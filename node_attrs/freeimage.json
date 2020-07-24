@@ -86,7 +86,7 @@
    "summary":"Helps provide support for many common image formats (PNG, JPEG, TIFF, BMP and others)."
   },
   "build":{
-   "number":"2",
+   "number":"3",
    "run_exports":[
     "freeimage"
    ]
@@ -121,7 +121,7 @@
     "openexr",
     "libpng",
     "zlib",
-    "libraw",
+    "libraw <0.20",
     "libwebp",
     "ilmbase"
    ]
@@ -204,7 +204,7 @@
    "summary":"Helps provide support for many common image formats (PNG, JPEG, TIFF, BMP and others)."
   },
   "build":{
-   "number":"2",
+   "number":"3",
    "run_exports":[
     "freeimage",
     "freeimage",
@@ -262,7 +262,7 @@
     "openexr",
     "libpng",
     "zlib",
-    "libraw",
+    "libraw <0.20",
     "libwebp",
     "ilmbase",
     "jpeg",
@@ -272,7 +272,7 @@
     "openexr",
     "libpng",
     "zlib",
-    "libraw",
+    "libraw <0.20",
     "libwebp",
     "ilmbase",
     "jpeg",
@@ -282,7 +282,7 @@
     "openexr",
     "libpng",
     "zlib",
-    "libraw",
+    "libraw <0.20",
     "libwebp",
     "ilmbase"
    ]
@@ -351,7 +351,7 @@
    "summary":"Helps provide support for many common image formats (PNG, JPEG, TIFF, BMP and others)."
   },
   "build":{
-   "number":"2",
+   "number":"3",
    "run_exports":[
     "freeimage"
    ]
@@ -386,7 +386,7 @@
     "openexr",
     "libpng",
     "zlib",
-    "libraw",
+    "libraw <0.20",
     "libwebp",
     "ilmbase"
    ]
@@ -451,7 +451,7 @@
   }
  },
  "pinning_version":"2020.05.27.14.19.32",
- "raw_meta_yaml":"{% set version = \"3.18.0\" %}\n{% set name = 'freeimage' %}\n\npackage:\n    name: {{ name }}\n    version: {{ version }}\n    # note: also update version in CMakeLists and in tests.\n\nsource:\n  - url: http://downloads.sourceforge.net/freeimage/FreeImage{{ version.replace('.', '') }}.zip\n    sha256: f41379682f9ada94ea7b34fe86bf9ee00935a3147be41b6569c9605a53e438fd\n\n  # The below files are taken (and adapted) from VCPKG: https://github.com/microsoft/vcpkg/tree/master/ports/freeimage\n  # The patches have been taken (and modified) from Debian / Fedora / VCPKG\n  - path: CMakeLists.txt\n  - path: FreeImageConfig-dynamic.h\n  - path: FreeImageConfig-static.h\n\nbuild:\n  number: 2\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - pkg-config\n    - make  # [unix]\n    # need to convert line endings for the patches to work\n    - dos2unix  # [unix]\n  host:\n    # or use jpeg-turbo?\n    - jpeg\n    - openjpeg\n    - jxrlib\n    - libtiff\n    - openexr\n    - libpng\n    - zlib\n    - libraw\n    - libwebp\n    - ilmbase\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libfreeimage${SHLIB_EXT}  # [linux]\n    - test -f $PREFIX/lib/libfreeimage${SHLIB_EXT}.{{ version.split('.')[0] }}  # [linux]\n    - test -f $PREFIX/lib/libfreeimage.{{ version.split('.')[0] }}${SHLIB_EXT}  # [osx]\n    - test -f $PREFIX/lib/libfreeimage-{{ version }}${SHLIB_EXT}  # [unix]\n    - test -f $PREFIX/include/FreeImage.h  # [unix]\n\nabout:\n  home: http://freeimage.sourceforge.net/\n  license: GPLv2 GPLv3 FreeImage\n  license_file:\n      - license-fi.txt\n      - license-gplv2.txt\n      - license-gplv3.txt\n  summary: Helps provide support for many common image formats (PNG, JPEG, TIFF, BMP and others).\n\nextra:\n  recipe-maintainers:\n    - almarklein\n    - jakirkham\n    - msarahan\n    - wolfv\n    - seanyen\n",
+ "raw_meta_yaml":"{% set version = \"3.18.0\" %}\n{% set name = 'freeimage' %}\n\npackage:\n    name: {{ name }}\n    version: {{ version }}\n    # note: also update version in CMakeLists and in tests.\n\nsource:\n  - url: http://downloads.sourceforge.net/freeimage/FreeImage{{ version.replace('.', '') }}.zip\n    sha256: f41379682f9ada94ea7b34fe86bf9ee00935a3147be41b6569c9605a53e438fd\n\n  # The below files are taken (and adapted) from VCPKG: https://github.com/microsoft/vcpkg/tree/master/ports/freeimage\n  # The patches have been taken (and modified) from Debian / Fedora / VCPKG\n  - path: CMakeLists.txt\n  - path: FreeImageConfig-dynamic.h\n  - path: FreeImageConfig-static.h\n\nbuild:\n  number: 3\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - pkg-config\n    - make  # [unix]\n    # need to convert line endings for the patches to work\n    - dos2unix  # [unix]\n  host:\n    # or use jpeg-turbo?\n    - jpeg\n    - openjpeg\n    - jxrlib\n    - libtiff\n    - openexr\n    - libpng\n    - zlib\n    - libraw <0.20\n    - libwebp\n    - ilmbase\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libfreeimage${SHLIB_EXT}  # [linux]\n    - test -f $PREFIX/lib/libfreeimage${SHLIB_EXT}.{{ version.split('.')[0] }}  # [linux]\n    - test -f $PREFIX/lib/libfreeimage.{{ version.split('.')[0] }}${SHLIB_EXT}  # [osx]\n    - test -f $PREFIX/lib/libfreeimage-{{ version }}${SHLIB_EXT}  # [unix]\n    - test -f $PREFIX/include/FreeImage.h  # [unix]\n\nabout:\n  home: http://freeimage.sourceforge.net/\n  license: GPLv2 GPLv3 FreeImage\n  license_file:\n      - license-fi.txt\n      - license-gplv2.txt\n      - license-gplv3.txt\n  summary: Helps provide support for many common image formats (PNG, JPEG, TIFF, BMP and others).\n\nextra:\n  recipe-maintainers:\n    - almarklein\n    - jakirkham\n    - msarahan\n    - wolfv\n    - seanyen\n",
  "req":{
   "__set__":true,
   "elements":[
@@ -530,7 +530,7 @@
     "jpeg",
     "jxrlib",
     "libpng",
-    "libraw",
+    "libraw <0.20",
     "libtiff",
     "libwebp",
     "openexr",
@@ -561,7 +561,7 @@
    "summary":"Helps provide support for many common image formats (PNG, JPEG, TIFF, BMP and others)."
   },
   "build":{
-   "number":"2",
+   "number":"3",
    "run_exports":[
     "freeimage"
    ],
@@ -595,7 +595,7 @@
     "openexr",
     "libpng",
     "zlib",
-    "libraw",
+    "libraw <0.20",
     "libwebp",
     "ilmbase"
    ]
