@@ -76,13 +76,12 @@
    "dev_url":"https://github.com/root-project/cling",
    "doc_url":"https://root.cern.ch/cling",
    "home":"https://root.cern.ch/cling",
-   "license":"UI/NCSAOSL",
-   "license_family":"BSD",
+   "license":"NCSA OR LGPL-2.1-only",
    "license_file":"LICENSE.TXT",
    "summary":"Cling - The Interactive C++ Interpreter"
   },
   "build":{
-   "number":"2",
+   "number":"3",
    "run_exports":[
     "cling"
    ]
@@ -102,7 +101,8 @@
   "requirements":{
    "build":[
     "cmake",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make"
    ],
    "host":[
     "llvmdev 5",
@@ -113,11 +113,11 @@
    "run":[
     "cxx_compiler_stub",
     "clangdev 5.0.0",
-    "clang_variant * cling_v0.6"
+    "clang_variant * cling_v0.6",
+    "sysroot_linux-64"
    ]
   },
   "source":{
-   "fn":"cling-0.6.tar.gz",
    "patches":[
     "patches/0001-Export-all-symbols-on-windows.patch",
     "patches/0001-remove-jupyter.patch",
@@ -140,7 +140,8 @@
    "__set__":true,
    "elements":[
     "cmake",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make"
    ]
   },
   "host":{
@@ -157,7 +158,8 @@
    "elements":[
     "clang_variant",
     "clangdev",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "sysroot_linux-64"
    ]
   },
   "test":{
@@ -171,13 +173,12 @@
    "dev_url":"https://github.com/root-project/cling",
    "doc_url":"https://root.cern.ch/cling",
    "home":"https://root.cern.ch/cling",
-   "license":"UI/NCSAOSL",
-   "license_family":"BSD",
+   "license":"NCSA OR LGPL-2.1-only",
    "license_file":"LICENSE.TXT",
    "summary":"Cling - The Interactive C++ Interpreter"
   },
   "build":{
-   "number":"2",
+   "number":"3",
    "run_exports":[
     "cling",
     "cling",
@@ -210,10 +211,13 @@
     "cmake",
     "ninja",
     "cxx_compiler_stub",
+    "make",
     "cmake",
     "cxx_compiler_stub",
+    "make",
     "cmake",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make"
    ],
    "host":[
     "llvmdev 5",
@@ -236,11 +240,11 @@
     "clang_variant * cling_v0.6",
     "cxx_compiler_stub",
     "clangdev 5.0.0",
-    "clang_variant * cling_v0.6"
+    "clang_variant * cling_v0.6",
+    "sysroot_linux-64"
    ]
   },
   "source":{
-   "fn":"cling-0.6.tar.gz",
    "patches":[
     "patches/0001-Export-all-symbols-on-windows.patch",
     "patches/0001-remove-jupyter.patch",
@@ -281,13 +285,12 @@
    "dev_url":"https://github.com/root-project/cling",
    "doc_url":"https://root.cern.ch/cling",
    "home":"https://root.cern.ch/cling",
-   "license":"UI/NCSAOSL",
-   "license_family":"BSD",
+   "license":"NCSA OR LGPL-2.1-only",
    "license_file":"LICENSE.TXT",
    "summary":"Cling - The Interactive C++ Interpreter"
   },
   "build":{
-   "number":"2",
+   "number":"3",
    "run_exports":[
     "cling"
    ]
@@ -307,7 +310,8 @@
   "requirements":{
    "build":[
     "cmake",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make"
    ],
    "host":[
     "llvmdev 5",
@@ -321,7 +325,6 @@
    ]
   },
   "source":{
-   "fn":"cling-0.6.tar.gz",
    "patches":[
     "patches/0001-Export-all-symbols-on-windows.patch",
     "patches/0001-remove-jupyter.patch",
@@ -344,7 +347,8 @@
    "__set__":true,
    "elements":[
     "cmake",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make"
    ]
   },
   "host":{
@@ -369,7 +373,7 @@
   }
  },
  "pinning_version":"2019.08.11",
- "raw_meta_yaml":"{% set name = \"cling\" %}\n{% set version = \"0.6\" %}\n{% set sha256 = \"c72efd121f65afb0bf2744d4871fd9758f265a750ce921fdef767c8ab9a0fa36\" %}\n{% set build_number = 2 %}\n{% set clang_version = [5, 0, 0] %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/root-project/cling/archive/v{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    # Export all symbols on windows to generate import library\n    - patches/0001-Export-all-symbols-on-windows.patch\n    # Do not build Jupyter kernel - use xeus-cling instead\n    - patches/0001-remove-jupyter.patch\n    - patches/0027-conda-packaging.patch\n    # Prevent setting sysroot include directory on OS Xd\n    - patches/0001-Drop-compile-time-sysroot.patch\n\nbuild:\n  number: {{ build_number }}\n  skip: True  # [win and vc<14]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - cmake\n    - ninja  # [win]\n    - {{ compiler('cxx') }}\n  host:\n    - llvmdev {{ clang_version[0] }}\n    - clangdev {{ clang_version|join('.') }}\n    - clang_variant * cling_v{{ version }}\n    - zlib\n  run:\n    # We really depend on the host compiler at runtime:\n    #  - the host compiler STL is one to be used.\n    #  - it is used by cling's runtime compatibility check.\n    - {{ compiler('cxx') }}  # [linux]\n    - clangdev {{ clang_version|join('.') }}\n    - clang_variant * cling_v{{ version }}\n\ntest:\n  commands:\n    - test -f $PREFIX/bin/cling  # [unix]\n    - if exist %LIBRARY_PREFIX%\\\\bin\\\\libcling.dll (exit 0) else (exit 1)  # [win]\n    - if exist %LIBRARY_PREFIX%\\\\lib\\\\libcling.lib (exit 0) else (exit 1)  # [win]\n    - cling '2+3; 0'\n    - cling '#include <vector>'\n\nabout:\n  dev_url: https://github.com/root-project/cling\n  doc_url: https://root.cern.ch/cling\n  home: https://root.cern.ch/cling\n  license: UI/NCSAOSL\n  license_family: BSD\n  license_file: LICENSE.TXT\n  summary: Cling - The Interactive C++ Interpreter\n  description: Cling is an interactive C++ interpreter, built on top of Clang and\n    LLVM compiler infrastructure. Cling realizes the read-eval-print loop (REPL)\n    concept, in order to leverage rapid application development. Implemented as\n    a small extension to LLVM and Clang, the interpreter reuses their strengths\n    such as the praised concise and expressive compiler diagnostics.\n\nextra:\n  recipe-maintainers:\n    - SylvainCorlay\n    - JohanMabille\n    - gouarin\n    - chrisburr\n",
+ "raw_meta_yaml":"{% set name = \"cling\" %}\n{% set version = \"0.6\" %}\n{% set sha256 = \"c72efd121f65afb0bf2744d4871fd9758f265a750ce921fdef767c8ab9a0fa36\" %}\n{% set build_number = 3 %}\n{% set clang_version = [5, 0, 0] %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/root-project/cling/archive/v{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    # Export all symbols on windows to generate import library\n    - patches/0001-Export-all-symbols-on-windows.patch\n    # Do not build Jupyter kernel - use xeus-cling instead\n    - patches/0001-remove-jupyter.patch\n    - patches/0027-conda-packaging.patch\n    # Prevent setting sysroot include directory on OS Xd\n    - patches/0001-Drop-compile-time-sysroot.patch\n\nbuild:\n  number: {{ build_number }}\n  skip: True  # [win and vc<14]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - cmake\n    - ninja  # [win]\n    - {{ compiler('cxx') }}\n    - make\n  host:\n    - llvmdev {{ clang_version[0] }}\n    - clangdev {{ clang_version|join('.') }}\n    - clang_variant * cling_v{{ version }}\n    - zlib\n  run:\n    # We really depend on the host compiler at runtime:\n    #  - the host compiler STL is one to be used.\n    #  - it is used by cling's runtime compatibility check.\n    - {{ compiler('cxx') }}  # [linux]\n    - clangdev {{ clang_version|join('.') }}\n    - clang_variant * cling_v{{ version }}\n    - sysroot_linux-64  # [linux]\n\ntest:\n  commands:\n    - test -f $PREFIX/bin/cling  # [unix]\n    - if exist %LIBRARY_PREFIX%\\\\bin\\\\libcling.dll (exit 0) else (exit 1)  # [win]\n    - if exist %LIBRARY_PREFIX%\\\\lib\\\\libcling.lib (exit 0) else (exit 1)  # [win]\n    - cling '2+3; 0'\n    - cling '#include <vector>'\n\nabout:\n  dev_url: https://github.com/root-project/cling\n  doc_url: https://root.cern.ch/cling\n  home: https://root.cern.ch/cling\n  license: NCSA OR LGPL-2.1-only\n  license_file: LICENSE.TXT\n  summary: Cling - The Interactive C++ Interpreter\n  description: Cling is an interactive C++ interpreter, built on top of Clang and\n    LLVM compiler infrastructure. Cling realizes the read-eval-print loop (REPL)\n    concept, in order to leverage rapid application development. Implemented as\n    a small extension to LLVM and Clang, the interpreter reuses their strengths\n    such as the praised concise and expressive compiler diagnostics.\n\nextra:\n  recipe-maintainers:\n    - SylvainCorlay\n    - JohanMabille\n    - gouarin\n    - chrisburr\n",
  "req":{
   "__set__":true,
   "elements":[
@@ -378,7 +382,9 @@
    "cmake",
    "cxx_compiler_stub",
    "llvmdev",
+   "make",
    "ninja",
+   "sysroot_linux-64",
    "zlib"
   ]
  },
@@ -388,6 +394,7 @@
    "elements":[
     "cmake",
     "cxx_compiler_stub",
+    "make",
     "ninja"
    ]
   },
@@ -405,7 +412,8 @@
    "elements":[
     "clang_variant",
     "clangdev",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "sysroot_linux-64"
    ]
   },
   "test":{
@@ -421,6 +429,7 @@
    "elements":[
     "cmake",
     "cxx_compiler_stub",
+    "make",
     "ninja"
    ]
   },
@@ -438,7 +447,8 @@
    "elements":[
     "clang_variant * cling_v0.6",
     "clangdev 5.0.0",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "sysroot_linux-64"
    ]
   },
   "test":{
@@ -454,13 +464,12 @@
    "dev_url":"https://github.com/root-project/cling",
    "doc_url":"https://root.cern.ch/cling",
    "home":"https://root.cern.ch/cling",
-   "license":"UI/NCSAOSL",
-   "license_family":"BSD",
+   "license":"NCSA OR LGPL-2.1-only",
    "license_file":"LICENSE.TXT",
    "summary":"Cling - The Interactive C++ Interpreter"
   },
   "build":{
-   "number":"2",
+   "number":"3",
    "run_exports":[
     "cling"
    ],
@@ -482,7 +491,8 @@
    "build":[
     "cmake",
     "ninja",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make"
    ],
    "host":[
     "llvmdev 5",
@@ -496,7 +506,6 @@
    ]
   },
   "source":{
-   "fn":"cling-0.6.tar.gz",
    "patches":[
     "patches/0001-Export-all-symbols-on-windows.patch",
     "patches/0001-remove-jupyter.patch",
@@ -521,6 +530,7 @@
    "elements":[
     "cmake",
     "cxx_compiler_stub",
+    "make",
     "ninja"
    ]
   },
