@@ -203,18 +203,23 @@
    "license":"BSD-3-Clause",
    "license_family":"BSD",
    "license_file":"go/LICENSE",
-   "summary":"The Go Programming Language ()"
+   "summary":"The Go Programming Language (cgo)"
   },
   "build":{
    "binary_relocation":false,
    "detect_binary_files_with_prefix":false,
    "missing_dso_whitelist":[
+    "$RPATH/libc.so.6",
     "$RPATH/libc.so.6"
    ],
    "number":"0"
   },
   "extra":{
    "recipe-maintainers":[
+    "nehaljwani",
+    "scopatz",
+    "sodre",
+    "stuarteberg",
     "nehaljwani",
     "scopatz",
     "sodre",
@@ -236,17 +241,17 @@
       "go14_compiler_stub"
      ],
      "run":[
-      "_go_select ==="
+      "_go_select ==2.2.0=nocgo"
      ],
      "run_constrained":null
     },
-    "script":"/build.sh",
+    "script":"nocgo/build.sh",
     "test":{
      "requires":[
       "git",
       "perl"
      ],
-     "script":"/test.sh"
+     "script":"nocgo/test.sh"
     }
    },
    {
@@ -257,9 +262,57 @@
      "license":"BSD-3-Clause",
      "license_family":"BSD",
      "license_file":"go/LICENSE",
-     "summary":"The Go () compiler activation scripts for conda-build."
+     "summary":"The Go (nocgo) compiler activation scripts for conda-build."
     },
-    "name":"go-_",
+    "name":"go-nocgo_linux-64",
+    "requirements":{
+     "run":[
+      "go"
+     ]
+    },
+    "script":"compiler/build.sh",
+    "test":{
+     "script":"compiler/test.sh"
+    }
+   },
+   {
+    "about":{
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go Programming Language"
+    },
+    "name":"go",
+    "requirements":{
+     "build":[
+      "go14_compiler_stub"
+     ],
+     "run":[
+      "_go_select ==2.3.0=cgo"
+     ],
+     "run_constrained":null
+    },
+    "script":"cgo/build.sh",
+    "test":{
+     "requires":[
+      "git",
+      "perl"
+     ],
+     "script":"cgo/test.sh"
+    }
+   },
+   {
+    "about":{
+     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
+     "dev_url":"https://github.com/conda-forge/go-feedstock",
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go (cgo) compiler activation scripts for conda-build."
+    },
+    "name":"go-cgo_linux-64",
     "requirements":{
      "run":[
       "go"
@@ -272,11 +325,12 @@
    }
   ],
   "package":{
-   "name":"go-",
+   "name":"go-cgo",
    "version":"1.13.14"
   },
   "requirements":{
    "run":[
+    "go",
     "go"
    ]
   },
@@ -292,10 +346,23 @@
     ],
     "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
     "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
+   },
+   {
+    "folder":"go",
+    "patches":[
+     "patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch",
+     "patches/0002-Fix-cgo_fortran-test-setup-for-conda.patch",
+     "patches/0003-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch",
+     "patches/0004-Inherit-CGO_-environment-variables.patch",
+     "patches/0005-Add-conda-aware-default-values-for-GOPATH-and-GOBIN.patch"
+    ],
+    "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
+    "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
    }
   ],
   "test":{
    "commands":[
+    "go help",
     "go help"
    ]
   }
@@ -335,18 +402,23 @@
    "license":"BSD-3-Clause",
    "license_family":"BSD",
    "license_file":"go/LICENSE",
-   "summary":"The Go Programming Language ()"
+   "summary":"The Go Programming Language (cgo)"
   },
   "build":{
    "binary_relocation":false,
    "detect_binary_files_with_prefix":false,
    "missing_dso_whitelist":[
+    "$RPATH/libc.so.6",
     "$RPATH/libc.so.6"
    ],
    "number":"0"
   },
   "extra":{
    "recipe-maintainers":[
+    "nehaljwani",
+    "scopatz",
+    "sodre",
+    "stuarteberg",
     "nehaljwani",
     "scopatz",
     "sodre",
@@ -366,17 +438,17 @@
     "requirements":{
      "build":null,
      "run":[
-      "_go_select ==="
+      "_go_select ==2.2.0=nocgo"
      ],
      "run_constrained":null
     },
-    "script":"/build.sh",
+    "script":"nocgo/build.sh",
     "test":{
      "requires":[
       "git",
       "perl"
      ],
-     "script":"/test.sh"
+     "script":"nocgo/test.sh"
     }
    },
    {
@@ -387,9 +459,55 @@
      "license":"BSD-3-Clause",
      "license_family":"BSD",
      "license_file":"go/LICENSE",
-     "summary":"The Go () compiler activation scripts for conda-build."
+     "summary":"The Go (nocgo) compiler activation scripts for conda-build."
     },
-    "name":"go-_",
+    "name":"go-nocgo_linux-aarch64",
+    "requirements":{
+     "run":[
+      "go"
+     ]
+    },
+    "script":"compiler/build.sh",
+    "test":{
+     "script":"compiler/test.sh"
+    }
+   },
+   {
+    "about":{
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go Programming Language"
+    },
+    "name":"go",
+    "requirements":{
+     "build":null,
+     "run":[
+      "_go_select ==2.3.0=cgo"
+     ],
+     "run_constrained":null
+    },
+    "script":"cgo/build.sh",
+    "test":{
+     "requires":[
+      "git",
+      "perl"
+     ],
+     "script":"cgo/test.sh"
+    }
+   },
+   {
+    "about":{
+     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
+     "dev_url":"https://github.com/conda-forge/go-feedstock",
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go (cgo) compiler activation scripts for conda-build."
+    },
+    "name":"go-cgo_linux-aarch64",
     "requirements":{
      "run":[
       "go"
@@ -402,11 +520,12 @@
    }
   ],
   "package":{
-   "name":"go-",
+   "name":"go-cgo",
    "version":"1.13.14"
   },
   "requirements":{
    "run":[
+    "go",
     "go"
    ]
   },
@@ -427,10 +546,28 @@
     "folder":"go-bootstrap",
     "sha256":"e94329c97b38b5bffe9c18e84e9f521dc995e02df7696897a7626293da9ac593",
     "url":"https://dl.google.com/go/go1.11.13.linux-arm64.tar.gz"
+   },
+   {
+    "folder":"go",
+    "patches":[
+     "patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch",
+     "patches/0002-Fix-cgo_fortran-test-setup-for-conda.patch",
+     "patches/0003-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch",
+     "patches/0004-Inherit-CGO_-environment-variables.patch",
+     "patches/0005-Add-conda-aware-default-values-for-GOPATH-and-GOBIN.patch"
+    ],
+    "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
+    "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
+   },
+   {
+    "folder":"go-bootstrap",
+    "sha256":"e94329c97b38b5bffe9c18e84e9f521dc995e02df7696897a7626293da9ac593",
+    "url":"https://dl.google.com/go/go1.11.13.linux-arm64.tar.gz"
    }
   ],
   "test":{
    "commands":[
+    "go help",
     "go help"
    ]
   }
@@ -468,18 +605,23 @@
    "license":"BSD-3-Clause",
    "license_family":"BSD",
    "license_file":"go/LICENSE",
-   "summary":"The Go Programming Language ()"
+   "summary":"The Go Programming Language (nocgo)"
   },
   "build":{
    "binary_relocation":false,
    "detect_binary_files_with_prefix":false,
    "missing_dso_whitelist":[
+    "$RPATH/libc.so.6",
     "$RPATH/libc.so.6"
    ],
    "number":"0"
   },
   "extra":{
    "recipe-maintainers":[
+    "nehaljwani",
+    "scopatz",
+    "sodre",
+    "stuarteberg",
     "nehaljwani",
     "scopatz",
     "sodre",
@@ -499,17 +641,17 @@
     "requirements":{
      "build":null,
      "run":[
-      "_go_select ==="
+      "_go_select ==2.3.0=cgo"
      ],
      "run_constrained":null
     },
-    "script":"/build.sh",
+    "script":"cgo/build.sh",
     "test":{
      "requires":[
       "git",
       "perl"
      ],
-     "script":"/test.sh"
+     "script":"cgo/test.sh"
     }
    },
    {
@@ -520,9 +662,55 @@
      "license":"BSD-3-Clause",
      "license_family":"BSD",
      "license_file":"go/LICENSE",
-     "summary":"The Go () compiler activation scripts for conda-build."
+     "summary":"The Go (cgo) compiler activation scripts for conda-build."
     },
-    "name":"go-_",
+    "name":"go-cgo_linux-ppc64le",
+    "requirements":{
+     "run":[
+      "go"
+     ]
+    },
+    "script":"compiler/build.sh",
+    "test":{
+     "script":"compiler/test.sh"
+    }
+   },
+   {
+    "about":{
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go Programming Language"
+    },
+    "name":"go",
+    "requirements":{
+     "build":null,
+     "run":[
+      "_go_select ==2.2.0=nocgo"
+     ],
+     "run_constrained":null
+    },
+    "script":"nocgo/build.sh",
+    "test":{
+     "requires":[
+      "git",
+      "perl"
+     ],
+     "script":"nocgo/test.sh"
+    }
+   },
+   {
+    "about":{
+     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
+     "dev_url":"https://github.com/conda-forge/go-feedstock",
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go (nocgo) compiler activation scripts for conda-build."
+    },
+    "name":"go-nocgo_linux-ppc64le",
     "requirements":{
      "run":[
       "go"
@@ -535,11 +723,12 @@
    }
   ],
   "package":{
-   "name":"go-",
+   "name":"go-nocgo",
    "version":"1.13.14"
   },
   "requirements":{
    "run":[
+    "go",
     "go"
    ]
   },
@@ -560,10 +749,28 @@
     "folder":"go-bootstrap",
     "sha256":"ad3c7397ddd41a5af9d9bf3c560d3d0f8c1bdef4ac4d21819a021ea88e25efca",
     "url":"https://dl.google.com/go/go1.11.13.linux-ppc64le.tar.gz"
+   },
+   {
+    "folder":"go",
+    "patches":[
+     "patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch",
+     "patches/0002-Fix-cgo_fortran-test-setup-for-conda.patch",
+     "patches/0003-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch",
+     "patches/0004-Inherit-CGO_-environment-variables.patch",
+     "patches/0005-Add-conda-aware-default-values-for-GOPATH-and-GOBIN.patch"
+    ],
+    "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
+    "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
+   },
+   {
+    "folder":"go-bootstrap",
+    "sha256":"ad3c7397ddd41a5af9d9bf3c560d3d0f8c1bdef4ac4d21819a021ea88e25efca",
+    "url":"https://dl.google.com/go/go1.11.13.linux-ppc64le.tar.gz"
    }
   ],
   "test":{
    "commands":[
+    "go help",
     "go help"
    ]
   }
@@ -601,7 +808,7 @@
    "license":"BSD-3-Clause",
    "license_family":"BSD",
    "license_file":"go/LICENSE",
-   "summary":"The Go Programming Language ()"
+   "summary":"The Go Programming Language (cgo)"
   },
   "build":{
    "binary_relocation":false,
@@ -609,12 +816,20 @@
    "force_ignore_keys":[
     "c_compiler",
     "cxx_compiler",
+    "fortran_compiler",
+    "c_compiler",
+    "cxx_compiler",
     "fortran_compiler"
    ],
    "missing_dso_whitelist":[
-    "$SYSROOT\\System32\\winmm.dll",
+    "/usr/lib/libSystem.B.dylib",
     "/usr/lib/libSystem.B.dylib",
     "$RPATH/libc.so.6",
+    "$RPATH/libc.so.6",
+    "$RPATH/libc.so.6",
+    "$RPATH/libc.so.6",
+    "$SYSROOT\\System32\\winmm.dll",
+    "$SYSROOT\\System32\\winmm.dll",
     "$RPATH/libc.so.6",
     "$RPATH/libc.so.6"
    ],
@@ -622,6 +837,26 @@
   },
   "extra":{
    "recipe-maintainers":[
+    "nehaljwani",
+    "scopatz",
+    "sodre",
+    "stuarteberg",
+    "nehaljwani",
+    "scopatz",
+    "sodre",
+    "stuarteberg",
+    "nehaljwani",
+    "scopatz",
+    "sodre",
+    "stuarteberg",
+    "nehaljwani",
+    "scopatz",
+    "sodre",
+    "stuarteberg",
+    "nehaljwani",
+    "scopatz",
+    "sodre",
+    "stuarteberg",
     "nehaljwani",
     "scopatz",
     "sodre",
@@ -659,16 +894,18 @@
       "go14_compiler_stub"
      ],
      "run":[
-      "_go_select ==="
+      "_go_select ==2.3.0=cgo"
      ],
-     "run_constrained":null
+     "run_constrained":[
+      "__osx >=10.11"
+     ]
     },
-    "script":"/build.bat",
+    "script":"cgo/build.sh",
     "test":{
      "requires":[
       "perl"
      ],
-     "script":"/test.bat"
+     "script":"cgo/test.sh"
     }
    },
    {
@@ -679,9 +916,293 @@
      "license":"BSD-3-Clause",
      "license_family":"BSD",
      "license_file":"go/LICENSE",
-     "summary":"The Go () compiler activation scripts for conda-build."
+     "summary":"The Go (cgo) compiler activation scripts for conda-build."
     },
-    "name":"go-_",
+    "name":"go-cgo_osx-64",
+    "requirements":{
+     "run":[
+      "go"
+     ]
+    },
+    "script":"compiler/build.sh",
+    "test":{
+     "script":"compiler/test.sh"
+    }
+   },
+   {
+    "about":{
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go Programming Language"
+    },
+    "name":"go",
+    "requirements":{
+     "build":[
+      "go14_compiler_stub"
+     ],
+     "run":[
+      "_go_select ==2.2.0=nocgo"
+     ],
+     "run_constrained":[
+      "__osx >=10.11"
+     ]
+    },
+    "script":"nocgo/build.sh",
+    "test":{
+     "requires":[
+      "perl"
+     ],
+     "script":"nocgo/test.sh"
+    }
+   },
+   {
+    "about":{
+     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
+     "dev_url":"https://github.com/conda-forge/go-feedstock",
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go (nocgo) compiler activation scripts for conda-build."
+    },
+    "name":"go-nocgo_osx-64",
+    "requirements":{
+     "run":[
+      "go"
+     ]
+    },
+    "script":"compiler/build.sh",
+    "test":{
+     "script":"compiler/test.sh"
+    }
+   },
+   {
+    "about":{
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go Programming Language"
+    },
+    "name":"go",
+    "requirements":{
+     "build":null,
+     "run":[
+      "_go_select ==2.3.0=cgo"
+     ],
+     "run_constrained":null
+    },
+    "script":"cgo/build.sh",
+    "test":{
+     "requires":[
+      "git",
+      "perl"
+     ],
+     "script":"cgo/test.sh"
+    }
+   },
+   {
+    "about":{
+     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
+     "dev_url":"https://github.com/conda-forge/go-feedstock",
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go (cgo) compiler activation scripts for conda-build."
+    },
+    "name":"go-cgo_linux-ppc64le",
+    "requirements":{
+     "run":[
+      "go"
+     ]
+    },
+    "script":"compiler/build.sh",
+    "test":{
+     "script":"compiler/test.sh"
+    }
+   },
+   {
+    "about":{
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go Programming Language"
+    },
+    "name":"go",
+    "requirements":{
+     "build":null,
+     "run":[
+      "_go_select ==2.2.0=nocgo"
+     ],
+     "run_constrained":null
+    },
+    "script":"nocgo/build.sh",
+    "test":{
+     "requires":[
+      "git",
+      "perl"
+     ],
+     "script":"nocgo/test.sh"
+    }
+   },
+   {
+    "about":{
+     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
+     "dev_url":"https://github.com/conda-forge/go-feedstock",
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go (nocgo) compiler activation scripts for conda-build."
+    },
+    "name":"go-nocgo_linux-ppc64le",
+    "requirements":{
+     "run":[
+      "go"
+     ]
+    },
+    "script":"compiler/build.sh",
+    "test":{
+     "script":"compiler/test.sh"
+    }
+   },
+   {
+    "about":{
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go Programming Language"
+    },
+    "name":"go",
+    "requirements":{
+     "build":[
+      "go14_compiler_stub"
+     ],
+     "run":[
+      "_go_select ==2.2.0=nocgo"
+     ],
+     "run_constrained":null
+    },
+    "script":"nocgo/build.sh",
+    "test":{
+     "requires":[
+      "git",
+      "perl"
+     ],
+     "script":"nocgo/test.sh"
+    }
+   },
+   {
+    "about":{
+     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
+     "dev_url":"https://github.com/conda-forge/go-feedstock",
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go (nocgo) compiler activation scripts for conda-build."
+    },
+    "name":"go-nocgo_linux-64",
+    "requirements":{
+     "run":[
+      "go"
+     ]
+    },
+    "script":"compiler/build.sh",
+    "test":{
+     "script":"compiler/test.sh"
+    }
+   },
+   {
+    "about":{
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go Programming Language"
+    },
+    "name":"go",
+    "requirements":{
+     "build":[
+      "go14_compiler_stub"
+     ],
+     "run":[
+      "_go_select ==2.3.0=cgo"
+     ],
+     "run_constrained":null
+    },
+    "script":"cgo/build.sh",
+    "test":{
+     "requires":[
+      "git",
+      "perl"
+     ],
+     "script":"cgo/test.sh"
+    }
+   },
+   {
+    "about":{
+     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
+     "dev_url":"https://github.com/conda-forge/go-feedstock",
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go (cgo) compiler activation scripts for conda-build."
+    },
+    "name":"go-cgo_linux-64",
+    "requirements":{
+     "run":[
+      "go"
+     ]
+    },
+    "script":"compiler/build.sh",
+    "test":{
+     "script":"compiler/test.sh"
+    }
+   },
+   {
+    "about":{
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go Programming Language"
+    },
+    "name":"go",
+    "requirements":{
+     "build":[
+      "go14_compiler_stub"
+     ],
+     "run":[
+      "_go_select ==2.2.0=nocgo"
+     ],
+     "run_constrained":null
+    },
+    "script":"nocgo/build.bat",
+    "test":{
+     "requires":[
+      "perl"
+     ],
+     "script":"nocgo/test.bat"
+    }
+   },
+   {
+    "about":{
+     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
+     "dev_url":"https://github.com/conda-forge/go-feedstock",
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go (nocgo) compiler activation scripts for conda-build."
+    },
+    "name":"go-nocgo_win-64",
     "requirements":{
      "run":[
       "go"
@@ -706,18 +1227,16 @@
       "go14_compiler_stub"
      ],
      "run":[
-      "_go_select ==="
+      "_go_select ==2.3.0=cgo"
      ],
-     "run_constrained":[
-      "__osx >="
-     ]
+     "run_constrained":null
     },
-    "script":"/build.sh",
+    "script":"cgo/build.bat",
     "test":{
      "requires":[
       "perl"
      ],
-     "script":"/test.sh"
+     "script":"cgo/test.bat"
     }
    },
    {
@@ -728,17 +1247,17 @@
      "license":"BSD-3-Clause",
      "license_family":"BSD",
      "license_file":"go/LICENSE",
-     "summary":"The Go () compiler activation scripts for conda-build."
+     "summary":"The Go (cgo) compiler activation scripts for conda-build."
     },
-    "name":"go-_",
+    "name":"go-cgo_win-64",
     "requirements":{
      "run":[
       "go"
      ]
     },
-    "script":"compiler/build.sh",
+    "script":"compiler/build.bat",
     "test":{
-     "script":"compiler/test.sh"
+     "script":"compiler/test.bat"
     }
    },
    {
@@ -751,21 +1270,19 @@
     },
     "name":"go",
     "requirements":{
-     "build":[
-      "go14_compiler_stub"
-     ],
+     "build":null,
      "run":[
-      "_go_select ==="
+      "_go_select ==2.2.0=nocgo"
      ],
      "run_constrained":null
     },
-    "script":"/build.sh",
+    "script":"nocgo/build.sh",
     "test":{
      "requires":[
       "git",
       "perl"
      ],
-     "script":"/test.sh"
+     "script":"nocgo/test.sh"
     }
    },
    {
@@ -776,9 +1293,9 @@
      "license":"BSD-3-Clause",
      "license_family":"BSD",
      "license_file":"go/LICENSE",
-     "summary":"The Go () compiler activation scripts for conda-build."
+     "summary":"The Go (nocgo) compiler activation scripts for conda-build."
     },
-    "name":"go-_",
+    "name":"go-nocgo_linux-aarch64",
     "requirements":{
      "run":[
       "go"
@@ -801,17 +1318,17 @@
     "requirements":{
      "build":null,
      "run":[
-      "_go_select ==="
+      "_go_select ==2.3.0=cgo"
      ],
      "run_constrained":null
     },
-    "script":"/build.sh",
+    "script":"cgo/build.sh",
     "test":{
      "requires":[
       "git",
       "perl"
      ],
-     "script":"/test.sh"
+     "script":"cgo/test.sh"
     }
    },
    {
@@ -822,55 +1339,9 @@
      "license":"BSD-3-Clause",
      "license_family":"BSD",
      "license_file":"go/LICENSE",
-     "summary":"The Go () compiler activation scripts for conda-build."
+     "summary":"The Go (cgo) compiler activation scripts for conda-build."
     },
-    "name":"go-_",
-    "requirements":{
-     "run":[
-      "go"
-     ]
-    },
-    "script":"compiler/build.sh",
-    "test":{
-     "script":"compiler/test.sh"
-    }
-   },
-   {
-    "about":{
-     "home":"http://golang.org",
-     "license":"BSD-3-Clause",
-     "license_family":"BSD",
-     "license_file":"go/LICENSE",
-     "summary":"The Go Programming Language"
-    },
-    "name":"go",
-    "requirements":{
-     "build":null,
-     "run":[
-      "_go_select ==="
-     ],
-     "run_constrained":null
-    },
-    "script":"/build.sh",
-    "test":{
-     "requires":[
-      "git",
-      "perl"
-     ],
-     "script":"/test.sh"
-    }
-   },
-   {
-    "about":{
-     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
-     "dev_url":"https://github.com/conda-forge/go-feedstock",
-     "home":"http://golang.org",
-     "license":"BSD-3-Clause",
-     "license_family":"BSD",
-     "license_file":"go/LICENSE",
-     "summary":"The Go () compiler activation scripts for conda-build."
-    },
-    "name":"go-_",
+    "name":"go-cgo_linux-aarch64",
     "requirements":{
      "run":[
       "go"
@@ -883,7 +1354,7 @@
    }
   ],
   "package":{
-   "name":"go-",
+   "name":"go-cgo",
    "version":"1.13.14"
   },
   "requirements":{
@@ -892,10 +1363,85 @@
     "go",
     "go",
     "go",
+    "go",
+    "go",
+    "go",
+    "go",
+    "go",
     "go"
    ]
   },
   "source":[
+   {
+    "folder":"go",
+    "patches":[
+     "patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch",
+     "patches/0002-Fix-cgo_fortran-test-setup-for-conda.patch",
+     "patches/0003-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch",
+     "patches/0004-Inherit-CGO_-environment-variables.patch",
+     "patches/0005-Add-conda-aware-default-values-for-GOPATH-and-GOBIN.patch"
+    ],
+    "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
+    "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
+   },
+   {
+    "folder":"go",
+    "patches":[
+     "patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch",
+     "patches/0002-Fix-cgo_fortran-test-setup-for-conda.patch",
+     "patches/0003-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch",
+     "patches/0004-Inherit-CGO_-environment-variables.patch",
+     "patches/0005-Add-conda-aware-default-values-for-GOPATH-and-GOBIN.patch"
+    ],
+    "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
+    "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
+   },
+   {
+    "folder":"go",
+    "patches":[
+     "patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch",
+     "patches/0002-Fix-cgo_fortran-test-setup-for-conda.patch",
+     "patches/0003-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch",
+     "patches/0004-Inherit-CGO_-environment-variables.patch",
+     "patches/0005-Add-conda-aware-default-values-for-GOPATH-and-GOBIN.patch"
+    ],
+    "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
+    "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
+   },
+   {
+    "folder":"go-bootstrap",
+    "sha256":"ad3c7397ddd41a5af9d9bf3c560d3d0f8c1bdef4ac4d21819a021ea88e25efca",
+    "url":"https://dl.google.com/go/go1.11.13.linux-ppc64le.tar.gz"
+   },
+   {
+    "folder":"go",
+    "patches":[
+     "patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch",
+     "patches/0002-Fix-cgo_fortran-test-setup-for-conda.patch",
+     "patches/0003-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch",
+     "patches/0004-Inherit-CGO_-environment-variables.patch",
+     "patches/0005-Add-conda-aware-default-values-for-GOPATH-and-GOBIN.patch"
+    ],
+    "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
+    "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
+   },
+   {
+    "folder":"go-bootstrap",
+    "sha256":"ad3c7397ddd41a5af9d9bf3c560d3d0f8c1bdef4ac4d21819a021ea88e25efca",
+    "url":"https://dl.google.com/go/go1.11.13.linux-ppc64le.tar.gz"
+   },
+   {
+    "folder":"go",
+    "patches":[
+     "patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch",
+     "patches/0002-Fix-cgo_fortran-test-setup-for-conda.patch",
+     "patches/0003-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch",
+     "patches/0004-Inherit-CGO_-environment-variables.patch",
+     "patches/0005-Add-conda-aware-default-values-for-GOPATH-and-GOBIN.patch"
+    ],
+    "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
+    "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
+   },
    {
     "folder":"go",
     "patches":[
@@ -963,8 +1509,8 @@
    },
    {
     "folder":"go-bootstrap",
-    "sha256":"ad3c7397ddd41a5af9d9bf3c560d3d0f8c1bdef4ac4d21819a021ea88e25efca",
-    "url":"https://dl.google.com/go/go1.11.13.linux-ppc64le.tar.gz"
+    "sha256":"e94329c97b38b5bffe9c18e84e9f521dc995e02df7696897a7626293da9ac593",
+    "url":"https://dl.google.com/go/go1.11.13.linux-arm64.tar.gz"
    }
   ],
   "test":{
@@ -973,11 +1519,16 @@
     "go help",
     "go help",
     "go help",
+    "go help",
+    "go help",
+    "go help",
+    "go help",
+    "go help",
     "go help"
    ]
   }
  },
- "name":"go-",
+ "name":"go-cgo",
  "new_version":false,
  "new_version_attempts":{
   "1.13.11":1,
@@ -994,18 +1545,23 @@
    "license":"BSD-3-Clause",
    "license_family":"BSD",
    "license_file":"go/LICENSE",
-   "summary":"The Go Programming Language ()"
+   "summary":"The Go Programming Language (nocgo)"
   },
   "build":{
    "binary_relocation":false,
    "detect_binary_files_with_prefix":false,
    "missing_dso_whitelist":[
+    "/usr/lib/libSystem.B.dylib",
     "/usr/lib/libSystem.B.dylib"
    ],
    "number":"0"
   },
   "extra":{
    "recipe-maintainers":[
+    "nehaljwani",
+    "scopatz",
+    "sodre",
+    "stuarteberg",
     "nehaljwani",
     "scopatz",
     "sodre",
@@ -1027,18 +1583,18 @@
       "go14_compiler_stub"
      ],
      "run":[
-      "_go_select ==="
+      "_go_select ==2.3.0=cgo"
      ],
      "run_constrained":[
-      "__osx >="
+      "__osx >=10.11"
      ]
     },
-    "script":"/build.sh",
+    "script":"cgo/build.sh",
     "test":{
      "requires":[
       "perl"
      ],
-     "script":"/test.sh"
+     "script":"cgo/test.sh"
     }
    },
    {
@@ -1049,9 +1605,58 @@
      "license":"BSD-3-Clause",
      "license_family":"BSD",
      "license_file":"go/LICENSE",
-     "summary":"The Go () compiler activation scripts for conda-build."
+     "summary":"The Go (cgo) compiler activation scripts for conda-build."
     },
-    "name":"go-_",
+    "name":"go-cgo_osx-64",
+    "requirements":{
+     "run":[
+      "go"
+     ]
+    },
+    "script":"compiler/build.sh",
+    "test":{
+     "script":"compiler/test.sh"
+    }
+   },
+   {
+    "about":{
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go Programming Language"
+    },
+    "name":"go",
+    "requirements":{
+     "build":[
+      "go14_compiler_stub"
+     ],
+     "run":[
+      "_go_select ==2.2.0=nocgo"
+     ],
+     "run_constrained":[
+      "__osx >=10.11"
+     ]
+    },
+    "script":"nocgo/build.sh",
+    "test":{
+     "requires":[
+      "perl"
+     ],
+     "script":"nocgo/test.sh"
+    }
+   },
+   {
+    "about":{
+     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
+     "dev_url":"https://github.com/conda-forge/go-feedstock",
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go (nocgo) compiler activation scripts for conda-build."
+    },
+    "name":"go-nocgo_osx-64",
     "requirements":{
      "run":[
       "go"
@@ -1064,11 +1669,12 @@
    }
   ],
   "package":{
-   "name":"go-",
+   "name":"go-nocgo",
    "version":"1.13.14"
   },
   "requirements":{
    "run":[
+    "go",
     "go"
    ]
   },
@@ -1084,10 +1690,23 @@
     ],
     "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
     "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
+   },
+   {
+    "folder":"go",
+    "patches":[
+     "patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch",
+     "patches/0002-Fix-cgo_fortran-test-setup-for-conda.patch",
+     "patches/0003-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch",
+     "patches/0004-Inherit-CGO_-environment-variables.patch",
+     "patches/0005-Add-conda-aware-default-values-for-GOPATH-and-GOBIN.patch"
+    ],
+    "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
+    "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
    }
   ],
   "test":{
    "commands":[
+    "go help",
     "go help"
    ]
   }
@@ -1119,7 +1738,16 @@
  },
  "outputs_names":[
   "go",
-  "go-_"
+  "go-cgo_linux-64",
+  "go-cgo_linux-aarch64",
+  "go-cgo_linux-ppc64le",
+  "go-cgo_osx-64",
+  "go-cgo_win-64",
+  "go-nocgo_linux-64",
+  "go-nocgo_linux-aarch64",
+  "go-nocgo_linux-ppc64le",
+  "go-nocgo_osx-64",
+  "go-nocgo_win-64"
  ],
  "pinning_version":"2020.07.21.17.10.15",
  "raw_meta_yaml":"{% set name = \"go\" %}\n{% set version = \"1.13.14\" %}\n\npackage:\n  name: {{ name }}-{{ go_variant_str }}\n  version: {{ version }}\n\nsource:\n  - folder: go\n    url: https://dl.google.com/{{ name }}/go{{ version }}.src.tar.gz\n    sha256: 197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06\n    patches:\n      # Please see patches/README.md for more details\n      - patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch\n      - patches/0002-Fix-cgo_fortran-test-setup-for-conda.patch\n      - patches/0003-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch\n      - patches/0004-Inherit-CGO_-environment-variables.patch\n      - patches/0005-Add-conda-aware-default-values-for-GOPATH-and-GOBIN.patch\n  - folder: go-bootstrap  # [aarch64 or ppc64le]\n    url: https://dl.google.com/go/go1.11.13.linux-arm64.tar.gz  # [aarch64]\n    sha256: e94329c97b38b5bffe9c18e84e9f521dc995e02df7696897a7626293da9ac593  # [aarch64]\n    url: https://dl.google.com/go/go1.11.13.linux-ppc64le.tar.gz  # [ppc64le]\n    sha256: ad3c7397ddd41a5af9d9bf3c560d3d0f8c1bdef4ac4d21819a021ea88e25efca  # [ppc64le]\n\nbuild:\n  binary_relocation: false\n  detect_binary_files_with_prefix: false\n  force_ignore_keys:   # [win]\n    - c_compiler        # [win]\n    - cxx_compiler      # [win]\n    - fortran_compiler  # [win]\n  # test data links to these DSOs\n  missing_dso_whitelist:\n    - $RPATH/libc.so.6             # [linux and not cgo]\n    - /usr/lib/libSystem.B.dylib   # [osx]\n    - $SYSROOT\\System32\\winmm.dll  # [win]\n  number: 0\n\nrequirements:\n  run:\n    - {{ pin_subpackage(name, exact=true) }}\n    - {{ compiler('c') }}  # [unix and cgo]\n    - {{ compiler('m2w64_c') }}  # [win and cgo]\n\ntest:\n  commands:\n    - go help\n\noutputs:\n  - name: {{ name }}\n    script: {{ go_variant_str }}/build.sh  # [unix]\n    script: {{ go_variant_str }}/build.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('go14') }}  # [not (aarch64 or ppc64le)]\n\n        - {{ compiler('c') }}        # [unix and cgo]\n        - {{ compiler('cxx') }}      # [unix and cgo]\n        - {{ compiler('fortran') }}  # [unix and cgo]\n\n        - {{ compiler('m2w64_c') }}        # [win and cgo]\n        - {{ compiler('m2w64_cxx') }}      # [win and cgo]\n        - {{ compiler('m2w64_fortran') }}  # [win and cgo]\n      run:\n        - _go_select =={{ go_variant_ver }}={{ go_variant_str }}\n      run_constrained:\n        # TODO: Move to run section once conda/conda#9845 is fixed\n        - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx]\n\n        - {{ pin_compatible(compiler('c')) }}        # [unix and cgo]\n        - {{ pin_compatible(compiler('cxx')) }}      # [unix and cgo]\n        - {{ pin_compatible(compiler('fortran')) }}  # [unix and cgo]\n\n        - {{ pin_compatible(compiler('m2w64_c')) }}        # [win and cgo]\n        - {{ pin_compatible(compiler('m2w64_cxx')) }}      # [win and cgo]\n        - {{ pin_compatible(compiler('m2w64_fortran')) }}  # [win and cgo]\n    test:\n      requires:\n        - {{ compiler('c') }}        # [unix and cgo]\n        - {{ compiler('m2w64_c') }}  # [win and cgo]\n        - git  # [linux]\n        - perl\n      script: {{ go_variant_str }}/test.sh  # [unix]\n      script: {{ go_variant_str }}/test.bat  # [win]\n    about:\n      home: http://golang.org\n      license: BSD-3-Clause\n      license_family: BSD\n      license_file: go/LICENSE\n      summary: The Go Programming Language\n\n  - name: {{ name }}-{{ go_variant_str }}_{{ target_platform }}\n    script: compiler/build.sh  # [unix]\n    script: compiler/build.bat  # [win]\n    requirements:\n      run:\n        - {{ pin_subpackage(name, exact=True) }}\n    #TODO: Re-enable once conda/conda#9845 if fixed.\n    #run_exports:   # [osx]\n    #  strong:                                     # [osx]\n    #    - __osx >={{ MACOSX_DEPLOYMENT_TARGET }}  # [osx]\n    test:\n      script: compiler/test.sh  # [unix]\n      script: compiler/test.bat  # [win]\n    about:\n      home: http://golang.org\n      license: BSD-3-Clause\n      license_family: BSD\n      license_file: go/LICENSE\n      summary: The Go ({{ go_variant_str }}) compiler activation scripts for conda-build.\n      description: |\n        This package enables the CONDA_GO_COMPILER environment variable. \n        This variable is used by conda-forge's patched GoLang compiler to \n        set conda-aware GOBIN and GOPATH default values. These default \n        values are ignored if GOBIN and GOPATH environment variables \n        are set independently by the user.\n\n        For more details, please see the go-feedstock recipe.\n      dev_url: https://github.com/conda-forge/go-feedstock\n\nabout:\n  home: http://golang.org\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: go/LICENSE\n  summary: The Go Programming Language ({{ go_variant_str }})\n  description: |\n    Go is expressive, concise, clean, and efficient. Its concurrency mechanisms\n    make it easy to write programs that get the most out of multicore and\n    networked machines, while its novel type system enables flexible and\n    modular program construction. Go compiles quickly to machine code yet has\n    the convenience of garbage collection and the power of run-time reflection.\n    It's a fast, statically typed, compiled language that feels like a\n    dynamically typed, interpreted language.\n  doc_url: https://golang.org/doc\n  dev_url: https://go.googlesource.com/go\n\nextra:\n  recipe-maintainers:\n    - nehaljwani\n    - scopatz\n    - sodre\n    - stuarteberg\n",
@@ -1174,7 +1802,8 @@
   "run":{
    "__set__":true,
    "elements":[
-    "_go_select ===",
+    "_go_select ==2.2.0=nocgo",
+    "_go_select ==2.3.0=cgo",
     "go"
    ]
   },
@@ -1197,7 +1826,7 @@
    "license":"BSD-3-Clause",
    "license_family":"BSD",
    "license_file":"go/LICENSE",
-   "summary":"The Go Programming Language ()"
+   "summary":"The Go Programming Language (cgo)"
   },
   "build":{
    "binary_relocation":false,
@@ -1205,15 +1834,23 @@
    "force_ignore_keys":[
     "c_compiler",
     "cxx_compiler",
+    "fortran_compiler",
+    "c_compiler",
+    "cxx_compiler",
     "fortran_compiler"
    ],
    "missing_dso_whitelist":[
+    "$SYSROOT\\System32\\winmm.dll",
     "$SYSROOT\\System32\\winmm.dll"
    ],
    "number":"0"
   },
   "extra":{
    "recipe-maintainers":[
+    "nehaljwani",
+    "scopatz",
+    "sodre",
+    "stuarteberg",
     "nehaljwani",
     "scopatz",
     "sodre",
@@ -1235,16 +1872,16 @@
       "go14_compiler_stub"
      ],
      "run":[
-      "_go_select ==="
+      "_go_select ==2.2.0=nocgo"
      ],
      "run_constrained":null
     },
-    "script":"/build.bat",
+    "script":"nocgo/build.bat",
     "test":{
      "requires":[
       "perl"
      ],
-     "script":"/test.bat"
+     "script":"nocgo/test.bat"
     }
    },
    {
@@ -1255,9 +1892,56 @@
      "license":"BSD-3-Clause",
      "license_family":"BSD",
      "license_file":"go/LICENSE",
-     "summary":"The Go () compiler activation scripts for conda-build."
+     "summary":"The Go (nocgo) compiler activation scripts for conda-build."
     },
-    "name":"go-_",
+    "name":"go-nocgo_win-64",
+    "requirements":{
+     "run":[
+      "go"
+     ]
+    },
+    "script":"compiler/build.bat",
+    "test":{
+     "script":"compiler/test.bat"
+    }
+   },
+   {
+    "about":{
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go Programming Language"
+    },
+    "name":"go",
+    "requirements":{
+     "build":[
+      "go14_compiler_stub"
+     ],
+     "run":[
+      "_go_select ==2.3.0=cgo"
+     ],
+     "run_constrained":null
+    },
+    "script":"cgo/build.bat",
+    "test":{
+     "requires":[
+      "perl"
+     ],
+     "script":"cgo/test.bat"
+    }
+   },
+   {
+    "about":{
+     "description":"This package enables the CONDA_GO_COMPILER environment variable.\nThis variable is used by conda-forge's patched GoLang compiler to\nset conda-aware GOBIN and GOPATH default values. These default\nvalues are ignored if GOBIN and GOPATH environment variables\nare set independently by the user.\n\nFor more details, please see the go-feedstock recipe.\n",
+     "dev_url":"https://github.com/conda-forge/go-feedstock",
+     "home":"http://golang.org",
+     "license":"BSD-3-Clause",
+     "license_family":"BSD",
+     "license_file":"go/LICENSE",
+     "summary":"The Go (cgo) compiler activation scripts for conda-build."
+    },
+    "name":"go-cgo_win-64",
     "requirements":{
      "run":[
       "go"
@@ -1270,11 +1954,12 @@
    }
   ],
   "package":{
-   "name":"go-",
+   "name":"go-cgo",
    "version":"1.13.14"
   },
   "requirements":{
    "run":[
+    "go",
     "go"
    ]
   },
@@ -1290,10 +1975,23 @@
     ],
     "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
     "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
+   },
+   {
+    "folder":"go",
+    "patches":[
+     "patches/0001-issue10607-is-only-valid-when-running-with-CGO.patch",
+     "patches/0002-Fix-cgo_fortran-test-setup-for-conda.patch",
+     "patches/0003-Add-CC-C-CPP-LD-FLAGS-to-script_test-extraEnvKeys.patch",
+     "patches/0004-Inherit-CGO_-environment-variables.patch",
+     "patches/0005-Add-conda-aware-default-values-for-GOPATH-and-GOBIN.patch"
+    ],
+    "sha256":"197333e97290e9ea8796f738d61019dcba1c377c2f3961fd6a114918ecc7ab06",
+    "url":"https://dl.google.com/go/go1.13.14.src.tar.gz"
    }
   ],
   "test":{
    "commands":[
+    "go help",
     "go help"
    ]
   }
