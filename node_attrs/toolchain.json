@@ -19,7 +19,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: Error getting upstream version",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "win":"azure"
@@ -153,48 +153,20 @@
   "outputs":[
    {
     "name":"toolchain",
-    "script":"install-toolchain.sh",
     "test":{
      "commands":[
-      "test -f \"${PREFIX}/etc/conda/activate.d/toolchain_activate.sh\"",
-      "test -f \"${PREFIX}/etc/conda/deactivate.d/toolchain_deactivate.sh\"",
-      "source ${PREFIX}/etc/conda/activate.d/toolchain_activate.sh",
-      "if [ -z ${CC+x} ]; then echo \"CC is unset after activation\" && exit 1; else echo \"CC is set to '$CC'\"; fi",
-      "source ${PREFIX}/etc/conda/deactivate.d/toolchain_deactivate.sh",
-      "if [ -z ${CC+x} ]; then echo \"CC is unset after deactivation \"; else echo \"CC is set to '$CC' after deactivation\" && exit 1; fi"
+      "echo \"I'm on windows, and there's nothing to do here.\""
      ]
     }
    },
    {
-    "name":"toolchain_c_linux-64",
+    "name":"m2w64-toolchain_win-64",
     "requirements":[
-     "toolchain"
+     "m2w64-toolchain"
     ],
     "run_exports":{
      "strong":[
-      "libgcc-ng >=4.9"
-     ]
-    }
-   },
-   {
-    "name":"toolchain_cxx_linux-64",
-    "requirements":[
-     "toolchain"
-    ],
-    "run_exports":{
-     "strong":[
-      "libstdcxx-ng >=4.9"
-     ]
-    }
-   },
-   {
-    "name":"toolchain_fort_linux-64",
-    "requirements":[
-     "toolchain"
-    ],
-    "run_exports":{
-     "strong":[
-      "libgfortran >=3.0"
+      "m2w64-gcc-libs"
      ]
     }
    },
@@ -238,20 +210,48 @@
    },
    {
     "name":"toolchain",
+    "script":"install-toolchain.sh",
     "test":{
      "commands":[
-      "echo \"I'm on windows, and there's nothing to do here.\""
+      "test -f \"${PREFIX}/etc/conda/activate.d/toolchain_activate.sh\"",
+      "test -f \"${PREFIX}/etc/conda/deactivate.d/toolchain_deactivate.sh\"",
+      "source ${PREFIX}/etc/conda/activate.d/toolchain_activate.sh",
+      "if [ -z ${CC+x} ]; then echo \"CC is unset after activation\" && exit 1; else echo \"CC is set to '$CC'\"; fi",
+      "source ${PREFIX}/etc/conda/deactivate.d/toolchain_deactivate.sh",
+      "if [ -z ${CC+x} ]; then echo \"CC is unset after deactivation \"; else echo \"CC is set to '$CC' after deactivation\" && exit 1; fi"
      ]
     }
    },
    {
-    "name":"m2w64-toolchain_win-64",
+    "name":"toolchain_c_linux-64",
     "requirements":[
-     "m2w64-toolchain"
+     "toolchain"
     ],
     "run_exports":{
      "strong":[
-      "m2w64-gcc-libs"
+      "libgcc-ng >=4.9"
+     ]
+    }
+   },
+   {
+    "name":"toolchain_cxx_linux-64",
+    "requirements":[
+     "toolchain"
+    ],
+    "run_exports":{
+     "strong":[
+      "libstdcxx-ng >=4.9"
+     ]
+    }
+   },
+   {
+    "name":"toolchain_fort_linux-64",
+    "requirements":[
+     "toolchain"
+    ],
+    "run_exports":{
+     "strong":[
+      "libgfortran >=3.0"
      ]
     }
    }
