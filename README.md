@@ -8,9 +8,13 @@ Please open issues in [cf-scripts](https://github.com/regro/cf-scripts/issues).
 ## code snippets to test building the graph
 
 ```python
+import logging
+
 from conda_forge_tick.make_graph import make_graph
 from conda_forge_tick.all_feedstocks import get_all_feedstocks
 from conda_forge_tick.utils import load_graph
+
+logging.getLogger("conda_forge_tick.make_graph").setLevel(logging.INFO)
 
 names = get_all_feedstocks(cached=True)[0:10]
 gx = load_graph()
