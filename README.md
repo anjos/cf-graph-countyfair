@@ -12,11 +12,11 @@ import logging
 
 from conda_forge_tick.make_graph import make_graph
 from conda_forge_tick.all_feedstocks import get_all_feedstocks
-from conda_forge_tick.utils import load_graph
-
-logging.getLogger("conda_forge_tick.make_graph").setLevel(logging.INFO)
+from conda_forge_tick.utils import load_graph, setup_logger
 
 names = get_all_feedstocks(cached=True)[0:10]
 gx = load_graph()
+
+setup_logger(logging.getLogger("conda_forge_tick.make_graph"))
 make_graph(names, gx)
 ```
