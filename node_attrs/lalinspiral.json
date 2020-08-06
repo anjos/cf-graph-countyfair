@@ -125,7 +125,7 @@
   }
  ],
  "archived":false,
- "bad":false,
+ "bad":"Upstream: unknown source",
  "conda-forge.yml":{},
  "feedstock_name":"lalinspiral",
  "hash_type":"sha256",
@@ -341,10 +341,13 @@
   "build":{
    "error_overdepending":true,
    "error_overlinking":true,
-   "number":"0"
+   "number":"0",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
+    "duncanmmacleod",
+    "skymoo",
     "duncanmmacleod",
     "skymoo",
     "duncanmmacleod",
@@ -352,6 +355,78 @@
    ]
   },
   "outputs":[
+   {
+    "build":{
+     "run_exports":[
+      "lalinspiral"
+     ]
+    },
+    "name":"lalinspiral"
+   },
+   {
+    "about":{
+     "description":"The LSC Algorithm Inspiral Library for gravitational wave data analysis.\nThis package contains the python bindings.\n",
+     "dev_url":"https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url":"https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/",
+     "home":"https://wiki.ligo.org/Computing/LALSuite",
+     "license":"GPL-2.0-or-later",
+     "license_family":"GPL",
+     "license_file":"COPYING",
+     "summary":"LSC Algorithm Inspiral Library"
+    },
+    "build":{
+     "ignore_run_exports":[
+      "lalburst",
+      "python"
+     ]
+    },
+    "name":"python-lalinspiral",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "make",
+      "pkg-config >=0.18.0",
+      "swig >=3.0.9"
+     ],
+     "host":[
+      "lalinspiral",
+      "lalburst >=1.5.3",
+      "numpy",
+      "python"
+     ],
+     "run":[
+      "lal >=7.0.0",
+      "lalinspiral",
+      "lscsoft-glue",
+      "numpy",
+      "python",
+      "python-lal >=7.0.0",
+      "python-lalburst >=1.5.3",
+      "python-lalframe >=1.5.0",
+      "python-lalmetaio >=1.6.0",
+      "python-lalsimulation >=2.1.0",
+      "python-ligo-lw"
+     ]
+    },
+    "script":"install-python.sh",
+    "test":{
+     "commands":[
+      "pushd test/python; python -m pytest -v; popd"
+     ],
+     "imports":[
+      "lalinspiral",
+      "lalinspiral.inspinjfind",
+      "lalinspiral.sbank",
+      "lalinspiral.thinca"
+     ],
+     "requires":[
+      "pytest >=4.0.0a0"
+     ],
+     "source_files":[
+      "test/python"
+     ]
+    }
+   },
    {
     "build":{
      "run_exports":[
@@ -515,9 +590,19 @@
     "c_compiler_stub",
     "make",
     "pkg-config >=0.18.0",
+    "swig >=3.0.9",
+    "c_compiler_stub",
+    "make",
+    "pkg-config >=0.18.0",
     "swig >=3.0.9"
    ],
    "host":[
+    "gsl",
+    "lal >=7.0.0",
+    "lalframe >=1.5.0",
+    "lalmetaio >=1.6.0",
+    "lalsimulation >=2.1.0",
+    "metaio",
     "gsl",
     "lal >=7.0.0",
     "lalframe >=1.5.0",
@@ -543,6 +628,12 @@
     "lalframe >=1.5.0",
     "lalmetaio >=1.6.0",
     "lalsimulation >=2.1.0",
+    "metaio",
+    "gsl",
+    "lal >=7.0.0",
+    "lalframe >=1.5.0",
+    "lalmetaio >=1.6.0",
+    "lalsimulation >=2.1.0",
     "metaio"
    ]
   },
@@ -553,12 +644,12 @@
   "test":{
    "commands":[
     "lalinspiral_version --verbose",
+    "lalinspiral_version --verbose",
     "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"",
     "lalinspiral_version --verbose",
     "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\""
    ],
    "requires":[
-    "pkg-config",
     "pkg-config"
    ]
   }

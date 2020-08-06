@@ -200,15 +200,87 @@
    "summary":"Provides dynamically loadable compression filters for HDF5 that are\npopular for photon or neutron science\n"
   },
   "build":{
-   "number":"2"
+   "number":"2",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
+    "Anthchirp",
     "Anthchirp",
     "Anthchirp"
    ]
   },
   "outputs":[
+   {
+    "name":"hdf5-external-filter-plugins-bitshuffle",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake >=3.0.0"
+     ],
+     "host":[
+      "hdf5",
+      "lz4-c"
+     ],
+     "run":[
+      "hdf5",
+      "lz4-c"
+     ]
+    },
+    "script":"build-bitshuffle.bat",
+    "test":{
+     "commands":[
+      "conda inspect linkages -p $PREFIX hdf5-external-filter-plugins-bitshuffle"
+     ]
+    }
+   },
+   {
+    "name":"hdf5-external-filter-plugins-bzip2",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake >=3.0.0"
+     ],
+     "host":[
+      "bzip2",
+      "hdf5"
+     ],
+     "run":[
+      "bzip2"
+     ]
+    },
+    "script":"build-bzip2.bat",
+    "test":{
+     "commands":[
+      "conda inspect linkages -p $PREFIX hdf5-external-filter-plugins-bzip2"
+     ]
+    }
+   },
+   {
+    "name":"hdf5-external-filter-plugins-lz4",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake >=3.0.0"
+     ],
+     "host":[
+      "hdf5",
+      "lz4-c"
+     ],
+     "run":[
+      "lz4-c"
+     ]
+    },
+    "script":"build-lz4.bat",
+    "test":{
+     "commands":[
+      "conda inspect linkages -p $PREFIX hdf5-external-filter-plugins-lz4"
+     ]
+    }
+   },
    {
     "name":"hdf5-external-filter-plugins-bitshuffle",
     "requirements":{
@@ -362,6 +434,9 @@
   },
   "requirements":{
    "run":[
+    "hdf5-external-filter-plugins-bitshuffle",
+    "hdf5-external-filter-plugins-bzip2",
+    "hdf5-external-filter-plugins-lz4",
     "hdf5-external-filter-plugins-bitshuffle",
     "hdf5-external-filter-plugins-bzip2",
     "hdf5-external-filter-plugins-lz4",

@@ -197,10 +197,12 @@
    "summary":"Free energy calculations in molecular systems"
   },
   "build":{
-   "number":"0"
+   "number":"0",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
+    "GiovanniBussi",
     "GiovanniBussi",
     "GiovanniBussi"
    ]
@@ -213,6 +215,9 @@
    "build":[
     "c_compiler_stub",
     "cxx_compiler_stub",
+    "make",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
     "llvm-openmp",
     "make",
     "c_compiler_stub",
@@ -221,6 +226,12 @@
     "vim"
    ],
    "host":[
+    "fftw",
+    "gsl",
+    "libblas",
+    "liblapack",
+    "xdrfile",
+    "zlib",
     "fftw",
     "gsl",
     "libblas",
@@ -237,6 +248,7 @@
    ],
    "run":[
     "gawk",
+    "gawk",
     "llvm-openmp",
     "gawk"
    ]
@@ -247,6 +259,15 @@
   },
   "test":{
    "commands":[
+    "plumed info --root",
+    "plumed info --long-version",
+    "plumed-patch -h",
+    "plumed config has external_blas external_lapack fftw gsl xdrfile zlib",
+    "$PREFIX/lib/plumed/plumed-runtime -h",
+    "test -f $PREFIX/lib/libplumed$SHLIB_EXT",
+    "test -f $PREFIX/lib/libplumedWrapper.a",
+    "test -f $PREFIX/lib/libplumedKernel$SHLIB_EXT",
+    "conda inspect linkages -p $PREFIX $PKG_NAME",
     "plumed info --root",
     "plumed info --long-version",
     "plumed-patch -h",

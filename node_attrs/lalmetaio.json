@@ -106,7 +106,7 @@
   }
  ],
  "archived":false,
- "bad":false,
+ "bad":"Upstream: unknown source",
  "conda-forge.yml":{},
  "feedstock_name":"lalmetaio",
  "hash_type":"sha256",
@@ -285,10 +285,13 @@
   "build":{
    "error_overdepending":true,
    "error_overlinking":true,
-   "number":"1"
+   "number":"1",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
+    "duncanmmacleod",
+    "skymoo",
     "duncanmmacleod",
     "skymoo",
     "duncanmmacleod",
@@ -296,6 +299,69 @@
    ]
   },
   "outputs":[
+   {
+    "build":{
+     "run_exports":[
+      "lalmetaio"
+     ]
+    },
+    "name":"lalmetaio"
+   },
+   {
+    "about":{
+     "description":"The LSC Algorithm MetaIO Library for gravitational wave data analysis.\nThis package contains the python bindings.\n",
+     "dev_url":"https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url":"https://lscsoft.docs.ligo.org/lalsuite/lalmetaio/",
+     "home":"https://wiki.ligo.org/Computing/LALSuite",
+     "license":"GPL-2.0-or-later",
+     "license_family":"GPL",
+     "license_file":"COPYING",
+     "summary":"LSC Algorithm MetaIO Library"
+    },
+    "build":{
+     "error_overdepending":true,
+     "error_overlinking":true,
+     "ignore_run_exports":[
+      "python"
+     ]
+    },
+    "name":"python-lalmetaio",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "make",
+      "pkg-config >=0.18.0",
+      "swig >=3.0.9"
+     ],
+     "host":[
+      "lalmetaio",
+      "numpy",
+      "python"
+     ],
+     "run":[
+      "lal",
+      "lalmetaio",
+      "numpy",
+      "python",
+      "python-lal >=7.0.0"
+     ]
+    },
+    "script":"install-python.sh",
+    "test":{
+     "commands":[
+      "pushd test/python; python -m pytest -v; popd"
+     ],
+     "imports":[
+      "lalmetaio"
+     ],
+     "requires":[
+      "pytest >=4.0.0a0"
+     ],
+     "source_files":[
+      "test/python"
+     ]
+    }
+   },
    {
     "build":{
      "run_exports":[
@@ -437,15 +503,23 @@
     "c_compiler_stub",
     "make",
     "pkg-config >=0.18.0",
+    "swig >=3.0.9",
+    "c_compiler_stub",
+    "make",
+    "pkg-config >=0.18.0",
     "swig >=3.0.9"
    ],
    "host":[
     "lal >=7.0.0",
     "metaio",
     "lal >=7.0.0",
+    "metaio",
+    "lal >=7.0.0",
     "metaio"
    ],
    "run":[
+    "lal >=7.0.0",
+    "metaio",
     "lal >=7.0.0",
     "metaio",
     "lal >=7.0.0",
@@ -459,12 +533,12 @@
   "test":{
    "commands":[
     "lalmetaio_version --verbose",
+    "lalmetaio_version --verbose",
     "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"",
     "lalmetaio_version --verbose",
     "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\""
    ],
    "requires":[
-    "pkg-config",
     "pkg-config"
    ]
   }

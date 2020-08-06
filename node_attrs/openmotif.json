@@ -48,7 +48,7 @@
   }
  ],
  "archived":false,
- "bad":false,
+ "bad":"Upstream: unknown source",
  "conda-forge.yml":{
   "compiler_stack":"comp7",
   "max_py_ver":"37",
@@ -204,15 +204,40 @@
    "summary":"Motif user interface component toolkit."
   },
   "build":{
-   "number":"2"
+   "number":"2",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
+    "epruesse",
     "epruesse",
     "epruesse"
    ]
   },
   "outputs":[
+   {
+    "build":{
+     "run_exports":[
+      "openmotif"
+     ]
+    },
+    "name":"openmotif-dev",
+    "requirements":[
+     "openmotif"
+    ],
+    "script":"install_dev.sh"
+   },
+   {
+    "name":"openmotif",
+    "script":"install_main.sh"
+   },
+   {
+    "name":"openmotif-doc",
+    "requirements":[
+     "openmotif"
+    ],
+    "script":"install_doc.sh"
+   },
    {
     "build":{
      "run_exports":[
@@ -271,9 +296,25 @@
     "cxx_compiler_stub",
     "pkg-config",
     "c_compiler_stub",
+    "cxx_compiler_stub",
+    "pkg-config",
+    "c_compiler_stub",
     "cxx_compiler_stub"
    ],
    "host":[
+    "flex",
+    "freetype",
+    "fontconfig",
+    "libpng",
+    "jpeg",
+    "xorg-libxt",
+    "xorg-libxext",
+    "xorg-libxft",
+    "xorg-xbitmaps",
+    "xorg-libxp",
+    "xorg-libxmu",
+    "xorg-makedepend",
+    "libiconv",
     "flex",
     "freetype",
     "fontconfig",
@@ -321,6 +362,16 @@
     "xorg-libxft",
     "xorg-libxp",
     "xorg-libxmu",
+    "libiconv",
+    "freetype",
+    "fontconfig",
+    "libpng",
+    "jpeg",
+    "xorg-libxt",
+    "xorg-libxext",
+    "xorg-libxft",
+    "xorg-libxp",
+    "xorg-libxmu",
     "libiconv"
    ]
   },
@@ -331,6 +382,7 @@
   },
   "test":{
    "commands":[
+    "test \"`uil 2>&1| tr -d '\\n'`\" = \"Severe: no source file specified\"",
     "test \"`uil 2>&1| tr -d '\\n'`\" = \"Severe: no source file specified\"",
     "conda inspect linkages -p $PREFIX $PKG_NAME",
     "conda inspect objects -p $PREFIX $PKG_NAME",
