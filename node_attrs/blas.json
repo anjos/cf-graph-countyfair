@@ -35,7 +35,7 @@
   }
  ],
  "archived":false,
- "bad":false,
+ "bad":"Upstream: unknown source",
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"default",
@@ -49,6 +49,8 @@
    "home":"https://github.com/conda-forge/blas-feedstock",
    "license":"BSD-3-Clause",
    "license_file":[
+    "LICENSE.txt",
+    "LICENSE.txt",
     "LICENSE.txt"
    ],
    "summary":"Metapackage to select the BLAS variant. Use conda's pinning mechanism in your environment to control which variant you want."
@@ -61,6 +63,14 @@
     "jakirkham",
     "pelson",
     "isuruf",
+    "ocefpaf",
+    "jakirkham",
+    "pelson",
+    "isuruf",
+    "ocefpaf",
+    "jakirkham",
+    "pelson",
+    "isuruf",
     "ocefpaf"
    ]
   },
@@ -70,7 +80,7 @@
      "run_exports":[
       "libblas"
      ],
-     "string":"16_",
+     "string":"16_blis",
      "track_features":null
     },
     "files":[
@@ -85,7 +95,7 @@
       "libcblas",
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * blis"
      ]
     },
     "script":"build_pkg.sh",
@@ -100,7 +110,7 @@
      "run_exports":[
       "libcblas"
      ],
-     "string":"16_",
+     "string":"16_blis",
      "track_features":null
     },
     "files":[
@@ -118,7 +128,117 @@
      "run_constrained":[
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * blis"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libcblas.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"blis"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "cmake"
+     ],
+     "host":[
+      "blis 0.7.0"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.so",
+      "test -f $PREFIX/lib/liblapacke.so.3"
+     ]
+    },
+    "version":"2.16"
+   },
+   {
+    "build":{
+     "string":"16_blis"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.so"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/libblas.so",
+     "lib/libblas.so.3"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libblas.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/libcblas.so",
+     "lib/libcblas.so.3"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -133,7 +253,7 @@
      "run_exports":[
       "liblapack"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -151,7 +271,7 @@
      "run_constrained":[
       "libcblas",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -166,7 +286,7 @@
      "run_exports":[
       "liblapacke"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -186,7 +306,7 @@
       "liblapack"
      ],
      "run_constrained":[
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -199,7 +319,188 @@
    {
     "build":{
      "activate_in_script":true,
-     "string":""
+     "string":"openblas"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "cmake"
+     ],
+     "host":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.so",
+      "test -f $PREFIX/lib/liblapacke.so.3"
+     ]
+    },
+    "version":"2.17"
+   },
+   {
+    "build":{
+     "string":"17_openblas"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.so"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/libblas.so",
+     "lib/libblas.so.3"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libblas.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/libcblas.so",
+     "lib/libcblas.so.3"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libcblas.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapack"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/liblapack.so",
+     "lib/liblapack.so.3"
+    ],
+    "name":"liblapack",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "libcblas",
+      "liblapacke",
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapacke"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/liblapacke.so",
+     "lib/liblapacke.so.3"
+    ],
+    "name":"liblapacke",
+    "requirements":{
+     "host":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run_constrained":[
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"mkl"
     },
     "name":"blas",
     "requirements":{
@@ -232,7 +533,7 @@
    },
    {
     "build":{
-     "string":"16_"
+     "string":"16_mkl"
     },
     "name":"blas-devel",
     "requirements":{
@@ -256,11 +557,21 @@
     "c_compiler_stub",
     "fortran_compiler_stub",
     "cmake",
+    "make",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "make",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
     "make"
    ]
   },
   "source":{
    "patches":[
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
     "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch"
    ],
    "sha256":"deb22cc4a6120bff72621155a9917f485f96ef8319ac074a7afbc68aab88bcf6",
@@ -280,6 +591,7 @@
   "host":{
    "__set__":true,
    "elements":[
+    "blis",
     "libblas",
     "libcblas",
     "liblapack",
@@ -311,7 +623,7 @@
    "summary":"Metapackage to select the BLAS variant. Use conda's pinning mechanism in your environment to control which variant you want."
   },
   "build":{
-   "number":"16"
+   "number":"17"
   },
   "extra":{
    "recipe-maintainers":[
@@ -327,7 +639,7 @@
      "run_exports":[
       "libblas"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -342,7 +654,7 @@
       "libcblas",
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -357,7 +669,7 @@
      "run_exports":[
       "libcblas"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -375,7 +687,7 @@
      "run_constrained":[
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -390,7 +702,7 @@
      "run_exports":[
       "liblapack"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -408,7 +720,7 @@
      "run_constrained":[
       "libcblas",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -423,7 +735,7 @@
      "run_exports":[
       "liblapacke"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -443,7 +755,7 @@
       "liblapack"
      ],
      "run_constrained":[
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -456,7 +768,7 @@
    {
     "build":{
      "activate_in_script":true,
-     "string":""
+     "string":"openblas"
     },
     "name":"blas",
     "requirements":{
@@ -485,11 +797,11 @@
       "test -f $PREFIX/lib/liblapacke.so.3"
      ]
     },
-    "version":"2.16"
+    "version":"2.17"
    },
    {
     "build":{
-     "string":"16_"
+     "string":"17_openblas"
     },
     "name":"blas-devel",
     "requirements":{
@@ -568,7 +880,7 @@
    "summary":"Metapackage to select the BLAS variant. Use conda's pinning mechanism in your environment to control which variant you want."
   },
   "build":{
-   "number":"16"
+   "number":"17"
   },
   "extra":{
    "recipe-maintainers":[
@@ -584,7 +896,7 @@
      "run_exports":[
       "libblas"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -599,7 +911,7 @@
       "libcblas",
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -614,7 +926,7 @@
      "run_exports":[
       "libcblas"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -632,7 +944,7 @@
      "run_constrained":[
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -647,7 +959,7 @@
      "run_exports":[
       "liblapack"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -665,7 +977,7 @@
      "run_constrained":[
       "libcblas",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -680,7 +992,7 @@
      "run_exports":[
       "liblapacke"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -700,7 +1012,7 @@
       "liblapack"
      ],
      "run_constrained":[
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -713,7 +1025,7 @@
    {
     "build":{
      "activate_in_script":true,
-     "string":""
+     "string":"openblas"
     },
     "name":"blas",
     "requirements":{
@@ -742,11 +1054,11 @@
       "test -f $PREFIX/lib/liblapacke.so.3"
      ]
     },
-    "version":"2.16"
+    "version":"2.17"
    },
    {
     "build":{
-     "string":"16_"
+     "string":"17_openblas"
     },
     "name":"blas-devel",
     "requirements":{
@@ -821,7 +1133,15 @@
    "license":"BSD-3-Clause",
    "license_file":[
     "LICENSE.txt",
-    "_license.txt",
+    "mkl_license.txt",
+    "LICENSE.txt",
+    "openblas_license.txt",
+    "LICENSE.txt",
+    "blis_license.txt",
+    "LICENSE.txt",
+    "LICENSE.txt",
+    "LICENSE.txt",
+    "LICENSE.txt",
     "LICENSE.txt",
     "LICENSE.txt",
     "LICENSE.txt",
@@ -830,10 +1150,34 @@
    "summary":"Metapackage to select the BLAS variant. Use conda's pinning mechanism in your environment to control which variant you want."
   },
   "build":{
-   "number":"16"
+   "number":"17"
   },
   "extra":{
    "recipe-maintainers":[
+    "jakirkham",
+    "pelson",
+    "isuruf",
+    "ocefpaf",
+    "jakirkham",
+    "pelson",
+    "isuruf",
+    "ocefpaf",
+    "jakirkham",
+    "pelson",
+    "isuruf",
+    "ocefpaf",
+    "jakirkham",
+    "pelson",
+    "isuruf",
+    "ocefpaf",
+    "jakirkham",
+    "pelson",
+    "isuruf",
+    "ocefpaf",
+    "jakirkham",
+    "pelson",
+    "isuruf",
+    "ocefpaf",
     "jakirkham",
     "pelson",
     "isuruf",
@@ -862,7 +1206,7 @@
      "run_exports":[
       "libblas"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -876,7 +1220,7 @@
       "libcblas",
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.bat",
@@ -891,7 +1235,7 @@
      "run_exports":[
       "libcblas"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -908,7 +1252,7 @@
      "run_constrained":[
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.bat",
@@ -923,7 +1267,7 @@
      "run_exports":[
       "liblapack"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -940,7 +1284,7 @@
      "run_constrained":[
       "libcblas",
       "liblapacke",
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.bat",
@@ -955,7 +1299,7 @@
      "run_exports":[
       "liblapacke"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -974,7 +1318,7 @@
       "liblapack"
      ],
      "run_constrained":[
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.bat",
@@ -987,7 +1331,7 @@
    {
     "build":{
      "activate_in_script":true,
-     "string":""
+     "string":"mkl"
     },
     "name":"blas",
     "requirements":{
@@ -1021,7 +1365,7 @@
    },
    {
     "build":{
-     "string":"16_"
+     "string":"16_mkl"
     },
     "name":"blas-devel",
     "requirements":{
@@ -1040,7 +1384,294 @@
      "run_exports":[
       "libblas"
      ],
-     "string":"16_",
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/libblas.dll"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/libblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/libcblas.dll"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/libcblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapack"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/liblapack.dll"
+    ],
+    "name":"liblapack",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "libcblas",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapack.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapacke"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/liblapacke.dll"
+    ],
+    "name":"liblapacke",
+    "requirements":{
+     "host":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run_constrained":[
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapacke.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"openblas"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "m2w64_c_compiler_stub",
+      "m2w64_fortran_compiler_stub",
+      "cmake",
+      "m2-make",
+      "posix"
+     ],
+     "host":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapacke.dll exit 1"
+     ]
+    },
+    "version":"2.17"
+   },
+   {
+    "build":{
+     "string":"17_openblas"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapack.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"16_blis",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/libblas.dll"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * blis"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/libblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"16_blis",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/libcblas.dll"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * blis"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/libcblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"blis"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "m2w64_c_compiler_stub",
+      "m2w64_fortran_compiler_stub",
+      "cmake",
+      "m2-make",
+      "posix"
+     ],
+     "host":[
+      "blis 0.7.0"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapacke.dll exit 1"
+     ]
+    },
+    "version":"2.16"
+   },
+   {
+    "build":{
+     "string":"16_blis"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapack.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"16_blis",
      "track_features":null
     },
     "files":[
@@ -1055,7 +1686,7 @@
       "libcblas",
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * blis"
      ]
     },
     "script":"build_pkg.sh",
@@ -1070,7 +1701,7 @@
      "run_exports":[
       "libcblas"
      ],
-     "string":"16_",
+     "string":"16_blis",
      "track_features":null
     },
     "files":[
@@ -1088,7 +1719,117 @@
      "run_constrained":[
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * blis"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libcblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"blis"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "cmake"
+     ],
+     "host":[
+      "blis 0.7.0"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.dylib",
+      "test -f $PREFIX/lib/liblapacke.3.dylib"
+     ]
+    },
+    "version":"2.16"
+   },
+   {
+    "build":{
+     "string":"16_blis"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/libblas.dylib",
+     "lib/libblas.3.dylib"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/libcblas.dylib",
+     "lib/libcblas.3.dylib"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -1103,7 +1844,7 @@
      "run_exports":[
       "liblapack"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -1121,7 +1862,7 @@
      "run_constrained":[
       "libcblas",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -1136,7 +1877,7 @@
      "run_exports":[
       "liblapacke"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -1156,7 +1897,7 @@
       "liblapack"
      ],
      "run_constrained":[
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -1169,7 +1910,188 @@
    {
     "build":{
      "activate_in_script":true,
-     "string":""
+     "string":"openblas"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "cmake"
+     ],
+     "host":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.dylib",
+      "test -f $PREFIX/lib/liblapacke.3.dylib"
+     ]
+    },
+    "version":"2.17"
+   },
+   {
+    "build":{
+     "string":"17_openblas"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/libblas.dylib",
+     "lib/libblas.3.dylib"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/libcblas.dylib",
+     "lib/libcblas.3.dylib"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libcblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapack"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/liblapack.dylib",
+     "lib/liblapack.3.dylib"
+    ],
+    "name":"liblapack",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "libcblas",
+      "liblapacke",
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapacke"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/liblapacke.dylib",
+     "lib/liblapacke.3.dylib"
+    ],
+    "name":"liblapacke",
+    "requirements":{
+     "host":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run_constrained":[
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"mkl"
     },
     "name":"blas",
     "requirements":{
@@ -1202,7 +2124,7 @@
    },
    {
     "build":{
-     "string":"16_"
+     "string":"16_mkl"
     },
     "name":"blas-devel",
     "requirements":{
@@ -1221,7 +2143,7 @@
      "run_exports":[
       "libblas"
      ],
-     "string":"16_",
+     "string":"16_blis",
      "track_features":null
     },
     "files":[
@@ -1236,7 +2158,7 @@
       "libcblas",
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * blis"
      ]
     },
     "script":"build_pkg.sh",
@@ -1251,7 +2173,7 @@
      "run_exports":[
       "libcblas"
      ],
-     "string":"16_",
+     "string":"16_blis",
      "track_features":null
     },
     "files":[
@@ -1269,7 +2191,7 @@
      "run_constrained":[
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * blis"
      ]
     },
     "script":"build_pkg.sh",
@@ -1281,76 +2203,8 @@
    },
    {
     "build":{
-     "run_exports":[
-      "liblapack"
-     ],
-     "string":"16_",
-     "track_features":null
-    },
-    "files":[
-     "lib/liblapack.so",
-     "lib/liblapack.so.3"
-    ],
-    "name":"liblapack",
-    "requirements":{
-     "host":[
-      "libblas"
-     ],
-     "run":[
-      "libblas"
-     ],
-     "run_constrained":[
-      "libcblas",
-      "liblapacke",
-      "blas *"
-     ]
-    },
-    "script":"build_pkg.sh",
-    "test":{
-     "commands":[
-      "test -f $PREFIX/lib/liblapack.so.3"
-     ]
-    }
-   },
-   {
-    "build":{
-     "run_exports":[
-      "liblapacke"
-     ],
-     "string":"16_",
-     "track_features":null
-    },
-    "files":[
-     "lib/liblapacke.so",
-     "lib/liblapacke.so.3"
-    ],
-    "name":"liblapacke",
-    "requirements":{
-     "host":[
-      "libblas",
-      "libcblas",
-      "liblapack"
-     ],
-     "run":[
-      "libblas",
-      "libcblas",
-      "liblapack"
-     ],
-     "run_constrained":[
-      "blas *"
-     ]
-    },
-    "script":"build_pkg.sh",
-    "test":{
-     "commands":[
-      "test -f $PREFIX/lib/liblapacke.so.3"
-     ]
-    }
-   },
-   {
-    "build":{
      "activate_in_script":true,
-     "string":""
+     "string":"blis"
     },
     "name":"blas",
     "requirements":{
@@ -1360,10 +2214,7 @@
       "cmake"
      ],
      "host":[
-      "liblapack",
-      "liblapacke",
-      "libcblas",
-      "libblas"
+      "blis 0.7.0"
      ],
      "run":[
       "liblapack",
@@ -1383,7 +2234,7 @@
    },
    {
     "build":{
-     "string":"16_"
+     "string":"16_blis"
     },
     "name":"blas-devel",
     "requirements":{
@@ -1402,7 +2253,7 @@
      "run_exports":[
       "libblas"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -1417,7 +2268,7 @@
       "libcblas",
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -1432,7 +2283,7 @@
      "run_exports":[
       "libcblas"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -1450,7 +2301,7 @@
      "run_constrained":[
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -1465,7 +2316,7 @@
      "run_exports":[
       "liblapack"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -1483,7 +2334,7 @@
      "run_constrained":[
       "libcblas",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -1498,7 +2349,7 @@
      "run_exports":[
       "liblapacke"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -1518,7 +2369,7 @@
       "liblapack"
      ],
      "run_constrained":[
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -1531,7 +2382,7 @@
    {
     "build":{
      "activate_in_script":true,
-     "string":""
+     "string":"openblas"
     },
     "name":"blas",
     "requirements":{
@@ -1560,11 +2411,11 @@
       "test -f $PREFIX/lib/liblapacke.so.3"
      ]
     },
-    "version":"2.16"
+    "version":"2.17"
    },
    {
     "build":{
-     "string":"16_"
+     "string":"17_openblas"
     },
     "name":"blas-devel",
     "requirements":{
@@ -1583,7 +2434,7 @@
      "run_exports":[
       "libblas"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -1598,7 +2449,7 @@
       "libcblas",
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.sh",
@@ -1613,7 +2464,7 @@
      "run_exports":[
       "libcblas"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -1631,7 +2482,7 @@
      "run_constrained":[
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.sh",
@@ -1646,7 +2497,7 @@
      "run_exports":[
       "liblapack"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -1664,7 +2515,7 @@
      "run_constrained":[
       "libcblas",
       "liblapacke",
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.sh",
@@ -1679,7 +2530,7 @@
      "run_exports":[
       "liblapacke"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -1699,7 +2550,7 @@
       "liblapack"
      ],
      "run_constrained":[
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.sh",
@@ -1712,7 +2563,7 @@
    {
     "build":{
      "activate_in_script":true,
-     "string":""
+     "string":"mkl"
     },
     "name":"blas",
     "requirements":{
@@ -1745,7 +2596,369 @@
    },
    {
     "build":{
-     "string":"16_"
+     "string":"16_mkl"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.so"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/libblas.so",
+     "lib/libblas.so.3"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libblas.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/libcblas.so",
+     "lib/libcblas.so.3"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libcblas.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapack"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/liblapack.so",
+     "lib/liblapack.so.3"
+    ],
+    "name":"liblapack",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "libcblas",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapacke"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/liblapacke.so",
+     "lib/liblapacke.so.3"
+    ],
+    "name":"liblapacke",
+    "requirements":{
+     "host":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run_constrained":[
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"openblas"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "cmake"
+     ],
+     "host":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.so",
+      "test -f $PREFIX/lib/liblapacke.so.3"
+     ]
+    },
+    "version":"2.17"
+   },
+   {
+    "build":{
+     "string":"17_openblas"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.so"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/libblas.so",
+     "lib/libblas.so.3"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libblas.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/libcblas.so",
+     "lib/libcblas.so.3"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libcblas.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapack"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/liblapack.so",
+     "lib/liblapack.so.3"
+    ],
+    "name":"liblapack",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "libcblas",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapacke"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/liblapacke.so",
+     "lib/liblapacke.so.3"
+    ],
+    "name":"liblapacke",
+    "requirements":{
+     "host":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run_constrained":[
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.so.3"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"openblas"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "cmake"
+     ],
+     "host":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.so",
+      "test -f $PREFIX/lib/liblapacke.so.3"
+     ]
+    },
+    "version":"2.17"
+   },
+   {
+    "build":{
+     "string":"17_openblas"
     },
     "name":"blas-devel",
     "requirements":{
@@ -1771,6 +2984,32 @@
     "cmake",
     "m2-make",
     "posix",
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "cmake",
+    "m2-make",
+    "posix",
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "cmake",
+    "m2-make",
+    "posix",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "make",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "make",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "make",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "make",
     "c_compiler_stub",
     "fortran_compiler_stub",
     "cmake",
@@ -1795,6 +3034,12 @@
     "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
     "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
     "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
     "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch"
    ],
    "sha256":"deb22cc4a6120bff72621155a9917f485f96ef8319ac074a7afbc68aab88bcf6",
@@ -1808,6 +3053,8 @@
    "home":"https://github.com/conda-forge/blas-feedstock",
    "license":"BSD-3-Clause",
    "license_file":[
+    "LICENSE.txt",
+    "LICENSE.txt",
     "LICENSE.txt"
    ],
    "summary":"Metapackage to select the BLAS variant. Use conda's pinning mechanism in your environment to control which variant you want."
@@ -1820,6 +3067,14 @@
     "jakirkham",
     "pelson",
     "isuruf",
+    "ocefpaf",
+    "jakirkham",
+    "pelson",
+    "isuruf",
+    "ocefpaf",
+    "jakirkham",
+    "pelson",
+    "isuruf",
     "ocefpaf"
    ]
   },
@@ -1829,7 +3084,7 @@
      "run_exports":[
       "libblas"
      ],
-     "string":"16_",
+     "string":"16_blis",
      "track_features":null
     },
     "files":[
@@ -1844,7 +3099,7 @@
       "libcblas",
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * blis"
      ]
     },
     "script":"build_pkg.sh",
@@ -1859,7 +3114,7 @@
      "run_exports":[
       "libcblas"
      ],
-     "string":"16_",
+     "string":"16_blis",
      "track_features":null
     },
     "files":[
@@ -1877,7 +3132,117 @@
      "run_constrained":[
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * blis"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libcblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"blis"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "cmake"
+     ],
+     "host":[
+      "blis 0.7.0"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.dylib",
+      "test -f $PREFIX/lib/liblapacke.3.dylib"
+     ]
+    },
+    "version":"2.16"
+   },
+   {
+    "build":{
+     "string":"16_blis"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/libblas.dylib",
+     "lib/libblas.3.dylib"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "lib/libcblas.dylib",
+     "lib/libcblas.3.dylib"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -1892,7 +3257,7 @@
      "run_exports":[
       "liblapack"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -1910,7 +3275,7 @@
      "run_constrained":[
       "libcblas",
       "liblapacke",
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -1925,7 +3290,7 @@
      "run_exports":[
       "liblapacke"
      ],
-     "string":"16_",
+     "string":"17_openblas",
      "track_features":null
     },
     "files":[
@@ -1945,7 +3310,7 @@
       "liblapack"
      ],
      "run_constrained":[
-      "blas *"
+      "blas * openblas"
      ]
     },
     "script":"build_pkg.sh",
@@ -1958,7 +3323,188 @@
    {
     "build":{
      "activate_in_script":true,
-     "string":""
+     "string":"openblas"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "cmake"
+     ],
+     "host":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.dylib",
+      "test -f $PREFIX/lib/liblapacke.3.dylib"
+     ]
+    },
+    "version":"2.17"
+   },
+   {
+    "build":{
+     "string":"17_openblas"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/libblas.dylib",
+     "lib/libblas.3.dylib"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/libcblas.dylib",
+     "lib/libcblas.3.dylib"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libcblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapack"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/liblapack.dylib",
+     "lib/liblapack.3.dylib"
+    ],
+    "name":"liblapack",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "libcblas",
+      "liblapacke",
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapack.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapacke"
+     ],
+     "string":"16_mkl",
+     "track_features":null
+    },
+    "files":[
+     "lib/liblapacke.dylib",
+     "lib/liblapacke.3.dylib"
+    ],
+    "name":"liblapacke",
+    "requirements":{
+     "host":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run_constrained":[
+      "blas * mkl"
+     ]
+    },
+    "script":"build_pkg.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/liblapacke.3.dylib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"mkl"
     },
     "name":"blas",
     "requirements":{
@@ -1991,7 +3537,7 @@
    },
    {
     "build":{
-     "string":"16_"
+     "string":"16_mkl"
     },
     "name":"blas-devel",
     "requirements":{
@@ -2015,11 +3561,21 @@
     "c_compiler_stub",
     "fortran_compiler_stub",
     "cmake",
+    "make",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "make",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
     "make"
    ]
   },
   "source":{
    "patches":[
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
     "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch"
    ],
    "sha256":"deb22cc4a6120bff72621155a9917f485f96ef8319ac074a7afbc68aab88bcf6",
@@ -2039,6 +3595,7 @@
   "host":{
    "__set__":true,
    "elements":[
+    "blis",
     "libblas",
     "libcblas",
     "liblapack",
@@ -2074,6 +3631,7 @@
   "__set__":true,
   "elements":[
    "blas",
+   "blis",
    "c_compiler_stub",
    "cmake",
    "fortran_compiler_stub",
@@ -2105,6 +3663,7 @@
   "host":{
    "__set__":true,
    "elements":[
+    "blis",
     "libblas",
     "libcblas",
     "liblapack",
@@ -2145,6 +3704,7 @@
   "host":{
    "__set__":true,
    "elements":[
+    "blis 0.7.0",
     "libblas",
     "libcblas",
     "liblapack",
@@ -2174,7 +3734,11 @@
    "license":"BSD-3-Clause",
    "license_file":[
     "LICENSE.txt",
-    "_license.txt"
+    "mkl_license.txt",
+    "LICENSE.txt",
+    "openblas_license.txt",
+    "LICENSE.txt",
+    "blis_license.txt"
    ],
    "summary":"Metapackage to select the BLAS variant. Use conda's pinning mechanism in your environment to control which variant you want."
   },
@@ -2183,6 +3747,14 @@
   },
   "extra":{
    "recipe-maintainers":[
+    "jakirkham",
+    "pelson",
+    "isuruf",
+    "ocefpaf",
+    "jakirkham",
+    "pelson",
+    "isuruf",
+    "ocefpaf",
     "jakirkham",
     "pelson",
     "isuruf",
@@ -2195,7 +3767,7 @@
      "run_exports":[
       "libblas"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -2209,7 +3781,7 @@
       "libcblas",
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.bat",
@@ -2224,7 +3796,7 @@
      "run_exports":[
       "libcblas"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -2241,7 +3813,7 @@
      "run_constrained":[
       "liblapack",
       "liblapacke",
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.bat",
@@ -2256,7 +3828,7 @@
      "run_exports":[
       "liblapack"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -2273,7 +3845,7 @@
      "run_constrained":[
       "libcblas",
       "liblapacke",
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.bat",
@@ -2288,7 +3860,7 @@
      "run_exports":[
       "liblapacke"
      ],
-     "string":"16_",
+     "string":"16_mkl",
      "track_features":null
     },
     "files":[
@@ -2307,7 +3879,7 @@
       "liblapack"
      ],
      "run_constrained":[
-      "blas *"
+      "blas * mkl"
      ]
     },
     "script":"build_pkg.bat",
@@ -2320,7 +3892,7 @@
    {
     "build":{
      "activate_in_script":true,
-     "string":""
+     "string":"mkl"
     },
     "name":"blas",
     "requirements":{
@@ -2354,7 +3926,294 @@
    },
    {
     "build":{
-     "string":"16_"
+     "string":"16_mkl"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapack.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/libblas.dll"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/libblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/libcblas.dll"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/libcblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapack"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/liblapack.dll"
+    ],
+    "name":"liblapack",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "libcblas",
+      "liblapacke",
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapack.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "liblapacke"
+     ],
+     "string":"17_openblas",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/liblapacke.dll"
+    ],
+    "name":"liblapacke",
+    "requirements":{
+     "host":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run":[
+      "libblas",
+      "libcblas",
+      "liblapack"
+     ],
+     "run_constrained":[
+      "blas * openblas"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapacke.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"openblas"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "m2w64_c_compiler_stub",
+      "m2w64_fortran_compiler_stub",
+      "cmake",
+      "m2-make",
+      "posix"
+     ],
+     "host":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapacke.dll exit 1"
+     ]
+    },
+    "version":"2.17"
+   },
+   {
+    "build":{
+     "string":"17_openblas"
+    },
+    "name":"blas-devel",
+    "requirements":{
+     "run":[
+      "blas"
+     ]
+    },
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapack.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libblas"
+     ],
+     "string":"16_blis",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/libblas.dll"
+    ],
+    "name":"libblas",
+    "requirements":{
+     "host":null,
+     "run":null,
+     "run_constrained":[
+      "libcblas",
+      "liblapack",
+      "liblapacke",
+      "blas * blis"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/libblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libcblas"
+     ],
+     "string":"16_blis",
+     "track_features":null
+    },
+    "files":[
+     "Library/bin/libcblas.dll"
+    ],
+    "name":"libcblas",
+    "requirements":{
+     "host":[
+      "libblas"
+     ],
+     "run":[
+      "libblas"
+     ],
+     "run_constrained":[
+      "liblapack",
+      "liblapacke",
+      "blas * blis"
+     ]
+    },
+    "script":"build_pkg.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/libcblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "string":"blis"
+    },
+    "name":"blas",
+    "requirements":{
+     "build":[
+      "m2w64_c_compiler_stub",
+      "m2w64_fortran_compiler_stub",
+      "cmake",
+      "m2-make",
+      "posix"
+     ],
+     "host":[
+      "blis 0.7.0"
+     ],
+     "run":[
+      "liblapack",
+      "liblapacke",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script":"test_blas.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_BIN%/liblapacke.dll exit 1"
+     ]
+    },
+    "version":"2.16"
+   },
+   {
+    "build":{
+     "string":"16_blis"
     },
     "name":"blas-devel",
     "requirements":{
@@ -2379,11 +4238,23 @@
     "m2w64_fortran_compiler_stub",
     "cmake",
     "m2-make",
+    "posix",
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "cmake",
+    "m2-make",
+    "posix",
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "cmake",
+    "m2-make",
     "posix"
    ]
   },
   "source":{
    "patches":[
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
+    "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch",
     "patches/0001-Test-BLAS-and-LAPACKE-in-addition-to-LAPACK.patch"
    ],
    "sha256":"deb22cc4a6120bff72621155a9917f485f96ef8319ac074a7afbc68aab88bcf6",
@@ -2404,6 +4275,7 @@
   "host":{
    "__set__":true,
    "elements":[
+    "blis",
     "libblas",
     "libcblas",
     "liblapack",

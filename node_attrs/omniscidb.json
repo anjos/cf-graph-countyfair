@@ -142,6 +142,10 @@
     "xmnlab",
     "pearu",
     "andrewseidl",
+    "jclay",
+    "xmnlab",
+    "pearu",
+    "andrewseidl",
     "jclay"
    ]
   },
@@ -158,9 +162,38 @@
     "cmake",
     "llvmdev 9",
     "make",
+    "maven",
+    "cgo_compiler_stub",
+    "cxx_compiler_stub",
+    "clangdev",
+    "clangxx",
+    "cmake",
+    "llvmdev 9",
+    "make",
     "maven"
    ],
    "host":[
+    "arrow-cpp =0.16.*=*cuda",
+    "bisonpp",
+    "blosc",
+    "boost-cpp",
+    "clangdev",
+    "double-conversion",
+    "flex",
+    "gflags",
+    "glog",
+    "llvmdev 9",
+    "llvm",
+    "libarchive",
+    "libgdal",
+    "libkml",
+    "libpng",
+    "librdkafka <1.4",
+    "ncurses",
+    "openldap",
+    "openssl",
+    "snappy",
+    "thrift-cpp",
     "arrow-cpp =0.16.*=*cpu",
     "bisonpp",
     "blosc",
@@ -186,18 +219,27 @@
    "run":[
     "boost-cpp",
     "bzip2",
-    "gxx_",
+    "gxx_linux-64",
+    "ncurses",
+    "openjdk 8",
+    "xz",
+    "zlib",
+    "boost-cpp",
+    "bzip2",
+    "gxx_linux-64",
     "ncurses",
     "openjdk 8",
     "xz",
     "zlib"
    ],
    "run_constrained":[
+    "arrow-cpp-proc * cuda",
     "arrow-cpp-proc * cpu"
    ]
   },
   "source":{
    "patches":[
+    "skip-boost-libs-install.patch",
     "skip-boost-libs-install.patch"
    ],
    "sha256":"7587ee6dfd900dc23b1ba1f6357c94bf65a997a25e21ee364b3e5d871dddd6fc",
@@ -205,6 +247,15 @@
   },
   "test":{
    "commands":[
+    "test -f \"${PREFIX}/etc/conda/activate.d/_activate.sh\"",
+    "test -f \"${PREFIX}/etc/conda/deactivate.d/_deactivate.sh\"",
+    "if [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Found omnisql in PATH\"\nelse\n  echo \"omnisql not found in PATH(=$PATH)\" && exit 1\nfi\nsource ${PREFIX}/etc/conda/deactivate.d/_deactivate.sh\nif [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Unexpectedly found omnisql in PATH(=$PATH) after deactivation\"  && exit 1\nelse\n  echo \"omnisql not in PATH after deactivation\"\nfi\nsource ${PREFIX}/etc/conda/activate.d/_activate.sh\n",
+    "omnisql -v",
+    "which omnisci_initdb",
+    "which omnisci_server",
+    "mkdir data && omnisci_initdb data\nomnisci_server --version\nrm -rf data\n",
+    "which omnisci_insert_sample_data",
+    "which startomnisci",
     "test -f \"${PREFIX}/etc/conda/activate.d/_activate.sh\"",
     "test -f \"${PREFIX}/etc/conda/deactivate.d/_deactivate.sh\"",
     "if [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Found omnisql in PATH\"\nelse\n  echo \"omnisql not found in PATH(=$PATH)\" && exit 1\nfi\nsource ${PREFIX}/etc/conda/deactivate.d/_deactivate.sh\nif [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Unexpectedly found omnisql in PATH(=$PATH) after deactivation\"  && exit 1\nelse\n  echo \"omnisql not in PATH after deactivation\"\nfi\nsource ${PREFIX}/etc/conda/activate.d/_activate.sh\n",
@@ -262,7 +313,7 @@
    "elements":[
     "boost-cpp",
     "bzip2",
-    "gxx_",
+    "gxx_linux-64",
     "ncurses",
     "openjdk",
     "xz",
@@ -288,16 +339,11 @@
   "build":{
    "missing_dso_whitelist":null,
    "number":"2",
-   "skip":true,
    "string":"h_2_cpu",
    "track_features":null
   },
   "extra":{
    "recipe-maintainers":[
-    "xmnlab",
-    "pearu",
-    "andrewseidl",
-    "jclay",
     "xmnlab",
     "pearu",
     "andrewseidl",
@@ -329,39 +375,10 @@
     "cmake",
     "llvmdev 9",
     "make",
-    "maven",
-    "cgo_compiler_stub",
-    "cxx_compiler_stub",
-    "clangdev",
-    "clangxx",
-    "cmake",
-    "llvmdev 9",
-    "make",
     "maven"
    ],
    "host":[
-    "arrow-cpp =0.16.*=*cpu",
-    "bisonpp",
-    "blosc",
-    "boost-cpp",
-    "clangdev",
-    "double-conversion",
-    "flex",
-    "gflags",
-    "glog",
-    "llvmdev 9",
-    "llvm",
-    "libarchive",
-    "libgdal",
-    "libkml",
-    "libpng",
-    "librdkafka <1.4",
-    "ncurses",
-    "openldap",
-    "openssl",
-    "snappy",
-    "thrift-cpp",
-    "arrow-cpp =0.16.*=*cpu",
+    "arrow-cpp =0.16.*=*cuda",
     "bisonpp",
     "blosc",
     "boost-cpp",
@@ -407,35 +424,26 @@
    "run":[
     "boost-cpp",
     "bzip2",
-    "gxx_",
+    "gxx_linux-64",
     "ncurses",
     "openjdk 8",
     "xz",
     "zlib",
     "boost-cpp",
     "bzip2",
-    "gxx_",
-    "ncurses",
-    "openjdk 8",
-    "xz",
-    "zlib",
-    "boost-cpp",
-    "bzip2",
-    "gxx_",
+    "gxx_linux-64",
     "ncurses",
     "openjdk 8",
     "xz",
     "zlib"
    ],
    "run_constrained":[
-    "arrow-cpp-proc * cpu",
-    "arrow-cpp-proc * cpu",
+    "arrow-cpp-proc * cuda",
     "arrow-cpp-proc * cpu"
    ]
   },
   "source":{
    "patches":[
-    "skip-boost-libs-install.patch",
     "skip-boost-libs-install.patch",
     "skip-boost-libs-install.patch"
    ],
@@ -444,15 +452,6 @@
   },
   "test":{
    "commands":[
-    "test -f \"${PREFIX}/etc/conda/activate.d/_activate.sh\"",
-    "test -f \"${PREFIX}/etc/conda/deactivate.d/_deactivate.sh\"",
-    "if [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Found omnisql in PATH\"\nelse\n  echo \"omnisql not found in PATH(=$PATH)\" && exit 1\nfi\nsource ${PREFIX}/etc/conda/deactivate.d/_deactivate.sh\nif [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Unexpectedly found omnisql in PATH(=$PATH) after deactivation\"  && exit 1\nelse\n  echo \"omnisql not in PATH after deactivation\"\nfi\nsource ${PREFIX}/etc/conda/activate.d/_activate.sh\n",
-    "omnisql -v",
-    "which omnisci_initdb",
-    "which omnisci_server",
-    "mkdir data && omnisci_initdb data\nomnisci_server --version\nrm -rf data\n",
-    "which omnisci_insert_sample_data",
-    "which startomnisci",
     "test -f \"${PREFIX}/etc/conda/activate.d/_activate.sh\"",
     "test -f \"${PREFIX}/etc/conda/deactivate.d/_deactivate.sh\"",
     "if [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Found omnisql in PATH\"\nelse\n  echo \"omnisql not found in PATH(=$PATH)\" && exit 1\nfi\nsource ${PREFIX}/etc/conda/deactivate.d/_deactivate.sh\nif [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Unexpectedly found omnisql in PATH(=$PATH) after deactivation\"  && exit 1\nelse\n  echo \"omnisql not in PATH after deactivation\"\nfi\nsource ${PREFIX}/etc/conda/activate.d/_activate.sh\n",
@@ -479,7 +478,7 @@
  "new_version_attempts":{
   "5.3.0":51,
   "5.3.1":475,
-  "5.3.2":62
+  "5.3.2":63
  },
  "new_version_errors":{},
  "osx_64_meta_yaml":{
@@ -656,7 +655,7 @@
    "flex",
    "gflags",
    "glog",
-   "gxx_",
+   "gxx_linux-64",
    "libarchive",
    "libgdal",
    "libkml",
@@ -721,7 +720,7 @@
    "elements":[
     "boost-cpp",
     "bzip2",
-    "gxx_",
+    "gxx_linux-64",
     "ncurses",
     "openjdk",
     "xz",
@@ -753,6 +752,7 @@
    "__set__":true,
    "elements":[
     "arrow-cpp =0.16.*=*cpu",
+    "arrow-cpp =0.16.*=*cuda",
     "bisonpp",
     "blosc",
     "boost-cpp",
@@ -780,7 +780,7 @@
    "elements":[
     "boost-cpp",
     "bzip2",
-    "gxx_",
+    "gxx_linux-64",
     "ncurses",
     "openjdk 8",
     "xz",

@@ -237,10 +237,12 @@
   },
   "build":{
    "number":"6",
-   "script":"mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DBLA_VENDOR=\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
+   "script":"mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DBLA_VENDOR=Generic\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
   },
   "extra":{
    "recipe-maintainers":[
+    "djsutherland",
+    "vigsterkr",
     "djsutherland",
     "vigsterkr"
    ]
@@ -251,6 +253,11 @@
   },
   "requirements":{
    "build":[
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "python",
+    "cmake =3.15",
+    "libgomp",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "python",
@@ -272,9 +279,27 @@
     "rxcpp 4.1.0",
     "snappy",
     "xz",
+    "zlib",
+    "arpack",
+    "bzip2",
+    "ctags",
+    "libcurl",
+    "eigen",
+    "glpk",
+    "hdf5",
+    "json-c",
+    "libxml2",
+    "lzo",
+    "libprotobuf",
+    "rxcpp 4.1.0",
+    "snappy",
+    "xz",
     "zlib"
    ],
    "run":[
+    "ctags",
+    "glpk",
+    "json-c",
     "ctags",
     "glpk",
     "json-c"
@@ -282,6 +307,20 @@
    "run_constrained":null
   },
   "source":[
+   {
+    "sha256":"d618a6c6fa6c230608bda7a17585387b89d11d58085a9457cbfba0c438a08969",
+    "url":"https://github.com/shogun-toolbox/shogun/archive/shogun_6.1.4.tar.gz"
+   },
+   {
+    "folder":"src/gpl",
+    "sha256":"ff8a46b7775e784f07e9ffb02e7cd9b101f508c1c7b7d8cdbf1024a2efacdb22",
+    "url":"https://github.com/shogun-toolbox/shogun-gpl/archive/29ca2ff930cd5d963b3a78e79160cc04d48970c2.tar.gz"
+   },
+   {
+    "patches":[
+     "json-is-error.patch"
+    ]
+   },
    {
     "sha256":"d618a6c6fa6c230608bda7a17585387b89d11d58085a9457cbfba0c438a08969",
     "url":"https://github.com/shogun-toolbox/shogun/archive/shogun_6.1.4.tar.gz"
@@ -303,9 +342,15 @@
     "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
     "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
     "conda inspect linkages -p $PREFIX shogun-cpp",
+    "cat $PREFIX/include/shogun/lib/config.h",
+    "$PREFIX/share/shogun/examples/libshogun/minimal",
+    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
+    "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
+    "conda inspect linkages -p $PREFIX shogun-cpp",
     "cat $PREFIX/include/shogun/lib/config.h"
    ],
    "requires":[
+    "python",
     "python"
    ]
   }
@@ -369,11 +414,12 @@
   },
   "build":{
    "number":"6",
-   "script":"mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DBLA_VENDOR=\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n",
-   "skip":true
+   "script":"mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DBLA_VENDOR=Generic\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
   },
   "extra":{
    "recipe-maintainers":[
+    "djsutherland",
+    "vigsterkr",
     "djsutherland",
     "vigsterkr",
     "djsutherland",
@@ -396,6 +442,11 @@
     "cxx_compiler_stub",
     "python",
     "cmake =3.15",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "python",
+    "cmake =3.15",
+    "libgomp",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "python",
@@ -447,115 +498,7 @@
     "rxcpp 4.1.0",
     "snappy",
     "xz",
-    "zlib"
-   ],
-   "run":[
-    "ctags",
-    "glpk",
-    "json-c",
-    "ctags",
-    "glpk",
-    "json-c",
-    "ctags",
-    "glpk",
-    "json-c"
-   ],
-   "run_constrained":null
-  },
-  "source":[
-   {
-    "sha256":"d618a6c6fa6c230608bda7a17585387b89d11d58085a9457cbfba0c438a08969",
-    "url":"https://github.com/shogun-toolbox/shogun/archive/shogun_6.1.4.tar.gz"
-   },
-   {
-    "folder":"src/gpl",
-    "sha256":"ff8a46b7775e784f07e9ffb02e7cd9b101f508c1c7b7d8cdbf1024a2efacdb22",
-    "url":"https://github.com/shogun-toolbox/shogun-gpl/archive/29ca2ff930cd5d963b3a78e79160cc04d48970c2.tar.gz"
-   },
-   {
-    "patches":[
-     "json-is-error.patch"
-    ]
-   },
-   {
-    "sha256":"d618a6c6fa6c230608bda7a17585387b89d11d58085a9457cbfba0c438a08969",
-    "url":"https://github.com/shogun-toolbox/shogun/archive/shogun_6.1.4.tar.gz"
-   },
-   {
-    "folder":"src/gpl",
-    "sha256":"ff8a46b7775e784f07e9ffb02e7cd9b101f508c1c7b7d8cdbf1024a2efacdb22",
-    "url":"https://github.com/shogun-toolbox/shogun-gpl/archive/29ca2ff930cd5d963b3a78e79160cc04d48970c2.tar.gz"
-   },
-   {
-    "patches":[
-     "json-is-error.patch"
-    ]
-   },
-   {
-    "sha256":"d618a6c6fa6c230608bda7a17585387b89d11d58085a9457cbfba0c438a08969",
-    "url":"https://github.com/shogun-toolbox/shogun/archive/shogun_6.1.4.tar.gz"
-   },
-   {
-    "folder":"src/gpl",
-    "sha256":"ff8a46b7775e784f07e9ffb02e7cd9b101f508c1c7b7d8cdbf1024a2efacdb22",
-    "url":"https://github.com/shogun-toolbox/shogun-gpl/archive/29ca2ff930cd5d963b3a78e79160cc04d48970c2.tar.gz"
-   },
-   {
-    "patches":[
-     "json-is-error.patch"
-    ]
-   }
-  ],
-  "test":{
-   "commands":[
-    "$PREFIX/share/shogun/examples/libshogun/minimal",
-    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
-    "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
-    "conda inspect linkages -p $PREFIX shogun-cpp",
-    "cat $PREFIX/include/shogun/lib/config.h"
-   ],
-   "requires":[
-    "python",
-    "python",
-    "python"
-   ]
-  }
- },
- "name":"shogun-cpp",
- "new_version":"6.1.4",
- "osx_64_meta_yaml":{
-  "about":{
-   "description":"The Shogun Machine learning toolbox offers a wide range of efficient and\nunified Machine Learning methods.\n",
-   "dev_url":"https://github.com/shogun-toolbox/shogun/wiki",
-   "doc_url":"http://shogun.ml/examples/latest/index.html",
-   "home":"http://shogun.ml",
-   "license":"GPL-3.0-only",
-   "license_family":"GPL",
-   "license_file":"COPYING",
-   "summary":"Unified and efficient Machine Learning"
-  },
-  "build":{
-   "number":"6",
-   "script":"mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DBLA_VENDOR=\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
-  },
-  "extra":{
-   "recipe-maintainers":[
-    "djsutherland",
-    "vigsterkr"
-   ]
-  },
-  "package":{
-   "name":"shogun-cpp",
-   "version":"6.1.4"
-  },
-  "requirements":{
-   "build":[
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "python",
-    "cmake =3.15"
-   ],
-   "host":[
+    "zlib",
     "arpack",
     "bzip2",
     "ctags",
@@ -575,11 +518,62 @@
    "run":[
     "ctags",
     "glpk",
+    "json-c",
+    "ctags",
+    "glpk",
+    "json-c",
+    "ctags",
+    "glpk",
+    "json-c",
+    "ctags",
+    "glpk",
     "json-c"
    ],
    "run_constrained":null
   },
   "source":[
+   {
+    "sha256":"d618a6c6fa6c230608bda7a17585387b89d11d58085a9457cbfba0c438a08969",
+    "url":"https://github.com/shogun-toolbox/shogun/archive/shogun_6.1.4.tar.gz"
+   },
+   {
+    "folder":"src/gpl",
+    "sha256":"ff8a46b7775e784f07e9ffb02e7cd9b101f508c1c7b7d8cdbf1024a2efacdb22",
+    "url":"https://github.com/shogun-toolbox/shogun-gpl/archive/29ca2ff930cd5d963b3a78e79160cc04d48970c2.tar.gz"
+   },
+   {
+    "patches":[
+     "json-is-error.patch"
+    ]
+   },
+   {
+    "sha256":"d618a6c6fa6c230608bda7a17585387b89d11d58085a9457cbfba0c438a08969",
+    "url":"https://github.com/shogun-toolbox/shogun/archive/shogun_6.1.4.tar.gz"
+   },
+   {
+    "folder":"src/gpl",
+    "sha256":"ff8a46b7775e784f07e9ffb02e7cd9b101f508c1c7b7d8cdbf1024a2efacdb22",
+    "url":"https://github.com/shogun-toolbox/shogun-gpl/archive/29ca2ff930cd5d963b3a78e79160cc04d48970c2.tar.gz"
+   },
+   {
+    "patches":[
+     "json-is-error.patch"
+    ]
+   },
+   {
+    "sha256":"d618a6c6fa6c230608bda7a17585387b89d11d58085a9457cbfba0c438a08969",
+    "url":"https://github.com/shogun-toolbox/shogun/archive/shogun_6.1.4.tar.gz"
+   },
+   {
+    "folder":"src/gpl",
+    "sha256":"ff8a46b7775e784f07e9ffb02e7cd9b101f508c1c7b7d8cdbf1024a2efacdb22",
+    "url":"https://github.com/shogun-toolbox/shogun-gpl/archive/29ca2ff930cd5d963b3a78e79160cc04d48970c2.tar.gz"
+   },
+   {
+    "patches":[
+     "json-is-error.patch"
+    ]
+   },
    {
     "sha256":"d618a6c6fa6c230608bda7a17585387b89d11d58085a9457cbfba0c438a08969",
     "url":"https://github.com/shogun-toolbox/shogun/archive/shogun_6.1.4.tar.gz"
@@ -602,9 +596,161 @@
     "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
     "conda inspect linkages -p $PREFIX shogun-cpp",
     "conda inspect objects  -p $PREFIX shogun-cpp",
+    "cat $PREFIX/include/shogun/lib/config.h",
+    "$PREFIX/share/shogun/examples/libshogun/minimal",
+    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
+    "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
+    "conda inspect linkages -p $PREFIX shogun-cpp",
+    "conda inspect objects  -p $PREFIX shogun-cpp",
+    "cat $PREFIX/include/shogun/lib/config.h",
+    "$PREFIX/share/shogun/examples/libshogun/minimal",
+    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
+    "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
+    "conda inspect linkages -p $PREFIX shogun-cpp",
+    "cat $PREFIX/include/shogun/lib/config.h",
+    "$PREFIX/share/shogun/examples/libshogun/minimal",
+    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
+    "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
+    "conda inspect linkages -p $PREFIX shogun-cpp",
     "cat $PREFIX/include/shogun/lib/config.h"
    ],
    "requires":[
+    "python",
+    "python",
+    "python",
+    "python"
+   ]
+  }
+ },
+ "name":"shogun-cpp",
+ "new_version":"6.1.4",
+ "osx_64_meta_yaml":{
+  "about":{
+   "description":"The Shogun Machine learning toolbox offers a wide range of efficient and\nunified Machine Learning methods.\n",
+   "dev_url":"https://github.com/shogun-toolbox/shogun/wiki",
+   "doc_url":"http://shogun.ml/examples/latest/index.html",
+   "home":"http://shogun.ml",
+   "license":"GPL-3.0-only",
+   "license_family":"GPL",
+   "license_file":"COPYING",
+   "summary":"Unified and efficient Machine Learning"
+  },
+  "build":{
+   "number":"6",
+   "script":"mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DBLA_VENDOR=Generic\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
+  },
+  "extra":{
+   "recipe-maintainers":[
+    "djsutherland",
+    "vigsterkr",
+    "djsutherland",
+    "vigsterkr"
+   ]
+  },
+  "package":{
+   "name":"shogun-cpp",
+   "version":"6.1.4"
+  },
+  "requirements":{
+   "build":[
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "python",
+    "cmake =3.15",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "python",
+    "cmake =3.15"
+   ],
+   "host":[
+    "arpack",
+    "bzip2",
+    "ctags",
+    "libcurl",
+    "eigen",
+    "glpk",
+    "hdf5",
+    "json-c",
+    "libxml2",
+    "lzo",
+    "libprotobuf",
+    "rxcpp 4.1.0",
+    "snappy",
+    "xz",
+    "zlib",
+    "arpack",
+    "bzip2",
+    "ctags",
+    "libcurl",
+    "eigen",
+    "glpk",
+    "hdf5",
+    "json-c",
+    "libxml2",
+    "lzo",
+    "libprotobuf",
+    "rxcpp 4.1.0",
+    "snappy",
+    "xz",
+    "zlib"
+   ],
+   "run":[
+    "ctags",
+    "glpk",
+    "json-c",
+    "ctags",
+    "glpk",
+    "json-c"
+   ],
+   "run_constrained":null
+  },
+  "source":[
+   {
+    "sha256":"d618a6c6fa6c230608bda7a17585387b89d11d58085a9457cbfba0c438a08969",
+    "url":"https://github.com/shogun-toolbox/shogun/archive/shogun_6.1.4.tar.gz"
+   },
+   {
+    "folder":"src/gpl",
+    "sha256":"ff8a46b7775e784f07e9ffb02e7cd9b101f508c1c7b7d8cdbf1024a2efacdb22",
+    "url":"https://github.com/shogun-toolbox/shogun-gpl/archive/29ca2ff930cd5d963b3a78e79160cc04d48970c2.tar.gz"
+   },
+   {
+    "patches":[
+     "json-is-error.patch"
+    ]
+   },
+   {
+    "sha256":"d618a6c6fa6c230608bda7a17585387b89d11d58085a9457cbfba0c438a08969",
+    "url":"https://github.com/shogun-toolbox/shogun/archive/shogun_6.1.4.tar.gz"
+   },
+   {
+    "folder":"src/gpl",
+    "sha256":"ff8a46b7775e784f07e9ffb02e7cd9b101f508c1c7b7d8cdbf1024a2efacdb22",
+    "url":"https://github.com/shogun-toolbox/shogun-gpl/archive/29ca2ff930cd5d963b3a78e79160cc04d48970c2.tar.gz"
+   },
+   {
+    "patches":[
+     "json-is-error.patch"
+    ]
+   }
+  ],
+  "test":{
+   "commands":[
+    "$PREFIX/share/shogun/examples/libshogun/minimal",
+    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
+    "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
+    "conda inspect linkages -p $PREFIX shogun-cpp",
+    "conda inspect objects  -p $PREFIX shogun-cpp",
+    "cat $PREFIX/include/shogun/lib/config.h",
+    "$PREFIX/share/shogun/examples/libshogun/minimal",
+    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
+    "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
+    "conda inspect linkages -p $PREFIX shogun-cpp",
+    "conda inspect objects  -p $PREFIX shogun-cpp",
+    "cat $PREFIX/include/shogun/lib/config.h"
+   ],
+   "requires":[
+    "python",
     "python"
    ]
   }
