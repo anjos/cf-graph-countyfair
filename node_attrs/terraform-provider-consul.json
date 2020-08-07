@@ -220,7 +220,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "bot":{
    "automerge":true
@@ -308,9 +308,9 @@
   "build":{
    "number":"0",
    "script":[
+    "go build -v -o %PREFIX%\\bin\\terraform-provider-consul_v2.9.0_x4.exe",
     "go build -v -o ${PREFIX}/bin/terraform-provider-consul_v2.9.0_x4",
-    "go build -v -o ${PREFIX}/bin/terraform-provider-consul_v2.9.0_x4",
-    "go build -v -o %PREFIX%\\bin\\terraform-provider-consul_v2.9.0_x4.exe"
+    "go build -v -o ${PREFIX}/bin/terraform-provider-consul_v2.9.0_x4"
    ]
   },
   "extra":{
@@ -342,6 +342,10 @@
   },
   "test":{
    "commands":[
+    "echo provider \"consul\" { version=\"2.9.0\" } > init.tf",
+    "terraform init",
+    "if not exist .terraform\\plugins\\windows_amd64\\lock.json exit 1",
+    "if exist .terraform\\plugins\\windows_amd64\\terraform-provider-consul_v2.9.0_x4.exe exit 1",
     "echo 'provider \"consul\" { version=\"2.9.0\" }' > init.tf",
     "terraform init",
     "test -f .terraform/plugins/linux_amd64/lock.json",
@@ -349,16 +353,12 @@
     "echo 'provider \"consul\" { version=\"2.9.0\" }' > init.tf",
     "terraform init",
     "test -f .terraform/plugins/darwin_amd64/lock.json",
-    "test ! -f .terraform/plugins/darwin_amd64/terraform-provider-consul_v2.9.0_x4",
-    "echo provider \"consul\" { version=\"2.9.0\" } > init.tf",
-    "terraform init",
-    "if not exist .terraform\\plugins\\windows_amd64\\lock.json exit 1",
-    "if exist .terraform\\plugins\\windows_amd64\\terraform-provider-consul_v2.9.0_x4.exe exit 1"
+    "test ! -f .terraform/plugins/darwin_amd64/terraform-provider-consul_v2.9.0_x4"
    ]
   }
  },
  "name":"terraform-provider-consul",
- "new_version":false,
+ "new_version":"2.9.0",
  "new_version_attempts":{
   "2.8.0":1,
   "2.9.0":1
