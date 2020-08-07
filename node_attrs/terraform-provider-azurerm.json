@@ -872,6 +872,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR":{
+    "__lazy_json__":"pr_json/464359493.json"
+   },
+   "data":{
+    "bot_rerun":false,
+    "migrator_name":"Version",
+    "migrator_version":0,
+    "version":"2.22.0"
+   },
+   "keys":[
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived":false,
@@ -969,8 +986,8 @@
    "number":"0",
    "script":[
     "go build -v -o ${PREFIX}/bin/terraform-provider-azurerm_v2.21.0_x4",
-    "go build -v -o ${PREFIX}/bin/terraform-provider-azurerm_v2.21.0_x4",
-    "go build -v -o %PREFIX%\\bin\\terraform-provider-azurerm_v2.21.0_x4.exe"
+    "go build -v -o %PREFIX%\\bin\\terraform-provider-azurerm_v2.21.0_x4.exe",
+    "go build -v -o ${PREFIX}/bin/terraform-provider-azurerm_v2.21.0_x4"
    ]
   },
   "extra":{
@@ -1009,19 +1026,19 @@
     "terraform init",
     "test -f .terraform/plugins/linux_amd64/lock.json",
     "test ! -f .terraform/plugins/linux_amd64/terraform-provider-azurerm_v2.21.0_x4",
-    "echo 'provider \"azurerm\" { version=\"2.21.0\" }' > init.tf",
-    "terraform init",
-    "test -f .terraform/plugins/darwin_amd64/lock.json",
-    "test ! -f .terraform/plugins/darwin_amd64/terraform-provider-azurerm_v2.21.0_x4",
     "echo provider \"azurerm\" { version=\"2.21.0\" } > init.tf",
     "terraform init",
     "if not exist .terraform\\plugins\\windows_amd64\\lock.json exit 1",
-    "if exist .terraform\\plugins\\windows_amd64\\terraform-provider-azurerm_v2.21.0_x4.exe exit 1"
+    "if exist .terraform\\plugins\\windows_amd64\\terraform-provider-azurerm_v2.21.0_x4.exe exit 1",
+    "echo 'provider \"azurerm\" { version=\"2.21.0\" }' > init.tf",
+    "terraform init",
+    "test -f .terraform/plugins/darwin_amd64/lock.json",
+    "test ! -f .terraform/plugins/darwin_amd64/terraform-provider-azurerm_v2.21.0_x4"
    ]
   }
  },
  "name":"terraform-provider-azurerm",
- "new_version":"2.21.0",
+ "new_version":"2.22.0",
  "new_version_attempts":{
   "2.10.0":1,
   "2.11.0":1,
@@ -1034,6 +1051,7 @@
   "2.19.0":1,
   "2.20.0":1,
   "2.21.0":1,
+  "2.22.0":1,
   "2.5.0":1,
   "2.6.0":1,
   "2.7.0":1,
@@ -1110,7 +1128,7 @@
    "elements":[]
   }
  },
- "pinning_version":"2020.07.30.14.05.10",
+ "pinning_version":"2020.08.05.17.02.37",
  "raw_meta_yaml":"{% set provider = \"azurerm\" %}\n{% set goname = \"github.com/terraform-providers/terraform-provider-\"+provider.lower() %}\n{% set version = \"2.21.0\" %}\n\n{% set name = goname.split('/')[-1] %}\n\n{% set x4_plugin = name + '_v' + version + \"_x4\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://{{ goname }}/archive/v{{ version }}.tar.gz\n  sha256: 2a2f827cbe17b72d156d331fbecca58679d4fa0114085f238866f4ac6694be5e\n\nbuild:\n  number: 0\n  script:\n    - go build -v -o {{ target_gobin }}{{ x4_plugin }}{{ target_goexe }}\n\nrequirements:\n  build:\n    - {{ compiler('go') }} 1.13\n  run:\n    - terraform 0.12\n\ntest:\n  commands:\n    # Create a sample init.tf loading the provider\n    - echo 'provider \"{{ provider|lower }}\" { version=\"{{ version }}\" }' > init.tf  # [unix]\n    - echo provider \"{{ provider|lower }}\" { version=\"{{ version }}\" } > init.tf    # [win]\n\n    # Initialize\n    - terraform init\n\n    # Tests that init was successful\n    - test -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/lock.json              # [unix]\n    - if not exist .terraform\\plugins\\{{ target_goos }}_{{ target_goarch }}\\lock.json exit 1  # [win]\n\n    # Test that the provider was not downloaded\n    - test ! -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/{{ x4_plugin }}{{ target_goexe }}        # [unix]\n    - if exist .terraform\\plugins\\{{ target_goos }}_{{ target_goarch }}\\{{ x4_plugin }}{{ target_goexe }} exit 1  # [win]\n\nabout:\n  home: https://www.terraform.io\n  license: MPL-2.0\n  license_file: LICENSE\n  license_family: MOZILLA\n  summary: The Terraform Azure provider\n  doc_url: https://www.terraform.io/docs/providers/{{ provider }}/index.html\n  dev_url: https://github.com/terraform-providers/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - conda-forge/terraform\n    - dhirschfeld\n",
  "req":{
   "__set__":true,
@@ -1141,7 +1159,7 @@
    "elements":[]
   }
  },
- "smithy_version":"No azure token. Create a token and\nput it in ~/.conda-smithy/azure.token\n3.7.5",
+ "smithy_version":"No azure token. Create a token and\nput it in ~/.conda-smithy/azure.token\n3.7.6",
  "strong_exports":false,
  "total_requirements":{
   "build":{
