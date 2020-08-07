@@ -288,7 +288,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "bot":{
    "automerge":true
@@ -376,9 +376,9 @@
   "build":{
    "number":"0",
    "script":[
-    "go build -v -o %PREFIX%\\bin\\terraform-provider-scaleway_v1.16.0_x4.exe",
     "go build -v -o ${PREFIX}/bin/terraform-provider-scaleway_v1.16.0_x4",
-    "go build -v -o ${PREFIX}/bin/terraform-provider-scaleway_v1.16.0_x4"
+    "go build -v -o ${PREFIX}/bin/terraform-provider-scaleway_v1.16.0_x4",
+    "go build -v -o %PREFIX%\\bin\\terraform-provider-scaleway_v1.16.0_x4.exe"
    ]
   },
   "extra":{
@@ -410,23 +410,23 @@
   },
   "test":{
    "commands":[
-    "echo provider \"scaleway\" { version=\"1.16.0\" } > init.tf",
+    "echo 'provider \"scaleway\" { version=\"1.16.0\" }' > init.tf",
     "terraform init",
-    "if not exist .terraform\\plugins\\windows_amd64\\lock.json exit 1",
-    "if exist .terraform\\plugins\\windows_amd64\\terraform-provider-scaleway_v1.16.0_x4.exe exit 1",
+    "test -f .terraform/plugins/linux_amd64/lock.json",
+    "test ! -f .terraform/plugins/linux_amd64/terraform-provider-scaleway_v1.16.0_x4",
     "echo 'provider \"scaleway\" { version=\"1.16.0\" }' > init.tf",
     "terraform init",
     "test -f .terraform/plugins/darwin_amd64/lock.json",
     "test ! -f .terraform/plugins/darwin_amd64/terraform-provider-scaleway_v1.16.0_x4",
-    "echo 'provider \"scaleway\" { version=\"1.16.0\" }' > init.tf",
+    "echo provider \"scaleway\" { version=\"1.16.0\" } > init.tf",
     "terraform init",
-    "test -f .terraform/plugins/linux_amd64/lock.json",
-    "test ! -f .terraform/plugins/linux_amd64/terraform-provider-scaleway_v1.16.0_x4"
+    "if not exist .terraform\\plugins\\windows_amd64\\lock.json exit 1",
+    "if exist .terraform\\plugins\\windows_amd64\\terraform-provider-scaleway_v1.16.0_x4.exe exit 1"
    ]
   }
  },
  "name":"terraform-provider-scaleway",
- "new_version":false,
+ "new_version":"1.16.0",
  "new_version_attempts":{
   "1.15.0":1,
   "1.16.0":1
