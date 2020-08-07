@@ -1045,7 +1045,8 @@
       "lit = lit:main"
      ],
      "noarch":"python",
-     "script":"python -m pip install utils/lit --no-deps -vv"
+     "script":"python -m pip install utils/lit --no-deps -vv",
+     "skip":true
     },
     "name":"lit",
     "requirements":{
@@ -1184,6 +1185,143 @@
      "noarch":"python",
      "script":"python -m pip install utils/lit --no-deps -vv",
      "skip":true
+    },
+    "name":"lit",
+    "requirements":{
+     "host":[
+      "python >=3",
+      "pip"
+     ],
+     "run":[
+      "python"
+     ]
+    },
+    "test":{
+     "imports":[
+      "lit"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true
+    },
+    "name":"llvmdev",
+    "requirements":{
+     "build":[
+      "cxx_compiler_stub",
+      "cmake",
+      "python    >=3"
+     ],
+     "host":[
+      "libllvm10",
+      "llvm-tools",
+      "zlib"
+     ],
+     "run":[
+      "libllvm10",
+      "llvm-tools"
+     ]
+    },
+    "script":"install_llvm.sh",
+    "test":{
+     "commands":[
+      "$PREFIX/bin/llvm-config --libs",
+      "test -f $PREFIX/include/llvm/Pass.h",
+      "test -f $PREFIX/lib/libLLVMCore.a",
+      "$PREFIX/libexec/llvm/not false"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "run_exports":[
+      "libllvm10"
+     ]
+    },
+    "name":"libllvm10",
+    "requirements":{
+     "build":[
+      "cxx_compiler_stub",
+      "cmake",
+      "python    >=3"
+     ],
+     "host":[
+      "zlib"
+     ],
+     "run":null
+    },
+    "script":"install_llvm.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libLLVM-10${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libllvm10"
+     ]
+    },
+    "name":"llvm",
+    "requirements":{
+     "build":null,
+     "host":[
+      "libllvm10",
+      "zlib"
+     ],
+     "run":[
+      "libllvm10"
+     ],
+     "run_constrained":[
+      "llvmdev   10.0.1"
+     ]
+    },
+    "test":{
+     "commands":[
+      "echo \"Hello World!\""
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true
+    },
+    "name":"llvm-tools",
+    "requirements":{
+     "build":[
+      "cxx_compiler_stub",
+      "cmake",
+      "python    >=3"
+     ],
+     "host":[
+      "libllvm10",
+      "zlib"
+     ],
+     "run":[
+      "libllvm10"
+     ],
+     "run_constrained":[
+      "llvmdev   10.0.1"
+     ]
+    },
+    "script":"install_llvm.sh",
+    "test":{
+     "commands":[
+      "$PREFIX/bin/llc -version"
+     ]
+    }
+   },
+   {
+    "build":{
+     "activate_in_script":true,
+     "entry_points":[
+      "lit = lit:main"
+     ],
+     "noarch":"python",
+     "script":"python -m pip install utils/lit --no-deps -vv"
     },
     "name":"lit",
     "requirements":{
@@ -1467,144 +1605,6 @@
       "lit"
      ]
     }
-   },
-   {
-    "build":{
-     "activate_in_script":true
-    },
-    "name":"llvmdev",
-    "requirements":{
-     "build":[
-      "cxx_compiler_stub",
-      "cmake",
-      "python    >=3"
-     ],
-     "host":[
-      "libllvm10",
-      "llvm-tools",
-      "zlib"
-     ],
-     "run":[
-      "libllvm10",
-      "llvm-tools"
-     ]
-    },
-    "script":"install_llvm.sh",
-    "test":{
-     "commands":[
-      "$PREFIX/bin/llvm-config --libs",
-      "test -f $PREFIX/include/llvm/Pass.h",
-      "test -f $PREFIX/lib/libLLVMCore.a",
-      "$PREFIX/libexec/llvm/not false"
-     ]
-    }
-   },
-   {
-    "build":{
-     "activate_in_script":true,
-     "run_exports":[
-      "libllvm10"
-     ]
-    },
-    "name":"libllvm10",
-    "requirements":{
-     "build":[
-      "cxx_compiler_stub",
-      "cmake",
-      "python    >=3"
-     ],
-     "host":[
-      "zlib"
-     ],
-     "run":null
-    },
-    "script":"install_llvm.sh",
-    "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libLLVM-10${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "build":{
-     "run_exports":[
-      "libllvm10"
-     ]
-    },
-    "name":"llvm",
-    "requirements":{
-     "build":null,
-     "host":[
-      "libllvm10",
-      "zlib"
-     ],
-     "run":[
-      "libllvm10"
-     ],
-     "run_constrained":[
-      "llvmdev   10.0.1"
-     ]
-    },
-    "test":{
-     "commands":[
-      "echo \"Hello World!\""
-     ]
-    }
-   },
-   {
-    "build":{
-     "activate_in_script":true
-    },
-    "name":"llvm-tools",
-    "requirements":{
-     "build":[
-      "cxx_compiler_stub",
-      "cmake",
-      "python    >=3"
-     ],
-     "host":[
-      "libllvm10",
-      "zlib"
-     ],
-     "run":[
-      "libllvm10"
-     ],
-     "run_constrained":[
-      "llvmdev   10.0.1"
-     ]
-    },
-    "script":"install_llvm.sh",
-    "test":{
-     "commands":[
-      "$PREFIX/bin/llc -version"
-     ]
-    }
-   },
-   {
-    "build":{
-     "activate_in_script":true,
-     "entry_points":[
-      "lit = lit:main"
-     ],
-     "noarch":"python",
-     "script":"python -m pip install utils/lit --no-deps -vv",
-     "skip":true
-    },
-    "name":"lit",
-    "requirements":{
-     "host":[
-      "python >=3",
-      "pip"
-     ],
-     "run":[
-      "python"
-     ]
-    },
-    "test":{
-     "imports":[
-      "lit"
-     ]
-    }
    }
   ],
   "package":{
@@ -1613,6 +1613,10 @@
   },
   "requirements":{
    "build":[
+    "cxx_compiler_stub",
+    "cmake",
+    "python    >=3",
+    "make",
     "cxx_compiler_stub",
     "cmake",
     "python    >=3",
@@ -1630,18 +1634,14 @@
     "cmake",
     "python    >=3",
     "make",
-    "libcxx 10",
-    "cxx_compiler_stub",
-    "cmake",
-    "python    >=3",
-    "make"
+    "libcxx 10"
    ],
    "host":[
     "zlib",
     "zlib",
     "zlib",
-    "libcxx 10",
     "zlib",
+    "libcxx 10",
     "zlib"
    ]
   },
