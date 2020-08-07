@@ -84,7 +84,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":"Upstream: Could not find version on github",
  "conda-forge.yml":{},
  "feedstock_name":"minuit2",
  "hash_type":"sha256",
@@ -256,10 +256,10 @@
       "test -f ${PREFIX}/lib/libMinuit2${SHLIB_EXT}",
       "test -f ${PREFIX}/lib/libMinuit2Math${SHLIB_EXT}",
       "cd math/minuit2/build/test/MnSim",
-      "for binary in ../../bin/*; do\n  patchelf --set-rpath $PREFIX/lib:${PWD}/../../lib ${binary}\n  ${binary}\ndone\n"
+      "for binary in ../../bin/*; do\n  export INSTALL_NAME_TOOL=$(find ${PREFIX}/bin -name '*install_name_tool' | head -n 1)\n  ${INSTALL_NAME_TOOL} -add_rpath ${PREFIX}/lib ${binary}\n  ${INSTALL_NAME_TOOL} -add_rpath @executable_path/../lib ${binary}\n  ${binary}\ndone\n"
      ],
      "requires":[
-      "patchelf"
+      "cctools"
      ],
      "source_files":[
       "math/minuit2/build/bin/",
@@ -308,10 +308,10 @@
       "test -f ${PREFIX}/lib/libMinuit2${SHLIB_EXT}",
       "test -f ${PREFIX}/lib/libMinuit2Math${SHLIB_EXT}",
       "cd math/minuit2/build/test/MnSim",
-      "for binary in ../../bin/*; do\n  export INSTALL_NAME_TOOL=$(find ${PREFIX}/bin -name '*install_name_tool' | head -n 1)\n  ${INSTALL_NAME_TOOL} -add_rpath ${PREFIX}/lib ${binary}\n  ${INSTALL_NAME_TOOL} -add_rpath @executable_path/../lib ${binary}\n  ${binary}\ndone\n"
+      "for binary in ../../bin/*; do\n  patchelf --set-rpath $PREFIX/lib:${PWD}/../../lib ${binary}\n  ${binary}\ndone\n"
      ],
      "requires":[
-      "cctools"
+      "patchelf"
      ],
      "source_files":[
       "math/minuit2/build/bin/",
