@@ -225,7 +225,7 @@
   }
  ],
  "archived":false,
- "bad":false,
+ "bad":"Upstream: unknown source",
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"azure",
@@ -711,6 +711,56 @@
      "Library/lib/libc++*.lib"
     ],
     "name":"libcxx",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/include/c++/v1/iterator",
+      "bash compile_test.sh",
+      "if [ -f $PREFIX/lib/libc++abi.dylib ]; then exit 1; fi"
+     ],
+     "downstreams":[
+      "python-symengine",
+      "openturns",
+      "libcxx-testing"
+     ],
+     "files":[
+      "test_sources",
+      "compile_test.sh"
+     ],
+     "requires":[
+      "clang <10",
+      "clangxx"
+     ]
+    }
+   },
+   {
+    "build":{
+     "skip":true
+    },
+    "files":[
+     "lib/libc++abi.*"
+    ],
+    "name":"libcxxabi",
+    "requirements":{
+     "run_constrained":[
+      "libcxx 10.0.1.*"
+     ]
+    },
+    "test":{
+     "commands":null
+    }
+   },
+   {
+    "files":[
+     "include/c++",
+     "Library/include/c++",
+     "lib/libc++.*",
+     "lib/libc++fs.*",
+     "lib/libc++experimental.*",
+     "Library/bin/c++*.dll",
+     "Library/lib/c++*.lib",
+     "Library/lib/libc++*.lib"
+    ],
+    "name":"libcxx",
     "requirements":{
      "run":[
       "libcxxabi"
@@ -749,56 +799,6 @@
       "test -f $PREFIX/lib/libc++abi.so"
      ]
     }
-   },
-   {
-    "files":[
-     "include/c++",
-     "Library/include/c++",
-     "lib/libc++.*",
-     "lib/libc++fs.*",
-     "lib/libc++experimental.*",
-     "Library/bin/c++*.dll",
-     "Library/lib/c++*.lib",
-     "Library/lib/libc++*.lib"
-    ],
-    "name":"libcxx",
-    "test":{
-     "commands":[
-      "test -f $PREFIX/include/c++/v1/iterator",
-      "bash compile_test.sh",
-      "if [ -f $PREFIX/lib/libc++abi.dylib ]; then exit 1; fi"
-     ],
-     "downstreams":[
-      "python-symengine",
-      "openturns",
-      "libcxx-testing"
-     ],
-     "files":[
-      "test_sources",
-      "compile_test.sh"
-     ],
-     "requires":[
-      "clang <10",
-      "clangxx"
-     ]
-    }
-   },
-   {
-    "build":{
-     "skip":true
-    },
-    "files":[
-     "lib/libc++abi.*"
-    ],
-    "name":"libcxxabi",
-    "requirements":{
-     "run_constrained":[
-      "libcxx 10.0.1.*"
-     ]
-    },
-    "test":{
-     "commands":null
-    }
    }
   ],
   "package":{
@@ -810,14 +810,22 @@
     "cmake",
     "make",
     "cxx_compiler_stub",
-    "python >3",
     "cmake",
     "make",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "python >3"
    ],
-   "host":null
+   "host":[
+    "clangdev 10.0.1",
+    "llvmdev 10.0.1"
+   ]
   },
   "source":[
+   {
+    "patches":null,
+    "sha256":"def674535f22f83131353b3c382ccebfef4ba6a35c488bdb76f10b68b25be86c",
+    "url":"https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/libcxx-10.0.1.src.tar.xz"
+   },
    {
     "patches":null,
     "sha256":"def674535f22f83131353b3c382ccebfef4ba6a35c488bdb76f10b68b25be86c",
@@ -827,16 +835,11 @@
     "folder":"libcxxabi",
     "sha256":"a97ef810b2e9fb70e8f7e317b74e646ed4944f488b02ac5ddd9c99e385381a7b",
     "url":"https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/libcxxabi-10.0.1.src.tar.xz"
-   },
-   {
-    "patches":null,
-    "sha256":"def674535f22f83131353b3c382ccebfef4ba6a35c488bdb76f10b68b25be86c",
-    "url":"https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/libcxx-10.0.1.src.tar.xz"
    }
   ]
  },
  "name":"libcxx_and_libcxxabi",
- "new_version":"10.0.1",
+ "new_version":false,
  "new_version_attempts":{
   "10.0.0":31,
   "10.0.1":1
@@ -975,9 +978,11 @@
  "req":{
   "__set__":true,
   "elements":[
+   "clangdev",
    "cmake",
    "cxx_compiler_stub",
    "libcxxabi",
+   "llvmdev",
    "make",
    "python"
   ]
@@ -994,7 +999,10 @@
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "clangdev",
+    "llvmdev"
+   ]
   },
   "run":{
    "__set__":true,
@@ -1025,7 +1033,10 @@
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "clangdev 10.0.1",
+    "llvmdev 10.0.1"
+   ]
   },
   "run":{
    "__set__":true,
