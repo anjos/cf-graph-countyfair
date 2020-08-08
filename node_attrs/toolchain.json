@@ -153,6 +153,44 @@
   "outputs":[
    {
     "name":"toolchain",
+    "script":"install-toolchain.sh",
+    "test":{
+     "commands":[
+      "test -f \"${PREFIX}/etc/conda/activate.d/toolchain_activate.sh\"",
+      "test -f \"${PREFIX}/etc/conda/deactivate.d/toolchain_deactivate.sh\"",
+      "source ${PREFIX}/etc/conda/activate.d/toolchain_activate.sh",
+      "if [ -z ${CC+x} ]; then echo \"CC is unset after activation\" && exit 1; else echo \"CC is set to '$CC'\"; fi",
+      "source ${PREFIX}/etc/conda/deactivate.d/toolchain_deactivate.sh",
+      "if [ -z ${CC+x} ]; then echo \"CC is unset after deactivation \"; else echo \"CC is set to '$CC' after deactivation\" && exit 1; fi"
+     ]
+    }
+   },
+   {
+    "name":"toolchain_c_osx-64",
+    "requirements":[
+     "toolchain"
+    ]
+   },
+   {
+    "name":"toolchain_cxx_osx-64",
+    "requirements":[
+     "toolchain"
+    ]
+   },
+   {
+    "name":"toolchain_fort_osx-64",
+    "requirements":[
+     "toolchain",
+     "gcc"
+    ],
+    "run_exports":{
+     "strong":[
+      "libgfortran >=3.0"
+     ]
+    }
+   },
+   {
+    "name":"toolchain",
     "test":{
      "commands":[
       "echo \"I'm on windows, and there's nothing to do here.\""
@@ -210,44 +248,6 @@
     "name":"toolchain_fort_linux-64",
     "requirements":[
      "toolchain"
-    ],
-    "run_exports":{
-     "strong":[
-      "libgfortran >=3.0"
-     ]
-    }
-   },
-   {
-    "name":"toolchain",
-    "script":"install-toolchain.sh",
-    "test":{
-     "commands":[
-      "test -f \"${PREFIX}/etc/conda/activate.d/toolchain_activate.sh\"",
-      "test -f \"${PREFIX}/etc/conda/deactivate.d/toolchain_deactivate.sh\"",
-      "source ${PREFIX}/etc/conda/activate.d/toolchain_activate.sh",
-      "if [ -z ${CC+x} ]; then echo \"CC is unset after activation\" && exit 1; else echo \"CC is set to '$CC'\"; fi",
-      "source ${PREFIX}/etc/conda/deactivate.d/toolchain_deactivate.sh",
-      "if [ -z ${CC+x} ]; then echo \"CC is unset after deactivation \"; else echo \"CC is set to '$CC' after deactivation\" && exit 1; fi"
-     ]
-    }
-   },
-   {
-    "name":"toolchain_c_osx-64",
-    "requirements":[
-     "toolchain"
-    ]
-   },
-   {
-    "name":"toolchain_cxx_osx-64",
-    "requirements":[
-     "toolchain"
-    ]
-   },
-   {
-    "name":"toolchain_fort_osx-64",
-    "requirements":[
-     "toolchain",
-     "gcc"
     ],
     "run_exports":{
      "strong":[
