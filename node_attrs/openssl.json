@@ -447,6 +447,48 @@
   "outputs":[
    {
     "build":{
+     "no_link":"lib/libcrypto.1.1.dylib",
+     "run_exports":[
+      "openssl"
+     ]
+    },
+    "name":"openssl",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "make",
+      "perl"
+     ],
+     "host":null,
+     "run":[
+      "ca-certificates"
+     ]
+    },
+    "script":"install_openssl.sh",
+    "test":{
+     "commands":[
+      "touch checksum.txt",
+      "openssl sha256 checksum.txt"
+     ]
+    }
+   },
+   {
+    "name":"libopenssl-static",
+    "requirements":{
+     "build":[
+      "c_compiler_stub"
+     ]
+    },
+    "script":"install_libopenssl-static.sh",
+    "test":{
+     "commands":[
+      "test -f ${PREFIX}/lib/libcrypto.a",
+      "test -f ${PREFIX}/lib/libssl.a"
+     ]
+    }
+   },
+   {
+    "build":{
      "no_link":"lib/libcrypto.so.1.1",
      "run_exports":[
       "openssl"
@@ -489,7 +531,7 @@
    },
    {
     "build":{
-     "no_link":"lib/libcrypto.1.1.dylib",
+     "no_link":"lib/libcrypto.so.1.1",
      "run_exports":[
       "openssl"
      ]
@@ -597,48 +639,6 @@
       "test -f ${PREFIX}/lib/libssl.a"
      ]
     }
-   },
-   {
-    "build":{
-     "no_link":"lib/libcrypto.so.1.1",
-     "run_exports":[
-      "openssl"
-     ]
-    },
-    "name":"openssl",
-    "requirements":{
-     "build":[
-      "c_compiler_stub",
-      "make",
-      "perl"
-     ],
-     "host":null,
-     "run":[
-      "ca-certificates"
-     ]
-    },
-    "script":"install_openssl.sh",
-    "test":{
-     "commands":[
-      "touch checksum.txt",
-      "openssl sha256 checksum.txt"
-     ]
-    }
-   },
-   {
-    "name":"libopenssl-static",
-    "requirements":{
-     "build":[
-      "c_compiler_stub"
-     ]
-    },
-    "script":"install_libopenssl-static.sh",
-    "test":{
-     "commands":[
-      "test -f ${PREFIX}/lib/libcrypto.a",
-      "test -f ${PREFIX}/lib/libssl.a"
-     ]
-    }
    }
   ],
   "package":{
@@ -654,10 +654,10 @@
     "make",
     "perl",
     "c_compiler_stub",
-    "nasm",
-    "c_compiler_stub",
     "make",
     "perl",
+    "c_compiler_stub",
+    "nasm",
     "c_compiler_stub",
     "make",
     "perl"
