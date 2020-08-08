@@ -159,7 +159,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"azure",
@@ -682,6 +682,44 @@
     "name":"libssh2",
     "test":{
      "commands":[
+      "if not exist %LIBRARY_INC%\\\\libssh2.h           exit 1",
+      "if not exist %LIBRARY_INC%\\\\libssh2_publickey.h exit 1",
+      "if not exist %LIBRARY_INC%\\\\libssh2_sftp.h      exit 1",
+      "if not exist %LIBRARY_LIB%\\\\libssh2.lib         exit 1"
+     ]
+    }
+   },
+   {
+    "build":null,
+    "name":"libssh2-static",
+    "requirements":{
+     "build":[
+      "cmake-binary",
+      "c_compiler_stub",
+      "ninja"
+     ],
+     "host":[
+      "libssh2",
+      "openssl",
+      "zlib"
+     ]
+    },
+    "script":"bld_static.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_LIB%\\libssh2_static.lib exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "libssh2"
+     ]
+    },
+    "name":"libssh2",
+    "test":{
+     "commands":[
       "test -f $PREFIX/include/libssh2.h",
       "test -f $PREFIX/include/libssh2_publickey.h",
       "test -f $PREFIX/include/libssh2_sftp.h",
@@ -711,44 +749,6 @@
       "test -f $PREFIX/lib/libssh2.a"
      ]
     }
-   },
-   {
-    "build":{
-     "run_exports":[
-      "libssh2"
-     ]
-    },
-    "name":"libssh2",
-    "test":{
-     "commands":[
-      "if not exist %LIBRARY_INC%\\\\libssh2.h           exit 1",
-      "if not exist %LIBRARY_INC%\\\\libssh2_publickey.h exit 1",
-      "if not exist %LIBRARY_INC%\\\\libssh2_sftp.h      exit 1",
-      "if not exist %LIBRARY_LIB%\\\\libssh2.lib         exit 1"
-     ]
-    }
-   },
-   {
-    "build":null,
-    "name":"libssh2-static",
-    "requirements":{
-     "build":[
-      "cmake-binary",
-      "c_compiler_stub",
-      "ninja"
-     ],
-     "host":[
-      "libssh2",
-      "openssl",
-      "zlib"
-     ]
-    },
-    "script":"bld_static.bat",
-    "test":{
-     "commands":[
-      "if not exist %LIBRARY_LIB%\\libssh2_static.lib exit 1"
-     ]
-    }
    }
   ],
   "package":{
@@ -766,12 +766,12 @@
     "cmake-no-system",
     "c_compiler_stub",
     "make",
-    "cmake-no-system",
-    "c_compiler_stub",
-    "make",
     "cmake-binary",
     "c_compiler_stub",
-    "ninja"
+    "ninja",
+    "cmake-no-system",
+    "c_compiler_stub",
+    "make"
    ],
    "host":[
     "openssl",
