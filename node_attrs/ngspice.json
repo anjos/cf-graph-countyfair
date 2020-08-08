@@ -1,6 +1,6 @@
 {
  "archived":false,
- "bad":false,
+ "bad":"Upstream: unknown source",
  "conda-forge.yml":{},
  "feedstock_name":"ngspice",
  "hash_type":"sha256",
@@ -265,6 +265,57 @@
     "name":"ngspice-lib",
     "requirements":{
      "build":[
+      "c_compiler_stub"
+     ],
+     "host":[
+      "winflexbison"
+     ]
+    },
+    "script":"build_lib.bat",
+    "test":{
+     "commands":[
+      "if not exist %PREFIX%\\\\bin\\\\ngspice.dll exit 1"
+     ]
+    }
+   },
+   {
+    "name":"ngspice-exe",
+    "requirements":{
+     "build":[
+      "c_compiler_stub"
+     ],
+     "host":[
+      "winflexbison"
+     ]
+    },
+    "script":"build_exe.bat",
+    "test":{
+     "commands":[
+      "call %PREFIX%\\bin\\ngspice_con.exe --version",
+      "call %PREFIX%\\bin\\ngspice_con.exe -b -r raw.out test-files\\test.cir"
+     ],
+     "files":"test-files"
+    }
+   },
+   {
+    "name":"ngspice",
+    "requirements":{
+     "run":[
+      "ngspice-lib",
+      "ngspice-exe"
+     ]
+    },
+    "test":{
+     "commands":[
+      "if not exist %PREFIX%\\\\bin\\\\ngspice.dll exit 1",
+      "%PREFIX%\\bin\\ngspice_con.exe --version"
+     ]
+    }
+   },
+   {
+    "name":"ngspice-lib",
+    "requirements":{
+     "build":[
       "c_compiler_stub",
       "libgomp",
       "autoconf",
@@ -341,57 +392,6 @@
       "$PREFIX/bin/ngspice --version"
      ]
     }
-   },
-   {
-    "name":"ngspice-lib",
-    "requirements":{
-     "build":[
-      "c_compiler_stub"
-     ],
-     "host":[
-      "winflexbison"
-     ]
-    },
-    "script":"build_lib.bat",
-    "test":{
-     "commands":[
-      "if not exist %PREFIX%\\\\bin\\\\ngspice.dll exit 1"
-     ]
-    }
-   },
-   {
-    "name":"ngspice-exe",
-    "requirements":{
-     "build":[
-      "c_compiler_stub"
-     ],
-     "host":[
-      "winflexbison"
-     ]
-    },
-    "script":"build_exe.bat",
-    "test":{
-     "commands":[
-      "call %PREFIX%\\bin\\ngspice_con.exe --version",
-      "call %PREFIX%\\bin\\ngspice_con.exe -b -r raw.out test-files\\test.cir"
-     ],
-     "files":"test-files"
-    }
-   },
-   {
-    "name":"ngspice",
-    "requirements":{
-     "run":[
-      "ngspice-lib",
-      "ngspice-exe"
-     ]
-    },
-    "test":{
-     "commands":[
-      "if not exist %PREFIX%\\\\bin\\\\ngspice.dll exit 1",
-      "%PREFIX%\\bin\\ngspice_con.exe --version"
-     ]
-    }
    }
   ],
   "package":{
@@ -399,9 +399,7 @@
    "version":"32"
   },
   "source":{
-   "patches":[
-    "patches/vngspice-install-location.patch"
-   ],
+   "patches":null,
    "sha256":"3cd90c4e94516d87c5b4d02a3a6405b1136b25d05c871d4fee1fd7c4c0d03ef2",
    "url":"https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/32/ngspice-32.tar.gz"
   }
