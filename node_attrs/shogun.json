@@ -408,7 +408,7 @@
     "blas_openblas"
    ],
    "number":"3",
-   "script":"mkdir build\ncd build\n\npyinc=$($PYTHON -c \"from distutils import sysconfig; print(sysconfig.get_python_inc())\")\npylib=$(ldd $PYTHON | grep $PREFIX | grep 'libpython.*\\.so' | cut -d' ' -f3)\n\ncmake ..                                      ^\n    -G\"%CMAKE_GENERATOR%\"           ^\n    -DCMAKE_PREFIX_PATH=\"%LIBRARY_PREFIX%\"        ^\n    -DCMAKE_INSTALL_PREFIX=\"%LIBRARY_PREFIX%\"     ^\n    -DCMAKE_BUILD_TYPE=Release                ^\n    -DBUILD_EXAMPLES=OFF                      ^\n    -DBUILD_META_EXAMPLES=OFF                 ^\n    -DENABLE_TESTING=OFF                      ^\n    -DENABLE_COVERAGE=OFF                     ^\n    -DUSE_SVMLIGHT=OFF                        ^\n    -DPYTHON_EXECUTABLE=%PYTHON%    ^\n    -DPYTHON_INCLUDE_DIR=$pyinc               \\\n    -DPYTHON_LIBRARY=$pylib                   \\\n    -DLIBSHOGUN=OFF                           ^\n    -DINTERFACE_PYTHON=ON\n\ncmake --build . --target _interface_python --config Release --\n\ncmake --build . --target install --config Release --\n",
+   "script":"mkdir build\ncd build\n\npyinc=$($PYTHON -c \"from distutils import sysconfig; print(sysconfig.get_python_inc())\")\npylib=$(otool -L $PYTHON | grep 'libpython.*\\.dylib' | tr '\\t' ' ' | cut -d' ' -f2 | sed \"s|@rpath|$PREFIX/lib|\")\n\ncmake ..                                      ^\n    -G\"%CMAKE_GENERATOR%\"           ^\n    -DCMAKE_PREFIX_PATH=\"%LIBRARY_PREFIX%\"        ^\n    -DCMAKE_INSTALL_PREFIX=\"%LIBRARY_PREFIX%\"     ^\n    -DCMAKE_BUILD_TYPE=Release                ^\n    -DBUILD_EXAMPLES=OFF                      ^\n    -DBUILD_META_EXAMPLES=OFF                 ^\n    -DENABLE_TESTING=OFF                      ^\n    -DENABLE_COVERAGE=OFF                     ^\n    -DUSE_SVMLIGHT=OFF                        ^\n    -DPYTHON_EXECUTABLE=%PYTHON%    ^\n    -DPYTHON_INCLUDE_DIR=$pyinc               \\\n    -DPYTHON_LIBRARY=$pylib                   \\\n    -DLIBSHOGUN=OFF                           ^\n    -DINTERFACE_PYTHON=ON\n\ncmake --build . --target _interface_python --config Release --\n\ncmake --build . --target install --config Release --\n",
    "skip":true
   },
   "extra":{
@@ -740,7 +740,9 @@
   "test":{
    "commands":[
     "conda inspect linkages -p $PREFIX shogun",
-    "conda inspect linkages -p $PREFIX shogun"
+    "conda inspect objects -p $PREFIX shogun",
+    "conda inspect linkages -p $PREFIX shogun",
+    "conda inspect objects -p $PREFIX shogun"
    ],
    "imports":[
     "shogun",
