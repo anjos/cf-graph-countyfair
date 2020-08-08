@@ -600,13 +600,12 @@
     "files":[
      "lib/clang/10.0.1/lib"
     ],
-    "name":"compiler-rt_osx-64",
+    "name":"compiler-rt_linux-ppc64le",
     "requirements":{
      "build":[
       "cxx_compiler_stub"
      ],
      "run":[
-      "libcxx >=10.0.0",
       "clang 10.0.1",
       "clangxx 10.0.1"
      ],
@@ -628,7 +627,53 @@
      "run":[
       "clang 10.0.1",
       "clangxx 10.0.1",
-      "compiler-rt_osx-64 10.0.1"
+      "compiler-rt_linux-ppc64le 10.0.1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "detect_binary_files_with_prefix":false,
+     "ignore_run_exports":[
+      "vc",
+      "libcxx",
+      "libgcc-ng",
+      "libstdcxx-ng"
+     ],
+     "noarch":"generic"
+    },
+    "files":[
+     "lib/clang/10.0.1/lib"
+    ],
+    "name":"compiler-rt_win-64",
+    "requirements":{
+     "build":[
+      "cxx_compiler_stub"
+     ],
+     "run":[
+      "clang 10.0.1",
+      "clangxx 10.0.1"
+     ],
+     "run_constrained":[
+      "compiler-rt 10.0.1"
+     ]
+    }
+   },
+   {
+    "files":[
+     "Library/lib/clang/10.0.1/share",
+     "Library/lib/clang/10.0.1/include",
+     "Library/lib/clang/10.0.1/lib"
+    ],
+    "name":"compiler-rt",
+    "requirements":{
+     "build":[
+      "cxx_compiler_stub"
+     ],
+     "run":[
+      "clang 10.0.1",
+      "clangxx 10.0.1",
+      "compiler-rt_win-64 10.0.1"
      ]
     }
    },
@@ -689,12 +734,13 @@
     "files":[
      "lib/clang/10.0.1/lib"
     ],
-    "name":"compiler-rt_linux-ppc64le",
+    "name":"compiler-rt_osx-64",
     "requirements":{
      "build":[
       "cxx_compiler_stub"
      ],
      "run":[
+      "libcxx >=10.0.0",
       "clang 10.0.1",
       "clangxx 10.0.1"
      ],
@@ -716,7 +762,7 @@
      "run":[
       "clang 10.0.1",
       "clangxx 10.0.1",
-      "compiler-rt_linux-ppc64le 10.0.1"
+      "compiler-rt_osx-64 10.0.1"
      ]
     }
    },
@@ -763,52 +809,6 @@
       "compiler-rt_linux-64 10.0.1"
      ]
     }
-   },
-   {
-    "build":{
-     "detect_binary_files_with_prefix":false,
-     "ignore_run_exports":[
-      "vc",
-      "libcxx",
-      "libgcc-ng",
-      "libstdcxx-ng"
-     ],
-     "noarch":"generic"
-    },
-    "files":[
-     "lib/clang/10.0.1/lib"
-    ],
-    "name":"compiler-rt_win-64",
-    "requirements":{
-     "build":[
-      "cxx_compiler_stub"
-     ],
-     "run":[
-      "clang 10.0.1",
-      "clangxx 10.0.1"
-     ],
-     "run_constrained":[
-      "compiler-rt 10.0.1"
-     ]
-    }
-   },
-   {
-    "files":[
-     "Library/lib/clang/10.0.1/share",
-     "Library/lib/clang/10.0.1/include",
-     "Library/lib/clang/10.0.1/lib"
-    ],
-    "name":"compiler-rt",
-    "requirements":{
-     "build":[
-      "cxx_compiler_stub"
-     ],
-     "run":[
-      "clang 10.0.1",
-      "clangxx 10.0.1",
-      "compiler-rt_win-64 10.0.1"
-     ]
-    }
    }
   ],
   "package":{
@@ -824,7 +824,6 @@
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python",
-    "make",
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python",
@@ -835,18 +834,19 @@
     "make",
     "cmake >=3.4.3",
     "cxx_compiler_stub",
-    "python"
+    "python",
+    "make"
    ],
    "host":[
     "clangdev 10.0.1",
     "llvmdev 10.0.1",
+    "clangdev 10.0.1",
+    "llvmdev 10.0.1",
+    "clangdev 10.0.1",
+    "llvmdev 10.0.1",
+    "clangdev 10.0.1",
+    "llvmdev 10.0.1",
     "libcxx 10.0.0",
-    "clangdev 10.0.1",
-    "llvmdev 10.0.1",
-    "clangdev 10.0.1",
-    "llvmdev 10.0.1",
-    "clangdev 10.0.1",
-    "llvmdev 10.0.1",
     "clangdev 10.0.1",
     "llvmdev 10.0.1"
    ]
@@ -869,16 +869,16 @@
   },
   "test":{
    "commands":[
+    "sed \"s/@MACOSX_DEPLOYMENT_TARGET@/10.14/g\" test.c.in > test.c",
+    "test -f $PREFIX/lib/clang/10.0.1/include/sanitizer/asan_interface.h",
+    "sed \"s/@MACOSX_DEPLOYMENT_TARGET@/10.14/g\" test.c.in > test.c",
+    "sed \"s/@MACOSX_DEPLOYMENT_TARGET@/10.14/g\" test.c.in > test.c",
+    "test -f $PREFIX/lib/clang/10.0.1/include/sanitizer/asan_interface.h",
     "sed \"s/@MACOSX_DEPLOYMENT_TARGET@/10.10/g\" test.c.in > test.c",
     "clang -mmacosx-version-min=10.9 test.c",
     "test -f $PREFIX/lib/clang/10.0.1/include/sanitizer/asan_interface.h",
     "sed \"s/@MACOSX_DEPLOYMENT_TARGET@/10.14/g\" test.c.in > test.c",
-    "test -f $PREFIX/lib/clang/10.0.1/include/sanitizer/asan_interface.h",
-    "sed \"s/@MACOSX_DEPLOYMENT_TARGET@/10.14/g\" test.c.in > test.c",
-    "test -f $PREFIX/lib/clang/10.0.1/include/sanitizer/asan_interface.h",
-    "sed \"s/@MACOSX_DEPLOYMENT_TARGET@/10.14/g\" test.c.in > test.c",
-    "test -f $PREFIX/lib/clang/10.0.1/include/sanitizer/asan_interface.h",
-    "sed \"s/@MACOSX_DEPLOYMENT_TARGET@/10.14/g\" test.c.in > test.c"
+    "test -f $PREFIX/lib/clang/10.0.1/include/sanitizer/asan_interface.h"
    ],
    "files":[
     "test.c.in",
