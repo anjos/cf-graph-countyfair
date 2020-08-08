@@ -276,23 +276,26 @@
      ]
     },
     "files":[
-     "Library/include/",
-     "Library/bin/libframel.dll",
-     "Library/lib/libframel.*",
-     "Library/lib/pkgconfig/framel.pc"
+     "include/",
+     "lib/libframel.*",
+     "lib/pkgconfig/framel.pc"
     ],
     "name":"libframel",
     "requirements":{
      "build":[
-      "m2w64_c_compiler_stub"
+      "c_compiler_stub"
      ],
      "run_constained":[
       "libframe >=9999"
      ]
     },
     "test":{
-     "commands":null,
-     "requires":null
+     "commands":[
+      "test \"$(pkg-config --print-errors --modversion framel)\" == \"${PKG_VERSION}\""
+     ],
+     "requires":[
+      "pkg-config"
+     ]
     }
    },
    {
@@ -305,13 +308,13 @@
      "summary":"LIGO/Virgo Frame Library"
     },
     "files":[
-     "Library/bin/Fr*",
-     "Library/share/doc/"
+     "bin/",
+     "share/doc/"
     ],
     "name":"framel",
     "requirements":{
      "build":[
-      "m2w64_c_compiler_stub"
+      "c_compiler_stub"
      ],
      "host":[
       "libframel"
@@ -353,13 +356,12 @@
     "name":"python-framel",
     "requirements":{
      "build":[
-      "m2w64_c_compiler_stub",
+      "c_compiler_stub",
       "cmake >=3.16.0",
-      "ninja"
+      "make"
      ],
      "host":[
       "libframel",
-      "libpython",
       "numpy",
       "python"
      ],
@@ -369,7 +371,7 @@
       "python"
      ]
     },
-    "script":"install-python.bat",
+    "script":"install-python.sh",
     "test":{
      "commands":[
       "python -c \"from pathlib import Path; from numpy.testing import assert_array_equal; import framel; indata = framel.frgetvect1d(str(Path('data') / 'test.gwf'), 'D1'); framel.frputvect('test2.gwf', [{'name': 'A1:TEST', 'data': indata[0], 'start': indata[1], 'dx': indata[3], 'x_unit': indata[4], 'y_unit': indata[5]}]); indata2 = framel.frgetvect1d('test2.gwf', 'A1:TEST'); assert_array_equal(indata[0], indata2[0], 'read-write data mismatch'); assert indata[1:] == indata2[1:], 'read-write metadata mismatch'; \"\n"
@@ -522,26 +524,23 @@
      ]
     },
     "files":[
-     "include/",
-     "lib/libframel.*",
-     "lib/pkgconfig/framel.pc"
+     "Library/include/",
+     "Library/bin/libframel.dll",
+     "Library/lib/libframel.*",
+     "Library/lib/pkgconfig/framel.pc"
     ],
     "name":"libframel",
     "requirements":{
      "build":[
-      "c_compiler_stub"
+      "m2w64_c_compiler_stub"
      ],
      "run_constained":[
       "libframe >=9999"
      ]
     },
     "test":{
-     "commands":[
-      "test \"$(pkg-config --print-errors --modversion framel)\" == \"${PKG_VERSION}\""
-     ],
-     "requires":[
-      "pkg-config"
-     ]
+     "commands":null,
+     "requires":null
     }
    },
    {
@@ -554,13 +553,13 @@
      "summary":"LIGO/Virgo Frame Library"
     },
     "files":[
-     "bin/",
-     "share/doc/"
+     "Library/bin/Fr*",
+     "Library/share/doc/"
     ],
     "name":"framel",
     "requirements":{
      "build":[
-      "c_compiler_stub"
+      "m2w64_c_compiler_stub"
      ],
      "host":[
       "libframel"
@@ -602,12 +601,13 @@
     "name":"python-framel",
     "requirements":{
      "build":[
-      "c_compiler_stub",
+      "m2w64_c_compiler_stub",
       "cmake >=3.16.0",
-      "make"
+      "ninja"
      ],
      "host":[
       "libframel",
+      "libpython",
       "numpy",
       "python"
      ],
@@ -617,7 +617,7 @@
       "python"
      ]
     },
-    "script":"install-python.sh",
+    "script":"install-python.bat",
     "test":{
      "commands":[
       "python -c \"from pathlib import Path; from numpy.testing import assert_array_equal; import framel; indata = framel.frgetvect1d(str(Path('data') / 'test.gwf'), 'D1'); framel.frputvect('test2.gwf', [{'name': 'A1:TEST', 'data': indata[0], 'start': indata[1], 'dx': indata[3], 'x_unit': indata[4], 'y_unit': indata[5]}]); indata2 = framel.frgetvect1d('test2.gwf', 'A1:TEST'); assert_array_equal(indata[0], indata2[0], 'read-write data mismatch'); assert indata[1:] == indata2[1:], 'read-write metadata mismatch'; \"\n"
@@ -637,19 +637,21 @@
   },
   "requirements":{
    "build":[
-    "m2w64_c_compiler_stub",
-    "cmake",
-    "ninja",
     "c_compiler_stub",
     "cmake",
     "make",
     "c_compiler_stub",
     "cmake",
-    "make"
+    "make",
+    "m2w64_c_compiler_stub",
+    "cmake",
+    "ninja"
    ]
   },
   "source":{
-   "patches":null,
+   "patches":[
+    "mkdir.patch"
+   ],
    "sha256":"ea4afcdf839f8eb49edc2d3190b5aebb08871146e426b644887f7efbae30a6b9",
    "url":"http://software.igwn.org/sources/source/framel-8.40.1.tar.xz"
   }
