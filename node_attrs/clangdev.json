@@ -1419,7 +1419,7 @@
      "build":[
       "cxx_compiler_stub",
       "cmake >=3.4.3",
-      "make"
+      "ninja"
      ],
      "host":[
       "clang",
@@ -1427,7 +1427,6 @@
       "clang-tools",
       "libclang",
       "libclang-cpp",
-      "libcxx *",
       "llvmdev ==10.0.1"
      ],
      "run":[
@@ -1436,23 +1435,21 @@
       "clang-tools",
       "libclang",
       "libclang-cpp",
-      "libcxx",
       "llvmdev ==10.0.1"
      ]
     },
-    "script":"install_clangdev.sh",
+    "script":"install_clangdev.bat",
     "test":{
      "commands":[
-      "test -f \"$PREFIX/include/clang/Config/config.h\"",
-      "test -f \"$PREFIX/lib/libclangAST.a\""
+      "if not exist %LIBRARY_INC%\\\\clang/Config/config.h exit 1",
+      "if not exist %LIBRARY_LIB%\\\\clangAST.lib exit 1"
      ]
     }
    },
    {
     "build":{
-     "run_exports":[
-      "libclang-cpp10"
-     ],
+     "run_exports":null,
+     "skip":true,
      "string":"default_h_1",
      "track_features":null
     },
@@ -1461,30 +1458,20 @@
      "build":[
       "cxx_compiler_stub",
       "cmake >=3.4.3",
-      "make"
+      "ninja"
      ],
      "host":[
-      "libcxx *",
       "llvmdev ==10.0.1",
       "llvm ==10.0.1"
      ],
-     "run":[
-      "libcxx"
-     ]
+     "run":null
     },
-    "script":"install_libclang_cpp.sh",
     "test":{
-     "commands":[
-      "test ! -f \"$PREFIX/lib/libclang-cpp.dylib\"",
-      "test -f \"$PREFIX/lib/libclang-cpp.10.dylib\""
-     ]
+     "commands":null
     }
    },
    {
     "build":{
-     "run_exports":[
-      "libclang-cpp10"
-     ],
      "string":"default_h_1",
      "track_features":null
     },
@@ -1493,23 +1480,17 @@
      "build":[
       "cxx_compiler_stub",
       "cmake >=3.4.3",
-      "make"
+      "ninja"
      ],
      "host":[
-      "libcxx *",
       "llvmdev ==10.0.1",
-      "llvm ==10.0.1",
-      "libclang-cpp10"
+      "llvm ==10.0.1"
      ],
-     "run":[
-      "libcxx",
-      "libclang-cpp10"
-     ]
+     "run":null
     },
-    "script":"install_libclang_cpp.sh",
     "test":{
      "commands":[
-      "test -f \"$PREFIX/lib/libclang-cpp.dylib\""
+      "if exist %LIBRARY_BIN%\\\\libclang-cpp.dll exit 1"
      ]
     }
    },
@@ -1523,22 +1504,19 @@
      "build":[
       "cxx_compiler_stub",
       "cmake >=3.4.3",
-      "make"
+      "ninja"
      ],
      "host":[
-      "libcxx *",
       "llvmdev ==10.0.1",
       "llvm ==10.0.1",
       "clang"
      ],
-     "run":[
-      "libcxx"
-     ]
+     "run":null
     },
-    "script":"install_libclang.sh",
+    "script":"install_libclang.bat",
     "test":{
      "commands":[
-      "test -f \"$PREFIX/lib/libclang.dylib\""
+      "if not exist %LIBRARY_BIN%\\\\libclang.dll exit 1"
      ]
     }
    },
@@ -1551,20 +1529,14 @@
     "requirements":{
      "build":[
       "cxx_compiler_stub",
-      "libcxx",
       "cmake >=3.4.3",
-      "make"
+      "ninja"
      ],
      "host":[
-      "libcxx *",
       "llvmdev ==10.0.1",
-      "llvm ==10.0.1",
-      "libclang-cpp10"
+      "llvm ==10.0.1"
      ],
-     "run":[
-      "libcxx",
-      "libclang-cpp10"
-     ],
+     "run":null,
      "run_constrained":[
       "clangdev 10.0.1",
       "clangxx 10.0.1",
@@ -1572,15 +1544,13 @@
       "llvm-tools 10.0.1"
      ]
     },
-    "script":"install_clang.sh",
+    "script":"install_clang.bat",
     "test":{
      "commands":[
       "clang --version",
       "clang-cl --version",
       "clang-cpp --version",
-      "clang-10 --version",
-      "test -f \"$PREFIX/lib/libclang-cpp.dylib\"",
-      "test -f \"$PREFIX/lib/clang/10.0.1/include/stdatomic.h\""
+      "if not exist %LIBRARY_LIB%\\\\clang\\\\10.0.1\\\\include\\\\stdatomic.h exit 1"
      ]
     }
    },
@@ -1598,7 +1568,7 @@
       "clang"
      ]
     },
-    "script":"install_clangxx.sh",
+    "script":"install_clangxx.bat",
     "test":{
      "commands":[
       "clang++ --version",
@@ -1623,26 +1593,24 @@
       "python >3",
       "cxx_compiler_stub",
       "cmake >=3.4.3",
-      "make"
+      "ninja"
      ],
      "host":[
       "clang",
       "clangxx",
       "libclang",
-      "libcxx *",
       "llvmdev ==10.0.1",
       "llvm ==10.0.1"
      ],
      "run":[
       "clang",
-      "clangxx",
-      "libcxx"
+      "clangxx"
      ],
      "run_constrained":[
       "clangdev 10.0.1"
      ]
     },
-    "script":"install_clang_tools.sh",
+    "script":"install_clang_tools.bat",
     "test":{
      "commands":[
       "clang-check --version",
@@ -1653,6 +1621,7 @@
    {
     "build":{
      "noarch":"python",
+     "skip":true,
      "string":"default_h_1",
      "track_features":null
     },
@@ -1960,7 +1929,7 @@
      "build":[
       "cxx_compiler_stub",
       "cmake >=3.4.3",
-      "ninja"
+      "make"
      ],
      "host":[
       "clang",
@@ -1968,6 +1937,7 @@
       "clang-tools",
       "libclang",
       "libclang-cpp",
+      "libcxx *",
       "llvmdev ==10.0.1"
      ],
      "run":[
@@ -1976,21 +1946,23 @@
       "clang-tools",
       "libclang",
       "libclang-cpp",
+      "libcxx",
       "llvmdev ==10.0.1"
      ]
     },
-    "script":"install_clangdev.bat",
+    "script":"install_clangdev.sh",
     "test":{
      "commands":[
-      "if not exist %LIBRARY_INC%\\\\clang/Config/config.h exit 1",
-      "if not exist %LIBRARY_LIB%\\\\clangAST.lib exit 1"
+      "test -f \"$PREFIX/include/clang/Config/config.h\"",
+      "test -f \"$PREFIX/lib/libclangAST.a\""
      ]
     }
    },
    {
     "build":{
-     "run_exports":null,
-     "skip":true,
+     "run_exports":[
+      "libclang-cpp10"
+     ],
      "string":"default_h_1",
      "track_features":null
     },
@@ -1999,20 +1971,30 @@
      "build":[
       "cxx_compiler_stub",
       "cmake >=3.4.3",
-      "ninja"
+      "make"
      ],
      "host":[
+      "libcxx *",
       "llvmdev ==10.0.1",
       "llvm ==10.0.1"
      ],
-     "run":null
+     "run":[
+      "libcxx"
+     ]
     },
+    "script":"install_libclang_cpp.sh",
     "test":{
-     "commands":null
+     "commands":[
+      "test ! -f \"$PREFIX/lib/libclang-cpp.dylib\"",
+      "test -f \"$PREFIX/lib/libclang-cpp.10.dylib\""
+     ]
     }
    },
    {
     "build":{
+     "run_exports":[
+      "libclang-cpp10"
+     ],
      "string":"default_h_1",
      "track_features":null
     },
@@ -2021,17 +2003,23 @@
      "build":[
       "cxx_compiler_stub",
       "cmake >=3.4.3",
-      "ninja"
+      "make"
      ],
      "host":[
+      "libcxx *",
       "llvmdev ==10.0.1",
-      "llvm ==10.0.1"
+      "llvm ==10.0.1",
+      "libclang-cpp10"
      ],
-     "run":null
+     "run":[
+      "libcxx",
+      "libclang-cpp10"
+     ]
     },
+    "script":"install_libclang_cpp.sh",
     "test":{
      "commands":[
-      "if exist %LIBRARY_BIN%\\\\libclang-cpp.dll exit 1"
+      "test -f \"$PREFIX/lib/libclang-cpp.dylib\""
      ]
     }
    },
@@ -2045,19 +2033,22 @@
      "build":[
       "cxx_compiler_stub",
       "cmake >=3.4.3",
-      "ninja"
+      "make"
      ],
      "host":[
+      "libcxx *",
       "llvmdev ==10.0.1",
       "llvm ==10.0.1",
       "clang"
      ],
-     "run":null
+     "run":[
+      "libcxx"
+     ]
     },
-    "script":"install_libclang.bat",
+    "script":"install_libclang.sh",
     "test":{
      "commands":[
-      "if not exist %LIBRARY_BIN%\\\\libclang.dll exit 1"
+      "test -f \"$PREFIX/lib/libclang.dylib\""
      ]
     }
    },
@@ -2070,14 +2061,20 @@
     "requirements":{
      "build":[
       "cxx_compiler_stub",
+      "libcxx",
       "cmake >=3.4.3",
-      "ninja"
+      "make"
      ],
      "host":[
+      "libcxx *",
       "llvmdev ==10.0.1",
-      "llvm ==10.0.1"
+      "llvm ==10.0.1",
+      "libclang-cpp10"
      ],
-     "run":null,
+     "run":[
+      "libcxx",
+      "libclang-cpp10"
+     ],
      "run_constrained":[
       "clangdev 10.0.1",
       "clangxx 10.0.1",
@@ -2085,13 +2082,15 @@
       "llvm-tools 10.0.1"
      ]
     },
-    "script":"install_clang.bat",
+    "script":"install_clang.sh",
     "test":{
      "commands":[
       "clang --version",
       "clang-cl --version",
       "clang-cpp --version",
-      "if not exist %LIBRARY_LIB%\\\\clang\\\\10.0.1\\\\include\\\\stdatomic.h exit 1"
+      "clang-10 --version",
+      "test -f \"$PREFIX/lib/libclang-cpp.dylib\"",
+      "test -f \"$PREFIX/lib/clang/10.0.1/include/stdatomic.h\""
      ]
     }
    },
@@ -2109,7 +2108,7 @@
       "clang"
      ]
     },
-    "script":"install_clangxx.bat",
+    "script":"install_clangxx.sh",
     "test":{
      "commands":[
       "clang++ --version",
@@ -2134,24 +2133,26 @@
       "python >3",
       "cxx_compiler_stub",
       "cmake >=3.4.3",
-      "ninja"
+      "make"
      ],
      "host":[
       "clang",
       "clangxx",
       "libclang",
+      "libcxx *",
       "llvmdev ==10.0.1",
       "llvm ==10.0.1"
      ],
      "run":[
       "clang",
-      "clangxx"
+      "clangxx",
+      "libcxx"
      ],
      "run_constrained":[
       "clangdev 10.0.1"
      ]
     },
-    "script":"install_clang_tools.bat",
+    "script":"install_clang_tools.sh",
     "test":{
      "commands":[
       "clang-check --version",
@@ -2162,7 +2163,6 @@
    {
     "build":{
      "noarch":"python",
-     "skip":true,
      "string":"default_h_1",
      "track_features":null
     },
@@ -2733,14 +2733,6 @@
    "build":[
     "cxx_compiler_stub",
     "cmake >=3.4.3",
-    "python >3",
-    "make",
-    "cxx_compiler_stub",
-    "cmake >=3.4.3",
-    "python >3",
-    "make",
-    "cxx_compiler_stub",
-    "cmake >=3.4.3",
     "m2w64-xz",
     "python >3",
     "ninja",
@@ -2751,12 +2743,20 @@
     "cxx_compiler_stub",
     "cmake >=3.4.3",
     "python >3",
+    "make",
+    "cxx_compiler_stub",
+    "cmake >=3.4.3",
+    "python >3",
+    "make",
+    "cxx_compiler_stub",
+    "cmake >=3.4.3",
+    "python >3",
     "make"
    ],
    "host":[
+    "llvmdev ==10.0.1",
+    "llvmdev ==10.0.1",
     "libcxx *",
-    "llvmdev ==10.0.1",
-    "llvmdev ==10.0.1",
     "llvmdev ==10.0.1",
     "llvmdev ==10.0.1",
     "llvmdev ==10.0.1"
@@ -2856,20 +2856,20 @@
   ],
   "test":{
    "commands":[
-    "$PREFIX/bin/clang --version",
-    "$PREFIX/bin/clang++ --version",
-    "$PREFIX/bin/clang-check --version",
-    "$PREFIX/bin/clang -v -c mytest.c",
-    "test -f $PREFIX/include/clang/Lex/Lexer.h",
-    "test -f $PREFIX/lib/libclangBasic.a",
-    "$PREFIX/bin/clang --version",
-    "$PREFIX/bin/clang++ --version",
-    "$PREFIX/bin/clang-check --version",
-    "$PREFIX/bin/clang -v -c mytest.c",
-    "test -f $PREFIX/include/clang/Lex/Lexer.h",
-    "test -f $PREFIX/lib/libclangBasic.a",
     "%LIBRARY_BIN%/clang -v -c mytest.c",
     "if not exist %LIBRARY_INC%\\\\clang\\\\Lex\\\\Lexer.h exit 1",
+    "$PREFIX/bin/clang --version",
+    "$PREFIX/bin/clang++ --version",
+    "$PREFIX/bin/clang-check --version",
+    "$PREFIX/bin/clang -v -c mytest.c",
+    "test -f $PREFIX/include/clang/Lex/Lexer.h",
+    "test -f $PREFIX/lib/libclangBasic.a",
+    "$PREFIX/bin/clang --version",
+    "$PREFIX/bin/clang++ --version",
+    "$PREFIX/bin/clang-check --version",
+    "$PREFIX/bin/clang -v -c mytest.c",
+    "test -f $PREFIX/include/clang/Lex/Lexer.h",
+    "test -f $PREFIX/lib/libclangBasic.a",
     "$PREFIX/bin/clang --version",
     "$PREFIX/bin/clang++ --version",
     "$PREFIX/bin/clang-check --version",
