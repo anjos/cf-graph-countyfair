@@ -824,7 +824,9 @@
   },
   "build":{
    "number":"0",
-   "script_env":null
+   "script_env":[
+    "OS"
+   ]
   },
   "extra":{
    "recipe-maintainers":[
@@ -896,88 +898,6 @@
      "build":[
       "cxx_compiler_stub",
       "make",
-      "swig"
-     ],
-     "host":[
-      "python",
-      "tbb-devel"
-     ],
-     "run":[
-      "tbb >=2020.1",
-      "python"
-     ]
-    },
-    "test":{
-     "commands":[
-      "python -m TBB -h",
-      "python -m tbb -h",
-      "python -m tbb test"
-     ],
-     "imports":[
-      "tbb",
-      "TBB"
-     ],
-     "requires":[
-      "python",
-      "tbb"
-     ]
-    }
-   },
-   {
-    "build":{
-     "script":"python build/build.py --build-args=\"stdver=c++11 runtime=conda\" --install-libs"
-    },
-    "name":"tbb"
-   },
-   {
-    "build":{
-     "run_exports":[
-      "tbb"
-     ],
-     "script":"python build/build.py --build-args=\"stdver=c++11 runtime=conda\" --no-rebuild --install-devel --install-docs"
-    },
-    "name":"tbb-devel",
-    "requirements":{
-     "build":[
-      "python *",
-      "cxx_compiler_stub",
-      "m2w64-make",
-      "cmake"
-     ],
-     "run":[
-      "tbb"
-     ]
-    },
-    "test":{
-     "commands":[
-      "set \"CMAKE_GENERATOR=NMake Makefiles\"",
-      "cmake -S examples/test_all/fibonacci -B test-bld",
-      "cmake --build test-bld --config release",
-      "cmake -E env test-bld/fibonacci"
-     ],
-     "requires":[
-      "cxx_compiler_stub",
-      "cmake >=3.13"
-     ],
-     "source_files":[
-      "examples/test_all/fibonacci"
-     ]
-    }
-   },
-   {
-    "about":{
-     "dev_url":"https://github.com/01org/tbb",
-     "license":"Apache 2.0",
-     "summary":"TBB module for Python"
-    },
-    "build":{
-     "script":"python build/build.py --build-args=\"stdver=c++11 runtime=conda\" --no-rebuild --install-python"
-    },
-    "name":"tbb4py",
-    "requirements":{
-     "build":[
-      "cxx_compiler_stub",
-      "m2w64-make",
       "swig"
      ],
      "host":[
@@ -1249,6 +1169,88 @@
       "tbb"
      ]
     }
+   },
+   {
+    "build":{
+     "script":"python build/build.py --build-args=\"stdver=c++11 runtime=conda\" --install-libs"
+    },
+    "name":"tbb"
+   },
+   {
+    "build":{
+     "run_exports":[
+      "tbb"
+     ],
+     "script":"python build/build.py --build-args=\"stdver=c++11 runtime=conda\" --no-rebuild --install-devel --install-docs"
+    },
+    "name":"tbb-devel",
+    "requirements":{
+     "build":[
+      "python *",
+      "cxx_compiler_stub",
+      "m2w64-make",
+      "cmake"
+     ],
+     "run":[
+      "tbb"
+     ]
+    },
+    "test":{
+     "commands":[
+      "set \"CMAKE_GENERATOR=NMake Makefiles\"",
+      "cmake -S examples/test_all/fibonacci -B test-bld",
+      "cmake --build test-bld --config release",
+      "cmake -E env test-bld/fibonacci"
+     ],
+     "requires":[
+      "cxx_compiler_stub",
+      "cmake >=3.13"
+     ],
+     "source_files":[
+      "examples/test_all/fibonacci"
+     ]
+    }
+   },
+   {
+    "about":{
+     "dev_url":"https://github.com/01org/tbb",
+     "license":"Apache 2.0",
+     "summary":"TBB module for Python"
+    },
+    "build":{
+     "script":"python build/build.py --build-args=\"stdver=c++11 runtime=conda\" --no-rebuild --install-python"
+    },
+    "name":"tbb4py",
+    "requirements":{
+     "build":[
+      "cxx_compiler_stub",
+      "m2w64-make",
+      "swig"
+     ],
+     "host":[
+      "python",
+      "tbb-devel"
+     ],
+     "run":[
+      "tbb >=2020.1",
+      "python"
+     ]
+    },
+    "test":{
+     "commands":[
+      "python -m TBB -h",
+      "python -m tbb -h",
+      "python -m tbb test"
+     ],
+     "imports":[
+      "tbb",
+      "TBB"
+     ],
+     "requires":[
+      "python",
+      "tbb"
+     ]
+    }
    }
   ],
   "package":{
@@ -1262,16 +1264,16 @@
     "make",
     "python *",
     "cxx_compiler_stub",
-    "m2w64-make",
-    "python *",
-    "cxx_compiler_stub",
     "make",
     "python *",
     "cxx_compiler_stub",
     "make",
     "python *",
     "cxx_compiler_stub",
-    "make"
+    "make",
+    "python *",
+    "cxx_compiler_stub",
+    "m2w64-make"
    ]
   },
   "source":{
@@ -1282,10 +1284,10 @@
   "test":{
    "commands":[
     "python -c \"import ctypes; assert 11101 == ctypes.cdll[r'libtbb.so.2']       ['TBB_runtime_interface_version']()\"",
-    "python -c \"import ctypes, os; os.add_dll_directory(os.environ['LIBRARY_BIN']); assert 11101 == ctypes.cdll[r'tbb.dll'] ['TBB_runtime_interface_version']()\"",
     "python -c \"import ctypes; assert 11101 == ctypes.cdll[r'libtbb.so.2']       ['TBB_runtime_interface_version']()\"",
     "python -c \"import ctypes; assert 11101 == ctypes.cdll[r'libtbb.so.2']       ['TBB_runtime_interface_version']()\"",
-    "python -c \"import ctypes; assert 11101 == ctypes.cdll[r'libtbb${SHLIB_EXT}']['TBB_runtime_interface_version']()\""
+    "python -c \"import ctypes; assert 11101 == ctypes.cdll[r'libtbb${SHLIB_EXT}']['TBB_runtime_interface_version']()\"",
+    "python -c \"import ctypes, os; os.add_dll_directory(os.environ['LIBRARY_BIN']); assert 11101 == ctypes.cdll[r'tbb.dll'] ['TBB_runtime_interface_version']()\""
    ],
    "requires":[
     "python *",
