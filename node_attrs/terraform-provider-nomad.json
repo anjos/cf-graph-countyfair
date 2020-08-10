@@ -293,9 +293,9 @@
   "build":{
    "number":"0",
    "script":[
+    "go build -v -o %PREFIX%\\bin\\terraform-provider-nomad_v1.4.8_x4.exe",
     "go build -v -o ${PREFIX}/bin/terraform-provider-nomad_v1.4.8_x4",
-    "go build -v -o ${PREFIX}/bin/terraform-provider-nomad_v1.4.8_x4",
-    "go build -v -o %PREFIX%\\bin\\terraform-provider-nomad_v1.4.8_x4.exe"
+    "go build -v -o ${PREFIX}/bin/terraform-provider-nomad_v1.4.8_x4"
    ]
   },
   "extra":{
@@ -327,6 +327,10 @@
   },
   "test":{
    "commands":[
+    "echo provider \"nomad\" { version=\"1.4.8\" } > init.tf",
+    "terraform init",
+    "if not exist .terraform\\plugins\\windows_amd64\\lock.json exit 1",
+    "if exist .terraform\\plugins\\windows_amd64\\terraform-provider-nomad_v1.4.8_x4.exe exit 1",
     "echo 'provider \"nomad\" { version=\"1.4.8\" }' > init.tf",
     "terraform init",
     "test -f .terraform/plugins/linux_amd64/lock.json",
@@ -334,11 +338,7 @@
     "echo 'provider \"nomad\" { version=\"1.4.8\" }' > init.tf",
     "terraform init",
     "test -f .terraform/plugins/darwin_amd64/lock.json",
-    "test ! -f .terraform/plugins/darwin_amd64/terraform-provider-nomad_v1.4.8_x4",
-    "echo provider \"nomad\" { version=\"1.4.8\" } > init.tf",
-    "terraform init",
-    "if not exist .terraform\\plugins\\windows_amd64\\lock.json exit 1",
-    "if exist .terraform\\plugins\\windows_amd64\\terraform-provider-nomad_v1.4.8_x4.exe exit 1"
+    "test ! -f .terraform/plugins/darwin_amd64/terraform-provider-nomad_v1.4.8_x4"
    ]
   }
  },
