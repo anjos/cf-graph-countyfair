@@ -839,7 +839,7 @@
    "home":"https://www.kubernetes.io",
    "license":"Apache-2.0",
    "license_family":"Apache",
-   "license_file":"LICENSE",
+   "license_file":"LICENSES",
    "summary":"Production-Grade Container Orchestration"
   },
   "build":{
@@ -853,6 +853,72 @@
    ]
   },
   "outputs":[
+   {
+    "about":{
+     "license":"Apache-2.0",
+     "license_file":"LICENSE",
+     "summary":"Kubernetes client binaries"
+    },
+    "name":"kubernetes-client",
+    "requirements":{
+     "build":[
+      "cgo_compiler_stub 1.13",
+      "c_compiler_stub",
+      "make",
+      "rsync",
+      "jq"
+     ]
+    },
+    "script":"client/build.sh",
+    "test":{
+     "script":"client/test.sh"
+    }
+   },
+   {
+    "about":{
+     "license":"Apache-2.0",
+     "license_file":"LICENSE",
+     "summary":"Kubernetes node binaries"
+    },
+    "name":"kubernetes-node",
+    "requirements":{
+     "build":[
+      "cgo_compiler_stub 1.13",
+      "c_compiler_stub",
+      "make",
+      "rsync",
+      "jq"
+     ]
+    },
+    "script":"node/build.sh",
+    "test":{
+     "script":"node/test.sh"
+    }
+   },
+   {
+    "about":{
+     "license":"Apache-2.0",
+     "license_file":"LICENSE",
+     "summary":"Kubernetes server binaries"
+    },
+    "name":"kubernetes-server",
+    "requirements":{
+     "build":[
+      "cgo_compiler_stub 1.13",
+      "c_compiler_stub",
+      "make",
+      "rsync",
+      "jq"
+     ],
+     "run":[
+      "kubernetes-node"
+     ]
+    },
+    "script":"server/build.sh",
+    "test":{
+     "script":"server/test.sh"
+    }
+   },
    {
     "about":{
      "license":"Apache-2.0",
@@ -948,72 +1014,6 @@
     "test":{
      "script":"node/test.sh"
     }
-   },
-   {
-    "about":{
-     "license":"Apache-2.0",
-     "license_file":"LICENSE",
-     "summary":"Kubernetes client binaries"
-    },
-    "name":"kubernetes-client",
-    "requirements":{
-     "build":[
-      "cgo_compiler_stub 1.13",
-      "c_compiler_stub",
-      "make",
-      "rsync",
-      "jq"
-     ]
-    },
-    "script":"client/build.sh",
-    "test":{
-     "script":"client/test.sh"
-    }
-   },
-   {
-    "about":{
-     "license":"Apache-2.0",
-     "license_file":"LICENSE",
-     "summary":"Kubernetes node binaries"
-    },
-    "name":"kubernetes-node",
-    "requirements":{
-     "build":[
-      "cgo_compiler_stub 1.13",
-      "c_compiler_stub",
-      "make",
-      "rsync",
-      "jq"
-     ]
-    },
-    "script":"node/build.sh",
-    "test":{
-     "script":"node/test.sh"
-    }
-   },
-   {
-    "about":{
-     "license":"Apache-2.0",
-     "license_file":"LICENSE",
-     "summary":"Kubernetes server binaries"
-    },
-    "name":"kubernetes-server",
-    "requirements":{
-     "build":[
-      "cgo_compiler_stub 1.13",
-      "c_compiler_stub",
-      "make",
-      "rsync",
-      "jq"
-     ],
-     "run":[
-      "kubernetes-node"
-     ]
-    },
-    "script":"server/build.sh",
-    "test":{
-     "script":"server/test.sh"
-    }
    }
   ],
   "package":{
@@ -1027,17 +1027,17 @@
     "kubernetes-server",
     "kubernetes-client",
     "kubernetes-node",
+    "kubernetes-server",
     "kubernetes-client",
-    "kubernetes-node",
-    "kubernetes-server"
+    "kubernetes-node"
    ]
   },
   "source":{
    "patches":[
     "0001-unset-conda-go-compiler.diff"
    ],
-   "sha256":"e03031e98594a69d1df43e2589692bf48b60acbcbf2fb5c997daee74923e2381",
-   "url":"https://github.com/kubernetes/kubernetes/archive/v1.18.6.tar.gz"
+   "sha256":"44be3cf72654cae7661432dd906d8d63e345e59142c0c9e15824927158149267",
+   "url":"https://dl.k8s.io/v1.18.6/kubernetes-node-windows-amd64.tar.gz"
   },
   "test":{
    "commands":[
@@ -1052,13 +1052,13 @@
     "kubelet --help",
     "kube-proxy --help",
     "kubeadm --help",
+    "kube-apiserver --help",
+    "kube-controller-manager --help",
+    "kube-scheduler --help",
     "kubectl",
     "kubelet --help",
     "kube-proxy --help",
-    "kubeadm --help",
-    "kube-apiserver --help",
-    "kube-controller-manager --help",
-    "kube-scheduler --help"
+    "kubeadm --help"
    ]
   }
  },
