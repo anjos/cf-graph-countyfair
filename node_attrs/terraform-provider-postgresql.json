@@ -257,7 +257,7 @@
   }
  ],
  "archived":false,
- "bad":false,
+ "bad":"Upstream: unknown source",
  "conda-forge.yml":{
   "bot":{
    "automerge":true
@@ -347,9 +347,9 @@
   "build":{
    "number":"0",
    "script":[
-    "go build -v -o %PREFIX%\\bin\\terraform-provider-postgresql_v1.7.1_x4.exe",
     "go build -v -o ${PREFIX}/bin/terraform-provider-postgresql_v1.7.1_x4",
-    "go build -v -o ${PREFIX}/bin/terraform-provider-postgresql_v1.7.1_x4"
+    "go build -v -o ${PREFIX}/bin/terraform-provider-postgresql_v1.7.1_x4",
+    "go build -v -o %PREFIX%\\bin\\terraform-provider-postgresql_v1.7.1_x4.exe"
    ]
   },
   "extra":{
@@ -381,10 +381,6 @@
   },
   "test":{
    "commands":[
-    "echo provider \"postgresql\" { version=\"1.7.1\" } > init.tf",
-    "terraform init",
-    "if not exist .terraform\\plugins\\windows_amd64\\lock.json exit 1",
-    "if exist .terraform\\plugins\\windows_amd64\\terraform-provider-postgresql_v1.7.1_x4.exe exit 1",
     "echo 'provider \"postgresql\" { version=\"1.7.1\" }' > init.tf",
     "terraform init",
     "test -f .terraform/plugins/darwin_amd64/lock.json",
@@ -392,12 +388,16 @@
     "echo 'provider \"postgresql\" { version=\"1.7.1\" }' > init.tf",
     "terraform init",
     "test -f .terraform/plugins/linux_amd64/lock.json",
-    "test ! -f .terraform/plugins/linux_amd64/terraform-provider-postgresql_v1.7.1_x4"
+    "test ! -f .terraform/plugins/linux_amd64/terraform-provider-postgresql_v1.7.1_x4",
+    "echo provider \"postgresql\" { version=\"1.7.1\" } > init.tf",
+    "terraform init",
+    "if not exist .terraform\\plugins\\windows_amd64\\lock.json exit 1",
+    "if exist .terraform\\plugins\\windows_amd64\\terraform-provider-postgresql_v1.7.1_x4.exe exit 1"
    ]
   }
  },
  "name":"terraform-provider-postgresql",
- "new_version":"1.7.1",
+ "new_version":false,
  "new_version_attempts":{
   "1.6.0":1,
   "1.7.0":1,
