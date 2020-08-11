@@ -29,11 +29,13 @@
   "outputs":[
    {
     "name":"ldraw-parts",
-    "script":"build_parts.bat",
+    "script":"build_parts.sh",
     "test":{
      "commands":[
-      "if exist %LIBRARY_PREFIX%\\share\\ldraw\\parts\\u9462.dat (exit 0) else (exit 1)",
-      "if exist %LIBRARY_PREFIX%\\share\\ldraw\\models\\car.ldr (exit 0) else (exit 1)"
+      "test -d $PREFIX/share/ldraw/parts/",
+      "test -d $PREFIX/share/ldraw/models/",
+      "test -f $PREFIX/share/ldraw/models/car.ldr",
+      "test -f $PREFIX/share/ldraw/parts/u9462.dat"
      ]
     },
     "version":"1903"
@@ -43,15 +45,14 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "m2-unzip",
-      "m2-sed",
+      "unzip",
       "make"
      ]
     },
-    "script":"build_mklist.bat",
+    "script":"build_mklist.sh",
     "test":{
      "commands":[
-      "if exist %LIBRARY_PREFIX%\\bin\\mklist.exe (exit 0) else (exit 1)"
+      "test -f $PREFIX/bin/mklist"
      ]
     },
     "version":"1.6"
@@ -76,9 +77,8 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "m2-sed",
-    "m2-unzip",
-    "make"
+    "make",
+    "unzip"
    ]
   },
   "host":{
@@ -260,13 +260,11 @@
   "outputs":[
    {
     "name":"ldraw-parts",
-    "script":"build_parts.sh",
+    "script":"build_parts.bat",
     "test":{
      "commands":[
-      "test -d $PREFIX/share/ldraw/parts/",
-      "test -d $PREFIX/share/ldraw/models/",
-      "test -f $PREFIX/share/ldraw/models/car.ldr",
-      "test -f $PREFIX/share/ldraw/parts/u9462.dat"
+      "if exist %LIBRARY_PREFIX%\\share\\ldraw\\parts\\u9462.dat (exit 0) else (exit 1)",
+      "if exist %LIBRARY_PREFIX%\\share\\ldraw\\models\\car.ldr (exit 0) else (exit 1)"
      ]
     },
     "version":"1903"
@@ -276,14 +274,15 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "unzip",
+      "m2-unzip",
+      "m2-sed",
       "make"
      ]
     },
-    "script":"build_mklist.sh",
+    "script":"build_mklist.bat",
     "test":{
      "commands":[
-      "test -f $PREFIX/bin/mklist"
+      "if exist %LIBRARY_PREFIX%\\bin\\mklist.exe (exit 0) else (exit 1)"
      ]
     },
     "version":"1.6"
@@ -308,8 +307,9 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "make",
-    "unzip"
+    "m2-sed",
+    "m2-unzip",
+    "make"
    ]
   },
   "host":{
