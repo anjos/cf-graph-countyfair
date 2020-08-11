@@ -40,7 +40,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{},
  "feedstock_name":"libode",
  "hash_type":"sha256",
@@ -199,14 +199,14 @@
    "missing_dso_whitelist":[
     "lib/libode*",
     "lib/libode*",
+    "lib/libode*",
     "$RPATH/librt.*",
     "$RPATH/libpthread.*",
     "$RPATH/libc.*",
     "$RPATH/libpython.*",
     "/lib*/librt.*",
     "/lib*/libpthread.*",
-    "/lib*/libc.*",
-    "lib/libode*"
+    "/lib*/libc.*"
    ],
    "number":"1"
   },
@@ -273,6 +273,53 @@
     "requirements":{
      "run":[
       "pthread-stubs",
+      "libcxx"
+     ]
+    },
+    "run_exports":[
+     "libode"
+    ],
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libode${SHLIB_EXT}",
+      "test -f $PREFIX/lib/libode.0.16.0${SHLIB_EXT}",
+      "test -d $PREFIX/include/ode",
+      "test -f $PREFIX/lib/pkgconfig/ode.pc"
+     ]
+    }
+   },
+   {
+    "files":[
+     "lib/python/site-packages/ode.*",
+     "lib/python/site-packages/Open_Dynamics_Engine*egg-info"
+    ],
+    "name":"pyode",
+    "requirements":{
+     "run":[
+      "libode",
+      "pthread-stubs",
+      "libcxx",
+      "python *"
+     ]
+    },
+    "test":{
+     "imports":[
+      "ode"
+     ]
+    }
+   },
+   {
+    "files":[
+     "lib/libode*",
+     "lib/pkgconfig/ode.pc",
+     "lib/cmake/ode-0.16.0",
+     "bin/ode-config",
+     "include/ode"
+    ],
+    "name":"libode",
+    "requirements":{
+     "run":[
+      "pthread-stubs",
       "libstdcxx-ng",
       "libgcc-ng"
      ]
@@ -301,53 +348,6 @@
       "pthread-stubs",
       "libstdcxx-ng",
       "libgcc-ng",
-      "python *"
-     ]
-    },
-    "test":{
-     "imports":[
-      "ode"
-     ]
-    }
-   },
-   {
-    "files":[
-     "lib/libode*",
-     "lib/pkgconfig/ode.pc",
-     "lib/cmake/ode-0.16.0",
-     "bin/ode-config",
-     "include/ode"
-    ],
-    "name":"libode",
-    "requirements":{
-     "run":[
-      "pthread-stubs",
-      "libcxx"
-     ]
-    },
-    "run_exports":[
-     "libode"
-    ],
-    "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libode${SHLIB_EXT}",
-      "test -f $PREFIX/lib/libode.0.16.0${SHLIB_EXT}",
-      "test -d $PREFIX/include/ode",
-      "test -f $PREFIX/lib/pkgconfig/ode.pc"
-     ]
-    }
-   },
-   {
-    "files":[
-     "lib/python/site-packages/ode.*",
-     "lib/python/site-packages/Open_Dynamics_Engine*egg-info"
-    ],
-    "name":"pyode",
-    "requirements":{
-     "run":[
-      "libode",
-      "pthread-stubs",
-      "libcxx",
       "python *"
      ]
     },
@@ -390,7 +390,9 @@
    ]
   },
   "source":{
-   "patches":null,
+   "patches":[
+    "add-rt-to-dotpc"
+   ],
    "sha256":"4ba3b76f9c1314160de483b3db92b0569242a07452cbb25b368e75deb3cabf27",
    "url":"https://bitbucket.org/odedevs/ode/downloads/ode-0.16.tar.gz"
   }
