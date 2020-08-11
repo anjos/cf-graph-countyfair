@@ -224,9 +224,7 @@
      ],
      "run_exports":{
       "strong":[
-       "llvm-openmp",
-       "_openmp_mutex >=4.5",
-       "_openmp_mutex * *_llvm"
+       "llvm-openmp"
       ]
      }
     },
@@ -250,7 +248,7 @@
     "script":"build-llvm-openmp.sh",
     "test":{
      "commands":[
-      "test -f $PREFIX/lib/libomp.so",
+      "test -f $PREFIX/lib/libomp.dylib",
       "test -f $PREFIX/include/omp.h",
       "$PREFIX/bin/clang -v -fopenmp -I$PREFIX/include -L$PREFIX/lib -Wl,-rpath,$PREFIX/lib omp_hello.c -o omp_hello",
       "./omp_hello"
@@ -418,7 +416,8 @@
    "summary":"The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran."
   },
   "build":{
-   "number":"0"
+   "number":"0",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -440,19 +439,17 @@
      ],
      "run_exports":{
       "strong":[
-       "llvm-openmp",
-       "_openmp_mutex >=4.5",
-       "_openmp_mutex * *_llvm"
+       "llvm-openmp"
       ]
      }
     },
     "name":"llvm-openmp",
     "requirements":{
      "build":[
-      "cxx_compiler_stub",
+      "vs2017_win-64",
       "cmake",
-      "make",
-      "perl"
+      "perl",
+      "ninja"
      ],
      "host":[
       "llvmdev 10.0.1|10.0.1.*"
@@ -463,20 +460,21 @@
       "openmp 10.0.1|10.0.1.*"
      ]
     },
-    "script":"build-llvm-openmp.sh",
+    "script":"bld-llvm-openmp.bat",
     "test":{
      "commands":[
-      "test -f $PREFIX/lib/libomp.so",
-      "test -f $PREFIX/include/omp.h",
-      "$PREFIX/bin/clang -v -fopenmp -I$PREFIX/include -L$PREFIX/lib -Wl,-rpath,$PREFIX/lib omp_hello.c -o omp_hello",
-      "./omp_hello"
+      "if not exist %LIBRARY_BIN%\\\\libomp.dll exit 1",
+      "if not exist %LIBRARY_LIB%\\\\libomp.lib exit 1",
+      "if not exist %LIBRARY_INC%\\\\omp.h exit 1",
+      "%LIBRARY_BIN%\\clang -v -fopenmp -I%LIBRARY_INC% -L%LIBRARY_LIB% omp_hello.c -o omp_hello.exe",
+      "%cd%\\omp_hello.exe"
      ],
      "files":[
       "omp_hello.c"
      ],
      "requires":[
       "clangxx",
-      "cxx_compiler_stub"
+      "vs2017_win-64"
      ]
     }
    }
@@ -495,9 +493,9 @@
    "__set__":true,
    "elements":[
     "cmake",
-    "cxx_compiler_stub",
-    "make",
-    "perl"
+    "ninja",
+    "perl",
+    "vs2017_win-64"
    ]
   },
   "host":{
@@ -514,7 +512,7 @@
    "__set__":true,
    "elements":[
     "clangxx",
-    "cxx_compiler_stub"
+    "vs2017_win-64"
    ]
   }
  },
@@ -671,6 +669,55 @@
      ],
      "run_exports":{
       "strong":[
+       "llvm-openmp",
+       "_openmp_mutex >=4.5",
+       "_openmp_mutex * *_llvm"
+      ]
+     }
+    },
+    "name":"llvm-openmp",
+    "requirements":{
+     "build":[
+      "cxx_compiler_stub",
+      "cmake",
+      "make",
+      "perl"
+     ],
+     "host":[
+      "llvmdev 10.0.1|10.0.1.*"
+     ],
+     "run_constrained":[
+      "clangdev 10.0.1|10.0.1.*",
+      "llvmdev 10.0.1|10.0.1.*",
+      "openmp 10.0.1|10.0.1.*"
+     ]
+    },
+    "script":"build-llvm-openmp.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libomp.so",
+      "test -f $PREFIX/include/omp.h",
+      "$PREFIX/bin/clang -v -fopenmp -I$PREFIX/include -L$PREFIX/lib -Wl,-rpath,$PREFIX/lib omp_hello.c -o omp_hello",
+      "./omp_hello"
+     ],
+     "files":[
+      "omp_hello.c"
+     ],
+     "requires":[
+      "clangxx",
+      "cxx_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build":{
+     "ignore_run_exports":[
+      "libgcc-ng",
+      "libstdcxx-ng",
+      "_openmp_mutex"
+     ],
+     "run_exports":{
+      "strong":[
        "llvm-openmp"
       ]
      }
@@ -756,55 +803,6 @@
       "vs2017_win-64"
      ]
     }
-   },
-   {
-    "build":{
-     "ignore_run_exports":[
-      "libgcc-ng",
-      "libstdcxx-ng",
-      "_openmp_mutex"
-     ],
-     "run_exports":{
-      "strong":[
-       "llvm-openmp",
-       "_openmp_mutex >=4.5",
-       "_openmp_mutex * *_llvm"
-      ]
-     }
-    },
-    "name":"llvm-openmp",
-    "requirements":{
-     "build":[
-      "cxx_compiler_stub",
-      "cmake",
-      "make",
-      "perl"
-     ],
-     "host":[
-      "llvmdev 10.0.1|10.0.1.*"
-     ],
-     "run_constrained":[
-      "clangdev 10.0.1|10.0.1.*",
-      "llvmdev 10.0.1|10.0.1.*",
-      "openmp 10.0.1|10.0.1.*"
-     ]
-    },
-    "script":"build-llvm-openmp.sh",
-    "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libomp.so",
-      "test -f $PREFIX/include/omp.h",
-      "$PREFIX/bin/clang -v -fopenmp -I$PREFIX/include -L$PREFIX/lib -Wl,-rpath,$PREFIX/lib omp_hello.c -o omp_hello",
-      "./omp_hello"
-     ],
-     "files":[
-      "omp_hello.c"
-     ],
-     "requires":[
-      "clangxx",
-      "cxx_compiler_stub"
-     ]
-    }
    }
   ],
   "package":{
@@ -852,7 +850,9 @@
      ],
      "run_exports":{
       "strong":[
-       "llvm-openmp"
+       "llvm-openmp",
+       "_openmp_mutex >=4.5",
+       "_openmp_mutex * *_llvm"
       ]
      }
     },
@@ -876,7 +876,7 @@
     "script":"build-llvm-openmp.sh",
     "test":{
      "commands":[
-      "test -f $PREFIX/lib/libomp.dylib",
+      "test -f $PREFIX/lib/libomp.so",
       "test -f $PREFIX/include/omp.h",
       "$PREFIX/bin/clang -v -fopenmp -I$PREFIX/include -L$PREFIX/lib -Wl,-rpath,$PREFIX/lib omp_hello.c -o omp_hello",
       "./omp_hello"
@@ -1019,8 +1019,7 @@
    "summary":"The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran."
   },
   "build":{
-   "number":"0",
-   "skip":true
+   "number":"0"
   },
   "extra":{
    "recipe-maintainers":[
@@ -1042,17 +1041,19 @@
      ],
      "run_exports":{
       "strong":[
-       "llvm-openmp"
+       "llvm-openmp",
+       "_openmp_mutex >=4.5",
+       "_openmp_mutex * *_llvm"
       ]
      }
     },
     "name":"llvm-openmp",
     "requirements":{
      "build":[
-      "vs2017_win-64",
+      "cxx_compiler_stub",
       "cmake",
-      "perl",
-      "ninja"
+      "make",
+      "perl"
      ],
      "host":[
       "llvmdev 10.0.1|10.0.1.*"
@@ -1063,21 +1064,20 @@
       "openmp 10.0.1|10.0.1.*"
      ]
     },
-    "script":"bld-llvm-openmp.bat",
+    "script":"build-llvm-openmp.sh",
     "test":{
      "commands":[
-      "if not exist %LIBRARY_BIN%\\\\libomp.dll exit 1",
-      "if not exist %LIBRARY_LIB%\\\\libomp.lib exit 1",
-      "if not exist %LIBRARY_INC%\\\\omp.h exit 1",
-      "%LIBRARY_BIN%\\clang -v -fopenmp -I%LIBRARY_INC% -L%LIBRARY_LIB% omp_hello.c -o omp_hello.exe",
-      "%cd%\\omp_hello.exe"
+      "test -f $PREFIX/lib/libomp.so",
+      "test -f $PREFIX/include/omp.h",
+      "$PREFIX/bin/clang -v -fopenmp -I$PREFIX/include -L$PREFIX/lib -Wl,-rpath,$PREFIX/lib omp_hello.c -o omp_hello",
+      "./omp_hello"
      ],
      "files":[
       "omp_hello.c"
      ],
      "requires":[
       "clangxx",
-      "vs2017_win-64"
+      "cxx_compiler_stub"
      ]
     }
    }
@@ -1096,9 +1096,9 @@
    "__set__":true,
    "elements":[
     "cmake",
-    "ninja",
-    "perl",
-    "vs2017_win-64"
+    "cxx_compiler_stub",
+    "make",
+    "perl"
    ]
   },
   "host":{
@@ -1115,7 +1115,7 @@
    "__set__":true,
    "elements":[
     "clangxx",
-    "vs2017_win-64"
+    "cxx_compiler_stub"
    ]
   }
  }

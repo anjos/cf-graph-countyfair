@@ -159,7 +159,8 @@
    "number":"4",
    "run_exports":[
     "gdk-pixbuf"
-   ]
+   ],
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -181,7 +182,6 @@
    "host":[
     "glib",
     "gobject-introspection",
-    "make",
     "jpeg",
     "libtiff",
     "libpng",
@@ -210,8 +210,10 @@
     "gdk-pixbuf-csource --version",
     "gdk-pixbuf-query-loaders",
     "gdk-pixbuf-pixdata --help",
-    "test -f $PREFIX/lib/libgdk_pixbuf-2.0${SHLIB_EXT}",
-    "test -f `pkg-config --variable=libdir --dont-define-prefix gdk-pixbuf-2.0`/libgdk_pixbuf-2.0${SHLIB_EXT}"
+    "if not exist %PREFIX%\\\\Library\\\\bin\\\\gdk_pixbuf-2.0-0.dll exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix gdk-pixbuf-2.0`) do if not exist \"%%a/bin/gdk_pixbuf-2.0-0.dll\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gdk_pixbuf-2.0.lib exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix gdk-pixbuf-2.0`) do if not exist \"%%a/gdk_pixbuf-2.0.lib\" exit 1"
    ],
    "requires":[
     "pkg-config"
@@ -236,7 +238,6 @@
     "jpeg",
     "libpng",
     "libtiff",
-    "make",
     "zlib"
    ]
   },
@@ -557,12 +558,6 @@
     "zlib",
     "glib",
     "gobject-introspection",
-    "jpeg",
-    "libtiff",
-    "libpng",
-    "zlib",
-    "glib",
-    "gobject-introspection",
     "make",
     "jpeg",
     "libtiff",
@@ -572,6 +567,12 @@
     "glib",
     "gobject-introspection",
     "make",
+    "jpeg",
+    "libtiff",
+    "libpng",
+    "zlib",
+    "glib",
+    "gobject-introspection",
     "jpeg",
     "libtiff",
     "libpng",
@@ -596,13 +597,13 @@
     "libtiff",
     "libpng",
     "zlib",
+    "gettext",
     "glib",
     "gobject-introspection",
     "jpeg",
     "libtiff",
     "libpng",
     "zlib",
-    "gettext",
     "glib",
     "gobject-introspection",
     "jpeg",
@@ -624,9 +625,9 @@
     "meson-rpaths-non-macos.patch",
     "0001-changed-perl-script-to-use-env.patch",
     "meson-rpaths-common.patch",
-    "meson-rpaths-non-macos.patch",
     "0001-changed-perl-script-to-use-env.patch",
-    "meson-rpaths-common.patch"
+    "meson-rpaths-common.patch",
+    "meson-rpaths-non-macos.patch"
    ],
    "sha256":"73fa651ec0d89d73dd3070b129ce2203a66171dfc0bd2caa3570a9c93d2d0781",
    "url":"http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/2.38/gdk-pixbuf-2.38.2.tar.xz"
@@ -646,10 +647,8 @@
     "gdk-pixbuf-csource --version",
     "gdk-pixbuf-query-loaders",
     "gdk-pixbuf-pixdata --help",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\gdk_pixbuf-2.0-0.dll exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix gdk-pixbuf-2.0`) do if not exist \"%%a/bin/gdk_pixbuf-2.0-0.dll\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gdk_pixbuf-2.0.lib exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix gdk-pixbuf-2.0`) do if not exist \"%%a/gdk_pixbuf-2.0.lib\" exit 1",
+    "test -f $PREFIX/lib/libgdk_pixbuf-2.0${SHLIB_EXT}",
+    "test -f `pkg-config --variable=libdir --dont-define-prefix gdk-pixbuf-2.0`/libgdk_pixbuf-2.0${SHLIB_EXT}",
     "gdk-pixbuf-csource --version",
     "gdk-pixbuf-query-loaders",
     "gdk-pixbuf-pixdata --help",
@@ -658,8 +657,10 @@
     "gdk-pixbuf-csource --version",
     "gdk-pixbuf-query-loaders",
     "gdk-pixbuf-pixdata --help",
-    "test -f $PREFIX/lib/libgdk_pixbuf-2.0${SHLIB_EXT}",
-    "test -f `pkg-config --variable=libdir --dont-define-prefix gdk-pixbuf-2.0`/libgdk_pixbuf-2.0${SHLIB_EXT}"
+    "if not exist %PREFIX%\\\\Library\\\\bin\\\\gdk_pixbuf-2.0-0.dll exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix gdk-pixbuf-2.0`) do if not exist \"%%a/bin/gdk_pixbuf-2.0-0.dll\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gdk_pixbuf-2.0.lib exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix gdk-pixbuf-2.0`) do if not exist \"%%a/gdk_pixbuf-2.0.lib\" exit 1"
    ],
    "requires":[
     "pkg-config",
@@ -905,8 +906,7 @@
    "number":"4",
    "run_exports":[
     "gdk-pixbuf"
-   ],
-   "skip":true
+   ]
   },
   "extra":{
    "recipe-maintainers":[
@@ -928,6 +928,7 @@
    "host":[
     "glib",
     "gobject-introspection",
+    "make",
     "jpeg",
     "libtiff",
     "libpng",
@@ -956,10 +957,8 @@
     "gdk-pixbuf-csource --version",
     "gdk-pixbuf-query-loaders",
     "gdk-pixbuf-pixdata --help",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\gdk_pixbuf-2.0-0.dll exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix gdk-pixbuf-2.0`) do if not exist \"%%a/bin/gdk_pixbuf-2.0-0.dll\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gdk_pixbuf-2.0.lib exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix gdk-pixbuf-2.0`) do if not exist \"%%a/gdk_pixbuf-2.0.lib\" exit 1"
+    "test -f $PREFIX/lib/libgdk_pixbuf-2.0${SHLIB_EXT}",
+    "test -f `pkg-config --variable=libdir --dont-define-prefix gdk-pixbuf-2.0`/libgdk_pixbuf-2.0${SHLIB_EXT}"
    ],
    "requires":[
     "pkg-config"
@@ -984,6 +983,7 @@
     "jpeg",
     "libpng",
     "libtiff",
+    "make",
     "zlib"
    ]
   },

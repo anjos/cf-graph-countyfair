@@ -89,7 +89,8 @@
    "number":"1",
    "run_exports":[
     "atk-1.0 >=2.36.0"
-   ]
+   ],
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -109,7 +110,6 @@
     "name":"atk-1.0",
     "requirements":{
      "build":[
-      "make",
       "meson=0.53.2",
       "ninja",
       "python >=3.6",
@@ -128,11 +128,13 @@
       "atk-1.0 2.36.0"
      ]
     },
-    "script":"build_atk.sh",
+    "script":"bld_atk.bat",
     "test":{
      "commands":[
-      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}",
-      "test -f `pkg-config --variable=libdir --dont-define-prefix atk`/libatk-1.0${SHLIB_EXT}"
+      "if not exist %PREFIX%\\\\Library\\\\bin\\\\atk-1.0-0.dll exit 1",
+      "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix atk`) do if not exist \"%%a/bin/atk-1.0-0.dll\" exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\lib\\\\atk-1.0.lib exit 1",
+      "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix atk`) do if not exist \"%%a/atk-1.0.lib\" exit 1"
      ],
      "requires":[
       "pkg-config"
@@ -147,9 +149,7 @@
      ]
     },
     "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}"
-     ]
+     "commands":null
     }
    }
   ],
@@ -167,7 +167,6 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "make",
     "meson",
     "ninja",
     "pkg-config",
@@ -588,6 +587,110 @@
     "name":"atk-1.0",
     "requirements":{
      "build":[
+      "make",
+      "meson=0.53.2",
+      "ninja",
+      "python >=3.6",
+      "pkg-config",
+      "c_compiler_stub"
+     ],
+     "host":[
+      "glib",
+      "gobject-introspection 1.*"
+     ],
+     "run":[
+      "glib",
+      "gobject-introspection 1.*"
+     ],
+     "run_constrained":[
+      "atk-1.0 2.36.0"
+     ]
+    },
+    "script":"build_atk.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}",
+      "test -f `pkg-config --variable=libdir --dont-define-prefix atk`/libatk-1.0${SHLIB_EXT}"
+     ],
+     "requires":[
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "name":"atk",
+    "requirements":{
+     "run":[
+      "atk-1.0 2.36.0"
+     ]
+    },
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "atk-1.0 >=2.36.0"
+     ]
+    },
+    "name":"atk-1.0",
+    "requirements":{
+     "build":[
+      "make",
+      "meson=0.53.2",
+      "ninja",
+      "python >=3.6",
+      "pkg-config",
+      "c_compiler_stub"
+     ],
+     "host":[
+      "glib",
+      "gobject-introspection 1.*"
+     ],
+     "run":[
+      "glib",
+      "gobject-introspection 1.*"
+     ],
+     "run_constrained":[
+      "atk-1.0 2.36.0"
+     ]
+    },
+    "script":"build_atk.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}",
+      "test -f `pkg-config --variable=libdir --dont-define-prefix atk`/libatk-1.0${SHLIB_EXT}"
+     ],
+     "requires":[
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "name":"atk",
+    "requirements":{
+     "run":[
+      "atk-1.0 2.36.0"
+     ]
+    },
+    "test":{
+     "commands":[
+      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build":{
+     "run_exports":[
+      "atk-1.0 >=2.36.0"
+     ]
+    },
+    "name":"atk-1.0",
+    "requirements":{
+     "build":[
       "meson=0.53.2",
       "ninja",
       "python >=3.6",
@@ -628,110 +731,6 @@
     },
     "test":{
      "commands":null
-    }
-   },
-   {
-    "build":{
-     "run_exports":[
-      "atk-1.0 >=2.36.0"
-     ]
-    },
-    "name":"atk-1.0",
-    "requirements":{
-     "build":[
-      "make",
-      "meson=0.53.2",
-      "ninja",
-      "python >=3.6",
-      "pkg-config",
-      "c_compiler_stub"
-     ],
-     "host":[
-      "glib",
-      "gobject-introspection 1.*"
-     ],
-     "run":[
-      "glib",
-      "gobject-introspection 1.*"
-     ],
-     "run_constrained":[
-      "atk-1.0 2.36.0"
-     ]
-    },
-    "script":"build_atk.sh",
-    "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}",
-      "test -f `pkg-config --variable=libdir --dont-define-prefix atk`/libatk-1.0${SHLIB_EXT}"
-     ],
-     "requires":[
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "name":"atk",
-    "requirements":{
-     "run":[
-      "atk-1.0 2.36.0"
-     ]
-    },
-    "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "build":{
-     "run_exports":[
-      "atk-1.0 >=2.36.0"
-     ]
-    },
-    "name":"atk-1.0",
-    "requirements":{
-     "build":[
-      "make",
-      "meson=0.53.2",
-      "ninja",
-      "python >=3.6",
-      "pkg-config",
-      "c_compiler_stub"
-     ],
-     "host":[
-      "glib",
-      "gobject-introspection 1.*"
-     ],
-     "run":[
-      "glib",
-      "gobject-introspection 1.*"
-     ],
-     "run_constrained":[
-      "atk-1.0 2.36.0"
-     ]
-    },
-    "script":"build_atk.sh",
-    "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}",
-      "test -f `pkg-config --variable=libdir --dont-define-prefix atk`/libatk-1.0${SHLIB_EXT}"
-     ],
-     "requires":[
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "name":"atk",
-    "requirements":{
-     "run":[
-      "atk-1.0 2.36.0"
-     ]
-    },
-    "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}"
-     ]
     }
    }
   ],
@@ -967,8 +966,7 @@
    "number":"1",
    "run_exports":[
     "atk-1.0 >=2.36.0"
-   ],
-   "skip":true
+   ]
   },
   "extra":{
    "recipe-maintainers":[
@@ -988,6 +986,7 @@
     "name":"atk-1.0",
     "requirements":{
      "build":[
+      "make",
       "meson=0.53.2",
       "ninja",
       "python >=3.6",
@@ -1006,13 +1005,11 @@
       "atk-1.0 2.36.0"
      ]
     },
-    "script":"bld_atk.bat",
+    "script":"build_atk.sh",
     "test":{
      "commands":[
-      "if not exist %PREFIX%\\\\Library\\\\bin\\\\atk-1.0-0.dll exit 1",
-      "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix atk`) do if not exist \"%%a/bin/atk-1.0-0.dll\" exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\atk-1.0.lib exit 1",
-      "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix atk`) do if not exist \"%%a/atk-1.0.lib\" exit 1"
+      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}",
+      "test -f `pkg-config --variable=libdir --dont-define-prefix atk`/libatk-1.0${SHLIB_EXT}"
      ],
      "requires":[
       "pkg-config"
@@ -1027,7 +1024,9 @@
      ]
     },
     "test":{
-     "commands":null
+     "commands":[
+      "test -f $PREFIX/lib/libatk-1.0${SHLIB_EXT}"
+     ]
     }
    }
   ],
@@ -1045,6 +1044,7 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
+    "make",
     "meson",
     "ninja",
     "pkg-config",

@@ -51,7 +51,8 @@
   },
   "build":{
    "missing_dso_whitelist":null,
-   "number":"0"
+   "number":"0",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -65,7 +66,7 @@
   "requirements":{
    "build":[
     "cmake",
-    "make",
+    "ninja",
     "cxx_compiler_stub",
     "c_compiler_stub"
    ],
@@ -83,19 +84,14 @@
   },
   "test":{
    "commands":[
-    "test -f \"${PREFIX}/include/mysqlx/common.h\"",
-    "test -f \"${PREFIX}/include/mysqlx/devapi/collations.h\"",
-    "test -f \"${PREFIX}/lib/libmysqlcppconn8${SHLIB_EXT}\"",
-    "cmake -Scmake_test -Bcmake_test/build"
+    "if not exist %LIBRARY_INC%\\mysqlx\\common.h            exit 1",
+    "if not exist %LIBRARY_INC%\\mysqlx\\devapi\\collations.h exit 1",
+    "if not exist %LIBRARY_LIB%\\mysqlcppconn8.lib          exit 1",
+    "if not exist %LIBRARY_LIB%\\mysqlcppconn8-static.lib   exit 1",
+    "if not exist %LIBRARY_BIN%\\mysqlcppconn8-2-vs14.dll   exit 1"
    ],
-   "files":[
-    "cmake_test"
-   ],
-   "requires":[
-    "cmake",
-    "cxx_compiler_stub",
-    "c_compiler_stub"
-   ]
+   "files":null,
+   "requires":null
   }
  },
  "linux_64_requirements":{
@@ -105,7 +101,7 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "make"
+    "ninja"
    ]
   },
   "host":{
@@ -120,11 +116,7 @@
   },
   "test":{
    "__set__":true,
-   "elements":[
-    "c_compiler_stub",
-    "cmake",
-    "cxx_compiler_stub"
-   ]
+   "elements":[]
   }
  },
  "meta_yaml":{
@@ -222,9 +214,7 @@
    "summary":"MySQL Connector/C++, the C++ interface for communicating with MySQL servers."
   },
   "build":{
-   "missing_dso_whitelist":[
-    "/usr/lib/libresolv.9.dylib"
-   ],
+   "missing_dso_whitelist":null,
    "number":"0"
   },
   "extra":{
@@ -380,9 +370,10 @@
    "summary":"MySQL Connector/C++, the C++ interface for communicating with MySQL servers."
   },
   "build":{
-   "missing_dso_whitelist":null,
-   "number":"0",
-   "skip":true
+   "missing_dso_whitelist":[
+    "/usr/lib/libresolv.9.dylib"
+   ],
+   "number":"0"
   },
   "extra":{
    "recipe-maintainers":[
@@ -396,7 +387,7 @@
   "requirements":{
    "build":[
     "cmake",
-    "ninja",
+    "make",
     "cxx_compiler_stub",
     "c_compiler_stub"
    ],
@@ -414,14 +405,19 @@
   },
   "test":{
    "commands":[
-    "if not exist %LIBRARY_INC%\\mysqlx\\common.h            exit 1",
-    "if not exist %LIBRARY_INC%\\mysqlx\\devapi\\collations.h exit 1",
-    "if not exist %LIBRARY_LIB%\\mysqlcppconn8.lib          exit 1",
-    "if not exist %LIBRARY_LIB%\\mysqlcppconn8-static.lib   exit 1",
-    "if not exist %LIBRARY_BIN%\\mysqlcppconn8-2-vs14.dll   exit 1"
+    "test -f \"${PREFIX}/include/mysqlx/common.h\"",
+    "test -f \"${PREFIX}/include/mysqlx/devapi/collations.h\"",
+    "test -f \"${PREFIX}/lib/libmysqlcppconn8${SHLIB_EXT}\"",
+    "cmake -Scmake_test -Bcmake_test/build"
    ],
-   "files":null,
-   "requires":null
+   "files":[
+    "cmake_test"
+   ],
+   "requires":[
+    "cmake",
+    "cxx_compiler_stub",
+    "c_compiler_stub"
+   ]
   }
  },
  "win_64_requirements":{
@@ -431,7 +427,7 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "ninja"
+    "make"
    ]
   },
   "host":{
@@ -446,7 +442,11 @@
   },
   "test":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub"
+   ]
   }
  }
 }

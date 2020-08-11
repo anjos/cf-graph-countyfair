@@ -225,9 +225,7 @@
   },
   "build":{
    "detect_binary_files_with_prefix":true,
-   "features":[
-    "blas_openblas"
-   ],
+   "features":null,
    "number":"5",
    "skip":true
   },
@@ -244,23 +242,20 @@
    "build":[
     "toolchain",
     "cmake",
-    "icu 58.*",
     "boost 1.65.1",
     "python",
     "numpy 1.8.*",
     "scipy",
     "hdf5 1.10.1",
-    "blas 1.* openblas"
+    "vs2008_express_vc_python_patch"
    ],
    "run":[
-    "icu 58.*",
     "boost 1.65.1",
     "python",
     "numpy >=1.8",
     "scipy",
     "matplotlib",
-    "hdf5 1.10.1",
-    "blas 1.* openblas"
+    "hdf5 1.10.1"
    ]
   },
   "source":{
@@ -271,14 +266,15 @@
     "no_python_extra_vars.patch",
     "numpy_array_cdecl.patch",
     "fix_xsl_padding.patch",
-    "remove_padding_from_prefix.patch"
+    "remove_padding_from_prefix.patch",
+    "no_install_deplibs.patch",
+    "boost_defs.patch"
    ],
    "sha256":"e64208d1e5acdd6f569277413c4867e1fa366cf4a224570eacbf1e9939fca2d2",
    "url":"http://alps.comp-phys.org/static/software/releases/alps-2.3.0-src.tar.gz"
   },
   "test":{
    "commands":[
-    "test -f $PREFIX/lib/libalps.so",
     "python -c \"import pyalps\"",
     "python -c \"import pyalps; print(pyalps.tools.xslPath())\"",
     "python -c \"import pyalps; pyalps.copyStylesheet('.')\""
@@ -289,15 +285,14 @@
   "build":{
    "__set__":true,
    "elements":[
-    "blas",
     "boost",
     "cmake",
     "hdf5",
-    "icu",
     "numpy",
     "python",
     "scipy",
-    "toolchain"
+    "toolchain",
+    "vs2008_express_vc_python_patch"
    ]
   },
   "host":{
@@ -307,10 +302,8 @@
   "run":{
    "__set__":true,
    "elements":[
-    "blas",
     "boost",
     "hdf5",
-    "icu",
     "matplotlib",
     "numpy",
     "python",
@@ -334,9 +327,7 @@
   "build":{
    "binary_relocation":false,
    "detect_binary_files_with_prefix":true,
-   "features":[
-    "blas_openblas"
-   ],
+   "features":null,
    "number":"5",
    "skip":true
   },
@@ -355,14 +346,6 @@
    "build":[
     "toolchain",
     "cmake",
-    "boost 1.65.1",
-    "python",
-    "numpy 1.8.*",
-    "scipy",
-    "hdf5 1.10.1",
-    "vs2008_express_vc_python_patch",
-    "toolchain",
-    "cmake",
     "icu 58.*",
     "boost 1.65.1",
     "python",
@@ -378,15 +361,17 @@
     "numpy 1.8.*",
     "scipy",
     "hdf5 1.10.1",
-    "blas 1.* openblas"
+    "blas 1.* openblas",
+    "toolchain",
+    "cmake",
+    "boost 1.65.1",
+    "python",
+    "numpy 1.8.*",
+    "scipy",
+    "hdf5 1.10.1",
+    "vs2008_express_vc_python_patch"
    ],
    "run":[
-    "boost 1.65.1",
-    "python",
-    "numpy >=1.8",
-    "scipy",
-    "matplotlib",
-    "hdf5 1.10.1",
     "icu 58.*",
     "boost 1.65.1",
     "python",
@@ -402,7 +387,13 @@
     "scipy",
     "matplotlib",
     "hdf5 1.10.1",
-    "blas 1.* openblas"
+    "blas 1.* openblas",
+    "boost 1.65.1",
+    "python",
+    "numpy >=1.8",
+    "scipy",
+    "matplotlib",
+    "hdf5 1.10.1"
    ]
   },
   "source":{
@@ -414,8 +405,6 @@
     "numpy_array_cdecl.patch",
     "fix_xsl_padding.patch",
     "remove_padding_from_prefix.patch",
-    "no_install_deplibs.patch",
-    "boost_defs.patch",
     "remove_unit_testing.patch",
     "skip_boost_numpy.patch",
     "fix_skeleton.patch",
@@ -429,13 +418,16 @@
     "no_python_extra_vars.patch",
     "numpy_array_cdecl.patch",
     "fix_xsl_padding.patch",
-    "remove_padding_from_prefix.patch"
+    "remove_padding_from_prefix.patch",
+    "no_install_deplibs.patch",
+    "boost_defs.patch"
    ],
    "sha256":"e64208d1e5acdd6f569277413c4867e1fa366cf4a224570eacbf1e9939fca2d2",
    "url":"http://alps.comp-phys.org/static/software/releases/alps-2.3.0-src.tar.gz"
   },
   "test":{
    "commands":[
+    "test -f $PREFIX/lib/libalps.so",
     "python -c \"import pyalps\"",
     "python -c \"import pyalps; print(pyalps.tools.xslPath())\"",
     "python -c \"import pyalps; pyalps.copyStylesheet('.')\"",
@@ -443,7 +435,6 @@
     "python -c \"import pyalps\"",
     "python -c \"import pyalps; print(pyalps.tools.xslPath())\"",
     "python -c \"import pyalps; pyalps.copyStylesheet('.')\"",
-    "test -f $PREFIX/lib/libalps.so",
     "python -c \"import pyalps\"",
     "python -c \"import pyalps; print(pyalps.tools.xslPath())\"",
     "python -c \"import pyalps; pyalps.copyStylesheet('.')\""
@@ -670,7 +661,9 @@
   },
   "build":{
    "detect_binary_files_with_prefix":true,
-   "features":null,
+   "features":[
+    "blas_openblas"
+   ],
    "number":"5",
    "skip":true
   },
@@ -687,20 +680,23 @@
    "build":[
     "toolchain",
     "cmake",
+    "icu 58.*",
     "boost 1.65.1",
     "python",
     "numpy 1.8.*",
     "scipy",
     "hdf5 1.10.1",
-    "vs2008_express_vc_python_patch"
+    "blas 1.* openblas"
    ],
    "run":[
+    "icu 58.*",
     "boost 1.65.1",
     "python",
     "numpy >=1.8",
     "scipy",
     "matplotlib",
-    "hdf5 1.10.1"
+    "hdf5 1.10.1",
+    "blas 1.* openblas"
    ]
   },
   "source":{
@@ -711,15 +707,14 @@
     "no_python_extra_vars.patch",
     "numpy_array_cdecl.patch",
     "fix_xsl_padding.patch",
-    "remove_padding_from_prefix.patch",
-    "no_install_deplibs.patch",
-    "boost_defs.patch"
+    "remove_padding_from_prefix.patch"
    ],
    "sha256":"e64208d1e5acdd6f569277413c4867e1fa366cf4a224570eacbf1e9939fca2d2",
    "url":"http://alps.comp-phys.org/static/software/releases/alps-2.3.0-src.tar.gz"
   },
   "test":{
    "commands":[
+    "test -f $PREFIX/lib/libalps.so",
     "python -c \"import pyalps\"",
     "python -c \"import pyalps; print(pyalps.tools.xslPath())\"",
     "python -c \"import pyalps; pyalps.copyStylesheet('.')\""
@@ -730,14 +725,15 @@
   "build":{
    "__set__":true,
    "elements":[
+    "blas",
     "boost",
     "cmake",
     "hdf5",
+    "icu",
     "numpy",
     "python",
     "scipy",
-    "toolchain",
-    "vs2008_express_vc_python_patch"
+    "toolchain"
    ]
   },
   "host":{
@@ -747,8 +743,10 @@
   "run":{
    "__set__":true,
    "elements":[
+    "blas",
     "boost",
     "hdf5",
+    "icu",
     "matplotlib",
     "numpy",
     "python",
