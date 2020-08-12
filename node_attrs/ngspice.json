@@ -16,7 +16,8 @@
    "summary":"The open source spice simulator for electric and electronic circuits"
   },
   "build":{
-   "number":"6"
+   "number":"6",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -28,28 +29,16 @@
     "name":"ngspice-lib",
     "requirements":{
      "build":[
-      "c_compiler_stub",
-      "libgomp",
-      "autoconf",
-      "automake",
-      "libtool",
-      "texinfo",
-      "bison",
-      "flex"
+      "c_compiler_stub"
      ],
      "host":[
-      "ncurses",
-      "readline"
-     ],
-     "run":[
-      "ncurses",
-      "readline"
+      "winflexbison"
      ]
     },
-    "script":"build_lib.sh",
+    "script":"build_lib.bat",
     "test":{
      "commands":[
-      "test -f $PREFIX/lib/libngspice"
+      "if not exist %PREFIX%\\\\bin\\\\ngspice.dll exit 1"
      ]
     }
    },
@@ -57,35 +46,17 @@
     "name":"ngspice-exe",
     "requirements":{
      "build":[
-      "c_compiler_stub",
-      "libgomp",
-      "autoconf",
-      "automake",
-      "libtool",
-      "texinfo",
-      "bison",
-      "flex"
+      "c_compiler_stub"
      ],
      "host":[
-      "ncurses",
-      "readline",
-      "xorg-libx11",
-      "xorg-libxaw",
-      "xorg-libxt"
-     ],
-     "run":[
-      "ncurses",
-      "readline",
-      "xorg-libx11",
-      "xorg-libxaw",
-      "xorg-libxt"
+      "winflexbison"
      ]
     },
-    "script":"build_exe.sh",
+    "script":"build_exe.bat",
     "test":{
      "commands":[
-      "$PREFIX/bin/ngspice --version",
-      "$PREFIX/bin/ngspice -b -r /tmp/raw.out test-files/test.cir"
+      "call %PREFIX%\\bin\\ngspice_con.exe --version",
+      "call %PREFIX%\\bin\\ngspice_con.exe -b -r raw.out test-files\\test.cir"
      ],
      "files":"test-files"
     }
@@ -100,8 +71,8 @@
     },
     "test":{
      "commands":[
-      "test -f $PREFIX/lib/libngspice",
-      "$PREFIX/bin/ngspice --version"
+      "if not exist %PREFIX%\\\\bin\\\\ngspice.dll exit 1",
+      "%PREFIX%\\bin\\ngspice_con.exe --version"
      ]
     }
    }
@@ -111,7 +82,9 @@
    "version":"32"
   },
   "source":{
-   "patches":null,
+   "patches":[
+    "patches/vngspice-install-location.patch"
+   ],
    "sha256":"3cd90c4e94516d87c5b4d02a3a6405b1136b25d05c871d4fee1fd7c4c0d03ef2",
    "url":"https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/32/ngspice-32.tar.gz"
   }
@@ -120,36 +93,20 @@
   "build":{
    "__set__":true,
    "elements":[
-    "autoconf",
-    "automake",
-    "bison",
-    "c_compiler_stub",
-    "flex",
-    "libgomp",
-    "libtool",
-    "texinfo"
+    "c_compiler_stub"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
-    "ncurses",
-    "readline",
-    "xorg-libx11",
-    "xorg-libxaw",
-    "xorg-libxt"
+    "winflexbison"
    ]
   },
   "run":{
    "__set__":true,
    "elements":[
-    "ncurses",
     "ngspice-exe",
-    "ngspice-lib",
-    "readline",
-    "xorg-libx11",
-    "xorg-libxaw",
-    "xorg-libxt"
+    "ngspice-lib"
    ]
   },
   "test":{
@@ -433,7 +390,7 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "llvm-openmp",
+      "libgomp",
       "autoconf",
       "automake",
       "libtool",
@@ -462,7 +419,7 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "llvm-openmp",
+      "libgomp",
       "autoconf",
       "automake",
       "libtool",
@@ -515,9 +472,7 @@
    "version":"32"
   },
   "source":{
-   "patches":[
-    "patches/libtoolize-name.patch"
-   ],
+   "patches":null,
    "sha256":"3cd90c4e94516d87c5b4d02a3a6405b1136b25d05c871d4fee1fd7c4c0d03ef2",
    "url":"https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/32/ngspice-32.tar.gz"
   }
@@ -531,8 +486,8 @@
     "bison",
     "c_compiler_stub",
     "flex",
+    "libgomp",
     "libtool",
-    "llvm-openmp",
     "texinfo"
    ]
   },
@@ -692,8 +647,7 @@
    "summary":"The open source spice simulator for electric and electronic circuits"
   },
   "build":{
-   "number":"6",
-   "skip":true
+   "number":"6"
   },
   "extra":{
    "recipe-maintainers":[
@@ -705,16 +659,28 @@
     "name":"ngspice-lib",
     "requirements":{
      "build":[
-      "c_compiler_stub"
+      "c_compiler_stub",
+      "llvm-openmp",
+      "autoconf",
+      "automake",
+      "libtool",
+      "texinfo",
+      "bison",
+      "flex"
      ],
      "host":[
-      "winflexbison"
+      "ncurses",
+      "readline"
+     ],
+     "run":[
+      "ncurses",
+      "readline"
      ]
     },
-    "script":"build_lib.bat",
+    "script":"build_lib.sh",
     "test":{
      "commands":[
-      "if not exist %PREFIX%\\\\bin\\\\ngspice.dll exit 1"
+      "test -f $PREFIX/lib/libngspice"
      ]
     }
    },
@@ -722,17 +688,35 @@
     "name":"ngspice-exe",
     "requirements":{
      "build":[
-      "c_compiler_stub"
+      "c_compiler_stub",
+      "llvm-openmp",
+      "autoconf",
+      "automake",
+      "libtool",
+      "texinfo",
+      "bison",
+      "flex"
      ],
      "host":[
-      "winflexbison"
+      "ncurses",
+      "readline",
+      "xorg-libx11",
+      "xorg-libxaw",
+      "xorg-libxt"
+     ],
+     "run":[
+      "ncurses",
+      "readline",
+      "xorg-libx11",
+      "xorg-libxaw",
+      "xorg-libxt"
      ]
     },
-    "script":"build_exe.bat",
+    "script":"build_exe.sh",
     "test":{
      "commands":[
-      "call %PREFIX%\\bin\\ngspice_con.exe --version",
-      "call %PREFIX%\\bin\\ngspice_con.exe -b -r raw.out test-files\\test.cir"
+      "$PREFIX/bin/ngspice --version",
+      "$PREFIX/bin/ngspice -b -r /tmp/raw.out test-files/test.cir"
      ],
      "files":"test-files"
     }
@@ -747,8 +731,8 @@
     },
     "test":{
      "commands":[
-      "if not exist %PREFIX%\\\\bin\\\\ngspice.dll exit 1",
-      "%PREFIX%\\bin\\ngspice_con.exe --version"
+      "test -f $PREFIX/lib/libngspice",
+      "$PREFIX/bin/ngspice --version"
      ]
     }
    }
@@ -759,7 +743,7 @@
   },
   "source":{
    "patches":[
-    "patches/vngspice-install-location.patch"
+    "patches/libtoolize-name.patch"
    ],
    "sha256":"3cd90c4e94516d87c5b4d02a3a6405b1136b25d05c871d4fee1fd7c4c0d03ef2",
    "url":"https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/32/ngspice-32.tar.gz"
@@ -769,20 +753,36 @@
   "build":{
    "__set__":true,
    "elements":[
-    "c_compiler_stub"
+    "autoconf",
+    "automake",
+    "bison",
+    "c_compiler_stub",
+    "flex",
+    "libtool",
+    "llvm-openmp",
+    "texinfo"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
-    "winflexbison"
+    "ncurses",
+    "readline",
+    "xorg-libx11",
+    "xorg-libxaw",
+    "xorg-libxt"
    ]
   },
   "run":{
    "__set__":true,
    "elements":[
+    "ncurses",
     "ngspice-exe",
-    "ngspice-lib"
+    "ngspice-lib",
+    "readline",
+    "xorg-libx11",
+    "xorg-libxaw",
+    "xorg-libxt"
    ]
   },
   "test":{

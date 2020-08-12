@@ -210,7 +210,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"default",
@@ -248,10 +248,9 @@
   },
   "requirements":{
    "build":[
-    "m2-patch",
     "meson",
     "ninja",
-    "m2w64-pkg-config",
+    "pkg-config",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "python >=2.7"
@@ -275,22 +274,24 @@
   "source":{
    "patches":[
     "hardcoded-paths.patch",
-    "skip-some-tests.patch",
-    "0001-Manually-link-with-libiconv-whenever-we-use-libintl.patch",
-    "0002-Increase-some-test-timeouts.patch"
+    "skip-some-tests.patch"
    ],
    "sha256":"b041e63cd0ac1fccb486374022ade040d907aad29b278e27d9e43e9294a6e7a3",
    "url":"http://ftp.gnome.org/pub/GNOME/sources/glib/2.65/glib-2.65.0.tar.xz"
   },
   "test":{
    "commands":[
+    "test -f ${PREFIX}/lib/libglib-2.0",
+    "test ! -f ${PREFIX}/lib/libgobject-2.0.la",
+    "gapplication help",
     "gdbus help",
     "gio version",
     "gio-querymodules .",
     "glib-compile-resources --help",
     "glib-compile-schemas --help",
     "gobject-query --help",
-    "gresource help"
+    "gresource help",
+    "gtester --help"
    ]
   }
  },
@@ -300,10 +301,9 @@
    "elements":[
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "m2-patch",
-    "m2w64-pkg-config",
     "meson",
     "ninja",
+    "pkg-config",
     "python"
    ]
   },
@@ -397,7 +397,6 @@
    "commands":[
     "test -f ${PREFIX}/lib/libglib-2.0",
     "test ! -f ${PREFIX}/lib/libgobject-2.0.la",
-    "gapplication help",
     "gdbus help",
     "gio version",
     "gio-querymodules .",
@@ -784,7 +783,7 @@
   }
  },
  "name":"glib",
- "new_version":false,
+ "new_version":"2.65.1",
  "new_version_attempts":{
   "2.59.0":1,
   "2.59.3":1,
@@ -825,9 +824,10 @@
   },
   "requirements":{
    "build":[
+    "m2-patch",
     "meson",
     "ninja",
-    "pkg-config",
+    "m2w64-pkg-config",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "python >=2.7"
@@ -851,24 +851,22 @@
   "source":{
    "patches":[
     "hardcoded-paths.patch",
-    "skip-some-tests.patch"
+    "skip-some-tests.patch",
+    "0001-Manually-link-with-libiconv-whenever-we-use-libintl.patch",
+    "0002-Increase-some-test-timeouts.patch"
    ],
    "sha256":"b041e63cd0ac1fccb486374022ade040d907aad29b278e27d9e43e9294a6e7a3",
    "url":"http://ftp.gnome.org/pub/GNOME/sources/glib/2.65/glib-2.65.0.tar.xz"
   },
   "test":{
    "commands":[
-    "test -f ${PREFIX}/lib/libglib-2.0",
-    "test ! -f ${PREFIX}/lib/libgobject-2.0.la",
-    "gapplication help",
     "gdbus help",
     "gio version",
     "gio-querymodules .",
     "glib-compile-resources --help",
     "glib-compile-schemas --help",
     "gobject-query --help",
-    "gresource help",
-    "gtester --help"
+    "gresource help"
    ]
   }
  },
@@ -878,9 +876,10 @@
    "elements":[
     "c_compiler_stub",
     "cxx_compiler_stub",
+    "m2-patch",
+    "m2w64-pkg-config",
     "meson",
     "ninja",
-    "pkg-config",
     "python"
    ]
   },
@@ -1078,6 +1077,7 @@
    "commands":[
     "test -f ${PREFIX}/lib/libglib-2.0",
     "test ! -f ${PREFIX}/lib/libgobject-2.0.la",
+    "gapplication help",
     "gdbus help",
     "gio version",
     "gio-querymodules .",

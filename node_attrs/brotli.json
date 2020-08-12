@@ -101,7 +101,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "compiler_stack":"comp7",
   "max_py_ver":"37",
@@ -158,13 +158,17 @@
   "test":{
    "commands":[
     "brotli --help",
-    "test -f $PREFIX/lib/libbrotlienc$SHLIB_EXT",
-    "test -f $PREFIX/lib/libbrotlidec$SHLIB_EXT",
-    "test -f $PREFIX/lib/libbrotlicommon$SHLIB_EXT",
-    "test -f $PREFIX/include/brotli/encode.h",
-    "test ! -f $PREFIX/lib/libbrotlienc-static.a",
-    "test ! -f $PREFIX/lib/libbrotlidec-static.a",
-    "test ! -f $PREFIX/lib/libbrotlicommon-static.a"
+    "if not exist %LIBRARY_BIN%\\\\brotli.exe exit 1",
+    "if not exist %LIBRARY_BIN%\\\\brotlicommon.dll exit 1",
+    "if not exist %LIBRARY_BIN%\\\\brotlidec.dll exit 1",
+    "if not exist %LIBRARY_BIN%\\\\brotlienc.dll exit 1",
+    "if not exist %LIBRARY_LIB%\\\\brotlicommon.lib exit 1",
+    "if not exist %LIBRARY_LIB%\\\\brotlidec.lib exit 1",
+    "if not exist %LIBRARY_LIB%\\\\brotlienc.lib exit 1",
+    "if not exist %LIBRARY_INC%\\\\brotli\\\\encode.h exit 1",
+    "if exist %LIBRARY_LIB%\\\\brotlicommon-static.lib exit 1",
+    "if exist %LIBRARY_LIB%\\\\brotlidec-static.lib exit 1",
+    "if exist %LIBRARY_LIB%\\\\brotlienc-static.lib exit 1"
    ]
   }
  },
@@ -472,7 +476,7 @@
   }
  },
  "name":"brotli",
- "new_version":false,
+ "new_version":"1.0.7",
  "osx_64_meta_yaml":{
   "about":{
    "home":"http://github.com/google/brotli",
@@ -655,17 +659,13 @@
   "test":{
    "commands":[
     "brotli --help",
-    "if not exist %LIBRARY_BIN%\\\\brotli.exe exit 1",
-    "if not exist %LIBRARY_BIN%\\\\brotlicommon.dll exit 1",
-    "if not exist %LIBRARY_BIN%\\\\brotlidec.dll exit 1",
-    "if not exist %LIBRARY_BIN%\\\\brotlienc.dll exit 1",
-    "if not exist %LIBRARY_LIB%\\\\brotlicommon.lib exit 1",
-    "if not exist %LIBRARY_LIB%\\\\brotlidec.lib exit 1",
-    "if not exist %LIBRARY_LIB%\\\\brotlienc.lib exit 1",
-    "if not exist %LIBRARY_INC%\\\\brotli\\\\encode.h exit 1",
-    "if exist %LIBRARY_LIB%\\\\brotlicommon-static.lib exit 1",
-    "if exist %LIBRARY_LIB%\\\\brotlidec-static.lib exit 1",
-    "if exist %LIBRARY_LIB%\\\\brotlienc-static.lib exit 1"
+    "test -f $PREFIX/lib/libbrotlienc$SHLIB_EXT",
+    "test -f $PREFIX/lib/libbrotlidec$SHLIB_EXT",
+    "test -f $PREFIX/lib/libbrotlicommon$SHLIB_EXT",
+    "test -f $PREFIX/include/brotli/encode.h",
+    "test ! -f $PREFIX/lib/libbrotlienc-static.a",
+    "test ! -f $PREFIX/lib/libbrotlidec-static.a",
+    "test ! -f $PREFIX/lib/libbrotlicommon-static.a"
    ]
   }
  },

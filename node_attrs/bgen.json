@@ -287,7 +287,8 @@
    "summary":"A BGEN file format reader"
   },
   "build":{
-   "number":"1"
+   "number":"1",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -301,15 +302,18 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cmake"
+    "cmake",
+    "ninja"
    ],
    "host":[
     "almosthere >=1.0.3",
     "conda-build",
+    "zlib",
     "zstd"
    ],
    "run":[
     "almosthere >=1.0.3",
+    "zlib",
     "zstd"
    ]
   },
@@ -320,10 +324,17 @@
   },
   "test":{
    "commands":[
-    "test -e $PREFIX/lib/libbgen.so",
-    "test -e $PREFIX/lib/libbgen_static.a",
-    "test -e $PREFIX/include/bgen.h",
-    "conda inspect linkages -p $PREFIX $PKG_NAME"
+    "if NOT exist %LIBRARY_LIB%/bgen.lib exit 1",
+    "if NOT exist %LIBRARY_BIN%/bgen.dll exit 1",
+    "if NOT exist %LIBRARY_LIB%/bgen_static.lib exit 1",
+    "if NOT exist %LIBRARY_INC%/bgen.h exit 1",
+    "if NOT exist %LIBRARY_INC%/bgen/file.h exit 1",
+    "if NOT exist %LIBRARY_INC%/bgen/depr.h exit 1",
+    "if NOT exist %LIBRARY_INC%/bgen/str.h exit 1",
+    "if NOT exist %LIBRARY_INC%/bgen/geno.h exit 1",
+    "if NOT exist %LIBRARY_INC%/bgen/platform.h exit 1",
+    "if NOT exist %LIBRARY_INC%/bgen/meta.h exit 1",
+    "if NOT exist %LIBRARY_INC%/bgen/api.h exit 1"
    ]
   }
  },
@@ -332,7 +343,8 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake"
+    "cmake",
+    "ninja"
    ]
   },
   "host":{
@@ -340,6 +352,7 @@
    "elements":[
     "almosthere",
     "conda-build",
+    "zlib",
     "zstd"
    ]
   },
@@ -347,6 +360,7 @@
    "__set__":true,
    "elements":[
     "almosthere",
+    "zlib",
     "zstd"
    ]
   },
@@ -458,8 +472,7 @@
    "summary":"A BGEN file format reader"
   },
   "build":{
-   "number":"1",
-   "skip":true
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
@@ -473,18 +486,15 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cmake",
-    "ninja"
+    "cmake"
    ],
    "host":[
     "almosthere >=1.0.3",
     "conda-build",
-    "zlib",
     "zstd"
    ],
    "run":[
     "almosthere >=1.0.3",
-    "zlib",
     "zstd"
    ]
   },
@@ -495,17 +505,11 @@
   },
   "test":{
    "commands":[
-    "if NOT exist %LIBRARY_LIB%/bgen.lib exit 1",
-    "if NOT exist %LIBRARY_BIN%/bgen.dll exit 1",
-    "if NOT exist %LIBRARY_LIB%/bgen_static.lib exit 1",
-    "if NOT exist %LIBRARY_INC%/bgen.h exit 1",
-    "if NOT exist %LIBRARY_INC%/bgen/file.h exit 1",
-    "if NOT exist %LIBRARY_INC%/bgen/depr.h exit 1",
-    "if NOT exist %LIBRARY_INC%/bgen/str.h exit 1",
-    "if NOT exist %LIBRARY_INC%/bgen/geno.h exit 1",
-    "if NOT exist %LIBRARY_INC%/bgen/platform.h exit 1",
-    "if NOT exist %LIBRARY_INC%/bgen/meta.h exit 1",
-    "if NOT exist %LIBRARY_INC%/bgen/api.h exit 1"
+    "test -e $PREFIX/lib/libbgen_static.a",
+    "test -e $PREFIX/include/bgen.h",
+    "test -e $PREFIX/lib/libbgen.dylib",
+    "conda inspect linkages -p $PREFIX $PKG_NAME",
+    "conda inspect objects -p $PREFIX $PKG_NAME"
    ]
   }
  },
@@ -514,8 +518,7 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake",
-    "ninja"
+    "cmake"
    ]
   },
   "host":{
@@ -523,7 +526,6 @@
    "elements":[
     "almosthere",
     "conda-build",
-    "zlib",
     "zstd"
    ]
   },
@@ -531,7 +533,6 @@
    "__set__":true,
    "elements":[
     "almosthere",
-    "zlib",
     "zstd"
    ]
   },
@@ -664,11 +665,10 @@
   },
   "test":{
    "commands":[
+    "test -e $PREFIX/lib/libbgen.so",
     "test -e $PREFIX/lib/libbgen_static.a",
     "test -e $PREFIX/include/bgen.h",
-    "test -e $PREFIX/lib/libbgen.dylib",
-    "conda inspect linkages -p $PREFIX $PKG_NAME",
-    "conda inspect objects -p $PREFIX $PKG_NAME"
+    "conda inspect linkages -p $PREFIX $PKG_NAME"
    ]
   }
  },

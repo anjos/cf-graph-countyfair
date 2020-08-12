@@ -44,12 +44,10 @@
   "build":{
    "binary_relocation":false,
    "detect_binary_files_with_prefix":false,
-   "force_ignore_keys":[
-    "c_compiler",
-    "cxx_compiler",
-    "fortran_compiler"
-   ],
    "missing_dso_whitelist":[
+    "/usr/lib/libSystem.B.dylib",
+    "/usr/lib/libgcc_s.1.dylib",
+    "libc.so.6",
     "/usr/lib/libSystem.B.dylib",
     "/usr/lib/libgcc_s.1.dylib",
     "libc.so.6"
@@ -59,23 +57,39 @@
   "extra":{
    "recipe-maintainers":[
     "scopatz",
+    "sodre",
+    "scopatz",
     "sodre"
    ]
   },
   "outputs":[
    {
-    "name":"go1.4-bootstrap_win-64",
+    "name":"go1.4-bootstrap_linux-64",
     "requirements":{
      "build":[
-      "m2w64_c_compiler_stub"
+      "c_compiler_stub",
+      "perl"
      ]
     },
-    "script":"build-core.bat",
+    "script":"build-core.sh",
     "test":{
      "commands":[
-      "cmd /c %GOROOT_BOOTSTRAP%\\bin\\go help",
-      "cmd /c echo x%GOROOT_BOOTSTRAP% NEQ x%CONDA_PREFIX%\\go1.4-bootstrap",
-      "cmd /c if x%GOROOT_BOOTSTRAP% NEQ x%CONDA_PREFIX%\\go1.4-bootstrap exit 1"
+      "${GOROOT_BOOTSTRAP}/bin/go help"
+     ]
+    }
+   },
+   {
+    "name":"go1.4-bootstrap_linux-64",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "perl"
+     ]
+    },
+    "script":"build-core.sh",
+    "test":{
+     "commands":[
+      "${GOROOT_BOOTSTRAP}/bin/go help"
      ]
     }
    }
@@ -86,10 +100,17 @@
   },
   "requirements":{
    "run":[
-    "go1.4-bootstrap_win-64"
+    "go1.4-bootstrap_linux-64",
+    "go1.4-bootstrap_linux-64"
    ]
   },
   "source":[
+   {
+    "folder":"go1.4-bootstrap",
+    "patches":null,
+    "sha256":"f4ff5b5eb3a3cae1c993723f3eab519c5bae18866b5e5f96fe1102f0cb5c3e52",
+    "url":"https://storage.googleapis.com/golang/go1.4-bootstrap-20171003.tar.gz"
+   },
    {
     "folder":"go1.4-bootstrap",
     "patches":null,
@@ -99,9 +120,8 @@
   ],
   "test":{
    "commands":[
-    "cmd /c %GOROOT_BOOTSTRAP%\\bin\\go help",
-    "cmd /c echo x%GOROOT_BOOTSTRAP% NEQ x%CONDA_PREFIX%\\go1.4-bootstrap",
-    "cmd /c if x%GOROOT_BOOTSTRAP% NEQ x%CONDA_PREFIX%\\go1.4-bootstrap exit 1"
+    "${GOROOT_BOOTSTRAP}/bin/go help",
+    "${GOROOT_BOOTSTRAP}/bin/go help"
    ]
   }
  },
@@ -109,7 +129,8 @@
   "build":{
    "__set__":true,
    "elements":[
-    "m2w64_c_compiler_stub"
+    "c_compiler_stub",
+    "perl"
    ]
   },
   "host":{
@@ -119,7 +140,7 @@
   "run":{
    "__set__":true,
    "elements":[
-    "go1.4-bootstrap_win-64"
+    "go1.4-bootstrap_linux-64"
    ]
   },
   "test":{
@@ -354,7 +375,7 @@
   },
   "outputs":[
    {
-    "name":"go1.4-bootstrap_linux-64",
+    "name":"go1.4-bootstrap_osx-64",
     "requirements":{
      "build":[
       "c_compiler_stub",
@@ -369,7 +390,7 @@
     }
    },
    {
-    "name":"go1.4-bootstrap_linux-64",
+    "name":"go1.4-bootstrap_osx-64",
     "requirements":{
      "build":[
       "c_compiler_stub",
@@ -390,20 +411,24 @@
   },
   "requirements":{
    "run":[
-    "go1.4-bootstrap_linux-64",
-    "go1.4-bootstrap_linux-64"
+    "go1.4-bootstrap_osx-64",
+    "go1.4-bootstrap_osx-64"
    ]
   },
   "source":[
    {
     "folder":"go1.4-bootstrap",
-    "patches":null,
+    "patches":[
+     "0001-remove-macosx-version.diff"
+    ],
     "sha256":"f4ff5b5eb3a3cae1c993723f3eab519c5bae18866b5e5f96fe1102f0cb5c3e52",
     "url":"https://storage.googleapis.com/golang/go1.4-bootstrap-20171003.tar.gz"
    },
    {
     "folder":"go1.4-bootstrap",
-    "patches":null,
+    "patches":[
+     "0001-remove-macosx-version.diff"
+    ],
     "sha256":"f4ff5b5eb3a3cae1c993723f3eab519c5bae18866b5e5f96fe1102f0cb5c3e52",
     "url":"https://storage.googleapis.com/golang/go1.4-bootstrap-20171003.tar.gz"
    }
@@ -430,7 +455,7 @@
   "run":{
    "__set__":true,
    "elements":[
-    "go1.4-bootstrap_linux-64"
+    "go1.4-bootstrap_osx-64"
    ]
   },
   "test":{
@@ -527,10 +552,12 @@
   "build":{
    "binary_relocation":false,
    "detect_binary_files_with_prefix":false,
+   "force_ignore_keys":[
+    "c_compiler",
+    "cxx_compiler",
+    "fortran_compiler"
+   ],
    "missing_dso_whitelist":[
-    "/usr/lib/libSystem.B.dylib",
-    "/usr/lib/libgcc_s.1.dylib",
-    "libc.so.6",
     "/usr/lib/libSystem.B.dylib",
     "/usr/lib/libgcc_s.1.dylib",
     "libc.so.6"
@@ -540,39 +567,23 @@
   "extra":{
    "recipe-maintainers":[
     "scopatz",
-    "sodre",
-    "scopatz",
     "sodre"
    ]
   },
   "outputs":[
    {
-    "name":"go1.4-bootstrap_osx-64",
+    "name":"go1.4-bootstrap_win-64",
     "requirements":{
      "build":[
-      "c_compiler_stub",
-      "perl"
+      "m2w64_c_compiler_stub"
      ]
     },
-    "script":"build-core.sh",
+    "script":"build-core.bat",
     "test":{
      "commands":[
-      "${GOROOT_BOOTSTRAP}/bin/go help"
-     ]
-    }
-   },
-   {
-    "name":"go1.4-bootstrap_osx-64",
-    "requirements":{
-     "build":[
-      "c_compiler_stub",
-      "perl"
-     ]
-    },
-    "script":"build-core.sh",
-    "test":{
-     "commands":[
-      "${GOROOT_BOOTSTRAP}/bin/go help"
+      "cmd /c %GOROOT_BOOTSTRAP%\\bin\\go help",
+      "cmd /c echo x%GOROOT_BOOTSTRAP% NEQ x%CONDA_PREFIX%\\go1.4-bootstrap",
+      "cmd /c if x%GOROOT_BOOTSTRAP% NEQ x%CONDA_PREFIX%\\go1.4-bootstrap exit 1"
      ]
     }
    }
@@ -583,32 +594,22 @@
   },
   "requirements":{
    "run":[
-    "go1.4-bootstrap_osx-64",
-    "go1.4-bootstrap_osx-64"
+    "go1.4-bootstrap_win-64"
    ]
   },
   "source":[
    {
     "folder":"go1.4-bootstrap",
-    "patches":[
-     "0001-remove-macosx-version.diff"
-    ],
-    "sha256":"f4ff5b5eb3a3cae1c993723f3eab519c5bae18866b5e5f96fe1102f0cb5c3e52",
-    "url":"https://storage.googleapis.com/golang/go1.4-bootstrap-20171003.tar.gz"
-   },
-   {
-    "folder":"go1.4-bootstrap",
-    "patches":[
-     "0001-remove-macosx-version.diff"
-    ],
+    "patches":null,
     "sha256":"f4ff5b5eb3a3cae1c993723f3eab519c5bae18866b5e5f96fe1102f0cb5c3e52",
     "url":"https://storage.googleapis.com/golang/go1.4-bootstrap-20171003.tar.gz"
    }
   ],
   "test":{
    "commands":[
-    "${GOROOT_BOOTSTRAP}/bin/go help",
-    "${GOROOT_BOOTSTRAP}/bin/go help"
+    "cmd /c %GOROOT_BOOTSTRAP%\\bin\\go help",
+    "cmd /c echo x%GOROOT_BOOTSTRAP% NEQ x%CONDA_PREFIX%\\go1.4-bootstrap",
+    "cmd /c if x%GOROOT_BOOTSTRAP% NEQ x%CONDA_PREFIX%\\go1.4-bootstrap exit 1"
    ]
   }
  },
@@ -616,8 +617,7 @@
   "build":{
    "__set__":true,
    "elements":[
-    "c_compiler_stub",
-    "perl"
+    "m2w64_c_compiler_stub"
    ]
   },
   "host":{
@@ -627,7 +627,7 @@
   "run":{
    "__set__":true,
    "elements":[
-    "go1.4-bootstrap_osx-64"
+    "go1.4-bootstrap_win-64"
    ]
   },
   "test":{

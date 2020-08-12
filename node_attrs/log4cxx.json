@@ -14,7 +14,8 @@
    "summary":"A logging framework for C++ patterned after Apache log4j."
   },
   "build":{
-   "number":"2"
+   "number":"2",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -31,7 +32,7 @@
    "build":[
     "cxx_compiler_stub",
     "c_compiler_stub",
-    "make"
+    "cmake"
    ],
    "host":[
     "expat",
@@ -49,19 +50,20 @@
    {
     "fn":"apache-log4cxx-0.10.0.tar.gz",
     "patches":[
-     "001-fix-compilation.patch",
-     "002-fix-osx.patch"
+     "msvc.patch"
     ],
     "sha256":"0de0396220a9566a580166e66b39674cb40efd2176f52ad2c65486c99c920c8c",
     "url":"http://archive.apache.org/dist/logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz"
+   },
+   {
+    "path":"CMakeLists.txt"
    }
   ],
   "test":{
    "commands":[
-    "test -f $PREFIX/include/log4cxx/appender.h",
-    "test -f $PREFIX/include/log4cxx/logmanager.h",
-    "test -f $PREFIX/lib/liblog4cxx.a",
-    "test -f $PREFIX/lib/liblog4cxx.so"
+    "if not exist %LIBRARY_INC%\\\\log4cxx\\\\log4cxx.h exit 1",
+    "if not exist %LIBRARY_BIN%\\\\log4cxx.dll exit 1",
+    "if not exist %LIBRARY_LIB%\\\\log4cxx.lib exit 1"
    ]
   }
  },
@@ -70,8 +72,8 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make"
+    "cmake",
+    "cxx_compiler_stub"
    ]
   },
   "host":{
@@ -268,7 +270,8 @@
    "commands":[
     "test -f $PREFIX/include/log4cxx/appender.h",
     "test -f $PREFIX/include/log4cxx/logmanager.h",
-    "test -f $PREFIX/lib/liblog4cxx.dylib"
+    "test -f $PREFIX/lib/liblog4cxx.a",
+    "test -f $PREFIX/lib/liblog4cxx.so"
    ]
   }
  },
@@ -396,8 +399,7 @@
    "summary":"A logging framework for C++ patterned after Apache log4j."
   },
   "build":{
-   "number":"2",
-   "skip":true
+   "number":"2"
   },
   "extra":{
    "recipe-maintainers":[
@@ -414,7 +416,7 @@
    "build":[
     "cxx_compiler_stub",
     "c_compiler_stub",
-    "cmake"
+    "make"
    ],
    "host":[
     "expat",
@@ -432,20 +434,18 @@
    {
     "fn":"apache-log4cxx-0.10.0.tar.gz",
     "patches":[
-     "msvc.patch"
+     "001-fix-compilation.patch",
+     "002-fix-osx.patch"
     ],
     "sha256":"0de0396220a9566a580166e66b39674cb40efd2176f52ad2c65486c99c920c8c",
     "url":"http://archive.apache.org/dist/logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz"
-   },
-   {
-    "path":"CMakeLists.txt"
    }
   ],
   "test":{
    "commands":[
-    "if not exist %LIBRARY_INC%\\\\log4cxx\\\\log4cxx.h exit 1",
-    "if not exist %LIBRARY_BIN%\\\\log4cxx.dll exit 1",
-    "if not exist %LIBRARY_LIB%\\\\log4cxx.lib exit 1"
+    "test -f $PREFIX/include/log4cxx/appender.h",
+    "test -f $PREFIX/include/log4cxx/logmanager.h",
+    "test -f $PREFIX/lib/liblog4cxx.dylib"
    ]
   }
  },
@@ -454,8 +454,8 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make"
    ]
   },
   "host":{

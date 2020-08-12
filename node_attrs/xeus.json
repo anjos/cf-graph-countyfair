@@ -415,7 +415,8 @@
    "number":"0",
    "run_exports":[
     "xeus"
-   ]
+   ],
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -431,14 +432,11 @@
   "requirements":{
    "build":[
     "cmake",
-    "make",
-    "pkg-config",
     "cxx_compiler_stub"
    ],
    "host":[
     "xtl >=0.6.1,<0.7",
     "nlohmann_json >=3.2.0,<4.0",
-    "libuuid",
     "cppzmq >=4.4.1,<5",
     "zeromq >=4.3.1,<4.4",
     "openssl >=1.0.1,<1.2"
@@ -456,10 +454,9 @@
   },
   "test":{
    "commands":[
-    "test -d ${PREFIX}/include/xeus",
-    "test -f ${PREFIX}/include/xeus/xeus.hpp",
-    "test -f ${PREFIX}/lib/cmake/xeus/xeusConfig.cmake",
-    "test -f ${PREFIX}/lib/cmake/xeus/xeusConfigVersion.cmake"
+    "if exist %LIBRARY_INC%\\\\xeus\\\\xeus.hpp (exit 0) else (exit 1)",
+    "if exist %LIBRARY_LIB%\\\\cmake\\\\xeus\\\\xeusConfig.cmake (exit 0) else (exit 1)",
+    "if exist %LIBRARY_LIB%\\\\cmake\\\\xeus\\\\xeusConfigVersion.cmake (exit 0) else (exit 1)"
    ]
   }
  },
@@ -468,16 +465,13 @@
    "__set__":true,
    "elements":[
     "cmake",
-    "cxx_compiler_stub",
-    "make",
-    "pkg-config"
+    "cxx_compiler_stub"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
     "cppzmq",
-    "libuuid",
     "nlohmann_json",
     "openssl",
     "xtl",
@@ -868,6 +862,7 @@
    "host":[
     "xtl >=0.6.1,<0.7",
     "nlohmann_json >=3.2.0,<4.0",
+    "libuuid",
     "cppzmq >=4.4.1,<5",
     "zeromq >=4.3.1,<4.4",
     "openssl >=1.0.1,<1.2"
@@ -906,6 +901,7 @@
    "__set__":true,
    "elements":[
     "cppzmq",
+    "libuuid",
     "nlohmann_json",
     "openssl",
     "xtl",
@@ -1017,8 +1013,7 @@
    "number":"0",
    "run_exports":[
     "xeus"
-   ],
-   "skip":true
+   ]
   },
   "extra":{
    "recipe-maintainers":[
@@ -1034,6 +1029,8 @@
   "requirements":{
    "build":[
     "cmake",
+    "make",
+    "pkg-config",
     "cxx_compiler_stub"
    ],
    "host":[
@@ -1056,9 +1053,10 @@
   },
   "test":{
    "commands":[
-    "if exist %LIBRARY_INC%\\\\xeus\\\\xeus.hpp (exit 0) else (exit 1)",
-    "if exist %LIBRARY_LIB%\\\\cmake\\\\xeus\\\\xeusConfig.cmake (exit 0) else (exit 1)",
-    "if exist %LIBRARY_LIB%\\\\cmake\\\\xeus\\\\xeusConfigVersion.cmake (exit 0) else (exit 1)"
+    "test -d ${PREFIX}/include/xeus",
+    "test -f ${PREFIX}/include/xeus/xeus.hpp",
+    "test -f ${PREFIX}/lib/cmake/xeus/xeusConfig.cmake",
+    "test -f ${PREFIX}/lib/cmake/xeus/xeusConfigVersion.cmake"
    ]
   }
  },
@@ -1067,7 +1065,9 @@
    "__set__":true,
    "elements":[
     "cmake",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make",
+    "pkg-config"
    ]
   },
   "host":{
