@@ -404,15 +404,15 @@
    "commands":[
     "test -d \"${PREFIX}/include/event2\"",
     "test -f \"${PREFIX}/lib/libevent.a\"",
-    "test -f \"${PREFIX}/lib/libevent.dylib\"",
+    "test -f \"${PREFIX}/lib/libevent.so\"",
     "test -f \"${PREFIX}/lib/libevent_core.a\"",
-    "test -f \"${PREFIX}/lib/libevent_core.dylib\"",
+    "test -f \"${PREFIX}/lib/libevent_core.so\"",
     "test -f \"${PREFIX}/lib/libevent_extra.a\"",
-    "test -f \"${PREFIX}/lib/libevent_extra.dylib\"",
+    "test -f \"${PREFIX}/lib/libevent_extra.so\"",
     "test -f \"${PREFIX}/lib/libevent_openssl.a\"",
-    "test -f \"${PREFIX}/lib/libevent_openssl.dylib\"",
+    "test -f \"${PREFIX}/lib/libevent_openssl.so\"",
     "test -f \"${PREFIX}/lib/libevent_pthreads.a\"",
-    "test -f \"${PREFIX}/lib/libevent_pthreads.dylib\"",
+    "test -f \"${PREFIX}/lib/libevent_pthreads.so\"",
     "test -f \"${PREFIX}/lib/pkgconfig/libevent.pc\"",
     "test -f \"${PREFIX}/lib/pkgconfig/libevent_openssl.pc\"",
     "test -f \"${PREFIX}/lib/pkgconfig/libevent_pthreads.pc\"",
@@ -683,8 +683,10 @@
   },
   "requirements":{
    "build":[
-    "cmake",
-    "m2-patch",
+    "pkg-config",
+    "autoconf",
+    "automake",
+    "libtool",
     "make",
     "c_compiler_stub",
     "openssl"
@@ -705,17 +707,24 @@
   },
   "test":{
    "commands":[
-    "if not exist %LIBRARY_INC%\\event2 exit 1",
-    "if not exist \"%LIBRARY_PREFIX%/lib/event.lib\" exit 1",
-    "if not exist \"%LIBRARY_PREFIX%/bin/event.dll\" exit 1",
-    "if not exist \"%LIBRARY_PREFIX%/lib/event_core.lib\" exit 1",
-    "if not exist \"%LIBRARY_PREFIX%/bin/event_core.dll\" exit 1",
-    "if not exist \"%LIBRARY_PREFIX%/lib/event_extra.lib\" exit 1",
-    "if not exist \"%LIBRARY_PREFIX%/bin/event_extra.dll\" exit 1",
+    "test -d \"${PREFIX}/include/event2\"",
+    "test -f \"${PREFIX}/lib/libevent.a\"",
+    "test -f \"${PREFIX}/lib/libevent.dylib\"",
+    "test -f \"${PREFIX}/lib/libevent_core.a\"",
+    "test -f \"${PREFIX}/lib/libevent_core.dylib\"",
+    "test -f \"${PREFIX}/lib/libevent_extra.a\"",
+    "test -f \"${PREFIX}/lib/libevent_extra.dylib\"",
+    "test -f \"${PREFIX}/lib/libevent_openssl.a\"",
+    "test -f \"${PREFIX}/lib/libevent_openssl.dylib\"",
+    "test -f \"${PREFIX}/lib/libevent_pthreads.a\"",
+    "test -f \"${PREFIX}/lib/libevent_pthreads.dylib\"",
+    "test -f \"${PREFIX}/lib/pkgconfig/libevent.pc\"",
+    "test -f \"${PREFIX}/lib/pkgconfig/libevent_openssl.pc\"",
+    "test -f \"${PREFIX}/lib/pkgconfig/libevent_pthreads.pc\"",
     "python event_rpcgen.py test/regress.rpc test/regress.gen.h test/regress.gen.c"
    ],
    "requires":[
-    "python 2.7"
+    "python 3.6"
    ],
    "source_files":[
     "event_rpcgen.py",
@@ -727,11 +736,13 @@
   "build":{
    "__set__":true,
    "elements":[
+    "autoconf",
+    "automake",
     "c_compiler_stub",
-    "cmake",
-    "m2-patch",
+    "libtool",
     "make",
-    "openssl"
+    "openssl",
+    "pkg-config"
    ]
   },
   "host":{
@@ -864,10 +875,8 @@
   },
   "requirements":{
    "build":[
-    "pkg-config",
-    "autoconf",
-    "automake",
-    "libtool",
+    "cmake",
+    "m2-patch",
     "make",
     "c_compiler_stub",
     "openssl"
@@ -888,24 +897,17 @@
   },
   "test":{
    "commands":[
-    "test -d \"${PREFIX}/include/event2\"",
-    "test -f \"${PREFIX}/lib/libevent.a\"",
-    "test -f \"${PREFIX}/lib/libevent.so\"",
-    "test -f \"${PREFIX}/lib/libevent_core.a\"",
-    "test -f \"${PREFIX}/lib/libevent_core.so\"",
-    "test -f \"${PREFIX}/lib/libevent_extra.a\"",
-    "test -f \"${PREFIX}/lib/libevent_extra.so\"",
-    "test -f \"${PREFIX}/lib/libevent_openssl.a\"",
-    "test -f \"${PREFIX}/lib/libevent_openssl.so\"",
-    "test -f \"${PREFIX}/lib/libevent_pthreads.a\"",
-    "test -f \"${PREFIX}/lib/libevent_pthreads.so\"",
-    "test -f \"${PREFIX}/lib/pkgconfig/libevent.pc\"",
-    "test -f \"${PREFIX}/lib/pkgconfig/libevent_openssl.pc\"",
-    "test -f \"${PREFIX}/lib/pkgconfig/libevent_pthreads.pc\"",
+    "if not exist %LIBRARY_INC%\\event2 exit 1",
+    "if not exist \"%LIBRARY_PREFIX%/lib/event.lib\" exit 1",
+    "if not exist \"%LIBRARY_PREFIX%/bin/event.dll\" exit 1",
+    "if not exist \"%LIBRARY_PREFIX%/lib/event_core.lib\" exit 1",
+    "if not exist \"%LIBRARY_PREFIX%/bin/event_core.dll\" exit 1",
+    "if not exist \"%LIBRARY_PREFIX%/lib/event_extra.lib\" exit 1",
+    "if not exist \"%LIBRARY_PREFIX%/bin/event_extra.dll\" exit 1",
     "python event_rpcgen.py test/regress.rpc test/regress.gen.h test/regress.gen.c"
    ],
    "requires":[
-    "python 3.6"
+    "python 2.7"
    ],
    "source_files":[
     "event_rpcgen.py",
@@ -917,13 +919,11 @@
   "build":{
    "__set__":true,
    "elements":[
-    "autoconf",
-    "automake",
     "c_compiler_stub",
-    "libtool",
+    "cmake",
+    "m2-patch",
     "make",
-    "openssl",
-    "pkg-config"
+    "openssl"
    ]
   },
   "host":{

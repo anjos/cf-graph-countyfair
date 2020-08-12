@@ -329,7 +329,7 @@
   "outputs":[
    {
     "build":{
-     "no_link":"lib/libcrypto.1.1.dylib",
+     "no_link":"lib/libcrypto.so.1.1",
      "run_exports":[
       "openssl"
      ]
@@ -738,6 +738,7 @@
   "outputs":[
    {
     "build":{
+     "no_link":"lib/libcrypto.1.1.dylib",
      "run_exports":[
       "openssl"
      ]
@@ -746,19 +747,18 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "make"
-     ],
-     "host":[
+      "make",
       "perl"
      ],
+     "host":null,
      "run":[
       "ca-certificates"
      ]
     },
-    "script":"install_openssl.bat",
+    "script":"install_openssl.sh",
     "test":{
      "commands":[
-      "copy NUL checksum.txt",
+      "touch checksum.txt",
       "openssl sha256 checksum.txt"
      ]
     }
@@ -770,11 +770,11 @@
       "c_compiler_stub"
      ]
     },
-    "script":"install_libopenssl-static.bat",
+    "script":"install_libopenssl-static.sh",
     "test":{
      "commands":[
-      "if exist %LIBRARY_PREFIX%\\lib\\libcrypto_static.lib (exit 0) else (exit 1)",
-      "if exist %LIBRARY_PREFIX%\\lib\\libssl_static.lib (exit 0) else (exit 1)"
+      "test -f ${PREFIX}/lib/libcrypto.a",
+      "test -f ${PREFIX}/lib/libssl.a"
      ]
     }
    }
@@ -786,11 +786,10 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "nasm"
-   ],
-   "host":[
+    "make",
     "perl"
-   ]
+   ],
+   "host":null
   },
   "source":{
    "patches":[
@@ -806,14 +805,12 @@
    "elements":[
     "c_compiler_stub",
     "make",
-    "nasm"
+    "perl"
    ]
   },
   "host":{
    "__set__":true,
-   "elements":[
-    "perl"
-   ]
+   "elements":[]
   },
   "run":{
    "__set__":true,
@@ -926,7 +923,6 @@
   "outputs":[
    {
     "build":{
-     "no_link":"lib/libcrypto.so.1.1",
      "run_exports":[
       "openssl"
      ]
@@ -935,18 +931,19 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "make",
+      "make"
+     ],
+     "host":[
       "perl"
      ],
-     "host":null,
      "run":[
       "ca-certificates"
      ]
     },
-    "script":"install_openssl.sh",
+    "script":"install_openssl.bat",
     "test":{
      "commands":[
-      "touch checksum.txt",
+      "copy NUL checksum.txt",
       "openssl sha256 checksum.txt"
      ]
     }
@@ -958,11 +955,11 @@
       "c_compiler_stub"
      ]
     },
-    "script":"install_libopenssl-static.sh",
+    "script":"install_libopenssl-static.bat",
     "test":{
      "commands":[
-      "test -f ${PREFIX}/lib/libcrypto.a",
-      "test -f ${PREFIX}/lib/libssl.a"
+      "if exist %LIBRARY_PREFIX%\\lib\\libcrypto_static.lib (exit 0) else (exit 1)",
+      "if exist %LIBRARY_PREFIX%\\lib\\libssl_static.lib (exit 0) else (exit 1)"
      ]
     }
    }
@@ -974,10 +971,11 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "make",
-    "perl"
+    "nasm"
    ],
-   "host":null
+   "host":[
+    "perl"
+   ]
   },
   "source":{
    "patches":[
@@ -993,12 +991,14 @@
    "elements":[
     "c_compiler_stub",
     "make",
-    "perl"
+    "nasm"
    ]
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "perl"
+   ]
   },
   "run":{
    "__set__":true,

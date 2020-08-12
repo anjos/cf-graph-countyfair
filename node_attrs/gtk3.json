@@ -1,6 +1,6 @@
 {
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"azure",
@@ -21,13 +21,16 @@
    "summary":"Version 3 of the Gtk+ graphical toolkit"
   },
   "build":{
-   "missing_dso_whitelist":null,
+   "missing_dso_whitelist":[
+    "*/libX11.so*",
+    "*/libXext.so*"
+   ],
    "number":"1",
+   "rpaths_patcher":"patchelf",
    "run_exports":[
     "gtk3",
     "adwaita-icon-theme"
-   ],
-   "skip":true
+   ]
   },
   "extra":{
    "recipe-maintainers":[
@@ -45,24 +48,46 @@
     "meson",
     "ninja",
     "pkg-config",
-    "c_compiler_stub"
+    "pthread-stubs",
+    "c_compiler_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub"
    ],
    "host":[
     "atk",
     "cairo",
     "epoxy",
+    "freetype",
     "fribidi",
     "gdk-pixbuf",
     "glib",
     "gobject-introspection",
-    "libiconv",
-    "pango"
+    "harfbuzz",
+    "libcups",
+    "pango",
+    "at-spi2-atk",
+    "fontconfig"
    ],
    "run":[
     "gdk-pixbuf",
     "glib",
+    "harfbuzz",
     "hicolor-icon-theme",
-    "libiconv",
+    "libcups",
     "pango"
    ]
   },
@@ -80,34 +105,29 @@
     "gtk-launch --help",
     "gtk-query-immodules-3.0",
     "gtk-update-icon-cache --help",
-    "where gtk-builder-tool",
-    "where gtk-query-settings",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\gail-3.0\\\\libgail-util\\\\gail-util.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\gtk-3.0\\\\gdk\\\\gdk.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\gtk-3.0\\\\gdk\\\\win32\\\\gdkwin32window.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\gtk-3.0\\\\gtk\\\\gtk.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gail-3.0.pc exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gdk-3.0.pc exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gtk+-3.0.pc exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gtk+-unix-print-3.0.pc exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gdk-x11-3.0.pc exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gtk+-x11-3.0.pc exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gdk-quartz-3.0.pc exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gtk+-quartz-3.0.pc exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gdk-win32-3.0.pc exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gtk+-win32-3.0.pc exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\gailutil-3-vs15.dll exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix gail-3.0`) do if not exist \"%%a/bin/gailutil-3-vs15.dll\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gailutil-3.lib exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix gail-3.0`) do if not exist \"%%a/gailutil-3.lib\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\gdk-3-vs15.dll exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix gdk-3.0`) do if not exist \"%%a/bin/gdk-3-vs15.dll\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gdk-3.lib exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix gdk-3.0`) do if not exist \"%%a/gdk-3.lib\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\gtk-3-vs15.dll exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix gtk+-3.0`) do if not exist \"%%a/bin/gtk-3-vs15.dll\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gtk-3.lib exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix gtk+-3.0`) do if not exist \"%%a/gtk-3.lib\" exit 1"
+    "command -v gtk-builder-tool",
+    "command -v gtk-query-settings",
+    "test -f $PREFIX/include/gail-3.0/libgail-util/gail-util.h",
+    "test -f $PREFIX/include/gtk-3.0/gdk/gdk.h",
+    "test -f $PREFIX/include/gtk-3.0/gdk/x11/gdkx11window.h",
+    "test -f $PREFIX/include/gtk-3.0/gtk/gtk.h",
+    "test -f $PREFIX/include/gtk-3.0/unix-print/gtk/gtkunixprint.h",
+    "test -f $PREFIX/lib/pkgconfig/gail-3.0.pc",
+    "test -f $PREFIX/lib/pkgconfig/gdk-3.0.pc",
+    "test -f $PREFIX/lib/pkgconfig/gtk+-3.0.pc",
+    "test -f $PREFIX/lib/pkgconfig/gtk+-unix-print-3.0.pc",
+    "test -f $PREFIX/lib/pkgconfig/gdk-x11-3.0.pc",
+    "test -f $PREFIX/lib/pkgconfig/gtk+-x11-3.0.pc",
+    "test -f $PREFIX/lib/pkgconfig/gdk-quartz-3.0.pc",
+    "test -f $PREFIX/lib/pkgconfig/gtk+-quartz-3.0.pc",
+    "test -f $PREFIX/lib/pkgconfig/gdk-win32-3.0.pc",
+    "test -f $PREFIX/lib/pkgconfig/gtk+-win32-3.0.pc",
+    "test -f $PREFIX/lib/libgailutil-3${SHLIB_EXT}",
+    "test -f `pkg-config --variable=libdir --dont-define-prefix gail-3.0`/libgailutil-3${SHLIB_EXT}",
+    "test -f $PREFIX/lib/libgdk-3${SHLIB_EXT}",
+    "test -f `pkg-config --variable=libdir --dont-define-prefix gdk-3.0`/libgdk-3${SHLIB_EXT}",
+    "test -f $PREFIX/lib/libgtk-3${SHLIB_EXT}",
+    "test -f `pkg-config --variable=libdir --dont-define-prefix gtk+-3.0`/libgtk-3${SHLIB_EXT}"
    ],
    "requires":[
     "pkg-config"
@@ -119,22 +139,28 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
+    "cdt_stub",
     "meson",
     "ninja",
-    "pkg-config"
+    "pkg-config",
+    "pthread-stubs"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
+    "at-spi2-atk",
     "atk",
     "cairo",
     "epoxy",
+    "fontconfig",
+    "freetype",
     "fribidi",
     "gdk-pixbuf",
     "glib",
     "gobject-introspection",
-    "libiconv",
+    "harfbuzz",
+    "libcups",
     "pango"
    ]
   },
@@ -143,8 +169,9 @@
    "elements":[
     "gdk-pixbuf",
     "glib",
+    "harfbuzz",
     "hicolor-icon-theme",
-    "libiconv",
+    "libcups",
     "pango"
    ]
   },
@@ -938,16 +965,13 @@
    "summary":"Version 3 of the Gtk+ graphical toolkit"
   },
   "build":{
-   "missing_dso_whitelist":[
-    "*/libX11.so*",
-    "*/libXext.so*"
-   ],
+   "missing_dso_whitelist":null,
    "number":"1",
-   "rpaths_patcher":"patchelf",
    "run_exports":[
     "gtk3",
     "adwaita-icon-theme"
-   ]
+   ],
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -965,46 +989,24 @@
     "meson",
     "ninja",
     "pkg-config",
-    "pthread-stubs",
-    "c_compiler_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub"
+    "c_compiler_stub"
    ],
    "host":[
     "atk",
     "cairo",
     "epoxy",
-    "freetype",
     "fribidi",
     "gdk-pixbuf",
     "glib",
     "gobject-introspection",
-    "harfbuzz",
-    "libcups",
-    "pango",
-    "at-spi2-atk",
-    "fontconfig"
+    "libiconv",
+    "pango"
    ],
    "run":[
     "gdk-pixbuf",
     "glib",
-    "harfbuzz",
     "hicolor-icon-theme",
-    "libcups",
+    "libiconv",
     "pango"
    ]
   },
@@ -1022,29 +1024,34 @@
     "gtk-launch --help",
     "gtk-query-immodules-3.0",
     "gtk-update-icon-cache --help",
-    "command -v gtk-builder-tool",
-    "command -v gtk-query-settings",
-    "test -f $PREFIX/include/gail-3.0/libgail-util/gail-util.h",
-    "test -f $PREFIX/include/gtk-3.0/gdk/gdk.h",
-    "test -f $PREFIX/include/gtk-3.0/gdk/x11/gdkx11window.h",
-    "test -f $PREFIX/include/gtk-3.0/gtk/gtk.h",
-    "test -f $PREFIX/include/gtk-3.0/unix-print/gtk/gtkunixprint.h",
-    "test -f $PREFIX/lib/pkgconfig/gail-3.0.pc",
-    "test -f $PREFIX/lib/pkgconfig/gdk-3.0.pc",
-    "test -f $PREFIX/lib/pkgconfig/gtk+-3.0.pc",
-    "test -f $PREFIX/lib/pkgconfig/gtk+-unix-print-3.0.pc",
-    "test -f $PREFIX/lib/pkgconfig/gdk-x11-3.0.pc",
-    "test -f $PREFIX/lib/pkgconfig/gtk+-x11-3.0.pc",
-    "test -f $PREFIX/lib/pkgconfig/gdk-quartz-3.0.pc",
-    "test -f $PREFIX/lib/pkgconfig/gtk+-quartz-3.0.pc",
-    "test -f $PREFIX/lib/pkgconfig/gdk-win32-3.0.pc",
-    "test -f $PREFIX/lib/pkgconfig/gtk+-win32-3.0.pc",
-    "test -f $PREFIX/lib/libgailutil-3${SHLIB_EXT}",
-    "test -f `pkg-config --variable=libdir --dont-define-prefix gail-3.0`/libgailutil-3${SHLIB_EXT}",
-    "test -f $PREFIX/lib/libgdk-3${SHLIB_EXT}",
-    "test -f `pkg-config --variable=libdir --dont-define-prefix gdk-3.0`/libgdk-3${SHLIB_EXT}",
-    "test -f $PREFIX/lib/libgtk-3${SHLIB_EXT}",
-    "test -f `pkg-config --variable=libdir --dont-define-prefix gtk+-3.0`/libgtk-3${SHLIB_EXT}"
+    "where gtk-builder-tool",
+    "where gtk-query-settings",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\gail-3.0\\\\libgail-util\\\\gail-util.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\gtk-3.0\\\\gdk\\\\gdk.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\gtk-3.0\\\\gdk\\\\win32\\\\gdkwin32window.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\gtk-3.0\\\\gtk\\\\gtk.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gail-3.0.pc exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gdk-3.0.pc exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gtk+-3.0.pc exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gtk+-unix-print-3.0.pc exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gdk-x11-3.0.pc exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gtk+-x11-3.0.pc exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gdk-quartz-3.0.pc exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gtk+-quartz-3.0.pc exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gdk-win32-3.0.pc exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\gtk+-win32-3.0.pc exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\bin\\\\gailutil-3-vs15.dll exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix gail-3.0`) do if not exist \"%%a/bin/gailutil-3-vs15.dll\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gailutil-3.lib exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix gail-3.0`) do if not exist \"%%a/gailutil-3.lib\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\bin\\\\gdk-3-vs15.dll exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix gdk-3.0`) do if not exist \"%%a/bin/gdk-3-vs15.dll\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gdk-3.lib exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix gdk-3.0`) do if not exist \"%%a/gdk-3.lib\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\bin\\\\gtk-3-vs15.dll exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix gtk+-3.0`) do if not exist \"%%a/bin/gtk-3-vs15.dll\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gtk-3.lib exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix gtk+-3.0`) do if not exist \"%%a/gtk-3.lib\" exit 1"
    ],
    "requires":[
     "pkg-config"
@@ -1056,28 +1063,22 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cdt_stub",
     "meson",
     "ninja",
-    "pkg-config",
-    "pthread-stubs"
+    "pkg-config"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
-    "at-spi2-atk",
     "atk",
     "cairo",
     "epoxy",
-    "fontconfig",
-    "freetype",
     "fribidi",
     "gdk-pixbuf",
     "glib",
     "gobject-introspection",
-    "harfbuzz",
-    "libcups",
+    "libiconv",
     "pango"
    ]
   },
@@ -1086,9 +1087,8 @@
    "elements":[
     "gdk-pixbuf",
     "glib",
-    "harfbuzz",
     "hicolor-icon-theme",
-    "libcups",
+    "libiconv",
     "pango"
    ]
   },
