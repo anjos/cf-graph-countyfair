@@ -1253,21 +1253,24 @@
   },
   "requirements":{
    "build":[
-    "make",
+    "cmake",
     "pkg-config",
     "rust",
     "c_compiler_stub"
    ],
    "host":[
     "glib",
+    "libiconv",
     "libxml2",
     "cairo",
     "gdk-pixbuf",
+    "gobject-introspection",
     "libcroco 0.6.*",
     "pango"
    ],
    "run":[
     "glib",
+    "libiconv",
     "libxml2",
     "cairo",
     "gdk-pixbuf",
@@ -1278,7 +1281,8 @@
   "source":{
    "fn":"librsvg-2.49.3.tar.xz",
    "patches":[
-    "add_rust_lto.patch"
+    "add_rust_lto.patch",
+    "windows_cairo_freetype_workaround.patch"
    ],
    "sha256":"963b06f62dd5aa2e947e83b29dfc682d601e24f7c69eb0764304853cea22db96",
    "url":"http://ftp.gnome.org/pub/gnome/sources/librsvg/2.49/librsvg-2.49.3.tar.xz"
@@ -1286,12 +1290,14 @@
   "test":{
    "commands":[
     "rsvg-convert --version",
-    "test -f $PREFIX/lib/rsvg-2.0${SHLIB_EXT}",
-    "test -f `pkg-config --variable=libdir --dont-define-prefix librsvg-2.0`/rsvg-2.0${SHLIB_EXT}",
-    "test -f $PREFIX/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.so",
-    "test -f $PREFIX/include/librsvg-2.0/librsvg/librsvg-features.h",
-    "test -f $PREFIX/include/librsvg-2.0/librsvg/rsvg-cairo.h",
-    "test -f $PREFIX/include/librsvg-2.0/librsvg/rsvg.h"
+    "if not exist %PREFIX%\\\\Library\\\\bin\\\\rsvg-2.0-vs15.dll exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix librsvg-2.0`) do if not exist \"%%a/bin/rsvg-2.0-vs15.dll\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\rsvg-2.0.lib exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix librsvg-2.0`) do if not exist \"%%a/rsvg-2.0.lib\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gdk-pixbuf-2.0\\\\2.10.0\\\\loaders\\\\libpixbufloader-svg.dll exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\librsvg-2.0\\\\librsvg\\\\librsvg-features.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\librsvg-2.0\\\\librsvg\\\\rsvg-cairo.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\librsvg-2.0\\\\librsvg\\\\rsvg.h exit 1"
    ],
    "requires":[
     "pkg-config"
@@ -1303,7 +1309,7 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "make",
+    "cmake",
     "pkg-config",
     "rust"
    ]
@@ -1314,7 +1320,9 @@
     "cairo",
     "gdk-pixbuf",
     "glib",
+    "gobject-introspection",
     "libcroco",
+    "libiconv",
     "libxml2",
     "pango"
    ]
@@ -1326,6 +1334,7 @@
     "gdk-pixbuf",
     "glib",
     "libcroco",
+    "libiconv",
     "libxml2",
     "pango"
    ]
@@ -1472,24 +1481,21 @@
   },
   "requirements":{
    "build":[
-    "cmake",
+    "make",
     "pkg-config",
     "rust",
     "c_compiler_stub"
    ],
    "host":[
     "glib",
-    "libiconv",
     "libxml2",
     "cairo",
     "gdk-pixbuf",
-    "gobject-introspection",
     "libcroco 0.6.*",
     "pango"
    ],
    "run":[
     "glib",
-    "libiconv",
     "libxml2",
     "cairo",
     "gdk-pixbuf",
@@ -1500,8 +1506,7 @@
   "source":{
    "fn":"librsvg-2.49.3.tar.xz",
    "patches":[
-    "add_rust_lto.patch",
-    "windows_cairo_freetype_workaround.patch"
+    "add_rust_lto.patch"
    ],
    "sha256":"963b06f62dd5aa2e947e83b29dfc682d601e24f7c69eb0764304853cea22db96",
    "url":"http://ftp.gnome.org/pub/gnome/sources/librsvg/2.49/librsvg-2.49.3.tar.xz"
@@ -1509,14 +1514,12 @@
   "test":{
    "commands":[
     "rsvg-convert --version",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\rsvg-2.0-vs15.dll exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix librsvg-2.0`) do if not exist \"%%a/bin/rsvg-2.0-vs15.dll\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\rsvg-2.0.lib exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix librsvg-2.0`) do if not exist \"%%a/rsvg-2.0.lib\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\gdk-pixbuf-2.0\\\\2.10.0\\\\loaders\\\\libpixbufloader-svg.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\librsvg-2.0\\\\librsvg\\\\librsvg-features.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\librsvg-2.0\\\\librsvg\\\\rsvg-cairo.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\librsvg-2.0\\\\librsvg\\\\rsvg.h exit 1"
+    "test -f $PREFIX/lib/rsvg-2.0${SHLIB_EXT}",
+    "test -f `pkg-config --variable=libdir --dont-define-prefix librsvg-2.0`/rsvg-2.0${SHLIB_EXT}",
+    "test -f $PREFIX/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.so",
+    "test -f $PREFIX/include/librsvg-2.0/librsvg/librsvg-features.h",
+    "test -f $PREFIX/include/librsvg-2.0/librsvg/rsvg-cairo.h",
+    "test -f $PREFIX/include/librsvg-2.0/librsvg/rsvg.h"
    ],
    "requires":[
     "pkg-config"
@@ -1528,7 +1531,7 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake",
+    "make",
     "pkg-config",
     "rust"
    ]
@@ -1539,9 +1542,7 @@
     "cairo",
     "gdk-pixbuf",
     "glib",
-    "gobject-introspection",
     "libcroco",
-    "libiconv",
     "libxml2",
     "pango"
    ]
@@ -1553,7 +1554,6 @@
     "gdk-pixbuf",
     "glib",
     "libcroco",
-    "libiconv",
     "libxml2",
     "pango"
    ]
