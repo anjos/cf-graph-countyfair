@@ -322,6 +322,7 @@
   },
   "extra":{
    "recipe-maintainers":[
+    "pkgw",
     "pkgw"
    ]
   },
@@ -331,14 +332,21 @@
   },
   "requirements":{
    "build":[
-    "m2-autoconf",
-    "m2-automake1.15",
-    "m2-libtool",
-    "m2w64-pkg-config",
-    "posix",
-    "m2w64_c_compiler_stub"
+    "pkg-config",
+    "c_compiler_stub",
+    "pkg-config",
+    "c_compiler_stub"
    ],
    "host":[
+    "pthread-stubs",
+    "xorg-libx11 1.6.*",
+    "xorg-libxext 1.3.*",
+    "xorg-libxmu 1.1.*",
+    "xorg-libxpm 3.5.*",
+    "xorg-libxt 1.1.*",
+    "xorg-util-macros",
+    "xorg-xextproto",
+    "xorg-xproto",
     "pthread-stubs",
     "xorg-libx11 1.6.*",
     "xorg-libxext 1.3.*",
@@ -354,23 +362,30 @@
     "xorg-libxext 1.3.*",
     "xorg-libxmu 1.1.*",
     "xorg-libxpm 3.5.*",
+    "xorg-libxt 1.1.*",
+    "xorg-libx11 1.6.*",
+    "xorg-libxext 1.3.*",
+    "xorg-libxmu 1.1.*",
+    "xorg-libxpm 3.5.*",
     "xorg-libxt 1.1.*"
    ]
   },
   "source":{
    "fn":"libXaw-1.0.13.tar.bz2",
-   "patches":[
-    "windows.patch"
-   ],
+   "patches":null,
    "sha256":"8ef8067312571292ccc2bbe94c41109dcf022ea5a4ec71656a83d8cce9edb0cd",
    "url":"https://www.x.org/releases/individual/lib/libXaw-1.0.13.tar.bz2"
   },
   "test":{
    "commands":[
-    "if not exist %PREFIX%/Library/lib/libXaw6.dll.a exit /b 1",
-    "if not exist %PREFIX%/Library/lib/libXaw7.dll.a exit /b 1",
-    "if not exist %PREFIX%/Library/bin/msys-Xaw-6.dll exit /b 1",
-    "if not exist %PREFIX%/Library/bin/msys-Xaw-7.dll exit /b 1"
+    "test -f $PREFIX/lib/libXaw6.dylib",
+    "test -f $PREFIX/lib/libXaw7.dylib",
+    "conda inspect linkages -p $PREFIX $PKG_NAME",
+    "conda inspect objects -p $PREFIX $PKG_NAME",
+    "test -f $PREFIX/lib/libXaw6.dylib",
+    "test -f $PREFIX/lib/libXaw7.dylib",
+    "conda inspect linkages -p $PREFIX $PKG_NAME",
+    "conda inspect objects -p $PREFIX $PKG_NAME"
    ]
   }
  },
@@ -378,12 +393,8 @@
   "build":{
    "__set__":true,
    "elements":[
-    "m2-autoconf",
-    "m2-automake1.15",
-    "m2-libtool",
-    "m2w64-pkg-config",
-    "m2w64_c_compiler_stub",
-    "posix"
+    "c_compiler_stub",
+    "pkg-config"
    ]
   },
   "host":{
@@ -543,7 +554,6 @@
   },
   "extra":{
    "recipe-maintainers":[
-    "pkgw",
     "pkgw"
    ]
   },
@@ -553,21 +563,14 @@
   },
   "requirements":{
    "build":[
-    "pkg-config",
-    "c_compiler_stub",
-    "pkg-config",
-    "c_compiler_stub"
+    "m2-autoconf",
+    "m2-automake1.15",
+    "m2-libtool",
+    "m2w64-pkg-config",
+    "posix",
+    "m2w64_c_compiler_stub"
    ],
    "host":[
-    "pthread-stubs",
-    "xorg-libx11 1.6.*",
-    "xorg-libxext 1.3.*",
-    "xorg-libxmu 1.1.*",
-    "xorg-libxpm 3.5.*",
-    "xorg-libxt 1.1.*",
-    "xorg-util-macros",
-    "xorg-xextproto",
-    "xorg-xproto",
     "pthread-stubs",
     "xorg-libx11 1.6.*",
     "xorg-libxext 1.3.*",
@@ -583,30 +586,23 @@
     "xorg-libxext 1.3.*",
     "xorg-libxmu 1.1.*",
     "xorg-libxpm 3.5.*",
-    "xorg-libxt 1.1.*",
-    "xorg-libx11 1.6.*",
-    "xorg-libxext 1.3.*",
-    "xorg-libxmu 1.1.*",
-    "xorg-libxpm 3.5.*",
     "xorg-libxt 1.1.*"
    ]
   },
   "source":{
    "fn":"libXaw-1.0.13.tar.bz2",
-   "patches":null,
+   "patches":[
+    "windows.patch"
+   ],
    "sha256":"8ef8067312571292ccc2bbe94c41109dcf022ea5a4ec71656a83d8cce9edb0cd",
    "url":"https://www.x.org/releases/individual/lib/libXaw-1.0.13.tar.bz2"
   },
   "test":{
    "commands":[
-    "test -f $PREFIX/lib/libXaw6.dylib",
-    "test -f $PREFIX/lib/libXaw7.dylib",
-    "conda inspect linkages -p $PREFIX $PKG_NAME",
-    "conda inspect objects -p $PREFIX $PKG_NAME",
-    "test -f $PREFIX/lib/libXaw6.dylib",
-    "test -f $PREFIX/lib/libXaw7.dylib",
-    "conda inspect linkages -p $PREFIX $PKG_NAME",
-    "conda inspect objects -p $PREFIX $PKG_NAME"
+    "if not exist %PREFIX%/Library/lib/libXaw6.dll.a exit /b 1",
+    "if not exist %PREFIX%/Library/lib/libXaw7.dll.a exit /b 1",
+    "if not exist %PREFIX%/Library/bin/msys-Xaw-6.dll exit /b 1",
+    "if not exist %PREFIX%/Library/bin/msys-Xaw-7.dll exit /b 1"
    ]
   }
  },
@@ -614,8 +610,12 @@
   "build":{
    "__set__":true,
    "elements":[
-    "c_compiler_stub",
-    "pkg-config"
+    "m2-autoconf",
+    "m2-automake1.15",
+    "m2-libtool",
+    "m2w64-pkg-config",
+    "m2w64_c_compiler_stub",
+    "posix"
    ]
   },
   "host":{

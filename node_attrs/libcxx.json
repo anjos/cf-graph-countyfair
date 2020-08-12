@@ -276,30 +276,31 @@
      "Library/lib/libc++*.lib"
     ],
     "name":"libcxx",
-    "requirements":{
-     "run":[
-      "libcxxabi"
-     ]
-    },
     "test":{
      "commands":[
       "test -f $PREFIX/include/c++/v1/iterator",
       "bash compile_test.sh",
-      "test -f $PREFIX/lib/libc++abi.so"
+      "if [ -f $PREFIX/lib/libc++abi.dylib ]; then exit 1; fi"
+     ],
+     "downstreams":[
+      "python-symengine",
+      "openturns",
+      "libcxx-testing"
      ],
      "files":[
       "test_sources",
       "compile_test.sh"
      ],
      "requires":[
-      "clang",
-      "clangxx",
-      "cxx_compiler_stub"
+      "clang <10",
+      "clangxx"
      ]
     }
    },
    {
-    "build":null,
+    "build":{
+     "skip":true
+    },
     "files":[
      "lib/libc++abi.*"
     ],
@@ -310,9 +311,7 @@
      ]
     },
     "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libc++abi.so"
-     ]
+     "commands":null
     }
    }
   ],
@@ -324,24 +323,15 @@
    "build":[
     "cmake",
     "make",
-    "cxx_compiler_stub",
-    "python >3"
+    "cxx_compiler_stub"
    ],
-   "host":[
-    "clangdev 10.0.1",
-    "llvmdev 10.0.1"
-   ]
+   "host":null
   },
   "source":[
    {
     "patches":null,
     "sha256":"def674535f22f83131353b3c382ccebfef4ba6a35c488bdb76f10b68b25be86c",
     "url":"https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/libcxx-10.0.1.src.tar.xz"
-   },
-   {
-    "folder":"libcxxabi",
-    "sha256":"a97ef810b2e9fb70e8f7e317b74e646ed4944f488b02ac5ddd9c99e385381a7b",
-    "url":"https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/libcxxabi-10.0.1.src.tar.xz"
    }
   ]
  },
@@ -351,29 +341,22 @@
    "elements":[
     "cmake",
     "cxx_compiler_stub",
-    "make",
-    "python"
+    "make"
    ]
   },
   "host":{
    "__set__":true,
-   "elements":[
-    "clangdev",
-    "llvmdev"
-   ]
+   "elements":[]
   },
   "run":{
    "__set__":true,
-   "elements":[
-    "libcxxabi"
-   ]
+   "elements":[]
   },
   "test":{
    "__set__":true,
    "elements":[
     "clang",
-    "clangxx",
-    "cxx_compiler_stub"
+    "clangxx"
    ]
   }
  },
@@ -882,31 +865,30 @@
      "Library/lib/libc++*.lib"
     ],
     "name":"libcxx",
+    "requirements":{
+     "run":[
+      "libcxxabi"
+     ]
+    },
     "test":{
      "commands":[
       "test -f $PREFIX/include/c++/v1/iterator",
       "bash compile_test.sh",
-      "if [ -f $PREFIX/lib/libc++abi.dylib ]; then exit 1; fi"
-     ],
-     "downstreams":[
-      "python-symengine",
-      "openturns",
-      "libcxx-testing"
+      "test -f $PREFIX/lib/libc++abi.so"
      ],
      "files":[
       "test_sources",
       "compile_test.sh"
      ],
      "requires":[
-      "clang <10",
-      "clangxx"
+      "clang",
+      "clangxx",
+      "cxx_compiler_stub"
      ]
     }
    },
    {
-    "build":{
-     "skip":true
-    },
+    "build":null,
     "files":[
      "lib/libc++abi.*"
     ],
@@ -917,7 +899,9 @@
      ]
     },
     "test":{
-     "commands":null
+     "commands":[
+      "test -f $PREFIX/lib/libc++abi.so"
+     ]
     }
    }
   ],
@@ -929,15 +913,24 @@
    "build":[
     "cmake",
     "make",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "python >3"
    ],
-   "host":null
+   "host":[
+    "clangdev 10.0.1",
+    "llvmdev 10.0.1"
+   ]
   },
   "source":[
    {
     "patches":null,
     "sha256":"def674535f22f83131353b3c382ccebfef4ba6a35c488bdb76f10b68b25be86c",
     "url":"https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/libcxx-10.0.1.src.tar.xz"
+   },
+   {
+    "folder":"libcxxabi",
+    "sha256":"a97ef810b2e9fb70e8f7e317b74e646ed4944f488b02ac5ddd9c99e385381a7b",
+    "url":"https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/libcxxabi-10.0.1.src.tar.xz"
    }
   ]
  },
@@ -947,22 +940,29 @@
    "elements":[
     "cmake",
     "cxx_compiler_stub",
-    "make"
+    "make",
+    "python"
    ]
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "clangdev",
+    "llvmdev"
+   ]
   },
   "run":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "libcxxabi"
+   ]
   },
   "test":{
    "__set__":true,
    "elements":[
     "clang",
-    "clangxx"
+    "clangxx",
+    "cxx_compiler_stub"
    ]
   }
  },
