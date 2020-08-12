@@ -496,7 +496,9 @@
   },
   "build":{
    "number":"0",
-   "script_env":null
+   "script_env":[
+    "OS"
+   ]
   },
   "extra":{
    "recipe-maintainers":[
@@ -523,7 +525,7 @@
      "build":[
       "python *",
       "cxx_compiler_stub",
-      "make",
+      "m2w64-make",
       "cmake"
      ],
      "run":[
@@ -532,13 +534,13 @@
     },
     "test":{
      "commands":[
+      "set \"CMAKE_GENERATOR=NMake Makefiles\"",
       "cmake -S examples/test_all/fibonacci -B test-bld",
       "cmake --build test-bld --config release",
       "cmake -E env test-bld/fibonacci"
      ],
      "requires":[
       "cxx_compiler_stub",
-      "make",
       "cmake >=3.13"
      ],
      "source_files":[
@@ -559,7 +561,7 @@
     "requirements":{
      "build":[
       "cxx_compiler_stub",
-      "make",
+      "m2w64-make",
       "swig"
      ],
      "host":[
@@ -596,7 +598,7 @@
    "build":[
     "python *",
     "cxx_compiler_stub",
-    "make"
+    "m2w64-make"
    ]
   },
   "source":{
@@ -606,7 +608,7 @@
   },
   "test":{
    "commands":[
-    "python -c \"import ctypes; assert 11101 == ctypes.cdll[r'libtbb.so.2']       ['TBB_runtime_interface_version']()\""
+    "python -c \"import ctypes, os; os.add_dll_directory(os.environ['LIBRARY_BIN']); assert 11101 == ctypes.cdll[r'tbb.dll'] ['TBB_runtime_interface_version']()\""
    ],
    "requires":[
     "python *"
@@ -619,7 +621,7 @@
    "elements":[
     "cmake",
     "cxx_compiler_stub",
-    "make",
+    "m2w64-make",
     "python",
     "swig"
    ]
@@ -643,7 +645,6 @@
    "elements":[
     "cmake",
     "cxx_compiler_stub",
-    "make",
     "python",
     "tbb"
    ]
@@ -738,8 +739,7 @@
     "test":{
      "commands":[
       "python -m TBB -h",
-      "python -m tbb -h",
-      "python -m tbb test"
+      "python -m tbb -h"
      ],
      "imports":[
       "tbb",
@@ -770,7 +770,7 @@
   },
   "test":{
    "commands":[
-    "python -c \"import ctypes; assert 11101 == ctypes.cdll[r'libtbb.so.2']       ['TBB_runtime_interface_version']()\""
+    "python -c \"import ctypes; assert 11101 == ctypes.cdll[r'libtbb${SHLIB_EXT}']['TBB_runtime_interface_version']()\""
    ],
    "requires":[
     "python *"
@@ -1319,9 +1319,7 @@
   },
   "build":{
    "number":"0",
-   "script_env":[
-    "OS"
-   ]
+   "script_env":null
   },
   "extra":{
    "recipe-maintainers":[
@@ -1348,7 +1346,7 @@
      "build":[
       "python *",
       "cxx_compiler_stub",
-      "m2w64-make",
+      "make",
       "cmake"
      ],
      "run":[
@@ -1357,13 +1355,13 @@
     },
     "test":{
      "commands":[
-      "set \"CMAKE_GENERATOR=NMake Makefiles\"",
       "cmake -S examples/test_all/fibonacci -B test-bld",
       "cmake --build test-bld --config release",
       "cmake -E env test-bld/fibonacci"
      ],
      "requires":[
       "cxx_compiler_stub",
+      "make",
       "cmake >=3.13"
      ],
      "source_files":[
@@ -1384,7 +1382,7 @@
     "requirements":{
      "build":[
       "cxx_compiler_stub",
-      "m2w64-make",
+      "make",
       "swig"
      ],
      "host":[
@@ -1421,7 +1419,7 @@
    "build":[
     "python *",
     "cxx_compiler_stub",
-    "m2w64-make"
+    "make"
    ]
   },
   "source":{
@@ -1431,7 +1429,7 @@
   },
   "test":{
    "commands":[
-    "python -c \"import ctypes, os; os.add_dll_directory(os.environ['LIBRARY_BIN']); assert 11101 == ctypes.cdll[r'tbb.dll'] ['TBB_runtime_interface_version']()\""
+    "python -c \"import ctypes; assert 11101 == ctypes.cdll[r'libtbb.so.2']       ['TBB_runtime_interface_version']()\""
    ],
    "requires":[
     "python *"
@@ -1444,7 +1442,7 @@
    "elements":[
     "cmake",
     "cxx_compiler_stub",
-    "m2w64-make",
+    "make",
     "python",
     "swig"
    ]
@@ -1468,6 +1466,7 @@
    "elements":[
     "cmake",
     "cxx_compiler_stub",
+    "make",
     "python",
     "tbb"
    ]
@@ -1662,7 +1661,8 @@
     "test":{
      "commands":[
       "python -m TBB -h",
-      "python -m tbb -h"
+      "python -m tbb -h",
+      "python -m tbb test"
      ],
      "imports":[
       "tbb",
@@ -1693,7 +1693,7 @@
   },
   "test":{
    "commands":[
-    "python -c \"import ctypes; assert 11101 == ctypes.cdll[r'libtbb${SHLIB_EXT}']['TBB_runtime_interface_version']()\""
+    "python -c \"import ctypes; assert 11101 == ctypes.cdll[r'libtbb.so.2']       ['TBB_runtime_interface_version']()\""
    ],
    "requires":[
     "python *"
