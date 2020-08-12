@@ -151,7 +151,7 @@
    "features":null,
    "number":"0",
    "script":[
-    "cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules && copy %SRC_DIR%\\\\CMake\\\\cotire.cmake ."
+    "cp \"${SRC_DIR}/CMake/cotire.cmake\" \"${PREFIX}\"/share/cmake*/Modules"
    ]
   },
   "extra":{
@@ -165,7 +165,6 @@
   },
   "requirements":{
    "build":[
-    "python",
     "cmake"
    ],
    "run":[
@@ -182,8 +181,10 @@
   },
   "test":{
    "commands":[
-    "cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules && if not exist cotire.cmake exit 1",
-    "cd \"%SRC_DIR%/src\" && mkdir build && cd build"
+    "test -f \"${PREFIX}\"/share/cmake*/Modules/cotire.cmake",
+    "cd \"${SRC_DIR}/src\" && mkdir build && cd build",
+    "cmake -G \"Unix Makefiles\" ..",
+    "cmake --build ."
    ],
    "requires":null
   }
@@ -192,8 +193,7 @@
   "build":{
    "__set__":true,
    "elements":[
-    "cmake",
-    "python"
+    "cmake"
    ]
   },
   "host":{
@@ -417,7 +417,7 @@
    "features":null,
    "number":"0",
    "script":[
-    "cp \"${SRC_DIR}/CMake/cotire.cmake\" \"${PREFIX}\"/share/cmake*/Modules"
+    "cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules && copy %SRC_DIR%\\\\CMake\\\\cotire.cmake ."
    ]
   },
   "extra":{
@@ -431,6 +431,7 @@
   },
   "requirements":{
    "build":[
+    "python",
     "cmake"
    ],
    "run":[
@@ -447,10 +448,8 @@
   },
   "test":{
    "commands":[
-    "test -f \"${PREFIX}\"/share/cmake*/Modules/cotire.cmake",
-    "cd \"${SRC_DIR}/src\" && mkdir build && cd build",
-    "cmake -G \"Unix Makefiles\" ..",
-    "cmake --build ."
+    "cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules && if not exist cotire.cmake exit 1",
+    "cd \"%SRC_DIR%/src\" && mkdir build && cd build"
    ],
    "requires":null
   }
@@ -459,7 +458,8 @@
   "build":{
    "__set__":true,
    "elements":[
-    "cmake"
+    "cmake",
+    "python"
    ]
   },
   "host":{

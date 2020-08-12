@@ -103,7 +103,7 @@
   }
  ],
  "archived":false,
- "bad":false,
+ "bad":"Upstream: unknown source",
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"azure",
@@ -124,6 +124,9 @@
    "summary":"A library for configuring and customizing font access"
   },
   "build":{
+   "binary_has_prefix_files":[
+    "lib/libfontconfig.so.1.*"
+   ],
    "number":"1002",
    "run_exports":[
     "fontconfig"
@@ -144,17 +147,15 @@
   },
   "requirements":{
    "build":[
-    "m2-autoconf",
-    "m2-automake1.15",
+    "autoconf",
+    "automake",
     "gettext",
-    "m2-gperf",
-    "m2-libtool",
-    "m2-patch",
-    "m2w64-binutils",
-    "m2w64-pkg-config",
-    "m2w64-xz",
-    "posix",
-    "vs2015_win-64",
+    "gperf",
+    "libtool",
+    "patch",
+    "pkg-config",
+    "xz",
+    "c_compiler_stub",
     "make"
    ],
    "host":[
@@ -162,23 +163,19 @@
     "icu",
     "libpng",
     "libxml2",
-    "libiconv"
+    "libuuid"
    ],
    "run":[
     "freetype",
     "icu",
     "libpng",
     "libxml2",
-    "libiconv"
+    "libuuid"
    ]
   },
   "source":{
    "patches":[
-    "0001-Disable-test-bz106632.patch",
-    "0002-Disable-some-more-Windows-unfriendly-tests.patch",
-    "0003-Import-MSVC-compatibility-files-from-ShiftMediaProje.patch",
-    "0004-SMB-getopt.h-also-add-this.patch",
-    "0005-Make-private-pkg-config-requirements-public.patch"
+    "fcf.patch"
    ],
    "sha256":"f655dd2a986d7aa97e052261b36aa67b0a64989496361eca8d604e6414006741",
    "url":"http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.bz2"
@@ -193,7 +190,8 @@
     "fc-query --help",
     "fc-scan --help",
     "fc-validate --help",
-    "if not exist %PREFIX%/Library/lib/fontconfig.lib exit /b 1"
+    "test -f $PREFIX/lib/libfontconfig.a",
+    "test -f $PREFIX/lib/libfontconfig${SHLIB_EXT}"
    ]
   }
  },
@@ -201,18 +199,16 @@
   "build":{
    "__set__":true,
    "elements":[
+    "autoconf",
+    "automake",
+    "c_compiler_stub",
     "gettext",
-    "m2-autoconf",
-    "m2-automake1.15",
-    "m2-gperf",
-    "m2-libtool",
-    "m2-patch",
-    "m2w64-binutils",
-    "m2w64-pkg-config",
-    "m2w64-xz",
+    "gperf",
+    "libtool",
     "make",
-    "posix",
-    "vs2015_win-64"
+    "patch",
+    "pkg-config",
+    "xz"
    ]
   },
   "host":{
@@ -220,8 +216,8 @@
    "elements":[
     "freetype",
     "icu",
-    "libiconv",
     "libpng",
+    "libuuid",
     "libxml2"
    ]
   },
@@ -230,8 +226,8 @@
    "elements":[
     "freetype",
     "icu",
-    "libiconv",
     "libpng",
+    "libuuid",
     "libxml2"
    ]
   },
@@ -735,7 +731,7 @@
   },
   "build":{
    "binary_has_prefix_files":[
-    "lib/libfontconfig.so.1.*"
+    "lib/libfontconfig.*.dylib*"
    ],
    "number":"1002",
    "run_exports":[
@@ -773,19 +769,19 @@
     "icu",
     "libpng",
     "libxml2",
-    "libuuid"
+    "libiconv"
    ],
    "run":[
     "freetype",
     "icu",
     "libpng",
     "libxml2",
-    "libuuid"
+    "libiconv"
    ]
   },
   "source":{
    "patches":[
-    "fcf.patch"
+    "0001-Disable-test-bz106632.patch"
    ],
    "sha256":"f655dd2a986d7aa97e052261b36aa67b0a64989496361eca8d604e6414006741",
    "url":"http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.bz2"
@@ -826,8 +822,8 @@
    "elements":[
     "freetype",
     "icu",
+    "libiconv",
     "libpng",
-    "libuuid",
     "libxml2"
    ]
   },
@@ -836,8 +832,8 @@
    "elements":[
     "freetype",
     "icu",
+    "libiconv",
     "libpng",
-    "libuuid",
     "libxml2"
    ]
   },
@@ -1000,9 +996,6 @@
    "summary":"A library for configuring and customizing font access"
   },
   "build":{
-   "binary_has_prefix_files":[
-    "lib/libfontconfig.*.dylib*"
-   ],
    "number":"1002",
    "run_exports":[
     "fontconfig"
@@ -1023,15 +1016,17 @@
   },
   "requirements":{
    "build":[
-    "autoconf",
-    "automake",
+    "m2-autoconf",
+    "m2-automake1.15",
     "gettext",
-    "gperf",
-    "libtool",
-    "patch",
-    "pkg-config",
-    "xz",
-    "c_compiler_stub",
+    "m2-gperf",
+    "m2-libtool",
+    "m2-patch",
+    "m2w64-binutils",
+    "m2w64-pkg-config",
+    "m2w64-xz",
+    "posix",
+    "vs2015_win-64",
     "make"
    ],
    "host":[
@@ -1051,7 +1046,11 @@
   },
   "source":{
    "patches":[
-    "0001-Disable-test-bz106632.patch"
+    "0001-Disable-test-bz106632.patch",
+    "0002-Disable-some-more-Windows-unfriendly-tests.patch",
+    "0003-Import-MSVC-compatibility-files-from-ShiftMediaProje.patch",
+    "0004-SMB-getopt.h-also-add-this.patch",
+    "0005-Make-private-pkg-config-requirements-public.patch"
    ],
    "sha256":"f655dd2a986d7aa97e052261b36aa67b0a64989496361eca8d604e6414006741",
    "url":"http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.bz2"
@@ -1066,8 +1065,7 @@
     "fc-query --help",
     "fc-scan --help",
     "fc-validate --help",
-    "test -f $PREFIX/lib/libfontconfig.a",
-    "test -f $PREFIX/lib/libfontconfig${SHLIB_EXT}"
+    "if not exist %PREFIX%/Library/lib/fontconfig.lib exit /b 1"
    ]
   }
  },
@@ -1075,16 +1073,18 @@
   "build":{
    "__set__":true,
    "elements":[
-    "autoconf",
-    "automake",
-    "c_compiler_stub",
     "gettext",
-    "gperf",
-    "libtool",
+    "m2-autoconf",
+    "m2-automake1.15",
+    "m2-gperf",
+    "m2-libtool",
+    "m2-patch",
+    "m2w64-binutils",
+    "m2w64-pkg-config",
+    "m2w64-xz",
     "make",
-    "patch",
-    "pkg-config",
-    "xz"
+    "posix",
+    "vs2015_win-64"
    ]
   },
   "host":{

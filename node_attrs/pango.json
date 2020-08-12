@@ -48,7 +48,7 @@
   }
  ],
  "archived":false,
- "bad":false,
+ "bad":"Upstream: unknown source",
  "conda-forge.yml":{
   "compiler_stack":"comp7",
   "max_py_ver":"37",
@@ -335,6 +335,7 @@
     "make",
     "perl",
     "pkg-config",
+    "pthread-stubs",
     "python >=2.7,<3",
     "c_compiler_stub"
    ],
@@ -367,7 +368,6 @@
    "commands":[
     "pango-view --help",
     "conda inspect linkages -p $PREFIX $PKG_NAME",
-    "conda inspect objects -p $PREFIX $PKG_NAME",
     "test -f $PREFIX/lib/libpango-1.0${SHLIB_EXT}",
     "test -f `pkg-config --variable=libdir --dont-define-prefix pango`/libpango-1.0${SHLIB_EXT}",
     "test -f $PREFIX/lib/libpangocairo-1.0${SHLIB_EXT}",
@@ -390,6 +390,7 @@
     "make",
     "perl",
     "pkg-config",
+    "pthread-stubs",
     "python"
    ]
   },
@@ -663,8 +664,7 @@
   },
   "build":{
    "detect_binary_files_with_prefix":true,
-   "number":"4",
-   "skip":true
+   "number":"4"
   },
   "extra":{
    "recipe-maintainers":[
@@ -680,15 +680,19 @@
   },
   "requirements":{
    "build":[
-    "meson 0.53.2",
-    "ninja",
+    "make",
+    "perl",
     "pkg-config",
+    "python >=2.7,<3",
     "c_compiler_stub"
    ],
    "host":[
     "cairo",
     "fribidi",
     "glib",
+    "harfbuzz",
+    "fontconfig",
+    "freetype",
     "gobject-introspection",
     "libpng"
    ],
@@ -696,35 +700,30 @@
     "cairo",
     "fribidi",
     "glib",
+    "harfbuzz",
+    "fontconfig",
+    "freetype",
     "libpng"
    ]
   },
   "source":{
-   "patches":[
-    "windows_fix_libm_in_pc_file.patch"
-   ],
+   "patches":null,
    "sha256":"1d2b74cd63e8bd41961f2f8d952355aa0f9be6002b52c8aa7699d9f5da597c9d",
    "url":"http://ftp.gnome.org/pub/GNOME/sources/pango/1.42/pango-1.42.4.tar.xz"
   },
   "test":{
    "commands":[
     "pango-view --help",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\pango-1.0-0.dll exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix pango`) do if not exist \"%%a/bin/pango-1.0-0.dll\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pango-1.0.lib exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix pango`) do if not exist \"%%a/pango-1.0.lib\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\pangocairo-1.0-0.dll exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix pangocairo`) do if not exist \"%%a/bin/pangocairo-1.0-0.dll\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pangocairo-1.0.lib exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix pangocairo`) do if not exist \"%%a/pangocairo-1.0.lib\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\pangoft2-1.0-0.dll exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix pangoft2`) do if not exist \"%%a/bin/pangoft2-1.0-0.dll\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pangoft2-1.0.lib exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix pangoft2`) do if not exist \"%%a/pangoft2-1.0.lib\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\pangowin32-1.0-0.dll exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix pangowin32`) do if not exist \"%%a/bin/pangowin32-1.0-0.dll\" exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pangowin32-1.0.lib exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix pangowin32`) do if not exist \"%%a/pangowin32-1.0.lib\" exit 1"
+    "conda inspect linkages -p $PREFIX $PKG_NAME",
+    "conda inspect objects -p $PREFIX $PKG_NAME",
+    "test -f $PREFIX/lib/libpango-1.0${SHLIB_EXT}",
+    "test -f `pkg-config --variable=libdir --dont-define-prefix pango`/libpango-1.0${SHLIB_EXT}",
+    "test -f $PREFIX/lib/libpangocairo-1.0${SHLIB_EXT}",
+    "test -f `pkg-config --variable=libdir --dont-define-prefix pangocairo`/libpangocairo-1.0${SHLIB_EXT}",
+    "test -f $PREFIX/lib/libpangoft2-1.0${SHLIB_EXT}",
+    "test -f `pkg-config --variable=libdir --dont-define-prefix pangoft2`/libpangoft2-1.0${SHLIB_EXT}",
+    "test -f $PREFIX/lib/libpangowin32-1.0${SHLIB_EXT}",
+    "test -f `pkg-config --variable=libdir --dont-define-prefix pangowin32`/libpangowin32-1.0${SHLIB_EXT}"
    ],
    "requires":[
     "pkg-config"
@@ -736,18 +735,22 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "meson",
-    "ninja",
-    "pkg-config"
+    "make",
+    "perl",
+    "pkg-config",
+    "python"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
     "cairo",
+    "fontconfig",
+    "freetype",
     "fribidi",
     "glib",
     "gobject-introspection",
+    "harfbuzz",
     "libpng"
    ]
   },
@@ -755,8 +758,11 @@
    "__set__":true,
    "elements":[
     "cairo",
+    "fontconfig",
+    "freetype",
     "fribidi",
     "glib",
+    "harfbuzz",
     "libpng"
    ]
   },
@@ -898,7 +904,8 @@
   },
   "build":{
    "detect_binary_files_with_prefix":true,
-   "number":"4"
+   "number":"4",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -914,20 +921,15 @@
   },
   "requirements":{
    "build":[
-    "make",
-    "perl",
+    "meson 0.53.2",
+    "ninja",
     "pkg-config",
-    "pthread-stubs",
-    "python >=2.7,<3",
     "c_compiler_stub"
    ],
    "host":[
     "cairo",
     "fribidi",
     "glib",
-    "harfbuzz",
-    "fontconfig",
-    "freetype",
     "gobject-introspection",
     "libpng"
    ],
@@ -935,29 +937,35 @@
     "cairo",
     "fribidi",
     "glib",
-    "harfbuzz",
-    "fontconfig",
-    "freetype",
     "libpng"
    ]
   },
   "source":{
-   "patches":null,
+   "patches":[
+    "windows_fix_libm_in_pc_file.patch"
+   ],
    "sha256":"1d2b74cd63e8bd41961f2f8d952355aa0f9be6002b52c8aa7699d9f5da597c9d",
    "url":"http://ftp.gnome.org/pub/GNOME/sources/pango/1.42/pango-1.42.4.tar.xz"
   },
   "test":{
    "commands":[
     "pango-view --help",
-    "conda inspect linkages -p $PREFIX $PKG_NAME",
-    "test -f $PREFIX/lib/libpango-1.0${SHLIB_EXT}",
-    "test -f `pkg-config --variable=libdir --dont-define-prefix pango`/libpango-1.0${SHLIB_EXT}",
-    "test -f $PREFIX/lib/libpangocairo-1.0${SHLIB_EXT}",
-    "test -f `pkg-config --variable=libdir --dont-define-prefix pangocairo`/libpangocairo-1.0${SHLIB_EXT}",
-    "test -f $PREFIX/lib/libpangoft2-1.0${SHLIB_EXT}",
-    "test -f `pkg-config --variable=libdir --dont-define-prefix pangoft2`/libpangoft2-1.0${SHLIB_EXT}",
-    "test -f $PREFIX/lib/libpangowin32-1.0${SHLIB_EXT}",
-    "test -f `pkg-config --variable=libdir --dont-define-prefix pangowin32`/libpangowin32-1.0${SHLIB_EXT}"
+    "if not exist %PREFIX%\\\\Library\\\\bin\\\\pango-1.0-0.dll exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix pango`) do if not exist \"%%a/bin/pango-1.0-0.dll\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pango-1.0.lib exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix pango`) do if not exist \"%%a/pango-1.0.lib\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\bin\\\\pangocairo-1.0-0.dll exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix pangocairo`) do if not exist \"%%a/bin/pangocairo-1.0-0.dll\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pangocairo-1.0.lib exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix pangocairo`) do if not exist \"%%a/pangocairo-1.0.lib\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\bin\\\\pangoft2-1.0-0.dll exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix pangoft2`) do if not exist \"%%a/bin/pangoft2-1.0-0.dll\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pangoft2-1.0.lib exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix pangoft2`) do if not exist \"%%a/pangoft2-1.0.lib\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\bin\\\\pangowin32-1.0-0.dll exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix pangowin32`) do if not exist \"%%a/bin/pangowin32-1.0-0.dll\" exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pangowin32-1.0.lib exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix pangowin32`) do if not exist \"%%a/pangowin32-1.0.lib\" exit 1"
    ],
    "requires":[
     "pkg-config"
@@ -969,23 +977,18 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "make",
-    "perl",
-    "pkg-config",
-    "pthread-stubs",
-    "python"
+    "meson",
+    "ninja",
+    "pkg-config"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
     "cairo",
-    "fontconfig",
-    "freetype",
     "fribidi",
     "glib",
     "gobject-introspection",
-    "harfbuzz",
     "libpng"
    ]
   },
@@ -993,11 +996,8 @@
    "__set__":true,
    "elements":[
     "cairo",
-    "fontconfig",
-    "freetype",
     "fribidi",
     "glib",
-    "harfbuzz",
     "libpng"
    ]
   },

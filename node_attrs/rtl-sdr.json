@@ -38,16 +38,14 @@
    "build":[
     "c_compiler_stub",
     "cmake",
-    "ninja",
+    "cdt_stub",
+    "make",
     "pkg-config"
    ],
    "host":[
-    "libusb >=1",
-    "pthreads-win32"
+    "libusb >=1"
    ],
-   "run":[
-    "pthreads-win32"
-   ]
+   "run":null
   },
   "source":{
    "patches":[
@@ -58,19 +56,17 @@
   },
   "test":{
    "commands":[
-    "setlocal EnableDelayedExpansion",
-    "rtl_adsb -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "rtl_eeprom -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "rtl_fm -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "rtl_power -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "rtl_sdr -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "rtl_tcp -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "rtl_test -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\rtl-sdr.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\rtl-sdr_export.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\rtlsdr.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\rtlsdr.lib exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\rtlsdr_static.lib exit 1"
+    "rtl_adsb -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "rtl_eeprom -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "rtl_fm -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "rtl_power -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "rtl_sdr -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "rtl_tcp -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "rtl_test -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "test -f $PREFIX/include/rtl-sdr.h",
+    "test -f $PREFIX/include/rtl-sdr_export.h",
+    "test -f $PREFIX/lib/librtlsdr${SHLIB_EXT}",
+    "test -f $PREFIX/lib/librtlsdr.a"
    ]
   }
  },
@@ -79,23 +75,21 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
+    "cdt_stub",
     "cmake",
-    "ninja",
+    "make",
     "pkg-config"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
-    "libusb",
-    "pthreads-win32"
+    "libusb"
    ]
   },
   "run":{
    "__set__":true,
-   "elements":[
-    "pthreads-win32"
-   ]
+   "elements":[]
   },
   "test":{
    "__set__":true,
@@ -239,7 +233,6 @@
    "build":[
     "c_compiler_stub",
     "cmake",
-    "cdt_stub",
     "make",
     "pkg-config"
    ],
@@ -276,7 +269,6 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cdt_stub",
     "cmake",
     "make",
     "pkg-config"
@@ -404,13 +396,16 @@
    "build":[
     "c_compiler_stub",
     "cmake",
-    "make",
+    "ninja",
     "pkg-config"
    ],
    "host":[
-    "libusb >=1"
+    "libusb >=1",
+    "pthreads-win32"
    ],
-   "run":null
+   "run":[
+    "pthreads-win32"
+   ]
   },
   "source":{
    "patches":[
@@ -421,17 +416,19 @@
   },
   "test":{
    "commands":[
-    "rtl_adsb -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "rtl_eeprom -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "rtl_fm -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "rtl_power -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "rtl_sdr -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "rtl_tcp -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "rtl_test -h || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "test -f $PREFIX/include/rtl-sdr.h",
-    "test -f $PREFIX/include/rtl-sdr_export.h",
-    "test -f $PREFIX/lib/librtlsdr${SHLIB_EXT}",
-    "test -f $PREFIX/lib/librtlsdr.a"
+    "setlocal EnableDelayedExpansion",
+    "rtl_adsb -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+    "rtl_eeprom -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+    "rtl_fm -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+    "rtl_power -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+    "rtl_sdr -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+    "rtl_tcp -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+    "rtl_test -h || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\rtl-sdr.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\rtl-sdr_export.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\bin\\\\rtlsdr.dll exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\rtlsdr.lib exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\rtlsdr_static.lib exit 1"
    ]
   }
  },
@@ -441,19 +438,22 @@
    "elements":[
     "c_compiler_stub",
     "cmake",
-    "make",
+    "ninja",
     "pkg-config"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
-    "libusb"
+    "libusb",
+    "pthreads-win32"
    ]
   },
   "run":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "pthreads-win32"
+   ]
   },
   "test":{
    "__set__":true,

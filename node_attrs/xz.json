@@ -70,7 +70,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"azure",
@@ -338,8 +338,7 @@
       "lzma --help",
       "test -f ${PREFIX}/lib/liblzma${SHLIB_EXT}",
       "test ! -f ${PREFIX}/lib/liblzma.a",
-      "conda inspect linkages -p $PREFIX $PKG_NAME",
-      "conda inspect objects -p $PREFIX $PKG_NAME"
+      "conda inspect linkages -p $PREFIX $PKG_NAME"
      ]
     }
    },
@@ -726,15 +725,16 @@
   "outputs":[
    {
     "name":"xz",
-    "script":"install.bat",
+    "script":"install.sh",
     "test":{
      "commands":[
-      "xz.exe --help",
-      "unxz.exe --help",
-      "if not exist %LIBRARY_PREFIX%\\bin\\liblzma.dll exit 1",
-      "if not exist %LIBRARY_PREFIX%\\lib\\liblzma.lib exit 1",
-      "if exist %LIBRARY_PREFIX%\\lib\\liblzma_static.lib exit 1",
-      "if not exist %LIBRARY_PREFIX%\\include\\lzma.h exit 1"
+      "xz --help",
+      "unxz --help",
+      "lzma --help",
+      "test -f ${PREFIX}/lib/liblzma${SHLIB_EXT}",
+      "test ! -f ${PREFIX}/lib/liblzma.a",
+      "conda inspect linkages -p $PREFIX $PKG_NAME",
+      "conda inspect objects -p $PREFIX $PKG_NAME"
      ]
     }
    },
@@ -743,22 +743,20 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "c99-to-c89",
-      "cmake",
-      "ninja"
+      "make",
+      "automake"
      ],
      "host":[
-      "msinttypes",
       "xz"
      ],
      "run":[
       "xz"
      ]
     },
-    "script":"install.bat",
+    "script":"install.sh",
     "test":{
      "commands":[
-      "if not exist %LIBRARY_PREFIX%\\lib\\liblzma_static.lib exit 1"
+      "test -f ${PREFIX}/lib/liblzma.a"
      ]
     }
    }
@@ -770,13 +768,10 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "c99-to-c89",
-    "cmake",
-    "ninja"
+    "make",
+    "automake"
    ],
-   "host":[
-    "msinttypes"
-   ]
+   "host":null
   },
   "source":{
    "patches":[
@@ -791,16 +786,14 @@
   "build":{
    "__set__":true,
    "elements":[
-    "c99-to-c89",
+    "automake",
     "c_compiler_stub",
-    "cmake",
-    "ninja"
+    "make"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
-    "msinttypes",
     "xz"
    ]
   },
@@ -927,15 +920,15 @@
   "outputs":[
    {
     "name":"xz",
-    "script":"install.sh",
+    "script":"install.bat",
     "test":{
      "commands":[
-      "xz --help",
-      "unxz --help",
-      "lzma --help",
-      "test -f ${PREFIX}/lib/liblzma${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/liblzma.a",
-      "conda inspect linkages -p $PREFIX $PKG_NAME"
+      "xz.exe --help",
+      "unxz.exe --help",
+      "if not exist %LIBRARY_PREFIX%\\bin\\liblzma.dll exit 1",
+      "if not exist %LIBRARY_PREFIX%\\lib\\liblzma.lib exit 1",
+      "if exist %LIBRARY_PREFIX%\\lib\\liblzma_static.lib exit 1",
+      "if not exist %LIBRARY_PREFIX%\\include\\lzma.h exit 1"
      ]
     }
    },
@@ -944,20 +937,22 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "make",
-      "automake"
+      "c99-to-c89",
+      "cmake",
+      "ninja"
      ],
      "host":[
+      "msinttypes",
       "xz"
      ],
      "run":[
       "xz"
      ]
     },
-    "script":"install.sh",
+    "script":"install.bat",
     "test":{
      "commands":[
-      "test -f ${PREFIX}/lib/liblzma.a"
+      "if not exist %LIBRARY_PREFIX%\\lib\\liblzma_static.lib exit 1"
      ]
     }
    }
@@ -969,10 +964,13 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "make",
-    "automake"
+    "c99-to-c89",
+    "cmake",
+    "ninja"
    ],
-   "host":null
+   "host":[
+    "msinttypes"
+   ]
   },
   "source":{
    "patches":[
@@ -987,14 +985,16 @@
   "build":{
    "__set__":true,
    "elements":[
-    "automake",
+    "c99-to-c89",
     "c_compiler_stub",
-    "make"
+    "cmake",
+    "ninja"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
+    "msinttypes",
     "xz"
    ]
   },
