@@ -40,7 +40,7 @@
   }
  ],
  "archived":false,
- "bad":false,
+ "bad":"Upstream: unknown source",
  "conda-forge.yml":{},
  "feedstock_name":"libode",
  "hash_type":"sha256",
@@ -56,14 +56,7 @@
   },
   "build":{
    "missing_dso_whitelist":[
-    "lib/libode*",
-    "$RPATH/librt.*",
-    "$RPATH/libpthread.*",
-    "$RPATH/libc.*",
-    "$RPATH/libpython.*",
-    "/lib*/librt.*",
-    "/lib*/libpthread.*",
-    "/lib*/libc.*"
+    "lib/libode*"
    ],
    "number":"1"
   },
@@ -85,8 +78,7 @@
     "requirements":{
      "run":[
       "pthread-stubs",
-      "libstdcxx-ng",
-      "libgcc-ng"
+      "libcxx"
      ]
     },
     "run_exports":[
@@ -95,7 +87,7 @@
     "test":{
      "commands":[
       "test -f $PREFIX/lib/libode${SHLIB_EXT}",
-      "test -f $PREFIX/lib/libode${SHLIB_EXT}.0.16.0",
+      "test -f $PREFIX/lib/libode.0.16.0${SHLIB_EXT}",
       "test -d $PREFIX/include/ode",
       "test -f $PREFIX/lib/pkgconfig/ode.pc"
      ]
@@ -111,8 +103,7 @@
      "run":[
       "libode",
       "pthread-stubs",
-      "libstdcxx-ng",
-      "libgcc-ng",
+      "libcxx",
       "python *"
      ]
     },
@@ -141,9 +132,7 @@
    ]
   },
   "source":{
-   "patches":[
-    "add-rt-to-dotpc"
-   ],
+   "patches":null,
    "sha256":"4ba3b76f9c1314160de483b3db92b0569242a07452cbb25b368e75deb3cabf27",
    "url":"https://bitbucket.org/odedevs/ode/downloads/ode-0.16.tar.gz"
   }
@@ -169,9 +158,8 @@
   "run":{
    "__set__":true,
    "elements":[
-    "libgcc-ng",
+    "libcxx",
     "libode",
-    "libstdcxx-ng",
     "pthread-stubs",
     "python"
    ]
@@ -412,7 +400,14 @@
   },
   "build":{
    "missing_dso_whitelist":[
-    "lib/libode*"
+    "lib/libode*",
+    "$RPATH/librt.*",
+    "$RPATH/libpthread.*",
+    "$RPATH/libc.*",
+    "$RPATH/libpython.*",
+    "/lib*/librt.*",
+    "/lib*/libpthread.*",
+    "/lib*/libc.*"
    ],
    "number":"1"
   },
@@ -424,16 +419,18 @@
   "outputs":[
    {
     "files":[
-     "Library/lib/ode_double.lib",
-     "Library/bin/ode_double.dll",
-     "Library/lib/pkgconfig/ode.pc",
-     "Library/lib/cmake/ode*",
+     "lib/libode*",
+     "lib/pkgconfig/ode.pc",
+     "lib/cmake/ode-0.16.0",
+     "bin/ode-config",
      "include/ode"
     ],
     "name":"libode",
     "requirements":{
      "run":[
-      "vs2015_runtime"
+      "pthread-stubs",
+      "libstdcxx-ng",
+      "libgcc-ng"
      ]
     },
     "run_exports":[
@@ -441,21 +438,25 @@
     ],
     "test":{
      "commands":[
-      "if not exist %PREFIX%\\Library\\lib\\ode_double.lib exit 1",
-      "if not exist %PREFIX%\\Library\\bin\\ode_double.dll exit 1",
-      "if not exist %PREFIX%\\Library\\lib\\pkgconfig\\ode.pc exit 1"
+      "test -f $PREFIX/lib/libode${SHLIB_EXT}",
+      "test -f $PREFIX/lib/libode${SHLIB_EXT}.0.16.0",
+      "test -d $PREFIX/include/ode",
+      "test -f $PREFIX/lib/pkgconfig/ode.pc"
      ]
     }
    },
    {
     "files":[
-     "Lib/site-packages/ode.*.pyd",
-     "Lib/site-packages/Open_Dynamics_Engine*egg-info"
+     "lib/python/site-packages/ode.*",
+     "lib/python/site-packages/Open_Dynamics_Engine*egg-info"
     ],
     "name":"pyode",
     "requirements":{
      "run":[
       "libode",
+      "pthread-stubs",
+      "libstdcxx-ng",
+      "libgcc-ng",
       "python *"
      ]
     },
@@ -476,7 +477,7 @@
     "cmake",
     "c_compiler_stub",
     "pkg-config",
-    "m2-patch"
+    "make"
    ],
    "host":[
     "python *",
@@ -485,8 +486,7 @@
   },
   "source":{
    "patches":[
-    "modify-dotpc-win",
-    "window-pointer-size"
+    "add-rt-to-dotpc"
    ],
    "sha256":"4ba3b76f9c1314160de483b3db92b0569242a07452cbb25b368e75deb3cabf27",
    "url":"https://bitbucket.org/odedevs/ode/downloads/ode-0.16.tar.gz"
@@ -499,7 +499,7 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "m2-patch",
+    "make",
     "pkg-config"
    ]
   },
@@ -513,9 +513,11 @@
   "run":{
    "__set__":true,
    "elements":[
+    "libgcc-ng",
     "libode",
-    "python",
-    "vs2015_runtime"
+    "libstdcxx-ng",
+    "pthread-stubs",
+    "python"
    ]
   },
   "test":{
@@ -648,17 +650,16 @@
   "outputs":[
    {
     "files":[
-     "lib/libode*",
-     "lib/pkgconfig/ode.pc",
-     "lib/cmake/ode-0.16.0",
-     "bin/ode-config",
+     "Library/lib/ode_double.lib",
+     "Library/bin/ode_double.dll",
+     "Library/lib/pkgconfig/ode.pc",
+     "Library/lib/cmake/ode*",
      "include/ode"
     ],
     "name":"libode",
     "requirements":{
      "run":[
-      "pthread-stubs",
-      "libcxx"
+      "vs2015_runtime"
      ]
     },
     "run_exports":[
@@ -666,24 +667,21 @@
     ],
     "test":{
      "commands":[
-      "test -f $PREFIX/lib/libode${SHLIB_EXT}",
-      "test -f $PREFIX/lib/libode.0.16.0${SHLIB_EXT}",
-      "test -d $PREFIX/include/ode",
-      "test -f $PREFIX/lib/pkgconfig/ode.pc"
+      "if not exist %PREFIX%\\Library\\lib\\ode_double.lib exit 1",
+      "if not exist %PREFIX%\\Library\\bin\\ode_double.dll exit 1",
+      "if not exist %PREFIX%\\Library\\lib\\pkgconfig\\ode.pc exit 1"
      ]
     }
    },
    {
     "files":[
-     "lib/python/site-packages/ode.*",
-     "lib/python/site-packages/Open_Dynamics_Engine*egg-info"
+     "Lib/site-packages/ode.*.pyd",
+     "Lib/site-packages/Open_Dynamics_Engine*egg-info"
     ],
     "name":"pyode",
     "requirements":{
      "run":[
       "libode",
-      "pthread-stubs",
-      "libcxx",
       "python *"
      ]
     },
@@ -704,7 +702,7 @@
     "cmake",
     "c_compiler_stub",
     "pkg-config",
-    "make"
+    "m2-patch"
    ],
    "host":[
     "python *",
@@ -712,7 +710,10 @@
    ]
   },
   "source":{
-   "patches":null,
+   "patches":[
+    "modify-dotpc-win",
+    "window-pointer-size"
+   ],
    "sha256":"4ba3b76f9c1314160de483b3db92b0569242a07452cbb25b368e75deb3cabf27",
    "url":"https://bitbucket.org/odedevs/ode/downloads/ode-0.16.tar.gz"
   }
@@ -724,7 +725,7 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "make",
+    "m2-patch",
     "pkg-config"
    ]
   },
@@ -738,10 +739,9 @@
   "run":{
    "__set__":true,
    "elements":[
-    "libcxx",
     "libode",
-    "pthread-stubs",
-    "python"
+    "python",
+    "vs2015_runtime"
    ]
   },
   "test":{

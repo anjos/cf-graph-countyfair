@@ -399,7 +399,7 @@
   }
  ],
  "archived":false,
- "bad":false,
+ "bad":"Upstream: unknown source",
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"azure",
@@ -686,6 +686,227 @@
     "test":{
      "commands":[
       "postgres --help",
+      "conda inspect linkages postgresql",
+      "conda inspect objects postgresql"
+     ]
+    }
+   },
+   {
+    "about":{
+     "summary":"The plpythonu postgresql extension"
+    },
+    "build":{
+     "run_exports":[
+      "postgresql-plpython"
+     ]
+    },
+    "name":"postgresql-plpython",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "make"
+     ],
+     "host":[
+      "openssl",
+      "readline",
+      "zlib",
+      "postgresql",
+      "python",
+      "libxml2",
+      "libxslt 1.1.*",
+      "libuuid"
+     ],
+     "run":[
+      "postgresql",
+      "python",
+      "krb5",
+      "openssl",
+      "readline",
+      "zlib"
+     ]
+    },
+    "script":"install_plpython.sh",
+    "test":{
+     "commands":[
+      "conda inspect linkages postgresql-plpython",
+      "conda inspect objects postgresql-plpython"
+     ]
+    }
+   },
+   {
+    "about":{
+     "summary":"The postgres runtime libraries and utilities (not the server itself)"
+    },
+    "build":{
+     "run_exports":[
+      "libpq"
+     ]
+    },
+    "name":"libpq",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "make"
+     ],
+     "host":[
+      "krb5",
+      "openssl",
+      "readline",
+      "tzcode",
+      "zlib"
+     ]
+    },
+    "script":"install_runtime.sh",
+    "test":{
+     "commands":[
+      "pg_config",
+      "test -f $PREFIX/lib/libpq.5.12.dylib",
+      "test -f $PREFIX/lib/libpq.5.dylib",
+      "test -f $PREFIX/lib/libpq.dylib"
+     ]
+    }
+   }
+  ],
+  "package":{
+   "name":"postgresql-split",
+   "version":"12.3"
+  },
+  "requirements":{
+   "build":[
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "make"
+   ],
+   "host":[
+    "libxml2",
+    "libxslt 1.1.*",
+    "krb5",
+    "openssl",
+    "openssl",
+    "readline",
+    "zlib",
+    "libuuid",
+    "tzcode"
+   ],
+   "run":[
+    "krb5",
+    "openssl",
+    "readline",
+    "tzcode"
+   ]
+  },
+  "source":{
+   "patches":[
+    "patches/0001-fix-win-zlib-name.patch",
+    "patches/0002-disable-new-dtags.patch",
+    "patches/0004-fix-windows-openssl-links-for-openssl-1.1.1.patch"
+   ],
+   "sha256":"94ed64a6179048190695c86ec707cc25d016056ce10fc9d229267d9a8f1dcf41",
+   "url":"https://ftp.postgresql.org/pub/source/v12.3/postgresql-12.3.tar.bz2"
+  }
+ },
+ "linux_aarch64_requirements":{
+  "build":{
+   "__set__":true,
+   "elements":[
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "make"
+   ]
+  },
+  "host":{
+   "__set__":true,
+   "elements":[
+    "krb5",
+    "libpq",
+    "libuuid",
+    "libxml2",
+    "libxslt",
+    "openssl",
+    "postgresql",
+    "python",
+    "readline",
+    "tzcode",
+    "zlib"
+   ]
+  },
+  "run":{
+   "__set__":true,
+   "elements":[
+    "krb5",
+    "libpq",
+    "openssl",
+    "postgresql",
+    "python",
+    "readline",
+    "tzcode",
+    "zlib"
+   ]
+  },
+  "test":{
+   "__set__":true,
+   "elements":[]
+  }
+ },
+ "linux_ppc64le_meta_yaml":{
+  "about":{
+   "home":"http://www.postgresql.org/",
+   "license":"PostgreSQL",
+   "license_file":"COPYRIGHT",
+   "summary":"multi-ouput recipe for postgresql"
+  },
+  "build":{
+   "number":"0"
+  },
+  "extra":{
+   "recipe-maintainers":[
+    "gillins",
+    "msarahan",
+    "ocefpaf",
+    "mariusvniekerk",
+    "sodre"
+   ]
+  },
+  "outputs":[
+   {
+    "about":{
+     "summary":"PostgreSQL is a powerful, open source object-relational database system."
+    },
+    "build":{
+     "run_exports":[
+      "libpq"
+     ]
+    },
+    "name":"postgresql",
+    "requirements":{
+     "build":[
+      "c_compiler_stub",
+      "make"
+     ],
+     "host":[
+      "krb5",
+      "openssl",
+      "readline",
+      "tzcode",
+      "zlib",
+      "libxml2",
+      "libpq"
+     ],
+     "run":[
+      "libpq",
+      "krb5",
+      "openssl",
+      "readline",
+      "tzcode",
+      "zlib"
+     ]
+    },
+    "script":"install_db.sh",
+    "test":{
+     "commands":[
+      "postgres --help",
       "conda inspect linkages postgresql"
      ]
     }
@@ -805,7 +1026,7 @@
    "url":"https://ftp.postgresql.org/pub/source/v12.3/postgresql-12.3.tar.bz2"
   }
  },
- "linux_aarch64_requirements":{
+ "linux_ppc64le_requirements":{
   "build":{
    "__set__":true,
    "elements":[
@@ -841,219 +1062,6 @@
     "python",
     "readline",
     "tzcode",
-    "zlib"
-   ]
-  },
-  "test":{
-   "__set__":true,
-   "elements":[]
-  }
- },
- "linux_ppc64le_meta_yaml":{
-  "about":{
-   "home":"http://www.postgresql.org/",
-   "license":"PostgreSQL",
-   "license_file":"COPYRIGHT",
-   "summary":"multi-ouput recipe for postgresql"
-  },
-  "build":{
-   "number":"0",
-   "skip":true
-  },
-  "extra":{
-   "recipe-maintainers":[
-    "gillins",
-    "msarahan",
-    "ocefpaf",
-    "mariusvniekerk",
-    "sodre"
-   ]
-  },
-  "outputs":[
-   {
-    "about":{
-     "summary":"PostgreSQL is a powerful, open source object-relational database system."
-    },
-    "build":{
-     "run_exports":[
-      "libpq"
-     ]
-    },
-    "name":"postgresql",
-    "requirements":{
-     "build":[
-      "c_compiler_stub",
-      "perl"
-     ],
-     "host":[
-      "krb5",
-      "openssl",
-      "zlib",
-      "libxml2",
-      "msinttypes",
-      "libpq"
-     ],
-     "run":[
-      "libpq",
-      "krb5",
-      "openssl",
-      "zlib"
-     ]
-    },
-    "script":"install_db.bat",
-    "test":{
-     "commands":[
-      "postgres --help"
-     ]
-    }
-   },
-   {
-    "about":{
-     "summary":"The plpythonu postgresql extension"
-    },
-    "build":{
-     "run_exports":[
-      "postgresql-plpython"
-     ]
-    },
-    "name":"postgresql-plpython",
-    "requirements":{
-     "build":[
-      "c_compiler_stub",
-      "perl"
-     ],
-     "host":[
-      "krb5",
-      "openssl",
-      "zlib",
-      "postgresql",
-      "python",
-      "libxml2",
-      "libxslt 1.1.*",
-      "vc"
-     ],
-     "run":[
-      "postgresql",
-      "python",
-      "krb5",
-      "openssl",
-      "zlib"
-     ]
-    },
-    "test":{
-     "commands":null
-    }
-   },
-   {
-    "about":{
-     "summary":"The postgres runtime libraries and utilities (not the server itself)"
-    },
-    "build":{
-     "run_exports":[
-      "libpq"
-     ]
-    },
-    "name":"libpq",
-    "requirements":{
-     "build":[
-      "c_compiler_stub",
-      "perl"
-     ],
-     "host":[
-      "krb5",
-      "openssl",
-      "zlib",
-      "msinttypes"
-     ]
-    },
-    "script":"install_runtime.bat",
-    "test":{
-     "commands":[
-      "pg_config",
-      "IF NOT EXIST %LIBRARY_BIN%\\libpq.dll EXIT 1",
-      "IF NOT EXIST %LIBRARY_BIN%\\pg_config.exe EXIT 1"
-     ]
-    }
-   }
-  ],
-  "package":{
-   "name":"postgresql-split",
-   "version":"12.3"
-  },
-  "requirements":{
-   "build":[
-    "c_compiler_stub",
-    "cxx_compiler_stub"
-   ],
-   "host":[
-    "m2-bison",
-    "m2-diffutils",
-    "m2-flex",
-    "perl",
-    "posix",
-    "libxml2",
-    "libxslt 1.1.*",
-    "krb5",
-    "openssl",
-    "msinttypes",
-    "openssl",
-    "zlib",
-    "vc"
-   ],
-   "run":[
-    "krb5",
-    "openssl"
-   ]
-  },
-  "source":{
-   "patches":[
-    "patches/0001-fix-win-zlib-name.patch",
-    "patches/0002-disable-new-dtags.patch",
-    "patches/fix_gss_win64.patch",
-    "patches/0004-fix-windows-openssl-links-for-openssl-1.1.1.patch",
-    "patches/fix_gssapi_setenv_win.patch"
-   ],
-   "sha256":"94ed64a6179048190695c86ec707cc25d016056ce10fc9d229267d9a8f1dcf41",
-   "url":"https://ftp.postgresql.org/pub/source/v12.3/postgresql-12.3.tar.bz2"
-  }
- },
- "linux_ppc64le_requirements":{
-  "build":{
-   "__set__":true,
-   "elements":[
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "perl"
-   ]
-  },
-  "host":{
-   "__set__":true,
-   "elements":[
-    "krb5",
-    "libpq",
-    "libxml2",
-    "libxslt",
-    "m2-bison",
-    "m2-diffutils",
-    "m2-flex",
-    "msinttypes",
-    "openssl",
-    "perl",
-    "posix",
-    "postgresql",
-    "python",
-    "vc",
-    "zlib"
-   ]
-  },
-  "run":{
-   "__set__":true,
-   "elements":[
-    "krb5",
-    "libpq",
-    "openssl",
-    "postgresql",
-    "python",
     "zlib"
    ]
   },
@@ -1858,8 +1866,7 @@
     "test":{
      "commands":[
       "postgres --help",
-      "conda inspect linkages postgresql",
-      "conda inspect objects postgresql"
+      "conda inspect linkages postgresql"
      ]
     }
    },
@@ -1879,6 +1886,7 @@
       "make"
      ],
      "host":[
+      "krb5",
       "openssl",
       "readline",
       "zlib",
@@ -1900,8 +1908,7 @@
     "script":"install_plpython.sh",
     "test":{
      "commands":[
-      "conda inspect linkages postgresql-plpython",
-      "conda inspect objects postgresql-plpython"
+      "conda inspect linkages postgresql-plpython"
      ]
     }
    },
@@ -1932,9 +1939,9 @@
     "test":{
      "commands":[
       "pg_config",
-      "test -f $PREFIX/lib/libpq.5.12.dylib",
-      "test -f $PREFIX/lib/libpq.5.dylib",
-      "test -f $PREFIX/lib/libpq.dylib"
+      "test -f $PREFIX/lib/libpq.so.5.12",
+      "test -f $PREFIX/lib/libpq.so.5",
+      "test -f $PREFIX/lib/libpq.so"
      ]
     }
    }
@@ -2172,7 +2179,8 @@
    "summary":"multi-ouput recipe for postgresql"
   },
   "build":{
-   "number":"0"
+   "number":"0",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -2197,31 +2205,27 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "make"
+      "perl"
      ],
      "host":[
       "krb5",
       "openssl",
-      "readline",
-      "tzcode",
       "zlib",
       "libxml2",
+      "msinttypes",
       "libpq"
      ],
      "run":[
       "libpq",
       "krb5",
       "openssl",
-      "readline",
-      "tzcode",
       "zlib"
      ]
     },
-    "script":"install_db.sh",
+    "script":"install_db.bat",
     "test":{
      "commands":[
-      "postgres --help",
-      "conda inspect linkages postgresql"
+      "postgres --help"
      ]
     }
    },
@@ -2238,33 +2242,28 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "make"
+      "perl"
      ],
      "host":[
       "krb5",
       "openssl",
-      "readline",
       "zlib",
       "postgresql",
       "python",
       "libxml2",
       "libxslt 1.1.*",
-      "libuuid"
+      "vc"
      ],
      "run":[
       "postgresql",
       "python",
       "krb5",
       "openssl",
-      "readline",
       "zlib"
      ]
     },
-    "script":"install_plpython.sh",
     "test":{
-     "commands":[
-      "conda inspect linkages postgresql-plpython"
-     ]
+     "commands":null
     }
    },
    {
@@ -2280,23 +2279,21 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "make"
+      "perl"
      ],
      "host":[
       "krb5",
       "openssl",
-      "readline",
-      "tzcode",
-      "zlib"
+      "zlib",
+      "msinttypes"
      ]
     },
-    "script":"install_runtime.sh",
+    "script":"install_runtime.bat",
     "test":{
      "commands":[
       "pg_config",
-      "test -f $PREFIX/lib/libpq.so.5.12",
-      "test -f $PREFIX/lib/libpq.so.5",
-      "test -f $PREFIX/lib/libpq.so"
+      "IF NOT EXIST %LIBRARY_BIN%\\libpq.dll EXIT 1",
+      "IF NOT EXIST %LIBRARY_BIN%\\pg_config.exe EXIT 1"
      ]
     }
    }
@@ -2308,33 +2305,35 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cxx_compiler_stub",
-    "fortran_compiler_stub",
-    "make"
+    "cxx_compiler_stub"
    ],
    "host":[
+    "m2-bison",
+    "m2-diffutils",
+    "m2-flex",
+    "perl",
+    "posix",
     "libxml2",
     "libxslt 1.1.*",
     "krb5",
     "openssl",
+    "msinttypes",
     "openssl",
-    "readline",
     "zlib",
-    "libuuid",
-    "tzcode"
+    "vc"
    ],
    "run":[
     "krb5",
-    "openssl",
-    "readline",
-    "tzcode"
+    "openssl"
    ]
   },
   "source":{
    "patches":[
     "patches/0001-fix-win-zlib-name.patch",
     "patches/0002-disable-new-dtags.patch",
-    "patches/0004-fix-windows-openssl-links-for-openssl-1.1.1.patch"
+    "patches/fix_gss_win64.patch",
+    "patches/0004-fix-windows-openssl-links-for-openssl-1.1.1.patch",
+    "patches/fix_gssapi_setenv_win.patch"
    ],
    "sha256":"94ed64a6179048190695c86ec707cc25d016056ce10fc9d229267d9a8f1dcf41",
    "url":"https://ftp.postgresql.org/pub/source/v12.3/postgresql-12.3.tar.bz2"
@@ -2346,8 +2345,7 @@
    "elements":[
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "fortran_compiler_stub",
-    "make"
+    "perl"
    ]
   },
   "host":{
@@ -2355,14 +2353,18 @@
    "elements":[
     "krb5",
     "libpq",
-    "libuuid",
     "libxml2",
     "libxslt",
+    "m2-bison",
+    "m2-diffutils",
+    "m2-flex",
+    "msinttypes",
     "openssl",
+    "perl",
+    "posix",
     "postgresql",
     "python",
-    "readline",
-    "tzcode",
+    "vc",
     "zlib"
    ]
   },
@@ -2374,8 +2376,6 @@
     "openssl",
     "postgresql",
     "python",
-    "readline",
-    "tzcode",
     "zlib"
    ]
   },

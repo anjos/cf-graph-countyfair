@@ -236,23 +236,30 @@
     "pythran = pythran.run:run",
     "pythran-config = pythran.config:run",
     "pythran = pythran.run:run",
+    "pythran-config = pythran.config:run",
+    "pythran = pythran.run:run",
     "pythran-config = pythran.config:run"
    ],
    "number":"0",
    "script":[
     "python -c \"import os, shutil; shutil.rmtree(os.path.join('pythran', 'xsimd'))\"",
-    "python -c \"s = open('pythran\\pythran-win32.cfg', 'r'); c = s.read(); s.close(); s = open('pythran\\pythran-win32.cfg', 'w'); r = c.replace('CC=', 'CC=clang-cl.exe').replace('CXX=','CXX=clang-cl.exe'); s.write(r); s.close(); print(r)\"",
+    "python -c \"with open('setup.cfg', 'w') as s: s.write('[build_py]\\nno_xsimd=True')\"",
     "python -m pip install . --no-deps -vv",
     "python -c \"import os, shutil; shutil.rmtree(os.path.join('pythran', 'xsimd'))\"",
-    "python -c \"s = open('pythran\\pythran-win32.cfg', 'r'); c = s.read(); s.close(); s = open('pythran\\pythran-win32.cfg', 'w'); r = c.replace('CC=', 'CC=clang-cl.exe').replace('CXX=','CXX=clang-cl.exe'); s.write(r); s.close(); print(r)\"",
+    "python -c \"with open('setup.cfg', 'w') as s: s.write('[build_py]\\nno_xsimd=True')\"",
     "python -m pip install . --no-deps -vv",
     "python -c \"import os, shutil; shutil.rmtree(os.path.join('pythran', 'xsimd'))\"",
-    "python -c \"s = open('pythran\\pythran-win32.cfg', 'r'); c = s.read(); s.close(); s = open('pythran\\pythran-win32.cfg', 'w'); r = c.replace('CC=', 'CC=clang-cl.exe').replace('CXX=','CXX=clang-cl.exe'); s.write(r); s.close(); print(r)\"",
+    "python -c \"with open('setup.cfg', 'w') as s: s.write('[build_py]\\nno_xsimd=True')\"",
+    "python -m pip install . --no-deps -vv",
+    "python -c \"import os, shutil; shutil.rmtree(os.path.join('pythran', 'xsimd'))\"",
+    "python -c \"with open('setup.cfg', 'w') as s: s.write('[build_py]\\nno_xsimd=True')\"",
     "python -m pip install . --no-deps -vv"
    ]
   },
   "extra":{
    "recipe-maintainers":[
+    "saraedum",
+    "serge-sans-paille",
     "saraedum",
     "serge-sans-paille",
     "saraedum",
@@ -267,11 +274,16 @@
   },
   "requirements":{
    "build":[
-    "clang",
-    "clang",
-    "clang"
+    "cxx_compiler_stub",
+    "cxx_compiler_stub",
+    "cxx_compiler_stub",
+    "cxx_compiler_stub"
    ],
    "host":[
+    "python",
+    "pip",
+    "numpy >=1.13",
+    "pytest-runner",
     "python",
     "pip",
     "numpy >=1.13",
@@ -286,7 +298,7 @@
     "pytest-runner"
    ],
    "run":[
-    "clang",
+    "cxx_compiler_stub",
     "python",
     "numpy",
     "decorator",
@@ -295,7 +307,8 @@
     "ply >=3.4",
     "six",
     "beniget >=0.2.0",
-    "clang",
+    "xsimd =7.2.2",
+    "cxx_compiler_stub",
     "python",
     "numpy",
     "decorator",
@@ -304,7 +317,8 @@
     "ply >=3.4",
     "six",
     "beniget >=0.2.0",
-    "clang",
+    "xsimd =7.2.2",
+    "cxx_compiler_stub",
     "python",
     "numpy",
     "decorator",
@@ -312,7 +326,18 @@
     "networkx >=2",
     "ply >=3.4",
     "six",
-    "beniget >=0.2.0"
+    "beniget >=0.2.0",
+    "xsimd =7.2.2",
+    "cxx_compiler_stub",
+    "python",
+    "numpy",
+    "decorator",
+    "gast >=0.3.0",
+    "networkx >=2",
+    "ply >=3.4",
+    "six",
+    "beniget >=0.2.0",
+    "xsimd =7.2.2"
    ]
   },
   "source":{
@@ -332,6 +357,10 @@
     "pythran -v dprod.py",
     "python -c \"import dprod\"",
     "pythran -v simple_numexpr.py -DUSE_XSIMD -march=native",
+    "python -c \"import simple_numexpr\"",
+    "pythran -v dprod.py",
+    "python -c \"import dprod\"",
+    "pythran -v simple_numexpr.py -DUSE_XSIMD -march=native",
     "python -c \"import simple_numexpr\""
    ],
    "files":[
@@ -340,19 +369,30 @@
     "dprod.py",
     "simple_numexpr.py",
     "dprod.py",
+    "simple_numexpr.py",
+    "dprod.py",
     "simple_numexpr.py"
    ],
    "imports":[
+    "omp",
     "pythran",
     "pythran.analyses",
     "pythran.optimizations",
     "pythran.transformations",
     "pythran.types",
+    "omp",
     "pythran",
     "pythran.analyses",
     "pythran.optimizations",
     "pythran.transformations",
     "pythran.types",
+    "omp",
+    "pythran",
+    "pythran.analyses",
+    "pythran.optimizations",
+    "pythran.transformations",
+    "pythran.types",
+    "omp",
     "pythran",
     "pythran.analyses",
     "pythran.optimizations",
@@ -365,7 +405,7 @@
   "build":{
    "__set__":true,
    "elements":[
-    "clang"
+    "cxx_compiler_stub"
    ]
   },
   "host":{
@@ -381,14 +421,15 @@
    "__set__":true,
    "elements":[
     "beniget",
-    "clang",
+    "cxx_compiler_stub",
     "decorator",
     "gast",
     "networkx",
     "numpy",
     "ply",
     "python",
-    "six"
+    "six",
+    "xsimd"
    ]
   },
   "test":{
@@ -837,30 +878,23 @@
     "pythran = pythran.run:run",
     "pythran-config = pythran.config:run",
     "pythran = pythran.run:run",
-    "pythran-config = pythran.config:run",
-    "pythran = pythran.run:run",
     "pythran-config = pythran.config:run"
    ],
    "number":"0",
    "script":[
     "python -c \"import os, shutil; shutil.rmtree(os.path.join('pythran', 'xsimd'))\"",
-    "python -c \"with open('setup.cfg', 'w') as s: s.write('[build_py]\\nno_xsimd=True')\"",
+    "python -c \"s = open('pythran\\pythran-win32.cfg', 'r'); c = s.read(); s.close(); s = open('pythran\\pythran-win32.cfg', 'w'); r = c.replace('CC=', 'CC=clang-cl.exe').replace('CXX=','CXX=clang-cl.exe'); s.write(r); s.close(); print(r)\"",
     "python -m pip install . --no-deps -vv",
     "python -c \"import os, shutil; shutil.rmtree(os.path.join('pythran', 'xsimd'))\"",
-    "python -c \"with open('setup.cfg', 'w') as s: s.write('[build_py]\\nno_xsimd=True')\"",
+    "python -c \"s = open('pythran\\pythran-win32.cfg', 'r'); c = s.read(); s.close(); s = open('pythran\\pythran-win32.cfg', 'w'); r = c.replace('CC=', 'CC=clang-cl.exe').replace('CXX=','CXX=clang-cl.exe'); s.write(r); s.close(); print(r)\"",
     "python -m pip install . --no-deps -vv",
     "python -c \"import os, shutil; shutil.rmtree(os.path.join('pythran', 'xsimd'))\"",
-    "python -c \"with open('setup.cfg', 'w') as s: s.write('[build_py]\\nno_xsimd=True')\"",
-    "python -m pip install . --no-deps -vv",
-    "python -c \"import os, shutil; shutil.rmtree(os.path.join('pythran', 'xsimd'))\"",
-    "python -c \"with open('setup.cfg', 'w') as s: s.write('[build_py]\\nno_xsimd=True')\"",
+    "python -c \"s = open('pythran\\pythran-win32.cfg', 'r'); c = s.read(); s.close(); s = open('pythran\\pythran-win32.cfg', 'w'); r = c.replace('CC=', 'CC=clang-cl.exe').replace('CXX=','CXX=clang-cl.exe'); s.write(r); s.close(); print(r)\"",
     "python -m pip install . --no-deps -vv"
    ]
   },
   "extra":{
    "recipe-maintainers":[
-    "saraedum",
-    "serge-sans-paille",
     "saraedum",
     "serge-sans-paille",
     "saraedum",
@@ -875,16 +909,11 @@
   },
   "requirements":{
    "build":[
-    "cxx_compiler_stub",
-    "cxx_compiler_stub",
-    "cxx_compiler_stub",
-    "cxx_compiler_stub"
+    "clang",
+    "clang",
+    "clang"
    ],
    "host":[
-    "python",
-    "pip",
-    "numpy >=1.13",
-    "pytest-runner",
     "python",
     "pip",
     "numpy >=1.13",
@@ -899,7 +928,7 @@
     "pytest-runner"
    ],
    "run":[
-    "cxx_compiler_stub",
+    "clang",
     "python",
     "numpy",
     "decorator",
@@ -908,8 +937,7 @@
     "ply >=3.4",
     "six",
     "beniget >=0.2.0",
-    "xsimd =7.2.2",
-    "cxx_compiler_stub",
+    "clang",
     "python",
     "numpy",
     "decorator",
@@ -918,8 +946,7 @@
     "ply >=3.4",
     "six",
     "beniget >=0.2.0",
-    "xsimd =7.2.2",
-    "cxx_compiler_stub",
+    "clang",
     "python",
     "numpy",
     "decorator",
@@ -927,18 +954,7 @@
     "networkx >=2",
     "ply >=3.4",
     "six",
-    "beniget >=0.2.0",
-    "xsimd =7.2.2",
-    "cxx_compiler_stub",
-    "python",
-    "numpy",
-    "decorator",
-    "gast >=0.3.0",
-    "networkx >=2",
-    "ply >=3.4",
-    "six",
-    "beniget >=0.2.0",
-    "xsimd =7.2.2"
+    "beniget >=0.2.0"
    ]
   },
   "source":{
@@ -958,10 +974,6 @@
     "pythran -v dprod.py",
     "python -c \"import dprod\"",
     "pythran -v simple_numexpr.py -DUSE_XSIMD -march=native",
-    "python -c \"import simple_numexpr\"",
-    "pythran -v dprod.py",
-    "python -c \"import dprod\"",
-    "pythran -v simple_numexpr.py -DUSE_XSIMD -march=native",
     "python -c \"import simple_numexpr\""
    ],
    "files":[
@@ -970,30 +982,19 @@
     "dprod.py",
     "simple_numexpr.py",
     "dprod.py",
-    "simple_numexpr.py",
-    "dprod.py",
     "simple_numexpr.py"
    ],
    "imports":[
-    "omp",
     "pythran",
     "pythran.analyses",
     "pythran.optimizations",
     "pythran.transformations",
     "pythran.types",
-    "omp",
     "pythran",
     "pythran.analyses",
     "pythran.optimizations",
     "pythran.transformations",
     "pythran.types",
-    "omp",
-    "pythran",
-    "pythran.analyses",
-    "pythran.optimizations",
-    "pythran.transformations",
-    "pythran.types",
-    "omp",
     "pythran",
     "pythran.analyses",
     "pythran.optimizations",
@@ -1006,7 +1007,7 @@
   "build":{
    "__set__":true,
    "elements":[
-    "cxx_compiler_stub"
+    "clang"
    ]
   },
   "host":{
@@ -1022,15 +1023,14 @@
    "__set__":true,
    "elements":[
     "beniget",
-    "cxx_compiler_stub",
+    "clang",
     "decorator",
     "gast",
     "networkx",
     "numpy",
     "ply",
     "python",
-    "six",
-    "xsimd"
+    "six"
    ]
   },
   "test":{
