@@ -57,7 +57,7 @@
      "epics/dbd",
      "epics/html",
      "epics/include",
-     "epics/lib/*/*.dylib",
+     "epics/lib/*/*.so*",
      "epics/lib/perl",
      "epics/lib/pkgconfig",
      "epics/templates"
@@ -120,7 +120,8 @@
   "source":{
    "fn":"base-7.0.4.tar.gz",
    "patches":[
-    "CONFIG_COMMON_install_permissions.patch"
+    "CONFIG_COMMON_install_permissions.patch",
+    "force_readline_commandline_library.patch"
    ],
    "sha256":"1f0597b91740742beec49ca1ca59e7b71f63483b7495068b4f0f685c0cda9e69",
    "url":"https://epics.anl.gov/download/base/base-7.0.4.tar.gz"
@@ -487,7 +488,6 @@
      "epics/dbd",
      "epics/html",
      "epics/include",
-     "epics/lib/*/*.so*",
      "epics/lib/perl",
      "epics/lib/pkgconfig",
      "epics/templates"
@@ -498,11 +498,11 @@
       "c_compiler_stub",
       "cxx_compiler_stub",
       "make",
-      "perl"
+      "perl",
+      "m2-patch",
+      "python >=3.6"
      ],
-     "host":[
-      "readline"
-     ],
+     "host":null,
      "run":[
       "perl"
      ]
@@ -510,7 +510,7 @@
    },
    {
     "files":[
-     "epics/lib/*/*.a"
+     "epics/lib/*/*.lib"
     ],
     "name":"epics-base-static-libs",
     "requirements":{
@@ -518,7 +518,9 @@
       "c_compiler_stub",
       "cxx_compiler_stub",
       "make",
-      "perl"
+      "perl",
+      "m2-patch",
+      "python >=3.6"
      ],
      "run":[
       "epics-base"
@@ -526,8 +528,8 @@
     },
     "test":{
      "commands":[
-      "test -f ${EPICS_BASE}/lib/${EPICS_HOST_ARCH}/libca.a",
-      "test -f ${EPICS_BASE}/lib/${EPICS_HOST_ARCH}/libCom.a"
+      "if not exist %EPICS_BASE%\\lib\\%EPICS_HOST_ARCH%\\ca.lib exit 1",
+      "if not exist %EPICS_BASE%\\lib\\%EPICS_HOST_ARCH%\\Com.lib exit 1"
      ]
     }
    }
@@ -541,17 +543,16 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "make",
-    "perl"
+    "perl",
+    "m2-patch",
+    "python >=3.6"
    ],
-   "host":[
-    "readline"
-   ]
+   "host":null
   },
   "source":{
    "fn":"base-7.0.4.tar.gz",
    "patches":[
-    "CONFIG_COMMON_install_permissions.patch",
-    "force_readline_commandline_library.patch"
+    "CONFIG_COMMON_install_permissions.patch"
    ],
    "sha256":"1f0597b91740742beec49ca1ca59e7b71f63483b7495068b4f0f685c0cda9e69",
    "url":"https://epics.anl.gov/download/base/base-7.0.4.tar.gz"
@@ -569,10 +570,10 @@
     "softIoc -h",
     "softIocPVA -h",
     "p2p -C modules/pva2pva/loopback.conf",
-    "test -f ${EPICS_BASE}/bin/${EPICS_HOST_ARCH}/caget",
-    "test -f ${EPICS_BASE}/include/epicsVersion.h",
-    "test -f ${EPICS_BASE}/lib/${EPICS_HOST_ARCH}/libCom${SHLIB_EXT}",
-    "test -f ${EPICS_BASE}/lib/${EPICS_HOST_ARCH}/libca${SHLIB_EXT}"
+    "if not exist %EPICS_BASE%\\bin\\%EPICS_HOST_ARCH%\\caget.exe exit 1",
+    "if not exist %EPICS_BASE%\\bin\\%EPICS_HOST_ARCH%\\Com.dll exit 1",
+    "if not exist %EPICS_BASE%\\bin\\%EPICS_HOST_ARCH%\\ca.dll exit 1",
+    "if not exist %EPICS_BASE%\\include\\epicsVersion.h exit 1"
    ],
    "source_files":[
     "modules/pva2pva/loopback.conf"
@@ -585,15 +586,15 @@
    "elements":[
     "c_compiler_stub",
     "cxx_compiler_stub",
+    "m2-patch",
     "make",
-    "perl"
+    "perl",
+    "python"
    ]
   },
   "host":{
    "__set__":true,
-   "elements":[
-    "readline"
-   ]
+   "elements":[]
   },
   "run":{
    "__set__":true,
@@ -720,6 +721,7 @@
      "epics/dbd",
      "epics/html",
      "epics/include",
+     "epics/lib/*/*.dylib",
      "epics/lib/perl",
      "epics/lib/pkgconfig",
      "epics/templates"
@@ -730,11 +732,11 @@
       "c_compiler_stub",
       "cxx_compiler_stub",
       "make",
-      "perl",
-      "m2-patch",
-      "python >=3.6"
+      "perl"
      ],
-     "host":null,
+     "host":[
+      "readline"
+     ],
      "run":[
       "perl"
      ]
@@ -742,7 +744,7 @@
    },
    {
     "files":[
-     "epics/lib/*/*.lib"
+     "epics/lib/*/*.a"
     ],
     "name":"epics-base-static-libs",
     "requirements":{
@@ -750,9 +752,7 @@
       "c_compiler_stub",
       "cxx_compiler_stub",
       "make",
-      "perl",
-      "m2-patch",
-      "python >=3.6"
+      "perl"
      ],
      "run":[
       "epics-base"
@@ -760,8 +760,8 @@
     },
     "test":{
      "commands":[
-      "if not exist %EPICS_BASE%\\lib\\%EPICS_HOST_ARCH%\\ca.lib exit 1",
-      "if not exist %EPICS_BASE%\\lib\\%EPICS_HOST_ARCH%\\Com.lib exit 1"
+      "test -f ${EPICS_BASE}/lib/${EPICS_HOST_ARCH}/libca.a",
+      "test -f ${EPICS_BASE}/lib/${EPICS_HOST_ARCH}/libCom.a"
      ]
     }
    }
@@ -775,11 +775,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "make",
-    "perl",
-    "m2-patch",
-    "python >=3.6"
+    "perl"
    ],
-   "host":null
+   "host":[
+    "readline"
+   ]
   },
   "source":{
    "fn":"base-7.0.4.tar.gz",
@@ -802,10 +802,10 @@
     "softIoc -h",
     "softIocPVA -h",
     "p2p -C modules/pva2pva/loopback.conf",
-    "if not exist %EPICS_BASE%\\bin\\%EPICS_HOST_ARCH%\\caget.exe exit 1",
-    "if not exist %EPICS_BASE%\\bin\\%EPICS_HOST_ARCH%\\Com.dll exit 1",
-    "if not exist %EPICS_BASE%\\bin\\%EPICS_HOST_ARCH%\\ca.dll exit 1",
-    "if not exist %EPICS_BASE%\\include\\epicsVersion.h exit 1"
+    "test -f ${EPICS_BASE}/bin/${EPICS_HOST_ARCH}/caget",
+    "test -f ${EPICS_BASE}/include/epicsVersion.h",
+    "test -f ${EPICS_BASE}/lib/${EPICS_HOST_ARCH}/libCom${SHLIB_EXT}",
+    "test -f ${EPICS_BASE}/lib/${EPICS_HOST_ARCH}/libca${SHLIB_EXT}"
    ],
    "source_files":[
     "modules/pva2pva/loopback.conf"
@@ -818,15 +818,15 @@
    "elements":[
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "m2-patch",
     "make",
-    "perl",
-    "python"
+    "perl"
    ]
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "readline"
+   ]
   },
   "run":{
    "__set__":true,
