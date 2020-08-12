@@ -502,19 +502,21 @@
     "test":{
      "commands":[
       "protoc --help",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotoc.lib exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf.lib exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf-lite.lib exit 1"
+      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
+      "test ! -f ${PREFIX}/lib/libprotobuf.a"
      ]
     }
    },
    {
-    "build":{
-     "skip":true
-    },
+    "build":null,
     "name":"libprotobuf-static",
+    "script":"build_static.sh",
     "test":{
-     "commands":null
+     "commands":[
+      "test -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
+      "test -f ${PREFIX}/lib/libprotoc.a"
+     ]
     }
    }
   ],
@@ -526,8 +528,12 @@
    "build":[
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "cmake",
-    "ninja"
+    "autoconf",
+    "automake",
+    "libtool",
+    "pkg-config",
+    "unzip",
+    "make"
    ],
    "host":[
     "zlib"
@@ -560,10 +566,14 @@
   "build":{
    "__set__":true,
    "elements":[
+    "autoconf",
+    "automake",
     "c_compiler_stub",
-    "cmake",
     "cxx_compiler_stub",
-    "ninja"
+    "libtool",
+    "make",
+    "pkg-config",
+    "unzip"
    ]
   },
   "host":{
@@ -662,6 +672,7 @@
   "source":[
    {
     "patches":[
+     "0001-remove-Werror-from-test-flags.patch",
      "issue-7567.patch"
     ],
     "sha256":"512e5a674bf31f8b7928a64d8adf73ee67b8fe88339ad29adaa3b84dbaa570d8",
@@ -1220,21 +1231,19 @@
     "test":{
      "commands":[
       "protoc --help",
-      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libprotobuf.a"
+      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotoc.lib exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf.lib exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf-lite.lib exit 1"
      ]
     }
    },
    {
-    "build":null,
+    "build":{
+     "skip":true
+    },
     "name":"libprotobuf-static",
-    "script":"build_static.sh",
     "test":{
-     "commands":[
-      "test -f ${PREFIX}/lib/libprotobuf.a",
-      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
-      "test -f ${PREFIX}/lib/libprotoc.a"
-     ]
+     "commands":null
     }
    }
   ],
@@ -1246,12 +1255,8 @@
    "build":[
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "unzip",
-    "make"
+    "cmake",
+    "ninja"
    ],
    "host":[
     "zlib"
@@ -1263,7 +1268,6 @@
   "source":[
    {
     "patches":[
-     "0001-remove-Werror-from-test-flags.patch",
      "issue-7567.patch"
     ],
     "sha256":"512e5a674bf31f8b7928a64d8adf73ee67b8fe88339ad29adaa3b84dbaa570d8",
@@ -1285,14 +1289,10 @@
   "build":{
    "__set__":true,
    "elements":[
-    "autoconf",
-    "automake",
     "c_compiler_stub",
+    "cmake",
     "cxx_compiler_stub",
-    "libtool",
-    "make",
-    "pkg-config",
-    "unzip"
+    "ninja"
    ]
   },
   "host":{
