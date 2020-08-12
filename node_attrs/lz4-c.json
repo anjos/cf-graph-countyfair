@@ -170,7 +170,8 @@
    "number":"1",
    "run_exports":[
     "lz4-c"
-   ]
+   ],
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -187,9 +188,8 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make",
-    "patch"
+    "m2-patch",
+    "m2-gcc-libs"
    ],
    "host":[
     "ripgrep"
@@ -207,20 +207,14 @@
   "test":{
    "commands":[
     "lz4 -h",
-    "lz4c -h",
-    "lz4cat -h",
-    "unlz4 -h",
-    "test -f ${PREFIX}/include/lz4.h",
-    "test -f ${PREFIX}/include/lz4hc.h",
-    "test -f ${PREFIX}/include/lz4frame.h",
-    "test -f ${PREFIX}/lib/liblz4.a",
-    "test -f ${PREFIX}/lib/liblz4.so",
-    "test -f ${PREFIX}/lib/pkgconfig/liblz4.pc",
-    "pkg-config --cflags --libs liblz4"
+    "if not exist %LIBRARY_INC%\\\\lz4.h exit 1",
+    "if not exist %LIBRARY_INC%\\\\lz4hc.h exit 1",
+    "if not exist %LIBRARY_INC%\\\\lz4frame.h exit 1",
+    "if not exist %LIBRARY_BIN%\\\\liblz4.dll exit 1",
+    "if not exist %LIBRARY_LIB%\\\\liblz4.lib exit 1",
+    "if not exist %LIBRARY_LIB%\\\\liblz4_static.lib exit 1"
    ],
-   "requires":[
-    "pkg-config"
-   ]
+   "requires":null
   }
  },
  "linux_64_requirements":{
@@ -228,9 +222,8 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make",
-    "patch"
+    "m2-gcc-libs",
+    "m2-patch"
    ]
   },
   "host":{
@@ -245,9 +238,7 @@
   },
   "test":{
    "__set__":true,
-   "elements":[
-    "pkg-config"
-   ]
+   "elements":[]
   }
  },
  "linux_aarch64_meta_yaml":{
@@ -603,8 +594,7 @@
    "number":"1",
    "run_exports":[
     "lz4-c"
-   ],
-   "skip":true
+   ]
   },
   "extra":{
    "recipe-maintainers":[
@@ -621,8 +611,9 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "m2-patch",
-    "m2-gcc-libs"
+    "cxx_compiler_stub",
+    "make",
+    "patch"
    ],
    "host":[
     "ripgrep"
@@ -640,14 +631,20 @@
   "test":{
    "commands":[
     "lz4 -h",
-    "if not exist %LIBRARY_INC%\\\\lz4.h exit 1",
-    "if not exist %LIBRARY_INC%\\\\lz4hc.h exit 1",
-    "if not exist %LIBRARY_INC%\\\\lz4frame.h exit 1",
-    "if not exist %LIBRARY_BIN%\\\\liblz4.dll exit 1",
-    "if not exist %LIBRARY_LIB%\\\\liblz4.lib exit 1",
-    "if not exist %LIBRARY_LIB%\\\\liblz4_static.lib exit 1"
+    "lz4c -h",
+    "lz4cat -h",
+    "unlz4 -h",
+    "test -f ${PREFIX}/include/lz4.h",
+    "test -f ${PREFIX}/include/lz4hc.h",
+    "test -f ${PREFIX}/include/lz4frame.h",
+    "test -f ${PREFIX}/lib/liblz4.a",
+    "test -f ${PREFIX}/lib/liblz4.so",
+    "test -f ${PREFIX}/lib/pkgconfig/liblz4.pc",
+    "pkg-config --cflags --libs liblz4"
    ],
-   "requires":null
+   "requires":[
+    "pkg-config"
+   ]
   }
  },
  "osx_64_requirements":{
@@ -655,8 +652,9 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "m2-gcc-libs",
-    "m2-patch"
+    "cxx_compiler_stub",
+    "make",
+    "patch"
    ]
   },
   "host":{
@@ -671,7 +669,9 @@
   },
   "test":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "pkg-config"
+   ]
   }
  },
  "pinning_version":"2020.04.09",
