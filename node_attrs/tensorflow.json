@@ -159,8 +159,7 @@
    "summary":"TensorFlow is an open source machine learning framework for everyone."
   },
   "build":{
-   "number":"0",
-   "skip":true
+   "number":"0"
   },
   "extra":{
    "recipe-maintainers":[
@@ -193,7 +192,10 @@
     },
     "name":"tensorflow-base",
     "requirements":{
-     "build":null,
+     "build":[
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
      "host":[
       "python",
       "pip",
@@ -210,7 +212,11 @@
       "termcolor >=1.1.0",
       "wrapt >=1.11.1",
       "grpcio >=1.8.6",
-      "tensorflow-estimator >=1.14.0rc0,<1.15.0a0"
+      "wheel >=0.26",
+      "tensorflow-estimator >=1.14.0rc0,<1.15.0a0",
+      "zlib",
+      "libpng",
+      "libcurl"
      ],
      "run":[
       "python",
@@ -220,8 +226,11 @@
       "google-pasta >=0.1.6",
       "keras-applications >=1.0.6",
       "keras-preprocessing >=1.0.5",
-      "numpy >=1.16.1,<2.0.0a0",
+      "numpy",
       "six >=1.10.0",
+      "zlib",
+      "libpng",
+      "libcurl",
       "protobuf >=3.6.1",
       "termcolor >=1.1.0",
       "wrapt >=1.11.1",
@@ -230,11 +239,14 @@
       "tensorboard >=1.14.0,<1.15.0a0"
      ]
     },
-    "script":"build_pkg.bat",
+    "script":"build_pkg.sh",
     "test":{
      "commands":[
       "freeze_graph --help",
-      "saved_model_cli --help"
+      "saved_model_cli --help",
+      "tflite_convert --help",
+      "toco_from_protos --help",
+      "toco --help"
      ],
      "imports":[
       "tensorflow"
@@ -242,16 +254,24 @@
     }
    },
    {
-    "build":{
-     "skip":true
-    },
+    "build":null,
     "name":"libtensorflow",
     "requirements":{
-     "build":null,
-     "host":null
+     "build":[
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host":[
+      "libcurl",
+      "zlib"
+     ]
     },
+    "script":"cp_libtensorflow.sh",
     "test":{
-     "commands":null,
+     "commands":[
+      "test -f $PREFIX/lib/libtensorflow.so",
+      "$CC -o test_c -L${PREFIX}/lib/ -ltensorflow -I${PREFIX}/include/ test_c.c && ./test_c"
+     ],
      "files":[
       "test_c.c"
      ],
@@ -261,20 +281,28 @@
     }
    },
    {
-    "build":{
-     "skip":true
-    },
+    "build":null,
     "name":"libtensorflow_cc",
     "requirements":{
-     "build":null,
-     "host":null,
+     "build":[
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host":[
+      "libcurl",
+      "zlib"
+     ],
      "run":[
       "libprotobuf >=3.6.1,<3.7",
       "nsync"
      ]
     },
+    "script":"cp_libtensorflow_cc.sh",
     "test":{
-     "commands":null,
+     "commands":[
+      "test -f $PREFIX/lib/libtensorflow_cc.so",
+      "$CXX -std=c++11 -o test_cc -L${PREFIX}/lib/ -ltensorflow_cc -ltensorflow_framework -lrt -I${PREFIX}/include/ test_cc.cc && ./test_cc"
+     ],
      "files":[
       "test_cc.cc"
      ],
@@ -297,7 +325,10 @@
     },
     "name":"tensorflow-base",
     "requirements":{
-     "build":null,
+     "build":[
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
      "host":[
       "python",
       "pip",
@@ -314,7 +345,11 @@
       "termcolor >=1.1.0",
       "wrapt >=1.11.1",
       "grpcio >=1.8.6",
-      "tensorflow-estimator >=1.14.0rc0,<1.15.0a0"
+      "wheel >=0.26",
+      "tensorflow-estimator >=1.14.0rc0,<1.15.0a0",
+      "zlib",
+      "libpng",
+      "libcurl"
      ],
      "run":[
       "python",
@@ -324,8 +359,11 @@
       "google-pasta >=0.1.6",
       "keras-applications >=1.0.6",
       "keras-preprocessing >=1.0.5",
-      "numpy >=1.16.1,<2.0.0a0",
+      "numpy",
       "six >=1.10.0",
+      "zlib",
+      "libpng",
+      "libcurl",
       "protobuf >=3.6.1",
       "termcolor >=1.1.0",
       "wrapt >=1.11.1",
@@ -334,11 +372,14 @@
       "tensorboard >=1.14.0,<1.15.0a0"
      ]
     },
-    "script":"build_pkg.bat",
+    "script":"build_pkg.sh",
     "test":{
      "commands":[
       "freeze_graph --help",
-      "saved_model_cli --help"
+      "saved_model_cli --help",
+      "tflite_convert --help",
+      "toco_from_protos --help",
+      "toco --help"
      ],
      "imports":[
       "tensorflow"
@@ -346,16 +387,24 @@
     }
    },
    {
-    "build":{
-     "skip":true
-    },
+    "build":null,
     "name":"libtensorflow",
     "requirements":{
-     "build":null,
-     "host":null
+     "build":[
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host":[
+      "libcurl",
+      "zlib"
+     ]
     },
+    "script":"cp_libtensorflow.sh",
     "test":{
-     "commands":null,
+     "commands":[
+      "test -f $PREFIX/lib/libtensorflow.so",
+      "$CC -o test_c -L${PREFIX}/lib/ -ltensorflow -I${PREFIX}/include/ test_c.c && ./test_c"
+     ],
      "files":[
       "test_c.c"
      ],
@@ -365,20 +414,28 @@
     }
    },
    {
-    "build":{
-     "skip":true
-    },
+    "build":null,
     "name":"libtensorflow_cc",
     "requirements":{
-     "build":null,
-     "host":null,
+     "build":[
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host":[
+      "libcurl",
+      "zlib"
+     ],
      "run":[
       "libprotobuf >=3.6.1,<3.7",
       "nsync"
      ]
     },
+    "script":"cp_libtensorflow_cc.sh",
     "test":{
-     "commands":null,
+     "commands":[
+      "test -f $PREFIX/lib/libtensorflow_cc.so",
+      "$CXX -std=c++11 -o test_cc -L${PREFIX}/lib/ -ltensorflow_cc -ltensorflow_framework -lrt -I${PREFIX}/include/ test_cc.cc && ./test_cc"
+     ],
      "files":[
       "test_cc.cc"
      ],
@@ -393,39 +450,62 @@
    "version":"1.14.0"
   },
   "requirements":{
-   "build":null,
+   "build":[
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "bazel >=0.24.1,<=0.25.2",
+    "nasm",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "bazel >=0.24.1,<=0.25.2",
+    "nasm"
+   ],
    "host":[
     "python",
     "pip",
     "setuptools <=39.1.0",
+    "swig",
     "absl-py >=0.7.0",
     "astor >=0.6.0",
     "gast >=0.2.0",
     "google-pasta >=0.1.6",
     "keras-applications >=1.0.6",
     "keras-preprocessing >=1.0.5",
+    "llvmdev >=9.0.0,<10.0.0",
+    "zlib",
+    "libpng",
+    "libcurl",
+    "nsync",
     "numpy 1.16.1",
     "six >=1.10.0",
     "protobuf >=3.6.1",
     "termcolor >=1.1.0",
     "wrapt >=1.11.1",
     "grpcio >=1.8.6",
+    "wheel >=0.26",
     "tensorflow-estimator >=1.14.0rc0,<1.15.0a0",
     "python",
     "pip",
     "setuptools <=39.1.0",
+    "swig",
     "absl-py >=0.7.0",
     "astor >=0.6.0",
     "gast >=0.2.0",
     "google-pasta >=0.1.6",
     "keras-applications >=1.0.6",
     "keras-preprocessing >=1.0.5",
+    "llvmdev >=9.0.0,<10.0.0",
+    "zlib",
+    "libpng",
+    "libcurl",
+    "nsync",
     "numpy 1.16.1",
     "six >=1.10.0",
     "protobuf >=3.6.1",
     "termcolor >=1.1.0",
     "wrapt >=1.11.1",
     "grpcio >=1.8.6",
+    "wheel >=0.26",
     "tensorflow-estimator >=1.14.0rc0,<1.15.0a0"
    ],
    "run":[
@@ -435,15 +515,33 @@
   },
   "source":{
    "fn":"tensorflow-{{ version }}.tar.gz",
-   "patches":null,
-   "sha256":"a4f154fa98cde5974117e05af444e0bed84cf431b8129c78a2de03a1ff7201c9",
-   "url":"https://pypi.io/packages/cp[\"0\"][\"2\"]/t/tensorflow/tensorflow-{{ version }}.tar.gz"
+   "patches":[
+    "patches/0001-add-rt-to-linkopts.patch",
+    "patches/0002-stable-image-rotate-test.patch",
+    "patches/0003-relax-tolerence-in-special_math_test.patch",
+    "patches/0004-skip-read-only-debugger_cli_common-test.patch",
+    "patches/0006-relax-precision-in-matrix_log_op_test.patch",
+    "patches/unbundle_llvm.patch",
+    "patches/0001-add-rt-to-linkopts.patch",
+    "patches/0002-stable-image-rotate-test.patch",
+    "patches/0003-relax-tolerence-in-special_math_test.patch",
+    "patches/0004-skip-read-only-debugger_cli_common-test.patch",
+    "patches/0006-relax-precision-in-matrix_log_op_test.patch",
+    "patches/unbundle_llvm.patch"
+   ],
+   "sha256":"aa2a6a1daafa3af66807cfe0bc77bfe1144a9a53df9a96bab52e3e575b3047ed",
+   "url":"https://github.com/tensorflow/tensorflow/archive/v1.14.0.tar.gz"
   }
  },
  "linux_64_requirements":{
   "build":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "bazel",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "nasm"
+   ]
   },
   "host":{
    "__set__":true,
@@ -455,15 +553,22 @@
     "grpcio",
     "keras-applications",
     "keras-preprocessing",
+    "libcurl",
+    "libpng",
+    "llvmdev",
+    "nsync",
     "numpy",
     "pip",
     "protobuf",
     "python",
     "setuptools",
     "six",
+    "swig",
     "tensorflow-estimator",
     "termcolor",
-    "wrapt"
+    "wheel",
+    "wrapt",
+    "zlib"
    ]
   },
   "run":{
@@ -476,6 +581,8 @@
     "grpcio",
     "keras-applications",
     "keras-preprocessing",
+    "libcurl",
+    "libpng",
     "libprotobuf",
     "nsync",
     "numpy",
@@ -486,7 +593,8 @@
     "tensorflow-base",
     "tensorflow-estimator",
     "termcolor",
-    "wrapt"
+    "wrapt",
+    "zlib"
    ]
   },
   "test":{
@@ -1398,10 +1506,10 @@
  "name":"tensorflow",
  "new_version":"2.3.0",
  "new_version_attempts":{
-  "2.3.0":19
+  "2.3.0":20
  },
  "new_version_errors":{
-  "2.3.0":"The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '2.3.0' to make sure they exist!\n\nWe also found the following errors:\n\n - missing jinja2 variable 'pyver' for selector 'linux'\n - could not hash URL template 'https://pypi.io/packages/{{ pyver }}/t/tensorflow/{{ fn }}'\n"
+  "2.3.0":"The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '2.3.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://pypi.io/packages/{{ pyver }}/t/tensorflow/{{ fn }}'\n - missing jinja2 variable 'pyver' for selector 'linux'\n"
  },
  "osx_64_meta_yaml":{
   "about":{
@@ -1416,7 +1524,8 @@
    "summary":"TensorFlow is an open source machine learning framework for everyone."
   },
   "build":{
-   "number":"0"
+   "number":"0",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -1449,10 +1558,7 @@
     },
     "name":"tensorflow-base",
     "requirements":{
-     "build":[
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ],
+     "build":null,
      "host":[
       "python",
       "pip",
@@ -1469,11 +1575,7 @@
       "termcolor >=1.1.0",
       "wrapt >=1.11.1",
       "grpcio >=1.8.6",
-      "wheel >=0.26",
-      "tensorflow-estimator >=1.14.0rc0,<1.15.0a0",
-      "zlib",
-      "libpng",
-      "libcurl"
+      "tensorflow-estimator >=1.14.0rc0,<1.15.0a0"
      ],
      "run":[
       "python",
@@ -1483,11 +1585,8 @@
       "google-pasta >=0.1.6",
       "keras-applications >=1.0.6",
       "keras-preprocessing >=1.0.5",
-      "numpy",
+      "numpy >=1.16.1,<2.0.0a0",
       "six >=1.10.0",
-      "zlib",
-      "libpng",
-      "libcurl",
       "protobuf >=3.6.1",
       "termcolor >=1.1.0",
       "wrapt >=1.11.1",
@@ -1496,14 +1595,11 @@
       "tensorboard >=1.14.0,<1.15.0a0"
      ]
     },
-    "script":"build_pkg.sh",
+    "script":"build_pkg.bat",
     "test":{
      "commands":[
       "freeze_graph --help",
-      "saved_model_cli --help",
-      "tflite_convert --help",
-      "toco_from_protos --help",
-      "toco --help"
+      "saved_model_cli --help"
      ],
      "imports":[
       "tensorflow"
@@ -1511,24 +1607,16 @@
     }
    },
    {
-    "build":null,
+    "build":{
+     "skip":true
+    },
     "name":"libtensorflow",
     "requirements":{
-     "build":[
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ],
-     "host":[
-      "libcurl",
-      "zlib"
-     ]
+     "build":null,
+     "host":null
     },
-    "script":"cp_libtensorflow.sh",
     "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libtensorflow.so",
-      "$CC -o test_c -L${PREFIX}/lib/ -ltensorflow -I${PREFIX}/include/ test_c.c && ./test_c"
-     ],
+     "commands":null,
      "files":[
       "test_c.c"
      ],
@@ -1538,28 +1626,20 @@
     }
    },
    {
-    "build":null,
+    "build":{
+     "skip":true
+    },
     "name":"libtensorflow_cc",
     "requirements":{
-     "build":[
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ],
-     "host":[
-      "libcurl",
-      "zlib"
-     ],
+     "build":null,
+     "host":null,
      "run":[
       "libprotobuf >=3.6.1,<3.7",
       "nsync"
      ]
     },
-    "script":"cp_libtensorflow_cc.sh",
     "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libtensorflow_cc.so",
-      "$CXX -std=c++11 -o test_cc -L${PREFIX}/lib/ -ltensorflow_cc -ltensorflow_framework -lrt -I${PREFIX}/include/ test_cc.cc && ./test_cc"
-     ],
+     "commands":null,
      "files":[
       "test_cc.cc"
      ],
@@ -1582,10 +1662,7 @@
     },
     "name":"tensorflow-base",
     "requirements":{
-     "build":[
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ],
+     "build":null,
      "host":[
       "python",
       "pip",
@@ -1602,11 +1679,7 @@
       "termcolor >=1.1.0",
       "wrapt >=1.11.1",
       "grpcio >=1.8.6",
-      "wheel >=0.26",
-      "tensorflow-estimator >=1.14.0rc0,<1.15.0a0",
-      "zlib",
-      "libpng",
-      "libcurl"
+      "tensorflow-estimator >=1.14.0rc0,<1.15.0a0"
      ],
      "run":[
       "python",
@@ -1616,11 +1689,8 @@
       "google-pasta >=0.1.6",
       "keras-applications >=1.0.6",
       "keras-preprocessing >=1.0.5",
-      "numpy",
+      "numpy >=1.16.1,<2.0.0a0",
       "six >=1.10.0",
-      "zlib",
-      "libpng",
-      "libcurl",
       "protobuf >=3.6.1",
       "termcolor >=1.1.0",
       "wrapt >=1.11.1",
@@ -1629,14 +1699,11 @@
       "tensorboard >=1.14.0,<1.15.0a0"
      ]
     },
-    "script":"build_pkg.sh",
+    "script":"build_pkg.bat",
     "test":{
      "commands":[
       "freeze_graph --help",
-      "saved_model_cli --help",
-      "tflite_convert --help",
-      "toco_from_protos --help",
-      "toco --help"
+      "saved_model_cli --help"
      ],
      "imports":[
       "tensorflow"
@@ -1644,24 +1711,16 @@
     }
    },
    {
-    "build":null,
+    "build":{
+     "skip":true
+    },
     "name":"libtensorflow",
     "requirements":{
-     "build":[
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ],
-     "host":[
-      "libcurl",
-      "zlib"
-     ]
+     "build":null,
+     "host":null
     },
-    "script":"cp_libtensorflow.sh",
     "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libtensorflow.so",
-      "$CC -o test_c -L${PREFIX}/lib/ -ltensorflow -I${PREFIX}/include/ test_c.c && ./test_c"
-     ],
+     "commands":null,
      "files":[
       "test_c.c"
      ],
@@ -1671,28 +1730,20 @@
     }
    },
    {
-    "build":null,
+    "build":{
+     "skip":true
+    },
     "name":"libtensorflow_cc",
     "requirements":{
-     "build":[
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ],
-     "host":[
-      "libcurl",
-      "zlib"
-     ],
+     "build":null,
+     "host":null,
      "run":[
       "libprotobuf >=3.6.1,<3.7",
       "nsync"
      ]
     },
-    "script":"cp_libtensorflow_cc.sh",
     "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libtensorflow_cc.so",
-      "$CXX -std=c++11 -o test_cc -L${PREFIX}/lib/ -ltensorflow_cc -ltensorflow_framework -lrt -I${PREFIX}/include/ test_cc.cc && ./test_cc"
-     ],
+     "commands":null,
      "files":[
       "test_cc.cc"
      ],
@@ -1707,62 +1758,39 @@
    "version":"1.14.0"
   },
   "requirements":{
-   "build":[
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "bazel >=0.24.1,<=0.25.2",
-    "nasm",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "bazel >=0.24.1,<=0.25.2",
-    "nasm"
-   ],
+   "build":null,
    "host":[
     "python",
     "pip",
     "setuptools <=39.1.0",
-    "swig",
     "absl-py >=0.7.0",
     "astor >=0.6.0",
     "gast >=0.2.0",
     "google-pasta >=0.1.6",
     "keras-applications >=1.0.6",
     "keras-preprocessing >=1.0.5",
-    "llvmdev >=9.0.0,<10.0.0",
-    "zlib",
-    "libpng",
-    "libcurl",
-    "nsync",
     "numpy 1.16.1",
     "six >=1.10.0",
     "protobuf >=3.6.1",
     "termcolor >=1.1.0",
     "wrapt >=1.11.1",
     "grpcio >=1.8.6",
-    "wheel >=0.26",
     "tensorflow-estimator >=1.14.0rc0,<1.15.0a0",
     "python",
     "pip",
     "setuptools <=39.1.0",
-    "swig",
     "absl-py >=0.7.0",
     "astor >=0.6.0",
     "gast >=0.2.0",
     "google-pasta >=0.1.6",
     "keras-applications >=1.0.6",
     "keras-preprocessing >=1.0.5",
-    "llvmdev >=9.0.0,<10.0.0",
-    "zlib",
-    "libpng",
-    "libcurl",
-    "nsync",
     "numpy 1.16.1",
     "six >=1.10.0",
     "protobuf >=3.6.1",
     "termcolor >=1.1.0",
     "wrapt >=1.11.1",
     "grpcio >=1.8.6",
-    "wheel >=0.26",
     "tensorflow-estimator >=1.14.0rc0,<1.15.0a0"
    ],
    "run":[
@@ -1772,33 +1800,15 @@
   },
   "source":{
    "fn":"tensorflow-{{ version }}.tar.gz",
-   "patches":[
-    "patches/0001-add-rt-to-linkopts.patch",
-    "patches/0002-stable-image-rotate-test.patch",
-    "patches/0003-relax-tolerence-in-special_math_test.patch",
-    "patches/0004-skip-read-only-debugger_cli_common-test.patch",
-    "patches/0006-relax-precision-in-matrix_log_op_test.patch",
-    "patches/unbundle_llvm.patch",
-    "patches/0001-add-rt-to-linkopts.patch",
-    "patches/0002-stable-image-rotate-test.patch",
-    "patches/0003-relax-tolerence-in-special_math_test.patch",
-    "patches/0004-skip-read-only-debugger_cli_common-test.patch",
-    "patches/0006-relax-precision-in-matrix_log_op_test.patch",
-    "patches/unbundle_llvm.patch"
-   ],
-   "sha256":"aa2a6a1daafa3af66807cfe0bc77bfe1144a9a53df9a96bab52e3e575b3047ed",
-   "url":"https://github.com/tensorflow/tensorflow/archive/v1.14.0.tar.gz"
+   "patches":null,
+   "sha256":"a4f154fa98cde5974117e05af444e0bed84cf431b8129c78a2de03a1ff7201c9",
+   "url":"https://pypi.io/packages/cp[\"0\"][\"2\"]/t/tensorflow/tensorflow-{{ version }}.tar.gz"
   }
  },
  "osx_64_requirements":{
   "build":{
    "__set__":true,
-   "elements":[
-    "bazel",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "nasm"
-   ]
+   "elements":[]
   },
   "host":{
    "__set__":true,
@@ -1810,22 +1820,15 @@
     "grpcio",
     "keras-applications",
     "keras-preprocessing",
-    "libcurl",
-    "libpng",
-    "llvmdev",
-    "nsync",
     "numpy",
     "pip",
     "protobuf",
     "python",
     "setuptools",
     "six",
-    "swig",
     "tensorflow-estimator",
     "termcolor",
-    "wheel",
-    "wrapt",
-    "zlib"
+    "wrapt"
    ]
   },
   "run":{
@@ -1838,8 +1841,6 @@
     "grpcio",
     "keras-applications",
     "keras-preprocessing",
-    "libcurl",
-    "libpng",
     "libprotobuf",
     "nsync",
     "numpy",
@@ -1850,8 +1851,7 @@
     "tensorflow-base",
     "tensorflow-estimator",
     "termcolor",
-    "wrapt",
-    "zlib"
+    "wrapt"
    ]
   },
   "test":{

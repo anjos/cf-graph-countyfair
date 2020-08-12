@@ -351,9 +351,8 @@
   },
   "test":{
    "commands":[
-    "test -e $PREFIX/lib/libathr.dylib",
-    "conda inspect linkages -p $PREFIX $PKG_NAME",
-    "conda inspect objects -p $PREFIX $PKG_NAME"
+    "test -e $PREFIX/lib/libathr.so",
+    "conda inspect linkages -p $PREFIX $PKG_NAME"
    ]
   }
  },
@@ -463,7 +462,8 @@
    "summary":"Progress indicator C library"
   },
   "build":{
-   "number":"0"
+   "number":"0",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -477,15 +477,13 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cmake"
+    "cmake",
+    "ninja"
    ],
    "host":[
-    "conda-build",
-    "ncurses"
+    "conda-build"
    ],
-   "run":[
-    "ncurses"
-   ]
+   "run":null
   },
   "source":{
    "fn":"almosthere-1.0.15.tar.gz",
@@ -494,8 +492,8 @@
   },
   "test":{
    "commands":[
-    "test -e $PREFIX/lib/libathr.so",
-    "conda inspect linkages -p $PREFIX $PKG_NAME"
+    "if NOT exist %LIBRARY_PREFIX%/lib/athr.lib exit 1",
+    "if NOT exist %LIBRARY_PREFIX%/bin/athr.dll exit 1"
    ]
   }
  },
@@ -504,21 +502,19 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake"
+    "cmake",
+    "ninja"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
-    "conda-build",
-    "ncurses"
+    "conda-build"
    ]
   },
   "run":{
    "__set__":true,
-   "elements":[
-    "ncurses"
-   ]
+   "elements":[]
   },
   "test":{
    "__set__":true,
@@ -603,8 +599,7 @@
    "summary":"Progress indicator C library"
   },
   "build":{
-   "number":"0",
-   "skip":true
+   "number":"0"
   },
   "extra":{
    "recipe-maintainers":[
@@ -618,13 +613,15 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cmake",
-    "ninja"
+    "cmake"
    ],
    "host":[
-    "conda-build"
+    "conda-build",
+    "ncurses"
    ],
-   "run":null
+   "run":[
+    "ncurses"
+   ]
   },
   "source":{
    "fn":"almosthere-1.0.15.tar.gz",
@@ -633,8 +630,9 @@
   },
   "test":{
    "commands":[
-    "if NOT exist %LIBRARY_PREFIX%/lib/athr.lib exit 1",
-    "if NOT exist %LIBRARY_PREFIX%/bin/athr.dll exit 1"
+    "test -e $PREFIX/lib/libathr.dylib",
+    "conda inspect linkages -p $PREFIX $PKG_NAME",
+    "conda inspect objects -p $PREFIX $PKG_NAME"
    ]
   }
  },
@@ -643,19 +641,21 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake",
-    "ninja"
+    "cmake"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
-    "conda-build"
+    "conda-build",
+    "ncurses"
    ]
   },
   "run":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "ncurses"
+   ]
   },
   "test":{
    "__set__":true,
