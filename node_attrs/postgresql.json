@@ -399,7 +399,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"azure",
@@ -417,8 +417,7 @@
    "summary":"multi-ouput recipe for postgresql"
   },
   "build":{
-   "number":"0",
-   "skip":true
+   "number":"0"
   },
   "extra":{
    "recipe-maintainers":[
@@ -443,27 +442,31 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "perl"
+      "make"
      ],
      "host":[
       "krb5",
       "openssl",
+      "readline",
+      "tzcode",
       "zlib",
       "libxml2",
-      "msinttypes",
       "libpq"
      ],
      "run":[
       "libpq",
       "krb5",
       "openssl",
+      "readline",
+      "tzcode",
       "zlib"
      ]
     },
-    "script":"install_db.bat",
+    "script":"install_db.sh",
     "test":{
      "commands":[
-      "postgres --help"
+      "postgres --help",
+      "conda inspect linkages postgresql"
      ]
     }
    },
@@ -480,28 +483,33 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "perl"
+      "make"
      ],
      "host":[
       "krb5",
       "openssl",
+      "readline",
       "zlib",
       "postgresql",
       "python",
       "libxml2",
       "libxslt 1.1.*",
-      "vc"
+      "libuuid"
      ],
      "run":[
       "postgresql",
       "python",
       "krb5",
       "openssl",
+      "readline",
       "zlib"
      ]
     },
+    "script":"install_plpython.sh",
     "test":{
-     "commands":null
+     "commands":[
+      "conda inspect linkages postgresql-plpython"
+     ]
     }
    },
    {
@@ -517,21 +525,23 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "perl"
+      "make"
      ],
      "host":[
       "krb5",
       "openssl",
-      "zlib",
-      "msinttypes"
+      "readline",
+      "tzcode",
+      "zlib"
      ]
     },
-    "script":"install_runtime.bat",
+    "script":"install_runtime.sh",
     "test":{
      "commands":[
       "pg_config",
-      "IF NOT EXIST %LIBRARY_BIN%\\libpq.dll EXIT 1",
-      "IF NOT EXIST %LIBRARY_BIN%\\pg_config.exe EXIT 1"
+      "test -f $PREFIX/lib/libpq.so.5.12",
+      "test -f $PREFIX/lib/libpq.so.5",
+      "test -f $PREFIX/lib/libpq.so"
      ]
     }
    }
@@ -543,35 +553,33 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "make"
    ],
    "host":[
-    "m2-bison",
-    "m2-diffutils",
-    "m2-flex",
-    "perl",
-    "posix",
     "libxml2",
     "libxslt 1.1.*",
     "krb5",
     "openssl",
-    "msinttypes",
     "openssl",
+    "readline",
     "zlib",
-    "vc"
+    "libuuid",
+    "tzcode"
    ],
    "run":[
     "krb5",
-    "openssl"
+    "openssl",
+    "readline",
+    "tzcode"
    ]
   },
   "source":{
    "patches":[
     "patches/0001-fix-win-zlib-name.patch",
     "patches/0002-disable-new-dtags.patch",
-    "patches/fix_gss_win64.patch",
-    "patches/0004-fix-windows-openssl-links-for-openssl-1.1.1.patch",
-    "patches/fix_gssapi_setenv_win.patch"
+    "patches/0004-fix-windows-openssl-links-for-openssl-1.1.1.patch"
    ],
    "sha256":"94ed64a6179048190695c86ec707cc25d016056ce10fc9d229267d9a8f1dcf41",
    "url":"https://ftp.postgresql.org/pub/source/v12.3/postgresql-12.3.tar.bz2"
@@ -583,7 +591,8 @@
    "elements":[
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "perl"
+    "fortran_compiler_stub",
+    "make"
    ]
   },
   "host":{
@@ -591,18 +600,14 @@
    "elements":[
     "krb5",
     "libpq",
+    "libuuid",
     "libxml2",
     "libxslt",
-    "m2-bison",
-    "m2-diffutils",
-    "m2-flex",
-    "msinttypes",
     "openssl",
-    "perl",
-    "posix",
     "postgresql",
     "python",
-    "vc",
+    "readline",
+    "tzcode",
     "zlib"
    ]
   },
@@ -614,6 +619,8 @@
     "openssl",
     "postgresql",
     "python",
+    "readline",
+    "tzcode",
     "zlib"
    ]
   },
@@ -899,7 +906,8 @@
     "test":{
      "commands":[
       "postgres --help",
-      "conda inspect linkages postgresql"
+      "conda inspect linkages postgresql",
+      "conda inspect objects postgresql"
      ]
     }
    },
@@ -919,7 +927,6 @@
       "make"
      ],
      "host":[
-      "krb5",
       "openssl",
       "readline",
       "zlib",
@@ -941,7 +948,8 @@
     "script":"install_plpython.sh",
     "test":{
      "commands":[
-      "conda inspect linkages postgresql-plpython"
+      "conda inspect linkages postgresql-plpython",
+      "conda inspect objects postgresql-plpython"
      ]
     }
    },
@@ -972,9 +980,9 @@
     "test":{
      "commands":[
       "pg_config",
-      "test -f $PREFIX/lib/libpq.so.5.12",
-      "test -f $PREFIX/lib/libpq.so.5",
-      "test -f $PREFIX/lib/libpq.so"
+      "test -f $PREFIX/lib/libpq.5.12.dylib",
+      "test -f $PREFIX/lib/libpq.5.dylib",
+      "test -f $PREFIX/lib/libpq.dylib"
      ]
     }
    }
@@ -1809,7 +1817,8 @@
    "summary":"multi-ouput recipe for postgresql"
   },
   "build":{
-   "number":"0"
+   "number":"0",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -1834,31 +1843,27 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "make"
+      "perl"
      ],
      "host":[
       "krb5",
       "openssl",
-      "readline",
-      "tzcode",
       "zlib",
       "libxml2",
+      "msinttypes",
       "libpq"
      ],
      "run":[
       "libpq",
       "krb5",
       "openssl",
-      "readline",
-      "tzcode",
       "zlib"
      ]
     },
-    "script":"install_db.sh",
+    "script":"install_db.bat",
     "test":{
      "commands":[
-      "postgres --help",
-      "conda inspect linkages postgresql"
+      "postgres --help"
      ]
     }
    },
@@ -1875,33 +1880,28 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "make"
+      "perl"
      ],
      "host":[
       "krb5",
       "openssl",
-      "readline",
       "zlib",
       "postgresql",
       "python",
       "libxml2",
       "libxslt 1.1.*",
-      "libuuid"
+      "vc"
      ],
      "run":[
       "postgresql",
       "python",
       "krb5",
       "openssl",
-      "readline",
       "zlib"
      ]
     },
-    "script":"install_plpython.sh",
     "test":{
-     "commands":[
-      "conda inspect linkages postgresql-plpython"
-     ]
+     "commands":null
     }
    },
    {
@@ -1917,23 +1917,21 @@
     "requirements":{
      "build":[
       "c_compiler_stub",
-      "make"
+      "perl"
      ],
      "host":[
       "krb5",
       "openssl",
-      "readline",
-      "tzcode",
-      "zlib"
+      "zlib",
+      "msinttypes"
      ]
     },
-    "script":"install_runtime.sh",
+    "script":"install_runtime.bat",
     "test":{
      "commands":[
       "pg_config",
-      "test -f $PREFIX/lib/libpq.so.5.12",
-      "test -f $PREFIX/lib/libpq.so.5",
-      "test -f $PREFIX/lib/libpq.so"
+      "IF NOT EXIST %LIBRARY_BIN%\\libpq.dll EXIT 1",
+      "IF NOT EXIST %LIBRARY_BIN%\\pg_config.exe EXIT 1"
      ]
     }
    }
@@ -1945,33 +1943,35 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cxx_compiler_stub",
-    "fortran_compiler_stub",
-    "make"
+    "cxx_compiler_stub"
    ],
    "host":[
+    "m2-bison",
+    "m2-diffutils",
+    "m2-flex",
+    "perl",
+    "posix",
     "libxml2",
     "libxslt 1.1.*",
     "krb5",
     "openssl",
+    "msinttypes",
     "openssl",
-    "readline",
     "zlib",
-    "libuuid",
-    "tzcode"
+    "vc"
    ],
    "run":[
     "krb5",
-    "openssl",
-    "readline",
-    "tzcode"
+    "openssl"
    ]
   },
   "source":{
    "patches":[
     "patches/0001-fix-win-zlib-name.patch",
     "patches/0002-disable-new-dtags.patch",
-    "patches/0004-fix-windows-openssl-links-for-openssl-1.1.1.patch"
+    "patches/fix_gss_win64.patch",
+    "patches/0004-fix-windows-openssl-links-for-openssl-1.1.1.patch",
+    "patches/fix_gssapi_setenv_win.patch"
    ],
    "sha256":"94ed64a6179048190695c86ec707cc25d016056ce10fc9d229267d9a8f1dcf41",
    "url":"https://ftp.postgresql.org/pub/source/v12.3/postgresql-12.3.tar.bz2"
@@ -1983,8 +1983,7 @@
    "elements":[
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "fortran_compiler_stub",
-    "make"
+    "perl"
    ]
   },
   "host":{
@@ -1992,14 +1991,18 @@
    "elements":[
     "krb5",
     "libpq",
-    "libuuid",
     "libxml2",
     "libxslt",
+    "m2-bison",
+    "m2-diffutils",
+    "m2-flex",
+    "msinttypes",
     "openssl",
+    "perl",
+    "posix",
     "postgresql",
     "python",
-    "readline",
-    "tzcode",
+    "vc",
     "zlib"
    ]
   },
@@ -2011,8 +2014,6 @@
     "openssl",
     "postgresql",
     "python",
-    "readline",
-    "tzcode",
     "zlib"
    ]
   },
@@ -2220,8 +2221,7 @@
     "test":{
      "commands":[
       "postgres --help",
-      "conda inspect linkages postgresql",
-      "conda inspect objects postgresql"
+      "conda inspect linkages postgresql"
      ]
     }
    },
@@ -2241,6 +2241,7 @@
       "make"
      ],
      "host":[
+      "krb5",
       "openssl",
       "readline",
       "zlib",
@@ -2262,8 +2263,7 @@
     "script":"install_plpython.sh",
     "test":{
      "commands":[
-      "conda inspect linkages postgresql-plpython",
-      "conda inspect objects postgresql-plpython"
+      "conda inspect linkages postgresql-plpython"
      ]
     }
    },
@@ -2294,9 +2294,9 @@
     "test":{
      "commands":[
       "pg_config",
-      "test -f $PREFIX/lib/libpq.5.12.dylib",
-      "test -f $PREFIX/lib/libpq.5.dylib",
-      "test -f $PREFIX/lib/libpq.dylib"
+      "test -f $PREFIX/lib/libpq.so.5.12",
+      "test -f $PREFIX/lib/libpq.so.5",
+      "test -f $PREFIX/lib/libpq.so"
      ]
     }
    }

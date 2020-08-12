@@ -223,7 +223,8 @@
   },
   "build":{
    "merge_build_host":false,
-   "number":"1"
+   "number":"1",
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -238,13 +239,15 @@
   "outputs":[
    {
     "build":{
-     "activate_in_script":true
+     "activate_in_script":true,
+     "skip":true
     },
     "name":"llvmdev",
     "requirements":{
      "build":[
-      "cxx_compiler_stub",
+      "vs2017_win-64",
       "cmake",
+      "ninja",
       "python    >=3"
      ],
      "host":[
@@ -257,60 +260,42 @@
       "llvm-tools"
      ]
     },
-    "script":"install_llvm.sh",
+    "script":"install_llvm.bat",
     "test":{
      "commands":[
-      "$PREFIX/bin/llvm-config --libs",
-      "test -f $PREFIX/include/llvm/Pass.h",
-      "test -f $PREFIX/lib/libLLVMCore.a",
-      "$PREFIX/libexec/llvm/not false"
+      "if not exist %LIBRARY_INC%\\\\llvm\\\\Pass.h exit 1",
+      "if not exist \"%LIBRARY_PREFIX%\"\\\\libexec\\llvm\\not.exe exit 1"
      ]
     }
    },
    {
     "build":{
      "activate_in_script":true,
-     "run_exports":[
-      "libllvm10"
-     ]
+     "skip":true
     },
     "name":"libllvm10",
     "requirements":{
      "build":[
-      "cxx_compiler_stub",
-      "cmake",
-      "python    >=3"
+      "vs2017_win-64"
      ],
      "host":[
       "zlib"
      ],
      "run":null
     },
-    "script":"install_llvm.sh",
     "test":{
-     "commands":[
-      "test -f $PREFIX/lib/libLLVM-10${SHLIB_EXT}"
-     ]
+     "commands":null
     }
    },
    {
     "build":{
-     "run_exports":[
-      "libllvm10"
-     ]
+     "skip":true
     },
     "name":"llvm",
     "requirements":{
      "build":null,
      "host":[
-      "libllvm10",
       "zlib"
-     ],
-     "run":[
-      "libllvm10"
-     ],
-     "run_constrained":[
-      "llvmdev   10.0.1"
      ]
     },
     "test":{
@@ -321,13 +306,15 @@
    },
    {
     "build":{
-     "activate_in_script":true
+     "activate_in_script":true,
+     "skip":true
     },
     "name":"llvm-tools",
     "requirements":{
      "build":[
-      "cxx_compiler_stub",
+      "vs2017_win-64",
       "cmake",
+      "ninja",
       "python    >=3"
      ],
      "host":[
@@ -341,10 +328,11 @@
       "llvmdev   10.0.1"
      ]
     },
-    "script":"install_llvm.sh",
+    "script":"install_llvm.bat",
     "test":{
      "commands":[
-      "$PREFIX/bin/llc -version"
+      "if not exist \"%LIBRARY_BIN%\"\\\\llc.exe exit 1",
+      "llc -version"
      ]
     }
    },
@@ -381,8 +369,9 @@
   },
   "requirements":{
    "build":[
-    "cxx_compiler_stub",
+    "vs2017_win-64",
     "cmake",
+    "ninja",
     "python    >=3",
     "make"
    ],
@@ -406,9 +395,10 @@
    "__set__":true,
    "elements":[
     "cmake",
-    "cxx_compiler_stub",
     "make",
-    "python"
+    "ninja",
+    "python",
+    "vs2017_win-64"
    ]
   },
   "host":{
@@ -2029,8 +2019,7 @@
   },
   "build":{
    "merge_build_host":false,
-   "number":"1",
-   "skip":true
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
@@ -2045,15 +2034,13 @@
   "outputs":[
    {
     "build":{
-     "activate_in_script":true,
-     "skip":true
+     "activate_in_script":true
     },
     "name":"llvmdev",
     "requirements":{
      "build":[
-      "vs2017_win-64",
+      "cxx_compiler_stub",
       "cmake",
-      "ninja",
       "python    >=3"
      ],
      "host":[
@@ -2066,42 +2053,60 @@
       "llvm-tools"
      ]
     },
-    "script":"install_llvm.bat",
+    "script":"install_llvm.sh",
     "test":{
      "commands":[
-      "if not exist %LIBRARY_INC%\\\\llvm\\\\Pass.h exit 1",
-      "if not exist \"%LIBRARY_PREFIX%\"\\\\libexec\\llvm\\not.exe exit 1"
+      "$PREFIX/bin/llvm-config --libs",
+      "test -f $PREFIX/include/llvm/Pass.h",
+      "test -f $PREFIX/lib/libLLVMCore.a",
+      "$PREFIX/libexec/llvm/not false"
      ]
     }
    },
    {
     "build":{
      "activate_in_script":true,
-     "skip":true
+     "run_exports":[
+      "libllvm10"
+     ]
     },
     "name":"libllvm10",
     "requirements":{
      "build":[
-      "vs2017_win-64"
+      "cxx_compiler_stub",
+      "cmake",
+      "python    >=3"
      ],
      "host":[
       "zlib"
      ],
      "run":null
     },
+    "script":"install_llvm.sh",
     "test":{
-     "commands":null
+     "commands":[
+      "test -f $PREFIX/lib/libLLVM-10${SHLIB_EXT}"
+     ]
     }
    },
    {
     "build":{
-     "skip":true
+     "run_exports":[
+      "libllvm10"
+     ]
     },
     "name":"llvm",
     "requirements":{
      "build":null,
      "host":[
+      "libllvm10",
       "zlib"
+     ],
+     "run":[
+      "libllvm10"
+     ],
+     "run_constrained":[
+      "llvmdev   10.0.1"
      ]
     },
     "test":{
@@ -2112,15 +2117,13 @@
    },
    {
     "build":{
-     "activate_in_script":true,
-     "skip":true
+     "activate_in_script":true
     },
     "name":"llvm-tools",
     "requirements":{
      "build":[
-      "vs2017_win-64",
+      "cxx_compiler_stub",
       "cmake",
-      "ninja",
       "python    >=3"
      ],
      "host":[
@@ -2134,11 +2137,10 @@
       "llvmdev   10.0.1"
      ]
     },
-    "script":"install_llvm.bat",
+    "script":"install_llvm.sh",
     "test":{
      "commands":[
-      "if not exist \"%LIBRARY_BIN%\"\\\\llc.exe exit 1",
-      "llc -version"
+      "$PREFIX/bin/llc -version"
      ]
     }
    },
@@ -2175,9 +2177,8 @@
   },
   "requirements":{
    "build":[
-    "vs2017_win-64",
+    "cxx_compiler_stub",
     "cmake",
-    "ninja",
     "python    >=3",
     "make"
    ],
@@ -2201,10 +2202,9 @@
    "__set__":true,
    "elements":[
     "cmake",
+    "cxx_compiler_stub",
     "make",
-    "ninja",
-    "python",
-    "vs2017_win-64"
+    "python"
    ]
   },
   "host":{

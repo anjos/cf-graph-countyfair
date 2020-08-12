@@ -449,7 +449,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"azure",
@@ -491,9 +491,10 @@
      ]
     },
     "files":[
-     "Library/bin/libcurl.dll",
-     "Library/include/curl",
-     "Library/lib/libcurl*"
+     "include/curl",
+     "lib/libcurl.so*",
+     "lib/pkgconfig/libcurl*",
+     "bin/curl-config"
     ],
     "name":"libcurl",
     "requirements":{
@@ -501,43 +502,52 @@
       "c_compiler_stub"
      ],
      "host":[
+      "openssl",
+      "libnghttp2",
       "zlib",
       "libssh2",
       "krb5"
      ],
      "run":[
-      "libssh2"
+      "libssh2",
+      "libnghttp2"
      ]
     },
-    "script":"install_dll.bat",
     "test":{
-     "commands":null
+     "commands":[
+      "curl-config --features",
+      "curl-config --protocols",
+      "test -f ${PREFIX}/lib/libcurl${SHLIB_EXT}",
+      "test ! -f ${PREFIX}/lib/libcurl.a"
+     ]
     }
    },
    {
+    "files":[
+     "lib/libcurl.a*"
+    ],
     "name":"libcurl-static",
     "requirements":{
      "build":[
       "c_compiler_stub"
      ],
      "host":[
+      "openssl",
       "zlib",
       "libssh2",
       "krb5",
       "libcurl"
      ]
     },
-    "script":"install_static.bat",
     "test":{
      "commands":[
-      "if exist %LIBRARY_LIB%\\libcurl_a.lib (exit 0) else (exit 1)"
+      "test -f $PREFIX/lib/libcurl.a"
      ]
     }
    },
    {
     "files":[
-     "Library/bin/curl.exe",
-     "Library/bin/curl.exe.manifest"
+     "bin/curl"
     ],
     "name":"curl",
     "requirements":{
@@ -569,12 +579,17 @@
   },
   "requirements":{
    "build":[
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "make",
+    "perl",
+    "pkg-config"
    ],
    "host":[
     "zlib",
     "krb5",
     "libssh2",
+    "openssl",
+    "libnghttp2",
     "zlib"
    ]
   },
@@ -587,7 +602,10 @@
   "build":{
    "__set__":true,
    "elements":[
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "make",
+    "perl",
+    "pkg-config"
    ]
   },
   "host":{
@@ -595,7 +613,9 @@
    "elements":[
     "krb5",
     "libcurl",
+    "libnghttp2",
     "libssh2",
+    "openssl",
     "zlib"
    ]
   },
@@ -603,6 +623,7 @@
    "__set__":true,
    "elements":[
     "libcurl",
+    "libnghttp2",
     "libssh2"
    ]
   },
@@ -817,7 +838,7 @@
     },
     "files":[
      "include/curl",
-     "lib/libcurl.so*",
+     "lib/libcurl*.dylib",
      "lib/pkgconfig/libcurl*",
      "bin/curl-config"
     ],
@@ -1534,10 +1555,9 @@
      ]
     },
     "files":[
-     "include/curl",
-     "lib/libcurl.so*",
-     "lib/pkgconfig/libcurl*",
-     "bin/curl-config"
+     "Library/bin/libcurl.dll",
+     "Library/include/curl",
+     "Library/lib/libcurl*"
     ],
     "name":"libcurl",
     "requirements":{
@@ -1545,52 +1565,43 @@
       "c_compiler_stub"
      ],
      "host":[
-      "openssl",
-      "libnghttp2",
       "zlib",
       "libssh2",
       "krb5"
      ],
      "run":[
-      "libssh2",
-      "libnghttp2"
+      "libssh2"
      ]
     },
+    "script":"install_dll.bat",
     "test":{
-     "commands":[
-      "curl-config --features",
-      "curl-config --protocols",
-      "test -f ${PREFIX}/lib/libcurl${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libcurl.a"
-     ]
+     "commands":null
     }
    },
    {
-    "files":[
-     "lib/libcurl.a*"
-    ],
     "name":"libcurl-static",
     "requirements":{
      "build":[
       "c_compiler_stub"
      ],
      "host":[
-      "openssl",
       "zlib",
       "libssh2",
       "krb5",
       "libcurl"
      ]
     },
+    "script":"install_static.bat",
     "test":{
      "commands":[
-      "test -f $PREFIX/lib/libcurl.a"
+      "if exist %LIBRARY_LIB%\\libcurl_a.lib (exit 0) else (exit 1)"
      ]
     }
    },
    {
     "files":[
-     "bin/curl"
+     "Library/bin/curl.exe",
+     "Library/bin/curl.exe.manifest"
     ],
     "name":"curl",
     "requirements":{
@@ -1622,17 +1633,12 @@
   },
   "requirements":{
    "build":[
-    "c_compiler_stub",
-    "make",
-    "perl",
-    "pkg-config"
+    "c_compiler_stub"
    ],
    "host":[
     "zlib",
     "krb5",
     "libssh2",
-    "openssl",
-    "libnghttp2",
     "zlib"
    ]
   },
@@ -1645,10 +1651,7 @@
   "build":{
    "__set__":true,
    "elements":[
-    "c_compiler_stub",
-    "make",
-    "perl",
-    "pkg-config"
+    "c_compiler_stub"
    ]
   },
   "host":{
@@ -1656,9 +1659,7 @@
    "elements":[
     "krb5",
     "libcurl",
-    "libnghttp2",
     "libssh2",
-    "openssl",
     "zlib"
    ]
   },
@@ -1666,7 +1667,6 @@
    "__set__":true,
    "elements":[
     "libcurl",
-    "libnghttp2",
     "libssh2"
    ]
   },
@@ -1802,7 +1802,7 @@
     },
     "files":[
      "include/curl",
-     "lib/libcurl*.dylib",
+     "lib/libcurl.so*",
      "lib/pkgconfig/libcurl*",
      "bin/curl-config"
     ],
