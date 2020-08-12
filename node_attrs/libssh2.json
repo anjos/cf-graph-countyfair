@@ -159,7 +159,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"azure",
@@ -199,11 +199,10 @@
     "name":"libssh2",
     "test":{
      "commands":[
-      "test -f $PREFIX/include/libssh2.h",
-      "test -f $PREFIX/include/libssh2_publickey.h",
-      "test -f $PREFIX/include/libssh2_sftp.h",
-      "test ! -f $PREFIX/lib/libssh2.a",
-      "test -f $PREFIX/lib/libssh2${SHLIB_EXT}"
+      "if not exist %LIBRARY_INC%\\\\libssh2.h           exit 1",
+      "if not exist %LIBRARY_INC%\\\\libssh2_publickey.h exit 1",
+      "if not exist %LIBRARY_INC%\\\\libssh2_sftp.h      exit 1",
+      "if not exist %LIBRARY_LIB%\\\\libssh2.lib         exit 1"
      ]
     }
    },
@@ -212,9 +211,9 @@
     "name":"libssh2-static",
     "requirements":{
      "build":[
-      "cmake-no-system",
+      "cmake-binary",
       "c_compiler_stub",
-      "make"
+      "ninja"
      ],
      "host":[
       "libssh2",
@@ -222,10 +221,10 @@
       "zlib"
      ]
     },
-    "script":"build_static.sh",
+    "script":"bld_static.bat",
     "test":{
      "commands":[
-      "test -f $PREFIX/lib/libssh2.a"
+      "if not exist %LIBRARY_LIB%\\libssh2_static.lib exit 1"
      ]
     }
    }
@@ -236,9 +235,9 @@
   },
   "requirements":{
    "build":[
-    "cmake-no-system",
+    "cmake-binary",
     "c_compiler_stub",
-    "make"
+    "ninja"
    ],
    "host":[
     "openssl",
@@ -263,8 +262,8 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake-no-system",
-    "make"
+    "cmake-binary",
+    "ninja"
    ]
   },
   "host":{
@@ -847,10 +846,11 @@
     "name":"libssh2",
     "test":{
      "commands":[
-      "if not exist %LIBRARY_INC%\\\\libssh2.h           exit 1",
-      "if not exist %LIBRARY_INC%\\\\libssh2_publickey.h exit 1",
-      "if not exist %LIBRARY_INC%\\\\libssh2_sftp.h      exit 1",
-      "if not exist %LIBRARY_LIB%\\\\libssh2.lib         exit 1"
+      "test -f $PREFIX/include/libssh2.h",
+      "test -f $PREFIX/include/libssh2_publickey.h",
+      "test -f $PREFIX/include/libssh2_sftp.h",
+      "test ! -f $PREFIX/lib/libssh2.a",
+      "test -f $PREFIX/lib/libssh2${SHLIB_EXT}"
      ]
     }
    },
@@ -859,9 +859,9 @@
     "name":"libssh2-static",
     "requirements":{
      "build":[
-      "cmake-binary",
+      "cmake-no-system",
       "c_compiler_stub",
-      "ninja"
+      "make"
      ],
      "host":[
       "libssh2",
@@ -869,10 +869,10 @@
       "zlib"
      ]
     },
-    "script":"bld_static.bat",
+    "script":"build_static.sh",
     "test":{
      "commands":[
-      "if not exist %LIBRARY_LIB%\\libssh2_static.lib exit 1"
+      "test -f $PREFIX/lib/libssh2.a"
      ]
     }
    }
@@ -883,9 +883,9 @@
   },
   "requirements":{
    "build":[
-    "cmake-binary",
+    "cmake-no-system",
     "c_compiler_stub",
-    "ninja"
+    "make"
    ],
    "host":[
     "openssl",
@@ -910,8 +910,8 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake-binary",
-    "ninja"
+    "cmake-no-system",
+    "make"
    ]
   },
   "host":{

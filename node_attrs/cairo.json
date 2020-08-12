@@ -89,7 +89,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"default",
@@ -112,8 +112,7 @@
    "number":"1005",
    "run_exports":[
     "cairo"
-   ],
-   "skip":true
+   ]
   },
   "extra":{
    "recipe-maintainers":[
@@ -129,68 +128,117 @@
   },
   "requirements":{
    "build":[
-    "posix",
-    "m2w64-xz",
-    "c_compiler_stub"
+    "pkg-config",
+    "libtool",
+    "automake",
+    "make",
+    "xz",
+    "c_compiler_stub",
+    "pthread-stubs",
+    "xcb-proto",
+    "xorg-renderproto",
+    "xorg-xproto"
    ],
    "host":[
     "freetype",
+    "fontconfig",
     "glib",
     "icu",
     "libpng",
+    "libxcb",
     "pixman",
+    "xorg-libice",
+    "xorg-libsm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxrender",
     "zlib"
    ],
    "run":[
     "freetype",
+    "fontconfig",
     "glib",
     "icu",
     "libpng",
+    "libxcb",
     "pixman",
+    "xorg-libice",
+    "xorg-libsm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxrender",
     "zlib"
    ]
   },
   "source":{
-   "patches":[
-    "windows_enable_cairo_gobject.patch",
-    "windows_pc_files.patch",
-    "windows_enable_freetype.patch"
-   ],
+   "patches":null,
    "sha256":"5e7b29b3f113ef870d1e3ecf8adf21f923396401604bda16d44be45e66052331",
    "url":"http://cairographics.org/releases/cairo-1.16.0.tar.xz"
   },
   "test":{
-   "commands":null
+   "commands":[
+    "cairo-trace --help",
+    "test -f $PREFIX/lib/libcairo.a",
+    "test -f $PREFIX/lib/libcairo.so",
+    "test -f $PREFIX/lib/libcairo-gobject.a",
+    "test -f $PREFIX/lib/libcairo-gobject.so",
+    "test -f $PREFIX/lib/libcairo-script-interpreter.a",
+    "test -f $PREFIX/lib/libcairo-script-interpreter.so",
+    "test -f $PREFIX/lib/pkgconfig/cairo-xlib.pc",
+    "test -f $PREFIX/include/cairo/cairo.h",
+    "grep -q \"CAIRO_HAS_FC_FONT 1\" $PREFIX/include/cairo/cairo-features.h"
+   ]
   }
  },
  "linux_64_requirements":{
   "build":{
    "__set__":true,
    "elements":[
+    "automake",
     "c_compiler_stub",
-    "m2w64-xz",
-    "posix"
+    "libtool",
+    "make",
+    "pkg-config",
+    "pthread-stubs",
+    "xcb-proto",
+    "xorg-renderproto",
+    "xorg-xproto",
+    "xz"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
+    "fontconfig",
     "freetype",
     "glib",
     "icu",
     "libpng",
+    "libxcb",
     "pixman",
+    "xorg-libice",
+    "xorg-libsm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxrender",
     "zlib"
    ]
   },
   "run":{
    "__set__":true,
    "elements":[
+    "fontconfig",
     "freetype",
     "glib",
     "icu",
     "libpng",
+    "libxcb",
     "pixman",
+    "xorg-libice",
+    "xorg-libsm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxrender",
     "zlib"
    ]
   },
@@ -381,11 +429,7 @@
     "automake",
     "make",
     "xz",
-    "c_compiler_stub",
-    "pthread-stubs",
-    "xcb-proto",
-    "xorg-renderproto",
-    "xorg-xproto"
+    "c_compiler_stub"
    ],
    "host":[
     "freetype",
@@ -393,13 +437,7 @@
     "glib",
     "icu",
     "libpng",
-    "libxcb",
     "pixman",
-    "xorg-libice",
-    "xorg-libsm",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxrender",
     "zlib"
    ],
    "run":[
@@ -408,13 +446,7 @@
     "glib",
     "icu",
     "libpng",
-    "libxcb",
     "pixman",
-    "xorg-libice",
-    "xorg-libsm",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxrender",
     "zlib"
    ]
   },
@@ -427,12 +459,12 @@
    "commands":[
     "cairo-trace --help",
     "test -f $PREFIX/lib/libcairo.a",
-    "test -f $PREFIX/lib/libcairo.so",
+    "test -f $PREFIX/lib/libcairo.dylib",
     "test -f $PREFIX/lib/libcairo-gobject.a",
-    "test -f $PREFIX/lib/libcairo-gobject.so",
+    "test -f $PREFIX/lib/libcairo-gobject.dylib",
     "test -f $PREFIX/lib/libcairo-script-interpreter.a",
-    "test -f $PREFIX/lib/libcairo-script-interpreter.so",
-    "test -f $PREFIX/lib/pkgconfig/cairo-xlib.pc",
+    "test -f $PREFIX/lib/libcairo-script-interpreter.dylib",
+    "test -f $PREFIX/lib/pkgconfig/cairo-quartz.pc",
     "test -f $PREFIX/include/cairo/cairo.h",
     "grep -q \"CAIRO_HAS_FC_FONT 1\" $PREFIX/include/cairo/cairo-features.h"
    ]
@@ -447,10 +479,6 @@
     "libtool",
     "make",
     "pkg-config",
-    "pthread-stubs",
-    "xcb-proto",
-    "xorg-renderproto",
-    "xorg-xproto",
     "xz"
    ]
   },
@@ -462,13 +490,7 @@
     "glib",
     "icu",
     "libpng",
-    "libxcb",
     "pixman",
-    "xorg-libice",
-    "xorg-libsm",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxrender",
     "zlib"
    ]
   },
@@ -480,13 +502,7 @@
     "glib",
     "icu",
     "libpng",
-    "libxcb",
     "pixman",
-    "xorg-libice",
-    "xorg-libsm",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxrender",
     "zlib"
    ]
   },
@@ -722,7 +738,8 @@
    "number":"1005",
    "run_exports":[
     "cairo"
-   ]
+   ],
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -738,117 +755,68 @@
   },
   "requirements":{
    "build":[
-    "pkg-config",
-    "libtool",
-    "automake",
-    "make",
-    "xz",
-    "c_compiler_stub",
-    "pthread-stubs",
-    "xcb-proto",
-    "xorg-renderproto",
-    "xorg-xproto"
+    "posix",
+    "m2w64-xz",
+    "c_compiler_stub"
    ],
    "host":[
     "freetype",
-    "fontconfig",
     "glib",
     "icu",
     "libpng",
-    "libxcb",
     "pixman",
-    "xorg-libice",
-    "xorg-libsm",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxrender",
     "zlib"
    ],
    "run":[
     "freetype",
-    "fontconfig",
     "glib",
     "icu",
     "libpng",
-    "libxcb",
     "pixman",
-    "xorg-libice",
-    "xorg-libsm",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxrender",
     "zlib"
    ]
   },
   "source":{
-   "patches":null,
+   "patches":[
+    "windows_enable_cairo_gobject.patch",
+    "windows_pc_files.patch",
+    "windows_enable_freetype.patch"
+   ],
    "sha256":"5e7b29b3f113ef870d1e3ecf8adf21f923396401604bda16d44be45e66052331",
    "url":"http://cairographics.org/releases/cairo-1.16.0.tar.xz"
   },
   "test":{
-   "commands":[
-    "cairo-trace --help",
-    "test -f $PREFIX/lib/libcairo.a",
-    "test -f $PREFIX/lib/libcairo.so",
-    "test -f $PREFIX/lib/libcairo-gobject.a",
-    "test -f $PREFIX/lib/libcairo-gobject.so",
-    "test -f $PREFIX/lib/libcairo-script-interpreter.a",
-    "test -f $PREFIX/lib/libcairo-script-interpreter.so",
-    "test -f $PREFIX/lib/pkgconfig/cairo-xlib.pc",
-    "test -f $PREFIX/include/cairo/cairo.h",
-    "grep -q \"CAIRO_HAS_FC_FONT 1\" $PREFIX/include/cairo/cairo-features.h"
-   ]
+   "commands":null
   }
  },
  "osx_64_requirements":{
   "build":{
    "__set__":true,
    "elements":[
-    "automake",
     "c_compiler_stub",
-    "libtool",
-    "make",
-    "pkg-config",
-    "pthread-stubs",
-    "xcb-proto",
-    "xorg-renderproto",
-    "xorg-xproto",
-    "xz"
+    "m2w64-xz",
+    "posix"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
-    "fontconfig",
     "freetype",
     "glib",
     "icu",
     "libpng",
-    "libxcb",
     "pixman",
-    "xorg-libice",
-    "xorg-libsm",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxrender",
     "zlib"
    ]
   },
   "run":{
    "__set__":true,
    "elements":[
-    "fontconfig",
     "freetype",
     "glib",
     "icu",
     "libpng",
-    "libxcb",
     "pixman",
-    "xorg-libice",
-    "xorg-libsm",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxrender",
     "zlib"
    ]
   },
@@ -1045,7 +1013,11 @@
     "automake",
     "make",
     "xz",
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "pthread-stubs",
+    "xcb-proto",
+    "xorg-renderproto",
+    "xorg-xproto"
    ],
    "host":[
     "freetype",
@@ -1053,7 +1025,13 @@
     "glib",
     "icu",
     "libpng",
+    "libxcb",
     "pixman",
+    "xorg-libice",
+    "xorg-libsm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxrender",
     "zlib"
    ],
    "run":[
@@ -1062,7 +1040,13 @@
     "glib",
     "icu",
     "libpng",
+    "libxcb",
     "pixman",
+    "xorg-libice",
+    "xorg-libsm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxrender",
     "zlib"
    ]
   },
@@ -1075,12 +1059,12 @@
    "commands":[
     "cairo-trace --help",
     "test -f $PREFIX/lib/libcairo.a",
-    "test -f $PREFIX/lib/libcairo.dylib",
+    "test -f $PREFIX/lib/libcairo.so",
     "test -f $PREFIX/lib/libcairo-gobject.a",
-    "test -f $PREFIX/lib/libcairo-gobject.dylib",
+    "test -f $PREFIX/lib/libcairo-gobject.so",
     "test -f $PREFIX/lib/libcairo-script-interpreter.a",
-    "test -f $PREFIX/lib/libcairo-script-interpreter.dylib",
-    "test -f $PREFIX/lib/pkgconfig/cairo-quartz.pc",
+    "test -f $PREFIX/lib/libcairo-script-interpreter.so",
+    "test -f $PREFIX/lib/pkgconfig/cairo-xlib.pc",
     "test -f $PREFIX/include/cairo/cairo.h",
     "grep -q \"CAIRO_HAS_FC_FONT 1\" $PREFIX/include/cairo/cairo-features.h"
    ]
@@ -1095,6 +1079,10 @@
     "libtool",
     "make",
     "pkg-config",
+    "pthread-stubs",
+    "xcb-proto",
+    "xorg-renderproto",
+    "xorg-xproto",
     "xz"
    ]
   },
@@ -1106,7 +1094,13 @@
     "glib",
     "icu",
     "libpng",
+    "libxcb",
     "pixman",
+    "xorg-libice",
+    "xorg-libsm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxrender",
     "zlib"
    ]
   },
@@ -1118,7 +1112,13 @@
     "glib",
     "icu",
     "libpng",
+    "libxcb",
     "pixman",
+    "xorg-libice",
+    "xorg-libsm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxrender",
     "zlib"
    ]
   },
