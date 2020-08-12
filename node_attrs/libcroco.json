@@ -68,7 +68,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "compiler_stack":"comp7",
   "max_py_ver":"37",
@@ -289,7 +289,8 @@
     "test -f $PREFIX/lib/libcroco-0.6$SHLIB_EXT",
     "test -f `pkg-config --variable=libdir --dont-define-prefix libcroco-0.6`/libcroco-0.6$SHLIB_EXT",
     "csslint-0.6 -v",
-    "conda inspect linkages -p $PREFIX $PKG_NAME"
+    "conda inspect linkages -p $PREFIX $PKG_NAME",
+    "conda inspect objects -p $PREFIX $PKG_NAME"
    ],
    "requires":[
     "pkg-config"
@@ -462,8 +463,7 @@
   },
   "requirements":{
    "build":[
-    "make",
-    "pkg-config",
+    "python",
     "c_compiler_stub"
    ],
    "host":[
@@ -481,12 +481,11 @@
   },
   "test":{
    "commands":[
-    "test -f $PREFIX/include/libcroco-0.6/libcroco/libcroco.h",
-    "test -f $PREFIX/lib/libcroco-0.6$SHLIB_EXT",
-    "test -f `pkg-config --variable=libdir --dont-define-prefix libcroco-0.6`/libcroco-0.6$SHLIB_EXT",
-    "csslint-0.6 -v",
-    "conda inspect linkages -p $PREFIX $PKG_NAME",
-    "conda inspect objects -p $PREFIX $PKG_NAME"
+    "if not exist %PREFIX%\\Library\\include\\libcroco-0.6\\libcroco\\libcroco.h exit 1",
+    "if not exist %PREFIX%\\Library\\bin\\croco-0.6-vs14.dll exit 1",
+    "if not exist %PREFIX%\\Library\\lib\\croco-0.6.lib exit 1",
+    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix libcroco-0.6`) do if not exist \"%%a/croco-0.6.lib\" exit 1",
+    "csslint -v"
    ],
    "requires":[
     "pkg-config"
@@ -498,8 +497,7 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "make",
-    "pkg-config"
+    "python"
    ]
   },
   "host":{
@@ -624,7 +622,8 @@
   },
   "requirements":{
    "build":[
-    "python",
+    "make",
+    "pkg-config",
     "c_compiler_stub"
    ],
    "host":[
@@ -642,11 +641,11 @@
   },
   "test":{
    "commands":[
-    "if not exist %PREFIX%\\Library\\include\\libcroco-0.6\\libcroco\\libcroco.h exit 1",
-    "if not exist %PREFIX%\\Library\\bin\\croco-0.6-vs14.dll exit 1",
-    "if not exist %PREFIX%\\Library\\lib\\croco-0.6.lib exit 1",
-    "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix libcroco-0.6`) do if not exist \"%%a/croco-0.6.lib\" exit 1",
-    "csslint -v"
+    "test -f $PREFIX/include/libcroco-0.6/libcroco/libcroco.h",
+    "test -f $PREFIX/lib/libcroco-0.6$SHLIB_EXT",
+    "test -f `pkg-config --variable=libdir --dont-define-prefix libcroco-0.6`/libcroco-0.6$SHLIB_EXT",
+    "csslint-0.6 -v",
+    "conda inspect linkages -p $PREFIX $PKG_NAME"
    ],
    "requires":[
     "pkg-config"
@@ -658,7 +657,8 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "python"
+    "make",
+    "pkg-config"
    ]
   },
   "host":{

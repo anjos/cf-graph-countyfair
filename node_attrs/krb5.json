@@ -462,6 +462,9 @@
    "summary":"A network authentication protocol."
   },
   "build":{
+   "missing_dso_whitelist":[
+    "/usr/lib/libresolv.9.dylib"
+   ],
    "number":"2",
    "run_exports":[
     "krb5"
@@ -482,6 +485,7 @@
     "test":{
      "commands":[
       "conda inspect linkages -p $PREFIX krb5",
+      "conda inspect objects -p $PREFIX krb5",
       "python krb5_test.py"
      ],
      "requires":[
@@ -927,13 +931,11 @@
    "summary":"A network authentication protocol."
   },
   "build":{
-   "missing_dso_whitelist":[
-    "/usr/lib/libresolv.9.dylib"
-   ],
    "number":"2",
    "run_exports":[
     "krb5"
-   ]
+   ],
+   "skip":true
   },
   "extra":{
    "recipe-maintainers":[
@@ -949,44 +951,38 @@
     "name":"krb5",
     "test":{
      "commands":[
-      "conda inspect linkages -p $PREFIX krb5",
-      "conda inspect objects -p $PREFIX krb5",
       "python krb5_test.py"
      ],
      "requires":[
-      "python 3.7.*"
+      "python"
      ]
     }
    },
    {
-    "build":null,
+    "build":{
+     "skip":true
+    },
     "name":"krb5-static",
     "requirements":{
      "build":[
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "bison",
-      "autoconf",
-      "pkg-config",
-      "make",
-      "python 3.7",
+      "posix",
+      "perl",
+      "python",
       "openssl"
      ],
      "host":[
-      "libedit",
       "openssl",
       "tk"
      ],
      "run":[
-      "krb5",
-      "libedit"
+      "krb5"
      ]
     },
     "script":"build_static.sh",
     "test":{
-     "commands":[
-      "test -f ${PREFIX}/lib/libk5crypto.a"
-     ]
+     "commands":null
     }
    }
   ],
@@ -998,21 +994,16 @@
    "build":[
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "bison",
-    "autoconf",
-    "pkg-config",
-    "make",
-    "python 3.7",
+    "posix",
+    "perl",
+    "python",
     "openssl"
    ],
    "host":[
-    "libedit",
     "openssl",
     "tk"
    ],
-   "run":[
-    "libedit"
-   ]
+   "run":null
   },
   "source":{
    "sha256":"8bdedbfb0bbb245217e23290437916d70b315514e6f7cc088b6e82d1310afe0b",
@@ -1023,20 +1014,17 @@
   "build":{
    "__set__":true,
    "elements":[
-    "autoconf",
-    "bison",
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "make",
     "openssl",
-    "pkg-config",
+    "perl",
+    "posix",
     "python"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
-    "libedit",
     "openssl",
     "tk"
    ]
@@ -1044,8 +1032,7 @@
   "run":{
    "__set__":true,
    "elements":[
-    "krb5",
-    "libedit"
+    "krb5"
    ]
   },
   "test":{
@@ -1172,8 +1159,7 @@
    "number":"2",
    "run_exports":[
     "krb5"
-   ],
-   "skip":true
+   ]
   },
   "extra":{
    "recipe-maintainers":[
@@ -1189,38 +1175,43 @@
     "name":"krb5",
     "test":{
      "commands":[
+      "conda inspect linkages -p $PREFIX krb5",
       "python krb5_test.py"
      ],
      "requires":[
-      "python"
+      "python 3.7.*"
      ]
     }
    },
    {
-    "build":{
-     "skip":true
-    },
+    "build":null,
     "name":"krb5-static",
     "requirements":{
      "build":[
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "posix",
-      "perl",
-      "python",
+      "bison",
+      "autoconf",
+      "pkg-config",
+      "make",
+      "python 3.7",
       "openssl"
      ],
      "host":[
+      "libedit",
       "openssl",
       "tk"
      ],
      "run":[
-      "krb5"
+      "krb5",
+      "libedit"
      ]
     },
     "script":"build_static.sh",
     "test":{
-     "commands":null
+     "commands":[
+      "test -f ${PREFIX}/lib/libk5crypto.a"
+     ]
     }
    }
   ],
@@ -1232,16 +1223,21 @@
    "build":[
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "posix",
-    "perl",
-    "python",
+    "bison",
+    "autoconf",
+    "pkg-config",
+    "make",
+    "python 3.7",
     "openssl"
    ],
    "host":[
+    "libedit",
     "openssl",
     "tk"
    ],
-   "run":null
+   "run":[
+    "libedit"
+   ]
   },
   "source":{
    "sha256":"8bdedbfb0bbb245217e23290437916d70b315514e6f7cc088b6e82d1310afe0b",
@@ -1252,17 +1248,20 @@
   "build":{
    "__set__":true,
    "elements":[
+    "autoconf",
+    "bison",
     "c_compiler_stub",
     "cxx_compiler_stub",
+    "make",
     "openssl",
-    "perl",
-    "posix",
+    "pkg-config",
     "python"
    ]
   },
   "host":{
    "__set__":true,
    "elements":[
+    "libedit",
     "openssl",
     "tk"
    ]
@@ -1270,7 +1269,8 @@
   "run":{
    "__set__":true,
    "elements":[
-    "krb5"
+    "krb5",
+    "libedit"
    ]
   },
   "test":{

@@ -51,7 +51,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "win":"azure"
@@ -105,7 +105,7 @@
   "test":{
    "commands":[
     "test -f $PREFIX/lib/libSDL2_ttf.a",
-    "test -f $PREFIX/lib/libSDL2_ttf.so",
+    "test -f $PREFIX/lib/libSDL2_ttf.dylib",
     "test -f $PREFIX/include/SDL2/SDL_ttf.h"
    ]
   }
@@ -239,6 +239,7 @@
   },
   "extra":{
    "recipe-maintainers":[
+    "dschreij",
     "dschreij"
    ]
   },
@@ -248,16 +249,20 @@
   },
   "requirements":{
    "build":[
-    "autoconf",
-    "automake",
-    "libtool",
+    "cmake",
+    "c_compiler_stub",
+    "cmake",
     "c_compiler_stub"
    ],
    "host":[
     "sdl2 2.0.*",
+    "freetype",
+    "sdl2 2.0.*",
     "freetype"
    ],
    "run":[
+    "sdl2 2.0.*",
+    "freetype",
     "sdl2 2.0.*",
     "freetype"
    ]
@@ -269,9 +274,12 @@
   },
   "test":{
    "commands":[
-    "test -f $PREFIX/lib/libSDL2_ttf.a",
-    "test -f $PREFIX/lib/libSDL2_ttf.dylib",
-    "test -f $PREFIX/include/SDL2/SDL_ttf.h"
+    "if not exist %LIBRARY_LIB%\\\\SDL2_ttf.lib exit 1",
+    "if not exist %LIBRARY_BIN%\\\\SDL2_ttf.dll exit 1",
+    "if not exist %LIBRARY_INC%\\\\SDL2\\\\SDL_ttf.h exit 1",
+    "if not exist %LIBRARY_LIB%\\\\SDL2_ttf.lib exit 1",
+    "if not exist %LIBRARY_BIN%\\\\SDL2_ttf.dll exit 1",
+    "if not exist %LIBRARY_INC%\\\\SDL2\\\\SDL_ttf.h exit 1"
    ]
   }
  },
@@ -279,10 +287,8 @@
   "build":{
    "__set__":true,
    "elements":[
-    "autoconf",
-    "automake",
     "c_compiler_stub",
-    "libtool"
+    "cmake"
    ]
   },
   "host":{
@@ -397,7 +403,6 @@
   },
   "extra":{
    "recipe-maintainers":[
-    "dschreij",
     "dschreij"
    ]
   },
@@ -407,20 +412,16 @@
   },
   "requirements":{
    "build":[
-    "cmake",
-    "c_compiler_stub",
-    "cmake",
+    "autoconf",
+    "automake",
+    "libtool",
     "c_compiler_stub"
    ],
    "host":[
     "sdl2 2.0.*",
-    "freetype",
-    "sdl2 2.0.*",
     "freetype"
    ],
    "run":[
-    "sdl2 2.0.*",
-    "freetype",
     "sdl2 2.0.*",
     "freetype"
    ]
@@ -432,12 +433,9 @@
   },
   "test":{
    "commands":[
-    "if not exist %LIBRARY_LIB%\\\\SDL2_ttf.lib exit 1",
-    "if not exist %LIBRARY_BIN%\\\\SDL2_ttf.dll exit 1",
-    "if not exist %LIBRARY_INC%\\\\SDL2\\\\SDL_ttf.h exit 1",
-    "if not exist %LIBRARY_LIB%\\\\SDL2_ttf.lib exit 1",
-    "if not exist %LIBRARY_BIN%\\\\SDL2_ttf.dll exit 1",
-    "if not exist %LIBRARY_INC%\\\\SDL2\\\\SDL_ttf.h exit 1"
+    "test -f $PREFIX/lib/libSDL2_ttf.a",
+    "test -f $PREFIX/lib/libSDL2_ttf.so",
+    "test -f $PREFIX/include/SDL2/SDL_ttf.h"
    ]
   }
  },
@@ -445,8 +443,10 @@
   "build":{
    "__set__":true,
    "elements":[
+    "autoconf",
+    "automake",
     "c_compiler_stub",
-    "cmake"
+    "libtool"
    ]
   },
   "host":{
