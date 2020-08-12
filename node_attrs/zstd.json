@@ -307,30 +307,28 @@
   "outputs":[
    {
     "name":"zstd",
-    "script":"install.sh",
     "test":{
      "commands":[
       "zstd -be -i5",
-      "test -f ${PREFIX}/include/zstd.h",
-      "test ! -f ${PREFIX}/lib/libzstd.a",
-      "test -f ${PREFIX}/lib/libzstd.so",
-      "export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig",
-      "test -f ${PREFIX}/lib/pkgconfig/libzstd.pc",
-      "pkg-config --cflags libzstd"
+      "if not exist %LIBRARY_INC%\\zstd.h exit 1",
+      "if not exist %LIBRARY_BIN%\\libzstd.dll exit 1",
+      "if not exist %LIBRARY_LIB%\\libzstd.lib exit 1",
+      "if exist %LIBRARY_LIB%\\libzstd_static.lib exit 1"
      ],
-     "requires":[
-      "pkg-config"
-     ]
+     "requires":null
     }
    },
    {
-    "build":null,
+    "build":{
+     "skip":true
+    },
     "name":"zstd-static",
     "requirements":{
      "build":[
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "make",
+      "msinttypes",
+      "ninja",
       "cmake"
      ],
      "host":[
@@ -340,11 +338,8 @@
       "zstd"
      ]
     },
-    "script":"install.sh",
     "test":{
-     "commands":[
-      "test -f ${PREFIX}/lib/libzstd.a"
-     ]
+     "commands":null
     }
    }
   ],
@@ -356,7 +351,8 @@
    "build":[
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "make",
+    "msinttypes",
+    "ninja",
     "cmake"
    ],
    "host":[
@@ -384,7 +380,8 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "make"
+    "msinttypes",
+    "ninja"
    ]
   },
   "host":{
@@ -407,9 +404,7 @@
   },
   "test":{
    "__set__":true,
-   "elements":[
-    "pkg-config"
-   ]
+   "elements":[]
   }
  },
  "linux_aarch64_meta_yaml":{
@@ -634,9 +629,7 @@
   },
   "source":{
    "fn":"zstd-1.4.5.tar.gz",
-   "patches":[
-    "utime-aarch64.patch"
-   ],
+   "patches":null,
    "sha256":"98e91c7c6bf162bf90e4e70fdbc41a8188b9fa8de5ad840c401198014406ce9e",
    "url":"https://github.com/facebook/zstd/releases/download/v1.4.5/zstd-1.4.5.tar.gz"
   }
@@ -1024,28 +1017,30 @@
   "outputs":[
    {
     "name":"zstd",
+    "script":"install.sh",
     "test":{
      "commands":[
       "zstd -be -i5",
-      "if not exist %LIBRARY_INC%\\zstd.h exit 1",
-      "if not exist %LIBRARY_BIN%\\libzstd.dll exit 1",
-      "if not exist %LIBRARY_LIB%\\libzstd.lib exit 1",
-      "if exist %LIBRARY_LIB%\\libzstd_static.lib exit 1"
+      "test -f ${PREFIX}/include/zstd.h",
+      "test ! -f ${PREFIX}/lib/libzstd.a",
+      "test -f ${PREFIX}/lib/libzstd.so",
+      "export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig",
+      "test -f ${PREFIX}/lib/pkgconfig/libzstd.pc",
+      "pkg-config --cflags libzstd"
      ],
-     "requires":null
+     "requires":[
+      "pkg-config"
+     ]
     }
    },
    {
-    "build":{
-     "skip":true
-    },
+    "build":null,
     "name":"zstd-static",
     "requirements":{
      "build":[
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "msinttypes",
-      "ninja",
+      "make",
       "cmake"
      ],
      "host":[
@@ -1055,8 +1050,11 @@
       "zstd"
      ]
     },
+    "script":"install.sh",
     "test":{
-     "commands":null
+     "commands":[
+      "test -f ${PREFIX}/lib/libzstd.a"
+     ]
     }
    }
   ],
@@ -1068,8 +1066,7 @@
    "build":[
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "msinttypes",
-    "ninja",
+    "make",
     "cmake"
    ],
    "host":[
@@ -1085,7 +1082,9 @@
   },
   "source":{
    "fn":"zstd-1.4.5.tar.gz",
-   "patches":null,
+   "patches":[
+    "utime-aarch64.patch"
+   ],
    "sha256":"98e91c7c6bf162bf90e4e70fdbc41a8188b9fa8de5ad840c401198014406ce9e",
    "url":"https://github.com/facebook/zstd/releases/download/v1.4.5/zstd-1.4.5.tar.gz"
   }
@@ -1097,8 +1096,7 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "msinttypes",
-    "ninja"
+    "make"
    ]
   },
   "host":{
@@ -1121,7 +1119,9 @@
   },
   "test":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "pkg-config"
+   ]
   }
  },
  "outputs_names":[
