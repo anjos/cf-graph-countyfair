@@ -159,7 +159,7 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
     "make"
    ],
    "host":null
@@ -181,7 +181,7 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
     "make"
    ]
   },
@@ -226,7 +226,7 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
     "make"
    ],
    "host":null
@@ -248,7 +248,7 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
     "make"
    ]
   },
@@ -293,7 +293,7 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
     "make"
    ],
    "host":null
@@ -315,7 +315,7 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
     "make"
    ]
   },
@@ -347,11 +347,15 @@
     "c-ares",
     "c-ares",
     "c-ares",
+    "c-ares",
     "c-ares"
    ]
   },
   "extra":{
    "recipe-maintainers":[
+    "ocefpaf",
+    "wesm",
+    "xhochy",
     "ocefpaf",
     "wesm",
     "xhochy",
@@ -376,16 +380,19 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
     "make",
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
     "make",
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
     "make",
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
+    "make",
+    "c_compiler_stub",
+    "cmake-no-system",
     "make",
     "c_compiler_stub",
     "cmake"
@@ -400,6 +407,9 @@
   },
   "test":{
    "commands":[
+    "test -f ${PREFIX}/include/ares.h",
+    "test -f ${PREFIX}/lib/libcares${SHLIB_EXT}",
+    "test ! -f ${PREFIX}/lib/libcares.a",
     "test -f ${PREFIX}/include/ares.h",
     "test -f ${PREFIX}/lib/libcares${SHLIB_EXT}",
     "test ! -f ${PREFIX}/lib/libcares.a",
@@ -454,7 +464,7 @@
   "requirements":{
    "build":[
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
     "make"
    ],
    "host":null
@@ -476,7 +486,74 @@
    "__set__":true,
    "elements":[
     "c_compiler_stub",
-    "cmake",
+    "cmake-no-system",
+    "make"
+   ]
+  },
+  "host":{
+   "__set__":true,
+   "elements":[]
+  },
+  "run":{
+   "__set__":true,
+   "elements":[]
+  },
+  "test":{
+   "__set__":true,
+   "elements":[]
+  }
+ },
+ "osx_arm64_meta_yaml":{
+  "about":{
+   "home":"https://c-ares.haxx.se/",
+   "license":"MIT",
+   "license_family":"MIT",
+   "license_file":"LICENSE.md",
+   "summary":"This is c-ares, an asynchronous resolver library"
+  },
+  "build":{
+   "number":"0",
+   "run_exports":[
+    "c-ares"
+   ]
+  },
+  "extra":{
+   "recipe-maintainers":[
+    "ocefpaf",
+    "wesm",
+    "xhochy"
+   ]
+  },
+  "package":{
+   "name":"c-ares",
+   "version":"1.16.1"
+  },
+  "requirements":{
+   "build":[
+    "c_compiler_stub",
+    "cmake-no-system",
+    "make"
+   ],
+   "host":null
+  },
+  "source":{
+   "sha256":"d08312d0ecc3bd48eee0a4cc0d2137c9f194e0a28de2028928c0f6cae85f86ce",
+   "url":"https://c-ares.haxx.se/download/c-ares-1.16.1.tar.gz"
+  },
+  "test":{
+   "commands":[
+    "test -f ${PREFIX}/include/ares.h",
+    "test -f ${PREFIX}/lib/libcares${SHLIB_EXT}",
+    "test ! -f ${PREFIX}/lib/libcares.a"
+   ]
+  }
+ },
+ "osx_arm64_requirements":{
+  "build":{
+   "__set__":true,
+   "elements":[
+    "c_compiler_stub",
+    "cmake-no-system",
     "make"
    ]
   },
@@ -494,12 +571,13 @@
   }
  },
  "pinning_version":"2020.08.15.14.59.48",
- "raw_meta_yaml":"{% set version = \"1.16.1\" %}\n\npackage:\n  name: c-ares\n  version: {{ version }}\n\nsource:\n  url: https://c-ares.haxx.se/download/c-ares-{{ version }}.tar.gz\n  sha256: d08312d0ecc3bd48eee0a4cc0d2137c9f194e0a28de2028928c0f6cae85f86ce\n\nbuild:\n  number: 0\n  run_exports:\n    - {{ pin_subpackage(\"c-ares\", max_pin=\"x\") }}\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n    - cmake\n    - make  # [unix]\n  host:\n    - msinttypes  # [win and vc<14]\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ares.h            # [not win]\n    - test -f ${PREFIX}/lib/libcares${SHLIB_EXT}  # [not win]\n    - test ! -f ${PREFIX}/lib/libcares.a          # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ares.h exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\cares.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\cares.lib exit 1  # [win]\n    - if exist %PREFIX%\\\\Library\\\\lib\\\\cares_static.lib exit 1  # [win]\n\nabout:\n  home: https://c-ares.haxx.se/\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE.md\n  summary: This is c-ares, an asynchronous resolver library\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - wesm\n    - xhochy\n",
+ "raw_meta_yaml":"{% set version = \"1.16.1\" %}\n\npackage:\n  name: c-ares\n  version: {{ version }}\n\nsource:\n  url: https://c-ares.haxx.se/download/c-ares-{{ version }}.tar.gz\n  sha256: d08312d0ecc3bd48eee0a4cc0d2137c9f194e0a28de2028928c0f6cae85f86ce\n\nbuild:\n  number: 0\n  run_exports:\n    - {{ pin_subpackage(\"c-ares\", max_pin=\"x\") }}\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n    - cmake  # [win]\n    # cmake on unix depends on c-ares. This breaks the cycle.\n    - cmake-no-system  # [unix]\n    - make  # [unix]\n  host:\n    - msinttypes  # [win and vc<14]\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ares.h            # [not win]\n    - test -f ${PREFIX}/lib/libcares${SHLIB_EXT}  # [not win]\n    - test ! -f ${PREFIX}/lib/libcares.a          # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ares.h exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\cares.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\cares.lib exit 1  # [win]\n    - if exist %PREFIX%\\\\Library\\\\lib\\\\cares_static.lib exit 1  # [win]\n\nabout:\n  home: https://c-ares.haxx.se/\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE.md\n  summary: This is c-ares, an asynchronous resolver library\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - wesm\n    - xhochy\n",
  "req":{
   "__set__":true,
   "elements":[
    "c_compiler_stub",
    "cmake",
+   "cmake-no-system",
    "make",
    "msinttypes"
   ]
@@ -510,6 +588,7 @@
    "elements":[
     "c_compiler_stub",
     "cmake",
+    "cmake-no-system",
     "make"
    ]
   },
@@ -536,6 +615,7 @@
    "elements":[
     "c_compiler_stub",
     "cmake",
+    "cmake-no-system",
     "make"
    ]
   },
