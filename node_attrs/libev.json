@@ -104,9 +104,6 @@
  "archived":false,
  "bad":false,
  "conda-forge.yml":{
-  "compiler_stack":"comp7",
-  "max_py_ver":"37",
-  "max_r_ver":"35",
   "provider":{
    "linux_aarch64":"default",
    "linux_ppc64le":"default"
@@ -180,6 +177,7 @@
    "build":[
     "libtool",
     "make",
+    "libtool",
     "c_compiler_stub"
    ],
    "host":null
@@ -282,6 +280,7 @@
    "build":[
     "libtool",
     "make",
+    "libtool",
     "c_compiler_stub"
    ],
    "host":null
@@ -384,6 +383,7 @@
    "build":[
     "libtool",
     "make",
+    "libtool",
     "c_compiler_stub"
    ],
    "host":null
@@ -434,11 +434,15 @@
     "libev",
     "libev",
     "libev",
+    "libev",
     "libev"
    ]
   },
   "extra":{
    "recipe-maintainers":[
+    "petercable",
+    "carlodri",
+    "wolfv",
     "petercable",
     "carlodri",
     "wolfv",
@@ -593,6 +597,41 @@
       "test -f \"${PREFIX}/lib/libev.a\""
      ]
     }
+   },
+   {
+    "name":"libev",
+    "script":"install.sh",
+    "test":{
+     "commands":[
+      "test -f \"${PREFIX}/include/ev.h\"",
+      "test -f \"${PREFIX}/include/ev++.h\"",
+      "test -f \"${PREFIX}/include/event.h\"",
+      "test ! -f \"${PREFIX}/lib/libev.a\"",
+      "test -f \"${PREFIX}/lib/libev${SHLIBEXT}\""
+     ]
+    }
+   },
+   {
+    "name":"libev-static",
+    "requirements":{
+     "build":[
+      "libtool",
+      "make",
+      "c_compiler_stub"
+     ],
+     "host":[
+      "libev"
+     ],
+     "run":[
+      "libev"
+     ]
+    },
+    "script":"install.sh",
+    "test":{
+     "commands":[
+      "test -f \"${PREFIX}/lib/libev.a\""
+     ]
+    }
    }
   ],
   "package":{
@@ -603,15 +642,23 @@
    "build":[
     "libtool",
     "make",
+    "libtool",
     "c_compiler_stub",
     "libtool",
     "make",
+    "libtool",
     "c_compiler_stub",
     "libtool",
     "make",
+    "libtool",
     "c_compiler_stub",
     "libtool",
     "make",
+    "libtool",
+    "c_compiler_stub",
+    "libtool",
+    "make",
+    "libtool",
     "c_compiler_stub"
    ],
    "host":null
@@ -690,6 +737,7 @@
    "build":[
     "libtool",
     "make",
+    "libtool",
     "c_compiler_stub"
    ],
    "host":null
@@ -726,12 +774,115 @@
    "elements":[]
   }
  },
+ "osx_arm64_meta_yaml":{
+  "about":{
+   "home":"http://software.schmorp.de/pkg/libev.html",
+   "license":"BSD-2-Clause",
+   "license_family":"BSD",
+   "license_file":"LICENSE",
+   "summary":"A full-featured and high-performance event loop that is loosely modeled after libevent, but without its limitations and bugs."
+  },
+  "build":{
+   "number":"0",
+   "run_exports":[
+    "libev"
+   ]
+  },
+  "extra":{
+   "recipe-maintainers":[
+    "petercable",
+    "carlodri",
+    "wolfv"
+   ]
+  },
+  "outputs":[
+   {
+    "name":"libev",
+    "script":"install.sh",
+    "test":{
+     "commands":[
+      "test -f \"${PREFIX}/include/ev.h\"",
+      "test -f \"${PREFIX}/include/ev++.h\"",
+      "test -f \"${PREFIX}/include/event.h\"",
+      "test ! -f \"${PREFIX}/lib/libev.a\"",
+      "test -f \"${PREFIX}/lib/libev${SHLIBEXT}\""
+     ]
+    }
+   },
+   {
+    "name":"libev-static",
+    "requirements":{
+     "build":[
+      "libtool",
+      "make",
+      "c_compiler_stub"
+     ],
+     "host":[
+      "libev"
+     ],
+     "run":[
+      "libev"
+     ]
+    },
+    "script":"install.sh",
+    "test":{
+     "commands":[
+      "test -f \"${PREFIX}/lib/libev.a\""
+     ]
+    }
+   }
+  ],
+  "package":{
+   "name":"libev",
+   "version":"4.33"
+  },
+  "requirements":{
+   "build":[
+    "libtool",
+    "make",
+    "libtool",
+    "c_compiler_stub"
+   ],
+   "host":null
+  },
+  "source":{
+   "fn":"libev-4.33.tar.gz",
+   "sha256":"507eb7b8d1015fbec5b935f34ebed15bf346bed04a11ab82b8eee848c4205aea",
+   "url":"http://dist.schmorp.de/libev/Attic/libev-4.33.tar.gz"
+  }
+ },
+ "osx_arm64_requirements":{
+  "build":{
+   "__set__":true,
+   "elements":[
+    "c_compiler_stub",
+    "libtool",
+    "make"
+   ]
+  },
+  "host":{
+   "__set__":true,
+   "elements":[
+    "libev"
+   ]
+  },
+  "run":{
+   "__set__":true,
+   "elements":[
+    "libev"
+   ]
+  },
+  "test":{
+   "__set__":true,
+   "elements":[]
+  }
+ },
  "outputs_names":[
   "libev",
   "libev-static"
  ],
  "pinning_version":"2020.08.15.14.59.48",
- "raw_meta_yaml":"{% set name = \"libev\" %}\n{% set version = \"4.33\" %}\n{% set sha256 = \"507eb7b8d1015fbec5b935f34ebed15bf346bed04a11ab82b8eee848c4205aea\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: http://dist.schmorp.de/libev/Attic/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - libtool\n    - make  # [unix]\n    - {{ compiler('c') }}\n  host:\n\noutputs:\n  - name: libev\n    script: install.sh  # [unix]\n    test:\n      commands:\n        # Check for headers.\n        - test -f \"${PREFIX}/include/ev.h\"\n        - test -f \"${PREFIX}/include/ev++.h\"\n        - test -f \"${PREFIX}/include/event.h\"\n        - test ! -f \"${PREFIX}/lib/libev.a\"\n        - test -f \"${PREFIX}/lib/libev${SHLIBEXT}\"  # [unix]\n\n  - name: libev-static\n    script: install.sh  # [unix]\n    requirements:\n      build:\n        - libtool\n        - make  # [unix]\n        - {{ compiler('c') }}\n      host:\n        - {{ pin_subpackage('libev', exact=True) }}\n      run:\n        - {{ pin_subpackage('libev', exact=True) }}\n    test:\n      commands:\n        - test -f \"${PREFIX}/lib/libev.a\"\n\nabout:\n  home: http://software.schmorp.de/pkg/libev.html\n  license: BSD-2-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: A full-featured and high-performance event loop that is loosely modeled after libevent, but without its limitations and bugs.\n\nextra:\n  recipe-maintainers:\n    - petercable\n    - carlodri\n    - wolfv\n",
+ "raw_meta_yaml":"{% set name = \"libev\" %}\n{% set version = \"4.33\" %}\n{% set sha256 = \"507eb7b8d1015fbec5b935f34ebed15bf346bed04a11ab82b8eee848c4205aea\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: http://dist.schmorp.de/libev/Attic/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - libtool\n    - make  # [unix]\n    - libtool  # [unix]\n    - {{ compiler('c') }}\n  host:\n\noutputs:\n  - name: libev\n    script: install.sh  # [unix]\n    test:\n      commands:\n        # Check for headers.\n        - test -f \"${PREFIX}/include/ev.h\"\n        - test -f \"${PREFIX}/include/ev++.h\"\n        - test -f \"${PREFIX}/include/event.h\"\n        - test ! -f \"${PREFIX}/lib/libev.a\"\n        - test -f \"${PREFIX}/lib/libev${SHLIBEXT}\"  # [unix]\n\n  - name: libev-static\n    script: install.sh  # [unix]\n    requirements:\n      build:\n        - libtool\n        - make  # [unix]\n        - {{ compiler('c') }}\n      host:\n        - {{ pin_subpackage('libev', exact=True) }}\n      run:\n        - {{ pin_subpackage('libev', exact=True) }}\n    test:\n      commands:\n        - test -f \"${PREFIX}/lib/libev.a\"\n\nabout:\n  home: http://software.schmorp.de/pkg/libev.html\n  license: BSD-2-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: A full-featured and high-performance event loop that is loosely modeled after libevent, but without its limitations and bugs.\n\nextra:\n  recipe-maintainers:\n    - petercable\n    - carlodri\n    - wolfv\n",
  "req":{
   "__set__":true,
   "elements":[
