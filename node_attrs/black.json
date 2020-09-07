@@ -37,7 +37,7 @@
    "summary":"The Uncompromising Code Formatter"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
@@ -65,8 +65,8 @@
      "run":[
       "python >=3.6",
       "appdirs",
-      "attrs >=18.1.0",
       "click >=7.1.2",
+      "dataclasses >=0.6",
       "mypy_extensions >=0.4.3",
       "pathspec >=0.6,<1",
       "regex",
@@ -78,7 +78,11 @@
     "script":"build_base.sh",
     "test":{
      "commands":[
-      "black --help"
+      "black --help",
+      "pip check"
+     ],
+     "requires":[
+      "pip"
      ]
     }
    },
@@ -150,10 +154,10 @@
     "aiohttp",
     "aiohttp-cors",
     "appdirs",
-    "attrs",
     "black",
     "click",
     "colorama",
+    "dataclasses",
     "mypy_extensions",
     "pathspec",
     "python",
@@ -165,7 +169,9 @@
   },
   "test":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "pip"
+   ]
   }
  },
  "meta_yaml":{
@@ -180,7 +186,7 @@
    "summary":"The Uncompromising Code Formatter"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
@@ -208,8 +214,8 @@
      "run":[
       "python >=3.6",
       "appdirs",
-      "attrs >=18.1.0",
       "click >=7.1.2",
+      "dataclasses >=0.6",
       "mypy_extensions >=0.4.3",
       "pathspec >=0.6,<1",
       "regex",
@@ -221,7 +227,11 @@
     "script":"build_base.sh",
     "test":{
      "commands":[
-      "black --help"
+      "black --help",
+      "pip check"
+     ],
+     "requires":[
+      "pip"
      ]
     }
    },
@@ -403,17 +413,17 @@
   "blackd"
  ],
  "pinning_version":"2019.11.01",
- "raw_meta_yaml":"{% set name = \"black\" %}\n{% set version = \"20.8b1\" %}\n\npackage:\n  name: {{ name|lower }}-recipe\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea\n\nbuild:\n  number: 0\n\noutputs:\n  - name: {{ name }}\n    script: build_base.sh\n    build:\n      noarch: python\n      entry_points:\n        - black = black:patched_main\n    requirements:\n      host:\n        - python >=3.6\n        - pip\n        - setuptools_scm\n      run:\n        - python >=3.6\n        - appdirs\n        - attrs >=18.1.0\n        - click >=7.1.2\n        - mypy_extensions >=0.4.3\n        - pathspec >=0.6,<1\n        - regex\n        - toml >=0.10.1\n        - typed-ast >=1.4.0\n        - typing_extensions >=3.7.4\n    test:\n      commands:\n        - black --help\n\n  - name: {{ name }}d\n    build:\n      noarch: python\n      entry_points:\n        - blackd = blackd:patched_main\n    requirements:\n      run:\n        - {{ pin_subpackage('black', exact=True) }}\n        - aiohttp >=3.3.2\n        - aiohttp-cors\n    test:\n      commands:\n        - black --help\n        - blackd --help\n  \n  - name: {{ name }}-colorama\n    build:\n      noarch: python\n    requirements:\n      run:\n        - {{ pin_subpackage('black', exact=True) }}\n        - colorama  >=0.4.3\n    test:\n      commands:\n        - black --help\n\nabout:\n  home: https://github.com/python/black\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: 'The Uncompromising Code Formatter'\n\n  description: |\n    Black is the uncompromising Python code formatter. By using it, you agree\n    to cease control over minutiae of hand-formatting. In return, Black gives\n    you speed, determinism, and freedom from pycodestyle nagging about\n    formatting. You will save time and mental energy for more important matters.\n  doc_url: https://github.com/psf/black\n  dev_url: https://github.com/psf/black\n\nextra:\n  recipe-maintainers:\n    - carlodri\n    - ambv\n    - mariusvniekerk\n    - xhochy\n",
+ "raw_meta_yaml":"{% set name = \"black\" %}\n{% set version = \"20.8b1\" %}\n\npackage:\n  name: {{ name|lower }}-recipe\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea\n\nbuild:\n  number: 1\n\noutputs:\n  - name: {{ name }}\n    script: build_base.sh\n    build:\n      noarch: python\n      entry_points:\n        - black = black:patched_main\n    requirements:\n      host:\n        - python >=3.6\n        - pip\n        - setuptools_scm\n      run:\n        - python >=3.6\n        - appdirs\n        - click >=7.1.2\n        - dataclasses >=0.6\n        - mypy_extensions >=0.4.3\n        - pathspec >=0.6,<1\n        - regex\n        - toml >=0.10.1\n        - typed-ast >=1.4.0\n        - typing_extensions >=3.7.4\n    test:\n      requires:\n        - pip\n      commands:\n        - black --help\n        - pip check\n\n  - name: {{ name }}d\n    build:\n      noarch: python\n      entry_points:\n        - blackd = blackd:patched_main\n    requirements:\n      run:\n        - {{ pin_subpackage('black', exact=True) }}\n        - aiohttp >=3.3.2\n        - aiohttp-cors\n    test:\n      commands:\n        - black --help\n        - blackd --help\n  \n  - name: {{ name }}-colorama\n    build:\n      noarch: python\n    requirements:\n      run:\n        - {{ pin_subpackage('black', exact=True) }}\n        - colorama  >=0.4.3\n    test:\n      commands:\n        - black --help\n\nabout:\n  home: https://github.com/python/black\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: 'The Uncompromising Code Formatter'\n\n  description: |\n    Black is the uncompromising Python code formatter. By using it, you agree\n    to cease control over minutiae of hand-formatting. In return, Black gives\n    you speed, determinism, and freedom from pycodestyle nagging about\n    formatting. You will save time and mental energy for more important matters.\n  doc_url: https://github.com/psf/black\n  dev_url: https://github.com/psf/black\n\nextra:\n  recipe-maintainers:\n    - carlodri\n    - ambv\n    - mariusvniekerk\n    - xhochy\n",
  "req":{
   "__set__":true,
   "elements":[
    "aiohttp",
    "aiohttp-cors",
    "appdirs",
-   "attrs",
    "black",
    "click",
    "colorama",
+   "dataclasses",
    "mypy_extensions",
    "pathspec",
    "pip",
@@ -444,10 +454,10 @@
     "aiohttp",
     "aiohttp-cors",
     "appdirs",
-    "attrs",
     "black",
     "click",
     "colorama",
+    "dataclasses",
     "mypy_extensions",
     "pathspec",
     "python",
@@ -459,7 +469,9 @@
   },
   "test":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "pip"
+   ]
   }
  },
  "smithy_version":"3.6.1",
@@ -483,10 +495,10 @@
     "aiohttp >=3.3.2",
     "aiohttp-cors",
     "appdirs",
-    "attrs >=18.1.0",
     "black",
     "click >=7.1.2",
     "colorama  >=0.4.3",
+    "dataclasses >=0.6",
     "mypy_extensions >=0.4.3",
     "pathspec >=0.6,<1",
     "python >=3.6",
@@ -498,7 +510,9 @@
   },
   "test":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "pip"
+   ]
   }
  },
  "url":"https://pypi.io/packages/source/b/black/black-19.3b0.tar.gz",
