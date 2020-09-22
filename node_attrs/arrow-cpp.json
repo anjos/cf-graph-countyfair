@@ -1472,7 +1472,7 @@
     },
     "build":{
      "number":"1",
-     "string":"cuda"
+     "string":"cpu"
     },
     "name":"arrow-cpp-proc",
     "test":{
@@ -1499,10 +1499,8 @@
      "run_exports":[
       "arrow-cpp"
      ],
-     "string":"pyh__cuda",
-     "track_features":[
-      "arrow-cuda"
-     ]
+     "string":"pyh__cpu",
+     "track_features":null
     },
     "name":"arrow-cpp",
     "requirements":{
@@ -1553,7 +1551,7 @@
       "zstd"
      ],
      "run_constrained":[
-      "arrow-cpp-proc * cuda"
+      "arrow-cpp-proc * cpu"
      ]
     },
     "script":"build-arrow.sh",
@@ -1571,7 +1569,7 @@
       "test -f $PREFIX/lib/libparquet.so",
       "test -f $PREFIX/lib/libgandiva.so",
       "test -f $PREFIX/lib/libplasma.so",
-      "test  -f $PREFIX/lib/libarrow_cuda.so",
+      "test ! -f $PREFIX/lib/libarrow_cuda.so",
       "test ! -f $PREFIX/lib/libarrow.a",
       "test ! -f $PREFIX/lib/libarrow_dataset.a",
       "test ! -f $PREFIX/lib/libarrow_flight.a",
@@ -1596,10 +1594,8 @@
      "ignore_run_exports":[
       "cudatoolkit"
      ],
-     "string":"pyh__cuda",
-     "track_features":[
-      "arrow-cuda"
-     ]
+     "string":"pyh__cpu",
+     "track_features":null
     },
     "name":"pyarrow",
     "requirements":{
@@ -1626,192 +1622,7 @@
       "python"
      ],
      "run_constrained":[
-      "arrow-cpp-proc * cuda"
-     ]
-    },
-    "script":"build-pyarrow.sh",
-    "test":{
-     "imports":[
-      "pyarrow",
-      "pyarrow.dataset",
-      "pyarrow.flight",
-      "pyarrow.gandiva",
-      "pyarrow.orc",
-      "pyarrow.parquet",
-      "pyarrow.plasma",
-      "pyarrow.fs",
-      "pyarrow._s3fs",
-      "pyarrow._hdfs"
-     ]
-    },
-    "version":"1.0.1"
-   },
-   {
-    "about":{
-     "home":"http://github.com/apache/arrow",
-     "license":"Apache-2.0",
-     "license_file":[
-      "LICENSE.txt"
-     ],
-     "summary":"A meta-package to select Arrow build variant"
-    },
-    "build":{
-     "number":"1",
-     "string":"cuda"
-    },
-    "name":"arrow-cpp-proc",
-    "test":{
-     "commands":[
-      "exit 0"
-     ]
-    },
-    "version":"1.0.1"
-   },
-   {
-    "about":{
-     "home":"http://github.com/apache/arrow",
-     "license":"Apache-2.0",
-     "license_file":[
-      "LICENSE.txt"
-     ],
-     "summary":"C++ libraries for Apache Arrow"
-    },
-    "build":{
-     "ignore_run_exports":[
-      "cudatoolkit",
-      "boost-cpp"
-     ],
-     "run_exports":[
-      "arrow-cpp"
-     ],
-     "string":"pyh__cuda",
-     "track_features":[
-      "arrow-cuda"
-     ]
-    },
-    "name":"arrow-cpp",
-    "requirements":{
-     "build":[
-      "cmake 3.16.*",
-      "autoconf",
-      "ninja",
-      "make",
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ],
-     "host":[
-      "aws-sdk-cpp",
-      "boost-cpp",
-      "brotli",
-      "bzip2",
-      "c-ares",
-      "gflags",
-      "glog",
-      "grpc-cpp",
-      "libprotobuf",
-      "clangdev 10",
-      "llvmdev 10",
-      "libutf8proc",
-      "lz4-c",
-      "numpy",
-      "orc",
-      "python",
-      "rapidjson",
-      "re2",
-      "snappy",
-      "thrift-cpp >=0.11",
-      "zlib",
-      "zstd"
-     ],
-     "run":[
-      "numpy",
-      "aws-sdk-cpp",
-      "brotli",
-      "c-ares",
-      "gflags",
-      "glog",
-      "grpc-cpp",
-      "lz4-c",
-      "python",
-      "re2",
-      "zlib",
-      "zstd"
-     ],
-     "run_constrained":[
-      "arrow-cpp-proc * cuda"
-     ]
-    },
-    "script":"build-arrow.sh",
-    "test":{
-     "commands":[
-      "test -f $PREFIX/include/arrow/api.h",
-      "test -f $PREFIX/include/arrow/flight/types.h",
-      "test -f $PREFIX/include/plasma/client.h",
-      "test -f $PREFIX/include/gandiva/engine.h",
-      "test -f $PREFIX/include/parquet/api/reader.h",
-      "test -f $PREFIX/lib/libarrow.so",
-      "test -f $PREFIX/lib/libarrow_dataset.so",
-      "test -f $PREFIX/lib/libarrow_flight.so",
-      "test -f $PREFIX/lib/libarrow_python.so",
-      "test -f $PREFIX/lib/libparquet.so",
-      "test -f $PREFIX/lib/libgandiva.so",
-      "test -f $PREFIX/lib/libplasma.so",
-      "test  -f $PREFIX/lib/libarrow_cuda.so",
-      "test ! -f $PREFIX/lib/libarrow.a",
-      "test ! -f $PREFIX/lib/libarrow_dataset.a",
-      "test ! -f $PREFIX/lib/libarrow_flight.a",
-      "test ! -f $PREFIX/lib/libarrow_python.a",
-      "test ! -f $PREFIX/lib/libplasma.a",
-      "test ! -f $PREFIX/lib/libparquet.a",
-      "test ! -f $PREFIX/lib/libgandiva.a"
-     ]
-    },
-    "version":"1.0.1"
-   },
-   {
-    "about":{
-     "home":"http://github.com/apache/arrow",
-     "license":"Apache-2.0",
-     "license_file":[
-      "LICENSE.txt"
-     ],
-     "summary":"Python libraries for Apache Arrow"
-    },
-    "build":{
-     "ignore_run_exports":[
-      "cudatoolkit"
-     ],
-     "string":"pyh__cuda",
-     "track_features":[
-      "arrow-cuda"
-     ]
-    },
-    "name":"pyarrow",
-    "requirements":{
-     "build":[
-      "cmake 3.16.*",
-      "ninja",
-      "make",
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ],
-     "host":[
-      "arrow-cpp",
-      "cython",
-      "numpy 1.16.*",
-      "python",
-      "setuptools",
-      "setuptools_scm",
-      "six"
-     ],
-     "run":[
-      "arrow-cpp",
-      "numpy",
-      "parquet-cpp 1.5.1.*",
-      "python"
-     ],
-     "run_constrained":[
-      "arrow-cpp-proc * cuda"
+      "arrow-cpp-proc * cpu"
      ]
     },
     "script":"build-pyarrow.sh",
@@ -2389,7 +2200,7 @@
     },
     "build":{
      "number":"1",
-     "string":"cpu"
+     "string":"cuda"
     },
     "name":"arrow-cpp-proc",
     "test":{
@@ -2416,8 +2227,10 @@
      "run_exports":[
       "arrow-cpp"
      ],
-     "string":"pyh__cpu",
-     "track_features":null
+     "string":"pyh__cuda",
+     "track_features":[
+      "arrow-cuda"
+     ]
     },
     "name":"arrow-cpp",
     "requirements":{
@@ -2468,7 +2281,7 @@
       "zstd"
      ],
      "run_constrained":[
-      "arrow-cpp-proc * cpu"
+      "arrow-cpp-proc * cuda"
      ]
     },
     "script":"build-arrow.sh",
@@ -2486,7 +2299,7 @@
       "test -f $PREFIX/lib/libparquet.so",
       "test -f $PREFIX/lib/libgandiva.so",
       "test -f $PREFIX/lib/libplasma.so",
-      "test ! -f $PREFIX/lib/libarrow_cuda.so",
+      "test  -f $PREFIX/lib/libarrow_cuda.so",
       "test ! -f $PREFIX/lib/libarrow.a",
       "test ! -f $PREFIX/lib/libarrow_dataset.a",
       "test ! -f $PREFIX/lib/libarrow_flight.a",
@@ -2511,8 +2324,10 @@
      "ignore_run_exports":[
       "cudatoolkit"
      ],
-     "string":"pyh__cpu",
-     "track_features":null
+     "string":"pyh__cuda",
+     "track_features":[
+      "arrow-cuda"
+     ]
     },
     "name":"pyarrow",
     "requirements":{
@@ -2539,7 +2354,7 @@
       "python"
      ],
      "run_constrained":[
-      "arrow-cpp-proc * cpu"
+      "arrow-cpp-proc * cuda"
      ]
     },
     "script":"build-pyarrow.sh",
@@ -2721,6 +2536,191 @@
      ],
      "run_constrained":[
       "arrow-cpp-proc * cpu"
+     ]
+    },
+    "script":"build-pyarrow.sh",
+    "test":{
+     "imports":[
+      "pyarrow",
+      "pyarrow.dataset",
+      "pyarrow.flight",
+      "pyarrow.gandiva",
+      "pyarrow.orc",
+      "pyarrow.parquet",
+      "pyarrow.plasma",
+      "pyarrow.fs",
+      "pyarrow._s3fs",
+      "pyarrow._hdfs"
+     ]
+    },
+    "version":"1.0.1"
+   },
+   {
+    "about":{
+     "home":"http://github.com/apache/arrow",
+     "license":"Apache-2.0",
+     "license_file":[
+      "LICENSE.txt"
+     ],
+     "summary":"A meta-package to select Arrow build variant"
+    },
+    "build":{
+     "number":"1",
+     "string":"cuda"
+    },
+    "name":"arrow-cpp-proc",
+    "test":{
+     "commands":[
+      "exit 0"
+     ]
+    },
+    "version":"1.0.1"
+   },
+   {
+    "about":{
+     "home":"http://github.com/apache/arrow",
+     "license":"Apache-2.0",
+     "license_file":[
+      "LICENSE.txt"
+     ],
+     "summary":"C++ libraries for Apache Arrow"
+    },
+    "build":{
+     "ignore_run_exports":[
+      "cudatoolkit",
+      "boost-cpp"
+     ],
+     "run_exports":[
+      "arrow-cpp"
+     ],
+     "string":"pyh__cuda",
+     "track_features":[
+      "arrow-cuda"
+     ]
+    },
+    "name":"arrow-cpp",
+    "requirements":{
+     "build":[
+      "cmake 3.16.*",
+      "autoconf",
+      "ninja",
+      "make",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host":[
+      "aws-sdk-cpp",
+      "boost-cpp",
+      "brotli",
+      "bzip2",
+      "c-ares",
+      "gflags",
+      "glog",
+      "grpc-cpp",
+      "libprotobuf",
+      "clangdev 10",
+      "llvmdev 10",
+      "libutf8proc",
+      "lz4-c",
+      "numpy",
+      "orc",
+      "python",
+      "rapidjson",
+      "re2",
+      "snappy",
+      "thrift-cpp >=0.11",
+      "zlib",
+      "zstd"
+     ],
+     "run":[
+      "numpy",
+      "aws-sdk-cpp",
+      "brotli",
+      "c-ares",
+      "gflags",
+      "glog",
+      "grpc-cpp",
+      "lz4-c",
+      "python",
+      "re2",
+      "zlib",
+      "zstd"
+     ],
+     "run_constrained":[
+      "arrow-cpp-proc * cuda"
+     ]
+    },
+    "script":"build-arrow.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/include/arrow/api.h",
+      "test -f $PREFIX/include/arrow/flight/types.h",
+      "test -f $PREFIX/include/plasma/client.h",
+      "test -f $PREFIX/include/gandiva/engine.h",
+      "test -f $PREFIX/include/parquet/api/reader.h",
+      "test -f $PREFIX/lib/libarrow.so",
+      "test -f $PREFIX/lib/libarrow_dataset.so",
+      "test -f $PREFIX/lib/libarrow_flight.so",
+      "test -f $PREFIX/lib/libarrow_python.so",
+      "test -f $PREFIX/lib/libparquet.so",
+      "test -f $PREFIX/lib/libgandiva.so",
+      "test -f $PREFIX/lib/libplasma.so",
+      "test  -f $PREFIX/lib/libarrow_cuda.so",
+      "test ! -f $PREFIX/lib/libarrow.a",
+      "test ! -f $PREFIX/lib/libarrow_dataset.a",
+      "test ! -f $PREFIX/lib/libarrow_flight.a",
+      "test ! -f $PREFIX/lib/libarrow_python.a",
+      "test ! -f $PREFIX/lib/libplasma.a",
+      "test ! -f $PREFIX/lib/libparquet.a",
+      "test ! -f $PREFIX/lib/libgandiva.a"
+     ]
+    },
+    "version":"1.0.1"
+   },
+   {
+    "about":{
+     "home":"http://github.com/apache/arrow",
+     "license":"Apache-2.0",
+     "license_file":[
+      "LICENSE.txt"
+     ],
+     "summary":"Python libraries for Apache Arrow"
+    },
+    "build":{
+     "ignore_run_exports":[
+      "cudatoolkit"
+     ],
+     "string":"pyh__cuda",
+     "track_features":[
+      "arrow-cuda"
+     ]
+    },
+    "name":"pyarrow",
+    "requirements":{
+     "build":[
+      "cmake 3.16.*",
+      "ninja",
+      "make",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host":[
+      "arrow-cpp",
+      "cython",
+      "numpy 1.16.*",
+      "python",
+      "setuptools",
+      "setuptools_scm",
+      "six"
+     ],
+     "run":[
+      "arrow-cpp",
+      "numpy",
+      "parquet-cpp 1.5.1.*",
+      "python"
+     ],
+     "run_constrained":[
+      "arrow-cpp-proc * cuda"
      ]
     },
     "script":"build-pyarrow.sh",
@@ -5532,7 +5532,7 @@
     },
     "build":{
      "number":"1",
-     "string":"cuda"
+     "string":"cpu"
     },
     "name":"arrow-cpp-proc",
     "test":{
@@ -5559,10 +5559,8 @@
      "run_exports":[
       "arrow-cpp"
      ],
-     "string":"pyh__cuda",
-     "track_features":[
-      "arrow-cuda"
-     ]
+     "string":"pyh__cpu",
+     "track_features":null
     },
     "name":"arrow-cpp",
     "requirements":{
@@ -5613,7 +5611,7 @@
       "zstd"
      ],
      "run_constrained":[
-      "arrow-cpp-proc * cuda"
+      "arrow-cpp-proc * cpu"
      ]
     },
     "script":"build-arrow.sh",
@@ -5631,7 +5629,7 @@
       "test -f $PREFIX/lib/libparquet.so",
       "test -f $PREFIX/lib/libgandiva.so",
       "test -f $PREFIX/lib/libplasma.so",
-      "test  -f $PREFIX/lib/libarrow_cuda.so",
+      "test ! -f $PREFIX/lib/libarrow_cuda.so",
       "test ! -f $PREFIX/lib/libarrow.a",
       "test ! -f $PREFIX/lib/libarrow_dataset.a",
       "test ! -f $PREFIX/lib/libarrow_flight.a",
@@ -5656,10 +5654,8 @@
      "ignore_run_exports":[
       "cudatoolkit"
      ],
-     "string":"pyh__cuda",
-     "track_features":[
-      "arrow-cuda"
-     ]
+     "string":"pyh__cpu",
+     "track_features":null
     },
     "name":"pyarrow",
     "requirements":{
@@ -5686,192 +5682,7 @@
       "python"
      ],
      "run_constrained":[
-      "arrow-cpp-proc * cuda"
-     ]
-    },
-    "script":"build-pyarrow.sh",
-    "test":{
-     "imports":[
-      "pyarrow",
-      "pyarrow.dataset",
-      "pyarrow.flight",
-      "pyarrow.gandiva",
-      "pyarrow.orc",
-      "pyarrow.parquet",
-      "pyarrow.plasma",
-      "pyarrow.fs",
-      "pyarrow._s3fs",
-      "pyarrow._hdfs"
-     ]
-    },
-    "version":"1.0.1"
-   },
-   {
-    "about":{
-     "home":"http://github.com/apache/arrow",
-     "license":"Apache-2.0",
-     "license_file":[
-      "LICENSE.txt"
-     ],
-     "summary":"A meta-package to select Arrow build variant"
-    },
-    "build":{
-     "number":"1",
-     "string":"cuda"
-    },
-    "name":"arrow-cpp-proc",
-    "test":{
-     "commands":[
-      "exit 0"
-     ]
-    },
-    "version":"1.0.1"
-   },
-   {
-    "about":{
-     "home":"http://github.com/apache/arrow",
-     "license":"Apache-2.0",
-     "license_file":[
-      "LICENSE.txt"
-     ],
-     "summary":"C++ libraries for Apache Arrow"
-    },
-    "build":{
-     "ignore_run_exports":[
-      "cudatoolkit",
-      "boost-cpp"
-     ],
-     "run_exports":[
-      "arrow-cpp"
-     ],
-     "string":"pyh__cuda",
-     "track_features":[
-      "arrow-cuda"
-     ]
-    },
-    "name":"arrow-cpp",
-    "requirements":{
-     "build":[
-      "cmake 3.16.*",
-      "autoconf",
-      "ninja",
-      "make",
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ],
-     "host":[
-      "aws-sdk-cpp",
-      "boost-cpp",
-      "brotli",
-      "bzip2",
-      "c-ares",
-      "gflags",
-      "glog",
-      "grpc-cpp",
-      "libprotobuf",
-      "clangdev 10",
-      "llvmdev 10",
-      "libutf8proc",
-      "lz4-c",
-      "numpy",
-      "orc",
-      "python",
-      "rapidjson",
-      "re2",
-      "snappy",
-      "thrift-cpp >=0.11",
-      "zlib",
-      "zstd"
-     ],
-     "run":[
-      "numpy",
-      "aws-sdk-cpp",
-      "brotli",
-      "c-ares",
-      "gflags",
-      "glog",
-      "grpc-cpp",
-      "lz4-c",
-      "python",
-      "re2",
-      "zlib",
-      "zstd"
-     ],
-     "run_constrained":[
-      "arrow-cpp-proc * cuda"
-     ]
-    },
-    "script":"build-arrow.sh",
-    "test":{
-     "commands":[
-      "test -f $PREFIX/include/arrow/api.h",
-      "test -f $PREFIX/include/arrow/flight/types.h",
-      "test -f $PREFIX/include/plasma/client.h",
-      "test -f $PREFIX/include/gandiva/engine.h",
-      "test -f $PREFIX/include/parquet/api/reader.h",
-      "test -f $PREFIX/lib/libarrow.so",
-      "test -f $PREFIX/lib/libarrow_dataset.so",
-      "test -f $PREFIX/lib/libarrow_flight.so",
-      "test -f $PREFIX/lib/libarrow_python.so",
-      "test -f $PREFIX/lib/libparquet.so",
-      "test -f $PREFIX/lib/libgandiva.so",
-      "test -f $PREFIX/lib/libplasma.so",
-      "test  -f $PREFIX/lib/libarrow_cuda.so",
-      "test ! -f $PREFIX/lib/libarrow.a",
-      "test ! -f $PREFIX/lib/libarrow_dataset.a",
-      "test ! -f $PREFIX/lib/libarrow_flight.a",
-      "test ! -f $PREFIX/lib/libarrow_python.a",
-      "test ! -f $PREFIX/lib/libplasma.a",
-      "test ! -f $PREFIX/lib/libparquet.a",
-      "test ! -f $PREFIX/lib/libgandiva.a"
-     ]
-    },
-    "version":"1.0.1"
-   },
-   {
-    "about":{
-     "home":"http://github.com/apache/arrow",
-     "license":"Apache-2.0",
-     "license_file":[
-      "LICENSE.txt"
-     ],
-     "summary":"Python libraries for Apache Arrow"
-    },
-    "build":{
-     "ignore_run_exports":[
-      "cudatoolkit"
-     ],
-     "string":"pyh__cuda",
-     "track_features":[
-      "arrow-cuda"
-     ]
-    },
-    "name":"pyarrow",
-    "requirements":{
-     "build":[
-      "cmake 3.16.*",
-      "ninja",
-      "make",
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ],
-     "host":[
-      "arrow-cpp",
-      "cython",
-      "numpy 1.16.*",
-      "python",
-      "setuptools",
-      "setuptools_scm",
-      "six"
-     ],
-     "run":[
-      "arrow-cpp",
-      "numpy",
-      "parquet-cpp 1.5.1.*",
-      "python"
-     ],
-     "run_constrained":[
-      "arrow-cpp-proc * cuda"
+      "arrow-cpp-proc * cpu"
      ]
     },
     "script":"build-pyarrow.sh",
@@ -6449,7 +6260,7 @@
     },
     "build":{
      "number":"1",
-     "string":"cpu"
+     "string":"cuda"
     },
     "name":"arrow-cpp-proc",
     "test":{
@@ -6476,8 +6287,10 @@
      "run_exports":[
       "arrow-cpp"
      ],
-     "string":"pyh__cpu",
-     "track_features":null
+     "string":"pyh__cuda",
+     "track_features":[
+      "arrow-cuda"
+     ]
     },
     "name":"arrow-cpp",
     "requirements":{
@@ -6528,7 +6341,7 @@
       "zstd"
      ],
      "run_constrained":[
-      "arrow-cpp-proc * cpu"
+      "arrow-cpp-proc * cuda"
      ]
     },
     "script":"build-arrow.sh",
@@ -6546,7 +6359,7 @@
       "test -f $PREFIX/lib/libparquet.so",
       "test -f $PREFIX/lib/libgandiva.so",
       "test -f $PREFIX/lib/libplasma.so",
-      "test ! -f $PREFIX/lib/libarrow_cuda.so",
+      "test  -f $PREFIX/lib/libarrow_cuda.so",
       "test ! -f $PREFIX/lib/libarrow.a",
       "test ! -f $PREFIX/lib/libarrow_dataset.a",
       "test ! -f $PREFIX/lib/libarrow_flight.a",
@@ -6571,8 +6384,10 @@
      "ignore_run_exports":[
       "cudatoolkit"
      ],
-     "string":"pyh__cpu",
-     "track_features":null
+     "string":"pyh__cuda",
+     "track_features":[
+      "arrow-cuda"
+     ]
     },
     "name":"pyarrow",
     "requirements":{
@@ -6599,7 +6414,7 @@
       "python"
      ],
      "run_constrained":[
-      "arrow-cpp-proc * cpu"
+      "arrow-cpp-proc * cuda"
      ]
     },
     "script":"build-pyarrow.sh",
@@ -6781,6 +6596,191 @@
      ],
      "run_constrained":[
       "arrow-cpp-proc * cpu"
+     ]
+    },
+    "script":"build-pyarrow.sh",
+    "test":{
+     "imports":[
+      "pyarrow",
+      "pyarrow.dataset",
+      "pyarrow.flight",
+      "pyarrow.gandiva",
+      "pyarrow.orc",
+      "pyarrow.parquet",
+      "pyarrow.plasma",
+      "pyarrow.fs",
+      "pyarrow._s3fs",
+      "pyarrow._hdfs"
+     ]
+    },
+    "version":"1.0.1"
+   },
+   {
+    "about":{
+     "home":"http://github.com/apache/arrow",
+     "license":"Apache-2.0",
+     "license_file":[
+      "LICENSE.txt"
+     ],
+     "summary":"A meta-package to select Arrow build variant"
+    },
+    "build":{
+     "number":"1",
+     "string":"cuda"
+    },
+    "name":"arrow-cpp-proc",
+    "test":{
+     "commands":[
+      "exit 0"
+     ]
+    },
+    "version":"1.0.1"
+   },
+   {
+    "about":{
+     "home":"http://github.com/apache/arrow",
+     "license":"Apache-2.0",
+     "license_file":[
+      "LICENSE.txt"
+     ],
+     "summary":"C++ libraries for Apache Arrow"
+    },
+    "build":{
+     "ignore_run_exports":[
+      "cudatoolkit",
+      "boost-cpp"
+     ],
+     "run_exports":[
+      "arrow-cpp"
+     ],
+     "string":"pyh__cuda",
+     "track_features":[
+      "arrow-cuda"
+     ]
+    },
+    "name":"arrow-cpp",
+    "requirements":{
+     "build":[
+      "cmake 3.16.*",
+      "autoconf",
+      "ninja",
+      "make",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host":[
+      "aws-sdk-cpp",
+      "boost-cpp",
+      "brotli",
+      "bzip2",
+      "c-ares",
+      "gflags",
+      "glog",
+      "grpc-cpp",
+      "libprotobuf",
+      "clangdev 10",
+      "llvmdev 10",
+      "libutf8proc",
+      "lz4-c",
+      "numpy",
+      "orc",
+      "python",
+      "rapidjson",
+      "re2",
+      "snappy",
+      "thrift-cpp >=0.11",
+      "zlib",
+      "zstd"
+     ],
+     "run":[
+      "numpy",
+      "aws-sdk-cpp",
+      "brotli",
+      "c-ares",
+      "gflags",
+      "glog",
+      "grpc-cpp",
+      "lz4-c",
+      "python",
+      "re2",
+      "zlib",
+      "zstd"
+     ],
+     "run_constrained":[
+      "arrow-cpp-proc * cuda"
+     ]
+    },
+    "script":"build-arrow.sh",
+    "test":{
+     "commands":[
+      "test -f $PREFIX/include/arrow/api.h",
+      "test -f $PREFIX/include/arrow/flight/types.h",
+      "test -f $PREFIX/include/plasma/client.h",
+      "test -f $PREFIX/include/gandiva/engine.h",
+      "test -f $PREFIX/include/parquet/api/reader.h",
+      "test -f $PREFIX/lib/libarrow.so",
+      "test -f $PREFIX/lib/libarrow_dataset.so",
+      "test -f $PREFIX/lib/libarrow_flight.so",
+      "test -f $PREFIX/lib/libarrow_python.so",
+      "test -f $PREFIX/lib/libparquet.so",
+      "test -f $PREFIX/lib/libgandiva.so",
+      "test -f $PREFIX/lib/libplasma.so",
+      "test  -f $PREFIX/lib/libarrow_cuda.so",
+      "test ! -f $PREFIX/lib/libarrow.a",
+      "test ! -f $PREFIX/lib/libarrow_dataset.a",
+      "test ! -f $PREFIX/lib/libarrow_flight.a",
+      "test ! -f $PREFIX/lib/libarrow_python.a",
+      "test ! -f $PREFIX/lib/libplasma.a",
+      "test ! -f $PREFIX/lib/libparquet.a",
+      "test ! -f $PREFIX/lib/libgandiva.a"
+     ]
+    },
+    "version":"1.0.1"
+   },
+   {
+    "about":{
+     "home":"http://github.com/apache/arrow",
+     "license":"Apache-2.0",
+     "license_file":[
+      "LICENSE.txt"
+     ],
+     "summary":"Python libraries for Apache Arrow"
+    },
+    "build":{
+     "ignore_run_exports":[
+      "cudatoolkit"
+     ],
+     "string":"pyh__cuda",
+     "track_features":[
+      "arrow-cuda"
+     ]
+    },
+    "name":"pyarrow",
+    "requirements":{
+     "build":[
+      "cmake 3.16.*",
+      "ninja",
+      "make",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host":[
+      "arrow-cpp",
+      "cython",
+      "numpy 1.16.*",
+      "python",
+      "setuptools",
+      "setuptools_scm",
+      "six"
+     ],
+     "run":[
+      "arrow-cpp",
+      "numpy",
+      "parquet-cpp 1.5.1.*",
+      "python"
+     ],
+     "run_constrained":[
+      "arrow-cpp-proc * cuda"
      ]
     },
     "script":"build-pyarrow.sh",
