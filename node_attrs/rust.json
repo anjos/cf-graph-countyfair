@@ -577,7 +577,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source or URL not in YAML",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"native",
@@ -600,7 +600,6 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "binary_relocation":false,
    "number":"0"
   },
   "extra":{
@@ -611,27 +610,63 @@
     "dlaehnemann"
    ]
   },
+  "outputs":[
+   {
+    "build":{
+     "binary_relocation":false,
+     "merge_build_host":false,
+     "noarch":"generic"
+    },
+    "name":"rust-std-x86_64-unknown-linux-gnu",
+    "requirements":{
+     "build":null,
+     "host":null,
+     "run":null
+    },
+    "script":"install-rust-std.sh",
+    "test":{
+     "commands":[
+      "test -d $PREFIX/lib/rustlib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false
+    },
+    "name":"rust",
+    "requirements":{
+     "build":null,
+     "host":[
+      "rust-std-x86_64-unknown-linux-gnu",
+      "c_compiler_stub"
+     ],
+     "run":[
+      "rust-std-x86_64-unknown-linux-gnu",
+      "gcc_impl_linux-64"
+     ]
+    },
+    "script":"install-rust.sh",
+    "test":{
+     "commands":[
+      "unset REQUESTS_CA_BUNDLE",
+      "unset SSL_CERT_FILE",
+      "rustc --help",
+      "rustdoc --help",
+      "cargo --help",
+      "cargo install --force xsv"
+     ],
+     "requires":null
+    }
+   }
+  ],
   "package":{
-   "name":"rust",
+   "name":"rust-split",
    "version":"1.46.0"
-  },
-  "requirements":{
-   "build":null,
-   "run":[
-    "c_compiler_stub"
-   ]
   },
   "source":{
    "sha256":"e3b98bc3440fe92817881933f9564389eccb396f5f431f33d48b979fa2fbdcf5",
    "url":"https://static.rust-lang.org/dist/rust-1.46.0-x86_64-unknown-linux-gnu.tar.gz"
-  },
-  "test":{
-   "commands":[
-    "time bash ./forge_test.sh"
-   ],
-   "files":[
-    "forge_test.sh"
-   ]
   }
  },
  "linux_64_requirements":{
@@ -641,12 +676,16 @@
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "c_compiler_stub",
+    "rust-std-x86_64-unknown-linux-gnu"
+   ]
   },
   "run":{
    "__set__":true,
    "elements":[
-    "c_compiler_stub"
+    "gcc_impl_linux-64",
+    "rust-std-x86_64-unknown-linux-gnu"
    ]
   },
   "test":{
@@ -667,7 +706,6 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "binary_relocation":false,
    "number":"0"
   },
   "extra":{
@@ -678,27 +716,63 @@
     "dlaehnemann"
    ]
   },
+  "outputs":[
+   {
+    "build":{
+     "binary_relocation":false,
+     "merge_build_host":false,
+     "noarch":"generic"
+    },
+    "name":"rust-std-",
+    "requirements":{
+     "build":null,
+     "host":null,
+     "run":null
+    },
+    "script":"install-rust-std.sh",
+    "test":{
+     "commands":[
+      "test -d $PREFIX/lib/rustlib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false
+    },
+    "name":"rust",
+    "requirements":{
+     "build":null,
+     "host":[
+      "rust-std-",
+      "c_compiler_stub"
+     ],
+     "run":[
+      "rust-std-",
+      "gcc_impl_linux-aarch64"
+     ]
+    },
+    "script":"install-rust.sh",
+    "test":{
+     "commands":[
+      "unset REQUESTS_CA_BUNDLE",
+      "unset SSL_CERT_FILE",
+      "rustc --help",
+      "rustdoc --help",
+      "cargo --help",
+      "cargo install --force xsv"
+     ],
+     "requires":null
+    }
+   }
+  ],
   "package":{
-   "name":"rust",
+   "name":"rust-split",
    "version":"1.46.0"
-  },
-  "requirements":{
-   "build":null,
-   "run":[
-    "c_compiler_stub"
-   ]
   },
   "source":{
    "sha256":"f0c6d630f3dedb3db69d69ed9f833aa6b472363096f5164f1068c7001ca42aeb",
    "url":"https://static.rust-lang.org/dist/rust-1.46.0-aarch64-unknown-linux-gnu.tar.gz"
-  },
-  "test":{
-   "commands":[
-    "time bash ./forge_test.sh"
-   ],
-   "files":[
-    "forge_test.sh"
-   ]
   }
  },
  "linux_aarch64_requirements":{
@@ -708,12 +782,16 @@
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "c_compiler_stub",
+    "rust-std-"
+   ]
   },
   "run":{
    "__set__":true,
    "elements":[
-    "c_compiler_stub"
+    "gcc_impl_linux-aarch64",
+    "rust-std-"
    ]
   },
   "test":{
@@ -734,7 +812,6 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "binary_relocation":false,
    "number":"0"
   },
   "extra":{
@@ -745,27 +822,63 @@
     "dlaehnemann"
    ]
   },
+  "outputs":[
+   {
+    "build":{
+     "binary_relocation":false,
+     "merge_build_host":false,
+     "noarch":"generic"
+    },
+    "name":"rust-std-",
+    "requirements":{
+     "build":null,
+     "host":null,
+     "run":null
+    },
+    "script":"install-rust-std.sh",
+    "test":{
+     "commands":[
+      "test -d $PREFIX/lib/rustlib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false
+    },
+    "name":"rust",
+    "requirements":{
+     "build":null,
+     "host":[
+      "rust-std-",
+      "c_compiler_stub"
+     ],
+     "run":[
+      "rust-std-",
+      "gcc_impl_linux-ppc64le"
+     ]
+    },
+    "script":"install-rust.sh",
+    "test":{
+     "commands":[
+      "unset REQUESTS_CA_BUNDLE",
+      "unset SSL_CERT_FILE",
+      "rustc --help",
+      "rustdoc --help",
+      "cargo --help",
+      "cargo install --force xsv"
+     ],
+     "requires":null
+    }
+   }
+  ],
   "package":{
-   "name":"rust",
+   "name":"rust-split",
    "version":"1.46.0"
-  },
-  "requirements":{
-   "build":null,
-   "run":[
-    "c_compiler_stub"
-   ]
   },
   "source":{
    "sha256":"89e2f4761d257f017a4b6aa427f36ac0603195546fa2cfded8c899789832941c",
    "url":"https://static.rust-lang.org/dist/rust-1.46.0-powerpc64le-unknown-linux-gnu.tar.gz"
-  },
-  "test":{
-   "commands":[
-    "time bash ./forge_test.sh"
-   ],
-   "files":[
-    "forge_test.sh"
-   ]
   }
  },
  "linux_ppc64le_requirements":{
@@ -775,12 +888,16 @@
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "c_compiler_stub",
+    "rust-std-"
+   ]
   },
   "run":{
    "__set__":true,
    "elements":[
-    "c_compiler_stub"
+    "gcc_impl_linux-ppc64le",
+    "rust-std-"
    ]
   },
   "test":{
@@ -809,7 +926,6 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "binary_relocation":false,
    "number":"0"
   },
   "extra":{
@@ -836,38 +952,260 @@
     "dlaehnemann"
    ]
   },
+  "outputs":[
+   {
+    "build":{
+     "binary_relocation":false,
+     "merge_build_host":false,
+     "noarch":"generic"
+    },
+    "name":"rust-std-x86_64-unknown-linux-gnu",
+    "requirements":{
+     "build":null,
+     "host":null,
+     "run":null
+    },
+    "script":"install-rust-std.sh",
+    "test":{
+     "commands":[
+      "test -d $PREFIX/lib/rustlib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false
+    },
+    "name":"rust",
+    "requirements":{
+     "build":null,
+     "host":[
+      "rust-std-x86_64-unknown-linux-gnu",
+      "c_compiler_stub"
+     ],
+     "run":[
+      "rust-std-x86_64-unknown-linux-gnu",
+      "gcc_impl_linux-64"
+     ]
+    },
+    "script":"install-rust.sh",
+    "test":{
+     "commands":[
+      "unset REQUESTS_CA_BUNDLE",
+      "unset SSL_CERT_FILE",
+      "rustc --help",
+      "rustdoc --help",
+      "cargo --help",
+      "cargo install --force xsv"
+     ],
+     "requires":null
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false,
+     "merge_build_host":false,
+     "noarch":"generic"
+    },
+    "name":"rust-std-",
+    "requirements":{
+     "build":null,
+     "host":null,
+     "run":null
+    },
+    "script":"install-rust-std.sh",
+    "test":{
+     "commands":[
+      "test -d $PREFIX/lib/rustlib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false
+    },
+    "name":"rust",
+    "requirements":{
+     "build":null,
+     "host":[
+      "rust-std-",
+      "c_compiler_stub"
+     ],
+     "run":[
+      "rust-std-",
+      "gcc_impl_linux-aarch64"
+     ]
+    },
+    "script":"install-rust.sh",
+    "test":{
+     "commands":[
+      "unset REQUESTS_CA_BUNDLE",
+      "unset SSL_CERT_FILE",
+      "rustc --help",
+      "rustdoc --help",
+      "cargo --help",
+      "cargo install --force xsv"
+     ],
+     "requires":null
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false,
+     "merge_build_host":false,
+     "noarch":"generic"
+    },
+    "name":"rust-std-",
+    "requirements":{
+     "build":null,
+     "host":null,
+     "run":null
+    },
+    "script":"install-rust-std.sh",
+    "test":{
+     "commands":[
+      "test -d $PREFIX/lib/rustlib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false
+    },
+    "name":"rust",
+    "requirements":{
+     "build":null,
+     "host":[
+      "rust-std-",
+      "c_compiler_stub"
+     ],
+     "run":[
+      "rust-std-",
+      "gcc_impl_linux-ppc64le"
+     ]
+    },
+    "script":"install-rust.sh",
+    "test":{
+     "commands":[
+      "unset REQUESTS_CA_BUNDLE",
+      "unset SSL_CERT_FILE",
+      "rustc --help",
+      "rustdoc --help",
+      "cargo --help",
+      "cargo install --force xsv"
+     ],
+     "requires":null
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false,
+     "merge_build_host":false,
+     "noarch":"generic"
+    },
+    "name":"rust-std-",
+    "requirements":{
+     "build":null,
+     "host":null,
+     "run":null
+    },
+    "script":"install-rust-std.sh",
+    "test":{
+     "commands":[
+      "test -d $PREFIX/lib/rustlib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false
+    },
+    "name":"rust",
+    "requirements":{
+     "build":null,
+     "host":[
+      "rust-std-"
+     ],
+     "run":[
+      "rust-std-"
+     ]
+    },
+    "script":"install-rust.sh",
+    "test":{
+     "commands":[
+      "unset REQUESTS_CA_BUNDLE",
+      "unset SSL_CERT_FILE",
+      "rustc --help",
+      "rustdoc --help",
+      "cargo --help",
+      "cargo install --force xsv"
+     ],
+     "requires":null
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false,
+     "merge_build_host":false,
+     "noarch":"generic"
+    },
+    "name":"rust-std-",
+    "requirements":{
+     "build":[
+      "posix"
+     ],
+     "host":null,
+     "run":null
+    },
+    "script":"install-rust-std.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_PREFIX%/lib/rustlib exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false
+    },
+    "name":"rust",
+    "requirements":{
+     "build":[
+      "posix"
+     ],
+     "host":[
+      "rust-std-"
+     ],
+     "run":[
+      "rust-std-"
+     ]
+    },
+    "script":"install-rust.bat",
+    "test":{
+     "commands":[
+      "set \"REQUESTS_CA_BUNDLE=\"",
+      "set \"SSL_CERT_FILE=\"",
+      "rustc --help",
+      "rustdoc --help",
+      "cargo --help",
+      "cargo install --force xsv"
+     ],
+     "requires":[
+      "posix"
+     ]
+    }
+   }
+  ],
   "package":{
-   "name":"rust",
+   "name":"rust-split",
    "version":"1.46.0"
-  },
-  "requirements":{
-   "build":[
-    "posix"
-   ],
-   "run":null
   },
   "source":{
    "sha256":"3545eb66ed7c6222ca4eb9e990d4bef63edbac9b580387bf7035501ee35d453f",
    "url":"https://static.rust-lang.org/dist/rust-1.46.0-x86_64-pc-windows-msvc.tar.gz"
-  },
-  "test":{
-   "commands":[
-    "time bash ./forge_test.sh",
-    "time bash ./forge_test.sh",
-    "time bash ./forge_test.sh",
-    "time bash ./forge_test.sh",
-    "bash forge_test.sh"
-   ],
-   "files":[
-    "forge_test.sh",
-    "forge_test.sh",
-    "forge_test.sh",
-    "forge_test.sh",
-    "forge_test.sh"
-   ]
   }
  },
- "name":"rust",
+ "name":"rust-split",
  "new_version":false,
  "new_version_attempts":{
   "1.42.0":1,
@@ -894,7 +1232,6 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "binary_relocation":false,
    "number":"0"
   },
   "extra":{
@@ -905,25 +1242,61 @@
     "dlaehnemann"
    ]
   },
+  "outputs":[
+   {
+    "build":{
+     "binary_relocation":false,
+     "merge_build_host":false,
+     "noarch":"generic"
+    },
+    "name":"rust-std-",
+    "requirements":{
+     "build":null,
+     "host":null,
+     "run":null
+    },
+    "script":"install-rust-std.sh",
+    "test":{
+     "commands":[
+      "test -d $PREFIX/lib/rustlib"
+     ]
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false
+    },
+    "name":"rust",
+    "requirements":{
+     "build":null,
+     "host":[
+      "rust-std-"
+     ],
+     "run":[
+      "rust-std-"
+     ]
+    },
+    "script":"install-rust.sh",
+    "test":{
+     "commands":[
+      "unset REQUESTS_CA_BUNDLE",
+      "unset SSL_CERT_FILE",
+      "rustc --help",
+      "rustdoc --help",
+      "cargo --help",
+      "cargo install --force xsv"
+     ],
+     "requires":null
+    }
+   }
+  ],
   "package":{
-   "name":"rust",
+   "name":"rust-split",
    "version":"1.46.0"
-  },
-  "requirements":{
-   "build":null,
-   "run":null
   },
   "source":{
    "sha256":"82d61582a3772932432a99789c3b3bd4abe6baca339e355048ca9efb9ea5b4db",
    "url":"https://static.rust-lang.org/dist/rust-1.46.0-x86_64-apple-darwin.tar.gz"
-  },
-  "test":{
-   "commands":[
-    "time bash ./forge_test.sh"
-   ],
-   "files":[
-    "forge_test.sh"
-   ]
   }
  },
  "osx_64_requirements":{
@@ -933,23 +1306,38 @@
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "rust-std-"
+   ]
   },
   "run":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "rust-std-"
+   ]
   },
   "test":{
    "__set__":true,
    "elements":[]
   }
  },
+ "outputs_names":[
+  "rust",
+  "rust-std-",
+  "rust-std-x86_64-unknown-linux-gnu"
+ ],
  "pinning_version":"2020.08.27.12.52.30",
- "raw_meta_yaml":"{% set version = \"1.46.0\" %}\n\npackage:\n  name: rust\n  version: {{ version }}\n\nsource:\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-unknown-linux-gnu.tar.gz  # [linux and x86_64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-aarch64-unknown-linux-gnu.tar.gz  # [aarch64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-powerpc64le-unknown-linux-gnu.tar.gz  # [ppc64le]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-apple-darwin.tar.gz  # [osx]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-pc-windows-msvc.tar.gz  # [win64]\n  sha256: e3b98bc3440fe92817881933f9564389eccb396f5f431f33d48b979fa2fbdcf5  # [linux and x86_64]\n  sha256: f0c6d630f3dedb3db69d69ed9f833aa6b472363096f5164f1068c7001ca42aeb  # [aarch64]\n  sha256: 89e2f4761d257f017a4b6aa427f36ac0603195546fa2cfded8c899789832941c  # [ppc64le]\n  sha256: 82d61582a3772932432a99789c3b3bd4abe6baca339e355048ca9efb9ea5b4db  # [osx]\n  sha256: 3545eb66ed7c6222ca4eb9e990d4bef63edbac9b580387bf7035501ee35d453f  # [win64]\n\nbuild:\n  number: 0\n  # the distributed binaries are already relocatable\n  binary_relocation: false\n\nrequirements:\n  build:\n    - posix  # [win]\n  run:\n    - {{ compiler('c') }}  # [linux] -- rustc needs a toolchain to link executables on Linux\n\ntest:\n  files:\n    - forge_test.sh\n  commands:\n    - time bash ./forge_test.sh  # [not win]\n    - bash forge_test.sh  # [win]\n\nabout:\n  home: https://www.rust-lang.org\n  license: MIT\n  license_file:\n    - LICENSE-APACHE\n    - LICENSE-MIT\n  summary: |\n    Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\n    This package provides the compiler (rustc) and the documentation utilities rustdoc.\n  dev_url: https://doc.rust-lang.org/std/\n  doc_url: https://www.rust-lang.org/en-US/documentation.html\n\nextra:\n  recipe-maintainers:\n    - johanneskoester\n    - abhi18av\n    - pkgw\n    - dlaehnemann\n",
+ "raw_meta_yaml":"{% set version = \"1.46.0\" %}\n\npackage:\n  name: rust-split\n  version: {{ version }}\n\nsource:\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-unknown-linux-gnu.tar.gz  # [linux and x86_64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-aarch64-unknown-linux-gnu.tar.gz  # [aarch64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-powerpc64le-unknown-linux-gnu.tar.gz  # [ppc64le]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-apple-darwin.tar.gz  # [osx and x86_64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-pc-windows-msvc.tar.gz  # [win64]\n  sha256: e3b98bc3440fe92817881933f9564389eccb396f5f431f33d48b979fa2fbdcf5  # [linux and x86_64]\n  sha256: f0c6d630f3dedb3db69d69ed9f833aa6b472363096f5164f1068c7001ca42aeb  # [aarch64]\n  sha256: 89e2f4761d257f017a4b6aa427f36ac0603195546fa2cfded8c899789832941c  # [ppc64le]\n  sha256: 82d61582a3772932432a99789c3b3bd4abe6baca339e355048ca9efb9ea5b4db  # [osx and x86_64]\n  sha256: 3545eb66ed7c6222ca4eb9e990d4bef63edbac9b580387bf7035501ee35d453f  # [win64]\n\nbuild:\n  number: 0\n\noutputs:\n  - name: rust-std-{{ rust_arch }}\n    build:\n      noarch: generic\n      binary_relocation: false\n      merge_build_host: false\n    requirements:\n      build:\n        - posix  # [win]\n      host:\n      run:\n    script: install-rust-std.sh  # [unix]\n    script: install-rust-std.bat  # [win]\n    test:\n      commands:\n        - test -d $PREFIX/lib/rustlib   # [unix]\n        - if not exist %LIBRARY_PREFIX%/lib/rustlib exit 1  # [win]\n\n  - name: rust\n    script: install-rust.sh  # [unix]\n    script: install-rust.bat  # [win]\n    build:\n      # the distributed binaries are already relocatable\n      binary_relocation: false\n    requirements:\n      build:\n        - posix  # [win]\n      host:\n        - {{ pin_subpackage(\"rust-std-\" ~ rust_arch, exact=True) }}\n        - {{ compiler('c') }}  # [linux] -- rustc needs a toolchain to link executables\n      run:\n        - {{ pin_subpackage(\"rust-std-\" ~ rust_arch, exact=True) }}\n        - gcc_impl_{{ target_platform }}  # [linux]\n    test:\n      requires:\n        - posix  # [win]\n      commands:\n        - set \"REQUESTS_CA_BUNDLE=\"  # [win]\n        - set \"SSL_CERT_FILE=\"       # [win]\n        - unset REQUESTS_CA_BUNDLE  # [unix]\n        - unset SSL_CERT_FILE       # [unix]\n        - rustc --help\n        - rustdoc --help\n        - cargo --help\n        - cargo install --force xsv\n\nabout:\n  home: https://www.rust-lang.org\n  license: MIT\n  license_file:\n    - LICENSE-APACHE\n    - LICENSE-MIT\n  summary: |\n    Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\n    This package provides the compiler (rustc) and the documentation utilities rustdoc.\n  dev_url: https://doc.rust-lang.org/std/\n  doc_url: https://www.rust-lang.org/en-US/documentation.html\n\nextra:\n  recipe-maintainers:\n    - johanneskoester\n    - abhi18av\n    - pkgw\n    - dlaehnemann\n",
  "req":{
   "__set__":true,
   "elements":[
-   "posix"
+   "c_compiler_stub",
+   "gcc_impl_linux-64",
+   "gcc_impl_linux-aarch64",
+   "gcc_impl_linux-ppc64le",
+   "posix",
+   "rust-std-",
+   "rust-std-x86_64-unknown-linux-gnu"
   ]
  },
  "requirements":{
@@ -961,15 +1349,27 @@
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "c_compiler_stub",
+    "rust-std-",
+    "rust-std-x86_64-unknown-linux-gnu"
+   ]
   },
   "run":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "gcc_impl_linux-64",
+    "gcc_impl_linux-aarch64",
+    "gcc_impl_linux-ppc64le",
+    "rust-std-",
+    "rust-std-x86_64-unknown-linux-gnu"
+   ]
   },
   "test":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "posix"
+   ]
   }
  },
  "smithy_version":"No azure token. Create a token and\nput it in ~/.conda-smithy/azure.token\n3.7.10",
@@ -983,15 +1383,27 @@
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "c_compiler_stub",
+    "rust-std-",
+    "rust-std-x86_64-unknown-linux-gnu"
+   ]
   },
   "run":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "gcc_impl_linux-64",
+    "gcc_impl_linux-aarch64",
+    "gcc_impl_linux-ppc64le",
+    "rust-std-",
+    "rust-std-x86_64-unknown-linux-gnu"
+   ]
   },
   "test":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "posix"
+   ]
   }
  },
  "url":"https://static.rust-lang.org/dist/rust-1.37.0-x86_64-unknown-linux-gnu.tar.gz",
@@ -1009,7 +1421,6 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "binary_relocation":false,
    "number":"0"
   },
   "extra":{
@@ -1020,27 +1431,67 @@
     "dlaehnemann"
    ]
   },
+  "outputs":[
+   {
+    "build":{
+     "binary_relocation":false,
+     "merge_build_host":false,
+     "noarch":"generic"
+    },
+    "name":"rust-std-",
+    "requirements":{
+     "build":[
+      "posix"
+     ],
+     "host":null,
+     "run":null
+    },
+    "script":"install-rust-std.bat",
+    "test":{
+     "commands":[
+      "if not exist %LIBRARY_PREFIX%/lib/rustlib exit 1"
+     ]
+    }
+   },
+   {
+    "build":{
+     "binary_relocation":false
+    },
+    "name":"rust",
+    "requirements":{
+     "build":[
+      "posix"
+     ],
+     "host":[
+      "rust-std-"
+     ],
+     "run":[
+      "rust-std-"
+     ]
+    },
+    "script":"install-rust.bat",
+    "test":{
+     "commands":[
+      "set \"REQUESTS_CA_BUNDLE=\"",
+      "set \"SSL_CERT_FILE=\"",
+      "rustc --help",
+      "rustdoc --help",
+      "cargo --help",
+      "cargo install --force xsv"
+     ],
+     "requires":[
+      "posix"
+     ]
+    }
+   }
+  ],
   "package":{
-   "name":"rust",
+   "name":"rust-split",
    "version":"1.46.0"
-  },
-  "requirements":{
-   "build":[
-    "posix"
-   ],
-   "run":null
   },
   "source":{
    "sha256":"3545eb66ed7c6222ca4eb9e990d4bef63edbac9b580387bf7035501ee35d453f",
    "url":"https://static.rust-lang.org/dist/rust-1.46.0-x86_64-pc-windows-msvc.tar.gz"
-  },
-  "test":{
-   "commands":[
-    "bash forge_test.sh"
-   ],
-   "files":[
-    "forge_test.sh"
-   ]
   }
  },
  "win_64_requirements":{
@@ -1052,15 +1503,21 @@
   },
   "host":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "rust-std-"
+   ]
   },
   "run":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "rust-std-"
+   ]
   },
   "test":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "posix"
+   ]
   }
  }
 }
