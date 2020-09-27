@@ -290,6 +290,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR":{
+    "__lazy_json__":"pr_json/493659017.json"
+   },
+   "data":{
+    "bot_rerun":false,
+    "migrator_name":"ArchRebuild",
+    "migrator_version":1,
+    "name":"aarch64 and ppc64le addition"
+   },
+   "keys":[
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived":false,
@@ -1245,7 +1262,7 @@
    ]
   }
  },
- "pinning_version":"2020.08.27.19.07.14",
+ "pinning_version":"2020.09.26.15.06.30",
  "raw_meta_yaml":"{% set version = \"3.11.0\" %}\n\npackage:\n  name: pymongo\n  version: {{ version }}\n\nsource:\n  url: https://github.com/mongodb/mongo-python-driver/archive/{{ version }}.tar.gz\n  fn: pymongo-{{ version }}.tar.gz\n  sha256: e45b318c56f5f385635df06685104ae22f3c9977addaa2dad0d1dc94f31f20c7\n\nbuild:\n  number: 3\n  script: python setup.py install --single-version-externally-managed --record=record.txt\n  # Three tests seem to fail on PPC64LE and PyPy\n  # test_monitoring test_gridfs_spec test_legacy_api\n  script_env:\n    - python_impl\n    - target_platform\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - python\n    - setuptools\n  run:\n    - python\n\ntest:\n  source_files:\n    - .\n  files:\n    - run_the_tests.sh\n  imports:\n    - bson\n    - gridfs\n    - pymongo\n  requires:       # [not win]\n    - mongodb     # [not win]\n    - setuptools  # [not win]\n  commands:                  # [unix and not (ppc64le and python_impl=='pypy')]\n    - bash run_the_tests.sh  # [unix and not (ppc64le and python_impl=='pypy')]\n\nabout:\n  home: https://github.com/mongodb/mongo-python-driver\n  license: Apache 2.0\n  license_file: LICENSE\n  summary: Python driver for MongoDB http://www.mongodb.org\n\nextra:\n  recipe-maintainers:\n    - licode\n    - tacaswell\n    - CJ-Wright\n",
  "req":{
   "__set__":true,
