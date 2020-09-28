@@ -1064,6 +1064,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR":{
+    "__lazy_json__":"pr_json/494309162.json"
+   },
+   "data":{
+    "bot_rerun":false,
+    "migrator_name":"Version",
+    "migrator_version":0,
+    "version":"3.41.0"
+   },
+   "keys":[
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived":false,
@@ -1219,7 +1236,7 @@
   }
  },
  "name":"terraform-provider-google",
- "new_version":"3.40.0",
+ "new_version":"3.41.0",
  "new_version_attempts":{
   "3.16.0":1,
   "3.17.0":1,
@@ -1243,7 +1260,8 @@
   "3.37.0":1,
   "3.38.0":1,
   "3.39.0":1,
-  "3.40.0":1
+  "3.40.0":1,
+  "3.41.0":1
  },
  "new_version_errors":{},
  "osx_64_meta_yaml":{
@@ -1316,7 +1334,7 @@
    "elements":[]
   }
  },
- "pinning_version":"2020.09.19.20.20.14",
+ "pinning_version":"2020.09.28.09.54.05",
  "raw_meta_yaml":"{% set provider = \"google\" %}\n{% set goname = \"github.com/terraform-providers/terraform-provider-\"+provider.lower() %}\n{% set version = \"3.40.0\" %}\n\n{% set name = goname.split('/')[-1] %}\n\n{% set x4_plugin = name + '_v' + version + \"_x4\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://{{ goname }}/archive/v{{ version }}.tar.gz\n  sha256: 7bcd68c502781e6f3001c7a2d3e424ecdbe44b08bc43ef2daf6f2a8f46236196\n\nbuild:\n  number: 0\n  script:\n    - go build -v -o {{ target_gobin }}{{ x4_plugin }}{{ target_goexe }}\n\nrequirements:\n  build:\n    - {{ compiler('go') }} 1.13\n  run:\n    - terraform 0.12\n\ntest:\n  commands:\n    # Create a sample init.tf loading the provider\n    - echo 'provider \"{{ provider|lower }}\" { version=\"{{ version }}\" }' > init.tf  # [unix]\n    - echo provider \"{{ provider|lower }}\" { version=\"{{ version }}\" } > init.tf    # [win]\n\n    # Initialize\n    - terraform init\n\n    # Tests that init was successful\n    - test -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/lock.json              # [unix]\n    - if not exist .terraform\\plugins\\{{ target_goos }}_{{ target_goarch }}\\lock.json exit 1  # [win]\n\n    # Test that the provider was not downloaded\n    - test ! -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/{{ x4_plugin }}{{ target_goexe }}        # [unix]\n    - if exist .terraform\\plugins\\{{ target_goos }}_{{ target_goarch }}\\{{ x4_plugin }}{{ target_goexe }} exit 1  # [win]\n\nabout:\n  home: https://www.terraform.io\n  license: MPL-2.0\n  license_file: LICENSE\n  summary: The Terraform Google provider\n  doc_url: https://www.terraform.io/docs/providers/{{ provider }}/index.html\n  dev_url: https://github.com/terraform-providers/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - conda-forge/terraform\n    - agcopenhaver\n    - rluria14\n    - oblute\n",
  "req":{
   "__set__":true,
