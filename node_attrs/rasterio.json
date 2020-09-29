@@ -641,6 +641,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR":{
+    "__lazy_json__":"pr_json/495120634.json"
+   },
+   "data":{
+    "bot_rerun":false,
+    "migrator_name":"Version",
+    "migrator_version":0,
+    "version":"1.1.7"
+   },
+   "keys":[
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived":false,
@@ -1256,7 +1273,8 @@
  "new_version_attempts":{
   "1.1.4":1,
   "1.1.5":1,
-  "1.1.6":1
+  "1.1.6":1,
+  "1.1.7":1
  },
  "new_version_errors":{},
  "osx_64_meta_yaml":{
@@ -1467,7 +1485,7 @@
    ]
   }
  },
- "pinning_version":"2020.09.14.18.14.00",
+ "pinning_version":"2020.09.29.16.41.07",
  "raw_meta_yaml":"{% set version = \"1.1.6\" %}\n\npackage:\n  name: rasterio\n  version: {{ version }}\n\nsource:\n  url: https://github.com/mapbox/rasterio/archive/{{ version }}.tar.gz\n  sha256: e4509dec5a1b1707575c642580ab5476c74d64032d3f7205c4954f2fddee5fa1\n  patches:\n    - 0001-xfail-tests-of-boundless-reads-with-fill_value.patch\n\nbuild:\n  number: 1\n  entry_points:\n    - rio = rasterio.rio.main:main_group\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - python\n    - pip\n    - cython\n    - numpy\n    - libgdal\n  run:\n    - python\n    - setuptools >=0.9.8\n    - libgdal\n    - affine\n    - attrs\n    - click >=4,<8\n    - cligj >=0.5\n    - {{ pin_compatible('numpy') }}\n    - snuggs >=1.4.1\n    - click-plugins\n\ntest:\n  source_files:\n    - tests\n  requires:\n    - pip\n    - pytest >=2.8.2\n    - pytest-cov >=2.2.0\n    - ipython >=2.0\n    - boto3 >=1.2.4\n    - matplotlib-base\n    - packaging\n    - hypothesis\n  files:\n    - test_data/test.tif\n  imports:\n    - rasterio\n  commands:\n    - rio --help\n    - rio info {{ RECIPE_DIR }}/test_data/test.tif  # [not win]\n    - rio info {{ RECIPE_DIR }}\\\\test_data\\\\test.tif  # [win]\n    # test_boundless_fill_value_overview_masks is failing for all OSes\n    - $PYTHON -m pytest -v -m \"not wheel\" -rxXs  tests  # [not win]\n    - python -m pytest -v -m \"not wheel\" -rxXs -k \"not (test_hit_ovr or test_file_in_handler_with_vfs or test_files or test_parse_windows_path or test_copyfiles_same_dataset_another_name or test_context)\" tests  # [win]\n    - pip check\nabout:\n  home: https://github.com/mapbox/rasterio\n  license: BSD-3-Clause\n  license_file: LICENSE.txt\n  summary: Rasterio reads and writes geospatial raster datasets\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - ceholden\n    - snowman2\n    - xylar\n",
  "req":{
   "__set__":true,
