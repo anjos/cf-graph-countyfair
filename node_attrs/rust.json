@@ -577,7 +577,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source or URL not in YAML",
+ "bad":false,
  "conda-forge.yml":{
   "provider":{
    "linux_aarch64":"native",
@@ -600,14 +600,15 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
     "johanneskoester",
     "abhi18av",
     "pkgw",
-    "dlaehnemann"
+    "dlaehnemann",
+    "isuruf"
    ]
   },
   "outputs":[
@@ -706,14 +707,15 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
     "johanneskoester",
     "abhi18av",
     "pkgw",
-    "dlaehnemann"
+    "dlaehnemann",
+    "isuruf"
    ]
   },
   "outputs":[
@@ -812,14 +814,15 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
     "johanneskoester",
     "abhi18av",
     "pkgw",
-    "dlaehnemann"
+    "dlaehnemann",
+    "isuruf"
    ]
   },
   "outputs":[
@@ -926,7 +929,7 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
@@ -934,22 +937,27 @@
     "abhi18av",
     "pkgw",
     "dlaehnemann",
+    "isuruf",
     "johanneskoester",
     "abhi18av",
     "pkgw",
     "dlaehnemann",
+    "isuruf",
     "johanneskoester",
     "abhi18av",
     "pkgw",
     "dlaehnemann",
+    "isuruf",
     "johanneskoester",
     "abhi18av",
     "pkgw",
     "dlaehnemann",
+    "isuruf",
     "johanneskoester",
     "abhi18av",
     "pkgw",
-    "dlaehnemann"
+    "dlaehnemann",
+    "isuruf"
    ]
   },
   "outputs":[
@@ -1232,14 +1240,15 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
     "johanneskoester",
     "abhi18av",
     "pkgw",
-    "dlaehnemann"
+    "dlaehnemann",
+    "isuruf"
    ]
   },
   "outputs":[
@@ -1327,7 +1336,7 @@
   "rust-std-x86_64-unknown-linux-gnu"
  ],
  "pinning_version":"2020.08.27.12.52.30",
- "raw_meta_yaml":"{% set version = \"1.46.0\" %}\n\npackage:\n  name: rust-split\n  version: {{ version }}\n\nsource:\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-unknown-linux-gnu.tar.gz  # [linux and x86_64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-aarch64-unknown-linux-gnu.tar.gz  # [aarch64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-powerpc64le-unknown-linux-gnu.tar.gz  # [ppc64le]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-apple-darwin.tar.gz  # [osx and x86_64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-pc-windows-msvc.tar.gz  # [win64]\n  sha256: e3b98bc3440fe92817881933f9564389eccb396f5f431f33d48b979fa2fbdcf5  # [linux and x86_64]\n  sha256: f0c6d630f3dedb3db69d69ed9f833aa6b472363096f5164f1068c7001ca42aeb  # [aarch64]\n  sha256: 89e2f4761d257f017a4b6aa427f36ac0603195546fa2cfded8c899789832941c  # [ppc64le]\n  sha256: 82d61582a3772932432a99789c3b3bd4abe6baca339e355048ca9efb9ea5b4db  # [osx and x86_64]\n  sha256: 3545eb66ed7c6222ca4eb9e990d4bef63edbac9b580387bf7035501ee35d453f  # [win64]\n\nbuild:\n  number: 0\n\noutputs:\n  - name: rust-std-{{ rust_arch }}\n    build:\n      noarch: generic\n      binary_relocation: false\n      merge_build_host: false\n    requirements:\n      build:\n        - posix  # [win]\n      host:\n      run:\n    script: install-rust-std.sh  # [unix]\n    script: install-rust-std.bat  # [win]\n    test:\n      commands:\n        - test -d $PREFIX/lib/rustlib   # [unix]\n        - if not exist %LIBRARY_PREFIX%/lib/rustlib exit 1  # [win]\n\n  - name: rust\n    script: install-rust.sh  # [unix]\n    script: install-rust.bat  # [win]\n    build:\n      # the distributed binaries are already relocatable\n      binary_relocation: false\n    requirements:\n      build:\n        - posix  # [win]\n      host:\n        - {{ pin_subpackage(\"rust-std-\" ~ rust_arch, exact=True) }}\n        - {{ compiler('c') }}  # [linux] -- rustc needs a toolchain to link executables\n      run:\n        - {{ pin_subpackage(\"rust-std-\" ~ rust_arch, exact=True) }}\n        - gcc_impl_{{ target_platform }}  # [linux]\n    test:\n      requires:\n        - posix  # [win]\n      commands:\n        - set \"REQUESTS_CA_BUNDLE=\"  # [win]\n        - set \"SSL_CERT_FILE=\"       # [win]\n        - unset REQUESTS_CA_BUNDLE  # [unix]\n        - unset SSL_CERT_FILE       # [unix]\n        - rustc --help\n        - rustdoc --help\n        - cargo --help\n        - cargo install --force xsv\n\nabout:\n  home: https://www.rust-lang.org\n  license: MIT\n  license_file:\n    - LICENSE-APACHE\n    - LICENSE-MIT\n  summary: |\n    Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\n    This package provides the compiler (rustc) and the documentation utilities rustdoc.\n  dev_url: https://doc.rust-lang.org/std/\n  doc_url: https://www.rust-lang.org/en-US/documentation.html\n\nextra:\n  recipe-maintainers:\n    - johanneskoester\n    - abhi18av\n    - pkgw\n    - dlaehnemann\n",
+ "raw_meta_yaml":"{% set version = \"1.46.0\" %}\n\npackage:\n  name: rust-split\n  version: {{ version }}\n\nsource:\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-unknown-linux-gnu.tar.gz  # [linux and x86_64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-aarch64-unknown-linux-gnu.tar.gz  # [aarch64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-powerpc64le-unknown-linux-gnu.tar.gz  # [ppc64le]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-apple-darwin.tar.gz  # [osx and x86_64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-pc-windows-msvc.tar.gz  # [win64]\n  sha256: e3b98bc3440fe92817881933f9564389eccb396f5f431f33d48b979fa2fbdcf5  # [linux and x86_64]\n  sha256: f0c6d630f3dedb3db69d69ed9f833aa6b472363096f5164f1068c7001ca42aeb  # [aarch64]\n  sha256: 89e2f4761d257f017a4b6aa427f36ac0603195546fa2cfded8c899789832941c  # [ppc64le]\n  sha256: 82d61582a3772932432a99789c3b3bd4abe6baca339e355048ca9efb9ea5b4db  # [osx and x86_64]\n  sha256: 3545eb66ed7c6222ca4eb9e990d4bef63edbac9b580387bf7035501ee35d453f  # [win64]\n\nbuild:\n  number: 1\n\noutputs:\n  - name: rust-std-{{ rust_arch }}\n    build:\n      noarch: generic\n      binary_relocation: false\n      merge_build_host: false\n    requirements:\n      build:\n        - posix  # [win]\n      host:\n      run:\n    script: install-rust-std.sh  # [unix]\n    script: install-rust-std.bat  # [win]\n    test:\n      commands:\n        - test -d $PREFIX/lib/rustlib   # [unix]\n        - if not exist %LIBRARY_PREFIX%/lib/rustlib exit 1  # [win]\n\n  - name: rust\n    script: install-rust.sh  # [unix]\n    script: install-rust.bat  # [win]\n    build:\n      # the distributed binaries are already relocatable\n      binary_relocation: false\n    requirements:\n      build:\n        - posix  # [win]\n      host:\n        - {{ pin_subpackage(\"rust-std-\" ~ rust_arch, exact=True) }}\n        - {{ compiler('c') }}  # [linux] -- rustc needs a toolchain to link executables\n      run:\n        - {{ pin_subpackage(\"rust-std-\" ~ rust_arch, exact=True) }}\n        - gcc_impl_{{ target_platform }}  # [linux]\n    test:\n      requires:\n        - posix  # [win]\n      commands:\n        - set \"REQUESTS_CA_BUNDLE=\"  # [win]\n        - set \"SSL_CERT_FILE=\"       # [win]\n        - unset REQUESTS_CA_BUNDLE  # [unix]\n        - unset SSL_CERT_FILE       # [unix]\n        - rustc --help\n        - rustdoc --help\n        - cargo --help\n        - cargo install --force xsv\n\nabout:\n  home: https://www.rust-lang.org\n  license: MIT\n  license_file:\n    - LICENSE-APACHE\n    - LICENSE-MIT\n  summary: |\n    Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\n    This package provides the compiler (rustc) and the documentation utilities rustdoc.\n  dev_url: https://doc.rust-lang.org/std/\n  doc_url: https://www.rust-lang.org/en-US/documentation.html\n\nextra:\n  recipe-maintainers:\n    - johanneskoester\n    - abhi18av\n    - pkgw\n    - dlaehnemann\n    - isuruf\n",
  "req":{
   "__set__":true,
   "elements":[
@@ -1421,14 +1430,15 @@
    "summary":"Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\nThis package provides the compiler (rustc) and the documentation utilities rustdoc.\n"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
     "johanneskoester",
     "abhi18av",
     "pkgw",
-    "dlaehnemann"
+    "dlaehnemann",
+    "isuruf"
    ]
   },
   "outputs":[
