@@ -445,6 +445,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR":{
+    "__lazy_json__":"pr_json/495683797.json"
+   },
+   "data":{
+    "bot_rerun":false,
+    "migrator_name":"Version",
+    "migrator_version":0,
+    "version":"3.14.0"
+   },
+   "keys":[
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived":false,
@@ -1153,7 +1170,8 @@
   "3.13.1":1,
   "3.13.2":1,
   "3.13.3":1,
-  "3.13.4":2
+  "3.13.4":2,
+  "3.14.0":1
  },
  "new_version_errors":{},
  "osx_64_meta_yaml":{
@@ -1297,7 +1315,7 @@
    ]
   }
  },
- "pinning_version":"2020.09.03.21.10.34",
+ "pinning_version":"2020.09.30.16.33.39",
  "raw_meta_yaml":"{% set version = \"3.13.4\" %}\n{% set sha256 = \"ddc9d58e1a4413218f4e67ea3b255b330bd389d67f394403a27caedf45afa496\" %}\n\n{% set version_xy = version.rsplit(\".\", 1)[0] %}\n{% set mpi = mpi or 'mpich' %}\n\npackage:\n  name: slepc\n  version: {{ version }}\n\nsource:\n  url: http://slepc.upv.es/download/distrib/slepc-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  skip: true  # [win]\n  number: 0\n  run_exports:\n    - {{ pin_subpackage('slepc', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n    - python\n  host:\n    - libblas\n    - libcblas\n    - liblapack\n    - {{ mpi }}\n    - petsc {{ version_xy }}.*\n    - suitesparse\n  run:\n    - {{ mpi }}\n    - petsc\n    - suitesparse\n\ntest:\n  requires:\n    - pkg-config\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n  files:\n    - tests/test10.c\n    - tests/test14f.F\n    - tests/makefile\n  commands:\n    - PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig pkg-config --cflags SLEPc\n    - PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig pkg-config --libs   SLEPc\n\nabout:\n  home: http://slepc.upv.es/\n  summary: 'SLEPc: Scalable Library for Eigenvalue Problem Computations'\n  license: BSD-2-Clause\n  license_file: LICENSE.md\n  license_family: BSD\n\nextra:\n  recipe-maintainers:\n    - dalcinl\n    - joseeroman\n    - minrk\n",
  "req":{
   "__set__":true,
