@@ -1008,6 +1008,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR":{
+    "__lazy_json__":"pr_json/496521025.json"
+   },
+   "data":{
+    "bot_rerun":false,
+    "migrator_name":"Version",
+    "migrator_version":0,
+    "version":"2.30.0"
+   },
+   "keys":[
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived":false,
@@ -1178,6 +1195,7 @@
   "2.27.0":1,
   "2.28.0":1,
   "2.29.0":1,
+  "2.30.0":1,
   "2.5.0":1,
   "2.6.0":1,
   "2.7.0":1,
@@ -1254,7 +1272,7 @@
    "elements":[]
   }
  },
- "pinning_version":"2020.09.24.11.51.54",
+ "pinning_version":"2020.10.01.19.13.14",
  "raw_meta_yaml":"{% set provider = \"azurerm\" %}\n{% set goname = \"github.com/terraform-providers/terraform-provider-\"+provider.lower() %}\n{% set version = \"2.29.0\" %}\n\n{% set name = goname.split('/')[-1] %}\n\n{% set x4_plugin = name + '_v' + version + \"_x4\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://{{ goname }}/archive/v{{ version }}.tar.gz\n  sha256: 069a08b2a57f96c3a9fefdb5466fa6a0651511abecc292dee3784f4caa173339\n\nbuild:\n  number: 0\n  script:\n    - go build -v -o {{ target_gobin }}{{ x4_plugin }}{{ target_goexe }}\n\nrequirements:\n  build:\n    - {{ compiler('go') }} 1.13\n  run:\n    - terraform 0.12\n\ntest:\n  commands:\n    # Create a sample init.tf loading the provider\n    - echo 'provider \"{{ provider|lower }}\" { version=\"{{ version }}\" }' > init.tf  # [unix]\n    - echo provider \"{{ provider|lower }}\" { version=\"{{ version }}\" } > init.tf    # [win]\n\n    # Initialize\n    - terraform init\n\n    # Tests that init was successful\n    - test -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/lock.json              # [unix]\n    - if not exist .terraform\\plugins\\{{ target_goos }}_{{ target_goarch }}\\lock.json exit 1  # [win]\n\n    # Test that the provider was not downloaded\n    - test ! -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/{{ x4_plugin }}{{ target_goexe }}        # [unix]\n    - if exist .terraform\\plugins\\{{ target_goos }}_{{ target_goarch }}\\{{ x4_plugin }}{{ target_goexe }} exit 1  # [win]\n\nabout:\n  home: https://www.terraform.io\n  license: MPL-2.0\n  license_file: LICENSE\n  license_family: MOZILLA\n  summary: The Terraform Azure provider\n  doc_url: https://www.terraform.io/docs/providers/{{ provider }}/index.html\n  dev_url: https://github.com/terraform-providers/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - conda-forge/terraform\n    - dhirschfeld\n",
  "req":{
   "__set__":true,
