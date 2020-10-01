@@ -539,6 +539,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR":{
+    "__lazy_json__":"pr_json/496047857.json"
+   },
+   "data":{
+    "bot_rerun":false,
+    "migrator_name":"Version",
+    "migrator_version":0,
+    "version":"2.0.0"
+   },
+   "keys":[
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived":false,
@@ -2284,7 +2301,8 @@
   "1.26.0":1,
   "1.26.1":1,
   "1.27.2":1,
-  "1.28.0":1
+  "1.28.0":1,
+  "2.0.0":1
  },
  "new_version_errors":{},
  "osx_64_meta_yaml":{
@@ -2766,7 +2784,7 @@
   "google-cloud-bigquery",
   "google-cloud-bigquery-core"
  ],
- "pinning_version":"2020.09.23.12.58.01",
+ "pinning_version":"2020.09.30.16.33.39",
  "raw_meta_yaml":"{% set name = \"google-cloud-bigquery\" %}\n{% set version = \"1.27.2\" %}\n{% set sha256 = \"8a21cfe5db0c84aca0730197b50ea1649350619849283d0b5e7b506d803a6fa1\" %}\n{% set dev_url = \"https://github.com/googleapis/python-bigquery\" %}\n{% set doc_url = \"https://googleapis.dev/python/bigquery/latest/index.html\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 0\n  # Conda package for protobuf does not support Python 2.7 on Windows due to\n  # requirement on C++ 11. VS 2008 is not supported.\n  skip: true  # [win and vc<14]\n\nrequirements:\n  host:\n    - python\n    - pip >=18.1\n    - setuptools >=34.0.0\n\noutputs:\n  - name: {{ name }}\n    build:\n      number: 0\n      noarch: python\n\n    requirements:\n      host:\n        - python\n        - pip >=18.1\n        - setuptools >=34.0.0\n\n      run:\n        - {{ name }}-core {{ version }}\n        - python\n        - google-cloud-bigquery-storage\n        - ipython\n        - pandas\n        - pyarrow\n        - tqdm\n\n    test:\n      requires:\n        - python\n        - pip\n      imports:\n        - google.api_core\n        - google.cloud.bigquery\n        - google.cloud.bigquery.client\n        - google.cloud.bigquery.dataset\n        - google.cloud.bigquery.encryption_configuration\n        - google.cloud.bigquery.enums\n        - google.cloud.bigquery.external_config\n        - google.cloud.bigquery.job\n        - google.cloud.bigquery.magics\n        - google.cloud.bigquery.model\n        - google.cloud.bigquery.query\n        - google.cloud.bigquery.retry\n        - google.cloud.bigquery.routine\n        - google.cloud.bigquery.schema\n        - google.cloud.bigquery.table\n        - google.cloud.bigquery_v2\n        - google.cloud.bigquery_v2.gapic.enums\n        - google.cloud.bigquery_v2.types\n      commands:\n        - python -m pip check\n\n    about:\n      home: {{ dev_url }}\n      license: Apache-2.0\n      license_family: Apache\n      license_file: LICENSE\n      summary: Batteries-included library for BigQuery API\n      description: |\n        {{ name }} installs {{ name }}-core and the extra requirements for\n        pandas and pyarrow integrations.\n\n        Supported Python Versions\n        -------------------------\n        Python >= 3.5\n\n        Deprecated Python Versions\n        --------------------------\n        Python == 2.7\n\n        - Python 2.7 support will be removed on January 1, 2020.\n        - protobuf does not support Visual C++ 2008, windows py27 package not available\n      doc_url: {{ doc_url }}\n      dev_url: {{ dev_url }}\n\n  - name: {{ name }}-core\n    build:\n      number: 0\n      script: '{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv '\n      skip: true  # [win and vc<14]\n\n    requirements:\n      host:\n        - python\n        - pip >=18.1\n        - setuptools >=34.0.0\n\n      run:\n        - python\n        # Backport of enum for Python < 3.4.\n        - enum34  # [py2k]\n        - google-api-core >=1.21.0,<2.0.0dev\n        - google-cloud-core >=1.4.1,<2.0.0dev\n        - google-resumable-media >=0.5.0,<2.0dev\n        - six >=1.13.0,<2.0.0dev\n      run-constrained:\n        - google-cloud-bigquery-storage-core >=1.0.0,<2.0.0dev\n        - grpcio >=1.8.2,<2.0dev\n        - pyarrow >=1.0.0,<2.0dev\n        - ipython >=5.0.0\n        - pandas >=0.17.1\n        - tqdm >=4.0.0,<=5.0.0dev\n\n    test:\n      requires:\n        - python\n        - pip\n      imports:\n        - google.api_core\n        - google.cloud.bigquery\n        - google.cloud.bigquery.client\n        - google.cloud.bigquery.dataset\n        - google.cloud.bigquery.encryption_configuration\n        - google.cloud.bigquery.enums\n        - google.cloud.bigquery.external_config\n        - google.cloud.bigquery.job\n        - google.cloud.bigquery.model\n        - google.cloud.bigquery.query\n        - google.cloud.bigquery.retry\n        - google.cloud.bigquery.routine\n        - google.cloud.bigquery.schema\n        - google.cloud.bigquery.table\n        - google.cloud.bigquery_v2\n        - google.cloud.bigquery_v2.gapic.enums\n        - google.cloud.bigquery_v2.types\n      commands:\n        - python -m pip check\n\n    about:\n      home: {{ dev_url }}\n      license: Apache-2.0\n      license_family: Apache\n      license_file: LICENSE\n      summary: Core library for BigQuery API\n      description: |\n        {{ name }}-core the core client library for connecting to the BigQuery API.\n\n        Supported Python Versions\n        -------------------------\n        Python >= 3.5\n\n        Deprecated Python Versions\n        --------------------------\n        Python == 2.7\n\n        - Python 2.7 support will be removed on January 1, 2020.\n        - protobuf does not support Visual C++ 2008, windows py27 package not available\n      doc_url: {{ doc_url }}\n      dev_url: {{ dev_url }}\n\nabout:\n  home: {{ dev_url }}\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: BigQuery API client library\n  doc_url: {{ doc_url }}\n  dev_url: {{ dev_url }}\n\nextra:\n  recipe-maintainers:\n    - leahecole\n    - parthea\n    - tswast\n",
  "req":{
   "__set__":true,
