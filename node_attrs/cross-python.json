@@ -482,6 +482,9 @@
    "elements":[]
   }
  },
+ "outputs_names":[
+  "cross-python_osx-arm64"
+ ],
  "raw_meta_yaml":"{% set build_number = \"3\" %}\n{% if cross_target_platform is undefined %}\n{% set cross_target_platform = \"linux-64\" %}\n{% endif %}\n\npackage:\n  name: cross-python_{{ cross_target_platform }}\n  version: {{ version }}\n\nbuild:\n  number: {{ build_number }}\n  string: {{ build_number }}_cpython\n  skip: True  # [win]\n{% if (cross_target_platform == \"osx-arm64\" and version != \"3.8\") or (cross_target_platform == target_platform) %}\n  skip: True\n{% endif %}\n  run_exports:\n    strong:\n      - python {{ version }}.*\n\nrequirements:\n  run:\n    - python {{ version }}.* *_cpython\n    - crossenv\n    - rsync\n    - sed\n{% if cross_target_platform.startswith(\"osx-\") %}\n    - clang_{{ cross_target_platform }}\n{% endif %}\n{% if cross_target_platform.startswith(\"linux-\") %}\n    - gcc_{{ cross_target_platform }}\n{% endif %}\n\n{% if cross_target_platform.startswith(\"linux-\") %}\ntest:\n  commands:\n    - test -f $PREFIX/etc/conda/activate.d/activate_z-cross-python_{{ cross_target_platform }}.sh\n{% endif %}\n\nabout:\n  home: https://github.com/conda-forge/cross-python-feedstock\n  license: LicenseRef-OTHER\n  summary: 'A meta-package to set up a cross compiling env for python in conda-build'\n\nextra:\n  recipe-maintainers:\n    - isuruf\n",
  "req":{
   "__set__":true,
