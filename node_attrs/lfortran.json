@@ -160,7 +160,7 @@
    "summary":"Modern interactive LLVM-based Fortran compiler"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
@@ -182,8 +182,10 @@
     "llvmdev =9.0.1",
     "xtl",
     "nlohmann_json",
-    "cppzmq"
-   ]
+    "cppzmq",
+    "zlib"
+   ],
+   "run":null
   },
   "source":{
    "patches":[
@@ -216,7 +218,8 @@
     "llvmdev",
     "nlohmann_json",
     "xeus",
-    "xtl"
+    "xtl",
+    "zlib"
    ]
   },
   "run":{
@@ -240,7 +243,7 @@
    "summary":"Modern interactive LLVM-based Fortran compiler"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
@@ -270,16 +273,22 @@
     "xtl",
     "nlohmann_json",
     "cppzmq",
+    "zlib",
     "xeus >=0.24.1,<0.25",
     "llvmdev =9.0.1",
     "xtl",
     "nlohmann_json",
     "cppzmq",
+    "zlib",
     "xeus >=0.24.1,<0.25",
     "llvmdev =9.0.1",
     "xtl",
     "nlohmann_json",
-    "cppzmq"
+    "cppzmq",
+    "zlib"
+   ],
+   "run":[
+    "xeus"
    ]
   },
   "source":{
@@ -299,7 +308,7 @@
     "test -f ${PREFIX}/bin/lfortran",
     "lfortran --help",
     "lfortran --version",
-    "if exist %LIBRARY_PREFIX%\\bin\\lfortran.exe (exit 0) else (exit 1)",
+    "if not exist %LIBRARY_PREFIX%\\bin\\lfortran.exe exit 1",
     "lfortran --help",
     "lfortran --version"
    ]
@@ -329,7 +338,7 @@
    "summary":"Modern interactive LLVM-based Fortran compiler"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
@@ -351,8 +360,10 @@
     "llvmdev =9.0.1",
     "xtl",
     "nlohmann_json",
-    "cppzmq"
-   ]
+    "cppzmq",
+    "zlib"
+   ],
+   "run":null
   },
   "source":{
    "patches":[
@@ -385,7 +396,8 @@
     "llvmdev",
     "nlohmann_json",
     "xeus",
-    "xtl"
+    "xtl",
+    "zlib"
    ]
   },
   "run":{
@@ -398,7 +410,7 @@
   }
  },
  "pinning_version":"2020.09.17.18.26.02",
- "raw_meta_yaml":"{% set name = \"lfortran\" %}\n{% set version = \"0.8.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://lfortran.github.io/tarballs/release/{{ name }}-{{ version }}.tar.gz\n  sha256: f668b3174c50e3bf1e4b2c70af7a8536dc160b439b1c48a864b2c39019e743f0\n  patches:\n    - lto.patch\n\nbuild:\n  number: 0\n  skip: true  # [py<36]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - make   # [unix]\n  host:\n    - xeus >=0.24.1,<0.25\n    - llvmdev =9.0.1\n    - xtl\n    - nlohmann_json\n    - cppzmq\n\ntest:\n  commands:\n    - test -f ${PREFIX}/bin/lfortran  # [unix]\n    - if exist %LIBRARY_PREFIX%\\bin\\lfortran.exe (exit 0) else (exit 1)  # [win]\n    - lfortran --help\n    - lfortran --version\n\nabout:\n  home: https://lfortran.org\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Modern interactive LLVM-based Fortran compiler\n  description: |\n    LFortran is a modern open-source (BSD licensed) interactive Fortran\n    compiler built on top of LLVM. It can execute user's code interactively to\n    allow exploratory work (much like Python, MATLAB or Julia) as well as\n    compile to binaries with the goal to run user\u2019s code on modern\n    architectures such as multi-core CPUs and GPUs.\n  doc_url: https://docs.lfortran.org/\n  dev_url: https://gitlab.com/lfortran/lfortran\n\nextra:\n  recipe-maintainers:\n    - certik\n",
+ "raw_meta_yaml":"{% set name = \"lfortran\" %}\n{% set version = \"0.8.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://lfortran.github.io/tarballs/release/{{ name }}-{{ version }}.tar.gz\n  sha256: f668b3174c50e3bf1e4b2c70af7a8536dc160b439b1c48a864b2c39019e743f0\n  patches:\n    - lto.patch\n\nbuild:\n  number: 1\n  skip: true  # [py<36]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - make   # [unix]\n  host:\n    - xeus >=0.24.1,<0.25\n    - llvmdev =9.0.1\n    - xtl\n    - nlohmann_json\n    - cppzmq\n    - zlib\n  run:\n    # xeus breaks abi compatibility in patch versions even though\n    # run_exports say otherwise in https://github.com/conda-forge/xeus-feedstock/blob/0896038be810da2944ebcb612e22886815ea691e/recipe/meta.yaml#L18\n    - {{ pin_compatible(\"xeus\", max_pin=\"x.x.x\") }}  # [win]\n\ntest:\n  commands:\n    - test -f ${PREFIX}/bin/lfortran  # [unix]\n    - if not exist %LIBRARY_PREFIX%\\bin\\lfortran.exe exit 1  # [win]\n    - lfortran --help\n    - lfortran --version\n\nabout:\n  home: https://lfortran.org\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Modern interactive LLVM-based Fortran compiler\n  description: |\n    LFortran is a modern open-source (BSD licensed) interactive Fortran\n    compiler built on top of LLVM. It can execute user's code interactively to\n    allow exploratory work (much like Python, MATLAB or Julia) as well as\n    compile to binaries with the goal to run user\u2019s code on modern\n    architectures such as multi-core CPUs and GPUs.\n  doc_url: https://docs.lfortran.org/\n  dev_url: https://gitlab.com/lfortran/lfortran\n\nextra:\n  recipe-maintainers:\n    - certik\n",
  "req":{
   "__set__":true,
   "elements":[
@@ -409,7 +421,8 @@
    "make",
    "nlohmann_json",
    "xeus",
-   "xtl"
+   "xtl",
+   "zlib"
   ]
  },
  "requirements":{
@@ -429,13 +442,15 @@
     "llvmdev",
     "nlohmann_json",
     "xeus",
-    "xtl"
+    "xtl",
+    "zlib"
    ]
   },
   "run":{
    "__set__":true,
    "elements":[
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "xeus"
    ]
   },
   "test":{
@@ -461,12 +476,15 @@
     "llvmdev =9.0.1",
     "nlohmann_json",
     "xeus >=0.24.1,<0.25",
-    "xtl"
+    "xtl",
+    "zlib"
    ]
   },
   "run":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "xeus"
+   ]
   },
   "test":{
    "__set__":true,
@@ -487,7 +505,7 @@
    "summary":"Modern interactive LLVM-based Fortran compiler"
   },
   "build":{
-   "number":"0"
+   "number":"1"
   },
   "extra":{
    "recipe-maintainers":[
@@ -508,7 +526,11 @@
     "llvmdev =9.0.1",
     "xtl",
     "nlohmann_json",
-    "cppzmq"
+    "cppzmq",
+    "zlib"
+   ],
+   "run":[
+    "xeus"
    ]
   },
   "source":{
@@ -520,7 +542,7 @@
   },
   "test":{
    "commands":[
-    "if exist %LIBRARY_PREFIX%\\bin\\lfortran.exe (exit 0) else (exit 1)",
+    "if not exist %LIBRARY_PREFIX%\\bin\\lfortran.exe exit 1",
     "lfortran --help",
     "lfortran --version"
    ]
@@ -541,12 +563,15 @@
     "llvmdev",
     "nlohmann_json",
     "xeus",
-    "xtl"
+    "xtl",
+    "zlib"
    ]
   },
   "run":{
    "__set__":true,
-   "elements":[]
+   "elements":[
+    "xeus"
+   ]
   },
   "test":{
    "__set__":true,
