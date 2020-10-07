@@ -326,6 +326,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR":{
+    "__lazy_json__":"pr_json/498941113.json"
+   },
+   "data":{
+    "bot_rerun":false,
+    "migrator_name":"Version",
+    "migrator_version":0,
+    "version":"1.16.0"
+   },
+   "keys":[
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived":false,
@@ -1351,9 +1368,10 @@
   }
  },
  "name":"pymeep",
- "new_version":"1.15.0",
+ "new_version":"1.16.0",
  "new_version_attempts":{
-  "1.14.0":47
+  "1.14.0":47,
+  "1.16.0":1
  },
  "new_version_errors":{
   "1.14.0":"The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '1.14.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/NanoComp/meep/releases/download/v<{version}}/meep-{{ version }}.tar.gz'\n"
@@ -1754,7 +1772,7 @@
    ]
   }
  },
- "pinning_version":"2020.09.14.18.14.00",
+ "pinning_version":"2020.10.06.07.41.18",
  "raw_meta_yaml":"{% set name = \"pymeep\" %}\n{% set version = \"1.15.0\" %}\n{% set sha256 = \"be50ccded3f1fb97e5c3a4e0351e2ff864d2a94c95ed80e29613d63a72c371f7\" %}\n{% set buildnumber = 3 %}\n# recipe-lint fails if mpi is undefined\n{% set mpi = mpi or 'nompi' %}\n{% if mpi == \"nompi\" %}\n# prioritize nompi via build number\n{% set buildnumber = buildnumber + 100 %}\n{% endif %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  fn: meep-{{ version }}.tar.gz\n  url: https://github.com/NanoComp/meep/releases/download/v{{ version }}/meep-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: {{ buildnumber }}\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  # add build string so packages can depend on mpi or nompi variants\n  # dependencies:\n  #     `pymeep * mpi_mpich_*` for mpich\n  #     `pymeep * mpi_*` for any mpi\n  #     `pymeep * nompi_*` for no mpi\n  string: {{ mpi_prefix }}_py{{ py }}h{{ PKG_HASH }}_{{ buildnumber }}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n\n  host:\n    - libblas >=3.8\n    - libcblas >=3.8\n    - liblapack >=3.8\n    - libgdsii >=0.21\n    - {{ mpi }}  # [mpi != 'nompi']\n    - mpi4py >=3.0  # [mpi != 'nompi']\n    - python\n    - libctl >=4.5\n    - harminv >=1.4.1\n    - mpb >=1.10 {{ mpi_prefix }}_*\n    - hdf5 1.10.5 {{ mpi_prefix }}_*\n    - numpy 1.16\n    - gsl\n\n  run:\n    # more or less a copy of the specs above\n    - libblas >=3.8\n    - libcblas >=3.8\n    - liblapack >=3.8\n    - libgdsii >=0.21\n    - {{ mpi }}  # [mpi != 'nompi']\n    - mpi4py >=3.0  # [mpi != 'nompi']\n    - python\n    - libctl >=4.5\n    - harminv >=1.4.1\n    - mpb >=1.10 {{ mpi_prefix }}_*\n    - hdf5 1.10.5 {{ mpi_prefix }}_*\n    - {{ pin_compatible('numpy') }}\n\n    # extras needed or typically used at runtime\n    - h5utils * {{ mpi_prefix }}_*\n    - h5py * {{ mpi_prefix }}_*\n    - matplotlib-base >=2.2\n    - scipy\n    - mayavi\n    - autograd\n    - ffmpeg\n    - zlib\n    - libopenblas\n    - fftw\n\ntest:\n  requires:\n    - parallel\n  imports:\n    - meep\n    - meep.mpb\n  source_files:\n    - tests/cyl-ellipsoid-eps-ref.h5\n    - python/tests/*.py\n    - python/tests/data/*\n\nabout:\n  home: https:/github.com/NanoComp/meep\n  license: GPL-2.0-or-later\n  license_file: LICENSE\n  summary: Free finite-difference time-domain (FDTD) software for electromagnetic simulations\n  doc_url: https://meep.readthedocs.io\n  dev_url: https://github.com/NanoComp/meep\n\nextra:\n  recipe-maintainers:\n    - ChristopherHogan\n    - oskooi\n    - RobinD42\n",
  "req":{
   "__set__":true,
@@ -1857,7 +1875,7 @@
    ]
   }
  },
- "smithy_version":"No azure token. Create a token and\nput it in ~/.conda-smithy/azure.token\n3.7.10",
+ "smithy_version":"3.8.0",
  "strong_exports":false,
  "total_requirements":{
   "build":{
