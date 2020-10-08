@@ -78,9 +78,6 @@
  "archived":false,
  "bad":false,
  "conda-forge.yml":{
-  "compiler_stack":"comp7",
-  "max_py_ver":"37",
-  "max_r_ver":"35",
   "provider":{
    "win":"azure"
   }
@@ -97,8 +94,9 @@
    "summary":"Caffe2 implementation of Open Neural Network Exchange (ONNX)"
   },
   "build":{
-   "number":"1000",
+   "number":"1001",
    "script":[
+    "python setup.py install --single-version-externally-managed --record=record.txt",
     "python setup.py install --single-version-externally-managed --record=record.txt",
     "python setup.py install --single-version-externally-managed --record=record.txt",
     "python setup.py install --single-version-externally-managed --record=record.txt"
@@ -106,6 +104,7 @@
   },
   "extra":{
    "recipe-maintainers":[
+    "ezyang",
     "ezyang",
     "ezyang",
     "ezyang"
@@ -122,9 +121,14 @@
     "python",
     "pytest-runner",
     "python",
+    "pytest-runner",
+    "python",
     "pytest-runner"
    ],
    "run":[
+    "python",
+    "onnx",
+    "click",
     "python",
     "onnx",
     "click",
@@ -143,6 +147,7 @@
   },
   "test":{
    "commands":[
+    "conda inspect linkages -p $PREFIX onnx-caffe2",
     "conda inspect linkages -p $PREFIX onnx-caffe2",
     "conda inspect linkages -p $PREFIX onnx-caffe2",
     "conda inspect linkages -p $PREFIX onnx-caffe2"
@@ -184,8 +189,10 @@
    "summary":"Caffe2 implementation of Open Neural Network Exchange (ONNX)"
   },
   "build":{
-   "number":"1000",
+   "number":"1001",
    "script":[
+    "python setup.py install --single-version-externally-managed --record=record.txt",
+    "python setup.py install --single-version-externally-managed --record=record.txt",
     "python setup.py install --single-version-externally-managed --record=record.txt",
     "python setup.py install --single-version-externally-managed --record=record.txt",
     "python setup.py install --single-version-externally-managed --record=record.txt",
@@ -199,6 +206,8 @@
   },
   "extra":{
    "recipe-maintainers":[
+    "ezyang",
+    "ezyang",
     "ezyang",
     "ezyang",
     "ezyang",
@@ -233,9 +242,19 @@
     "python",
     "pytest-runner",
     "python",
+    "pytest-runner",
+    "python",
+    "pytest-runner",
+    "python",
     "pytest-runner"
    ],
    "run":[
+    "python",
+    "onnx",
+    "click",
+    "python",
+    "onnx",
+    "click",
     "python",
     "onnx",
     "click",
@@ -286,8 +305,9 @@
    "summary":"Caffe2 implementation of Open Neural Network Exchange (ONNX)"
   },
   "build":{
-   "number":"1000",
+   "number":"1001",
    "script":[
+    "python setup.py install --single-version-externally-managed --record=record.txt",
     "python setup.py install --single-version-externally-managed --record=record.txt",
     "python setup.py install --single-version-externally-managed --record=record.txt",
     "python setup.py install --single-version-externally-managed --record=record.txt"
@@ -295,6 +315,7 @@
   },
   "extra":{
    "recipe-maintainers":[
+    "ezyang",
     "ezyang",
     "ezyang",
     "ezyang"
@@ -311,9 +332,14 @@
     "python",
     "pytest-runner",
     "python",
+    "pytest-runner",
+    "python",
     "pytest-runner"
    ],
    "run":[
+    "python",
+    "onnx",
+    "click",
     "python",
     "onnx",
     "click",
@@ -332,6 +358,8 @@
   },
   "test":{
    "commands":[
+    "conda inspect linkages -p $PREFIX onnx-caffe2",
+    "conda inspect objects -p $PREFIX onnx-caffe2",
     "conda inspect linkages -p $PREFIX onnx-caffe2",
     "conda inspect objects -p $PREFIX onnx-caffe2",
     "conda inspect linkages -p $PREFIX onnx-caffe2",
@@ -367,7 +395,7 @@
   }
  },
  "pinning_version":"2020.09.23.12.58.01",
- "raw_meta_yaml":"{% set name = \"onnx-caffe2\" %}\n{% set version = \"1.0.0\" %}\n{% set sha256 = \"ef4ba9a71798b7a5dd0a1897fb33eddd7bba148236a01abf0a0dc160e98bf020\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 1000\n  script:\n    - python setup.py install --single-version-externally-managed --record=record.txt\n\nrequirements:\n  build:\n    - python\n    - pytest-runner\n    - enum34  # [py2k]\n  run:\n    - python\n    - onnx\n    - click\n    # NB: caffe2 is not conda managed, so don't put it as a \"dep\"\n\ntest:\n  # It would be nice to do this, but a user has to have independently\n  # installed caffe2 for this to work.\n  # imports:\n  #  - onnx_caffe2\n\n  # This appeases the linter (which requires a test), and eventually\n  # we're going to build some C++ in this package, which will be helpful\n  commands:\n    - conda inspect linkages -p $PREFIX {{ name }}  # [unix]\n    - conda inspect objects -p $PREFIX {{ name }}   # [osx]\n\nabout:\n  home: https://github.com/onnx/onnx-caffe2/\n  license: MIT\n  license_family: MIT\n  license_file: '{{ environ[\"RECIPE_DIR\"] }}/LICENSE'  # https://github.com/onnx/onnx-caffe2/pull/81\n  summary: Caffe2 implementation of Open Neural Network Exchange (ONNX)\n  description: |\n    This library provides Caffe2 importer and exporter for the ONNX format.\n\nextra:\n  recipe-maintainers:\n    - ezyang\n",
+ "raw_meta_yaml":"{% set name = \"onnx-caffe2\" %}\n{% set version = \"1.0.0\" %}\n{% set sha256 = \"ef4ba9a71798b7a5dd0a1897fb33eddd7bba148236a01abf0a0dc160e98bf020\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 1001\n  script:\n    - python setup.py install --single-version-externally-managed --record=record.txt\n\nrequirements:\n  build:\n    - python\n    - pytest-runner\n    - enum34  # [py2k]\n  run:\n    - python\n    - onnx\n    - click\n    # NB: caffe2 is not conda managed, so don't put it as a \"dep\"\n\ntest:\n  # It would be nice to do this, but a user has to have independently\n  # installed caffe2 for this to work.\n  # imports:\n  #  - onnx_caffe2\n\n  # This appeases the linter (which requires a test), and eventually\n  # we're going to build some C++ in this package, which will be helpful\n  commands:\n    - conda inspect linkages -p $PREFIX {{ name }}  # [unix]\n    - conda inspect objects -p $PREFIX {{ name }}   # [osx]\n\nabout:\n  home: https://github.com/onnx/onnx-caffe2/\n  license: MIT\n  license_family: MIT\n  license_file: '{{ environ[\"RECIPE_DIR\"] }}/LICENSE'  # https://github.com/onnx/onnx-caffe2/pull/81\n  summary: Caffe2 implementation of Open Neural Network Exchange (ONNX)\n  description: |\n    This library provides Caffe2 importer and exporter for the ONNX format.\n\nextra:\n  recipe-maintainers:\n    - ezyang\n",
  "req":{
   "__set__":true,
   "elements":[
@@ -441,7 +469,7 @@
    "summary":"Caffe2 implementation of Open Neural Network Exchange (ONNX)"
   },
   "build":{
-   "number":"1000",
+   "number":"1001",
    "script":[
     "python setup.py install --single-version-externally-managed --record=record.txt",
     "python setup.py install --single-version-externally-managed --record=record.txt",
