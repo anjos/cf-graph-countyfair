@@ -88,6 +88,25 @@
     "__lazy_json__":"pr_json/500071789.json"
    },
    "data":{
+    "bot_rerun":1602202239.0540078,
+    "migrator_name":"MigrationYaml",
+    "migrator_object_version":1,
+    "migrator_version":0,
+    "name":"gcc930"
+   },
+   "keys":[
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR":{
+    "__lazy_json__":"pr_json/500272663.json"
+   },
+   "data":{
     "bot_rerun":false,
     "migrator_name":"MigrationYaml",
     "migrator_object_version":1,
@@ -104,7 +123,7 @@
   }
  ],
  "archived":false,
- "bad":"Upstream: unknown source or URL not in YAML",
+ "bad":false,
  "conda-forge.yml":{
   "compiler_stack":"comp7",
   "max_py_ver":"37",
@@ -1374,7 +1393,7 @@
   "mpich-mpicxx",
   "mpich-mpifort"
  ],
- "pinning_version":"2020.10.08.15.13.14",
+ "pinning_version":"2020.10.08.20.29.16",
  "raw_meta_yaml":"{% set version = \"3.3.2\" %}\n{% set build = 0 %}\n\npackage:\n  # must not match any outputs for requirements to be handled correctly\n  name: mpich-mpi\n  version: {{ version }}\n\nsource:\n  fn: mpich-{{ version }}.tar.gz\n  url: http://www.mpich.org/static/downloads/{{ version }}/mpich-{{ version }}.tar.gz\n  sha256: 4bfaf8837a54771d3e4922c84071ef80ffebddbb6971a006038d91ee7ef959b9\n\nbuild:\n  number: {{ build }}\n  skip: True  # [win]\n\noutputs:\n  {% if mpi_type == 'external' %}\n  - name: mpich\n    string: \"{{ mpi_type }}_{{ build }}\"\n    track_features:\n      - mpich_{{ mpi_type }}\n    requirements:\n      run:\n        - mpi 1.0 mpich\n    test:\n      commands:\n        - echo \"It works!\"\n  {% else %}\n  - name: mpich\n    script: build-mpi.sh\n    build:\n      run_exports:\n        - {{ pin_subpackage('mpich', max_pin='x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - {{ compiler('fortran') }}\n        - make  # [unix]\n      host: []\n      run:\n        - mpi 1.0 mpich\n    test:\n      script: run_test.sh\n      files:\n        - mpiexec.sh\n        - tests/helloworld.sh\n\n  - name: mpich-mpicc\n    build:\n      script:\n        - echo 'ok'  # [not osx]\n        # make CONDA_BUILD_SYSROOT a 'used variable'\n        # so that conda-build knows to pass it to the test env\n        - echo \"{{CONDA_BUILD_SYSROOT}}\"  # [osx]\n    requirements:\n      run:\n        - {{ pin_subpackage('mpich', exact=True) }}\n        # host C compilers work fine (better) on mac\n        - {{ compiler('c') }}\n    test:\n      script: run_test.sh\n      files:\n        - mpiexec.sh\n        - tests/helloworld.c\n\n  - name: mpich-mpicxx\n    build:\n      script:\n        - echo 'ok'  # [not osx]\n        # make CONDA_BUILD_SYSROOT a 'used variable'\n        # so that conda-build knows to pass it to the test env\n        - echo \"{{CONDA_BUILD_SYSROOT}}\"  # [osx]\n    requirements:\n      run:\n        - {{ pin_subpackage('mpich', exact=True) }}\n        # host C compilers work fine (better) on mac\n        - {{ compiler('cxx') }}\n    test:\n      script: run_test.sh\n      files:\n        - mpiexec.sh\n        - tests/helloworld.cxx\n\n  - name: mpich-mpifort\n    build:\n      script:\n        - echo 'ok'  # [not osx]\n        # make CONDA_BUILD_SYSROOT a 'used variable'\n        # so that conda-build knows to pass it to the test env\n        - echo \"{{CONDA_BUILD_SYSROOT}}\"  # [osx]\n    requirements:\n      run:\n        - {{ pin_subpackage('mpich', exact=True) }}\n        - {{ compiler('fortran') }}\n    test:\n      script: run_test.sh\n      files:\n        - mpiexec.sh\n        - tests/helloworld.f\n        - tests/helloworld.f90\n  {% endif %}\n\nabout:\n  home: http://www.mpich.org/\n  license: MPICH\n  license_file: COPYRIGHT\n  license_family: Other\n  summary: 'A high performance widely portable implementation of the MPI standard.'\n  description: |\n    MPICH is a high performance and widely portable implementation of the\n    Message Passing Interface (MPI) standard.\n  doc_url: http://www.mpich.org/documentation/guides\n  dev_url: https://wiki.mpich.org/mpich/index.php/Main_Page\n\nextra:\n  recipe-maintainers:\n    - astrofrog-conda-forge\n    - bekozi\n    - dalcinl\n    - minrk\n    - msarahan\n    - ocefpaf\n    - beckermr\n",
  "req":{
   "__set__":true,
