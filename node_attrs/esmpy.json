@@ -73,10 +73,27 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/500756503.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "8.1.0.beta.snapshot.33"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
- "bad": "Upstream: unknown source or URL not in YAML",
+ "bad": false,
  "conda-forge.yml": {},
  "feedstock_name": "esmpy",
  "hash_type": "sha256",
@@ -616,7 +633,11 @@
   }
  },
  "name": "esmpy",
- "new_version": false,
+ "new_version": "8.1.0.beta.snapshot.33",
+ "new_version_attempts": {
+  "8.1.0.beta.snapshot.33": 1
+ },
+ "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
    "home": "https://www.earthsystemcog.org/projects/esmpy/",
@@ -830,7 +851,7 @@
    "elements": []
   }
  },
- "pinning_version": "2020.08.09.19.50.01",
+ "pinning_version": "2020.10.09.16.47.17",
  "raw_meta_yaml": "{% set version = \"8.1.0.beta.snapshot.32\" %}\n{% set ver = version.replace(\".\", \"_\") %}\n{% set build = 0 %}\n\n# recipe-lint fails if mpi is undefined\n{% set mpi = mpi or 'nompi' %}\n\n{% if mpi == 'mpich' %}\n# prioritize mpich variant, which was previously the only option, via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: esmpy\n  version: {{ version }}\n\nsource:\n  url: https://github.com/esmf-org/esmf/archive/ESMF_{{ ver }}/esmf_{{ ver }}_src.tar.gz\n  sha256: 98d15c4d62a22a577e5bf774b238421af1d0cc32c113b6037eb4c9f65fe27e73\n\nbuild:\n  number: {{ build }}\n  skip: True  # [win]\n\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `esmf * mpi_mpich_*` for mpich\n  # `esmf * mpi_*` for any mpi\n  # `esmf * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: \"{{ mpi_prefix }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}\"\n\nrequirements:\n  host:\n    - python\n    - numpy\n    - esmf {{ version }} {{ mpi_prefix }}_*\n    - nose\n    - {{ mpi }}  # [mpi != 'nompi']\n    - mpi4py  # [mpi != 'nompi']\n  run:\n    - python\n    - numpy\n    - esmf {{ version }} {{ mpi_prefix }}_*\n    - {{ mpi }}  # [mpi != 'nompi']\n    - mpi4py  # [mpi != 'nompi']\n    - openssh  # [mpi == 'openmpi']\n\ntest:\n  imports:\n    - ESMF\n\nabout:\n  home: https://www.earthsystemcog.org/projects/esmpy/\n  license: The University of Illinois/NCSA\n  license_file: LICENSE\n  summary: ESMPy is a Python interface to the Earth System Modeling Framework (ESMF) regridding utility.\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - bekozi\n    - rokuingh\n    - xylar\n",
  "req": {
   "__set__": true,
@@ -880,7 +901,7 @@
    "elements": []
   }
  },
- "smithy_version": "No azure token. Create a token and\nput it in ~/.conda-smithy/azure.token\n3.7.8",
+ "smithy_version": "3.8.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
