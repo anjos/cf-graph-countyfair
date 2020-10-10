@@ -140,19 +140,29 @@
  "linux_64_meta_yaml": {
   "about": {
    "home": "https://fstpackage.github.io",
-   "license": "AGPL-3",
+   "license": "AGPL-3.0-only",
    "license_family": "AGPL",
+   "license_file": [
+    "/lib/R/share/licenses/AGPL-3",
+    "LICENSE",
+    "/lib/R/share/licenses/AGPL-3",
+    "LICENSE"
+   ],
    "summary": "Multithreaded serialization of compressed data frames using the 'fst' format. The 'fst' format allows for random access of stored data and compression with the LZ4 and ZSTD compressors created by Yann Collet. The ZSTD compression library is owned by Facebook Inc."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "rpaths": [
+    "lib/R/lib/",
+    "lib/",
     "lib/R/lib/",
     "lib/"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "conda-forge/r",
+    "jprnz",
     "conda-forge/r",
     "jprnz"
    ]
@@ -165,13 +175,20 @@
    "build": [
     "c_compiler_stub",
     "cxx_compiler_stub",
+    "make",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
     "make"
    ],
    "host": [
     "r-base",
+    "r-rcpp",
+    "r-base",
     "r-rcpp"
    ],
    "run": [
+    "r-base",
+    "r-rcpp",
     "r-base",
     "r-rcpp"
    ]
@@ -180,11 +197,14 @@
    "sha256": "2e8bc93b1c2c1a41f743d6338fd37a2907c907b159776e32bbc5637011a44579",
    "url": [
     "https://cran.r-project.org/src/contrib/fst_0.9.0.tar.gz",
+    "https://cran.r-project.org/src/contrib/Archive/fst/fst_0.9.0.tar.gz",
+    "https://cran.r-project.org/src/contrib/fst_0.9.0.tar.gz",
     "https://cran.r-project.org/src/contrib/Archive/fst/fst_0.9.0.tar.gz"
    ]
   },
   "test": {
    "commands": [
+    "$R -e \"library('fst')\"",
     "$R -e \"library('fst')\""
    ]
   }
@@ -220,14 +240,26 @@
  "meta_yaml": {
   "about": {
    "home": "https://fstpackage.github.io",
-   "license": "AGPL-3",
+   "license": "AGPL-3.0-only",
    "license_family": "AGPL",
+   "license_file": [
+    "/lib/R/share/licenses/AGPL-3",
+    "LICENSE",
+    "/lib/R/share/licenses/AGPL-3",
+    "LICENSE",
+    "/lib/R/share/licenses/AGPL-3",
+    "LICENSE",
+    "/lib/R/share/licenses/AGPL-3",
+    "LICENSE"
+   ],
    "summary": "Multithreaded serialization of compressed data frames using the 'fst' format. The 'fst' format allows for random access of stored data and compression with the LZ4 and ZSTD compressors created by Yann Collet. The ZSTD compression library is owned by Facebook Inc."
   },
   "build": {
    "merge_build_host": true,
-   "number": "0",
+   "number": "1",
    "rpaths": [
+    "lib/R/lib/",
+    "lib/",
     "lib/R/lib/",
     "lib/",
     "lib/R/lib/",
@@ -238,6 +270,8 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "conda-forge/r",
+    "jprnz",
     "conda-forge/r",
     "jprnz",
     "conda-forge/r",
@@ -258,8 +292,15 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "make",
-    "llvm-openmp",
-    "m2w64-toolchain",
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub",
+    "m2-filesystem",
+    "m2-make",
+    "m2-sed",
+    "m2-coreutils",
+    "m2-zip",
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub",
     "m2-filesystem",
     "m2-make",
     "m2-sed",
@@ -272,6 +313,8 @@
     "r-base",
     "r-rcpp",
     "r-base",
+    "r-rcpp",
+    "r-base",
     "r-rcpp"
    ],
    "run": [
@@ -279,7 +322,9 @@
     "r-rcpp",
     "r-base",
     "r-rcpp",
-    "llvm-openmp",
+    "r-base",
+    "m2w64-gcc-libs",
+    "r-rcpp",
     "r-base",
     "m2w64-gcc-libs",
     "r-rcpp"
@@ -293,6 +338,8 @@
     "https://cran.r-project.org/src/contrib/fst_0.9.0.tar.gz",
     "https://cran.r-project.org/src/contrib/Archive/fst/fst_0.9.0.tar.gz",
     "https://cran.r-project.org/src/contrib/fst_0.9.0.tar.gz",
+    "https://cran.r-project.org/src/contrib/Archive/fst/fst_0.9.0.tar.gz",
+    "https://cran.r-project.org/src/contrib/fst_0.9.0.tar.gz",
     "https://cran.r-project.org/src/contrib/Archive/fst/fst_0.9.0.tar.gz"
    ]
   },
@@ -300,6 +347,7 @@
    "commands": [
     "$R -e \"library('fst')\"",
     "$R -e \"library('fst')\"",
+    "\"%R%\" -e \"library('fst')\"",
     "\"%R%\" -e \"library('fst')\""
    ]
   }
@@ -395,20 +443,20 @@
   }
  },
  "pinning_version": "2020.08.27.12.52.30",
- "raw_meta_yaml": "{% set version = '0.9.0' %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-fst\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/fst_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/fst/fst_{{ version }}.tar.gz\n  sha256: 2e8bc93b1c2c1a41f743d6338fd37a2907c907b159776e32bbc5637011a44579\n\nbuild:\n  merge_build_host: True  # [win]\n  number: 0\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}        # [not win]\n    - {{ compiler('cxx') }}      # [not win]\n    - {{native}}toolchain        # [win]\n    - {{posix}}filesystem        # [win]\n    - {{posix}}make\n    - {{posix}}sed               # [win]\n    - {{posix}}coreutils         # [win]\n    - {{posix}}zip               # [win]\n    - llvm-openmp                # [osx]\n  host:\n    - r-base\n    - r-rcpp\n  run:\n    - r-base\n    - {{native}}gcc-libs         # [win]\n    - r-rcpp\n    - llvm-openmp                # [osx]\n\ntest:\n  commands:\n    - $R -e \"library('fst')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('fst')\\\"\"  # [win]\n\nabout:\n  home: https://fstpackage.github.io\n  license: AGPL-3\n  summary: Multithreaded serialization of compressed data frames using the 'fst' format. The\n    'fst' format allows for random access of stored data and compression with the LZ4\n    and ZSTD compressors created by Yann Collet. The ZSTD compression library is owned\n    by Facebook Inc.\n  license_family: AGPL\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n    - jprnz\n\n# Package: fst\n# Type: Package\n# Title: Lightning Fast Serialization of Data Frames for R\n# Description: Multithreaded serialization of compressed data frames using the 'fst' format. The 'fst' format allows for random access of stored data and compression with the LZ4 and ZSTD compressors created by Yann Collet. The ZSTD compression library is owned by Facebook Inc.\n# Version: 0.9.0\n# Date: 2019-04-02\n# Authors@R: c( person(\"Mark\", \"Klik\", email = \"markklik@gmail.com\", role = c(\"aut\", \"cre\", \"cph\")), person(\"Yann\", \"Collet\", role = c(\"ctb\", \"cph\"), comment = \"Yann Collet is author of the bundled LZ4 and ZSTD code and copyright holder of LZ4\"), person(\"Facebook, Inc.\", role = \"cph\", comment = \"Bundled ZSTD code\"))\n# LazyData: true\n# Depends: R (>= 3.0.0)\n# Imports: Rcpp\n# LinkingTo: Rcpp\n# SystemRequirements: little-endian platform\n# RoxygenNote: 6.1.1\n# Suggests: testthat, bit64, data.table, lintr, nanotime, crayon\n# License: AGPL-3 | file LICENSE\n# Copyright: This package includes sources from the LZ4 library written by Yann Collet, sources of the ZSTD library owned by Facebook, Inc. and sources of the fstlib library owned by Mark Klik\n# URL: https://fstpackage.github.io\n# BugReports: https://github.com/fstpackage/fst/issues\n# NeedsCompilation: yes\n# Packaged: 2019-04-02 12:51:58 UTC; Mark\n# Author: Mark Klik [aut, cre, cph], Yann Collet [ctb, cph] (Yann Collet is author of the bundled LZ4 and ZSTD code and copyright holder of LZ4), Facebook, Inc. [cph] (Bundled ZSTD code)\n# Maintainer: Mark Klik <markklik@gmail.com>\n# Repository: CRAN\n# Date/Publication: 2019-04-09 04:43:13 UTC\n",
+ "raw_meta_yaml": "{% set version = \"0.9.0\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-fst\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/fst_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/fst/fst_{{ version }}.tar.gz\n  sha256: 2e8bc93b1c2c1a41f743d6338fd37a2907c907b159776e32bbc5637011a44579\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 1\n  skip: True  # [osx]\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ compiler('cxx') }}            # [not win]\n    - {{ compiler('m2w64_cxx') }}      # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n    - llvm-openmp                # [osx]\n  host:\n    - r-base\n    - r-rcpp\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - r-rcpp\n    - lz4-c  # [osx]\n\ntest:\n  commands:\n    - $R -e \"library('fst')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('fst')\\\"\"  # [win]\n\nabout:\n  home: https://fstpackage.github.io\n  license: AGPL-3.0-only\n  summary: Multithreaded serialization of compressed data frames using the 'fst' format. The 'fst' format allows for random access of stored data and compression with the LZ4 and ZSTD compressors created by Yann Collet. The ZSTD compression library is owned by Facebook Inc.\n  license_family: AGPL\n\n  license_file:\n    - {{ environ[\"PREFIX\"] }}/lib/R/share/licenses/AGPL-3\n    - LICENSE\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n    - jprnz\n\n# Package: fst\n# Type: Package\n# Title: Lightning Fast Serialization of Data Frames for R\n# Description: Multithreaded serialization of compressed data frames using the 'fst' format. The 'fst' format allows for random access of stored data and compression with the LZ4 and ZSTD compressors created by Yann Collet. The ZSTD compression library is owned by Facebook Inc.\n# Version: 0.9.0\n# Date: 2019-04-02\n# Authors@R: c( person(\"Mark\", \"Klik\", email = \"markklik@gmail.com\", role = c(\"aut\", \"cre\", \"cph\")), person(\"Yann\", \"Collet\", role = c(\"ctb\", \"cph\"), comment = \"Yann Collet is author of the bundled LZ4 and ZSTD code and copyright holder of LZ4\"), person(\"Facebook, Inc.\", role = \"cph\", comment = \"Bundled ZSTD code\"))\n# LazyData: true\n# Depends: R (>= 3.0.0)\n# Imports: Rcpp\n# LinkingTo: Rcpp\n# SystemRequirements: little-endian platform\n# RoxygenNote: 6.1.1\n# Suggests: testthat, bit64, data.table, lintr, nanotime, crayon\n# License: AGPL-3 | file LICENSE\n# Copyright: This package includes sources from the LZ4 library written by Yann Collet, sources of the ZSTD library owned by Facebook, Inc. and sources of the fstlib library owned by Mark Klik\n# URL: https://fstpackage.github.io\n# BugReports: https://github.com/fstpackage/fst/issues\n# NeedsCompilation: yes\n# Packaged: 2019-04-02 12:51:58 UTC; Mark\n# Author: Mark Klik [aut, cre, cph], Yann Collet [ctb, cph] (Yann Collet is author of the bundled LZ4 and ZSTD code and copyright holder of LZ4), Facebook, Inc. [cph] (Bundled ZSTD code)\n# Maintainer: Mark Klik <markklik@gmail.com>\n# Repository: CRAN\n# Date/Publication: 2019-04-09 04:43:13 UTC\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "cxx_compiler_stub",
-   "llvm-openmp",
    "m2-coreutils",
    "m2-filesystem",
    "m2-make",
    "m2-sed",
    "m2-zip",
    "m2w64-gcc-libs",
-   "m2w64-toolchain",
+   "m2w64_c_compiler_stub",
+   "m2w64_cxx_compiler_stub",
    "make",
    "r-base",
    "r-rcpp"
@@ -420,13 +468,13 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "llvm-openmp",
     "m2-coreutils",
     "m2-filesystem",
     "m2-make",
     "m2-sed",
     "m2-zip",
-    "m2w64-toolchain",
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub",
     "make"
    ]
   },
@@ -435,7 +483,6 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "openmp",
     "r-base",
     "r-rcpp"
    ]
@@ -445,9 +492,7 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "llvm-openmp",
     "m2w64-gcc-libs",
-    "openmp",
     "r-base",
     "r-rcpp"
    ]
@@ -465,13 +510,13 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "llvm-openmp",
     "m2-coreutils",
     "m2-filesystem",
     "m2-make",
     "m2-sed",
     "m2-zip",
-    "m2w64-toolchain",
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub",
     "make"
    ]
   },
@@ -485,7 +530,6 @@
   "run": {
    "__set__": true,
    "elements": [
-    "llvm-openmp",
     "m2w64-gcc-libs",
     "r-base",
     "r-rcpp"
@@ -508,20 +552,30 @@
  "win_64_meta_yaml": {
   "about": {
    "home": "https://fstpackage.github.io",
-   "license": "AGPL-3",
+   "license": "AGPL-3.0-only",
    "license_family": "AGPL",
+   "license_file": [
+    "/lib/R/share/licenses/AGPL-3",
+    "LICENSE",
+    "/lib/R/share/licenses/AGPL-3",
+    "LICENSE"
+   ],
    "summary": "Multithreaded serialization of compressed data frames using the 'fst' format. The 'fst' format allows for random access of stored data and compression with the LZ4 and ZSTD compressors created by Yann Collet. The ZSTD compression library is owned by Facebook Inc."
   },
   "build": {
    "merge_build_host": true,
-   "number": "0",
+   "number": "1",
    "rpaths": [
+    "lib/R/lib/",
+    "lib/",
     "lib/R/lib/",
     "lib/"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "conda-forge/r",
+    "jprnz",
     "conda-forge/r",
     "jprnz"
    ]
@@ -532,7 +586,15 @@
   },
   "requirements": {
    "build": [
-    "m2w64-toolchain",
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub",
+    "m2-filesystem",
+    "m2-make",
+    "m2-sed",
+    "m2-coreutils",
+    "m2-zip",
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub",
     "m2-filesystem",
     "m2-make",
     "m2-sed",
@@ -541,9 +603,14 @@
    ],
    "host": [
     "r-base",
+    "r-rcpp",
+    "r-base",
     "r-rcpp"
    ],
    "run": [
+    "r-base",
+    "m2w64-gcc-libs",
+    "r-rcpp",
     "r-base",
     "m2w64-gcc-libs",
     "r-rcpp"
@@ -553,11 +620,14 @@
    "sha256": "2e8bc93b1c2c1a41f743d6338fd37a2907c907b159776e32bbc5637011a44579",
    "url": [
     "https://cran.r-project.org/src/contrib/fst_0.9.0.tar.gz",
+    "https://cran.r-project.org/src/contrib/Archive/fst/fst_0.9.0.tar.gz",
+    "https://cran.r-project.org/src/contrib/fst_0.9.0.tar.gz",
     "https://cran.r-project.org/src/contrib/Archive/fst/fst_0.9.0.tar.gz"
    ]
   },
   "test": {
    "commands": [
+    "\"%R%\" -e \"library('fst')\"",
     "\"%R%\" -e \"library('fst')\""
    ]
   }
@@ -571,7 +641,8 @@
     "m2-make",
     "m2-sed",
     "m2-zip",
-    "m2w64-toolchain"
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub"
    ]
   },
   "host": {
