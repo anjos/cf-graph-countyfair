@@ -924,6 +924,9 @@
   }
  },
  "pinning_version": "2020.09.09.10.20.41",
+ "pre_pr_migrator_status": {
+  "python39": "not solvable: ['Encountered problems while solving.\\nProblem: nothing provides vc 10.* needed by python-3.4.5-0\\n', 'Encountered problems while solving.\\nProblem: package setuptools-23.0.0-py27_0 requires python 2.7*, but none of the providers can be installed\\n']"
+ },
  "raw_meta_yaml": "{% set version = \"1.31.0\" %}\n\npackage:\n  name: grpcio\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/g/grpcio/grpcio-{{ version }}.tar.gz\n  sha256: 5043440c45c0a031f387e7f48527541c65d672005fb24cf18ef6857483557d39\n  patches:\n    - 0001-Monkey-patch-distutils.ccompiler.spawn-to-elide-std-.patch\n    - 0002-windows-ssl-lib-names.patch\n    - 0001-fix-win-setup.patch\n    - 0001-fix-win-commands.patch\n\nbuild:\n  number: 0\n  skip: true  # [python_impl == 'pypy']\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - python\n    - pip\n    # TODO evaluate if this can be relaxed\n    - setuptools <48.0.0a0\n    - cython\n    - six >=1.5.2\n    - zlib\n    - openssl\n    - c-ares            # [unix]\n    - pthread-stubs     # [linux]\n  run:\n    - python\n    - setuptools\n    - six >=1.5.2\n    - zlib\n    - openssl\n    - {{ pin_compatible(\"c-ares\") }}  # [unix]\n\ntest:\n  requires:\n    - pip\n  imports:\n    - grpc\n    - grpc._cython\n    - grpc._cython._cygrpc\n    - grpc.beta\n    - grpc.framework\n    - grpc.framework.common\n    - grpc.framework.foundation\n    - grpc.framework.interfaces\n    - grpc.framework.interfaces.base\n    - grpc.framework.interfaces.face\n  commands:\n    - python -m pip check\n\nabout:\n  home: https://grpc.io\n  license: Apache-2.0\n  license_file: LICENSE\n  license_family: APACHE\n  summary: HTTP/2-based RPC framework\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - jcrist\n    - bollwyvl\n",
  "req": {
   "__set__": true,
