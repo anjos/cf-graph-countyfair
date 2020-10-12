@@ -197,9 +197,6 @@
  "archived": false,
  "bad": false,
  "conda-forge.yml": {
-  "compiler_stack": "comp7",
-  "max_py_ver": "37",
-  "max_r_ver": "35",
   "provider": {
    "win": "azure"
   }
@@ -286,20 +283,23 @@
    "description": "A set of extension modules that provides access to many of the Windows API functions.\n",
    "dev_url": "https://github.com/mhammond/pywin32",
    "home": "https://github.com/mhammond/pywin32",
-   "license": "PSF",
+   "license": "PSF-2.0",
    "license_file": "Pythonwin/License.txt",
    "summary": "Python extensions for Windows"
   },
   "build": {
    "number": "0",
    "script": [
-    " setup.py -q install --record=record.txt",
+    "setup.py -q install --record=record.txt --skip-verstamp",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %PREFIX%\\Lib\\site-packages\\win32\\",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %LIBRARY_BIN%\\",
-    " setup.py -q install --record=record.txt",
+    "setup.py -q install --record=record.txt --skip-verstamp",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %PREFIX%\\Lib\\site-packages\\win32\\",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %LIBRARY_BIN%\\",
-    " setup.py -q install --record=record.txt",
+    "setup.py -q install --record=record.txt --skip-verstamp",
+    "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %PREFIX%\\Lib\\site-packages\\win32\\",
+    "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %LIBRARY_BIN%\\",
+    "setup.py -q install --record=record.txt --skip-verstamp",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %PREFIX%\\Lib\\site-packages\\win32\\",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %LIBRARY_BIN%\\"
    ]
@@ -314,15 +314,19 @@
     "carlodri",
     "mingwandroid",
     "nicoddemus",
+    "carlodri",
+    "mingwandroid",
+    "nicoddemus",
     "carlodri"
    ]
   },
   "package": {
    "name": "pywin32",
-   "version": "227"
+   "version": "228"
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
     "c_compiler_stub",
     "c_compiler_stub",
     "c_compiler_stub"
@@ -333,9 +337,12 @@
     "python",
     "pip",
     "python",
+    "pip",
+    "python",
     "pip"
    ],
    "run": [
+    "python",
     "python",
     "python",
     "python"
@@ -345,13 +352,23 @@
    "patches": [
     "disable_exchange_modules.patch",
     "0003-remove-PATH-pth-hack.patch",
+    "fix-formatting.diff",
+    "ensure-PythonService-mc-before-cpp.diff",
     "disable_exchange_modules.patch",
     "0003-remove-PATH-pth-hack.patch",
+    "fix-formatting.diff",
+    "ensure-PythonService-mc-before-cpp.diff",
     "disable_exchange_modules.patch",
-    "0003-remove-PATH-pth-hack.patch"
+    "0003-remove-PATH-pth-hack.patch",
+    "fix-formatting.diff",
+    "ensure-PythonService-mc-before-cpp.diff",
+    "disable_exchange_modules.patch",
+    "0003-remove-PATH-pth-hack.patch",
+    "fix-formatting.diff",
+    "ensure-PythonService-mc-before-cpp.diff"
    ],
-   "sha256": "02b0de1abe9c52762ba3024a0e801df5b41f53eeea48b6561d4a9038ee36c010",
-   "url": "https://github.com/mhammond/pywin32/archive/b227.tar.gz"
+   "sha256": "894cde85c251a3da6d341a711d7259ca11097bfd1b16e10024988790aa5c81b1",
+   "url": "https://github.com/mhammond/pywin32/archive/b228.tar.gz"
   }
  },
  "name": "pywin32",
@@ -436,7 +453,7 @@
   }
  },
  "pinning_version": "2020.10.08.20.29.16",
- "raw_meta_yaml": "{% set version = \"227\" %}\n\npackage:\n  name: pywin32\n  version: {{ version }}\n\nsource:\n  url: https://github.com/mhammond/pywin32/archive/b{{ version }}.tar.gz\n  sha256: 02b0de1abe9c52762ba3024a0e801df5b41f53eeea48b6561d4a9038ee36c010\n  patches:\n    - disable_exchange_modules.patch\n    - 0003-remove-PATH-pth-hack.patch\n\nbuild:\n  number: 0\n  script:\n    - \"{{ PYTHON }} setup.py -q install --record=record.txt\"\n    - copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %PREFIX%\\Lib\\site-packages\\win32\\\n    - copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %LIBRARY_BIN%\\\n  skip: True  # [not win or py27]\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n  host:\n    - python\n    - pip\n  run:\n    - python\n\nabout:\n  home: https://github.com/mhammond/pywin32\n  license: PSF\n  license_file: Pythonwin/License.txt\n  summary: Python extensions for Windows\n  description: |\n    A set of extension modules that provides access to many of the Windows API functions.\n  dev_url: https://github.com/mhammond/pywin32\n\nextra:\n  recipe-maintainers:\n    - mingwandroid\n    - nicoddemus\n    - carlodri\n",
+ "raw_meta_yaml": "{% set version = \"228\" %}\n\npackage:\n  name: pywin32\n  version: {{ version }}\n\nsource:\n  url: https://github.com/mhammond/pywin32/archive/b{{ version }}.tar.gz\n  sha256: 894cde85c251a3da6d341a711d7259ca11097bfd1b16e10024988790aa5c81b1\n  patches:\n    - disable_exchange_modules.patch\n    - 0003-remove-PATH-pth-hack.patch\n    # https://github.com/mhammond/pywin32/commit/9fbc2ed3c0d69aca2475975a599cc316016599d3\n    - fix-formatting.diff\n    # HACK: Avoid https://bugs.python.org/issue42009\n    - ensure-PythonService-mc-before-cpp.diff\n\nbuild:\n  number: 0\n  script:\n    - {{ PYTHON }} setup.py -q install --record=record.txt --skip-verstamp\n    - copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %PREFIX%\\Lib\\site-packages\\win32\\\n    - copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %LIBRARY_BIN%\\\n  skip: true  # [not win or py27]\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n  host:\n    - python\n    - pip\n  run:\n    - python\n\nabout:\n  home: https://github.com/mhammond/pywin32\n  license: PSF-2.0\n  license_file: Pythonwin/License.txt\n  summary: Python extensions for Windows\n  description: |\n    A set of extension modules that provides access to many of the Windows API functions.\n  dev_url: https://github.com/mhammond/pywin32\n\nextra:\n  recipe-maintainers:\n    - mingwandroid\n    - nicoddemus\n    - carlodri\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -500,26 +517,29 @@
   }
  },
  "url": "https://github.com/mhammond/pywin32/archive/b224.tar.gz",
- "version": "227",
+ "version": "228",
  "win_64_meta_yaml": {
   "about": {
    "description": "A set of extension modules that provides access to many of the Windows API functions.\n",
    "dev_url": "https://github.com/mhammond/pywin32",
    "home": "https://github.com/mhammond/pywin32",
-   "license": "PSF",
+   "license": "PSF-2.0",
    "license_file": "Pythonwin/License.txt",
    "summary": "Python extensions for Windows"
   },
   "build": {
    "number": "0",
    "script": [
-    " setup.py -q install --record=record.txt",
+    "setup.py -q install --record=record.txt --skip-verstamp",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %PREFIX%\\Lib\\site-packages\\win32\\",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %LIBRARY_BIN%\\",
-    " setup.py -q install --record=record.txt",
+    "setup.py -q install --record=record.txt --skip-verstamp",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %PREFIX%\\Lib\\site-packages\\win32\\",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %LIBRARY_BIN%\\",
-    " setup.py -q install --record=record.txt",
+    "setup.py -q install --record=record.txt --skip-verstamp",
+    "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %PREFIX%\\Lib\\site-packages\\win32\\",
+    "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %LIBRARY_BIN%\\",
+    "setup.py -q install --record=record.txt --skip-verstamp",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %PREFIX%\\Lib\\site-packages\\win32\\",
     "copy %PREFIX%\\Lib\\site-packages\\pywin32_system32\\*.dll %LIBRARY_BIN%\\"
    ]
@@ -534,15 +554,19 @@
     "carlodri",
     "mingwandroid",
     "nicoddemus",
+    "carlodri",
+    "mingwandroid",
+    "nicoddemus",
     "carlodri"
    ]
   },
   "package": {
    "name": "pywin32",
-   "version": "227"
+   "version": "228"
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
     "c_compiler_stub",
     "c_compiler_stub",
     "c_compiler_stub"
@@ -553,9 +577,12 @@
     "python",
     "pip",
     "python",
+    "pip",
+    "python",
     "pip"
    ],
    "run": [
+    "python",
     "python",
     "python",
     "python"
@@ -565,13 +592,23 @@
    "patches": [
     "disable_exchange_modules.patch",
     "0003-remove-PATH-pth-hack.patch",
+    "fix-formatting.diff",
+    "ensure-PythonService-mc-before-cpp.diff",
     "disable_exchange_modules.patch",
     "0003-remove-PATH-pth-hack.patch",
+    "fix-formatting.diff",
+    "ensure-PythonService-mc-before-cpp.diff",
     "disable_exchange_modules.patch",
-    "0003-remove-PATH-pth-hack.patch"
+    "0003-remove-PATH-pth-hack.patch",
+    "fix-formatting.diff",
+    "ensure-PythonService-mc-before-cpp.diff",
+    "disable_exchange_modules.patch",
+    "0003-remove-PATH-pth-hack.patch",
+    "fix-formatting.diff",
+    "ensure-PythonService-mc-before-cpp.diff"
    ],
-   "sha256": "02b0de1abe9c52762ba3024a0e801df5b41f53eeea48b6561d4a9038ee36c010",
-   "url": "https://github.com/mhammond/pywin32/archive/b227.tar.gz"
+   "sha256": "894cde85c251a3da6d341a711d7259ca11097bfd1b16e10024988790aa5c81b1",
+   "url": "https://github.com/mhammond/pywin32/archive/b228.tar.gz"
   }
  },
  "win_64_requirements": {
