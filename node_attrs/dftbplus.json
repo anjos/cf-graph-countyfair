@@ -1,4 +1,25 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/503282442.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "gcc930"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "conda-forge.yml": {
@@ -660,6 +681,7 @@
    ]
   }
  },
+ "pinning_version": "2020.10.13.19.09.25",
  "raw_meta_yaml": "{% set name = \"dftbplus\" %}\n{% set version = \"20.1\" %}\n{% set build = 1 %}\n{% set mpi = mpi or \"nompi\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/{{ name }}/{{ name }}/archive/{{ version }}.tar.gz\n    sha256: a155ca927c804234587c61c4938d154f31578c816b0ce20eaee3b5d7e39d91dc\n    patches:\n    - no-python.patch\n    - pkg-config.patch\n    - scalapackfx.patch\n  {% if mpi != \"nompi\" %}\n  - url: https://github.com/{{ name }}/mpifx/archive/{{ name }}-{{ version }}.tar.gz\n    sha256: 321808573bc7f7719a34516723bd9514ddb6db508a74b572a52794f7bc864f93\n    folder: \"external/mpifx/origin\"\n  - url: https://github.com/{{ name }}/scalapackfx/archive/{{ name }}-{{ version }}.tar.gz\n    sha256: 23797a2ac8c495a4bd9cc9445f14a8aca7eee0ce585f86b9e575b1e2a4b68cb6\n    folder: \"external/scalapackfx/origin\"\n    patches:\n    - scalapack-link.patch\n  {% endif %}\n\n{% if mpi == \"nompi\" %}\n{% set build = build + 100 %}\n{% endif %}\nbuild:\n  number: {{ build }}\n  skip: True  # [win]\n\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: \"{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\"\n\n  {% if mpi != \"nompi\" %}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}\n    - cmake\n    - ninja\n    - fypp\n  host:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux and not aarch64]\n  run:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config {{ name }} --exact-version {{ version }}\n    - test -f $PREFIX/bin/dftb+\n    - test -f $PREFIX/lib/libdftbplus.dylib  # [osx]\n    - test -f $PREFIX/lib/libdftbplus.so  # [linux]\n\nabout:\n  home: https://{{ name }}.org\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file:\n    - \"LICENSE\"\n    - \"COPYING\"\n    - \"COPYING.LESSER\"\n    - \"external/fsockets/LICENSE\"\n    - \"external/mudpack/LICENSE\"\n    - \"external/xmlf90/LICENSE\"\n    - \"external/mpifx/origin/LICENSE\"  # [mpi != \"nompi\"]\n    - \"external/scalapackfx/origin/LICENSE\"  # [mpi != \"nompi\"]\n  summary: \"DFTB+ general package for performing fast atomistic simulations\"\n  doc_url: https://{{ name }}-recipes.readthedocs.io\n  dev_url: https://github.com/{{ name }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - aradi\n    - awvwgk\n    - bhourahine\n",
  "req": {
   "__set__": true,
@@ -723,6 +745,7 @@
    ]
   }
  },
+ "smithy_version": "3.8.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {

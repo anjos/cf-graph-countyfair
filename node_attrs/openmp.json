@@ -219,7 +219,7 @@
    "summary": "The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -330,7 +330,7 @@
    "summary": "The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -441,7 +441,7 @@
    "summary": "The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -552,7 +552,7 @@
    "summary": "The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "skip": true
   },
   "extra": {
@@ -918,7 +918,7 @@
    "summary": "The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1027,7 +1027,7 @@
    "summary": "The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1132,7 +1132,7 @@
   "llvm-openmp"
  ],
  "pinning_version": "2020.10.11.15.10.22",
- "raw_meta_yaml": "{% set name = \"openmp\" %}\n{% set version = \"11.0.0\" %}\n{% set sha256 = \"2d704df8ca67b77d6d94ebf79621b0f773d5648963dd19e0f78efef4404b684c\" %}\n{% set openmp_ver = \"4.5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/openmp-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz\n  sha256: {{ sha256 }}\n  patches:\n    - darwin_arm64.patch\n\nbuild:\n  number: 0\n  skip: true  # [win and vc<14]\n\noutputs:\n  - name: llvm-openmp\n    script: build-llvm-openmp.sh  # [not win]\n    script: bld-llvm-openmp.bat  # [win]\n    build:\n      ignore_run_exports:\n        - libgcc-ng\n        - libstdcxx-ng\n        - _openmp_mutex\n      run_exports:\n        strong:\n          - {{ pin_subpackage(\"llvm-openmp\", max_pin=None) }}\n          - _openmp_mutex >={{ openmp_ver }}  # [linux]\n          - _openmp_mutex * *_llvm            # [linux]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n        - perl\n        - ninja  # [win]\n      host:\n        - llvmdev {{ version }}|{{ version }}.*\n      run_constrained:\n        - clangdev {{ version }}|{{ version }}.*\n        - llvmdev {{ version }}|{{ version }}.*\n        - openmp {{ version }}|{{ version }}.*\n    test:\n      requires:\n        - clangxx\n        - {{ compiler('cxx') }}\n      commands:\n        - if not exist %LIBRARY_BIN%\\\\libomp.dll exit 1   # [win]\n        - test -f $PREFIX/lib/libomp.so                   # [linux]\n        - test -f $PREFIX/lib/libomp.dylib                # [osx]\n        - if not exist %LIBRARY_LIB%\\\\libomp.lib exit 1   # [win]\n        - if not exist %LIBRARY_INC%\\\\omp.h exit 1        # [win]\n        - test -f $PREFIX/include/omp.h                   # [unix]\n        - $PREFIX/bin/clang -v -fopenmp -I$PREFIX/include -L$PREFIX/lib -Wl,-rpath,$PREFIX/lib omp_hello.c -o omp_hello  # [not win]\n        - '%LIBRARY_BIN%\\clang -v -fopenmp -I%LIBRARY_INC% -L%LIBRARY_LIB% omp_hello.c -o omp_hello.exe'   # [win]\n        - ./omp_hello            # [unix]\n        - '%cd%\\omp_hello.exe'   # [win]\n      files:\n        - omp_hello.c\n\nabout:\n  home: http://openmp.llvm.org/\n  license: NCSA\n  license_file: LICENSE.txt\n  summary: The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran.\n\nextra:\n  recipe-maintainers:\n    - inducer\n    - jakirkham\n    - yesimon\n    - isuruf\n    - beckermr\n    - katietz\n",
+ "raw_meta_yaml": "{% set name = \"openmp\" %}\n{% set version = \"11.0.0\" %}\n{% set sha256 = \"2d704df8ca67b77d6d94ebf79621b0f773d5648963dd19e0f78efef4404b684c\" %}\n{% set openmp_ver = \"4.5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/openmp-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz\n  sha256: {{ sha256 }}\n  patches:\n    - darwin_arm64.patch\n\nbuild:\n  number: 1\n  skip: true  # [win and vc<14]\n\noutputs:\n  - name: llvm-openmp\n    script: build-llvm-openmp.sh  # [not win]\n    script: bld-llvm-openmp.bat  # [win]\n    build:\n      ignore_run_exports:\n        - libgcc-ng\n        - libstdcxx-ng\n        - _openmp_mutex\n      run_exports:\n        strong:\n          - {{ pin_subpackage(\"llvm-openmp\", max_pin=None) }}\n          - _openmp_mutex >={{ openmp_ver }}  # [linux]\n          - _openmp_mutex * *_llvm            # [linux]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n        - perl\n        - ninja  # [win]\n      host:\n        - llvmdev {{ version }}|{{ version }}.*\n      run_constrained:\n        - clangdev {{ version }}|{{ version }}.*\n        - llvmdev {{ version }}|{{ version }}.*\n        - openmp {{ version }}|{{ version }}.*\n    test:\n      requires:\n        - clangxx\n        - {{ compiler('cxx') }}\n      commands:\n        - if not exist %LIBRARY_BIN%\\\\libomp.dll exit 1   # [win]\n        - test -f $PREFIX/lib/libomp.so                   # [linux]\n        - test -f $PREFIX/lib/libomp.dylib                # [osx]\n        - if not exist %LIBRARY_LIB%\\\\libomp.lib exit 1   # [win]\n        - if not exist %LIBRARY_INC%\\\\omp.h exit 1        # [win]\n        - test -f $PREFIX/include/omp.h                   # [unix]\n        - $PREFIX/bin/clang -v -fopenmp -I$PREFIX/include -L$PREFIX/lib -Wl,-rpath,$PREFIX/lib omp_hello.c -o omp_hello  # [not win]\n        - '%LIBRARY_BIN%\\clang -v -fopenmp -I%LIBRARY_INC% -L%LIBRARY_LIB% omp_hello.c -o omp_hello.exe'   # [win]\n        - ./omp_hello            # [unix]\n        - '%cd%\\omp_hello.exe'   # [win]\n      files:\n        - omp_hello.c\n\nabout:\n  home: http://openmp.llvm.org/\n  license: NCSA\n  license_file: LICENSE.txt\n  summary: The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran.\n\nextra:\n  recipe-maintainers:\n    - inducer\n    - jakirkham\n    - yesimon\n    - isuruf\n    - beckermr\n    - katietz\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1217,7 +1217,7 @@
    "summary": "The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "skip": true
   },
   "extra": {
