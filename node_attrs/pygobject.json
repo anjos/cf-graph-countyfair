@@ -85,6 +85,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/503087884.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 2,
+    "migrator_version": 0,
+    "name": "python39"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1012,7 +1031,7 @@
    ]
   }
  },
- "pinning_version": "2020.10.07.23.53.48",
+ "pinning_version": "2020.10.13.19.09.25",
  "raw_meta_yaml": "{% set name = \"pygobject\" %}\n{% set version = \"3.38.0\" %}\n{% set majmin = '.'.join(version.split('.', 2)[:2]) %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.xz\n  url: https://download.gnome.org/sources/{{ name }}/{{ majmin }}/{{ name }}-{{ version }}.tar.xz\n  sha256: 0372d1bb9122fc19f500a249b1f38c2bb67485000f5887497b4b205b3e7084d5\n  patches:\n    - macos-tests.patch\n    - meson-rpaths.patch  # [linux]\n\nbuild:\n  number: 0\n  skip: true  # [py<35]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - m2-msys2-runtime  # [win]\n    - ninja\n    - {{ posix }}patch\n    - {{ native }}pkg-config\n  host:\n    - glib\n    - gobject-introspection\n    - libffi\n    - meson  # undiagnosed issues with meson in build prefix that go away when in host\n    - pycairo\n    - python\n  run:\n    - glib\n    - gobject-introspection\n    - libiconv  # on Windows we seem to need the conda-forge version here (see #15)\n    - libffi\n    - pycairo\n    - python\n\ntest:\n  requires:\n    - pkg-config\n    - gtk3\n  imports:\n    - gi\n    - gi.repository.GLib\n    - gi.repository.Gtk\n  commands:\n    # verify that header gets installed and can be located through pkg-config\n    {% set pc = \"pygobject-3.0\" %}\n    {% set header = \"pygobject.h\" %}\n    - test -f $PREFIX/include/{{ pc }}/{{ header }}  # [unix]\n    - test -f `pkg-config --variable=pygobjectincludedir --dont-define-prefix {{ pc }}`/{{ header }}  # [unix]\n    - if not exist %LIBRARY_INC%\\\\{{ pc }}\\\\{{ header }} exit 1  # [win]\n    - for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=pygobjectincludedir --dont-define-prefix {{ pc }}`) do if not exist \"%%a/{{ header }}\" exit 1  # [win]\n\n    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]\n    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]\n\nabout:\n  home: https://pygobject.readthedocs.io\n  license: LGPL-2.1-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: 'Python bindings for GObject Introspection'\n\n  description: |\n    PyGObject is a Python package which provides bindings for GObject based libraries\n    such as GTK+, GStreamer, WebKitGTK+, GLib, GIO and many more.\n\n  doc_url: https://pygobject.readthedocs.io\n  dev_url: https://git.gnome.org/browse/pygobject\n\nextra:\n  recipe-maintainers:\n    - pkgw\n    - sebastian-luna-valero\n    - tschoonj\n",
  "req": {
   "__set__": true,
@@ -1078,7 +1097,7 @@
    ]
   }
  },
- "smithy_version": "3.8.0",
+ "smithy_version": "3.8.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
