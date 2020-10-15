@@ -262,7 +262,8 @@
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make"
+    "make",
+    "llvmdev 11.0.0"
    ],
    "host": [
     "clangdev 11.0.0",
@@ -272,7 +273,8 @@
   "source": {
    "patches": [
     "no_codesign.diff",
-    "macosx_10_9.patch"
+    "macosx_10_9.patch",
+    "cross.diff"
    ],
    "sha256": "374aff82ff573a449f9aabbd330a5d0a441181c535a3599996127378112db234",
    "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/compiler-rt-11.0.0.src.tar.xz"
@@ -284,6 +286,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
+    "llvmdev",
     "make",
     "python"
    ]
@@ -389,7 +392,8 @@
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make"
+    "make",
+    "llvmdev 11.0.0"
    ],
    "host": [
     "clangdev 11.0.0",
@@ -399,7 +403,8 @@
   "source": {
    "patches": [
     "no_codesign.diff",
-    "macosx_10_9.patch"
+    "macosx_10_9.patch",
+    "cross.diff"
    ],
    "sha256": "374aff82ff573a449f9aabbd330a5d0a441181c535a3599996127378112db234",
    "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/compiler-rt-11.0.0.src.tar.xz"
@@ -411,6 +416,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
+    "llvmdev",
     "make",
     "python"
    ]
@@ -516,7 +522,8 @@
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make"
+    "make",
+    "llvmdev 11.0.0"
    ],
    "host": [
     "clangdev 11.0.0",
@@ -526,7 +533,8 @@
   "source": {
    "patches": [
     "no_codesign.diff",
-    "macosx_10_9.patch"
+    "macosx_10_9.patch",
+    "cross.diff"
    ],
    "sha256": "374aff82ff573a449f9aabbd330a5d0a441181c535a3599996127378112db234",
    "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/compiler-rt-11.0.0.src.tar.xz"
@@ -538,6 +546,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
+    "llvmdev",
     "make",
     "python"
    ]
@@ -575,6 +584,10 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "SylvainCorlay",
+    "inducer",
+    "jakirkham",
+    "isuruf",
     "SylvainCorlay",
     "inducer",
     "jakirkham",
@@ -806,6 +819,59 @@
    },
    {
     "build": {
+     "ignore_run_exports": [
+      "vc",
+      "libcxx",
+      "libgcc-ng",
+      "libstdcxx-ng"
+     ],
+     "noarch": "generic"
+    },
+    "files": [
+     "lib/clang/11.0.0/lib"
+    ],
+    "name": "compiler-rt_osx-arm64",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub"
+     ],
+     "host": null,
+     "run": [
+      "libcxx >=11.0.0.a0",
+      "clang 11.0.0",
+      "clangxx 11.0.0"
+     ],
+     "run_constrained": [
+      "compiler-rt 11.0.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "echo 10.9",
+      "test -f $PREFIX/lib/clang/11.0.0/lib/darwin/libclang_rt.osx.a"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/clang/11.0.0/share",
+     "lib/clang/11.0.0/include"
+    ],
+    "name": "compiler-rt",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub"
+     ],
+     "host": null,
+     "run": [
+      "clang 11.0.0",
+      "clangxx 11.0.0",
+      "compiler-rt_osx-arm64 11.0.0"
+     ]
+    }
+   },
+   {
+    "build": {
      "detect_binary_files_with_prefix": false,
      "ignore_run_exports": [
       "vc",
@@ -868,21 +934,31 @@
     "cxx_compiler_stub",
     "python *",
     "make",
+    "llvmdev 11.0.0",
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
     "make",
+    "llvmdev 11.0.0",
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
     "make",
+    "llvmdev 11.0.0",
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
     "make",
+    "llvmdev 11.0.0",
     "cmake >=3.4.3",
     "cxx_compiler_stub",
-    "python *"
+    "python *",
+    "make",
+    "llvmdev 11.0.0",
+    "cmake >=3.4.3",
+    "cxx_compiler_stub",
+    "python *",
+    "llvmdev 11.0.0"
    ],
    "host": [
     "clangdev 11.0.0",
@@ -895,6 +971,9 @@
     "llvmdev 11.0.0",
     "libcxx",
     "clangdev 11.0.0",
+    "llvmdev 11.0.0",
+    "libcxx",
+    "clangdev 11.0.0",
     "llvmdev 11.0.0"
    ]
   },
@@ -902,14 +981,22 @@
    "patches": [
     "no_codesign.diff",
     "macosx_10_9.patch",
+    "cross.diff",
     "no_codesign.diff",
     "macosx_10_9.patch",
+    "cross.diff",
     "no_codesign.diff",
     "macosx_10_9.patch",
+    "cross.diff",
     "no_codesign.diff",
     "macosx_10_9.patch",
+    "cross.diff",
     "no_codesign.diff",
-    "macosx_10_9.patch"
+    "macosx_10_9.patch",
+    "cross.diff",
+    "no_codesign.diff",
+    "macosx_10_9.patch",
+    "cross.diff"
    ],
    "sha256": "374aff82ff573a449f9aabbd330a5d0a441181c535a3599996127378112db234",
    "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/compiler-rt-11.0.0.src.tar.xz"
@@ -1005,7 +1092,8 @@
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make"
+    "make",
+    "llvmdev 11.0.0"
    ],
    "host": [
     "clangdev 11.0.0",
@@ -1016,7 +1104,8 @@
   "source": {
    "patches": [
     "no_codesign.diff",
-    "macosx_10_9.patch"
+    "macosx_10_9.patch",
+    "cross.diff"
    ],
    "sha256": "374aff82ff573a449f9aabbd330a5d0a441181c535a3599996127378112db234",
    "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/compiler-rt-11.0.0.src.tar.xz"
@@ -1028,6 +1117,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
+    "llvmdev",
     "make",
     "python"
    ]
@@ -1054,16 +1144,152 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "builtins - low-level target-specific hooks required by code generation and other\n  runtime components\nsanitizer runtimes - AddressSanitizer, ThreadSanitizer, UndefinedBehaviorSanitizer,\n  MemorySanitizer, LeakSanitizer, DataFlowSanitizer\nprofile - library which is used to collect coverage information\nBlocksRuntime - target-independent implementation of Apple \"Blocks\" runtime\n  interfaces\n",
+   "home": "http://llvm.org/",
+   "license": "NCSA",
+   "license_file": "LICENSE.TXT",
+   "summary": "compiler-rt runtime libraries"
+  },
+  "build": {
+   "number": "0"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "SylvainCorlay",
+    "inducer",
+    "jakirkham",
+    "isuruf"
+   ]
+  },
+  "outputs": [
+   {
+    "build": {
+     "ignore_run_exports": [
+      "vc",
+      "libcxx",
+      "libgcc-ng",
+      "libstdcxx-ng"
+     ],
+     "noarch": "generic"
+    },
+    "files": [
+     "lib/clang/11.0.0/lib"
+    ],
+    "name": "compiler-rt_osx-arm64",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub"
+     ],
+     "host": null,
+     "run": [
+      "libcxx >=11.0.0.a0",
+      "clang 11.0.0",
+      "clangxx 11.0.0"
+     ],
+     "run_constrained": [
+      "compiler-rt 11.0.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "echo 10.9",
+      "test -f $PREFIX/lib/clang/11.0.0/lib/darwin/libclang_rt.osx.a"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/clang/11.0.0/share",
+     "lib/clang/11.0.0/include"
+    ],
+    "name": "compiler-rt",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub"
+     ],
+     "host": null,
+     "run": [
+      "clang 11.0.0",
+      "clangxx 11.0.0",
+      "compiler-rt_osx-arm64 11.0.0"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "compiler-rt-packages",
+   "version": "11.0.0"
+  },
+  "requirements": {
+   "build": [
+    "cmake >=3.4.3",
+    "cxx_compiler_stub",
+    "python *",
+    "make",
+    "llvmdev 11.0.0"
+   ],
+   "host": [
+    "clangdev 11.0.0",
+    "llvmdev 11.0.0",
+    "libcxx"
+   ]
+  },
+  "source": {
+   "patches": [
+    "no_codesign.diff",
+    "macosx_10_9.patch",
+    "cross.diff"
+   ],
+   "sha256": "374aff82ff573a449f9aabbd330a5d0a441181c535a3599996127378112db234",
+   "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/compiler-rt-11.0.0.src.tar.xz"
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cmake",
+    "cxx_compiler_stub",
+    "llvmdev",
+    "make",
+    "python"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "clangdev",
+    "libcxx",
+    "llvmdev"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "clang",
+    "clangxx",
+    "compiler-rt_osx-arm64",
+    "libcxx"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": [
   "compiler-rt",
   "compiler-rt_linux-64",
   "compiler-rt_linux-aarch64",
   "compiler-rt_linux-ppc64le",
   "compiler-rt_osx-64",
+  "compiler-rt_osx-arm64",
   "compiler-rt_win-64"
  ],
  "pinning_version": "2020.10.11.15.10.22",
- "raw_meta_yaml": "{% set version = \"11.0.0\" %}\n{% set prod_ver = '.'.join(version.split('.')[:3]) %}\n{% set build_number = 0 %}\n{% set sha256 = \"374aff82ff573a449f9aabbd330a5d0a441181c535a3599996127378112db234\" %}\n\npackage:\n  name: compiler-rt-packages\n  version: {{ version }}\n\nsource:\n  url: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/compiler-rt-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz\n  sha256: {{ sha256 }}\n  patches:\n    - no_codesign.diff\n    - macosx_10_9.patch\n\nbuild:\n  number: {{ build_number }}\n\nrequirements:\n  build:\n    - cmake >=3.4.3\n    - {{ compiler('cxx') }}\n    - python *\n    - make  # [unix]\n  host:\n    - clangdev {{ version }}\n    - llvmdev {{ version }}\n    - libcxx   # [osx]\n\noutputs:\n  - name: compiler-rt_{{ target_platform }}\n    build:\n      noarch: generic\n      ignore_run_exports:\n        - vc\n        - libcxx\n        - libgcc-ng\n        - libstdcxx-ng\n      detect_binary_files_with_prefix: false  # [win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n      run:\n        - libcxx >={{ cxx_compiler_version }}.a0  # [osx]\n        - clang {{ version }}\n        - clangxx {{ version }}\n      run_constrained:\n        - compiler-rt {{ version }}\n    files:\n      - lib/clang/{{ prod_ver }}/lib\n    test:\n      commands:\n        - echo {{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}\n        - test -f $PREFIX/lib/clang/{{ prod_ver }}/lib/darwin/libclang_rt.osx.a  # [osx]\n\n  - name: compiler-rt\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n      run:\n        - clang {{ version }}\n        - clangxx {{ version }}\n        - compiler-rt_{{ target_platform }} {{ version }}\n    files:\n      - lib/clang/{{ prod_ver }}/share             # [unix]\n      - lib/clang/{{ prod_ver }}/include           # [unix]\n      - Library/lib/clang/{{ version }}/share     # [win]\n      - Library/lib/clang/{{ version }}/include   # [win]\n      - Library/lib/clang/{{ version }}/lib       # [win]\n    #test:\n    #  files:\n    #    - test.c.in\n    #  commands:\n    #  {% set NEW_TARGET=\"10.\" ~ (((MACOSX_DEPLOYMENT_TARGET|default(\"10.13\")).split(\".\")[1])|int + 1) %}\n    #    - sed \"s/@MACOSX_DEPLOYMENT_TARGET@/{{ NEW_TARGET }}/g\" test.c.in > test.c\n    #    - clang -mmacosx-version-min={{ MACOSX_DEPLOYMENT_TARGET }} test.c  # [osx]\n    #    - test -f $PREFIX/lib/clang/{{ prod_ver }}/include/sanitizer/asan_interface.h  # [unix]\n\nabout:\n  home: http://llvm.org/\n  license: NCSA\n  license_file: LICENSE.TXT\n  summary: compiler-rt runtime libraries\n  description: |\n    builtins - low-level target-specific hooks required by code generation and other\n      runtime components\n    sanitizer runtimes - AddressSanitizer, ThreadSanitizer, UndefinedBehaviorSanitizer,\n      MemorySanitizer, LeakSanitizer, DataFlowSanitizer\n    profile - library which is used to collect coverage information\n    BlocksRuntime - target-independent implementation of Apple \"Blocks\" runtime\n      interfaces\n\nextra:\n  recipe-maintainers:\n    - SylvainCorlay\n    - inducer\n    - jakirkham\n    - isuruf\n",
+ "raw_meta_yaml": "{% set version = \"11.0.0\" %}\n{% set prod_ver = '.'.join(version.split('.')[:3]) %}\n{% set build_number = 0 %}\n{% set sha256 = \"374aff82ff573a449f9aabbd330a5d0a441181c535a3599996127378112db234\" %}\n\npackage:\n  name: compiler-rt-packages\n  version: {{ version }}\n\nsource:\n  url: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/compiler-rt-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz\n  sha256: {{ sha256 }}\n  patches:\n    - no_codesign.diff\n    - macosx_10_9.patch\n    - cross.diff\n\nbuild:\n  number: {{ build_number }}\n\nrequirements:\n  build:\n    - cmake >=3.4.3\n    - {{ compiler('cxx') }}\n    - python *\n    - make  # [unix]\n    - llvmdev {{ version }}  # [build_platform != target_platform]\n  host:\n    - clangdev {{ version }}\n    - llvmdev {{ version }}\n    - libcxx   # [osx]\n\noutputs:\n  - name: compiler-rt_{{ target_platform }}\n    build:\n      noarch: generic\n      ignore_run_exports:\n        - vc\n        - libcxx\n        - libgcc-ng\n        - libstdcxx-ng\n      detect_binary_files_with_prefix: false  # [win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n      run:\n        - libcxx >={{ cxx_compiler_version }}.a0  # [osx]\n        - clang {{ version }}\n        - clangxx {{ version }}\n      run_constrained:\n        - compiler-rt {{ version }}\n    files:\n      - lib/clang/{{ prod_ver }}/lib\n    test:\n      commands:\n        - echo {{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}\n        - test -f $PREFIX/lib/clang/{{ prod_ver }}/lib/darwin/libclang_rt.osx.a  # [osx]\n\n  - name: compiler-rt\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n      run:\n        - clang {{ version }}\n        - clangxx {{ version }}\n        - compiler-rt_{{ target_platform }} {{ version }}\n    files:\n      - lib/clang/{{ prod_ver }}/share             # [unix]\n      - lib/clang/{{ prod_ver }}/include           # [unix]\n      - Library/lib/clang/{{ version }}/share     # [win]\n      - Library/lib/clang/{{ version }}/include   # [win]\n      - Library/lib/clang/{{ version }}/lib       # [win]\n    #test:\n    #  files:\n    #    - test.c.in\n    #  commands:\n    #  {% set NEW_TARGET=\"10.\" ~ (((MACOSX_DEPLOYMENT_TARGET|default(\"10.13\")).split(\".\")[1])|int + 1) %}\n    #    - sed \"s/@MACOSX_DEPLOYMENT_TARGET@/{{ NEW_TARGET }}/g\" test.c.in > test.c\n    #    - clang -mmacosx-version-min={{ MACOSX_DEPLOYMENT_TARGET }} test.c  # [osx]\n    #    - test -f $PREFIX/lib/clang/{{ prod_ver }}/include/sanitizer/asan_interface.h  # [unix]\n\nabout:\n  home: http://llvm.org/\n  license: NCSA\n  license_file: LICENSE.TXT\n  summary: compiler-rt runtime libraries\n  description: |\n    builtins - low-level target-specific hooks required by code generation and other\n      runtime components\n    sanitizer runtimes - AddressSanitizer, ThreadSanitizer, UndefinedBehaviorSanitizer,\n      MemorySanitizer, LeakSanitizer, DataFlowSanitizer\n    profile - library which is used to collect coverage information\n    BlocksRuntime - target-independent implementation of Apple \"Blocks\" runtime\n      interfaces\n\nextra:\n  recipe-maintainers:\n    - SylvainCorlay\n    - inducer\n    - jakirkham\n    - isuruf\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1075,6 +1301,7 @@
    "compiler-rt_linux-aarch64",
    "compiler-rt_linux-ppc64le",
    "compiler-rt_osx-64",
+   "compiler-rt_osx-arm64",
    "compiler-rt_win-64",
    "cxx_compiler_stub",
    "libcxx",
@@ -1089,6 +1316,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
+    "llvmdev",
     "make",
     "python"
    ]
@@ -1111,6 +1339,7 @@
     "compiler-rt_linux-aarch64",
     "compiler-rt_linux-ppc64le",
     "compiler-rt_osx-64",
+    "compiler-rt_osx-arm64",
     "compiler-rt_win-64",
     "cxx_compiler_stub",
     "libcxx"
@@ -1129,6 +1358,7 @@
    "elements": [
     "cmake >=3.4.3",
     "cxx_compiler_stub",
+    "llvmdev 11.0.0",
     "make",
     "python *"
    ]
@@ -1150,6 +1380,7 @@
     "compiler-rt_linux-aarch64 11.0.0",
     "compiler-rt_linux-ppc64le 11.0.0",
     "compiler-rt_osx-64 11.0.0",
+    "compiler-rt_osx-arm64 11.0.0",
     "compiler-rt_win-64 11.0.0",
     "libcxx >=11.0.0.a0"
    ]
@@ -1243,7 +1474,8 @@
    "build": [
     "cmake >=3.4.3",
     "cxx_compiler_stub",
-    "python *"
+    "python *",
+    "llvmdev 11.0.0"
    ],
    "host": [
     "clangdev 11.0.0",
@@ -1253,7 +1485,8 @@
   "source": {
    "patches": [
     "no_codesign.diff",
-    "macosx_10_9.patch"
+    "macosx_10_9.patch",
+    "cross.diff"
    ],
    "sha256": "374aff82ff573a449f9aabbd330a5d0a441181c535a3599996127378112db234",
    "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/compiler-rt-11.0.0.src.tar.xz"
@@ -1265,6 +1498,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
+    "llvmdev",
     "python"
    ]
   },
