@@ -129,7 +129,7 @@
    "summary": "Cross-platform solution to record, convert and stream audio and video."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "ffmpeg"
    ]
@@ -139,7 +139,6 @@
     "danielballan",
     "jakirkham",
     "183amir",
-    "caspervdw",
     "patricksnape",
     "ocefpaf",
     "sdvillal",
@@ -260,7 +259,7 @@
    "summary": "Cross-platform solution to record, convert and stream audio and video."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "ffmpeg"
    ]
@@ -270,7 +269,6 @@
     "danielballan",
     "jakirkham",
     "183amir",
-    "caspervdw",
     "patricksnape",
     "ocefpaf",
     "sdvillal",
@@ -391,7 +389,7 @@
    "summary": "Cross-platform solution to record, convert and stream audio and video."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "ffmpeg"
    ]
@@ -401,7 +399,6 @@
     "danielballan",
     "jakirkham",
     "183amir",
-    "caspervdw",
     "patricksnape",
     "ocefpaf",
     "sdvillal",
@@ -522,7 +519,7 @@
    "summary": "Cross-platform solution to record, convert and stream audio and video."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "ffmpeg",
     "ffmpeg",
@@ -536,7 +533,6 @@
     "danielballan",
     "jakirkham",
     "183amir",
-    "caspervdw",
     "patricksnape",
     "ocefpaf",
     "sdvillal",
@@ -544,7 +540,6 @@
     "danielballan",
     "jakirkham",
     "183amir",
-    "caspervdw",
     "patricksnape",
     "ocefpaf",
     "sdvillal",
@@ -552,7 +547,6 @@
     "danielballan",
     "jakirkham",
     "183amir",
-    "caspervdw",
     "patricksnape",
     "ocefpaf",
     "sdvillal",
@@ -560,7 +554,6 @@
     "danielballan",
     "jakirkham",
     "183amir",
-    "caspervdw",
     "patricksnape",
     "ocefpaf",
     "sdvillal",
@@ -568,7 +561,6 @@
     "danielballan",
     "jakirkham",
     "183amir",
-    "caspervdw",
     "patricksnape",
     "ocefpaf",
     "sdvillal",
@@ -736,7 +728,7 @@
    "summary": "Cross-platform solution to record, convert and stream audio and video."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "ffmpeg"
    ]
@@ -746,7 +738,6 @@
     "danielballan",
     "jakirkham",
     "183amir",
-    "caspervdw",
     "patricksnape",
     "ocefpaf",
     "sdvillal",
@@ -861,7 +852,7 @@
   }
  },
  "pinning_version": "2019.06.17",
- "raw_meta_yaml": "{% set version = \"4.3.1\" %} # semver: (x.y.z)\n{% set x,y,z = version.split('.') %}\n{% set version_ffmpeg_style = x ~ '.' ~ y if z == \"0\" else version %}\n\npackage:\n  name: ffmpeg\n  version: {{ version }}\n\nsource:\n  - url: https://ffmpeg.org/releases/ffmpeg-{{ version_ffmpeg_style }}.tar.gz  # [not win]\n    sha256: 45035f15d6f192772de2309c846e1d60472694f479679354a39c699719e53772  # [not win]\n\n  - url: https://ffmpeg.zeranoe.com/builds/win64/shared/ffmpeg-{{ version_ffmpeg_style }}-win64-shared.zip  # [win]\n    sha256: dd29b7f92f48dead4dd940492c7509138c0f99db445076d0a597007298a79940  # [win]\n\n  - url: https://ffmpeg.zeranoe.com/builds/win64/dev/ffmpeg-{{ version_ffmpeg_style }}-win64-dev.zip  # [win]\n    sha256: 2e8038242cf8e1bd095c2978f196ff0462b122cc6ef7e74626a6af15459d8b81  # [win]\n\nbuild:\n  number: 0\n  run_exports:\n  # seems to be minor version compatibility\n  # https://abi-laboratory.pro/tracker/timeline/ffmpeg/\n    - {{ pin_subpackage('ffmpeg', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n    - {{ compiler(\"cxx\") }}\n    - pkg-config  # [not win]\n    - libtool  # [not win]\n    - nasm  # [not win]\n    - lame  # [not win]\n    - make  # [not win]\n  host:\n    - bzip2  # [not win]\n    - freetype  # [not win]\n    - gnutls  # [not win]\n    - libiconv  # [not win]\n    - x264  # [not win]\n    - zlib  # [not win]\n    - openh264  # [not win]\n    - lame  # [not win]\n    - gmp  # [unix]\n  run:\n    - bzip2  # [not win]\n    - freetype  # [not win]\n    - gnutls  # [not win]\n    - openh264  # [not win]\n    - lame  # [not win]\n    - gmp  # [unix]\n\ntest:\n  commands:\n    - ffmpeg --help\n    - ffmpeg -loglevel panic -protocols | grep \"https\"  # [not win]\n    - ffmpeg -loglevel panic -codecs | grep \"libmp3lame\"  # [not win]\n    - ffmpeg -loglevel panic -codecs | grep \"DEVI.S zlib\"  # [unix]\n    - ffmpeg -loglevel panic -codecs | grep \"DEV.LS h264\"  # [unix]\n    - ffmpeg -loglevel panic -codecs | grep \"libx264\"  # [unix]\n    - ffmpeg -loglevel panic -codecs | grep \"libopenh264\"  # [unix]\n    # Verify dynamic libraries on all systems\n    {% set ffmpeg_libs = [\n        \"avcodec\",\n        \"avdevice\",\n        \"swresample\",\n        \"postproc\",\n        \"avfilter\",\n        \"swresample\",\n        \"avcodec\",\n        \"avformat\",\n        \"swscale\",\n        \"avresample\"\n    ] %}\n    {% for each_ffmpeg_lib in ffmpeg_libs %}\n    - test -f $PREFIX/lib/lib{{ each_ffmpeg_lib }}.dylib  # [osx]\n    - test -f $PREFIX/lib/lib{{ each_ffmpeg_lib }}.so     # [linux]\n    {% endfor %}\n    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]\n    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]\n\nabout:\n  home: http://www.ffmpeg.org/\n  license: GPL-3.0-or-later\n  license_file: COPYING.GPLv3  # [unix]\n  summary: Cross-platform solution to record, convert and stream audio and video.\n\nextra:\n  recipe-maintainers:\n    - danielballan\n    - jakirkham\n    - 183amir\n    - caspervdw\n    - patricksnape\n    - ocefpaf\n    - sdvillal\n    - carlodri\n",
+ "raw_meta_yaml": "{% set version = \"4.3.1\" %} # semver: (x.y.z)\n{% set x,y,z = version.split('.') %}\n{% set version_ffmpeg_style = x ~ '.' ~ y if z == \"0\" else version %}\n\npackage:\n  name: ffmpeg\n  version: {{ version }}\n\nsource:\n  - url: https://ffmpeg.org/releases/ffmpeg-{{ version_ffmpeg_style }}.tar.gz  # [not win]\n    sha256: 45035f15d6f192772de2309c846e1d60472694f479679354a39c699719e53772  # [not win]\n\n  - url: https://ffmpeg.zeranoe.com/builds/win64/shared/ffmpeg-{{ version_ffmpeg_style }}-win64-shared.zip  # [win]\n    sha256: dd29b7f92f48dead4dd940492c7509138c0f99db445076d0a597007298a79940  # [win]\n\n  - url: https://ffmpeg.zeranoe.com/builds/win64/dev/ffmpeg-{{ version_ffmpeg_style }}-win64-dev.zip  # [win]\n    sha256: 2e8038242cf8e1bd095c2978f196ff0462b122cc6ef7e74626a6af15459d8b81  # [win]\n\nbuild:\n  number: 1\n  run_exports:\n  # seems to be minor version compatibility\n  # https://abi-laboratory.pro/tracker/timeline/ffmpeg/\n    - {{ pin_subpackage('ffmpeg', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n    - {{ compiler(\"cxx\") }}\n    - pkg-config  # [not win]\n    - libtool  # [not win]\n    - nasm  # [not win]\n    - lame  # [not win]\n    - make  # [not win]\n  host:\n    - bzip2  # [not win]\n    - freetype  # [not win]\n    - gnutls  # [not win]\n    - libiconv  # [not win]\n    - x264  # [not win]\n    - zlib  # [not win]\n    - openh264  # [not win]\n    - lame  # [not win]\n    - gmp  # [unix]\n  run:\n    - bzip2  # [not win]\n    - freetype  # [not win]\n    - gnutls  # [not win]\n    - openh264  # [not win]\n    - lame  # [not win]\n    - gmp  # [unix]\n\ntest:\n  commands:\n    - ffmpeg --help\n    - ffmpeg -loglevel panic -protocols | grep \"https\"  # [not win]\n    - ffmpeg -loglevel panic -codecs | grep \"libmp3lame\"  # [not win]\n    - ffmpeg -loglevel panic -codecs | grep \"DEVI.S zlib\"  # [unix]\n    - ffmpeg -loglevel panic -codecs | grep \"DEV.LS h264\"  # [unix]\n    - ffmpeg -loglevel panic -codecs | grep \"libx264\"  # [unix]\n    - ffmpeg -loglevel panic -codecs | grep \"libopenh264\"  # [unix]\n    # Verify dynamic libraries on all systems\n    {% set ffmpeg_libs = [\n        \"avcodec\",\n        \"avdevice\",\n        \"swresample\",\n        \"postproc\",\n        \"avfilter\",\n        \"swresample\",\n        \"avcodec\",\n        \"avformat\",\n        \"swscale\",\n        \"avresample\"\n    ] %}\n    {% for each_ffmpeg_lib in ffmpeg_libs %}\n    - test -f $PREFIX/lib/lib{{ each_ffmpeg_lib }}.dylib  # [osx]\n    - test -f $PREFIX/lib/lib{{ each_ffmpeg_lib }}.so     # [linux]\n    {% endfor %}\n    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]\n    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]\n\nabout:\n  home: http://www.ffmpeg.org/\n  license: GPL-3.0-or-later\n  license_file: COPYING.GPLv3  # [unix]\n  summary: Cross-platform solution to record, convert and stream audio and video.\n\nextra:\n  recipe-maintainers:\n    - danielballan\n    - jakirkham\n    - 183amir\n    - patricksnape\n    - ocefpaf\n    - sdvillal\n    - carlodri\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -943,7 +934,7 @@
    "summary": "Cross-platform solution to record, convert and stream audio and video."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "ffmpeg"
    ]
@@ -953,7 +944,6 @@
     "danielballan",
     "jakirkham",
     "183amir",
-    "caspervdw",
     "patricksnape",
     "ocefpaf",
     "sdvillal",
