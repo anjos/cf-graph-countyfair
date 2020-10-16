@@ -56,10 +56,29 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/504605229.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "boost_cpp1740"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
- "bad": "Upstream: unknown source or URL not in YAML",
+ "bad": false,
  "conda-forge.yml": {
   "bot": {
    "automerge": true
@@ -613,10 +632,10 @@
    "elements": []
   }
  },
- "pinning_version": "2020.08.27.12.52.30",
+ "pinning_version": "2020.10.16.02.36.37",
  "pre_pr_migrator_status": {
   "boost_cpp1740": "not solvable: ['win_64_boost_cpp1.74.0python3.6.____cpython: Encountered problems while solving.\\nProblem: package gnuradio-core-3.8.2.0-py38he7dd8cb_2 requires python_abi 3.8.* *_cp38, but none of the providers can be installed\\n', 'win_64_boost_cpp1.74.0python3.7.____cpython: Encountered problems while solving.\\nProblem: package gnuradio-core-3.8.2.0-py38he7dd8cb_2 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n']",
-  "python39": "not solvable: ['linux_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package gnuradio-core-3.8.2.0-py36he775e64_2 requires boost-cpp >=1.74.0,<1.74.1.0a0, but none of the providers can be installed\\n', 'osx_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package gnuradio-core-3.8.2.0-py36h3774890_2 requires boost-cpp >=1.74.0,<1.74.1.0a0, but none of the providers can be installed\\n', 'win_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package gnuradio-core-3.8.2.0-py38he7dd8cb_2 requires boost-cpp >=1.74.0,<1.74.1.0a0, but none of the providers can be installed\\n']"
+  "python39": "not solvable: ['linux_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package gnuradio-core-3.8.2.0-py36he775e64_2 requires boost-cpp >=1.74.0,<1.74.1.0a0, but none of the providers can be installed\\n', 'osx_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package gnuradio-core-3.8.2.0-py36h3774890_2 requires boost-cpp >=1.74.0,<1.74.1.0a0, but none of the providers can be installed\\n', 'win_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package gnuradio-core-3.8.2.0-py36h77275a1_2 requires boost-cpp >=1.74.0,<1.74.1.0a0, but none of the providers can be installed\\n']"
  },
  "raw_meta_yaml": "{% set name = \"gnuradio-soapy\" %}\n{% set version = \"2.1.3\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://gitlab.com/librespacefoundation/gr-soapy/-/archive/v{{ version }}/gr-soapy-v{{ version }}.tar.gz\n  sha256: 176dde371dffb209c0e54d171f154a5252c4012bac67233ba1462784cb7d9f6d\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage('gnuradio-soapy', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make  # [not win]\n    - ninja  # [win]\n    - pkg-config  # [not win]\n  host:\n    - boost-cpp\n    - gnuradio-core\n    - pip  # [win]\n    - python\n    - soapysdr\n    - swig\n    # pulled in by gnuradio-core and linked against, so include explicitly\n    - log4cpp\n  run:\n    - boost-cpp\n    - python\n    # pulled in by gnuradio-core and linked against, so include explicitly\n    - log4cpp\n\ntest:\n  commands:\n    # verify that headers get installed\n    {% set headers = [\"api\", \"source\", \"sink\"] %}\n    {% for header in headers %}\n    - test -f $PREFIX/include/soapy/{{ header }}.h  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\soapy\\\\{{ header }}.h exit 1  # [win]\n    {% endfor %}\n\n    # verify that libraries get installed\n    - test -f $PREFIX/lib/lib{{ name }}${SHLIB_EXT}  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ name }}.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ name }}.lib exit 1  # [win]\n\n    # verify that GRC blocks get installed\n    {% set blocks = [\"soapy_sink\", \"soapy_source\"] %}\n    {% for block in blocks %}\n    - test -f $PREFIX/share/gnuradio/grc/blocks/{{ block }}.block.yml  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\share\\\\gnuradio\\\\grc\\\\blocks\\\\{{ block }}.block.yml exit 1  # [win]\n    {% endfor %}\n  imports:\n    - soapy\n\nabout:\n  home: https://gitlab.com/librespacefoundation/gr-soapy\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: 'A GNU Radio wrapper for the SoapySDR library'\n  description: |\n    This module provides GNU Radio source and sink blocks for a variety of SDR devices using SoapySDR, a generalized C/C++ library which provides abstraction in interfacing with different SDR devices and vendors.\n  dev_url: https://gitlab.com/librespacefoundation/gr-soapy\n\nextra:\n  recipe-maintainers:\n    - ryanvolz\n",
  "req": {
@@ -678,7 +697,7 @@
    "elements": []
   }
  },
- "smithy_version": "No azure token. Create a token and\nput it in ~/.conda-smithy/azure.token\n3.7.10",
+ "smithy_version": "3.8.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
