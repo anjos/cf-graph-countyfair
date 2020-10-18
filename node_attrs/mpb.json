@@ -187,6 +187,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/505372461.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "gcc930"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -873,7 +892,7 @@
    "elements": []
   }
  },
- "pinning_version": "2020.10.06.07.41.18",
+ "pinning_version": "2020.10.16.18.51.08",
  "raw_meta_yaml": "{% set name = \"mpb\" %}\n{% set version = \"1.11.0\" %}\n{% set sha256 = \"5852a0a40cd035ffcbab9cfdab759be731bfe1d9c8cc491120acbac26731d4a0\" %}\n{% set buildnumber = 12 %}\n\n# recipe-lint fails if mpi is undefined\n{% set mpi = mpi or 'nompi' %}\n{% if mpi == \"nompi\" %}\n# prioritize nompi via build number\n{% set buildnumber = buildnumber + 100 %}\n{% endif %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/NanoComp/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: {{ buildnumber }}\n  skip: true  # [win]\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  # add build string so packages can depend on\n  # mpi or nompi variants\n  # dependencies:\n  # `mpb * mpi_mpich_*` for mpich\n  # `mpb * mpi_*` for any mpi\n  # `mpb * nompi_*` for no mpi\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ buildnumber }}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n\nrequirements:\n  build:\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - make\n\n  host:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - libblas\n    - libcblas\n    - liblapack\n    - fftw\n    # We need to list hdf5 twice to get version pinning from\n    # conda_build_config.yaml, (which falls back to the one from conda-forge,)\n    # and build pinning from {{ mpi_prefix }}\n    - hdf5\n    - hdf5 * {{ mpi_prefix }}_*\n\n  run:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - fftw\n    - hdf5\n    - zlib\n    - _openmp_mutex  # [linux]\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libmpb${SHLIB_EXT}\n\nabout:\n  home: https://github.com/NanoComp/mpb\n  license: GPL-2.0-or-later\n  license_file: COPYING\n  summary: MIT Photonic-Bands - computation of photonic band structures in periodic media\n  doc_url: https://mpb.readthedocs.io\n  dev_url: https://github.com/NanoComp/mpb\n\nextra:\n  recipe-maintainers:\n    - ChristopherHogan\n    - oskooi\n    - RobinD42\n",
  "req": {
   "__set__": true,
@@ -935,7 +954,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.8.0",
+ "smithy_version": "3.8.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
