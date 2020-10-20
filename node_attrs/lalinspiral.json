@@ -122,30 +122,29 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/506492075.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 2,
+    "migrator_version": 0,
+    "name": "python39"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
- "bad": {
-  "exception": "Variant configuration errors in ./feedstocks/lalinspiral-feedstock/.ci_support/linux_64_.yaml:\n  zip fields in zip_key group ('cdt_name', 'docker_image') are not all the same length",
-  "traceback": [
-   "Traceback (most recent call last):",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 937, in main",
-   "    hash_type=attrs.get(\"hash_type\", \"sha256\"),",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 249, in run",
-   "    solvable, errors, _ = is_recipe_solvable(feedstock_dir)",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/mamba_solver.py\", line 433, in is_recipe_solvable",
-   "    additional_channels=additional_channels,",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/mamba_solver.py\", line 516, in _is_recipe_solvable_on_platform",
-   "    cbc, _ = conda_build.variants.get_package_combined_spec(recipe_dir, config=config)",
-   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/site-packages/conda_build/variants.py\", line 523, in get_package_combined_spec",
-   "    validate_spec(f, spec)",
-   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/site-packages/conda_build/variants.py\", line 171, in validate_spec",
-   "    raise ValueError(\"Variant configuration errors in {}:\\n{}\".format(src, \"\\n\".join(errors)))",
-   "ValueError: Variant configuration errors in ./feedstocks/lalinspiral-feedstock/.ci_support/linux_64_.yaml:",
-   "  zip fields in zip_key group ('cdt_name', 'docker_image') are not all the same length",
-   ""
-  ]
- },
+ "bad": false,
  "conda-forge.yml": {},
  "feedstock_name": "lalinspiral",
  "hash_type": "sha256",
@@ -785,7 +784,7 @@
   "lalinspiral",
   "python-lalinspiral"
  ],
- "pinning_version": "2020.06.24.16.31.11",
+ "pinning_version": "2020.10.19.14.20.14",
  "raw_meta_yaml": "{% set name = \"lalinspiral\" %}\n{% set version = \"1.10.1\" %}\n{% set sha256 = \"c6391d829e96d6cf5f21eb278d192f95a6ddd09150dd77fb659aadd0afe0a088\" %}\n\n{% set lal_version = \"7.0.0\" %}\n{% set lalburst_version = \"1.5.3\" %}\n{% set lalframe_version = \"1.5.0\" %}\n{% set lalmetaio_version = \"1.6.0\" %}\n{% set lalsimulation_version = \"2.1.0\" %}\n{% set swig_version = \"3.0.9\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz\n  sha256: {{ sha256 }}\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: 0\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - make\n    - pkg-config >=0.18.0\n    - swig >={{ swig_version }}\n  host:\n    - gsl\n    - lal >={{ lal_version }}\n    - lalframe >={{ lalframe_version }}\n    - lalmetaio >={{ lalmetaio_version }}\n    - lalsimulation >={{ lalsimulation_version }}\n    - metaio\n  run:\n    - gsl\n    - lal >={{ lal_version }}\n    - lalframe >={{ lalframe_version }}\n    - lalmetaio >={{ lalmetaio_version }}\n    - lalsimulation >={{ lalsimulation_version }}\n    - metaio\n\ntest:\n  requires:\n    - pkg-config  # [unix]\n  commands:\n    - lalinspiral_version --verbose\n    - test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"  # [unix]\n\noutputs:\n  - name: lalinspiral\n    build:\n      run_exports:\n        - {{ pin_subpackage(\"lalinspiral\", max_pin=\"x.x\") }}\n\n  - name: python-lalinspiral\n    build:\n      ignore_run_exports:\n        # we don't actually use lalburst, but need it to ./configure\n        # unfortunately, swig overlinks liblalburst into the python\n        # bindings on linux\n        - lalburst  # [not linux]\n        # nothing actually links against libpython\n        - python\n    script: install-python.sh\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - make\n        - pkg-config >=0.18.0\n        - swig >={{ swig_version }}\n      host:\n        - {{ pin_subpackage('lalinspiral', exact=True) }}\n        - lalburst >={{ lalburst_version }}\n        - numpy\n        - python\n      run:\n        - gsl  # [linux]\n        - lal >={{ lal_version }}\n        - {{ pin_subpackage('lalinspiral', exact=True) }}\n        - lalburst  # [linux]\n        - lalframe  # [linux]\n        - lalmetaio  # [linux]\n        - lalsimulation  # [linux]\n        - lscsoft-glue\n        - metaio  # [linux]\n        - {{ pin_compatible('numpy') }}\n        - python\n        - python-lal >={{ lal_version }}\n        - python-lalburst >={{ lalburst_version }}\n        - python-lalframe >={{ lalframe_version }}\n        - python-lalmetaio >={{ lalmetaio_version }}\n        - python-lalsimulation >={{ lalsimulation_version }}\n        - python-ligo-lw\n    test:\n      imports:\n        - lalinspiral\n        - lalinspiral.inspinjfind\n        - lalinspiral.sbank\n        - lalinspiral.thinca\n      requires:\n        - pytest >=4.0.0a0\n      source_files:\n        - test/python\n      commands:\n        - pushd test/python; python -m pytest -v; popd\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Inspiral Library\n      description: |\n        The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n        This package contains the python bindings.\n\nabout:\n  home: https://wiki.ligo.org/Computing/LALSuite\n  doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/\n  dev_url: https://git.ligo.org/lscsoft/lalsuite/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LSC Algorithm Inspiral Library\n  description: |\n    The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n    This package contains the shared-object libraries needed to run\n    applications that use the LAL Inspiral library.  If you want to install\n    the Python bindings, please install the associated python-lalinspiral\n    package.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - skymoo\n",
  "req": {
   "__set__": true,
@@ -870,7 +869,7 @@
    ]
   }
  },
- "smithy_version": "No azure token. Create a token and\nput it in ~/.conda-smithy/azure.token\n3.7.3\n",
+ "smithy_version": "3.8.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
