@@ -105,9 +105,9 @@
   "exception": "MD5 mismatch: '9f3f63422e0efa772b8bf5a774061170' != '6f6e17de3413c2232a96f40df63afb42'",
   "traceback": [
    "Traceback (most recent call last):",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 937, in main",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 943, in main",
    "    hash_type=attrs.get(\"hash_type\", \"sha256\"),",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 192, in run",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 193, in run",
    "    migrator.run_post_piggyback_migrations(recipe_dir, feedstock_ctx.attrs, **kwargs)",
    "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/core.py\", line 236, in run_post_piggyback_migrations",
    "    mini_migrator.migrate(recipe_dir, attrs, **kwargs)",
@@ -348,6 +348,9 @@
   }
  },
  "pinning_version": "2019.11.01",
+ "pre_pr_migrator_status": {
+  "python39": "bot error: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 943, in main\n    hash_type=attrs.get(\"hash_type\", \"sha256\"),\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 193, in run\n    migrator.run_post_piggyback_migrations(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/core.py\", line 236, in run_post_piggyback_migrations\n    mini_migrator.migrate(recipe_dir, attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/license.py\", line 262, in migrate\n    cb_work_dir = _get_source_code(recipe_dir)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 902, in _get_source_code\n    return provide(md)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/site-packages/conda_build/source.py\", line 851, in provide\n    timeout=metadata.config.timeout, locking=metadata.config.locking)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/site-packages/conda_build/source.py\", line 142, in unpack\n    src_path, unhashed_fn = download_to_cache(cache_folder, recipe_path, source_dict, verbose)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/site-packages/conda_build/source.py\", line 108, in download_to_cache\n    (tp.upper(), hashed, expected_hash))\nRuntimeError: MD5 mismatch: '9f3f63422e0efa772b8bf5a774061170' != '6f6e17de3413c2232a96f40df63afb42'\n"
+ },
  "raw_meta_yaml": "{% set version = \"0.3.5\" %}\n\npackage:\n  name: u3d\n  version: {{ version }}\n\nsource:\n  fn: u3d-v{{ version }}.tar.gz\n  url: https://github.com/ClinicalGraphics/u3d/archive/{{ version }}.tar.gz\n  md5: 6f6e17de3413c2232a96f40df63afb42\n\nbuild:\n  features:\n  - vc9  # [win and py27]\n  - vc10  # [win and py34]\n  - vc14  # [win and py35]\n  number: 0\n\nrequirements:\n  build:\n  - python  # [win]\n  - cmake\n  - jpeg 9*\n  - libpng >=1.6.28,<1.7\n  - zlib 1.2.*\n  run:\n  - jpeg 9*\n  - libpng >=1.6.28,<1.7\n  - zlib 1.2.*\n\ntest:\n  requires:\n  - python {{ environ['PY_VER'] + '*' }}  # [win]\n  commands:\n  # generate a test.idtf file. this tool never exit code 0 so we force it\n  - IDTFGen || true  # [not win]\n  - IDTFGen || ver>nul  # [win]\n  # then try to generate a u3d file. this tool only exits 0 if it succeeds\n  - IDTFConverter -input test.idtf -output test.u3d -debuglevel 0\n\nabout:\n  home: https://github.com/ClinicalGraphics/u3d\n  license: Apache-2.0\n  summary: Universal 3D Sample Software\n  \nextra:\n  recipe-maintainers:\n    - Maxyme\n    - EelcoHoogendoorn\n",
  "req": {
   "__set__": true,

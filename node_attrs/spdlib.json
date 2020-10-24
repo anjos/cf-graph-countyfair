@@ -277,9 +277,9 @@
   "exception": "Could not download https://bitbucket.org/petebunting/spdlib/downloads/spdlib-3.3.0.tar.gz",
   "traceback": [
    "Traceback (most recent call last):",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 937, in main",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 943, in main",
    "    hash_type=attrs.get(\"hash_type\", \"sha256\"),",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 192, in run",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 193, in run",
    "    migrator.run_post_piggyback_migrations(recipe_dir, feedstock_ctx.attrs, **kwargs)",
    "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/core.py\", line 236, in run_post_piggyback_migrations",
    "    mini_migrator.migrate(recipe_dir, attrs, **kwargs)",
@@ -637,6 +637,9 @@
   }
  },
  "pinning_version": "2020.05.06.22.15.02",
+ "pre_pr_migrator_status": {
+  "boost_cpp1740": "bot error: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 943, in main\n    hash_type=attrs.get(\"hash_type\", \"sha256\"),\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 193, in run\n    migrator.run_post_piggyback_migrations(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/core.py\", line 236, in run_post_piggyback_migrations\n    mini_migrator.migrate(recipe_dir, attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/license.py\", line 262, in migrate\n    cb_work_dir = _get_source_code(recipe_dir)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 902, in _get_source_code\n    return provide(md)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/site-packages/conda_build/source.py\", line 851, in provide\n    timeout=metadata.config.timeout, locking=metadata.config.locking)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/site-packages/conda_build/source.py\", line 142, in unpack\n    src_path, unhashed_fn = download_to_cache(cache_folder, recipe_path, source_dict, verbose)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/site-packages/conda_build/source.py\", line 98, in download_to_cache\n    raise RuntimeError(\"Could not download %s\" % url)\nRuntimeError: Could not download https://bitbucket.org/petebunting/spdlib/downloads/spdlib-3.3.0.tar.gz\n"
+ },
  "raw_meta_yaml": "{% set version = \"3.3.0\" %}\n\npackage:\n  name: spdlib\n  version: {{ version }}\n\nsource:\n  url: https://bitbucket.org/petebunting/spdlib/downloads/spdlib-{{ version }}.tar.gz\n  sha256: ded350c5eedb7b3b92a84a1e2d6dfa4c6f9ecb09bd83f0fcfb7fe17c1595b9c7\n  patches:\n    - python_numeric.cpp.patch\n    - winboost.patch  # [win]\n    - pyboost.patch\n    - nocpp98.patch\n\nbuild:\n    number: 7\n    # CGAL etc do not support earlier than vc14\n    skip: True  # [win and py<35]\n\nrequirements:\n  build:\n    - cmake\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - boost-cpp\n    - hdf5\n    - xerces-c\n    - gsl\n    - libgdal\n    - geos\n    - cgal-cpp\n    - lastools\n  run:\n    - boost-cpp\n    - hdf5\n    - xerces-c\n    - gsl\n    - libgdal\n    - geos\n    - cgal-cpp\n    - lastools\n\ntest:\n  commands:\n    - if not exist %LIBRARY_BIN%\\\\libspd.dll exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\libspd.lib exit 1  # [win]\n    - test -f $PREFIX/lib/libspd.so                  # [linux]\n    - test -f $PREFIX/lib/libspd.dylib               # [osx]\n    - spdtranslate -h\n\nabout:\n  home: http://www.spdlib.org\n  license: GPLv3\n  summary: The Sorted Pulse Data Library (SPDLib) provides a format for storing and tools for processing discrete return and full waveform LiDAR data from airborne and terrestrial sensors.\n\nextra:\n  recipe-maintainers:\n    - danclewley\n    - petebunting\n    - gillins\n    - armstonj\n",
  "req": {
   "__set__": true,
