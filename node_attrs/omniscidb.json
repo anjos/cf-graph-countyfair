@@ -230,7 +230,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 938, in main",
+   "    hash_type=attrs.get(\"hash_type\", \"sha256\"),",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 215, in run",
+   "    timeout=300,",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 99, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/subprocess.py\", line 444, in check_returncode",
+   "    self.stderr)",
+   "subprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.",
+   ""
+  ]
+ },
  "conda-forge.yml": {},
  "feedstock_name": "omniscidb",
  "hash_type": "sha256",
@@ -618,7 +633,7 @@
   "5.3.1": 475,
   "5.3.2": 611,
   "5.4.0": 30,
-  "5.4.1": 49
+  "5.4.1": 50
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -777,6 +792,9 @@
   }
  },
  "pinning_version": "2020.10.21.13.25.30",
+ "pre_pr_migrator_status": {
+  "version": "bot error: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 938, in main\n    hash_type=attrs.get(\"hash_type\", \"sha256\"),\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 215, in run\n    timeout=300,\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 99, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/subprocess.py\", line 444, in check_returncode\n    self.stderr)\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
+ },
  "raw_meta_yaml": "{% set version = \"5.4.0\" %}\n{% set number = \"1\" %}\n{% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '10.1' %}\n{% set build_ext_version = \"1.0.0\" %}\n{% set build_ext = \"cuda\" if cuda_enabled else \"cpu\" %}\n{% set build_string = \"h{}_{}_{}\".format(PKG_HASH, number, build_ext) %}\n\npackage:\n  name: omniscidb\n  version: {{ version }}\n\nsource:\n  url: https://github.com/omnisci/omniscidb/archive/v{{ version }}.tar.gz\n  sha256: f26ffcb53b4a02dac03424bb8aca1aab5a584c6382fc6e284c42485ffc25aca3\n  patches:\n    - skip-boost-libs-install.patch\n\nbuild:\n  number: {{ number }}\n  string: \"{{ build_string }}\"\n  skip: true  # [cuda_compiler_version not in (undefined, \"None\", \"10.1\")]\n  skip: true  # [not linux64]\n  missing_dso_whitelist:\n    - \"*/libcuda.*\"  # [cuda_compiler_version not in (undefined, \"None\")]\n  track_features:\n    {{ \"- arrow-cuda\" if cuda_enabled else \"\" }}\n\nrequirements:\n  build:\n    # c compiler is specified here to get run constraint pins correct, presumably..\n    - {{ compiler('c') }}\n    - {{ compiler('cgo') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler(\"cuda\") }}  # [cuda_compiler_version not in (undefined, \"None\")]\n    # omniscidb 5.4 is not LLVM 11 ready\n    - clangdev <11\n    # clang++ is used for generating the bytecodes of extension functions\n    - clangxx <11\n    - cmake\n    - llvmdev <11\n    - make\n    - maven\n  host:\n    - arrow-cpp =1.*=*{{ build_ext }}\n    - bisonpp\n    - blosc\n    - boost-cpp\n    - clangdev <11\n    - double-conversion\n    - flex\n    - gflags\n    - glog\n    - llvmdev <11\n    - llvm <11\n    - libarchive\n    - libgdal\n    - libkml\n    - libpng\n    - librdkafka\n    - ncurses\n    - openldap\n    - openssl\n    - snappy\n    - tbb\n    - tbb-devel\n    - thrift-cpp\n  run:\n    - boost-cpp\n    - bzip2\n    # omnscidb Load-time UDF support calls clang++\n    - gxx_{{ target_platform }}\n    - libclang-cpp <11\n    - ncurses\n    - openjdk 8\n    - xz\n    - zlib\n  run_constrained:\n    - arrow-cpp-proc * {{ build_ext }}\n    - cudatoolkit >=10.1  # [cuda_compiler_version not in (undefined, \"None\")]\n\ntest:\n  commands:\n    # Verify the activation scripts are in-place.\n    {% for state in [\"activate\", \"deactivate\"] %}\n    - test -f \"${PREFIX}/etc/conda/{{ state }}.d/{{ PKG_NAME }}_{{ state }}.sh\"\n    {% endfor %}\n    # Try using the activation scripts.\n    - |\n      if [[ -x \"$(command -v omnisql)\" ]]\n      then\n        echo \"Found omnisql in PATH\"\n      else\n        echo \"omnisql not found in PATH(=$PATH)\" && exit 1\n      fi\n      source ${PREFIX}/etc/conda/deactivate.d/{{ PKG_NAME }}_deactivate.sh\n      if [[ -x \"$(command -v omnisql)\" ]]\n      then\n        echo \"Unexpectedly found omnisql in PATH(=$PATH) after deactivation\"  && exit 1\n      else\n        echo \"omnisql not in PATH after deactivation\"\n      fi\n      source ${PREFIX}/etc/conda/activate.d/{{ PKG_NAME }}_activate.sh\n    # Test installation\n    - omnisql -v\n    - which omnisci_initdb\n    - which omnisci_server\n    - |\n      if [ -x \"$(command -v nvidia-smi)\" ]; then  # [cuda_compiler_version not in (undefined, \"None\")]\n        mkdir data && omnisci_initdb data\n        omnisci_server --version\n        rm -rf data\n      fi                                          # [cuda_compiler_version not in (undefined, \"None\")]\n    - which omnisci_insert_sample_data\n    - which startomnisci\n\nabout:\n  home: https://www.omnisci.com/\n  license: Apache-2.0\n  license_family: APACHE\n  license_file: LICENSE.md\n  summary: 'The OmniSci database'\n\n  description: |\n    OmniSciDB is an in-memory, column store, SQL relational database\n    that was designed from the ground up to run on GPUs.\n\n    This recipe provides both CUDA enabled and CUDA disabled omniscidb\n    packages.\n  doc_url: https://www.omnisci.com/docs/latest/\n  dev_url: https://github.com/omnisci/omniscidb\n\nextra:\n  recipe-maintainers:\n    - xmnlab\n    - pearu\n    - andrewseidl\n    - jclay\n",
  "req": {
   "__set__": true,
