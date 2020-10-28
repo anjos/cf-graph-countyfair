@@ -55,7 +55,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 938, in main",
+   "    hash_type=attrs.get(\"hash_type\", \"sha256\"),",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 215, in run",
+   "    timeout=300,",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 99, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/subprocess.py\", line 444, in check_returncode",
+   "    self.stderr)",
+   "subprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.",
+   ""
+  ]
+ },
  "conda-forge.yml": {
   "provider": {
    "linux_aarch64": "default",
@@ -946,7 +961,7 @@
  ],
  "pinning_version": "2020.09.28.20.29.37",
  "pre_pr_migrator_status": {
-  "python39": "not solvable: ['win_64_: Encountered problems while solving.\\nProblem: package sip-4.19.20-py27hc56fc5f_0 requires python >=2.7,<2.8.0a0, but none of the providers can be installed\\n']"
+  "python39": "bot error: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 938, in main\n    hash_type=attrs.get(\"hash_type\", \"sha256\"),\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 215, in run\n    timeout=300,\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 99, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/subprocess.py\", line 444, in check_returncode\n    self.stderr)\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
  },
  "raw_meta_yaml": "{% set name = \"orocos-kdl\" %}\n{% set version = \"1.4.0\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/orocos/orocos_kinematics_dynamics/archive/v{{ version }}.tar.gz\n  sha256: 05b93e759923684dc07433ccae1e476d158d89b3c2be5079c20062406da7b4dd\n  patches:\n    - orocos_kdl.patch\n    - python_orocos_kdl.patch\n    - python_osx.patch  # [osx]\n    - assignment_operator.patch  # [unix]\n\nbuild:\n  number: 0\n  skip: true  # [win and vc<14]\n  script: \"echo 'do nothing'\"  # [unix]\n  run_exports:\n    - {{ pin_subpackage('orocos-kdl', max_pin='x.x') }}\n    - {{ pin_subpackage('python-orocos-kdl', max_pin='x.x') }}\n\noutputs:\n  - name: orocos-kdl\n    version: {{ version }}\n    script: buildpkg.sh  # [unix]\n    script: bldpkg.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - {{ compiler('c') }}\n        - cmake\n        - ninja  # [win]\n        - make  # [not win]\n        - pkg-config\n      host:\n        - eigen\n      run:\n        - eigen\n    test:\n      commands:\n        - if not exist %LIBRARY_PREFIX%\\\\lib\\\\orocos-kdl.lib exit 1  # [win]\n        - if not exist %LIBRARY_PREFIX%\\\\lib\\\\orocos-kdl.dll exit 1  # [win]\n        - test -f $PREFIX/lib/liborocos-kdl${SHLIB_EXT}  # [unix]\n  - name: python-orocos-kdl\n    version: {{ version }}\n    script: buildpkg.sh  # [unix]\n    script: bldpkg.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - {{ compiler('c') }}\n        - cmake\n        - ninja  # [win]\n        - make  # [not win]\n        - pkg-config\n      host:\n        - python\n        - eigen\n        - orocos-kdl\n        - sip 4.19.20  # [win]\n        - sip  # [not win]\n      run:\n        - python\n        - eigen\n        - orocos-kdl\n        - sip 4.19.20  # [win]\n        - sip  # [not win]\n    test:\n      imports:\n        - PyKDL\n\nabout:\n  home: https://github.com/orocos/orocos_kinematics_dynamics\n  license: LGPL-2.1-or-later\n  license_family: LGPL\n  license_file: orocos_kdl/COPYING\n  summary: |\n    Orocos Kinematics and Dynamics C++ library\n\nextra:\n  recipe-maintainers:\n    - seanyen\n    - wolfv\n    - Tobias-Fischer\n",
  "req": {
