@@ -172,7 +172,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 938, in main",
+   "    hash_type=attrs.get(\"hash_type\", \"sha256\"),",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 215, in run",
+   "    timeout=300,",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 99, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/subprocess.py\", line 444, in check_returncode",
+   "    self.stderr)",
+   "subprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.",
+   ""
+  ]
+ },
  "conda-forge.yml": {
   "bot": {
    "automerge": true
@@ -462,13 +477,14 @@
   }
  },
  "name": "fzf",
- "new_version": "0.24.0-1",
+ "new_version": "0.24.1",
  "new_version_attempts": {
   "0.22.0": 1,
   "0.23.0": 1,
   "0.23.1": 1,
   "0.24.0": 1,
-  "0.24.0-1": 1
+  "0.24.0-1": 1,
+  "0.24.1": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -535,6 +551,9 @@
   }
  },
  "pinning_version": "2020.10.27.17.47.18",
+ "pre_pr_migrator_status": {
+  "version": "bot error: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 938, in main\n    hash_type=attrs.get(\"hash_type\", \"sha256\"),\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 215, in run\n    timeout=300,\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 99, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/subprocess.py\", line 444, in check_returncode\n    self.stderr)\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
+ },
  "raw_meta_yaml": "{% set goname = \"github.com/junegunn/fzf\" %}\n{% set version = \"0.24.0\" %}\n\n{% set name = goname.split('/')[-1] %}\n{% set pkg_src = ('src/'+goname).replace(\"/\",os.sep) %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  - folder: {{ pkg_src }}\n    url: https://{{ goname }}/archive/{{ version }}.tar.gz\n    sha256: ce76f5f1a7cef05061e3cb2ab1eba7bc47660a868d622b5dd914e50158129ff6\n\nbuild:\n  number: 0\n  script:\n    - pushd {{ pkg_src }}\n    - go install -v -ldflags \"-X main.revision=conda-forge\" .\n    - bash -c \"mkdir -p ${PREFIX}/share/fzf/shell; cp -v shell/* ${PREFIX}/share/fzf/shell/\"\n\nrequirements:\n  build:\n    - {{ compiler('go') }}\n\ntest:\n  commands:\n    - fzf --version\n\nabout:\n  home: https://{{ goname }}\n  license: MIT\n  license_family: MIT\n  license_file: {{ pkg_src }}/LICENSE\n  summary: A command-line fuzzy finder\n\nextra:\n  recipe-maintainers:\n    - dbast\n",
  "req": {
   "__set__": true,
