@@ -144,7 +144,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 938, in main",
+   "    hash_type=attrs.get(\"hash_type\", \"sha256\"),",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 215, in run",
+   "    timeout=300,",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 99, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/subprocess.py\", line 444, in check_returncode",
+   "    self.stderr)",
+   "subprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.",
+   ""
+  ]
+ },
  "conda-forge.yml": {},
  "feedstock_name": "mongodb",
  "hash_type": "sha256",
@@ -1436,6 +1451,9 @@
   }
  },
  "pinning_version": "2020.09.30.16.33.39",
+ "pre_pr_migrator_status": {
+  "abseil_cpp202009232": "bot error: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 938, in main\n    hash_type=attrs.get(\"hash_type\", \"sha256\"),\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 215, in run\n    timeout=300,\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 99, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/subprocess.py\", line 444, in check_returncode\n    self.stderr)\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
+ },
  "raw_meta_yaml": "{% set version = \"4.2.10\" %}\n\npackage:\n  name: mongodb\n  version: {{ version }}\n\nsource:\n  url: https://fastdl.mongodb.org/src/mongodb-src-r{{ version }}.tar.gz\n  sha256: f44a846514f8db8be2a662210ad7fefc059d8e17ab2c59aceeae8b0b173d8286\n  patches:\n    - patches/0001-Do-not-inject-debug-info-unnecessarily.patch\n    - patches/0002-Relax-constraint-on-minimum-version-of-GCC.patch\n    - patches/0003-aligned_alloc-in-libC-is-only-available-in-glibc-2.1.patch\n    - patches/0004-Fix-icu-namespace-extension-for-un-vendored-icu.patch\n    - patches/0005-Fix-flags-for-un-vendoring-abseil-cpp.patch\n    - patches/0006-Make-SCons-inherit-environment-vars.patch\n    - patches/0007-Disable-fsized-deallocation-on-macOS.patch\n    - patches/0008-Relax-minimum-Darwin-version-check-to-10.9.patch\n    - patches/0009-Use-platform-specific-TimeStamp-implementation.patch\n    - patches/0010-Fix-openssl-1.1.x-library-names-on-Windows.patch\n    - patches/0011-Fix-icu-library-names-for-Windows.patch\n    - patches/0012-Don-t-force-disable-auto-linking-if-use-system-boost.patch\n    - patches/0013-MSVC-Don-t-generating-debug-info-forcefully.patch\n\nbuild:\n  number: 0\n  detect_binary_files_with_prefix: false\n  missing_dso_whitelist:   # [osx]\n    - /usr/lib/libresolv.9.dylib  # [osx]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - python 3.*\n    - pywin32  # [win]\n    - cheetah3\n    - psutil\n    - pyyaml\n    - regex\n    - requests\n    - setuptools\n  host:\n    - abseil-cpp\n    - boost-cpp\n    - icu\n    - libcurl\n    - openssl\n    - pcre\n    - snappy\n    - sqlite\n    - yaml-cpp\n    - zlib\n    - zstd\n  run:\n    - {{ pin_compatible('icu', max_pin='x') }}\n    - {{ pin_compatible('yaml-cpp', max_pin='x.x.x') }}\n    - {{ pin_compatible('boost-cpp', max_pin='x.x.x') }}\n\ntest:\n  commands:\n    - mongod --help\n    - mongod --version\n\nabout:\n  home: http://www.mongodb.org/\n  license: SSPL-1.0\n  license_file:\n    - LICENSE-Community.txt\n     # fmt can be unvendored after upgrading to >=4.3.3\n     # xref: https://github.com/mongodb/mongo/commit/eacfb9c5\n    - src/third_party/fmt/dist/LICENSE.rst\n     # Part of boost, but requires code changes to unvendor the dep or\n     # packaging asio as a separate package\n    - src/third_party/asio-master/asio/LICENSE_1_0.txt\n     # Can be unvendored, needs to be packaged\n    - {{ RECIPE_DIR }}/libstemmer_COPYING\n     # IMO, this one is okay, it isn't used anywhere but mongodb\n    - src/third_party/wiredtiger/LICENSE\n     # Can be packaged\n    - src/third_party/IntelRDFPMathLib20U1/eula.txt\n     # This one is a discontinued project\n    - src/third_party/kms-message/COPYING\n    - src/third_party/kms-message/THIRD_PARTY_NOTICES\n     # Can be packaged, but build system doesn't have --system flag for it\n    - src/third_party/s2/LICENSE-2.0.txt\n     # A consolidated version for all 3rd party with SHAs and license names\n     # (Not all of them are statically linked)\n    - README.third_party.md\n  summary: A next-gen database that lets you do things you could never do before\n  description: |\n    MongoDB is an open-source, document database designed for ease of\n    development and scaling.\n  doc_url: https://docs.mongodb.org/manual/\n  dev_url: https://github.com/mongodb/mongo\n\nextra:\n  recipe-maintainers:\n    - nehaljwani\n",
  "req": {
   "__set__": true,
