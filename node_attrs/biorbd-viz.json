@@ -176,7 +176,22 @@
   }
  ],
  "archived": false,
- "bad": "Upstream: Could not find version on github",
+ "bad": {
+  "exception": "Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 938, in main",
+   "    hash_type=attrs.get(\"hash_type\", \"sha256\"),",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 215, in run",
+   "    timeout=300,",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 99, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/subprocess.py\", line 444, in check_returncode",
+   "    self.stderr)",
+   "subprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.",
+   ""
+  ]
+ },
  "conda-forge.yml": {
   "bot": {
    "automerge": true
@@ -718,7 +733,7 @@
  ],
  "pinning_version": "2020.10.24.16.47.03",
  "pre_pr_migrator_status": {
-  "python39": "not solvable: ['win_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package pyomeca-1.0.1-pyh9f0ad1d_0 requires scipy, but none of the providers can be installed\\n']"
+  "python39": "bot error: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 938, in main\n    hash_type=attrs.get(\"hash_type\", \"sha256\"),\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 215, in run\n    timeout=300,\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 99, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.7/subprocess.py\", line 444, in check_returncode\n    self.stderr)\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
  },
  "raw_meta_yaml": "{% set name = \"bioviz\" %}\n{% set version = \"2.0.0\" %}\n{% set build_num = 0 %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/pyomeca/{{ name }}/archive/Release_{{ version }}.tar.gz\n  sha256: 51a72ff8f2dc618e1d70f4aa41c124427df2a7312861087553a2e121212e5f42\n\nbuild:\n  number: {{ build_num }}\n  script: {{ PYTHON }} -m pip install . -vv\n  string: py{{ py }}_{{ backend }}_h{{ PKG_HASH }}_{{ build_num }}\n  track_features:\n    - casadi  # [backend == \"casadi\"]\n\nrequirements:\n  host:\n    - python\n    - pip\n  run:\n    - python\n    - {{ backend|default(\"eigen\") }}\n    - {{ pin_compatible('rbdl') }}\n    - {{ pin_compatible('biorbd') }}\n    - vtk\n    - pyqt\n    - pyomeca\n    - packaging\n\ntest:\n  imports:\n    - biorbd\n    - bioviz  # [not linux]\n\nabout:\n  home: http://github.com/pyomeca/bioviz\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: Biorbd visualization toolkit\n  description: |\n    Biorbd visualization toolkit \n  doc_url: https://github.com/{{ name }}/{{ name }}\n  dev_url: https://github.com/{{ name }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - pariterre\n",
  "req": {
