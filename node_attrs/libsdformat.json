@@ -103,13 +103,14 @@
    "summary": "Simulation Description Format (SDF) parser and description files.\n"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "libsdformat",
     "libsdformat",
     "libsdformat",
     "libsdformat"
-   ]
+   ],
+   "skip": false
   },
   "extra": {
    "recipe-maintainers": [
@@ -299,7 +300,7 @@
    "summary": "Simulation Description Format (SDF) parser and description files.\n"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "libsdformat",
     "libsdformat",
@@ -308,11 +309,22 @@
     "libsdformat",
     "libsdformat",
     "libsdformat",
+    "libsdformat",
+    "libsdformat",
     "libsdformat"
-   ]
+   ],
+   "skip": false
   },
   "extra": {
    "recipe-maintainers": [
+    "seanyen",
+    "j-rivero",
+    "conda-forge/ros-core",
+    "Tobias-Fischer",
+    "seanyen",
+    "j-rivero",
+    "conda-forge/ros-core",
+    "Tobias-Fischer",
     "seanyen",
     "j-rivero",
     "conda-forge/ros-core",
@@ -400,6 +412,14 @@
     "ninja",
     "ruby",
     "cmake",
+    "pkg-config",
+    "vs2017_win-64",
+    "ruby 2.7",
+    "cmake",
+    "pkg-config",
+    "vs2017_win-64",
+    "ruby 2.7",
+    "cmake",
     "pkg-config"
    ],
    "host": [
@@ -442,9 +462,29 @@
     "urdfdom",
     "boost-cpp",
     "tinyxml",
+    "console_bridge",
+    "libignition-math6",
+    "urdfdom",
+    "boost-cpp",
+    "tinyxml",
+    "console_bridge",
+    "libignition-math6",
+    "urdfdom",
+    "boost-cpp",
+    "tinyxml",
     "console_bridge"
    ],
    "run": [
+    "libignition-math6",
+    "urdfdom",
+    "boost-cpp",
+    "tinyxml",
+    "console_bridge",
+    "libignition-math6",
+    "urdfdom",
+    "boost-cpp",
+    "tinyxml",
+    "console_bridge",
     "libignition-math6",
     "urdfdom",
     "boost-cpp",
@@ -543,6 +583,20 @@
     ],
     "sha256": "6886cd905c74698000bf4e4bb378efe292411fab939d80d3263dfad430e50204",
     "url": "https://github.com/osrf/sdformat/archive/sdformat9_9.3.0.tar.gz"
+   },
+   {
+    "patches": [
+     "sdformat.patch"
+    ],
+    "sha256": "6886cd905c74698000bf4e4bb378efe292411fab939d80d3263dfad430e50204",
+    "url": "https://github.com/osrf/sdformat/archive/sdformat9_9.3.0.tar.gz"
+   },
+   {
+    "patches": [
+     "sdformat.patch"
+    ],
+    "sha256": "6886cd905c74698000bf4e4bb378efe292411fab939d80d3263dfad430e50204",
+    "url": "https://github.com/osrf/sdformat/archive/sdformat9_9.3.0.tar.gz"
    }
   ],
   "test": {
@@ -570,7 +624,15 @@
     "test -f ${PREFIX}/lib/cmake/sdformat9/sdformat9-config.cmake",
     "test -f ${PREFIX}/include/sdformat-9.3/sdf/sdf.hh",
     "test -f ${PREFIX}/lib/libsdformat9${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/cmake/sdformat9/sdformat9-config.cmake"
+    "test -f ${PREFIX}/lib/cmake/sdformat9/sdformat9-config.cmake",
+    "if not exist %LIBRARY_INC%\\\\sdformat-9.3\\\\sdf\\\\sdf.hh exit 1",
+    "if not exist %LIBRARY_LIB%\\\\sdformat9.lib exit 1",
+    "if not exist %LIBRARY_BIN%\\\\sdformat9.dll exit 1",
+    "if not exist %LIBRARY_LIB%\\\\cmake\\\\sdformat9\\\\sdformat9-config.cmake exit 1",
+    "if not exist %LIBRARY_INC%\\\\sdformat-9.3\\\\sdf\\\\sdf.hh exit 1",
+    "if not exist %LIBRARY_LIB%\\\\sdformat9.lib exit 1",
+    "if not exist %LIBRARY_BIN%\\\\sdformat9.dll exit 1",
+    "if not exist %LIBRARY_LIB%\\\\cmake\\\\sdformat9\\\\sdformat9-config.cmake exit 1"
    ]
   }
  },
@@ -590,13 +652,14 @@
    "summary": "Simulation Description Format (SDF) parser and description files.\n"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "libsdformat",
     "libsdformat",
     "libsdformat",
     "libsdformat"
-   ]
+   ],
+   "skip": false
   },
   "extra": {
    "recipe-maintainers": [
@@ -779,7 +842,7 @@
   }
  },
  "pinning_version": "2020.09.29.16.41.07",
- "raw_meta_yaml": "{% set name = \"libsdformat\" %}\n{% set version = \"9.3.0\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/osrf/sdformat/archive/sdformat{{ version.split('.')[0] }}_{{ version }}.tar.gz\n    sha256: 6886cd905c74698000bf4e4bb378efe292411fab939d80d3263dfad430e50204\n    patches:\n      - sdformat.patch\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}              # [not win]\n    - {{ compiler('c') }}                # [not win]\n    - vs2017_win-64                      # [win64]\n    - vs2017_win-32                      # [win32]\n    - ninja                              # [not win]\n    - ruby                               # [not win]\n    - cmake\n    - pkg-config\n  host:\n    - libignition-math6\n    - urdfdom\n    - boost-cpp\n    - tinyxml\n    - console_bridge\n  run:\n    - libignition-math6\n    - urdfdom\n    - boost-cpp\n    - tinyxml\n    - console_bridge\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/sdformat-{{ version.split('.')[0] }}.{{ version.split('.')[1] }}/sdf/sdf.hh  # [not win]\n    - test -f ${PREFIX}/lib/libsdformat{{ version.split('.')[0] }}${SHLIB_EXT}  # [unix]\n    - test -f ${PREFIX}/lib/cmake/sdformat{{ version.split('.')[0] }}/sdformat{{ version.split('.')[0] }}-config.cmake  # [not win]\n    - if not exist %LIBRARY_INC%\\\\sdformat-{{ version.split('.')[0] }}.{{ version.split('.')[1] }}\\\\sdf\\\\sdf.hh exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\sdformat{{ version.split('.')[0] }}.lib exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\sdformat{{ version.split('.')[0] }}.dll exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\cmake\\\\sdformat{{ version.split('.')[0] }}\\\\sdformat{{ version.split('.')[0] }}-config.cmake exit 1  # [win]\n\nabout:\n  home: http://sdformat.org/\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: |\n    Simulation Description Format (SDF) parser and description files.\n\nextra:\n  recipe-maintainers:\n    - seanyen\n    - j-rivero\n    - conda-forge/ros-core\n    - Tobias-Fischer\n",
+ "raw_meta_yaml": "{% set name = \"libsdformat\" %}\n{% set version = \"9.3.0\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/osrf/sdformat/archive/sdformat{{ version.split('.')[0] }}_{{ version }}.tar.gz\n    sha256: 6886cd905c74698000bf4e4bb378efe292411fab939d80d3263dfad430e50204\n    patches:\n      - sdformat.patch\n\nbuild:\n  number: 1\n  skip: false\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}              # [not win]\n    - {{ compiler('c') }}                # [not win]\n    - vs2017_win-64                      # [win64]\n    - vs2017_win-32                      # [win32]\n    - ninja                              # [not win]\n    - ruby                               # [not win]\n    - ruby 2.7                           # [win]\n    - cmake\n    - pkg-config\n  host:\n    - libignition-math6\n    - urdfdom\n    - boost-cpp\n    - tinyxml\n    - console_bridge\n  run:\n    - libignition-math6\n    - urdfdom\n    - boost-cpp\n    - tinyxml\n    - console_bridge\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/sdformat-{{ version.split('.')[0] }}.{{ version.split('.')[1] }}/sdf/sdf.hh  # [not win]\n    - test -f ${PREFIX}/lib/libsdformat{{ version.split('.')[0] }}${SHLIB_EXT}  # [unix]\n    - test -f ${PREFIX}/lib/cmake/sdformat{{ version.split('.')[0] }}/sdformat{{ version.split('.')[0] }}-config.cmake  # [not win]\n    - if not exist %LIBRARY_INC%\\\\sdformat-{{ version.split('.')[0] }}.{{ version.split('.')[1] }}\\\\sdf\\\\sdf.hh exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\sdformat{{ version.split('.')[0] }}.lib exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\sdformat{{ version.split('.')[0] }}.dll exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\cmake\\\\sdformat{{ version.split('.')[0] }}\\\\sdformat{{ version.split('.')[0] }}-config.cmake exit 1  # [win]\n\nabout:\n  home: http://sdformat.org/\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: |\n    Simulation Description Format (SDF) parser and description files.\n\nextra:\n  recipe-maintainers:\n    - seanyen\n    - j-rivero\n    - conda-forge/ros-core\n    - Tobias-Fischer\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -793,7 +856,8 @@
    "pkg-config",
    "ruby",
    "tinyxml",
-   "urdfdom"
+   "urdfdom",
+   "vs2017_win-64"
   ]
  },
  "requirements": {
@@ -805,7 +869,8 @@
     "cxx_compiler_stub",
     "ninja",
     "pkg-config",
-    "ruby"
+    "ruby",
+    "vs2017_win-64"
    ]
   },
   "host": {
@@ -817,7 +882,8 @@
     "cxx_compiler_stub",
     "libignition-math6",
     "tinyxml",
-    "urdfdom"
+    "urdfdom",
+    "vc"
    ]
   },
   "run": {
@@ -829,7 +895,8 @@
     "cxx_compiler_stub",
     "libignition-math6",
     "tinyxml",
-    "urdfdom"
+    "urdfdom",
+    "vc"
    ]
   },
   "test": {
@@ -848,7 +915,9 @@
     "cxx_compiler_stub",
     "ninja",
     "pkg-config",
-    "ruby"
+    "ruby",
+    "ruby 2.7",
+    "vs2017_win-64"
    ]
   },
   "host": {
@@ -888,12 +957,17 @@
   "build": {
    "number": "1",
    "run_exports": [
+    "libsdformat",
     "libsdformat"
    ],
-   "skip": true
+   "skip": false
   },
   "extra": {
    "recipe-maintainers": [
+    "seanyen",
+    "j-rivero",
+    "conda-forge/ros-core",
+    "Tobias-Fischer",
     "seanyen",
     "j-rivero",
     "conda-forge/ros-core",
@@ -902,11 +976,16 @@
   },
   "package": {
    "name": "libsdformat",
-   "version": "9.2.0"
+   "version": "9.3.0"
   },
   "requirements": {
    "build": [
     "vs2017_win-64",
+    "ruby 2.7",
+    "cmake",
+    "pkg-config",
+    "vs2017_win-64",
+    "ruby 2.7",
     "cmake",
     "pkg-config"
    ],
@@ -915,9 +994,19 @@
     "urdfdom",
     "boost-cpp",
     "tinyxml",
+    "console_bridge",
+    "libignition-math6",
+    "urdfdom",
+    "boost-cpp",
+    "tinyxml",
     "console_bridge"
    ],
    "run": [
+    "libignition-math6",
+    "urdfdom",
+    "boost-cpp",
+    "tinyxml",
+    "console_bridge",
     "libignition-math6",
     "urdfdom",
     "boost-cpp",
@@ -930,13 +1019,24 @@
     "patches": [
      "sdformat.patch"
     ],
-    "sha256": "fff12c89ba197714cc22eda4933383d21d04f09239b4606703d2256265c83543",
-    "url": "https://bitbucket.org/osrf/sdformat/get/sdformat9_9.2.0.tar.gz"
+    "sha256": "6886cd905c74698000bf4e4bb378efe292411fab939d80d3263dfad430e50204",
+    "url": "https://github.com/osrf/sdformat/archive/sdformat9_9.3.0.tar.gz"
+   },
+   {
+    "patches": [
+     "sdformat.patch"
+    ],
+    "sha256": "6886cd905c74698000bf4e4bb378efe292411fab939d80d3263dfad430e50204",
+    "url": "https://github.com/osrf/sdformat/archive/sdformat9_9.3.0.tar.gz"
    }
   ],
   "test": {
    "commands": [
-    "if not exist %LIBRARY_INC%\\\\sdformat-9.2\\\\sdf\\\\sdf.hh exit 1",
+    "if not exist %LIBRARY_INC%\\\\sdformat-9.3\\\\sdf\\\\sdf.hh exit 1",
+    "if not exist %LIBRARY_LIB%\\\\sdformat9.lib exit 1",
+    "if not exist %LIBRARY_BIN%\\\\sdformat9.dll exit 1",
+    "if not exist %LIBRARY_LIB%\\\\cmake\\\\sdformat9\\\\sdformat9-config.cmake exit 1",
+    "if not exist %LIBRARY_INC%\\\\sdformat-9.3\\\\sdf\\\\sdf.hh exit 1",
     "if not exist %LIBRARY_LIB%\\\\sdformat9.lib exit 1",
     "if not exist %LIBRARY_BIN%\\\\sdformat9.dll exit 1",
     "if not exist %LIBRARY_LIB%\\\\cmake\\\\sdformat9\\\\sdformat9-config.cmake exit 1"
@@ -949,6 +1049,7 @@
    "elements": [
     "cmake",
     "pkg-config",
+    "ruby",
     "vs2017_win-64"
    ]
   },
