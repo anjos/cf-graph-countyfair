@@ -283,6 +283,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/513701847.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 2,
+    "migrator_version": 0,
+    "name": "python39"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1519,7 +1538,7 @@
    ]
   }
  },
- "pinning_version": "2020.09.03.21.10.34",
+ "pinning_version": "2020.11.01.16.28.01",
  "raw_meta_yaml": "{% set name = \"mpas_tools\" %}\n{% set version = \"0.0.13\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/MPAS-Dev/MPAS-Tools/archive/{{ version }}.tar.gz\n  sha256: d805aaae67121f4e000d6b0581ad5cbb557a3c9e93e6de89b8675aeda79bd5a3\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  entry_points:\n    - planar_hex = mpas_tools.planar_hex:main\n    - translate_planar_grid = mpas_tools.translate:main\n    - merge_grids = mpas_tools.merge_grids:main\n    - split_grids = mpas_tools.split_grids:main\n    - inject_bathymetry = mpas_tools.ocean.inject_bathymetry:main\n    - inject_preserve_floodplain = mpas_tools.ocean.inject_preserve_floodplain:main\n    - mpas_to_triangle = mpas_tools.mesh.creation.mpas_to_triangle:main\n    - triangle_to_netcdf = mpas_tools.mesh.creation.triangle_to_netcdf:main\n    - jigsaw_to_netcdf = mpas_tools.mesh.creation.jigsaw_to_netcdf:main\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n  host:\n    - python\n    - hdf5\n    - hdf5 * nompi_*\n    - libnetcdf\n    - libnetcdf * nompi_*\n    - setuptools\n    - pip\n    - netcdf4\n    - openmp  # [osx]\n  run:\n    - python\n    - netcdf4\n    - hdf5\n    - libnetcdf\n    - numpy\n    - scipy\n    - xarray\n    - dask\n    - geometric_features\n    - pyevtk\n    - future\n    - jigsaw >=0.9.12\n    - jigsawpy >=0.2.1\n    - pyflann\n    - scikit-image\n    - cartopy\n    - pyamg\n    - rasterio\n    - affine\n\ntest:\n  requires:\n    - pytest\n    - requests\n  source_files:\n    - mesh_tools/mesh_conversion_tools/test/Arctic_Ocean.geojson\n    - mesh_tools/mesh_conversion_tools/test/mesh.QU.1920km.151026.nc\n    - mesh_tools/mesh_conversion_tools/test/land_mask_final.nc\n    - conda_package/mpas_tools/tests/*\n  imports:\n    - mpas_tools\n    - mpas_tools.mesh.conversion\n    - mpas_tools.mesh.creation\n    - mpas_tools.viz\n    - mpas_tools.conversion\n  commands:\n    - planar_hex --nx=10 --ny=20 --dc=1000. --outFileName='periodic_mesh_10x20_1km.nc'\n    - translate_planar_grid -f 'periodic_mesh_10x20_1km.nc' -x 1000. -y 2000.\n    - translate_planar_grid -f 'periodic_mesh_10x20_1km.nc' -c\n    - planar_hex --nx=20 --ny=40 --dc=1000. --outFileName='periodic_mesh_20x40_1km.nc'\n    - translate_planar_grid -f 'periodic_mesh_10x20_1km.nc' -d 'periodic_mesh_20x40_1km.nc'\n    - MpasMeshConverter.x mesh_tools/mesh_conversion_tools/test/mesh.QU.1920km.151026.nc mesh.nc\n    - MpasCellCuller.x mesh.nc culled_mesh.nc -m mesh_tools/mesh_conversion_tools/test/land_mask_final.nc\n    - MpasMaskCreator.x mesh.nc arctic_mask.nc -f mesh_tools/mesh_conversion_tools/test/Arctic_Ocean.geojson\n    - planar_hex --nx=30 --ny=20 --dc=1000. --npx --npy --outFileName='nonperiodic_mesh_30x20_1km.nc'\n    - MpasCellCuller.x nonperiodic_mesh_30x20_1km.nc culled_nonperiodic_mesh_30x20_1km.nc\n    - python -m pytest conda_package/mpas_tools/tests\n    - mark_horns_for_culling.py --help\n    - set_lat_lon_fields_in_planar_grid.py --help\n    - create_SCRIP_file_from_MPAS_mesh.py --help\n    - create_landice_grid_from_generic_MPAS_grid.py --help\n    - define_cullMask.py --help\n    - interpolate_to_mpasli_grid.py --help\n    - mark_domain_boundaries_dirichlet.py --help\n    - add_land_locked_cells_to_mask.py --help\n    - moc_southern_boundary_extractor.py --help\n    - widen_transect_edge_masks.py --help\n    - add_critical_land_blockages_to_mask.py --help\n    - paraview_vtk_field_extractor.py -f mesh_tools/mesh_conversion_tools/test/mesh.QU.1920km.151026.nc -v latCell,lonCell --ignore_time -o vtk_test\n    - split_grids --help\n    - merge_grids --help\n    - inject_bathymetry mesh_tools/mesh_conversion_tools/test/mesh.QU.1920km.151026.nc\n    - inject_preserve_floodplain --help\n    - mpas_to_triangle --help\n    - triangle_to_netcdf --help\n    - jigsaw_to_netcdf --help\n\nabout:\n  home: https://github.com/MPAS-Dev/MPAS-Tools/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Mesh tools for Model for Prediction Across Scales (MPAS)\n  description: |\n    A set of tools for creating and manipulating meshes for the climate\n    components based on the Model for Prediction Across Scales (MPAS) framework\n  doc_url: https://github.com/MPAS-Dev/MPAS-Tools/README.md\n  dev_url: https://github.com/MPAS-Dev/MPAS-Tools/\n\nextra:\n  recipe-maintainers:\n    - xylar\n    - jhkennedy\n",
  "req": {
   "__set__": true,
@@ -1605,7 +1624,7 @@
    ]
   }
  },
- "smithy_version": "No azure token. Create a token and\nput it in ~/.conda-smithy/azure.token\n3.7.10",
+ "smithy_version": "3.8.4",
  "strong_exports": false,
  "total_requirements": {
   "build": {
