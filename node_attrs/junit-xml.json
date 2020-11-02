@@ -199,6 +199,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "junit-xml"
+ ],
  "raw_meta_yaml": "{% set name = \"junit-xml\" %}\n{% set version = \"1.9\" %}\n{% set python_tag = 'py2.py3' %}\n{% set use_wheel = True %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  {% if use_wheel %}\n  - url: https://pypi.org/packages/{{ python_tag }}/{{ name[0] }}/{{ name }}/{{ name | replace('-', '_') }}-{{ version }}-{{ python_tag }}-none-any.whl\n    sha256: \"ec5ca1a55aefdd76d28fcc0b135251d156c7106fa979686a4b48d62b761b4732\"\n  {% else %}\n  - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n    sha256: \"\"\n  {% endif %}\n\n\nbuild:\n  noarch: python\n  number: 0\n  {% if use_wheel %}\n  script: \"{{ PYTHON }} -m pip install --no-deps --ignore-installed --no-cache-dir -vvv *.whl\"\n  {% else %}\n  script: \"{{ PYTHON }} -m pip install --no-deps --ignore-installed --no-cache-dir -vvv .\"\n  {% endif %}\n\nrequirements:\n  host:\n    - python\n    - pip\n  run:\n    - python\n    - six\n\ntest:\n  imports:\n    - junit_xml\n\nabout:\n  home: https://github.com/kyrus/python-junit-xml\n  license: MIT\n  license_file:\n    {% if use_wheel %}\n    - \"{{ name | replace('-', '_') }}-{{ version }}.dist-info/LICENSE.txt\"\n    {% else %}\n    - LICENSE.txt\n    {% endif %}\n  summary: 'Creates JUnit XML test result documents that can be read by tools such as Jenkins'\n  license_family: MIT\n\nextra:\n  recipe-maintainers:\n    - chapmanb\n    - dfornika\n    - mariusvniekerk\n",
  "req": {
   "__set__": true,

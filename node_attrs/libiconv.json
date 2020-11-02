@@ -561,6 +561,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "libiconv"
+ ],
  "pinning_version": "2020.08.15.14.59.48",
  "raw_meta_yaml": "{% set version = \"1.16\" %}\n\npackage:\n  name: libiconv\n  version: {{ version }}\n\nsource:\n  url: http://ftp.gnu.org/pub/gnu/libiconv/libiconv-{{ version }}.tar.gz\n  sha256: e6a1b1b589654277ee790cce3734f07876ac4ccfaecbee8afa0b649cf529cc04\n  patches:\n    - glibc.patch  # [linux]\n    - CMakeLists.txt.patch  # [win]\n    - config.h.patch  # [win]\n    - configure.cmake.patch  # [win]\n\nbuild:\n  number: 0\n  run_exports:\n    # Pretty good recently, let's trust them.\n    #   https://abi-laboratory.pro/tracker/timeline/libiconv/\n    - {{ pin_subpackage('libiconv') }}\n\nrequirements:\n  build:\n    - libtool  # [unix]\n    - {{ compiler('c') }}\n    - cmake     # [win]\n    - ninja     # [win]\n    - m2-patch  # [win]\n    - make      # [unix]\n\ntest:\n  commands:\n    - iconv --help  # [not win]\n    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]\n    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]\n\nabout:\n  home: https://www.gnu.org/software/libiconv/\n  license: GPL and LGPL\n  license_file: COPYING\n  summary: Provides iconv for systems which don't have one (or that cannot convert from/to Unicode.)\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - jakirkham\n    - jhamman\n    - scopatz\n",
  "req": {

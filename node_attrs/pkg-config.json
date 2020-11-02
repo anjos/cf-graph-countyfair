@@ -592,6 +592,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "pkg-config"
+ ],
  "pinning_version": "2020.10.16.18.51.08",
  "raw_meta_yaml": "{% set version = \"0.29.2\" %}\n\npackage:\n  name: pkg-config\n  version: {{ version }}\n\nsource:\n  url: https://pkg-config.freedesktop.org/releases/pkg-config-{{ version }}.tar.gz\n  sha256: 6fc69c01688c9458a57eb9a1664c9aba372ccda420a02bf4429fe610e7e7d591\n\nbuild:\n  number: 1008\n  skip: True  # [win and vc<14]\n  detect_binary_files_with_prefix: True\n\nrequirements:\n  build:\n    - libtool  # [unix]\n    - {{ compiler('c') }}\n    - automake  # [unix]\n    - make  # [unix]\n  host:\n    # To avoid a cyclic dependency when building, we avoid glib when not cross-compiling\n    # This assumes that both pkg-config and glib are cross-compiled or neither is\n    - glib  # [win or (build_platform != target_platform)]\n    - libiconv  # [osx]\n\ntest:\n  commands:\n    - pkg-config --help\n\nabout:\n  home: http://www.freedesktop.org/wiki/Software/pkg-config/\n  license: GPL-2.0-or-later\n  license_file: COPYING\n  summary: Interface for querying installed libraries for use during compilation.\n\n  description: |\n    pkg-config is a script to make putting together all the build\n    flags when compiling/linking a lot easier.\n  doc_url: https://people.freedesktop.org/~dbn/pkg-config-guide.html\n  dev_url: https://cgit.freedesktop.org/pkg-config\n  doc_source_url:\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n    - mdboom\n    - ocefpaf\n    - tacaswell\n    - mingwandroid\n",
  "req": {

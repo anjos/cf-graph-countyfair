@@ -224,6 +224,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "kubernetes-federation"
+ ],
  "pinning_version": "2018.09.27",
  "raw_meta_yaml": "{% set goname = \"k8s.io/federation\" %}\n{% set version = \"1.10.0\" %}\n{% set version_suffix = \"alpha.0\" %}\n\n\n{% set name = goname.split('/')[-1] %}\n{% set pkg_src = ('src/'+goname).replace(\"/\", os.sep) %}\n\npackage:\n  name: kubernetes-{{ name|lower }}\n  version: {{ version }}{{ version_suffix[0] }}{{ version_suffix.split('.')[-1] }}\n\nsource:\n  - folder: {{ pkg_src }}\n    url: https://github.com/kubernetes/{{ name }}/archive/v{{ version }}-{{version_suffix}}.tar.gz\n    sha256: 6e11061ef5496a93ba32d84c6ebbe20f815e75b3e1f7468d3ab78c0c6ae0543d\n\nbuild:\n  skip: True  # [not linux]\n  number: 1000\n\nrequirements:\n  build:\n    - {{ compiler('go') }} 1.8\n    - rsync\n    - make\n\ntest:\n  commands:\n    - fcp --help\n    - federation-apiserver --help\n    - federation-controller-manager --help\n    - kubefed help\n\nabout:\n  home: https://www.kubernetes.io\n  license: Apache-2.0\n  license_family: Apache\n  license_file: {{pkg_src}}/LICENSE\n  summary: Production-Grade Container Orchestration / Federation\n  doc_url: https://docs.kubernetes.io/docs/home/\n  dev_url: https://github.com/kubernetes/federation\n\nextra:\n  recipe-maintainers:\n    - sodre\n",
  "req": {

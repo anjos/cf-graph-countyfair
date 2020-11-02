@@ -251,6 +251,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "go-glide"
+ ],
  "pinning_version": "2019.07.04",
  "raw_meta_yaml": "{% set goname = \"github.com/Masterminds/glide\" %}\n{% set version = \"0.13.3\" %}\n\n{% set name = goname.split('/')[-1] %}\n{% set pkg_src = ('src/'+goname).replace(\"/\", \"\\\\\" if win else \"/\") %}\n\npackage:\n  name: go-{{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - folder: {{ pkg_src }}\n    url: https://{{ goname }}/archive/v{{ version }}.tar.gz  # [unix]\n    sha256: 817dad2f25303d835789c889bf2fac5e141ad2442b9f75da7b164650f0de3fee  # [unix]\n\n    git_url: https://{{ goname }}  # [win]\n    git_tag: v{{ version }}  # [win]\n\nbuild:\n  number: 0\n  script:\n    - pushd {{ pkg_src }}\n    - go install -v -ldflags \"-X main.version={{ version }}\" .\n\nrequirements:\n  build:\n    - {{ compiler('go') }}\n\ntest:\n  commands:\n    - test -x {{ target_gobin }}glide{{ target_goexe }}\n    - glide --version\n    - glide --help\n\nabout:\n  home: https://glide.sh\n  license: MIT\n  license_file: {{pkg_src}}/LICENSE\n  summary: 'Package Management for Golang'\n\n  description: |\n      Manage your vendor and vendored packages with ease. Glide is a tool\n      for managing the vendor directory within a Go package. This feature,\n      first introduced in Go 1.5, allows each package to have a vendor\n      directory containing dependent packages for the project. These vendor\n      packages can be installed by a tool (e.g. glide), similar to go get\n      or they can be vendored and distributed with the package.\n  dev_url: https://{{ goname }}\n  doc_url: http://glide.readthedocs.io\n\nextra:\n  recipe-maintainers:\n    - sodre\n",
  "req": {

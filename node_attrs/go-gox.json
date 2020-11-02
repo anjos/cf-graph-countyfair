@@ -227,6 +227,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "go-gox"
+ ],
  "pinning_version": "2019.01.05",
  "raw_meta_yaml": "{% set goname = \"github.com/mitchellh/gox\" %}\n{% set version = \"0.4.0\" %}\n\n{% set name = goname.split('/')[-1] %}\n{% set pkg_src = ('src/'+goname).replace(\"/\", \"\\\\\" if win else \"/\") %}\n\npackage:\n  name: go-{{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - folder: {{ pkg_src }}\n    git_url: https://{{ goname }}\n    git_tag: v{{ version }}\n    \nbuild:\n  number: 1000\n  script:\n    - pushd {{ pkg_src }}\n    # Download non-vendored dependencies/source code only\n    - go get -d -v ./...\n    - go install -v .\n\nrequirements:\n  build:\n    - {{ compiler('go') }}\n\ntest:\n  commands:\n    - test -x {{ target_gobin }}gox{{ target_goexe }}\n    - gox -h || true\n\nabout:\n  home: http://{{ goname }}\n  license: MPL-2.0\n  license_file: {{pkg_src}}/LICENSE\n  summary: 'A dead simple, no frills Go cross compile tool'\n  dev_url: https://{{ goname }}\n\nextra:\n  recipe-maintainers:\n    - sodre\n",
  "req": {

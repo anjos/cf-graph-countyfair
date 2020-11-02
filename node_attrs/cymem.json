@@ -1215,6 +1215,9 @@
    ]
   }
  },
+ "outputs_names": [
+  "cymem"
+ ],
  "pinning_version": "2020.11.01.23.03.12",
  "raw_meta_yaml": "{% set version = \"2.0.4\" %}\n{% set sha256sum = \"2d862c83c8ade3b033b975be537ffd67281c41119c08a81e202bd9378fb50fd2\" %}\n\npackage:\n  name: cymem\n  version: {{ version }}\n\nsource:\n  # We don't use the PyPI release because it does not include the cythonize.py\n  # helper script to rebuild from the Cython source.\n  # url: https://pypi.io/packages/source/c/cymem/cymem-{{ version }}.tar.gz\n  url: https://github.com/explosion/cymem/archive/v{{ version }}.tar.gz\n  sha256: {{ sha256sum }}\n  patches:\n    - patches/0001-remove-setup_requires.patch\n    - patches/0002-always-cythonize.patch\n\nbuild:\n  number: 0\n  script: {{ PYTHON }} -m pip install --no-deps --ignore-installed .\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - cython\n    - pip\n    - python\n    - setuptools\n    - wheel\n\n  run:\n    - python\n\ntest:\n  requires:\n    - pytest\n\nabout:\n  home: https://github.com/explosion/cymem\n  license: MIT\n  license_file: LICENSE\n  summary: Manage calls to calloc/free through Cython\n  description: |\n    cymem provides two small memory-management helpers for Cython. They make it\n    easy to tie memory to a Python object\u2019s life-cycle, so that the memory is\n    freed when the object is garbage collected.\n\nextra:\n  recipe-maintainers:\n    - rmax\n    - h-vetinari\n    - ines\n    - honnibal\n    - adrianeboyd\n",
  "req": {

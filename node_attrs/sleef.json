@@ -190,6 +190,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "sleef"
+ ],
  "raw_meta_yaml": "{% set version = \"3.5.1\" %}\n\npackage:\n  name: sleef\n  version: {{ version }}\n\nsource:\n  url: https://github.com/shibatch/sleef/archive/{{ version }}.tar.gz\n  sha256: 415ee9b1bcc5816989d3d4d92afd0cd3f9ee89cbd5a33eb008e69751e40438ab\n  patches:\n    - install_dll.diff  # [win]\n\nbuild:\n  number: 0\n  run_exports:\n    # SO name changes at minor rev bumps.\n    - {{ pin_subpackage('sleef', max_pin='x') }}\n  skip: true  # [win and vc<14]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - cmake\n    - ninja        # [unix]\n    - llvm-openmp  # [osx]\n    - libgomp      # [linux]\n\ntest:\n  commands:\n    - test -f $PREFIX/include/sleef.h                          # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\sleef.h exit 1  # [win]\n\nabout:\n  home: https://sleef.org/\n  license: BSL-1.0\n  license_file: LICENSE.txt\n  summary: SIMD library for evaluating elementary functions\n\nextra:\n  recipe-maintainers:\n    - bluescarni\n",
  "req": {
   "__set__": true,

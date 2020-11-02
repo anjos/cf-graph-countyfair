@@ -522,6 +522,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "gdbm"
+ ],
  "pinning_version": "2020.08.15.14.59.48",
  "raw_meta_yaml": "{% set name = \"gdbm\" %}\n{% set version = \"1.18\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: ftp://ftp.gnu.org/gnu/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha1: 0f1056ab3beb1bf09dad06f8083f2c79716a5b1b\n  patches:\n    # From https://github.com/spack/spack/commit/6d7daf0def6b8c432b5e79d48c96f29faf3d2db9\n    - gdbm_gcc_10.patch\n\nbuild:\n  number: 2\n  run_exports:\n    # Please see ABI report\n    # https://abi-laboratory.pro/index.php?view=timeline&l=gdbm\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n  skip: True  # [win]\n\nrequirements:\n  build:\n    - libtool  # [unix]\n    - {{ compiler('c') }}\n    - make\n  host:\n    - readline\n\ntest:\n  commands:\n    - gdbm_dump --version\n    - gdbm_load --version\n    - gdbmtool --version\n\nabout:\n  home: https://www.gnu.org.ua/software/gdbm/\n  license: GPL-3.0\n  license_family: GPL\n  license_file: COPYING\n  summary: >\n    A library of database functions that use extensible hashing and works\n    similar to the standard UNIX dbm functions.\n\nextra:\n  recipe-maintainers:\n    - hmaarrfk\n    - jakirkham\n",
  "req": {

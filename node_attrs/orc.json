@@ -941,6 +941,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "orc"
+ ],
  "pinning_version": "2020.10.01.19.13.14",
  "raw_meta_yaml": "{% set version = \"1.6.5\" %}\n\npackage:\n  name: orc\n  version: {{ version }}\n\nsource:\n  url: https://archive.apache.org/dist/orc/orc-{{ version }}/orc-{{ version }}.tar.gz\n  sha256: 1e77840861a5c5c80173b39a32f4fba97fb3ed9d0cd492d8eae65e53bd496e98\n  patches:\n    # ORC builds by default with -Werror but some dependencies omit warnings.\n    # This deactivates -Werror\n    - 0001-Deactivate-aggressive-failures-on-warnings.patch\n    - 0002-Partially-rework-cmake-modules-to-accommodate-librar.patch\n    - 0003-Don-t-force-orc-to-be-a-static-library-let-end-user-.patch\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(\"orc\", max_pin=\"x.x.x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - ninja       # [unix]\n    # `protoc` is also used for building\n    - libprotobuf\n    - cmake\n  host:\n    - zlib\n    - snappy\n    - libprotobuf\n    - lz4-c\n    - zstd\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/liborc${SHLIB_EXT}  # [unix]\n    - test -f $PREFIX/include/orc/Common.hh   # [unix]\n\nabout:\n  home: http://github.com/apache/orc\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: C++ libraries for Apache ORC\n\nextra:\n  recipe-maintainers:\n    - wesm\n    - xhochy\n    - nehaljwani\n",
  "req": {

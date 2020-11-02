@@ -1782,6 +1782,9 @@
    ]
   }
  },
+ "outputs_names": [
+  "slepc"
+ ],
  "pinning_version": "2020.10.31.20.42.37",
  "raw_meta_yaml": "{% set version = \"3.14.0\" %}\n{% set sha256 = \"37f8bb270169d1d3f5d43756ac8929d56204e596bd7a78a7daff707513472e46\" %}\n\n{% set version_xy = version.rsplit(\".\", 1)[0] %}\n{% set mpi = mpi or 'mpich' %}\n\npackage:\n  name: slepc\n  version: {{ version }}\n\nsource:\n  url: http://slepc.upv.es/download/distrib/slepc-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  skip: true  # [win]\n  number: 1\n  run_exports:\n    - {{ pin_subpackage('slepc', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n    - python\n  host:\n    - libblas\n    - libcblas\n    - liblapack\n    - {{ mpi }}\n    - petsc {{ version_xy }}.*\n    - suitesparse\n  run:\n    - {{ mpi }}\n    - petsc\n    - suitesparse\n\ntest:\n  requires:\n    - pkg-config\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n  files:\n    - tests/test10.c\n    - tests/test14f.F\n    - tests/makefile\n  commands:\n    - PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig pkg-config --cflags SLEPc\n    - PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig pkg-config --libs   SLEPc\n\nabout:\n  home: http://slepc.upv.es/\n  summary: 'SLEPc: Scalable Library for Eigenvalue Problem Computations'\n  license: BSD-2-Clause\n  license_file: LICENSE.md\n  license_family: BSD\n\nextra:\n  recipe-maintainers:\n    - dalcinl\n    - joseeroman\n    - minrk\n",
  "req": {

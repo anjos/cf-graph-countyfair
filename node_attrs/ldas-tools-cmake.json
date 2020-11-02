@@ -409,6 +409,9 @@
    ]
   }
  },
+ "outputs_names": [
+  "ldas-tools-cmake"
+ ],
  "pinning_version": "2020.06.10.22.19.47",
  "raw_meta_yaml": "{% set name = \"ldas-tools-cmake\" %}\n{% set version = \"1.2.1\" %}\n{% set sha256 = \"bc4b447717753f7bde8fbc17b8f05f2f3f7f21ad4764c0530cb42bdf42c0dde3\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  ignore_run_exports:\n    # we don't actually use the compiler\n    - libgcc-ng  # [linux]\n    - libstdcxx-ng  # [linux]\n    - vc  # [win]\n    - vs2015_runtime  # [win]\n  number: 0\n\nrequirements:\n  build:\n    # we need a compiler present, osx has one by default\n    - {{ compiler('c') }}  # [not osx]\n    - {{ compiler('cxx') }}  # [not osx]\n    - cmake >=3.2\n    - pkg-config\n  host:\n    - igwn-cmake >=1.2.1\n  run:\n    - igwn-cmake >=1.2.1\n\ntest:\n  requires:\n    - pkg-config  # [unix]\n  commands:\n    - test -f ${PREFIX}/share/ldas-tools/cmake/Modules/LDASToolsCMakeConfig.cmake  # [unix]\n    - if not exist %LIBRARY_PREFIX%\\share\\ldas-tools\\cmake\\Modules\\LDASToolsCMakeConfig.cmake exit 1  # [win]\n    - test \"$(pkg-config --modversion ldastoolscmake)\" == \"{{ version }}\"  # [unix]\n\nabout:\n  home: https://git.ligo.org/ldastools/LDAS_Tools\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: CMake functions used by LDAS Tools\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - emaros\n",
  "req": {

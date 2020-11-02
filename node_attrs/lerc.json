@@ -435,6 +435,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "lerc"
+ ],
  "pinning_version": "2020.08.04.14.41.32",
  "raw_meta_yaml": "{% set name = \"lerc\" %}\n{% set version = \"2.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/Esri/lerc/archive/v{{ version }}.tar.gz\n  sha256: abc0c5c149144d39a8b351ff5a9a5940c0f66ba908ecf717d58f8f71065d11fe\n  # CMakeLists.txt taken from master, and adapted for better compatibility\n  # PR made: https://github.com/Esri/lerc/pull/128\n\nbuild:\n  number: 0\n  run_exports:\n    # No real information, keep conda-forge defaults\n    - {{ pin_subpackage('lerc', max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make  # [unix]\n    - ninja  # [win]\n  #host:\n    # TODO: add support for\n    # gdal\n    # geotiff\n\ntest:\n  commands:\n    - if not exist %LIBRARY_INC%\\Lerc_types.h exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\Lerc.dll exit 1      # [win]\n    - if not exist %LIBRARY_LIB%\\Lerc.lib exit 1      # [win]\n    - test -f ${PREFIX}/lib/libLerc${SHLIB_EXT}       # [unix]\n    - test -f ${PREFIX}/include/Lerc_types.h          # [unix]\n\nabout:\n  home: https://github.com/Esri/lerc\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: LERC - Limited Error Raster Compression\n\n  description: |\n    LERC is an open-source image or raster format which\n    supports rapid encoding and decoding for any pixel type\n    (not just RGB or Byte). Users set the maximum compression\n    error per pixel while encoding, so the precision of the\n    original input image is preserved (within user defined\n    error bounds).\n\nextra:\n  recipe-maintainers:\n    - hmaarrfk\n",
  "req": {

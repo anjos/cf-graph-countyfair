@@ -359,6 +359,9 @@
    ]
   }
  },
+ "outputs_names": [
+  "nodeenv"
+ ],
  "pinning_version": "2020.08.21.04.46.41",
  "raw_meta_yaml": "{% set name = \"nodeenv\" %}\n{% set version = \"1.5.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/ekalinin/nodeenv/archive/{{ version }}.tar.gz\n  sha256: c79669818bf010d8539cc9a53729b6be089bb482daac15bca2bf4196b2343284\n\nbuild:\n  number: 0\n  entry_points:\n    - nodeenv = nodeenv:main\n  script: {{ PYTHON }} -m pip install . --no-deps -vv\n  noarch: python\n\nrequirements:\n  build:\n    - pip\n    - python\n    - setuptools\n  run:\n    - python\n    - setuptools  # depends on pkg_resources at runtime\n\ntest:\n  commands:\n    - nodeenv --help\n    # skip test_smoke because nodejs fails with:\n    #   nodejs: /lib64/libc.so.6: version `GLIBC_2.16' not found (required by nodejs)\n    # let's assume it's an issue with the docker image\n    - pytest tests -ra -k \"not test_smoke\"\n  requires:\n    - pytest\n    - mock\n    - coverage\n  source_files:\n    - tests\n\nabout:\n  home: https://github.com/ekalinin/nodeenv\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Node.js virtual environment builder\n\nextra:\n  recipe-maintainers:\n    - nicoddemus\n",
  "req": {

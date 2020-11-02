@@ -256,6 +256,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "metaio"
+ ],
  "pinning_version": "2018.08.31",
  "raw_meta_yaml": "{% set name = \"metaio\" %}\n{% set version = \"8.5.1\" %}\n{% set posix = 'm2-' if win else '' %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/{{ name }}-{{ version }}.tar.gz\n  sha256: cf1bb2cf9148a46e94100c72d12a48f7478dae25a0da37d58a3019f757cdb407\n  patches:\n    # remove scripts that shouldn't be installed\n    - remove-unused.patch\n    # remove lwtselect on windows (it's bash)\n    - remove-lwtselect.patch  # [win]\n\nbuild:\n  number: 1001\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - {{ posix }}make\n    - posix  # [win]\n  host:\n    - zlib\n  run:\n    - zlib\n\ntest:\n  source_files:\n    - src/dmt_sample.xml\n  commands:\n    - lwtscan src/dmt_sample.xml\n    - lwtprint src/dmt_sample.xml -t gds_trigger -c ifo -c name -c subtype -c significance\n    - lwtcut src/dmt_sample.xml -r 1-10 -o cut.xml\n    - lwtdiff src/dmt_sample.xml src/dmt_sample.xml\n\nabout:\n  home: https://wiki.ligo.org/Computing/MetaIO\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LIGO Light-Weight XML Library\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n",
  "req": {

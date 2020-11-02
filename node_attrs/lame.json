@@ -372,6 +372,9 @@
    "elements": []
   }
  },
+ "outputs_names": [
+  "lame"
+ ],
  "pinning_version": "2019.02.24",
  "raw_meta_yaml": "# Jinja variables help maintain the recipe as you'll update the version only here.\n# Using the name variable with the URL in line 13 is conviniet\n# when copying and pasting from another recipe, but not really needed.\n{% set name = \"lame\" %}\n{% set version = \"3.100\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://downloads.sourceforge.net/sourceforge/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e\n  patches:\n    - libmp3lame.patch\n\nbuild:\n  number: 1001\n  skip: True  # [win]\n  run_exports:\n    # seems to be minor version compatibility\n    # https://abi-laboratory.pro/tracker/timeline/lame/\n    - {{ pin_subpackage('lame', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - make\n\ntest:\n  commands:\n    - lame --genre-list testcase.mp3\n\nabout:\n  home: https://lame.sourceforge.io/\n  license: LGPL\n  license_file: LICENSE\n  summary: 'High quality MPEG Audio Layer III (MP3) encoder'\n\n  # The remaining entries in this section are optional, but recommended\n  description: |\n    LAME is a high quality MPEG Audio Layer III (MP3) encoder licensed under the LGPL.\n    Today, LAME is considered the best MP3 encoder at mid-high bitrates and at VBR, mostly\n    thanks to the dedicated work of its developers and the open source licensing model\n    that allowed the project to tap into engineering resources from all around the world.\n  doc_url: http://lame.sourceforge.net/using.php\n  dev_url: https://svn.code.sf.net/p/lame/svn/trunk/lame/\n\nextra:\n  recipe-maintainers:\n    - soumith\n",
  "req": {
