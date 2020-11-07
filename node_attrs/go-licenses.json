@@ -1,7 +1,34 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "head": {
+     "ref": "<this_is_not_a_branch>"
+    },
+    "state": "closed"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  }
+ ],
  "archived": false,
- "bad": "Upstream: Could not find version on github",
- "conda-forge.yml": {},
+ "bad": false,
+ "conda-forge.yml": {
+  "provider": {
+   "linux_aarch64": "default",
+   "linux_ppc64le": "default"
+  }
+ },
  "feedstock_name": "go-licenses",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -9,7 +36,10 @@
    "home": "https://github.com/google/go-licenses",
    "license": "Apache-2.0",
    "license_family": "Apache",
-   "license_file": "LICENSE",
+   "license_file": [
+    "LICENSE",
+    "thirdparty-licenses.txt"
+   ],
    "summary": "A tool to collect licenses from the dependency tree of a Go package in order to comply with redistribution terms."
   },
   "build": {
@@ -17,25 +47,50 @@
   },
   "extra": {
    "recipe-maintainers": [
-    "dhirschfeld"
+    "dhirschfeld",
+    "mbargull"
    ]
   },
   "package": {
    "name": "go-licenses",
-   "version": "0.0.35"
+   "version": "0.0.36"
   },
   "requirements": {
    "build": [
     "go_compiler_stub"
+   ],
+   "host": null,
+   "run": [
+    "go"
    ]
   },
-  "source": {
-   "sha256": "fbd30c6704a02fdce0fbc1ebf8b07871a9c4db9fc87c14a5b08dfcdc1bc7739f",
-   "url": "https://github.com/google/go-licenses/archive/f29a4c695c3d0bedb950061032f97e90aa28d846.zip"
-  },
+  "source": [
+   {
+    "patches": [
+     "0001-Add-path-to-license-archive-relative-to-executable.patch",
+     "0002-Recognize-more-license-file-name-patterns.patch"
+    ],
+    "sha256": "e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961",
+    "url": "https://github.com/google/go-licenses/archive/73411c8fa237ccc6a75af79d0a5bc021c9487aad.tar.gz"
+   },
+   {
+    "folder": "licenseclassifier-842c0d70d702",
+    "patches": [
+     "0001-Use-filepath.IsAbs.patch"
+    ],
+    "sha256": "7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930",
+    "url": "https://github.com/google/licenseclassifier/archive/842c0d70d702.tar.gz"
+   }
+  ],
   "test": {
    "commands": [
-    "test -f $PREFIX/bin/go-licenses"
+    "export GOPATH=\"$(pwd)/gopath\"",
+    "go get -d \"github.com/google/go-licenses\"",
+    "go-licenses csv \"github.com/google/go-licenses\""
+   ],
+   "requires": [
+    "git",
+    "go"
    ]
   }
  },
@@ -52,19 +107,27 @@
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "go"
+   ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "git",
+    "go"
+   ]
   }
  },
- "meta_yaml": {
+ "linux_aarch64_meta_yaml": {
   "about": {
    "home": "https://github.com/google/go-licenses",
    "license": "Apache-2.0",
    "license_family": "Apache",
-   "license_file": "LICENSE",
+   "license_file": [
+    "LICENSE",
+    "thirdparty-licenses.txt"
+   ],
    "summary": "A tool to collect licenses from the dependency tree of a Go package in order to comply with redistribution terms."
   },
   "build": {
@@ -73,31 +136,334 @@
   "extra": {
    "recipe-maintainers": [
     "dhirschfeld",
-    "dhirschfeld",
-    "dhirschfeld"
+    "mbargull"
    ]
   },
   "package": {
    "name": "go-licenses",
-   "version": "0.0.35"
+   "version": "0.0.36"
+  },
+  "requirements": {
+   "build": [
+    "go_compiler_stub"
+   ],
+   "host": null,
+   "run": [
+    "go"
+   ]
+  },
+  "source": [
+   {
+    "patches": [
+     "0001-Add-path-to-license-archive-relative-to-executable.patch",
+     "0002-Recognize-more-license-file-name-patterns.patch"
+    ],
+    "sha256": "e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961",
+    "url": "https://github.com/google/go-licenses/archive/73411c8fa237ccc6a75af79d0a5bc021c9487aad.tar.gz"
+   },
+   {
+    "folder": "licenseclassifier-842c0d70d702",
+    "patches": [
+     "0001-Use-filepath.IsAbs.patch"
+    ],
+    "sha256": "7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930",
+    "url": "https://github.com/google/licenseclassifier/archive/842c0d70d702.tar.gz"
+   }
+  ],
+  "test": {
+   "commands": [
+    "export GOPATH=\"$(pwd)/gopath\"",
+    "go get -d \"github.com/google/go-licenses\"",
+    "go-licenses csv \"github.com/google/go-licenses\""
+   ],
+   "requires": [
+    "git",
+    "go"
+   ]
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "go_compiler_stub"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "go"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "git",
+    "go"
+   ]
+  }
+ },
+ "linux_ppc64le_meta_yaml": {
+  "about": {
+   "home": "https://github.com/google/go-licenses",
+   "license": "Apache-2.0",
+   "license_family": "Apache",
+   "license_file": [
+    "LICENSE",
+    "thirdparty-licenses.txt"
+   ],
+   "summary": "A tool to collect licenses from the dependency tree of a Go package in order to comply with redistribution terms."
+  },
+  "build": {
+   "number": "0"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "dhirschfeld",
+    "mbargull"
+   ]
+  },
+  "package": {
+   "name": "go-licenses",
+   "version": "0.0.36"
+  },
+  "requirements": {
+   "build": [
+    "go_compiler_stub"
+   ],
+   "host": null,
+   "run": [
+    "go"
+   ]
+  },
+  "source": [
+   {
+    "patches": [
+     "0001-Add-path-to-license-archive-relative-to-executable.patch",
+     "0002-Recognize-more-license-file-name-patterns.patch"
+    ],
+    "sha256": "e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961",
+    "url": "https://github.com/google/go-licenses/archive/73411c8fa237ccc6a75af79d0a5bc021c9487aad.tar.gz"
+   },
+   {
+    "folder": "licenseclassifier-842c0d70d702",
+    "patches": [
+     "0001-Use-filepath.IsAbs.patch"
+    ],
+    "sha256": "7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930",
+    "url": "https://github.com/google/licenseclassifier/archive/842c0d70d702.tar.gz"
+   }
+  ],
+  "test": {
+   "commands": [
+    "export GOPATH=\"$(pwd)/gopath\"",
+    "go get -d \"github.com/google/go-licenses\"",
+    "go-licenses csv \"github.com/google/go-licenses\""
+   ],
+   "requires": [
+    "git",
+    "go"
+   ]
+  }
+ },
+ "linux_ppc64le_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "go_compiler_stub"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "go"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "git",
+    "go"
+   ]
+  }
+ },
+ "meta_yaml": {
+  "about": {
+   "home": "https://github.com/google/go-licenses",
+   "license": "Apache-2.0",
+   "license_family": "Apache",
+   "license_file": [
+    "LICENSE",
+    "thirdparty-licenses.txt",
+    "LICENSE",
+    "thirdparty-licenses.txt",
+    "LICENSE",
+    "thirdparty-licenses.txt",
+    "LICENSE",
+    "thirdparty-licenses.txt",
+    "LICENSE",
+    "thirdparty-licenses.txt"
+   ],
+   "summary": "A tool to collect licenses from the dependency tree of a Go package in order to comply with redistribution terms."
+  },
+  "build": {
+   "number": "0"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "dhirschfeld",
+    "mbargull",
+    "dhirschfeld",
+    "mbargull",
+    "dhirschfeld",
+    "mbargull",
+    "dhirschfeld",
+    "mbargull",
+    "dhirschfeld",
+    "mbargull"
+   ]
+  },
+  "package": {
+   "name": "go-licenses",
+   "version": "0.0.36"
   },
   "requirements": {
    "build": [
     "go_compiler_stub",
     "go_compiler_stub",
     "go_compiler_stub",
+    "go_compiler_stub",
+    "go_compiler_stub",
     "posix"
+   ],
+   "host": null,
+   "run": [
+    "go",
+    "go",
+    "go",
+    "go",
+    "go"
    ]
   },
-  "source": {
-   "sha256": "fbd30c6704a02fdce0fbc1ebf8b07871a9c4db9fc87c14a5b08dfcdc1bc7739f",
-   "url": "https://github.com/google/go-licenses/archive/f29a4c695c3d0bedb950061032f97e90aa28d846.zip"
-  },
+  "source": [
+   {
+    "patches": [
+     "0001-Add-path-to-license-archive-relative-to-executable.patch",
+     "0002-Recognize-more-license-file-name-patterns.patch"
+    ],
+    "sha256": "e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961",
+    "url": "https://github.com/google/go-licenses/archive/73411c8fa237ccc6a75af79d0a5bc021c9487aad.tar.gz"
+   },
+   {
+    "folder": "licenseclassifier-842c0d70d702",
+    "patches": [
+     "0001-Use-filepath.IsAbs.patch"
+    ],
+    "sha256": "7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930",
+    "url": "https://github.com/google/licenseclassifier/archive/842c0d70d702.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Add-path-to-license-archive-relative-to-executable.patch",
+     "0002-Recognize-more-license-file-name-patterns.patch"
+    ],
+    "sha256": "e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961",
+    "url": "https://github.com/google/go-licenses/archive/73411c8fa237ccc6a75af79d0a5bc021c9487aad.tar.gz"
+   },
+   {
+    "folder": "licenseclassifier-842c0d70d702",
+    "patches": [
+     "0001-Use-filepath.IsAbs.patch"
+    ],
+    "sha256": "7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930",
+    "url": "https://github.com/google/licenseclassifier/archive/842c0d70d702.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Add-path-to-license-archive-relative-to-executable.patch",
+     "0002-Recognize-more-license-file-name-patterns.patch"
+    ],
+    "sha256": "e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961",
+    "url": "https://github.com/google/go-licenses/archive/73411c8fa237ccc6a75af79d0a5bc021c9487aad.tar.gz"
+   },
+   {
+    "folder": "licenseclassifier-842c0d70d702",
+    "patches": [
+     "0001-Use-filepath.IsAbs.patch"
+    ],
+    "sha256": "7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930",
+    "url": "https://github.com/google/licenseclassifier/archive/842c0d70d702.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Add-path-to-license-archive-relative-to-executable.patch",
+     "0002-Recognize-more-license-file-name-patterns.patch"
+    ],
+    "sha256": "e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961",
+    "url": "https://github.com/google/go-licenses/archive/73411c8fa237ccc6a75af79d0a5bc021c9487aad.tar.gz"
+   },
+   {
+    "folder": "licenseclassifier-842c0d70d702",
+    "patches": [
+     "0001-Use-filepath.IsAbs.patch"
+    ],
+    "sha256": "7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930",
+    "url": "https://github.com/google/licenseclassifier/archive/842c0d70d702.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Add-path-to-license-archive-relative-to-executable.patch",
+     "0002-Recognize-more-license-file-name-patterns.patch"
+    ],
+    "sha256": "e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961",
+    "url": "https://github.com/google/go-licenses/archive/73411c8fa237ccc6a75af79d0a5bc021c9487aad.tar.gz"
+   },
+   {
+    "folder": "licenseclassifier-842c0d70d702",
+    "patches": [
+     "0001-Use-filepath.IsAbs.patch"
+    ],
+    "sha256": "7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930",
+    "url": "https://github.com/google/licenseclassifier/archive/842c0d70d702.tar.gz"
+   }
+  ],
   "test": {
    "commands": [
-    "test -f $PREFIX/bin/go-licenses",
-    "test -f $PREFIX/bin/go-licenses",
-    "if not exist %PREFIX%\\\\bin\\\\go-licenses.exe exit 1"
+    "export GOPATH=\"$(pwd)/gopath\"",
+    "go get -d \"github.com/google/go-licenses\"",
+    "go-licenses csv \"github.com/google/go-licenses\"",
+    "export GOPATH=\"$(pwd)/gopath\"",
+    "go get -d \"github.com/google/go-licenses\"",
+    "go-licenses csv \"github.com/google/go-licenses\"",
+    "export GOPATH=\"$(pwd)/gopath\"",
+    "go get -d \"github.com/google/go-licenses\"",
+    "go-licenses csv \"github.com/google/go-licenses\"",
+    "export GOPATH=\"$(pwd)/gopath\"",
+    "go get -d \"github.com/google/go-licenses\"",
+    "go-licenses csv \"github.com/google/go-licenses\"",
+    "set \"GOPATH=%CD%/gopath\"",
+    "go get -d \"github.com/google/go-licenses\"",
+    "go-licenses csv \"github.com/google/go-licenses\""
+   ],
+   "requires": [
+    "git",
+    "go",
+    "git",
+    "go",
+    "git",
+    "go",
+    "git",
+    "go",
+    "git",
+    "go"
    ]
   }
  },
@@ -107,7 +473,10 @@
    "home": "https://github.com/google/go-licenses",
    "license": "Apache-2.0",
    "license_family": "Apache",
-   "license_file": "LICENSE",
+   "license_file": [
+    "LICENSE",
+    "thirdparty-licenses.txt"
+   ],
    "summary": "A tool to collect licenses from the dependency tree of a Go package in order to comply with redistribution terms."
   },
   "build": {
@@ -115,25 +484,50 @@
   },
   "extra": {
    "recipe-maintainers": [
-    "dhirschfeld"
+    "dhirschfeld",
+    "mbargull"
    ]
   },
   "package": {
    "name": "go-licenses",
-   "version": "0.0.35"
+   "version": "0.0.36"
   },
   "requirements": {
    "build": [
     "go_compiler_stub"
+   ],
+   "host": null,
+   "run": [
+    "go"
    ]
   },
-  "source": {
-   "sha256": "fbd30c6704a02fdce0fbc1ebf8b07871a9c4db9fc87c14a5b08dfcdc1bc7739f",
-   "url": "https://github.com/google/go-licenses/archive/f29a4c695c3d0bedb950061032f97e90aa28d846.zip"
-  },
+  "source": [
+   {
+    "patches": [
+     "0001-Add-path-to-license-archive-relative-to-executable.patch",
+     "0002-Recognize-more-license-file-name-patterns.patch"
+    ],
+    "sha256": "e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961",
+    "url": "https://github.com/google/go-licenses/archive/73411c8fa237ccc6a75af79d0a5bc021c9487aad.tar.gz"
+   },
+   {
+    "folder": "licenseclassifier-842c0d70d702",
+    "patches": [
+     "0001-Use-filepath.IsAbs.patch"
+    ],
+    "sha256": "7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930",
+    "url": "https://github.com/google/licenseclassifier/archive/842c0d70d702.tar.gz"
+   }
+  ],
   "test": {
    "commands": [
-    "test -f $PREFIX/bin/go-licenses"
+    "export GOPATH=\"$(pwd)/gopath\"",
+    "go get -d \"github.com/google/go-licenses\"",
+    "go-licenses csv \"github.com/google/go-licenses\""
+   ],
+   "requires": [
+    "git",
+    "go"
    ]
   }
  },
@@ -150,20 +544,27 @@
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "go"
+   ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "git",
+    "go"
+   ]
   }
  },
  "outputs_names": [
   "go-licenses"
  ],
- "raw_meta_yaml": "{% set name = \"go-licenses\" %}\n{% set version = \"0.0.35\" %}\n{% set sha = \"f29a4c695c3d0bedb950061032f97e90aa28d846\" %}\n\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/google/{{ name }}/archive/{{ sha }}.zip\n  sha256: fbd30c6704a02fdce0fbc1ebf8b07871a9c4db9fc87c14a5b08dfcdc1bc7739f\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('go') }}\n    - posix  # [win]\n\ntest:\n  commands:\n    - test -f $PREFIX/bin/go-licenses  # [unix]\n    - if not exist %PREFIX%\\\\bin\\\\go-licenses.exe exit 1  # [win]\n\nabout:\n  home: https://github.com/google/go-licenses\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: 'A tool to collect licenses from the dependency tree of a Go package in order to comply with redistribution terms.'\n\nextra:\n  recipe-maintainers:\n    - dhirschfeld\n",
+ "pinning_version": "2020.11.07.01.17.20",
+ "raw_meta_yaml": "# NOTE: The package version does not correspond to an upstream version but\n#       rather denotes the commit number. E.g., \"0.0.35\" is the 35th commit.\n{% set version = \"0.0.36\" %}\n{% set commit = \"73411c8fa237ccc6a75af79d0a5bc021c9487aad\" %}\n\npackage:\n  name: go-licenses\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/google/go-licenses/archive/{{ commit }}.tar.gz\n    sha256: e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961\n    patches:\n      - 0001-Add-path-to-license-archive-relative-to-executable.patch\n      - 0002-Recognize-more-license-file-name-patterns.patch\n  - url: https://github.com/google/licenseclassifier/archive/{{ licenseclassifier_commit }}.tar.gz\n    sha256: 7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930\n    folder: licenseclassifier-{{ licenseclassifier_commit }}\n    patches:\n      - 0001-Use-filepath.IsAbs.patch\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('go') }}\n    - posix  # [win]\n  host:\n  run:\n    - go\n\ntest:\n  commands:\n    - export GOPATH=\"$(pwd)/gopath\"  # [not win]\n    - set \"GOPATH=%CD%/gopath\"  # [win]\n    - go get -d \"github.com/google/go-licenses\"\n    - go-licenses csv \"github.com/google/go-licenses\"\n  requires:\n    - git\n    - go\n\nabout:\n  home: https://github.com/google/go-licenses\n  license: Apache-2.0\n  license_family: Apache\n  license_file:\n    - LICENSE\n    - thirdparty-licenses.txt\n  summary: 'A tool to collect licenses from the dependency tree of a Go package in order to comply with redistribution terms.'\n\nextra:\n  recipe-maintainers:\n    - dhirschfeld\n    - mbargull\n",
  "req": {
   "__set__": true,
   "elements": [
+   "go",
    "go_compiler_stub",
    "posix"
   ]
@@ -182,13 +583,19 @@
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "go"
+   ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "git",
+    "go"
+   ]
   }
  },
+ "smithy_version": "3.8.5",
  "strong_exports": false,
  "total_requirements": {
   "build": {
@@ -204,21 +611,29 @@
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "go"
+   ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "git",
+    "go"
+   ]
   }
  },
  "url": "https://github.com/google/go-licenses/archive/f29a4c695c3d0bedb950061032f97e90aa28d846.zip",
- "version": "0.0.35",
+ "version": "0.0.36",
  "win_64_meta_yaml": {
   "about": {
    "home": "https://github.com/google/go-licenses",
    "license": "Apache-2.0",
    "license_family": "Apache",
-   "license_file": "LICENSE",
+   "license_file": [
+    "LICENSE",
+    "thirdparty-licenses.txt"
+   ],
    "summary": "A tool to collect licenses from the dependency tree of a Go package in order to comply with redistribution terms."
   },
   "build": {
@@ -226,26 +641,51 @@
   },
   "extra": {
    "recipe-maintainers": [
-    "dhirschfeld"
+    "dhirschfeld",
+    "mbargull"
    ]
   },
   "package": {
    "name": "go-licenses",
-   "version": "0.0.35"
+   "version": "0.0.36"
   },
   "requirements": {
    "build": [
     "go_compiler_stub",
     "posix"
+   ],
+   "host": null,
+   "run": [
+    "go"
    ]
   },
-  "source": {
-   "sha256": "fbd30c6704a02fdce0fbc1ebf8b07871a9c4db9fc87c14a5b08dfcdc1bc7739f",
-   "url": "https://github.com/google/go-licenses/archive/f29a4c695c3d0bedb950061032f97e90aa28d846.zip"
-  },
+  "source": [
+   {
+    "patches": [
+     "0001-Add-path-to-license-archive-relative-to-executable.patch",
+     "0002-Recognize-more-license-file-name-patterns.patch"
+    ],
+    "sha256": "e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961",
+    "url": "https://github.com/google/go-licenses/archive/73411c8fa237ccc6a75af79d0a5bc021c9487aad.tar.gz"
+   },
+   {
+    "folder": "licenseclassifier-842c0d70d702",
+    "patches": [
+     "0001-Use-filepath.IsAbs.patch"
+    ],
+    "sha256": "7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930",
+    "url": "https://github.com/google/licenseclassifier/archive/842c0d70d702.tar.gz"
+   }
+  ],
   "test": {
    "commands": [
-    "if not exist %PREFIX%\\\\bin\\\\go-licenses.exe exit 1"
+    "set \"GOPATH=%CD%/gopath\"",
+    "go get -d \"github.com/google/go-licenses\"",
+    "go-licenses csv \"github.com/google/go-licenses\""
+   ],
+   "requires": [
+    "git",
+    "go"
    ]
   }
  },
@@ -263,11 +703,16 @@
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "go"
+   ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "git",
+    "go"
+   ]
   }
  }
 }
