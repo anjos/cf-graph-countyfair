@@ -428,13 +428,14 @@
    "ignore_run_exports": [
     "libstdcxx-ng"
    ],
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
     "nehaljwani",
     "abhi18av",
-    "jschueller"
+    "jschueller",
+    "adrianchia"
    ]
   },
   "package": {
@@ -521,16 +522,23 @@
    "ignore_run_exports": [
     "libstdcxx-ng"
    ],
-   "number": "0"
+   "number": "1",
+   "skip": true
   },
   "extra": {
    "recipe-maintainers": [
     "nehaljwani",
     "abhi18av",
     "jschueller",
+    "adrianchia",
     "nehaljwani",
     "abhi18av",
-    "jschueller"
+    "jschueller",
+    "adrianchia",
+    "nehaljwani",
+    "abhi18av",
+    "jschueller",
+    "adrianchia"
    ]
   },
   "package": {
@@ -542,6 +550,8 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "c_compiler_stub",
+    "cxx_compiler_stub",
+    "c_compiler_stub",
     "cxx_compiler_stub"
    ],
    "host": [
@@ -549,16 +559,19 @@
     "unzip",
     "zip",
     "openjdk >=8",
-    "unzip",
-    "zip"
+    "openjdk >=8",
+    "posix"
    ],
    "run": [
     "openjdk >=8",
-    "openjdk >=8"
+    "openjdk >=8",
+    "openjdk >=8",
+    "posix"
    ]
   },
   "source": {
    "patches": [
+    "0001-allow-args-to-be-passed-to-bazel_build.patch",
     "0001-allow-args-to-be-passed-to-bazel_build.patch",
     "0001-allow-args-to-be-passed-to-bazel_build.patch"
    ],
@@ -571,9 +584,13 @@
     "bazel version",
     "readelf -d $PREFIX/bin/bazel",
     "bazel -h",
+    "bazel version",
+    "bazel -h",
     "bazel version"
    ],
    "requires": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "c_compiler_stub",
@@ -607,13 +624,14 @@
   "build": {
    "binary_relocation": false,
    "ignore_prefix_files": true,
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
     "nehaljwani",
     "abhi18av",
-    "jschueller"
+    "jschueller",
+    "adrianchia"
    ]
   },
   "package": {
@@ -626,9 +644,7 @@
     "cxx_compiler_stub"
    ],
    "host": [
-    "openjdk >=8",
-    "unzip",
-    "zip"
+    "openjdk >=8"
    ],
    "run": [
     "openjdk >=8"
@@ -663,9 +679,7 @@
   "host": {
    "__set__": true,
    "elements": [
-    "openjdk",
-    "unzip",
-    "zip"
+    "openjdk"
    ]
   },
   "run": {
@@ -686,13 +700,14 @@
   "bazel"
  ],
  "pinning_version": "2020.10.20.11.22.02",
- "raw_meta_yaml": "{% set version = \"3.6.0\" %}\n\npackage:\n  name: bazel\n  version: {{ version }}\n\nsource:\n  url: https://github.com/bazelbuild/bazel/releases/download/{{ version }}/bazel-{{ version }}-dist.zip\n  sha256: 3a18f24febb5203f11b0985b27e120ac623058d1d5ca79cd6df992e67d57240a\n  patches:\n    - 0001-allow-args-to-be-passed-to-bazel_build.patch\n\nbuild:\n  number: 0\n  ignore_prefix_files: true\n  binary_relocation: false\n  skip: true  # [win]\n  # libstdc++: statically linked\n  ignore_run_exports:   # [not osx]\n    - libstdcxx-ng  # [not osx]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - openjdk >=8\n    - unzip\n    - zip\n  run:\n    - openjdk >=8\n\ntest:\n  requires:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  commands:\n    - bazel -h\n    - bazel version\n    # libstdc++ should not be included in this listing as it is statically linked\n    - readelf -d $PREFIX/bin/bazel  # [linux]\n\nabout:\n  home: https://www.bazel.io/\n  summary: build system originally authored by Google\n  description: |\n    Bazel is Google's own build tool, now publicly available in Beta. Bazel has\n    built-in support for building both client and server software, including\n    client applications for both Android and iOS platforms. It also provides an\n    extensible framework that you can use to develop your own build rules.\n  dev_url: https://github.com/bazelbuild/bazel\n  doc_url: https://www.bazel.io/versions/master/docs/install.html\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n\nextra:\n  recipe-maintainers:\n    - nehaljwani\n    - abhi18av\n    - jschueller\n",
+ "raw_meta_yaml": "{% set version = \"3.6.0\" %}\n\npackage:\n  name: bazel\n  version: {{ version }}\n\nsource:\n  url: https://github.com/bazelbuild/bazel/releases/download/{{ version }}/bazel-{{ version }}-dist.zip\n  sha256: 3a18f24febb5203f11b0985b27e120ac623058d1d5ca79cd6df992e67d57240a\n  patches:\n    - 0001-allow-args-to-be-passed-to-bazel_build.patch\n\nbuild:\n  number: 1\n  ignore_prefix_files: true\n  binary_relocation: false\n  skip: true  # [win and vc<14]\n  # libstdc++: statically linked\n  ignore_run_exports:   # [not osx]\n    - libstdcxx-ng  # [not osx]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - openjdk >=8\n    - unzip  # [linux]\n    - zip  # [linux]\n    - posix  # [win]\n  run:\n    - openjdk >=8\n    - posix  # [win]\n\ntest:\n  requires:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  commands:\n    - bazel -h\n    - bazel version\n    # libstdc++ should not be included in this listing as it is statically linked\n    - readelf -d $PREFIX/bin/bazel  # [linux]\n\nabout:\n  home: https://www.bazel.io/\n  summary: build system originally authored by Google\n  description: |\n    Bazel is Google's own build tool, now publicly available in Beta. Bazel has\n    built-in support for building both client and server software, including\n    client applications for both Android and iOS platforms. It also provides an\n    extensible framework that you can use to develop your own build rules.\n  dev_url: https://github.com/bazelbuild/bazel\n  doc_url: https://www.bazel.io/versions/master/docs/install.html\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n\nextra:\n  recipe-maintainers:\n    - nehaljwani\n    - abhi18av\n    - jschueller\n    - adrianchia\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "cxx_compiler_stub",
    "openjdk",
+   "posix",
    "unzip",
    "zip"
   ]
@@ -711,6 +726,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "openjdk",
+    "posix",
     "unzip",
     "zip"
    ]
@@ -720,7 +736,8 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "openjdk"
+    "openjdk",
+    "posix"
    ]
   },
   "test": {
@@ -745,6 +762,7 @@
    "__set__": true,
    "elements": [
     "openjdk >=8",
+    "posix",
     "unzip",
     "zip"
    ]
@@ -752,7 +770,8 @@
   "run": {
    "__set__": true,
    "elements": [
-    "openjdk >=8"
+    "openjdk >=8",
+    "posix"
    ]
   },
   "test": {
@@ -782,20 +801,20 @@
    "ignore_run_exports": [
     "libstdcxx-ng"
    ],
-   "number": "0",
+   "number": "1",
    "skip": true
   },
   "extra": {
    "recipe-maintainers": [
-    "jjhelmus",
     "nehaljwani",
     "abhi18av",
-    "jschueller"
+    "jschueller",
+    "adrianchia"
    ]
   },
   "package": {
    "name": "bazel",
-   "version": "3.4.1"
+   "version": "3.6.0"
   },
   "requirements": {
    "build": [
@@ -804,19 +823,19 @@
    ],
    "host": [
     "openjdk >=8",
-    "unzip",
-    "zip"
+    "posix"
    ],
    "run": [
-    "openjdk >=8"
+    "openjdk >=8",
+    "posix"
    ]
   },
   "source": {
    "patches": [
     "0001-allow-args-to-be-passed-to-bazel_build.patch"
    ],
-   "sha256": "27af1f11c8f23436915925b25cf6e1fb07fccf2d2a193a307c93437c60f63ba8",
-   "url": "https://github.com/bazelbuild/bazel/releases/download/3.4.1/bazel-3.4.1-dist.zip"
+   "sha256": "3a18f24febb5203f11b0985b27e120ac623058d1d5ca79cd6df992e67d57240a",
+   "url": "https://github.com/bazelbuild/bazel/releases/download/3.6.0/bazel-3.6.0-dist.zip"
   },
   "test": {
    "commands": [
@@ -841,14 +860,14 @@
    "__set__": true,
    "elements": [
     "openjdk",
-    "unzip",
-    "zip"
+    "posix"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "openjdk"
+    "openjdk",
+    "posix"
    ]
   },
   "test": {

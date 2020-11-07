@@ -60,17 +60,21 @@
  "linux_64_meta_yaml": {
   "about": {
    "home": "https://github.com/libfuse/libfuse",
-   "license": "LGPL-2.1",
+   "license": "LGPL-2.1-only AND GPL-2.0-only",
    "license_family": "LGPL",
    "license_file": "LICENSE",
    "summary": "The reference implementation of the Linux FUSE (Filesystem in Userspace) interface"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "libfuse"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
-    "asafkahlon"
+    "asafkahlon",
+    "mbargull"
    ]
   },
   "package": {
@@ -93,13 +97,19 @@
    ]
   },
   "source": {
+   "patches": [
+    "0001-Install-fusermount-init-script-into-sysconfdir.patch",
+    "0002-Enable-building-utils-on-CentOS-6.patch"
+   ],
    "sha256": "26517954567f237a7dbcb532755ba0d2c77575c5d90db7566b6e40ec05b0a039",
    "url": "https://github.com/libfuse/libfuse/releases/download/fuse-3.10.0/fuse-3.10.0.tar.xz"
   },
   "test": {
    "commands": [
     "test -f ${PREFIX}/lib/libfuse3${SHLIB_EXT}",
-    "test -f ${PREFIX}/include/fuse3/fuse.h"
+    "test -f ${PREFIX}/include/fuse3/fuse.h",
+    "mount.fuse3 2>&1 | grep -qF usage:",
+    "fusermount3 -V"
    ]
   }
  },
@@ -134,17 +144,21 @@
  "meta_yaml": {
   "about": {
    "home": "https://github.com/libfuse/libfuse",
-   "license": "LGPL-2.1",
+   "license": "LGPL-2.1-only AND GPL-2.0-only",
    "license_family": "LGPL",
    "license_file": "LICENSE",
    "summary": "The reference implementation of the Linux FUSE (Filesystem in Userspace) interface"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "libfuse"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
-    "asafkahlon"
+    "asafkahlon",
+    "mbargull"
    ]
   },
   "package": {
@@ -167,13 +181,19 @@
    ]
   },
   "source": {
+   "patches": [
+    "0001-Install-fusermount-init-script-into-sysconfdir.patch",
+    "0002-Enable-building-utils-on-CentOS-6.patch"
+   ],
    "sha256": "26517954567f237a7dbcb532755ba0d2c77575c5d90db7566b6e40ec05b0a039",
    "url": "https://github.com/libfuse/libfuse/releases/download/fuse-3.10.0/fuse-3.10.0.tar.xz"
   },
   "test": {
    "commands": [
     "test -f ${PREFIX}/lib/libfuse3${SHLIB_EXT}",
-    "test -f ${PREFIX}/include/fuse3/fuse.h"
+    "test -f ${PREFIX}/include/fuse3/fuse.h",
+    "mount.fuse3 2>&1 | grep -qF usage:",
+    "fusermount3 -V"
    ]
   }
  },
@@ -266,7 +286,7 @@
   "libfuse"
  ],
  "pinning_version": "2020.10.08.20.29.16",
- "raw_meta_yaml": "{% set name = \"libfuse\" %}\n{% set version = \"3.10.0\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name }}/{{ name }}/releases/download/fuse-{{ version }}/fuse-{{ version }}.tar.xz\n  sha256: 26517954567f237a7dbcb532755ba0d2c77575c5d90db7566b6e40ec05b0a039\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - meson\n    - ninja\n    - pkg-config\n  host:\n    - libiconv\n  run:\n    - libiconv\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libfuse3${SHLIB_EXT}\n    - test -f ${PREFIX}/include/fuse3/fuse.h\n\nabout:\n  home: https://github.com/libfuse/libfuse\n  license: LGPL-2.1\n  license_file: LICENSE\n  license_family: LGPL\n  summary: The reference implementation of the Linux FUSE (Filesystem in Userspace) interface\n\nextra:\n  recipe-maintainers:\n    - asafkahlon\n",
+ "raw_meta_yaml": "{% set version = \"3.10.0\" %}\n\npackage:\n  name: libfuse\n  version: {{ version }}\n\nsource:\n  url: https://github.com/libfuse/libfuse/releases/download/fuse-{{ version }}/fuse-{{ version }}.tar.xz\n  sha256: 26517954567f237a7dbcb532755ba0d2c77575c5d90db7566b6e40ec05b0a039\n  patches:\n    - 0001-Install-fusermount-init-script-into-sysconfdir.patch\n    - 0002-Enable-building-utils-on-CentOS-6.patch\n\nbuild:\n  number: 1\n  skip: true  # [not linux]\n  run_exports:\n    # Seems to be quite stable between minor versions\n    # https://abi-laboratory.pro/?view=timeline&l=libfuse\n    - {{ pin_subpackage('libfuse', max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - meson\n    - ninja\n    - pkg-config\n  host:\n    - libiconv\n  run:\n    - libiconv\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libfuse3${SHLIB_EXT}\n    - test -f ${PREFIX}/include/fuse3/fuse.h\n    - 'mount.fuse3 2>&1 | grep -qF usage:'\n    - fusermount3 -V\n\nabout:\n  home: https://github.com/libfuse/libfuse\n  license: LGPL-2.1-only AND GPL-2.0-only\n  license_file: LICENSE\n  license_family: LGPL\n  summary: The reference implementation of the Linux FUSE (Filesystem in Userspace) interface\n\nextra:\n  recipe-maintainers:\n    - asafkahlon\n    - mbargull\n",
  "req": {
   "__set__": true,
   "elements": [

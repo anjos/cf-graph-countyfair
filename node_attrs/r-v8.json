@@ -354,8 +354,11 @@
    "summary": "An R interface to Google's open source JavaScript engine. This  package can now be compiled either with V8 version 6 or 7 (LTS) from  nodejs or with the legacy 3.14/3.15 branch of V8."
   },
   "build": {
+   "merge_build_host": true,
    "number": "0",
    "rpaths": [
+    "lib/R/lib/",
+    "lib/",
     "lib/R/lib/",
     "lib/",
     "lib/R/lib/",
@@ -375,6 +378,8 @@
     "conda-forge/r",
     "xhochy",
     "conda-forge/r",
+    "xhochy",
+    "conda-forge/r",
     "xhochy"
    ]
   },
@@ -383,32 +388,7 @@
    "version": "3.3.1"
   },
   "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "autoconf",
-    "automake",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "autoconf",
-    "automake",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "autoconf",
-    "automake",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "autoconf",
-    "automake",
-    "pkg-config",
-    "make"
-   ],
+   "build": null,
    "host": [
     "r-base",
     "r-rcpp >=0.12.12",
@@ -433,6 +413,11 @@
     "r-curl >=1.0",
     "r-jsonlite >=1.0",
     "libv8",
+    "icu",
+    "r-base",
+    "r-rcpp >=0.12.12",
+    "r-curl >=1.0",
+    "r-jsonlite >=1.0",
     "icu"
    ],
    "run": [
@@ -451,28 +436,25 @@
     "r-base",
     "r-rcpp >=0.12.12",
     "r-curl >=1.0",
+    "r-jsonlite >=1.0",
+    "r-base",
+    "m2w64-gcc-libs",
+    "r-rcpp >=0.12.12",
+    "r-curl >=1.0",
     "r-jsonlite >=1.0"
    ]
   },
   "source": {
    "sha256": "c7f84e00350bd9b8897045c1d2f1500eeec867f6dc678a2cba307dedc24d52b4",
-   "url": [
-    "https://cran.r-project.org/src/contrib/V8_3.3.1.tar.gz",
-    "https://cran.r-project.org/src/contrib/Archive/V8/V8_3.3.1.tar.gz",
-    "https://cran.r-project.org/src/contrib/V8_3.3.1.tar.gz",
-    "https://cran.r-project.org/src/contrib/Archive/V8/V8_3.3.1.tar.gz",
-    "https://cran.r-project.org/src/contrib/V8_3.3.1.tar.gz",
-    "https://cran.r-project.org/src/contrib/Archive/V8/V8_3.3.1.tar.gz",
-    "https://cran.r-project.org/src/contrib/V8_3.3.1.tar.gz",
-    "https://cran.r-project.org/src/contrib/Archive/V8/V8_3.3.1.tar.gz"
-   ]
+   "url": "https://cran.r-project.org/bin/windows/contrib/4.0/V8_3.3.1.zip"
   },
   "test": {
    "commands": [
     "$R -e \"library('V8')\"",
     "$R -e \"library('V8')\"",
     "$R -e \"library('V8')\"",
-    "$R -e \"library('V8')\""
+    "$R -e \"library('V8')\"",
+    "\"%R%\" -e \"library('V8')\""
    ]
   }
  },
@@ -611,18 +593,13 @@
   "r-v8"
  ],
  "pinning_version": "2020.10.26.12.39.30",
- "raw_meta_yaml": "{% set version = \"3.3.1\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-v8\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/V8_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/V8/V8_{{ version }}.tar.gz\n  sha256: c7f84e00350bd9b8897045c1d2f1500eeec867f6dc678a2cba307dedc24d52b4\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 0\n  skip: true  # [win]\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ compiler('cxx') }}            # [not win]\n    - {{ compiler('m2w64_cxx') }}      # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}sed               # [win]\n    - {{ posix }}grep              # [win]\n    - {{ posix }}autoconf\n    - {{ posix }}automake          # [not win]\n    - {{ posix }}automake-wrapper  # [win]\n    - {{ posix }}pkg-config\n    - {{ posix }}make\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n  host:\n    - r-base\n    - r-rcpp >=0.12.12\n    - r-curl >=1.0\n    - r-jsonlite >=1.0\n    - libv8\n    - icu\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - r-rcpp >=0.12.12\n    - r-curl >=1.0\n    - r-jsonlite >=1.0\n\ntest:\n  commands:\n    - $R -e \"library('V8')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('V8')\\\"\"  # [win]\n\nabout:\n  home: https://github.com/jeroen/v8 (devel) https://v8.dev (upstream)\n  license: MIT\n  summary: An R interface to Google's open source JavaScript engine. This  package can now be compiled either with V8 version 6 or 7 (LTS) from  nodejs or with the legacy 3.14/3.15 branch of V8.\n  license_family: MIT\n  license_file: LICENSE\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n    - xhochy\n\n# Package: V8\n# Type: Package\n# Title: Embedded JavaScript Engine for R\n# Version: 2.3\n# Authors@R: person(\"Jeroen\", \"Ooms\", role = c(\"aut\", \"cre\"), email = \"jeroen@berkeley.edu\", comment = c(ORCID = \"0000-0002-4035-0289\"))\n# Description: An R interface to Google's open source JavaScript engine. This  package can now be compiled either with V8 version 6 or 7 (LTS) from  nodejs or with the legacy 3.14/3.15 branch of V8.\n# License: MIT + file LICENSE\n# URL: https://github.com/jeroen/v8 (devel) https://v8.dev (upstream)\n# BugReports: https://github.com/jeroen/v8/issues\n# SystemRequirements: V8 version 6 or 7 is recommended, but 3.14 (legacy) is still supported as well. On Debian / Ubuntu you need either libv8-dev or libnode-dev, on Fedora use v8-devel.\n# NeedsCompilation: yes\n# VignetteBuilder: knitr\n# Imports: Rcpp (>= 0.12.12), jsonlite (>= 1.0), curl (>= 1.0), utils\n# LinkingTo: Rcpp\n# Suggests: testthat, knitr, rmarkdown\n# RoxygenNote: 6.1.1\n# Language: en-US\n# Packaged: 2019-07-02 09:56:44 UTC; jeroen\n# Author: Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>)\n# Maintainer: Jeroen Ooms <jeroen@berkeley.edu>\n# Repository: CRAN\n# Date/Publication: 2019-07-02 10:51:07 UTC\n",
+ "raw_meta_yaml": "{% set version = \"3.3.1\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-v8\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:  # [not win]\n    - {{ cran_mirror }}/src/contrib/V8_{{ version }}.tar.gz  # [not win]\n    - {{ cran_mirror }}/src/contrib/Archive/V8/V8_{{ version }}.tar.gz  # [not win]\n  sha256: c7f84e00350bd9b8897045c1d2f1500eeec867f6dc678a2cba307dedc24d52b4  # [not win]\n\n  url: https://cran.r-project.org/bin/windows/contrib/{{ r_base[0:3] }}/V8_{{ version }}.zip  # [win]\n  sha256: 214d30a822a1d3cc9093d948e6ad3dcfda633738b0e2393c51713b59e7345d04  # [win and r_base==\"4.0\"]\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 0\n  skip: True  # [win and r_base==\"3.6\"]\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    - {{ compiler('cxx') }}  # [not win]\n    - {{ posix }}autoconf  # [not win]\n    - {{ posix }}automake  # [not win]\n    - {{ posix }}pkg-config  # [not win]\n    - {{ posix }}make  # [not win]\n  host:\n    - r-base\n    - r-rcpp >=0.12.12\n    - r-curl >=1.0\n    - r-jsonlite >=1.0\n    - libv8  # [not win]\n    - icu\n  run:\n    - r-base\n    - {{ native }}gcc-libs  # [win]\n    - r-rcpp >=0.12.12\n    - r-curl >=1.0\n    - r-jsonlite >=1.0\n\ntest:\n  commands:\n    - $R -e \"library('V8')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('V8')\\\"\"  # [win]\n\nabout:\n  home: https://github.com/jeroen/v8 (devel) https://v8.dev (upstream)\n  license: MIT\n  summary: An R interface to Google's open source JavaScript engine. This  package can now be compiled either with V8 version 6 or 7 (LTS) from  nodejs or with the legacy 3.14/3.15 branch of V8.\n  license_family: MIT\n  license_file: LICENSE\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n    - xhochy\n\n# Package: V8\n# Type: Package\n# Title: Embedded JavaScript Engine for R\n# Version: 2.3\n# Authors@R: person(\"Jeroen\", \"Ooms\", role = c(\"aut\", \"cre\"), email = \"jeroen@berkeley.edu\", comment = c(ORCID = \"0000-0002-4035-0289\"))\n# Description: An R interface to Google's open source JavaScript engine. This  package can now be compiled either with V8 version 6 or 7 (LTS) from  nodejs or with the legacy 3.14/3.15 branch of V8.\n# License: MIT + file LICENSE\n# URL: https://github.com/jeroen/v8 (devel) https://v8.dev (upstream)\n# BugReports: https://github.com/jeroen/v8/issues\n# SystemRequirements: V8 version 6 or 7 is recommended, but 3.14 (legacy) is still supported as well. On Debian / Ubuntu you need either libv8-dev or libnode-dev, on Fedora use v8-devel.\n# NeedsCompilation: yes\n# VignetteBuilder: knitr\n# Imports: Rcpp (>= 0.12.12), jsonlite (>= 1.0), curl (>= 1.0), utils\n# LinkingTo: Rcpp\n# Suggests: testthat, knitr, rmarkdown\n# RoxygenNote: 6.1.1\n# Language: en-US\n# Packaged: 2019-07-02 09:56:44 UTC; jeroen\n# Author: Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>)\n# Maintainer: Jeroen Ooms <jeroen@berkeley.edu>\n# Repository: CRAN\n# Date/Publication: 2019-07-02 10:51:07 UTC\n",
  "req": {
   "__set__": true,
   "elements": [
-   "autoconf",
-   "automake",
-   "c_compiler_stub",
-   "cxx_compiler_stub",
    "icu",
    "libv8",
-   "make",
-   "pkg-config",
+   "m2w64-gcc-libs",
    "r-base",
    "r-curl",
    "r-jsonlite",
@@ -632,20 +609,11 @@
  "requirements": {
   "build": {
    "__set__": true,
-   "elements": [
-    "autoconf",
-    "automake",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make",
-    "pkg-config"
-   ]
+   "elements": []
   },
   "host": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub",
-    "cxx_compiler_stub",
     "icu",
     "libv8",
     "r-base",
@@ -657,8 +625,7 @@
   "run": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub",
-    "cxx_compiler_stub",
+    "m2w64-gcc-libs",
     "r-base",
     "r-curl",
     "r-jsonlite",
@@ -675,14 +642,7 @@
  "total_requirements": {
   "build": {
    "__set__": true,
-   "elements": [
-    "autoconf",
-    "automake",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make",
-    "pkg-config"
-   ]
+   "elements": []
   },
   "host": {
    "__set__": true,
@@ -698,6 +658,7 @@
   "run": {
    "__set__": true,
    "elements": [
+    "m2w64-gcc-libs",
     "r-base",
     "r-curl >=1.0",
     "r-jsonlite >=1.0",
@@ -728,12 +689,11 @@
   },
   "build": {
    "merge_build_host": true,
-   "number": "1",
+   "number": "0",
    "rpaths": [
     "lib/R/lib/",
     "lib/"
-   ],
-   "skip": true
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -743,44 +703,27 @@
   },
   "package": {
    "name": "r-v8",
-   "version": "3.2.0"
+   "version": "3.3.1"
   },
   "requirements": {
-   "build": [
-    "m2w64_c_compiler_stub",
-    "m2w64_cxx_compiler_stub",
-    "filesystem",
-    "sed",
-    "grep",
-    "autoconf",
-    "automake-wrapper",
-    "pkg-config",
-    "make",
-    "coreutils",
-    "zip"
-   ],
+   "build": null,
    "host": [
     "r-base",
     "r-rcpp >=0.12.12",
     "r-curl >=1.0",
     "r-jsonlite >=1.0",
-    "libv8",
     "icu"
    ],
    "run": [
     "r-base",
-    "gcc-libs",
+    "m2w64-gcc-libs",
     "r-rcpp >=0.12.12",
     "r-curl >=1.0",
     "r-jsonlite >=1.0"
    ]
   },
   "source": {
-   "sha256": "f575e07c6fefbc53a96e90bbb41ffdf67794cca797661eb97a6f52348ae20d7c",
-   "url": [
-    "https://cran.r-project.org/src/contrib/V8_3.2.0.tar.gz",
-    "https://cran.r-project.org/src/contrib/Archive/V8/V8_3.2.0.tar.gz"
-   ]
+   "url": "https://cran.r-project.org/bin/windows/contrib/4.0/V8_3.3.1.zip"
   },
   "test": {
    "commands": [
@@ -791,25 +734,12 @@
  "win_64_requirements": {
   "build": {
    "__set__": true,
-   "elements": [
-    "autoconf",
-    "automake-wrapper",
-    "coreutils",
-    "filesystem",
-    "grep",
-    "m2w64_c_compiler_stub",
-    "m2w64_cxx_compiler_stub",
-    "make",
-    "pkg-config",
-    "sed",
-    "zip"
-   ]
+   "elements": []
   },
   "host": {
    "__set__": true,
    "elements": [
     "icu",
-    "libv8",
     "r-base",
     "r-curl",
     "r-jsonlite",
@@ -819,7 +749,7 @@
   "run": {
    "__set__": true,
    "elements": [
-    "gcc-libs",
+    "m2w64-gcc-libs",
     "r-base",
     "r-curl",
     "r-jsonlite",
