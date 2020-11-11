@@ -19,6 +19,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/518872796.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1365,7 +1382,7 @@
   "reproc-cpp-static",
   "reproc-static"
  ],
- "pinning_version": "2020.11.07.01.17.20",
+ "pinning_version": "2020.11.10.21.31.03",
  "raw_meta_yaml": "{% set version = \"14.2.0\" %}\n\npackage:\n  name: reproc\n  version: '{{ version }}'\n\nsource:\n  - url: https://github.com/DaanDeMeyer/reproc/archive/v{{ version }}.tar.gz\n    sha256: dd6165722f6a478b695b8a6b91d50ce7d2b1f934220d02757deb5b0b716bf970\n    patches:\n      - apple_gettime.patch  # [osx]\n      - fix_rt_linking_test.patch  # [linux]\n\nbuild:\n  number: 0\n\noutputs:\n  - name: reproc\n    script: build_c.sh  # [unix]\n    script: bld_c.bat   # [win]\n    build:\n      run_exports:\n        - '{{ pin_subpackage('reproc', 'x.x') }}'\n    requirements:\n      build:\n        - {{ compiler(\"c\") }}\n        - cmake\n        - make   # [unix]\n        - ninja  # [win]\n    test:\n      commands:\n        - test -f ${PREFIX}/include/reproc/run.h                          # [unix]\n        - test -f ${PREFIX}/lib/libreproc${SHLIB_EXT}                     # [unix]\n        - test -f ${PREFIX}/lib/cmake/reproc/reproc-config-version.cmake  # [unix]\n        - test ! -f ${PREFIX}/lib/libreproc.a                             # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\reproc\\run.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\reproc\\reproc-config-version.cmake (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\reproc.lib (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\bin\\reproc.dll (exit 0) else (exit 1)  # [win]\n\n  - name: reproc-cpp\n    script: build_cpp.sh  # [unix]\n    script: bld_cpp.bat   # [win]\n    build:\n      run_exports:\n        - '{{ pin_subpackage('reproc-cpp', 'x.x') }}'\n    requirements:\n      build:\n        - '{{ compiler(\"c\") }}'\n        - '{{ compiler(\"cxx\") }}'\n        - cmake\n        - make   # [unix]\n        - ninja  # [win]\n      host:\n        - \"{{ pin_subpackage('reproc', exact=True ) }}\"\n      run:\n        - \"{{ pin_subpackage('reproc', exact=True ) }}\"\n    test:\n      commands:\n        - test -f ${PREFIX}/include/reproc++/reproc.hpp               # [unix]\n        - test -f ${PREFIX}/lib/libreproc++${SHLIB_EXT}               # [unix]\n        - test -f ${PREFIX}/lib/cmake/reproc++/reproc++-config.cmake  # [unix]\n        - test ! -f ${PREFIX}/lib/libreproc++.a                       # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\reproc++\\reproc.hpp (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\reproc++\\reproc++-config.cmake (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\reproc++.lib (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\bin\\reproc++.dll (exit 0) else (exit 1)  # [win]\n\n  - name: reproc-static\n    script: build_c.sh  # [unix]\n    script: bld_c.bat  # [win]\n    build:\n      ignore_run_exports:\n        - reproc\n    requirements:\n      build:\n        - '{{ compiler(\"c\") }}'\n        - cmake\n        - make   # [unix]\n        - ninja  # [win]\n      host:\n        - \"{{ pin_subpackage('reproc', exact=True ) }}\"\n    test:\n      commands:\n        - test ! -f ${PREFIX}/include/reproc/run.h                          # [unix]\n        - test ! -f ${PREFIX}/lib/libreproc${SHLIB_EXT}                     # [unix]\n        - test ! -f ${PREFIX}/lib/cmake/reproc/reproc-config-version.cmake  # [unix]\n        - test -f ${PREFIX}/lib/libreproc.a                                 # [unix]\n        - if exist %LIBRARY_PREFIX%\\lib\\reproc_static.lib (exit 0) else (exit 1)  # [win]\n\n  - name: reproc-cpp-static\n    script: build_cpp.sh  # [unix]\n    script: bld_cpp.bat   # [win]\n    build:\n      ignore_run_exports:\n        - reproc\n        - reproc-cpp\n    requirements:\n      build:\n        - '{{ compiler(\"c\") }}'\n        - '{{ compiler(\"cxx\") }}'\n        - cmake\n        - make   # [unix]\n        - ninja  # [win]\n      host:\n        - \"{{ pin_subpackage('reproc', exact=True ) }}\"\n        - \"{{ pin_subpackage('reproc-static', exact=True ) }}\"\n        - \"{{ pin_subpackage('reproc-cpp', exact=True ) }}\"\n    test:\n      commands:\n        - test ! -f ${PREFIX}/include/reproc++/reproc.hpp                # [unix]\n        - test ! -f ${PREFIX}/lib/libreproc++${SHLIB_EXT}                # [unix]\n        - test ! -f ${PREFIX}/lib/cmake/reproc++/reproc++-config.cmake   # [unix]\n        - test -f ${PREFIX}/lib/libreproc++.a                            # [unix]\n        - if exist %LIBRARY_PREFIX%\\lib\\reproc++_static.lib (exit 0) else (exit 1)  # [win]\n\nabout:\n  home: https://github.com/DaanDeMeyer/reproc\n  license_file: LICENSE\n  license: MIT\n  summary: reproc (Redirected Process) is a cross-platform C/C++ library that simplifies starting, stopping and communicating with external programs.\n  dev_url: https://github.com/DaanDeMeyer/reproc\n\nextra:\n  recipe-maintainers:\n    - wolfv\n    - DaanDeMeyer\n",
  "req": {
   "__set__": true,
