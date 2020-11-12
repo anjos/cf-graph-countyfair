@@ -147,6 +147,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/c5dea976-5f6e-4c62-bc3e-d6f198789f77.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "zeromq-433"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1188,7 +1207,7 @@
   "zeromq",
   "zeromq-static"
  ],
- "pinning_version": "2020.11.11.15.57.25",
+ "pinning_version": "2020.11.12.14.52.24",
  "raw_meta_yaml": "{% set name = \"zeromq\" %}\n{% set version = \"4.3.3\" %}\n{% set sha256 = \"9d9285db37ae942ed0780c016da87060497877af45094ff9e1a1ca736e3875a2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/zeromq/libzmq/releases/download/v{{ version }}/zeromq-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    - 001-windows-install.patch\n    - 002-osx-test.patch  # [osx]\n\nbuild:\n  number: 2\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}  # [not win]\n    # Windows DLLs have x.y.z in filename\n    - {{ pin_subpackage(name, max_pin='x.x.x') }}  # [win]\n\nrequirements:\n  build:\n    - automake                     # [unix]\n    - autoconf                     # [unix]\n    - make                         # [unix]\n    - cmake                        # [win]\n    - libtool                      # [unix]\n    - pkg-config                   # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - libsodium\n  run:\n    - libsodium\n\noutputs:\n  - name: zeromq\n    script: install.sh  # [unix]\n    test:\n      commands:\n        - test ! -f ${PREFIX}/lib/libzmq.a       # [unix]\n        - test -f ${PREFIX}/lib/libzmq.so        # [linux]\n        - test -f ${PREFIX}/lib/libzmq.so.5      # [linux]\n        - test -f ${PREFIX}/lib/libzmq.dylib     # [osx]\n        - test -f ${PREFIX}/lib/libzmq.5.dylib   # [osx]\n        # verify libsodium is linked\n        - otool -L ${PREFIX}/lib/libzmq.dylib | grep sodium  # [osx]\n        - ldd ${PREFIX}/lib/libzmq.so | grep sodium  # [linux]\n        - test -f ${PREFIX}/lib/cmake/ZeroMQ/ZeroMQConfig.cmake         # [unix]\n        - test -f ${PREFIX}/lib/cmake/ZeroMQ/ZeroMQConfigVersion.cmake  # [unix]\n        - ${PREFIX}/bin/curve_keygen  # [unix]\n        - if exist %LIBRARY_LIB%\\libzmq-mt-s-{{ version | replace('.', '_') }}.lib (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_BIN%\\libzmq-mt-{{ version | replace('.', '_') }}.dll (exit 0) else (exit 1)    # [win]\n        - if exist %LIBRARY_LIB%\\libzmq-mt-{{ version | replace('.', '_') }}.lib (exit 0) else (exit 1)    # [win]\n        - if exist %LIBRARY_BIN%\\libzmq.dll (exit 0) else (exit 1)                                         # [win]\n        - if exist %LIBRARY_LIB%\\libzmq.lib (exit 0) else (exit 1)                                         # [win]\n        - if exist %LIBRARY_PREFIX%\\cmake\\ZeroMQ\\ZeroMQConfig.cmake (exit 0) else (exit 1)           # [win]\n        - if exist %LIBRARY_PREFIX%\\cmake\\ZeroMQ\\ZeroMQConfigVersion.cmake (exit 0) else (exit 1)    # [win]\n  - name: zeromq-static\n    script: install.sh  # [unix]\n    requirements:\n      build:\n        - automake                     # [unix]\n        - autoconf                     # [unix]\n        - make                         # [unix]\n        - cmake                        # [win]\n        - libtool                      # [unix]\n        - pkg-config                   # [unix]\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n      host:\n        - libsodium\n        - {{ pin_subpackage(\"zeromq\", exact=True) }}\n      run:\n        - libsodium\n        - {{ pin_subpackage(\"zeromq\", exact=True) }}\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/libzmq.a           # [unix]\n\nabout:\n  home: http://zeromq.org\n  license: LGPL-3.0-or-later\n  license_file: COPYING.LESSER\n  summary: A high-performance asynchronous messaging library.\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n    - minrk\n    - SylvainCorlay\n    - JohanMabille\n",
  "req": {
   "__set__": true,
