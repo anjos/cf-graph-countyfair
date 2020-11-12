@@ -152,9 +152,6 @@
  "archived": false,
  "bad": false,
  "conda-forge.yml": {
-  "compiler_stack": "comp7",
-  "max_py_ver": "37",
-  "max_r_ver": "35",
   "provider": {
    "linux_aarch64": "azure",
    "linux_ppc64le": "azure",
@@ -561,11 +558,16 @@
     "zeromq",
     "zeromq",
     "zeromq",
+    "zeromq",
     "zeromq"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "jakirkham",
+    "minrk",
+    "SylvainCorlay",
+    "JohanMabille",
     "jakirkham",
     "minrk",
     "SylvainCorlay",
@@ -684,6 +686,49 @@
       "test -f ${PREFIX}/lib/libzmq.so",
       "test -f ${PREFIX}/lib/libzmq.so.5",
       "ldd ${PREFIX}/lib/libzmq.so | grep sodium",
+      "test -f ${PREFIX}/lib/cmake/ZeroMQ/ZeroMQConfig.cmake",
+      "test -f ${PREFIX}/lib/cmake/ZeroMQ/ZeroMQConfigVersion.cmake",
+      "${PREFIX}/bin/curve_keygen"
+     ]
+    }
+   },
+   {
+    "name": "zeromq-static",
+    "requirements": {
+     "build": [
+      "automake",
+      "autoconf",
+      "make",
+      "libtool",
+      "pkg-config",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libsodium",
+      "zeromq"
+     ],
+     "run": [
+      "libsodium",
+      "zeromq"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libzmq.a"
+     ]
+    }
+   },
+   {
+    "name": "zeromq",
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test ! -f ${PREFIX}/lib/libzmq.a",
+      "test -f ${PREFIX}/lib/libzmq.dylib",
+      "test -f ${PREFIX}/lib/libzmq.5.dylib",
+      "otool -L ${PREFIX}/lib/libzmq.dylib | grep sodium",
       "test -f ${PREFIX}/lib/cmake/ZeroMQ/ZeroMQConfig.cmake",
       "test -f ${PREFIX}/lib/cmake/ZeroMQ/ZeroMQConfigVersion.cmake",
       "${PREFIX}/bin/curve_keygen"
@@ -831,6 +876,13 @@
     "pkg-config",
     "c_compiler_stub",
     "cxx_compiler_stub",
+    "automake",
+    "autoconf",
+    "make",
+    "libtool",
+    "pkg-config",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
     "cmake",
     "c_compiler_stub",
     "cxx_compiler_stub"
@@ -840,9 +892,11 @@
     "libsodium",
     "libsodium",
     "libsodium",
+    "libsodium",
     "libsodium"
    ],
    "run": [
+    "libsodium",
     "libsodium",
     "libsodium",
     "libsodium",
@@ -856,6 +910,8 @@
     "001-windows-install.patch",
     "001-windows-install.patch",
     "001-windows-install.patch",
+    "001-windows-install.patch",
+    "002-osx-test.patch",
     "001-windows-install.patch",
     "002-osx-test.patch",
     "001-windows-install.patch"
@@ -968,6 +1024,135 @@
   }
  },
  "osx_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "autoconf",
+    "automake",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "libtool",
+    "make",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libsodium",
+    "zeromq"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libsodium",
+    "zeromq"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "http://zeromq.org",
+   "license": "LGPL-3.0-or-later",
+   "license_file": "COPYING.LESSER",
+   "summary": "A high-performance asynchronous messaging library."
+  },
+  "build": {
+   "number": "2",
+   "run_exports": [
+    "zeromq"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "jakirkham",
+    "minrk",
+    "SylvainCorlay",
+    "JohanMabille"
+   ]
+  },
+  "outputs": [
+   {
+    "name": "zeromq",
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test ! -f ${PREFIX}/lib/libzmq.a",
+      "test -f ${PREFIX}/lib/libzmq.dylib",
+      "test -f ${PREFIX}/lib/libzmq.5.dylib",
+      "otool -L ${PREFIX}/lib/libzmq.dylib | grep sodium",
+      "test -f ${PREFIX}/lib/cmake/ZeroMQ/ZeroMQConfig.cmake",
+      "test -f ${PREFIX}/lib/cmake/ZeroMQ/ZeroMQConfigVersion.cmake",
+      "${PREFIX}/bin/curve_keygen"
+     ]
+    }
+   },
+   {
+    "name": "zeromq-static",
+    "requirements": {
+     "build": [
+      "automake",
+      "autoconf",
+      "make",
+      "libtool",
+      "pkg-config",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libsodium",
+      "zeromq"
+     ],
+     "run": [
+      "libsodium",
+      "zeromq"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libzmq.a"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "zeromq",
+   "version": "4.3.3"
+  },
+  "requirements": {
+   "build": [
+    "automake",
+    "autoconf",
+    "make",
+    "libtool",
+    "pkg-config",
+    "c_compiler_stub",
+    "cxx_compiler_stub"
+   ],
+   "host": [
+    "libsodium"
+   ],
+   "run": [
+    "libsodium"
+   ]
+  },
+  "source": {
+   "fn": "zeromq-4.3.3.tar.gz",
+   "patches": [
+    "001-windows-install.patch",
+    "002-osx-test.patch"
+   ],
+   "sha256": "9d9285db37ae942ed0780c016da87060497877af45094ff9e1a1ca736e3875a2",
+   "url": "https://github.com/zeromq/libzmq/releases/download/v4.3.3/zeromq-4.3.3.tar.gz"
+  }
+ },
+ "osx_arm64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
