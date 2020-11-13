@@ -171,9 +171,6 @@
  "archived": false,
  "bad": false,
  "conda-forge.yml": {
-  "compiler_stack": "comp7",
-  "max_py_ver": "37",
-  "max_r_ver": "35",
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default"
@@ -207,6 +204,7 @@
   },
   "requirements": {
    "build": [
+    "libtool",
     "c_compiler_stub",
     "libtool",
     "make"
@@ -287,6 +285,7 @@
   },
   "requirements": {
    "build": [
+    "libtool",
     "c_compiler_stub",
     "libtool",
     "make"
@@ -367,6 +366,7 @@
   },
   "requirements": {
    "build": [
+    "libtool",
     "c_compiler_stub",
     "libtool",
     "make"
@@ -435,11 +435,14 @@
     "mpfi",
     "mpfi",
     "mpfi",
+    "mpfi",
     "mpfi"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "isuruf",
+    "marcelotrevisani",
     "isuruf",
     "marcelotrevisani",
     "isuruf",
@@ -456,20 +459,30 @@
   },
   "requirements": {
    "build": [
+    "libtool",
     "c_compiler_stub",
     "libtool",
     "make",
+    "libtool",
     "c_compiler_stub",
     "libtool",
     "make",
+    "libtool",
     "c_compiler_stub",
     "libtool",
     "make",
+    "libtool",
+    "c_compiler_stub",
+    "libtool",
+    "make",
+    "libtool",
     "c_compiler_stub",
     "libtool",
     "make"
    ],
    "host": [
+    "gmp",
+    "mpfr",
     "gmp",
     "mpfr",
     "gmp",
@@ -487,6 +500,8 @@
     "gmp",
     "mpfr",
     "gmp",
+    "mpfr",
+    "gmp",
     "mpfr"
    ]
   },
@@ -497,6 +512,9 @@
   },
   "test": {
    "commands": [
+    "test -f ${PREFIX}/include/mpfi.h",
+    "test -f ${PREFIX}/lib/libmpfi.a",
+    "test -f ${PREFIX}/lib/libmpfi${SHLIB_EXT}",
     "test -f ${PREFIX}/include/mpfi.h",
     "test -f ${PREFIX}/lib/libmpfi.a",
     "test -f ${PREFIX}/lib/libmpfi${SHLIB_EXT}",
@@ -540,6 +558,7 @@
   },
   "requirements": {
    "build": [
+    "libtool",
     "c_compiler_stub",
     "libtool",
     "make"
@@ -594,11 +613,92 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "dev_url": "https://gforge.inria.fr/scm/?group_id=157",
+   "home": "http://mpfi.gforge.inria.fr/",
+   "license": "LGPL 3",
+   "license_file": "COPYING",
+   "summary": "A multiple precision interval arithmetic library based on MPFR"
+  },
+  "build": {
+   "number": "1001",
+   "run_exports": [
+    "mpfi"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "isuruf",
+    "marcelotrevisani"
+   ]
+  },
+  "package": {
+   "name": "mpfi",
+   "version": "1.5.4"
+  },
+  "requirements": {
+   "build": [
+    "libtool",
+    "c_compiler_stub",
+    "libtool",
+    "make"
+   ],
+   "host": [
+    "gmp",
+    "mpfr"
+   ],
+   "run": [
+    "gmp",
+    "mpfr"
+   ]
+  },
+  "source": {
+   "fn": "mpfi-1.5.4.tar.gz",
+   "sha256": "2383d457b208c6cd3cf2e66b69c4ce47477b2a0db31fbec0cd4b1ebaa247192f",
+   "url": "https://gforge.inria.fr/frs/download.php/file/37331/mpfi-1.5.4.tar.bz2"
+  },
+  "test": {
+   "commands": [
+    "test -f ${PREFIX}/include/mpfi.h",
+    "test -f ${PREFIX}/lib/libmpfi.a",
+    "test -f ${PREFIX}/lib/libmpfi${SHLIB_EXT}"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "libtool",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "gmp",
+    "mpfr"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "gmp",
+    "mpfr"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": [
   "mpfi"
  ],
  "pinning_version": "2020.11.12.21.52.18",
- "raw_meta_yaml": "{% set version = \"1.5.4\" %}\n{% set name = \"mpfi\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://gforge.inria.fr/frs/download.php/file/37331/mpfi-{{ version }}.tar.bz2\n  sha256: 2383d457b208c6cd3cf2e66b69c4ce47477b2a0db31fbec0cd4b1ebaa247192f\n\nbuild:\n  number: 1001\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage('mpfi', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - libtool\n    - make\n\n  host:\n    - gmp\n    - mpfr\n\n  run:\n    - gmp\n    - mpfr\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/{{ name }}.h\n    - test -f ${PREFIX}/lib/lib{{ name }}.a\n    - test -f ${PREFIX}/lib/lib{{ name }}${SHLIB_EXT}  # [unix]\n\nabout:\n  home: http://mpfi.gforge.inria.fr/\n  license: LGPL 3\n  license_file: COPYING\n  summary: A multiple precision interval arithmetic library based on MPFR\n  dev_url: https://gforge.inria.fr/scm/?group_id=157\n\nextra:\n  recipe-maintainers:\n    - isuruf\n    - marcelotrevisani\n",
+ "raw_meta_yaml": "{% set version = \"1.5.4\" %}\n{% set name = \"mpfi\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://gforge.inria.fr/frs/download.php/file/37331/mpfi-{{ version }}.tar.bz2\n  sha256: 2383d457b208c6cd3cf2e66b69c4ce47477b2a0db31fbec0cd4b1ebaa247192f\n\nbuild:\n  number: 1001\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage('mpfi', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - libtool  # [unix]\n    - {{ compiler('c') }}\n    - libtool\n    - make\n\n  host:\n    - gmp\n    - mpfr\n\n  run:\n    - gmp\n    - mpfr\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/{{ name }}.h\n    - test -f ${PREFIX}/lib/lib{{ name }}.a\n    - test -f ${PREFIX}/lib/lib{{ name }}${SHLIB_EXT}  # [unix]\n\nabout:\n  home: http://mpfi.gforge.inria.fr/\n  license: LGPL 3\n  license_file: COPYING\n  summary: A multiple precision interval arithmetic library based on MPFR\n  dev_url: https://gforge.inria.fr/scm/?group_id=157\n\nextra:\n  recipe-maintainers:\n    - isuruf\n    - marcelotrevisani\n",
  "req": {
   "__set__": true,
   "elements": [
