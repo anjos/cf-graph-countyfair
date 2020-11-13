@@ -87,9 +87,6 @@
  "archived": false,
  "bad": false,
  "conda-forge.yml": {
-  "compiler_stack": "comp7",
-  "max_py_ver": "37",
-  "max_r_ver": "35",
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default",
@@ -358,8 +355,11 @@
     "autoconf",
     "c_compiler_stub",
     "make",
+    "libtool",
+    "automake",
+    "autoconf",
     "c_compiler_stub",
-    "cmake",
+    "make",
     "c_compiler_stub",
     "cmake"
    ],
@@ -372,8 +372,7 @@
     "extern.patch",
     "extern.patch",
     "extern.patch",
-    "dllexport.patch",
-    "exclude-unistd.patch",
+    "extern.patch",
     "dllexport.patch",
     "exclude-unistd.patch"
    ],
@@ -398,8 +397,9 @@
     "test -f ${PREFIX}/lib/libplanarity.a",
     "test -f ${PREFIX}/lib/libplanarity.dylib",
     "planarity -h | exit 0",
-    "if not exist %LIBRARY_LIB%/planarity.lib exit 1",
-    "if not exist %LIBRARY_INC%/planarity/planarity.h exit 1",
+    "test -f ${PREFIX}/include/planarity/planarity.h",
+    "test -f ${PREFIX}/lib/libplanarity.a",
+    "test -f ${PREFIX}/lib/libplanarity.dylib",
     "planarity -h | exit 0",
     "if not exist %LIBRARY_LIB%/planarity.lib exit 1",
     "if not exist %LIBRARY_INC%/planarity/planarity.h exit 1",
@@ -461,6 +461,77 @@
   }
  },
  "osx_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "autoconf",
+    "automake",
+    "c_compiler_stub",
+    "libtool",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/graph-algorithms/edge-addition-planarity-suite",
+   "home": "https://github.com/graph-algorithms/edge-addition-planarity-suite",
+   "license": "3-clause BSD",
+   "license_file": "LICENSE.TXT",
+   "summary": "This code project provides a library for implementing graph algorithms as well\nas implementations of several planarity-related graph algorithms\n"
+  },
+  "build": {
+   "number": "1002"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "isuruf"
+   ]
+  },
+  "package": {
+   "name": "planarity",
+   "version": "3.0.0.5"
+  },
+  "requirements": {
+   "build": [
+    "libtool",
+    "automake",
+    "autoconf",
+    "c_compiler_stub",
+    "make"
+   ],
+   "host": null
+  },
+  "source": {
+   "fn": "planarity-3.0.0.5.tar.gz",
+   "patches": [
+    "extern.patch"
+   ],
+   "sha256": "a019eedf67087bba1996c8b9ad47a6f1cda166c2d8976f13bfcff5c0d23e5578",
+   "url": "https://github.com/graph-algorithms/edge-addition-planarity-suite/archive/Version_3.0.0.5.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -f ${PREFIX}/include/planarity/planarity.h",
+    "test -f ${PREFIX}/lib/libplanarity.a",
+    "test -f ${PREFIX}/lib/libplanarity.dylib",
+    "planarity -h | exit 0"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
@@ -571,7 +642,6 @@
   },
   "extra": {
    "recipe-maintainers": [
-    "isuruf",
     "isuruf"
    ]
   },
@@ -582,8 +652,6 @@
   "requirements": {
    "build": [
     "c_compiler_stub",
-    "cmake",
-    "c_compiler_stub",
     "cmake"
    ],
    "host": null
@@ -592,8 +660,6 @@
    "fn": "planarity-3.0.0.5.tar.gz",
    "patches": [
     "dllexport.patch",
-    "exclude-unistd.patch",
-    "dllexport.patch",
     "exclude-unistd.patch"
    ],
    "sha256": "a019eedf67087bba1996c8b9ad47a6f1cda166c2d8976f13bfcff5c0d23e5578",
@@ -601,9 +667,6 @@
   },
   "test": {
    "commands": [
-    "if not exist %LIBRARY_LIB%/planarity.lib exit 1",
-    "if not exist %LIBRARY_INC%/planarity/planarity.h exit 1",
-    "planarity -h | exit 0",
     "if not exist %LIBRARY_LIB%/planarity.lib exit 1",
     "if not exist %LIBRARY_INC%/planarity/planarity.h exit 1",
     "planarity -h | exit 0"
