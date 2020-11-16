@@ -51,7 +51,37 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 135, in fetch_repo",
+   "    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.",
+   "",
+   "During handling of the above exception, another exception occurred:",
+   "",
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1018, in main",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 163, in run",
+   "    feedstock_dir, repo = get_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 220, in get_repo",
+   "    if fetch_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 137, in fetch_repo",
+   "    _run_git_cmd(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "master",
  "conda-forge.yml": {
   "compiler_stack": "comp7",
@@ -263,6 +293,9 @@
   "ghostscript"
  ],
  "pinning_version": "2020.02.12",
+ "pre_pr_migrator_status": {
+  "version": "bot error: master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 135, in fetch_repo\n    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1018, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 163, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 220, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 137, in fetch_repo\n    _run_git_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.\n"
+ },
  "raw_meta_yaml": "{% set version = \"9.53.3\" %}\n{% set major = version.split('.')[0] %}\n{% set minor = version.split('.')[1] %}\n\npackage:\n  name: ghostscript\n  version: {{ version }}\n\nsource:\n  url: https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs{{ version | replace(\".\", \"\") }}/ghostscript-{{ version }}.tar.gz\n  sha256: 6eaf422f26a81854a230b80fd18aaef7e8d94d661485bd2e97e695b9dce7bf7f\n  patches:\n    - dynlink_runtime.patch\n\nbuild:\n  number: 2\n  skip: True  # [win and vc<14]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libgs${SHLIB_EXT}  # [unix]\n    - test -f ${PREFIX}/lib/libgs${SHLIB_EXT}.{{ major }}  # [unix]\n    - test -f ${PREFIX}/lib/libgs${SHLIB_EXT}.{{ major }}.{{ minor }}  # [unix]\n\nabout:\n  home: http://ghostscript.com/\n  license: AGPL-3.0-only\n  license_file: LICENSE\n  summary: An interpreter for the PostScript language and for PDF\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - leouieda\n    - tdegeus\n",
  "req": {
   "__set__": true,

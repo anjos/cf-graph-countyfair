@@ -100,7 +100,37 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 135, in fetch_repo",
+   "    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.",
+   "",
+   "During handling of the above exception, another exception occurred:",
+   "",
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1018, in main",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 163, in run",
+   "    feedstock_dir, repo = get_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 220, in get_repo",
+   "    if fetch_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 137, in fetch_repo",
+   "    _run_git_cmd(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "master",
  "conda-forge.yml": {
   "compiler_stack": "comp7",
@@ -643,6 +673,9 @@
   "lua"
  ],
  "pinning_version": "2020.10.02.09.22.14",
+ "pre_pr_migrator_status": {
+  "version": "bot error: master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 135, in fetch_repo\n    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1018, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 163, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 220, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 137, in fetch_repo\n    _run_git_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.\n"
+ },
  "raw_meta_yaml": "{% set version = \"5.4.0\" %}\n\npackage:\n  name: lua\n  version: {{ version }}\n\nsource:\n  - url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz\n    sha256: eac0836eb7219e421a96b7ee3692b93f0629e4cdb0c788432e3d10ce9ed47e28\n    patches:\n      # Enables Lua to look for packages on a relative path\n      - luaconf.patch\n      # Build as a shared library\n      - liblua.so.patch\n      # Enables readline on linux\n      - Makefile.patch\n  - path: CMakeLists.txt\n\nbuild:\n  number: 0\n  detect_binary_files_with_prefix: true\n  run_exports:\n    # http://www.lua.org/versions.html#numbering\n    - {{ pin_subpackage('lua', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    - vs2017_win-64  # [win64]\n    - vs2017_win-32  # [win32]\n    - ninja          # [win]\n    - cmake          # [win]\n    - sed            # [unix]\n    - make           # [unix]\n  host:\n    - readline  # [not win]\n    - ncurses   # [not win]\n  run:\n    - readline  # [not win]\n    - ncurses   # [not win]\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/liblua$SHLIB_EXT  # [unix]\n    - if not exist %LIBRARY_INC%\\\\lua.h exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\lua.dll exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\lua.exe exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\lua.exe exit 1  # [win]\n    - lua -v\n    - lua -e \"print(package.path)\"\n\nabout:\n  home: http://www.lua.org/\n  summary: Lua is a powerful, fast, lightweight, embeddable scripting language\n  license: MIT\n  license_file: doc/readme.html\n\nextra:\n  recipe-maintainers:\n    - alexbw\n    - seanyen\n",
  "req": {
   "__set__": true,
