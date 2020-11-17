@@ -957,10 +957,13 @@
    ]
   }
  },
- "outputs_names": [
-  "yaml-cpp",
-  "yaml-cpp-static"
- ],
+ "outputs_names": {
+  "__set__": true,
+  "elements": [
+   "yaml-cpp",
+   "yaml-cpp-static"
+  ]
+ },
  "pinning_version": "2020.09.16.03.05.24",
  "raw_meta_yaml": "{% set version = \"0.6.3\" %}\n\npackage:\n  name: yaml-cpp\n  version: {{ version }}\n\nsource:\n  url: https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-{{ version }}.tar.gz\n  sha256: 77ea1b90b3718aa0c324207cb29418f5bced2354c2e483a9523d98c3460af1ed\n  patches:\n    - pkgconfig.patch  # [win]\n\nbuild:\n  number: 4\n  run_exports:\n    - {{ pin_subpackage('yaml-cpp', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n\ntest:\n  files:\n    - test\n  requires:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n  commands:\n    - test -f $PREFIX/lib/libyaml-cpp.so  # [not win]\n    - if not exist %LIBRARY_BIN%\\\\yaml-cpp.dll exit 1  # [win]\n\noutputs:\n  - name: yaml-cpp\n  - name: yaml-cpp-static\n    script: build_static.sh  # [not win]\n    build:\n      skip: true  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake\n        - ninja\n      host:\n        - {{ pin_subpackage('yaml-cpp', exact=True) }}\n      run:\n        - {{ pin_subpackage('yaml-cpp', exact=True) }}\n    test:\n      commands:\n        - test -f $PREFIX/lib/libyaml-cpp.a  # [not win]\n\nabout:\n  home: https://github.com/jbeder/yaml-cpp\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: yaml-cpp is a YAML parser and emitter in C++ matching the YAML 1.2 spec.\n  doc_url: https://github.com/jbeder/yaml-cpp/wiki/Tutorial\n  dev_url: https://github.com/jbeder/yaml-cpp\n\nextra:\n  recipe-maintainers:\n    - allanleal\n    - marcelotrevisani\n    - tadeu\n    - seanyen\n    - wolfv\n",
  "req": {

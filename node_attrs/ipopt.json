@@ -712,9 +712,12 @@
    ]
   }
  },
- "outputs_names": [
-  "ipopt"
- ],
+ "outputs_names": {
+  "__set__": true,
+  "elements": [
+   "ipopt"
+  ]
+ },
  "pinning_version": "2020.10.16.02.36.37",
  "raw_meta_yaml": "{% set name = \"Ipopt\" %}\n{% set version = \"3.13.3\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - folder: Ipopt\n    url: https://github.com/coin-or/Ipopt/archive/releases/{{ version }}.tar.gz\n    sha256: 86354b36c691e6cd6b8049218519923ab0ce8a6f0a432c2c0de605191f2d4a1c\n    patches:\n      - linux-configure.patch  # [linux]\n\n  # CMake-based build system for Windows\n  - folder: coinor-cmake  # [win]\n    url: https://github.com/traversaro/coinor-cmake/archive/daf0d0c4c2c55b3c0537cf2397400b9a246b61dc.zip  # [win]\n    sha256: 9c0d04c304cbaa430e5ef0aa9a4b4dd443b21149f380f0eade65bd40618c94fa  # [win]\n\nbuild:\n  number: 4\n  run_exports:\n    - {{ pin_subpackage('ipopt', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake  # [win]\n    - wget  # [not win]\n    - pkgconfig\n  host:\n    - libblas\n    - liblapack\n    - metis\n    - mumps-seq\n    - ampl-mp  # [not win]\n\ntest:\n  files:\n    - test\n    - mytoy.nl\n\n  requires:\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n\nabout:\n  home: https://projects.coin-or.org/Ipopt/\n  license: EPL-1.0\n  license_file: Ipopt/LICENSE\n  summary: Software package for large-scale nonlinear optimization\n\nextra:\n  recipe-maintainers:\n    - pstjohn\n    - bluescarni\n    - jschueller\n    - moorepants\n",
  "req": {

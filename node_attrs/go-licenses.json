@@ -557,9 +557,12 @@
    ]
   }
  },
- "outputs_names": [
-  "go-licenses"
- ],
+ "outputs_names": {
+  "__set__": true,
+  "elements": [
+   "go-licenses"
+  ]
+ },
  "pinning_version": "2020.11.07.01.17.20",
  "raw_meta_yaml": "# NOTE: The package version does not correspond to an upstream version but\n#       rather denotes the commit number. E.g., \"0.0.35\" is the 35th commit.\n{% set version = \"0.0.36\" %}\n{% set commit = \"73411c8fa237ccc6a75af79d0a5bc021c9487aad\" %}\n\npackage:\n  name: go-licenses\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/google/go-licenses/archive/{{ commit }}.tar.gz\n    sha256: e3db1d49696e0c77995c4561a1abedca7c50ebece3b4864aeed963657d12a961\n    patches:\n      - 0001-Add-path-to-license-archive-relative-to-executable.patch\n      - 0002-Recognize-more-license-file-name-patterns.patch\n  - url: https://github.com/google/licenseclassifier/archive/{{ licenseclassifier_commit }}.tar.gz\n    sha256: 7fc0b149b44e263d8d58bfadee7c789b62b2c3f7ff7e51fd6e861a61e2143930\n    folder: licenseclassifier-{{ licenseclassifier_commit }}\n    patches:\n      - 0001-Use-filepath.IsAbs.patch\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('go') }}\n    - posix  # [win]\n  host:\n  run:\n    - go\n\ntest:\n  commands:\n    - export GOPATH=\"$(pwd)/gopath\"  # [not win]\n    - set \"GOPATH=%CD%/gopath\"  # [win]\n    - go get -d \"github.com/google/go-licenses\"\n    - go-licenses csv \"github.com/google/go-licenses\"\n  requires:\n    - git\n    - go\n\nabout:\n  home: https://github.com/google/go-licenses\n  license: Apache-2.0\n  license_family: Apache\n  license_file:\n    - LICENSE\n    - thirdparty-licenses.txt\n  summary: 'A tool to collect licenses from the dependency tree of a Go package in order to comply with redistribution terms.'\n\nextra:\n  recipe-maintainers:\n    - dhirschfeld\n    - mbargull\n",
  "req": {

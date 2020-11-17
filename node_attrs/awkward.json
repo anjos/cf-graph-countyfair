@@ -1133,10 +1133,13 @@
    "elements": []
   }
  },
- "outputs_names": [
-  "awkward",
-  "awkward-numba"
- ],
+ "outputs_names": {
+  "__set__": true,
+  "elements": [
+   "awkward",
+   "awkward-numba"
+  ]
+ },
  "pinning_version": "2020.11.03.00.15.30",
  "raw_meta_yaml": "{% set name = \"awkward\" %}\n{% set version = \"0.14.0\" %}\n{% set build_number = 0 %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n    sha256: 6a3878f46e8bc2acf28a0b9feb69d354ad2fee2a2a0f65c48c115aa74f245204\n    folder: {{ name }}\n  - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}-numba/{{ name }}-numba-{{ version }}.tar.gz\n    sha256: ade7fe77f1a863658b31579f66aca94726eb8194506bb5666cf4b160b8cc98d1\n    folder: {{ name }}-numba\n\nbuild:\n  number: {{ build_number }}\n  noarch: python\n\n# Specifying `python` as a top-level build requirements to force conda to\n# render the recipe correctly\nrequirements:\n  host:\n    - python\n  run:\n    - python\n\noutputs:\n  - name: {{ name }}\n    version: {{ version }}\n    build:\n      number: {{ build_number }}\n      script: {{ PYTHON }} -m pip install {{ name }} --no-deps -vv\n      noarch: python\n    requirements:\n      build:\n      host:\n        - python\n        - pip\n        - pytest-runner\n      run:\n        - python\n        - numpy >=1.13.1\n    test:\n      imports:\n        - awkward\n\n  - name: {{ name }}-numba\n    version: {{ version }}\n    build:\n      number: {{ build_number }}\n      script: {{ PYTHON }} -m pip install {{ name }}-numba --no-deps -vv\n      noarch: python\n    requirements:\n      build:\n      host:\n        - python\n        - pip\n        - pytest-runner\n      run:\n        - python\n        - numba <0.46\n        - awkward =={{ version }}\n    test:\n      imports:\n        - awkward.numba\n\nabout:\n  home: https://github.com/scikit-hep/{{ name }}\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: {{ name }}/LICENSE\n  summary: Manipulate arrays of complex data structures as easily as Numpy.\n  dev_url: https://github.com/scikit-hep/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - chrisburr\n    - jpivarski\n",
  "req": {

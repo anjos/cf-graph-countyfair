@@ -154,9 +154,12 @@
  },
  "name": "kubessh",
  "new_version": "0.1",
- "outputs_names": [
-  "kubessh"
- ],
+ "outputs_names": {
+  "__set__": true,
+  "elements": [
+   "kubessh"
+  ]
+ },
  "raw_meta_yaml": "{% set name = \"kubessh\" %}\n{% set version = \"0.1\" %}\n\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/kubessh-{{ version }}.tar.gz\n  sha256: 7ccf719a0ce6abb2efb051b8f583a521c2c65cecbf6708c6008cbcbbdacf7ee8\n\nbuild:\n  number: 0\n  noarch: python\n  entry_points:\n    - kubessh=kubessh.app:main\n  script: {{ PYTHON }} -m pip install . -vv\n\nrequirements:\n  host:\n    - python >=3\n    - pip\n  run:\n    - python >=3\n    - aiohttp\n    - asyncssh\n    - escapism\n    - python-kubernetes\n    - ptyprocess\n    - ruamel.yaml\n    - simpervisor\n    - traitlets\n\ntest:\n  imports:\n    - kubessh\n  commands:\n    - pip check\n    # The CLI call workd but it needs a cluster set. It \"fails\" with:\n    # kubernetes.config.config_exception.ConfigException: Service host/port is not set.\n    # I'll ask upstream if that is by design and then we can do something better to test the CLI.\n    # - kubessh --help\n  requires:\n    - pip\n\nabout:\n  home: https://github.com/yuvipanda/kubessh\n  summary: SSH server to spawn users into kubernetes pods\n  license: Apache-2.0\n  license_file: LICENSE\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n",
  "req": {
   "__set__": true,

@@ -214,9 +214,9 @@
     "rbdl",
     "rbdl * casadi_*",
     "rbdl",
-    "rbdl * eigen_*",
-    "rbdl",
     "rbdl * casadi_*",
+    "rbdl",
+    "rbdl * eigen_*",
     "rbdl",
     "rbdl * eigen_*"
    ],
@@ -258,15 +258,15 @@
    "host": [
     "eigen",
     "casadi",
-    "eigen",
     "casadi",
+    "eigen",
     "eigen"
    ],
    "run": [
     "eigen",
     "casadi",
-    "eigen",
     "casadi",
+    "eigen",
     "eigen"
    ]
   },
@@ -311,11 +311,11 @@
    ],
    "run_exports": [
     "rbdl",
-    "rbdl * eigen_*",
+    "rbdl * casadi_*",
     "rbdl",
-    "rbdl * casadi_*"
+    "rbdl * eigen_*"
    ],
-   "string": "casadi_h_0",
+   "string": "eigen_h_0",
    "track_features": null
   },
   "extra": {
@@ -338,12 +338,12 @@
     "ninja"
    ],
    "host": [
-    "eigen",
-    "casadi"
+    "casadi",
+    "eigen"
    ],
    "run": [
-    "eigen",
-    "casadi"
+    "casadi",
+    "eigen"
    ]
   },
   "source": {
@@ -385,9 +385,12 @@
    "elements": []
   }
  },
- "outputs_names": [
-  "rbdl"
- ],
+ "outputs_names": {
+  "__set__": true,
+  "elements": [
+   "rbdl"
+  ]
+ },
  "pinning_version": "2020.06.15.11.48.40",
  "raw_meta_yaml": "{% set name = \"rbdl\" %}\n{% set version = \"2.6.0.10\" %}\n{% set build_num = 0 %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/pyomeca/rbdl-casadi/archive/{{ version }}.tar.gz\n  sha256: b833ec7045a8feedc61bf0ecef5a77d16d92cc66a4315df8d5d88bbf69e6276e\n\nbuild:\n  number: {{ build_num }}\n  skip: true  # [win and vc<14]\n  rpaths:\n    - lib/\n    - lib/{{ name }}/\n  run_exports:\n    - {{ pin_subpackage('rbdl', max_pin='x.x') }}\n    - rbdl * {{ backend }}_*\n  string: {{ backend }}_h{{ PKG_HASH }}_{{ build_num }}\n  track_features:\n    - casadi  # [backend == \"casadi\"]\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n  host:\n    - {{ backend|default(\"eigen\") }}\n  run:\n    - {{ backend|default(\"eigen\") }}\n\ntest:\n  commands:\n    - test $PREFIX/lib/librbdl$SHLIB_EXT  # [unix]\n    - if not exist %PREFIX%\\\\Lib\\\\rbdl*.lib exit 1  # [win]\n\nabout:\n  home: https://bitbucket.org/rbdl/rbdl\n  license: Zlib\n  license_file: LICENSE\n  summary: RBDL is a highly efficient C++ library that contains some essential rigid body dynamics algorithms.\n\nextra:\n  recipe-maintainers:\n    - pariterre\n",
  "req": {
