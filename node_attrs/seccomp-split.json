@@ -334,6 +334,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/524785506.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.5.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -897,7 +914,7 @@
  "new_version": "2.5.1",
  "new_version_attempts": {
   "2.5.0": 6,
-  "2.5.1": 43
+  "2.5.1": 44
  },
  "new_version_errors": {
   "2.5.1": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '2.5.1' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/seccomp/libseccomp/releases/download/v{{ version }}/libseccomp-{{ version }}.tar.gz'\n"
@@ -1026,7 +1043,7 @@
    "seccomp"
   ]
  },
- "pinning_version": "2020.11.12.21.52.18",
+ "pinning_version": "2020.11.20.14.18.33",
  "raw_meta_yaml": "{% set version = \"2.4.4\" %}\n\npackage:\n  name: seccomp-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/seccomp/libseccomp/releases/download/v{{ version }}/libseccomp-{{ version }}.tar.gz\n  sha256: 4e79738d1ef3c9b7ca9769f1f8b8d84fc17143c2c1c432e53b9c64787e0ff3eb\n  patches:\n    - 0001-Dynamic-linking-for-Python-package.patch\n\nbuild:\n  number: 0\n  skip: True  # [not linux]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - automake\n    - autoconf\n    - libtool\n    - make\n\noutputs:\n  - name: libseccomp\n    script: install_lib.sh\n    build:\n      run_exports:\n        # Has followed semver since 1.0.1 in 2012\n        # https://abi-laboratory.pro/index.php?view=timeline&l=libseccomp\n        - {{ pin_subpackage('libseccomp') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - make\n    test:\n      commands:\n        - test -f $PREFIX/lib/libseccomp.so\n        - test ! -f $PREFIX/lib/libseccomp.a\n\n  - name: seccomp\n    script: install_python.sh\n    requirements:\n      build:\n        - {{ compiler('c') }}\n      host:\n        - cython\n        - python\n        - pip\n        - {{ pin_subpackage('libseccomp', exact=True) }}\n      run:\n        - {{ pin_subpackage('libseccomp', exact=True) }}\n        - python\n    test:\n      imports:\n        - seccomp\n\nabout:\n  home: https://github.com/seccomp/libseccomp\n  license: LGPL-2.1-only\n  license_file: LICENSE\n  summary: 'libseccomp provides an easy to use, platform independent, interface to the Linux syscall filtering mechanism.'\n\n  description: |\n    The libseccomp library provides an easy to use, platform independent, \n    interface to the Linux Kernel's syscall filtering mechanism. The \n    libseccomp API is designed to abstract away the underlying BPF based \n    syscall filter language and present a more conventional function-call\n    based filtering interface that should be familiar to, and easily \n    adopted by, application developers.\n  dev_url: https://github.com/seccomp/libseccomp\n\nextra:\n  recipe-maintainers:\n    - mbargull\n    - sodre\n",
  "req": {
   "__set__": true,
