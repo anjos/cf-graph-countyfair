@@ -313,7 +313,7 @@
     "*/libcuda.*",
     "*/libOpenCL.*"
    ],
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1198,7 +1198,7 @@
     "*/libOpenCL.*",
     "*/libOpenCL.*"
    ],
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1626,7 +1626,7 @@
     "*/nvcuda.dll",
     "*/nvcuda.dll"
    ],
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -3293,7 +3293,7 @@
     "*/libOpenCL.*",
     "*/libOpenCL.*"
    ],
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -3490,7 +3490,7 @@
   ]
  },
  "pinning_version": "2020.11.25.17.00.45",
- "raw_meta_yaml": "{% set name = \"openmm\" %}\n{% set version = \"7.5.0\" %}\n{% set build = 0 %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  # pre-rc\n  url: https://github.com/openmm/{{ name }}/archive/2c36e9b34d046f09be4887ff60e7fdac02cf3cdb.tar.gz\n  sha256: 193a501d10ca713443e44e0d8972c5d3f30ee0ed116d59679d1cbdabd6b96b28\n\nbuild:\n  number: {{ build }}\n  skip: true  # [((cuda_compiler_version == \"None\") and (linux64 or win)) or ((cuda_compiler_version != \"10.2\") and (ppc64le))]\n  missing_dso_whitelist:\n    - \"*/libcuda.*\"    # [linux64 or ppc64le]\n    - \"*/libOpenCL.*\"  # [unix]\n    - \"*/nvcuda.dll\"   # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}  # [linux64 or ppc64le or win]\n    - {{ cdt('mesa-libgl-devel') }}  # [linux]\n    - cmake\n    - make  # [unix]\n    - jom  # [win]\n\n  host:\n    - python\n    - fftw\n    - swig\n    - pthread-stubs\n    - lxml\n    - numpy\n    - cython\n    # needed for Python wrappers\n    - doxygen 1.8.14\n    # OpenCL ICD\n    - ocl-icd  # [linux]\n    - khronos-opencl-icd-loader  # [win]\n\n  run:\n    - python\n    - fftw\n    - numpy\n    # OpenCL ICD\n    - ocl-icd  # [linux]\n    - ocl-icd-system  # [linux]\n    - khronos-opencl-icd-loader  # [win]\n\ntest:\n  requires:\n    - pocl  # [linux]\n  imports:\n    - simtk\n    - simtk.openmm\n  commands:\n    ## Are the key libraries built?\n    # Existence tests Unix\n    - test -f $PREFIX/lib/libOpenMM$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/lib/plugins/libOpenMMCPU$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/lib/plugins/libOpenMMPME$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/lib/plugins/libOpenMMOpenCL$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/lib/plugins/libOpenMMCUDA$SHLIB_EXT  # [linux64 or ppc64le]\n    - test -f $PREFIX/lib/plugins/libOpenMMCudaCompiler$SHLIB_EXT  # [linux64 or ppc64le]\n    # Existence tests Windows\n    - if not exist %LIBRARY_LIB%/OpenMM.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/plugins/OpenMMCPU.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/plugins/OpenMMPME.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/plugins/OpenMMOpenCL.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/plugins/OpenMMCUDA.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/plugins/OpenMMCudaCompiler.lib exit 1  # [win]\n\n    ## Do they work properly?\n    # Debug silent errors in plugin loading\n    - python -c \"import simtk.openmm as mm; print('---Loaded---', *mm.pluginLoadedLibNames, '---Failed---', *mm.Platform.getPluginLoadFailures(), sep='\\n')\"\n    # Check that hardcoded library path was correctly replaced by conda-build\n    - python -c \"import os, simtk.openmm.version as v; print(v.openmm_library_path); assert os.path.isdir(v.openmm_library_path), 'Directory does not exist'\"\n\n    # Check all platforms\n    - python -m simtk.testInstallation\n    # Linux64 / PPC see all 4 platforms, but CUDA is not usable because there's no GPU there\n    - python -c \"from simtk.openmm import Platform as P; n = P.getNumPlatforms(); assert n == 4, f'n_platforms ({n}) != 4'\"  # [linux64 or ppc64le]\n    # Windows will only see 2 because the driver nvcuda.dll is missing and that throws a 126 error\n    - python -c \"from simtk.openmm import Platform as P; n = P.getNumPlatforms(); assert n == 2, f'n_platforms ({n}) != 2'\"  # [win]\n    # MacOS / ARM only see 3 because CUDA is not available there\n    - python -c \"from simtk.openmm import Platform as P; n = P.getNumPlatforms(); assert n == 3, f'n_platforms ({n}) != 3'\"  # [osx or aarch64]\n\n    # Run a small MD\n    - cd ${CONDA_PREFIX}/share/openmm/examples  # [unix]\n    - cd %LIBRARY_PREFIX%/share/openmm/examples  # [win]\n    - python benchmark.py --test=rf --seconds=10 --platform=Reference\n    - python benchmark.py --test=rf --seconds=10 --platform=CPU\n\nabout:\n  home: http://openmm.org\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file:\n    - docs-source/licenses/Licenses.txt\n    - docs-source/licenses/LGPL.txt\n    - docs-source/licenses/GPL.txt\n  summary: A high performance toolkit for molecular simulation.\n\n  description: |\n    OpenMM is a toolkit for molecular simulation. It can be used either as a\n    stand-alone application for running simulations, or as a library you call\n    from your own code. It provides a combination of extreme flexibility\n    (through custom forces and integrators), openness, and high performance\n    (especially on recent GPUs) that make it truly unique among simulation\n    codes. OpenMM is MIT licensed with some LGPL portions (CUDA and OpenCL\n    platforms).\n  doc_url: http://docs.openmm.org\n  dev_url: https://github.com/openmm/openmm\n\nextra:\n  recipe-maintainers:\n    - jchodera\n    - jaimergp\n    - peastman\n",
+ "raw_meta_yaml": "{% set name = \"openmm\" %}\n{% set version = \"7.5.0\" %}\n{% set build = 1 %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  # pre-rc\n  url: https://github.com/openmm/{{ name }}/archive/2c36e9b34d046f09be4887ff60e7fdac02cf3cdb.tar.gz\n  sha256: 193a501d10ca713443e44e0d8972c5d3f30ee0ed116d59679d1cbdabd6b96b28\n\nbuild:\n  number: {{ build }}\n  skip: true  # [((cuda_compiler_version == \"None\") and (linux64 or win)) or ((cuda_compiler_version != \"10.2\") and (ppc64le))]\n  missing_dso_whitelist:\n    - \"*/libcuda.*\"    # [linux64 or ppc64le]\n    - \"*/libOpenCL.*\"  # [unix]\n    - \"*/nvcuda.dll\"   # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}  # [linux64 or ppc64le or win]\n    - {{ cdt('mesa-libgl-devel') }}  # [linux]\n    - cmake\n    - make  # [unix]\n    - jom  # [win]\n\n  host:\n    - python\n    - fftw\n    - swig\n    - pthread-stubs\n    - lxml\n    - numpy\n    - cython\n    # needed for Python wrappers\n    - doxygen 1.8.14\n    # OpenCL ICD\n    - ocl-icd  # [linux]\n    - khronos-opencl-icd-loader  # [win]\n\n  run:\n    - python\n    - fftw\n    - numpy\n    # OpenCL ICD\n    - ocl-icd  # [linux]\n    - ocl-icd-system  # [linux]\n    - khronos-opencl-icd-loader  # [win]\n\ntest:\n  requires:\n    - pocl  # [linux]\n  imports:\n    - simtk\n    - simtk.openmm\n  commands:\n    ## Are the key libraries built?\n    # Existence tests Unix\n    - test -f $PREFIX/lib/libOpenMM$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/lib/plugins/libOpenMMCPU$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/lib/plugins/libOpenMMPME$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/lib/plugins/libOpenMMOpenCL$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/lib/plugins/libOpenMMCUDA$SHLIB_EXT  # [linux64 or ppc64le]\n    - test -f $PREFIX/lib/plugins/libOpenMMCudaCompiler$SHLIB_EXT  # [linux64 or ppc64le]\n    # Existence tests Windows\n    - if not exist %LIBRARY_LIB%/OpenMM.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/plugins/OpenMMCPU.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/plugins/OpenMMPME.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/plugins/OpenMMOpenCL.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/plugins/OpenMMCUDA.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/plugins/OpenMMCudaCompiler.lib exit 1  # [win]\n\n    ## Do they work properly?\n    # Debug silent errors in plugin loading\n    - python -c \"import simtk.openmm as mm; print('---Loaded---', *mm.pluginLoadedLibNames, '---Failed---', *mm.Platform.getPluginLoadFailures(), sep='\\n')\"\n    # Check that hardcoded library path was correctly replaced by conda-build\n    - python -c \"import os, simtk.openmm.version as v; print(v.openmm_library_path); assert os.path.isdir(v.openmm_library_path), 'Directory does not exist'\"\n\n    # Check all platforms\n    - python -m simtk.testInstallation\n    # Linux64 / PPC see all 4 platforms, but CUDA is not usable because there's no GPU there\n    - python -c \"from simtk.openmm import Platform as P; n = P.getNumPlatforms(); assert n == 4, f'n_platforms ({n}) != 4'\"  # [linux64 or ppc64le]\n    # Windows will only see 2 because the driver nvcuda.dll is missing and that throws a 126 error\n    - python -c \"from simtk.openmm import Platform as P; n = P.getNumPlatforms(); assert n == 2, f'n_platforms ({n}) != 2'\"  # [win]\n    # MacOS / ARM only see 3 because CUDA is not available there\n    - python -c \"from simtk.openmm import Platform as P; n = P.getNumPlatforms(); assert n == 3, f'n_platforms ({n}) != 3'\"  # [osx or aarch64]\n\n    # Run a small MD\n    - cd ${CONDA_PREFIX}/share/openmm/examples  # [unix]\n    - cd %LIBRARY_PREFIX%/share/openmm/examples  # [win]\n    - python benchmark.py --test=rf --seconds=10 --platform=Reference\n    - python benchmark.py --test=rf --seconds=10 --platform=CPU\n\nabout:\n  home: http://openmm.org\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file:\n    - docs-source/licenses/Licenses.txt\n    - docs-source/licenses/LGPL.txt\n    - docs-source/licenses/GPL.txt\n  summary: A high performance toolkit for molecular simulation.\n\n  description: |\n    OpenMM is a toolkit for molecular simulation. It can be used either as a\n    stand-alone application for running simulations, or as a library you call\n    from your own code. It provides a combination of extreme flexibility\n    (through custom forces and integrators), openness, and high performance\n    (especially on recent GPUs) that make it truly unique among simulation\n    codes. OpenMM is MIT licensed with some LGPL portions (CUDA and OpenCL\n    platforms).\n  doc_url: http://docs.openmm.org\n  dev_url: https://github.com/openmm/openmm\n\nextra:\n  recipe-maintainers:\n    - jchodera\n    - jaimergp\n    - peastman\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -3691,7 +3691,7 @@
     "*/nvcuda.dll",
     "*/nvcuda.dll"
    ],
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
