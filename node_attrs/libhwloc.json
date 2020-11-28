@@ -226,7 +226,7 @@
    "summary": "Portable Hardware Locality (hwloc)"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "libhwloc"
    ]
@@ -305,7 +305,7 @@
    "summary": "Portable Hardware Locality (hwloc)"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "libhwloc"
    ]
@@ -384,7 +384,7 @@
    "summary": "Portable Hardware Locality (hwloc)"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "libhwloc"
    ]
@@ -463,8 +463,9 @@
    "summary": "Portable Hardware Locality (hwloc)"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
+    "libhwloc",
     "libhwloc",
     "libhwloc",
     "libhwloc",
@@ -475,6 +476,8 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "inducer",
+    "isuruf",
     "inducer",
     "isuruf",
     "inducer",
@@ -518,19 +521,16 @@
     "libtool",
     "autoconf",
     "cxx_compiler_stub",
-    "posix",
-    "clangdev",
-    "llvmdev",
-    "lld",
-    "m2-perl",
-    "m2-automake-wrapper",
-    "m2-libtool",
-    "m2-autoconf",
-    "m2-make",
-    "m2-m4",
-    "python >3"
+    "pkg-config",
+    "make",
+    "automake",
+    "libtool",
+    "autoconf",
+    "cxx_compiler_stub",
+    "autotools_clang_conda"
    ],
    "host": [
+    "libxml2",
     "libxml2",
     "libxml2",
     "libxml2",
@@ -539,6 +539,7 @@
     "pthreads-win32"
    ],
    "run": [
+    "libxml2",
     "libxml2",
     "libxml2",
     "libxml2",
@@ -554,6 +555,7 @@
   },
   "test": {
    "commands": [
+    "hwloc-ls",
     "hwloc-ls",
     "hwloc-ls",
     "hwloc-ls",
@@ -577,7 +579,7 @@
    "summary": "Portable Hardware Locality (hwloc)"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "libhwloc"
    ]
@@ -648,6 +650,85 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "https://www.open-mpi.org/projects/hwloc/",
+   "license": "BSD 3-Clause",
+   "license_file": "COPYING",
+   "summary": "Portable Hardware Locality (hwloc)"
+  },
+  "build": {
+   "number": "1",
+   "run_exports": [
+    "libhwloc"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "inducer",
+    "isuruf"
+   ]
+  },
+  "package": {
+   "name": "libhwloc",
+   "version": "2.3.0"
+  },
+  "requirements": {
+   "build": [
+    "cxx_compiler_stub",
+    "pkg-config",
+    "make",
+    "automake",
+    "libtool",
+    "autoconf"
+   ],
+   "host": [
+    "libxml2"
+   ],
+   "run": [
+    "libxml2"
+   ]
+  },
+  "source": {
+   "fn": "hwloc-2.3.0.tar.gz",
+   "sha256": "155480620c98b43ddf9ca66a6c318b363ca24acb5ff0683af9d25d9324f59836",
+   "url": "https://www.open-mpi.org/software/hwloc/v2.3/downloads/hwloc-2.3.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "hwloc-ls"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "autoconf",
+    "automake",
+    "cxx_compiler_stub",
+    "libtool",
+    "make",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libxml2"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libxml2"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -655,29 +736,19 @@
   ]
  },
  "pinning_version": "2020.11.13.16.40.26",
- "raw_meta_yaml": "{% set name = \"libhwloc\" %}\n{% set pname = \"hwloc\" %}\n{% set version = \"2.3.0\" %}\n{% set sha256 = \"155480620c98b43ddf9ca66a6c318b363ca24acb5ff0683af9d25d9324f59836\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ pname }}-{{ version }}.tar.gz\n  url: https://www.open-mpi.org/software/hwloc/v{{ '.'.join(version.split('.')[:2]) }}/downloads/{{ pname }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 0\n  skip: true  # [win and vc<14]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - pkg-config                # [unix]\n    - posix                     # [win]\n    - clangdev                  # [win]\n    - llvmdev                   # [win]\n    - lld                       # [win]\n    - m2-perl                   # [win]\n    - m2-automake-wrapper       # [win]\n    - m2-libtool                # [win]\n    - m2-autoconf               # [win]\n    - m2-make                   # [win]\n    - m2-m4                     # [win]\n    - python >3                 # [win]\n    - make                      # [unix]\n    - automake                  # [unix]\n    - libtool                   # [unix]\n    - autoconf                  # [unix]\n  host:\n    - libxml2\n    - pthreads-win32            # [win]\n  run:\n    - libxml2\n    - pthreads-win32            # [win]\n\ntest:\n  commands:\n    - hwloc-ls\n\nabout:\n  home: https://www.open-mpi.org/projects/hwloc/\n  license: BSD 3-Clause\n  license_file: COPYING\n  summary: Portable Hardware Locality (hwloc)\n\nextra:\n  recipe-maintainers:\n    - inducer\n    - isuruf\n",
+ "raw_meta_yaml": "{% set name = \"libhwloc\" %}\n{% set pname = \"hwloc\" %}\n{% set version = \"2.3.0\" %}\n{% set sha256 = \"155480620c98b43ddf9ca66a6c318b363ca24acb5ff0683af9d25d9324f59836\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ pname }}-{{ version }}.tar.gz\n  url: https://www.open-mpi.org/software/hwloc/v{{ '.'.join(version.split('.')[:2]) }}/downloads/{{ pname }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 1\n  skip: true  # [win and vc<14]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - pkg-config                # [unix]\n    - autotools_clang_conda     # [win]\n    - make                      # [unix]\n    - automake                  # [unix]\n    - libtool                   # [unix]\n    - autoconf                  # [unix]\n  host:\n    - libxml2\n    - pthreads-win32            # [win]\n  run:\n    - libxml2\n    - pthreads-win32            # [win]\n\ntest:\n  commands:\n    - hwloc-ls\n\nabout:\n  home: https://www.open-mpi.org/projects/hwloc/\n  license: BSD 3-Clause\n  license_file: COPYING\n  summary: Portable Hardware Locality (hwloc)\n\nextra:\n  recipe-maintainers:\n    - inducer\n    - isuruf\n",
  "req": {
   "__set__": true,
   "elements": [
    "autoconf",
    "automake",
-   "clangdev",
+   "autotools_clang_conda",
    "cxx_compiler_stub",
    "libtool",
    "libxml2",
-   "lld",
-   "llvmdev",
-   "m2-autoconf",
-   "m2-automake-wrapper",
-   "m2-libtool",
-   "m2-m4",
-   "m2-make",
-   "m2-perl",
    "make",
    "pkg-config",
-   "posix",
-   "pthreads-win32",
-   "python"
+   "pthreads-win32"
   ]
  },
  "requirements": {
@@ -686,21 +757,11 @@
    "elements": [
     "autoconf",
     "automake",
-    "clangdev",
+    "autotools_clang_conda",
     "cxx_compiler_stub",
     "libtool",
-    "lld",
-    "llvmdev",
-    "m2-autoconf",
-    "m2-automake-wrapper",
-    "m2-libtool",
-    "m2-m4",
-    "m2-make",
-    "m2-perl",
     "make",
-    "pkg-config",
-    "posix",
-    "python"
+    "pkg-config"
    ]
   },
   "host": {
@@ -732,21 +793,11 @@
    "elements": [
     "autoconf",
     "automake",
-    "clangdev",
+    "autotools_clang_conda",
     "cxx_compiler_stub",
     "libtool",
-    "lld",
-    "llvmdev",
-    "m2-autoconf",
-    "m2-automake-wrapper",
-    "m2-libtool",
-    "m2-m4",
-    "m2-make",
-    "m2-perl",
     "make",
-    "pkg-config",
-    "posix",
-    "python >3"
+    "pkg-config"
    ]
   },
   "host": {
@@ -778,7 +829,7 @@
    "summary": "Portable Hardware Locality (hwloc)"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "libhwloc"
    ],
@@ -797,17 +848,7 @@
   "requirements": {
    "build": [
     "cxx_compiler_stub",
-    "posix",
-    "clangdev",
-    "llvmdev",
-    "lld",
-    "m2-perl",
-    "m2-automake-wrapper",
-    "m2-libtool",
-    "m2-autoconf",
-    "m2-make",
-    "m2-m4",
-    "python >3"
+    "autotools_clang_conda"
    ],
    "host": [
     "libxml2",
@@ -833,18 +874,8 @@
   "build": {
    "__set__": true,
    "elements": [
-    "clangdev",
-    "cxx_compiler_stub",
-    "lld",
-    "llvmdev",
-    "m2-autoconf",
-    "m2-automake-wrapper",
-    "m2-libtool",
-    "m2-m4",
-    "m2-make",
-    "m2-perl",
-    "posix",
-    "python"
+    "autotools_clang_conda",
+    "cxx_compiler_stub"
    ]
   },
   "host": {
