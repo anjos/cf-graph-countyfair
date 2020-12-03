@@ -51,7 +51,7 @@
    "summary": "A file format designed for highly efficient deltas while maintaining good compression"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "zchunk"
    ]
@@ -60,7 +60,8 @@
    "recipe-maintainers": [
     "wolfv",
     "JohanMabille",
-    "SylvainCorlay"
+    "SylvainCorlay",
+    "davidbrochart"
    ]
   },
   "package": {
@@ -75,16 +76,17 @@
    ],
    "host": [
     "libcurl",
-    "openssl",
-    "zstd"
+    "zstd",
+    "openssl"
    ],
    "run": [
     "libcurl",
-    "openssl",
-    "zstd"
+    "zstd",
+    "openssl"
    ]
   },
   "source": {
+   "patches": null,
    "sha256": "eb3d531916d6fea399520a2a4663099ddbf2278088599fa09980631067dc9d7b",
    "url": "https://github.com/zchunk/zchunk/archive/1.1.7.tar.gz"
   },
@@ -137,8 +139,9 @@
    "summary": "A file format designed for highly efficient deltas while maintaining good compression"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
+    "zchunk",
     "zchunk"
    ]
   },
@@ -146,7 +149,12 @@
    "recipe-maintainers": [
     "wolfv",
     "JohanMabille",
-    "SylvainCorlay"
+    "SylvainCorlay",
+    "davidbrochart",
+    "wolfv",
+    "JohanMabille",
+    "SylvainCorlay",
+    "davidbrochart"
    ]
   },
   "package": {
@@ -157,25 +165,44 @@
    "build": [
     "c_compiler_stub",
     "meson",
+    "ninja",
+    "c_compiler_stub",
+    "meson",
+    "pkg-config",
     "ninja"
    ],
    "host": [
     "libcurl",
+    "zstd",
     "openssl",
-    "zstd"
+    "libcurl",
+    "zstd",
+    "openssl",
+    "argp-standalone"
    ],
    "run": [
     "libcurl",
+    "zstd",
     "openssl",
-    "zstd"
+    "libcurl",
+    "zstd",
+    "openssl"
    ]
   },
   "source": {
+   "patches": [
+    "osx_include_endian.h.patch",
+    "osx_link_argp.patch"
+   ],
    "sha256": "eb3d531916d6fea399520a2a4663099ddbf2278088599fa09980631067dc9d7b",
    "url": "https://github.com/zchunk/zchunk/archive/1.1.7.tar.gz"
   },
   "test": {
    "commands": [
+    "test -f ${PREFIX}/lib/libzck${SHLIB_EXT}",
+    "test -f ${PREFIX}/bin/zck",
+    "test -f ${PREFIX}/include/zck.h",
+    "test -f ${PREFIX}/lib/pkgconfig/zck.pc",
     "test -f ${PREFIX}/lib/libzck${SHLIB_EXT}",
     "test -f ${PREFIX}/bin/zck",
     "test -f ${PREFIX}/include/zck.h",
@@ -200,22 +227,22 @@
    "summary": "A file format designed for highly efficient deltas while maintaining good compression"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "zchunk"
-   ],
-   "skip": true
+   ]
   },
   "extra": {
    "recipe-maintainers": [
     "wolfv",
     "JohanMabille",
-    "SylvainCorlay"
+    "SylvainCorlay",
+    "davidbrochart"
    ]
   },
   "package": {
    "name": "zchunk",
-   "version": "1.1.6"
+   "version": "1.1.7"
   },
   "requirements": {
    "build": [
@@ -226,18 +253,23 @@
    ],
    "host": [
     "libcurl",
+    "zstd",
     "openssl",
-    "zstd"
+    "argp-standalone"
    ],
    "run": [
     "libcurl",
-    "openssl",
-    "zstd"
+    "zstd",
+    "openssl"
    ]
   },
   "source": {
-   "sha256": "7068fbf30b613b3e4ac80ec291ebdbc08c70c7ce81af1f689d9eaf32bac3a027",
-   "url": "https://github.com/zchunk/zchunk/archive/1.1.6.tar.gz"
+   "patches": [
+    "osx_include_endian.h.patch",
+    "osx_link_argp.patch"
+   ],
+   "sha256": "eb3d531916d6fea399520a2a4663099ddbf2278088599fa09980631067dc9d7b",
+   "url": "https://github.com/zchunk/zchunk/archive/1.1.7.tar.gz"
   },
   "test": {
    "commands": [
@@ -261,6 +293,7 @@
   "host": {
    "__set__": true,
    "elements": [
+    "argp-standalone",
     "libcurl",
     "openssl",
     "zstd"
@@ -286,15 +319,17 @@
   ]
  },
  "pinning_version": "2020.09.26.15.06.30",
- "raw_meta_yaml": "{% set name = \"zchunk\" %}\n{% set version = \"1.1.7\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/zchunk/zchunk/archive/{{ version }}.tar.gz\n  sha256: eb3d531916d6fea399520a2a4663099ddbf2278088599fa09980631067dc9d7b\n\nbuild:\n  number: 0\n  skip: true  # [win or osx]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x' ) }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - meson\n    - pkg-config  # [osx or win]\n    - ninja\n  host:\n    - libcurl\n    - openssl\n    - zstd\n  run:\n    - libcurl\n    - openssl\n    - zstd\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libzck${SHLIB_EXT}  # [unix]\n    - test -f ${PREFIX}/bin/zck  # [unix]\n    - test -f ${PREFIX}/include/zck.h  # [unix]\n    - test -f ${PREFIX}/lib/pkgconfig/zck.pc  # [unix]\n\nabout:\n  home: https://github.com/zchunk/zchunk\n  license: BSD-2-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: A file format designed for highly efficient deltas while maintaining good compression\n  description: |\n    zchunk is a compressed file format that splits the file into independent\n    chunks. This allows you to only download changed chunks when downloading a\n    new version of the file, and also makes zchunk files efficient over rsync.\n\n    zchunk files are protected with strong checksums to verify that the file\n    you downloaded is, in fact, the file you wanted.\n\nextra:\n  recipe-maintainers:\n    - wolfv\n    - JohanMabille\n    - SylvainCorlay\n",
+ "raw_meta_yaml": "{% set name = \"zchunk\" %}\n{% set version = \"1.1.7\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/zchunk/zchunk/archive/{{ version }}.tar.gz\n  sha256: eb3d531916d6fea399520a2a4663099ddbf2278088599fa09980631067dc9d7b\n  patches:\n    - osx_include_endian.h.patch  # [osx]\n    - osx_link_argp.patch  # [osx]\n\nbuild:\n  number: 1\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x' ) }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - meson\n    - pkg-config  # [osx]\n    - ninja\n  host:\n    - libcurl\n    - zstd\n    - openssl\n    - argp-standalone  # [osx]\n  run:\n    - libcurl\n    - zstd\n    - openssl\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libzck${SHLIB_EXT}\n    - test -f ${PREFIX}/bin/zck\n    - test -f ${PREFIX}/include/zck.h\n    - test -f ${PREFIX}/lib/pkgconfig/zck.pc\n\nabout:\n  home: https://github.com/zchunk/zchunk\n  license: BSD-2-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: A file format designed for highly efficient deltas while maintaining good compression\n  description: |\n    zchunk is a compressed file format that splits the file into independent\n    chunks. This allows you to only download changed chunks when downloading a\n    new version of the file, and also makes zchunk files efficient over rsync.\n\n    zchunk files are protected with strong checksums to verify that the file\n    you downloaded is, in fact, the file you wanted.\n\nextra:\n  recipe-maintainers:\n    - wolfv\n    - JohanMabille\n    - SylvainCorlay\n    - davidbrochart\n",
  "req": {
   "__set__": true,
   "elements": [
+   "argp-standalone",
    "c_compiler_stub",
    "libcurl",
    "meson",
    "ninja",
    "openssl",
+   "pkg-config",
    "zstd"
   ]
  },
@@ -304,12 +339,14 @@
    "elements": [
     "c_compiler_stub",
     "meson",
-    "ninja"
+    "ninja",
+    "pkg-config"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
+    "argp-standalone",
     "c_compiler_stub",
     "libcurl",
     "openssl",
@@ -338,12 +375,14 @@
    "elements": [
     "c_compiler_stub",
     "meson",
-    "ninja"
+    "ninja",
+    "pkg-config"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
+    "argp-standalone",
     "libcurl",
     "openssl",
     "zstd"
