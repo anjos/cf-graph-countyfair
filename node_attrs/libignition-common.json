@@ -83,7 +83,7 @@
    "summary": "Ignition Common is a component in the ignition framework, a set of libraries designed to rapidly develop robot applications."
   },
   "build": {
-   "number": "3",
+   "number": "4",
    "run_exports": [
     "libignition-common3"
    ]
@@ -185,13 +185,12 @@
    "summary": "Ignition Common is a component in the ignition framework, a set of libraries designed to rapidly develop robot applications."
   },
   "build": {
-   "number": "3",
+   "number": "4",
    "run_exports": [
     "libignition-common3",
     "libignition-common3",
     "libignition-common3"
-   ],
-   "skip": true
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -219,7 +218,8 @@
     "cmake",
     "ninja",
     "pkgconfig",
-    "vs2017_win-64",
+    "cxx_compiler_stub",
+    "c_compiler_stub",
     "cmake",
     "ninja",
     "pkgconfig"
@@ -282,7 +282,8 @@
    },
    {
     "patches": [
-     "fix_test_break.patch"
+     "fix_test_break.patch",
+     "use_external_tinyxml2.patch"
     ],
     "sha256": "a09e7dc178c2680751bc27d965991f3abc16b955ab58573a39e30bc3e3d2456e",
     "url": "https://github.com/ignitionrobotics/ign-common/archive/ignition-common3_3.7.0.tar.gz"
@@ -312,7 +313,7 @@
    "summary": "Ignition Common is a component in the ignition framework, a set of libraries designed to rapidly develop robot applications."
   },
   "build": {
-   "number": "3",
+   "number": "4",
    "run_exports": [
     "libignition-common3"
    ]
@@ -409,7 +410,7 @@
   ]
  },
  "pinning_version": "2020.10.22.15.42.41",
- "raw_meta_yaml": "{% set base_name = \"libignition-common\" %}\n{% set version = \"3.7.0\" %}\n{% set major_version = version.split('.')[0] %}\n{% set name = base_name + major_version %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/ignitionrobotics/ign-common/archive/ignition-common{{ major_version }}_{{ version }}.tar.gz\n    sha256: a09e7dc178c2680751bc27d965991f3abc16b955ab58573a39e30bc3e3d2456e\n    patches:\n      - fix_test_break.patch\n      - librt_linkage.patch  # [linux]\n      - framework.patch  # [osx]\n\nbuild:\n  number: 3\n  skip: true  # [win and vc<14]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}  # [not win]\n    - {{ compiler('c') }}    # [not win]\n    - vs2017_win-64          # [win64]\n    - cmake\n    - ninja\n    - pkgconfig\n  host:\n    - libignition-math6\n    - libignition-cmake2\n    - dlfcn-win32  # [win]\n    - libuuid      # [linux]\n    - freeimage\n    - gts\n    - tinyxml2\n    - glib\n    - ffmpeg\n  run:\n    - dlfcn-win32  # [win]\n    - libuuid      # [linux]\n    - freeimage\n    - gts\n    - ffmpeg\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ignition/common{{ major_version }}/ignition/common.hh  # [not win]\n    - if exist %PREFIX%\\\\Library\\\\include\\\\ignition\\common{{ major_version }}\\ignition\\common.hh (exit 0) else (exit 1)  # [win]\n\nabout:\n  home: https://github.com/ignitionrobotics/ign-common\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: Ignition Common is a component in the ignition framework, a set of libraries designed to rapidly develop robot applications.\n\nextra:\n  recipe-maintainers:\n    - seanyen\n    - Tobias-Fischer\n",
+ "raw_meta_yaml": "{% set base_name = \"libignition-common\" %}\n{% set version = \"3.7.0\" %}\n{% set major_version = version.split('.')[0] %}\n{% set name = base_name + major_version %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/ignitionrobotics/ign-common/archive/ignition-common{{ major_version }}_{{ version }}.tar.gz\n    sha256: a09e7dc178c2680751bc27d965991f3abc16b955ab58573a39e30bc3e3d2456e\n    patches:\n      - fix_test_break.patch\n      - librt_linkage.patch  # [linux]\n      - framework.patch  # [osx]\n      - use_external_tinyxml2.patch  # [win]\n\nbuild:\n  number: 4\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - cmake\n    - ninja\n    - pkgconfig\n  host:\n    - libignition-math6\n    - libignition-cmake2\n    - dlfcn-win32  # [win]\n    - libuuid      # [linux]\n    - freeimage\n    - gts\n    - tinyxml2\n    - glib\n    - ffmpeg\n  run:\n    - dlfcn-win32  # [win]\n    - libuuid      # [linux]\n    - freeimage\n    - gts\n    - ffmpeg\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ignition/common{{ major_version }}/ignition/common.hh  # [not win]\n    - if exist %PREFIX%\\\\Library\\\\include\\\\ignition\\common{{ major_version }}\\ignition\\common.hh (exit 0) else (exit 1)  # [win]\n\nabout:\n  home: https://github.com/ignitionrobotics/ign-common\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: Ignition Common is a component in the ignition framework, a set of libraries designed to rapidly develop robot applications.\n\nextra:\n  recipe-maintainers:\n    - seanyen\n    - Tobias-Fischer\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -426,8 +427,7 @@
    "libuuid",
    "ninja",
    "pkgconfig",
-   "tinyxml2",
-   "vs2017_win-64"
+   "tinyxml2"
   ]
  },
  "requirements": {
@@ -438,8 +438,7 @@
     "cmake",
     "cxx_compiler_stub",
     "ninja",
-    "pkgconfig",
-    "vs2017_win-64"
+    "pkgconfig"
    ]
   },
   "host": {
@@ -455,8 +454,7 @@
     "libignition-cmake2",
     "libignition-math6",
     "libuuid",
-    "tinyxml2",
-    "vc"
+    "tinyxml2"
    ]
   },
   "run": {
@@ -468,8 +466,7 @@
     "ffmpeg",
     "freeimage",
     "gts",
-    "libuuid",
-    "vc"
+    "libuuid"
    ]
   },
   "test": {
@@ -487,8 +484,7 @@
     "cmake",
     "cxx_compiler_stub",
     "ninja",
-    "pkgconfig",
-    "vs2017_win-64"
+    "pkgconfig"
    ]
   },
   "host": {
@@ -530,11 +526,10 @@
    "summary": "Ignition Common is a component in the ignition framework, a set of libraries designed to rapidly develop robot applications."
   },
   "build": {
-   "number": "3",
+   "number": "4",
    "run_exports": [
     "libignition-common3"
-   ],
-   "skip": true
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -548,7 +543,8 @@
   },
   "requirements": {
    "build": [
-    "vs2017_win-64",
+    "cxx_compiler_stub",
+    "c_compiler_stub",
     "cmake",
     "ninja",
     "pkgconfig"
@@ -573,7 +569,8 @@
   "source": [
    {
     "patches": [
-     "fix_test_break.patch"
+     "fix_test_break.patch",
+     "use_external_tinyxml2.patch"
     ],
     "sha256": "a09e7dc178c2680751bc27d965991f3abc16b955ab58573a39e30bc3e3d2456e",
     "url": "https://github.com/ignitionrobotics/ign-common/archive/ignition-common3_3.7.0.tar.gz"
@@ -589,10 +586,11 @@
   "build": {
    "__set__": true,
    "elements": [
+    "c_compiler_stub",
     "cmake",
+    "cxx_compiler_stub",
     "ninja",
-    "pkgconfig",
-    "vs2017_win-64"
+    "pkgconfig"
    ]
   },
   "host": {
