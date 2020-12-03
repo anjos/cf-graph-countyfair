@@ -66,18 +66,16 @@
    "dev_url": "https://github.com/cp2k/cp2k",
    "doc_url": "https://manual.cp2k.org",
    "home": "https://www.cp2k.org",
-   "license": "GPL-2.0",
+   "license": "GPL-2.0-only",
    "license_family": "GPL",
    "license_file": "LICENSE",
    "summary": "Quantum chemistry and solid state physics software package"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
-    "jan-janssen",
-    "oschuett",
     "jan-janssen",
     "oschuett"
    ]
@@ -96,31 +94,22 @@
     "automake",
     "cmake",
     "libtool",
-    "python",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "fortran_compiler_stub",
-    "make",
-    "autoconf",
-    "automake",
-    "cmake",
-    "libtool",
     "python"
    ],
    "host": [
-    "libblas",
-    "liblapack",
     "libblas",
     "liblapack"
    ]
   },
   "source": {
+   "patches": [
+    "regtest.patch"
+   ],
    "sha256": "ccd711a09a426145440e666310dd01cc5772ab103493c4ae6a3470898cd0addb",
    "url": "https://github.com/cp2k/cp2k/releases/download/v7.1.0/cp2k-7.1.tar.bz2"
   },
   "test": {
    "commands": [
-    "cp2k.sopt --help",
     "cp2k.sopt --help"
    ]
   }
@@ -162,13 +151,13 @@
    "dev_url": "https://github.com/cp2k/cp2k",
    "doc_url": "https://manual.cp2k.org",
    "home": "https://www.cp2k.org",
-   "license": "GPL-2.0",
+   "license": "GPL-2.0-only",
    "license_family": "GPL",
    "license_file": "LICENSE",
    "summary": "Quantum chemistry and solid state physics software package"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -211,6 +200,11 @@
    ]
   },
   "source": {
+   "patches": [
+    "regtest.patch",
+    "regtest.patch",
+    "macosxtest.patch"
+   ],
    "sha256": "ccd711a09a426145440e666310dd01cc5772ab103493c4ae6a3470898cd0addb",
    "url": "https://github.com/cp2k/cp2k/releases/download/v7.1.0/cp2k-7.1.tar.bz2"
   },
@@ -229,14 +223,13 @@
    "dev_url": "https://github.com/cp2k/cp2k",
    "doc_url": "https://manual.cp2k.org",
    "home": "https://www.cp2k.org",
-   "license": "GPL-2.0",
+   "license": "GPL-2.0-only",
    "license_family": "GPL",
    "license_file": "LICENSE",
    "summary": "Quantum chemistry and solid state physics software package"
   },
   "build": {
-   "number": "0",
-   "skip": true
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -266,6 +259,10 @@
    ]
   },
   "source": {
+   "patches": [
+    "regtest.patch",
+    "macosxtest.patch"
+   ],
    "sha256": "ccd711a09a426145440e666310dd01cc5772ab103493c4ae6a3470898cd0addb",
    "url": "https://github.com/cp2k/cp2k/releases/download/v7.1.0/cp2k-7.1.tar.bz2"
   },
@@ -313,7 +310,7 @@
   ]
  },
  "pinning_version": "2020.10.13.15.16.20",
- "raw_meta_yaml": "{% set name = \"cp2k\" %}\n{% set version = \"7.1.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name }}/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version[:-2] }}.tar.bz2\n  sha256: ccd711a09a426145440e666310dd01cc5772ab103493c4ae6a3470898cd0addb\n\nbuild:\n  number: 1\n  skip: True  # [not linux]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n    - autoconf\n    - automake\n    - cmake \n    - libtool\n    - python \n  host:\n    - libblas\n    - liblapack\n\ntest:\n  commands:\n    - cp2k.sopt --help\n\nabout:\n  home: https://www.cp2k.org\n  license: GPL-2.0\n  license_family: GPL\n  license_file: LICENSE\n  summary: 'Quantum chemistry and solid state physics software package'\n\n  description: |\n    CP2K is a quantum chemistry and solid state physics software package \n    that can perform atomistic simulations of solid state, liquid, \n    molecular, periodic, material, crystal, and biological systems. \n  doc_url: https://manual.cp2k.org\n  dev_url: https://github.com/cp2k/cp2k\n\nextra:\n  recipe-maintainers:\n    - jan-janssen\n    - oschuett\n",
+ "raw_meta_yaml": "{% set name = \"cp2k\" %}\n{% set version = \"7.1.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name }}/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version[:-2] }}.tar.bz2\n  sha256: ccd711a09a426145440e666310dd01cc5772ab103493c4ae6a3470898cd0addb\n  patches: \n    - regtest.patch\n    - macosxtest.patch  # [osx]\n\nbuild:\n  number: 2\n  skip: True  # [not (linux or osx) ]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n    - autoconf\n    - automake\n    - cmake \n    - libtool\n    - python \n  host:\n    - libblas\n    - liblapack\n\ntest:\n  commands:\n    - cp2k.sopt --help\n\nabout:\n  home: https://www.cp2k.org\n  license: GPL-2.0-only\n  license_family: GPL\n  license_file: LICENSE\n  summary: 'Quantum chemistry and solid state physics software package'\n\n  description: |\n    CP2K is a quantum chemistry and solid state physics software package \n    that can perform atomistic simulations of solid state, liquid, \n    molecular, periodic, material, crystal, and biological systems. \n  doc_url: https://manual.cp2k.org\n  dev_url: https://github.com/cp2k/cp2k\n\nextra:\n  recipe-maintainers:\n    - jan-janssen\n    - oschuett\n",
  "req": {
   "__set__": true,
   "elements": [
