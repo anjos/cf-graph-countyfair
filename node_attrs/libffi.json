@@ -108,7 +108,7 @@
    "summary": "A Portable Foreign Function Interface Library."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "libffi"
    ]
@@ -190,7 +190,7 @@
    "summary": "A Portable Foreign Function Interface Library."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "libffi"
    ]
@@ -272,7 +272,7 @@
    "summary": "A Portable Foreign Function Interface Library."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "libffi"
    ]
@@ -354,7 +354,7 @@
    "summary": "A Portable Foreign Function Interface Library."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "libffi",
     "libffi",
@@ -472,6 +472,7 @@
     "test -e $PREFIX/include/ffitarget.h",
     "if not exist %LIBRARY_PREFIX%/bin/ffi-7.dll exit /b 1",
     "if not exist %LIBRARY_PREFIX%/lib/libffi.lib exit /b 1",
+    "if not exist %LIBRARY_PREFIX%/lib/ffi.lib exit /b 1",
     "if not exist %LIBRARY_PREFIX%/include/ffi.h exit /b 1",
     "if not exist %LIBRARY_PREFIX%/include/ffitarget.h exit /b 1",
     "llvm-nm %LIBRARY_PREFIX%/lib/libffi.lib | grep \"__imp_ffi_type_void\""
@@ -499,7 +500,7 @@
    "summary": "A Portable Foreign Function Interface Library."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "libffi"
    ]
@@ -581,7 +582,7 @@
    "summary": "A Portable Foreign Function Interface Library."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "libffi"
    ]
@@ -659,7 +660,7 @@
   ]
  },
  "pinning_version": "2020.08.10.21.36.31",
- "raw_meta_yaml": "{% set version = \"3.3\" %}\n{% set am_version = \"1.15\" %} # keep synchronized with build.sh\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: libffi\n  version: {{ version }}\n\nsource:\n  url: https://github.com/libffi/libffi/archive/v{{ version }}.tar.gz\n  sha256: 3f2f86094f5cf4c36cfe850d2fe029d01f5c2c2296619407c8ba0d8207da9a6b\n  patches:  # [win]\n    # Windows-specific:\n    - 0001-x86-MSVC-does-not-support-Complex-type.patch                # [win]\n    - 0002-Don-t-define-FFI_COMPLEX_TYPEDEF-ifndef-FFI_TARGET_H.patch  # [win]\n\nbuild:\n  number: 1\n  run_exports:\n    # good history: https://abi-laboratory.pro/tracker/timeline/libffi/\n    - {{ pin_subpackage('libffi', \"x.x\") }}\n\nrequirements:\n  build:\n    - autotools_clang_conda              # [win]\n    - make                               # [unix]\n    - autoconf                           # [unix]\n    - libtool                            # [unix]\n    - patch                              # [unix]\n    - automake                           # [unix]\n    - {{ posix }}texinfo\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n  run:\n\ntest:\n  requires:\n    - llvm-tools  # [win]\n    - m2-grep     # [win]\n  commands:\n    - test -e $PREFIX/lib/libffi${SHLIB_EXT}                       # [not win]\n    - test -e $PREFIX/lib/libffi.a                                 # [not win]\n    - test -e $PREFIX/include/ffi.h                                # [not win]\n    - test -e $PREFIX/include/ffitarget.h                          # [not win]\n    - if not exist %LIBRARY_PREFIX%/bin/ffi-7.dll exit /b 1        # [win]\n    - if not exist %LIBRARY_PREFIX%/lib/libffi.lib exit /b 1       # [win]\n    - if not exist %LIBRARY_PREFIX%/include/ffi.h exit /b 1        # [win]\n    - if not exist %LIBRARY_PREFIX%/include/ffitarget.h exit /b 1  # [win]\n    - llvm-nm %LIBRARY_PREFIX%/lib/libffi.lib | grep \"__imp_ffi_type_void\"        # [win]\n\nabout:\n  home: https://sourceware.org/libffi/\n  license: MIT\n  license_file: LICENSE\n  summary: A Portable Foreign Function Interface Library.\n\n  description: |\n    The libffi library provides a portable, high level programming interface\n    to various calling conventions. This allows a programmer to call any\n    function specified by a call interface description at run-time.\n  doc_url: https://sourceware.org/libffi/\n  dev_url: https://github.com/libffi/libffi\n\nextra:\n  recipe-maintainers:\n    - stefan-balke\n    - scopatz\n    - isuruf\n",
+ "raw_meta_yaml": "{% set version = \"3.3\" %}\n{% set am_version = \"1.15\" %} # keep synchronized with build.sh\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: libffi\n  version: {{ version }}\n\nsource:\n  url: https://github.com/libffi/libffi/archive/v{{ version }}.tar.gz\n  sha256: 3f2f86094f5cf4c36cfe850d2fe029d01f5c2c2296619407c8ba0d8207da9a6b\n  patches:  # [win]\n    # Windows-specific:\n    - 0001-x86-MSVC-does-not-support-Complex-type.patch                # [win]\n    - 0002-Don-t-define-FFI_COMPLEX_TYPEDEF-ifndef-FFI_TARGET_H.patch  # [win]\n\nbuild:\n  number: 2\n  run_exports:\n    # good history: https://abi-laboratory.pro/tracker/timeline/libffi/\n    - {{ pin_subpackage('libffi', \"x.x\") }}\n\nrequirements:\n  build:\n    - autotools_clang_conda              # [win]\n    - make                               # [unix]\n    - autoconf                           # [unix]\n    - libtool                            # [unix]\n    - patch                              # [unix]\n    - automake                           # [unix]\n    - {{ posix }}texinfo\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n  run:\n\ntest:\n  requires:\n    - llvm-tools  # [win]\n    - m2-grep     # [win]\n  commands:\n    - test -e $PREFIX/lib/libffi${SHLIB_EXT}                       # [not win]\n    - test -e $PREFIX/lib/libffi.a                                 # [not win]\n    - test -e $PREFIX/include/ffi.h                                # [not win]\n    - test -e $PREFIX/include/ffitarget.h                          # [not win]\n    - if not exist %LIBRARY_PREFIX%/bin/ffi-7.dll exit /b 1        # [win]\n    - if not exist %LIBRARY_PREFIX%/lib/libffi.lib exit /b 1       # [win]\n    - if not exist %LIBRARY_PREFIX%/lib/ffi.lib exit /b 1       # [win]\n    - if not exist %LIBRARY_PREFIX%/include/ffi.h exit /b 1        # [win]\n    - if not exist %LIBRARY_PREFIX%/include/ffitarget.h exit /b 1  # [win]\n    - llvm-nm %LIBRARY_PREFIX%/lib/libffi.lib | grep \"__imp_ffi_type_void\"        # [win]\n\nabout:\n  home: https://sourceware.org/libffi/\n  license: MIT\n  license_file: LICENSE\n  summary: A Portable Foreign Function Interface Library.\n\n  description: |\n    The libffi library provides a portable, high level programming interface\n    to various calling conventions. This allows a programmer to call any\n    function specified by a call interface description at run-time.\n  doc_url: https://sourceware.org/libffi/\n  dev_url: https://github.com/libffi/libffi\n\nextra:\n  recipe-maintainers:\n    - stefan-balke\n    - scopatz\n    - isuruf\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -760,7 +761,7 @@
    "summary": "A Portable Foreign Function Interface Library."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "libffi"
    ]
@@ -798,6 +799,7 @@
    "commands": [
     "if not exist %LIBRARY_PREFIX%/bin/ffi-7.dll exit /b 1",
     "if not exist %LIBRARY_PREFIX%/lib/libffi.lib exit /b 1",
+    "if not exist %LIBRARY_PREFIX%/lib/ffi.lib exit /b 1",
     "if not exist %LIBRARY_PREFIX%/include/ffi.h exit /b 1",
     "if not exist %LIBRARY_PREFIX%/include/ffitarget.h exit /b 1",
     "llvm-nm %LIBRARY_PREFIX%/lib/libffi.lib | grep \"__imp_ffi_type_void\""
