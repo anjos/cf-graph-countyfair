@@ -275,8 +275,9 @@
    "summary": "Unified and efficient Machine Learning"
   },
   "build": {
+   "merge_build_host": true,
    "number": "7",
-   "script": "mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DBLA_VENDOR=Intel\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
+   "script": "mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DLICENSE_GPL_SHOGUN=OFF                                \\\n  -DBLAS_LIBRARIES=/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libmkl_rt.so                                                    \\\n  -DLAPACK_LIBRARIES=/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libmkl_rt.so                                                  \\\n  -DBLA_VENDOR=Intel\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
   },
   "extra": {
    "recipe-maintainers": [
@@ -314,6 +315,10 @@
     "json-c",
     "libxml2",
     "lzo",
+    "libblas 3.8 *netlib",
+    "libcblas 3.8 *netlib",
+    "liblapack 3.8.0 *netlib",
+    "liblapacke 3.8.0 *netlib",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -329,6 +334,7 @@
     "json-c",
     "libxml2",
     "lzo",
+    "mkl-devel",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -341,7 +347,8 @@
     "json-c",
     "ctags",
     "glpk",
-    "json-c"
+    "json-c",
+    "libblas * *_mkl"
    ],
    "run_constrained": null
   },
@@ -383,7 +390,6 @@
     "conda inspect linkages -p $PREFIX shogun-cpp",
     "cat $PREFIX/include/shogun/lib/config.h",
     "$PREFIX/share/shogun/examples/libshogun/minimal",
-    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
     "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
     "conda inspect linkages -p $PREFIX shogun-cpp",
     "cat $PREFIX/include/shogun/lib/config.h"
@@ -415,10 +421,15 @@
     "glpk",
     "hdf5",
     "json-c",
+    "libblas",
+    "libcblas",
     "libcurl",
+    "liblapack",
+    "liblapacke",
     "libprotobuf",
     "libxml2",
     "lzo",
+    "mkl-devel",
     "rxcpp",
     "snappy",
     "xz",
@@ -430,7 +441,8 @@
    "elements": [
     "ctags",
     "glpk",
-    "json-c"
+    "json-c",
+    "libblas"
    ]
   },
   "test": {
@@ -452,8 +464,9 @@
    "summary": "Unified and efficient Machine Learning"
   },
   "build": {
+   "merge_build_host": true,
    "number": "7",
-   "script": "mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DBLA_VENDOR=Intel\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
+   "script": "mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DLICENSE_GPL_SHOGUN=OFF                                \\\n  -DBLAS_LIBRARIES=/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libmkl_rt.dylib                                                    \\\n  -DLAPACK_LIBRARIES=/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libmkl_rt.dylib                                                  \\\n  -DBLA_VENDOR=Intel\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
   },
   "extra": {
    "recipe-maintainers": [
@@ -503,6 +516,10 @@
     "json-c",
     "libxml2",
     "lzo",
+    "libblas 3.8 *netlib",
+    "libcblas 3.8 *netlib",
+    "liblapack 3.8.0 *netlib",
+    "liblapacke 3.8.0 *netlib",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -518,6 +535,7 @@
     "json-c",
     "libxml2",
     "lzo",
+    "mkl-devel",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -533,6 +551,10 @@
     "json-c",
     "libxml2",
     "lzo",
+    "libblas 3.8 *netlib",
+    "libcblas 3.8 *netlib",
+    "liblapack 3.8.0 *netlib",
+    "liblapacke 3.8.0 *netlib",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -548,6 +570,7 @@
     "json-c",
     "libxml2",
     "lzo",
+    "mkl-devel",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -561,12 +584,14 @@
     "ctags",
     "glpk",
     "json-c",
+    "libblas * *_mkl",
     "ctags",
     "glpk",
     "json-c",
     "ctags",
     "glpk",
-    "json-c"
+    "json-c",
+    "libblas * *_mkl"
    ],
    "run_constrained": null
   },
@@ -636,7 +661,6 @@
     "conda inspect linkages -p $PREFIX shogun-cpp",
     "cat $PREFIX/include/shogun/lib/config.h",
     "$PREFIX/share/shogun/examples/libshogun/minimal",
-    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
     "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
     "conda inspect linkages -p $PREFIX shogun-cpp",
     "cat $PREFIX/include/shogun/lib/config.h",
@@ -647,7 +671,6 @@
     "conda inspect objects  -p $PREFIX shogun-cpp",
     "cat $PREFIX/include/shogun/lib/config.h",
     "$PREFIX/share/shogun/examples/libshogun/minimal",
-    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
     "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
     "conda inspect linkages -p $PREFIX shogun-cpp",
     "conda inspect objects  -p $PREFIX shogun-cpp",
@@ -676,7 +699,7 @@
   },
   "build": {
    "number": "7",
-   "script": "mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DBLA_VENDOR=Intel\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
+   "script": "mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DLICENSE_GPL_SHOGUN=OFF                                \\\n  -DBLAS_LIBRARIES=/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libmkl_rt.dylib                                                    \\\n  -DLAPACK_LIBRARIES=/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libmkl_rt.dylib                                                  \\\n  -DBLA_VENDOR=Intel\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
   },
   "extra": {
    "recipe-maintainers": [
@@ -712,6 +735,10 @@
     "json-c",
     "libxml2",
     "lzo",
+    "libblas 3.8 *netlib",
+    "libcblas 3.8 *netlib",
+    "liblapack 3.8.0 *netlib",
+    "liblapacke 3.8.0 *netlib",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -727,6 +754,7 @@
     "json-c",
     "libxml2",
     "lzo",
+    "mkl-devel",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -739,7 +767,8 @@
     "json-c",
     "ctags",
     "glpk",
-    "json-c"
+    "json-c",
+    "libblas * *_mkl"
    ],
    "run_constrained": null
   },
@@ -782,7 +811,6 @@
     "conda inspect objects  -p $PREFIX shogun-cpp",
     "cat $PREFIX/include/shogun/lib/config.h",
     "$PREFIX/share/shogun/examples/libshogun/minimal",
-    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
     "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
     "conda inspect linkages -p $PREFIX shogun-cpp",
     "conda inspect objects  -p $PREFIX shogun-cpp",
@@ -814,10 +842,15 @@
     "glpk",
     "hdf5",
     "json-c",
+    "libblas",
+    "libcblas",
     "libcurl",
+    "liblapack",
+    "liblapacke",
     "libprotobuf",
     "libxml2",
     "lzo",
+    "mkl-devel",
     "rxcpp",
     "snappy",
     "xz",
@@ -829,7 +862,8 @@
    "elements": [
     "ctags",
     "glpk",
-    "json-c"
+    "json-c",
+    "libblas"
    ]
   },
   "test": {
@@ -863,11 +897,16 @@
    "glpk",
    "hdf5",
    "json-c",
+   "libblas",
+   "libcblas",
    "libcurl",
    "libgomp",
+   "liblapack",
+   "liblapacke",
    "libprotobuf",
    "libxml2",
    "lzo",
+   "mkl-devel",
    "python",
    "rxcpp",
    "snappy",
@@ -899,10 +938,15 @@
     "glpk",
     "hdf5",
     "json-c",
+    "libblas",
+    "libcblas",
     "libcurl",
+    "liblapack",
+    "liblapacke",
     "libprotobuf",
     "libxml2",
     "lzo",
+    "mkl-devel",
     "rxcpp",
     "snappy",
     "xz",
@@ -917,7 +961,8 @@
     "ctng-compilers",
     "cxx_compiler_stub",
     "glpk",
-    "json-c"
+    "json-c",
+    "libblas"
    ]
   },
   "test": {
@@ -950,10 +995,15 @@
     "glpk",
     "hdf5",
     "json-c",
+    "libblas 3.8 *netlib",
+    "libcblas 3.8 *netlib",
     "libcurl",
+    "liblapack 3.8.0 *netlib",
+    "liblapacke 3.8.0 *netlib",
     "libprotobuf",
     "libxml2",
     "lzo",
+    "mkl-devel",
     "rxcpp 4.1.0",
     "snappy",
     "xz",
@@ -965,7 +1015,8 @@
    "elements": [
     "ctags",
     "glpk",
-    "json-c"
+    "json-c",
+    "libblas * *_mkl"
    ]
   },
   "test": {
