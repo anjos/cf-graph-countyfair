@@ -16,7 +16,7 @@
    "summary": "Microsoft message-passing-interface (MS-MPI)"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -32,6 +32,9 @@
     "cxx_compiler_stub",
     "c_compiler_stub",
     "m2w64_fortran_compiler_stub"
+   ],
+   "run": [
+    "mpi 1.0 msmpi"
    ]
   },
   "source": {
@@ -48,7 +51,10 @@
     "if not exist %LIBRARY_INC%\\\\mpi.f90 exit 1",
     "if not exist %LIBRARY_INC%\\\\mpi.h exit 1",
     "if not exist %LIBRARY_LIB%\\\\msmpi.lib exit 1",
-    "if not exist %LIBRARY_LIB%\\\\mpifort.lib exit 1"
+    "if not exist %LIBRARY_LIB%\\\\mpifort.lib exit 1",
+    "if not %MSMPI_BIN% == %LIBRARY_BIN% exit 1",
+    "if not %MSMPI_INC% == %LIBRARY_INC% exit 1",
+    "if not %MSMPI_LIB64% == %LIBRARY_LIB% exit 1"
    ]
   }
  },
@@ -60,13 +66,14 @@
    "msmpi"
   ]
  },
- "raw_meta_yaml": "{% set name = \"msmpi\" %}\n{% set version = \"10.1.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/microsoft/Microsoft-MPI/archive/v{{ version }}.tar.gz\n  sha256: 63c7da941fc4ffb05a0f97bd54a67968c71f63389a0d162d3182eabba1beab3d\n  patches:\n    - conda-build.patch\n\nbuild:\n  number: 0\n  skip: true  # [not win]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - {{ compiler('m2w64_fortran') }}\n\ntest:\n  commands:\n    - if not exist %LIBRARY_BIN%\\\\mpiexec.exe exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\msmpi.dll exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\\\mpi.f90 exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\\\mpi.h exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\msmpi.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\mpifort.lib exit 1  # [win]\n\nabout:\n  home: https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi\n  license: MIT\n  license_file: LICENSE.txt\n  summary: Microsoft message-passing-interface (MS-MPI)\n  description: Microsoft MPI (MS-MPI) is a Microsoft implementation of the Message Passing Interface standard for developing and running parallel applications on the Windows platform.\n  doc_url: https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi\n  dev_url: https://github.com/microsoft/Microsoft-MPI\n\nextra:\n  recipe-maintainers:\n    - RyanMcCarthy-NOAA\n",
+ "raw_meta_yaml": "{% set name = \"msmpi\" %}\n{% set version = \"10.1.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/microsoft/Microsoft-MPI/archive/v{{ version }}.tar.gz\n  sha256: 63c7da941fc4ffb05a0f97bd54a67968c71f63389a0d162d3182eabba1beab3d\n  patches:\n    - conda-build.patch\n\nbuild:\n  number: 1\n  skip: true  # [not win]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - {{ compiler('m2w64_fortran') }}\n  run:\n    - mpi 1.0 msmpi\n\ntest:\n  commands:\n    - if not exist %LIBRARY_BIN%\\\\mpiexec.exe exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\msmpi.dll exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\\\mpi.f90 exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\\\mpi.h exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\msmpi.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\mpifort.lib exit 1  # [win]\n    - if not %MSMPI_BIN% == %LIBRARY_BIN% exit 1  # [win]\n    - if not %MSMPI_INC% == %LIBRARY_INC% exit 1  # [win]\n    - if not %MSMPI_LIB64% == %LIBRARY_LIB% exit 1  # [win]\n\nabout:\n  home: https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi\n  license: MIT\n  license_file: LICENSE.txt\n  summary: Microsoft message-passing-interface (MS-MPI)\n  description: Microsoft MPI (MS-MPI) is a Microsoft implementation of the Message Passing Interface standard for developing and running parallel applications on the Windows platform.\n  doc_url: https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi\n  dev_url: https://github.com/microsoft/Microsoft-MPI\n\nextra:\n  recipe-maintainers:\n    - RyanMcCarthy-NOAA\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "cxx_compiler_stub",
-   "m2w64_fortran_compiler_stub"
+   "m2w64_fortran_compiler_stub",
+   "mpi"
   ]
  },
  "requirements": {
@@ -89,7 +96,8 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "mpi"
    ]
   },
   "test": {
@@ -113,7 +121,9 @@
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "mpi 1.0 msmpi"
+   ]
   },
   "test": {
    "__set__": true,
@@ -133,7 +143,7 @@
    "summary": "Microsoft message-passing-interface (MS-MPI)"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -149,6 +159,9 @@
     "cxx_compiler_stub",
     "c_compiler_stub",
     "m2w64_fortran_compiler_stub"
+   ],
+   "run": [
+    "mpi 1.0 msmpi"
    ]
   },
   "source": {
@@ -165,7 +178,10 @@
     "if not exist %LIBRARY_INC%\\\\mpi.f90 exit 1",
     "if not exist %LIBRARY_INC%\\\\mpi.h exit 1",
     "if not exist %LIBRARY_LIB%\\\\msmpi.lib exit 1",
-    "if not exist %LIBRARY_LIB%\\\\mpifort.lib exit 1"
+    "if not exist %LIBRARY_LIB%\\\\mpifort.lib exit 1",
+    "if not %MSMPI_BIN% == %LIBRARY_BIN% exit 1",
+    "if not %MSMPI_INC% == %LIBRARY_INC% exit 1",
+    "if not %MSMPI_LIB64% == %LIBRARY_LIB% exit 1"
    ]
   }
  },
@@ -184,7 +200,9 @@
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "mpi"
+   ]
   },
   "test": {
    "__set__": true,
