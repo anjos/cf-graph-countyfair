@@ -62,6 +62,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/554765131.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -534,7 +551,7 @@
    "libsndfile"
   ]
  },
- "pinning_version": "2020.01.28",
+ "pinning_version": "2021.01.14.02.00.42",
  "raw_meta_yaml": "{% set name = \"libsndfile\" %}\n{% set version = \"1.0.30\" %}\n\npackage:\n    name: {{ name|lower }}\n    version: {{ version }}\n\nsource:\n    fn: {{ name }}-{{ version }}.tar.gz\n    url: https://github.com/libsndfile/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version }}.tar.bz2\n    sha256: 9df273302c4fa160567f412e10cc4f76666b66281e7ba48370fb544e87e4611a\n\nbuild:\n    number: 1\n    run_exports:\n        # https://abi-laboratory.pro/?view=timeline&l=libsndfile\n        - {{ pin_subpackage(name, max_pin=\"x.x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - make   # [not win]\n    - cmake  # [win]\n    - ninja  # [win]\n    - python\n  host:\n    - libflac\n    - libvorbis\n    - libogg\n    - libopus\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libsndfile${SHLIB_EXT}  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\sndfile.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\sndfile.lib exit 1  # [win]\n\n    # try to run one of the commands (--help returns 1, so make that OK)\n    - sndfile-info --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi  # [not win]\n    - sndfile-info --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"  # [win]\n\nabout:\n    home: http://www.mega-nerd.com/libsndfile\n    dev_url: https://github.com/libsndfile/libsndfile\n    license: LGPL-2.1-or-later\n    license_family: LGPL\n    license_file: COPYING\n    summary: \"libsndfile - a C library for reading and writing files containing sampled sound (such as MS Windows WAV and the Apple/SGI AIFF format) through one standard library interface\"\n\nextra:\n  recipe-maintainers:\n    - hbredin\n    - thomasfillon\n    - SylvainCorlay\n    - wolfv\n    - JohanMabille\n",
  "req": {
   "__set__": true,
@@ -586,7 +603,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.6.8",
+ "smithy_version": "3.8.6",
  "strong_exports": false,
  "total_requirements": {
   "build": {
