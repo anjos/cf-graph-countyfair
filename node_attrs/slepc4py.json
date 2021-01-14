@@ -1186,6 +1186,9 @@
   ]
  },
  "pinning_version": "2021.01.14.09.11.00",
+ "pre_pr_migrator_status": {
+  "pypy37": "not solvable: master: ['osx_64_mpimpichnumpy1.19python3.7.____73_pypy: Encountered problems while solving.\\nProblem: package petsc4py-3.14.0-py36h2645b94_1 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'osx_64_mpiopenmpinumpy1.19python3.7.____73_pypy: Encountered problems while solving.\\nProblem: package petsc4py-3.14.0-py36h2645b94_1 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n']"
+ },
  "raw_meta_yaml": "{% set name = \"slepc4py\" %}\n{% set version = \"3.14.0\" %}\n{% set sha256 = \"31f47745f38f942c4b76b034a986feaffda9babe6d9df101e201fbbff6279f8d\" %}\n\n{% set version_xy = version.rsplit('.', 1)[0] %}\n\npackage:\n  name: slepc4py\n  version: {{ version }}\n\nsource:\n  fn: slepc4py-{{ version }}.tar.gz\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    - dont_fix_config_vars.patch\n\nbuild:\n  number: 1\n  script: PETSC_DIR=$PREFIX SLEPC_DIR=$PREFIX pip -v install --no-deps .\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n  host:\n    - python\n    - pip\n    - numpy\n    - {{ mpi }}\n    - petsc {{ version_xy }}.*\n    - slepc {{ version_xy }}.*\n    - petsc4py {{ version_xy }}.*\n  run:\n    - python\n    - {{ pin_compatible('numpy') }}\n    - {{ mpi }}\n    - petsc  # pinned by petsc run_exports\n    - slepc  # pinned by slepc run_exports\n    - petsc4py {{ version_xy }}.*\n  run_constrained:\n    - mpi4py >=3.0.1\n\nabout:\n  home: https://gitlab.com/slepc/slepc4py\n  summary: Python bindings for SLEPc\n  license: BSD-2-Clause\n  license_file: LICENSE.rst\n\nextra:\n  recipe-maintainers:\n    - dalcinl\n    - joseeroman\n    - minrk\n",
  "req": {
   "__set__": true,
