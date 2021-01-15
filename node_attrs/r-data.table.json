@@ -544,6 +544,7 @@
     "LICENSE",
     "LICENSE",
     "LICENSE",
+    "LICENSE",
     "LICENSE"
    ],
    "summary": "Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and flexible syntax, for faster development."
@@ -571,11 +572,15 @@
     "lib/R/lib/",
     "lib/",
     "lib/R/lib/",
+    "lib/",
+    "lib/R/lib/",
     "lib/"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "conda-forge/r",
+    "nick-youngblut",
     "conda-forge/r",
     "nick-youngblut",
     "conda-forge/r",
@@ -630,6 +635,10 @@
     "make",
     "llvm-openmp",
     "pkg-config",
+    "c_compiler_stub",
+    "make",
+    "llvm-openmp",
+    "pkg-config",
     "m2w64_c_compiler_stub",
     "filesystem",
     "make",
@@ -655,6 +664,7 @@
     "r-base",
     "r-base",
     "r-base",
+    "r-base",
     "r-base"
    ],
    "run": [
@@ -664,6 +674,8 @@
     "r-base",
     "r-base",
     "r-base",
+    "r-base",
+    "llvm-openmp",
     "r-base",
     "llvm-openmp",
     "r-base",
@@ -696,11 +708,14 @@
     "https://cran.r-project.org/src/contrib/data.table_1.13.6.tar.gz",
     "https://cran.r-project.org/src/contrib/Archive/data.table/data.table_1.13.6.tar.gz",
     "https://cran.r-project.org/src/contrib/data.table_1.13.6.tar.gz",
+    "https://cran.r-project.org/src/contrib/Archive/data.table/data.table_1.13.6.tar.gz",
+    "https://cran.r-project.org/src/contrib/data.table_1.13.6.tar.gz",
     "https://cran.r-project.org/src/contrib/Archive/data.table/data.table_1.13.6.tar.gz"
    ]
   },
   "test": {
    "commands": [
+    "$R -e \"library('data.table')\"",
     "$R -e \"library('data.table')\"",
     "$R -e \"library('data.table')\"",
     "$R -e \"library('data.table')\"",
@@ -821,6 +836,89 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "http://r-datatable.com",
+   "license": "MPL-2.0",
+   "license_family": "OTHER",
+   "license_file": [
+    "LICENSE"
+   ],
+   "summary": "Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and flexible syntax, for faster development."
+  },
+  "build": {
+   "number": "0",
+   "rpaths": [
+    "lib/R/lib/",
+    "lib/"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "conda-forge/r",
+    "nick-youngblut"
+   ]
+  },
+  "package": {
+   "name": "r-data.table",
+   "version": "1.13.6"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "make",
+    "llvm-openmp",
+    "pkg-config"
+   ],
+   "host": [
+    "r-base"
+   ],
+   "run": [
+    "r-base",
+    "llvm-openmp"
+   ]
+  },
+  "source": {
+   "sha256": "d50cdd4c4f89cabf83baa9114e49a3b8179f403c499d6e0be7791a44ffcd3e9b",
+   "url": [
+    "https://cran.r-project.org/src/contrib/data.table_1.13.6.tar.gz",
+    "https://cran.r-project.org/src/contrib/Archive/data.table/data.table_1.13.6.tar.gz"
+   ]
+  },
+  "test": {
+   "commands": [
+    "$R -e \"library('data.table')\""
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "llvm-openmp",
+    "make",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "r-base"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "llvm-openmp",
+    "r-base"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -828,7 +926,7 @@
   ]
  },
  "pinning_version": "2021.01.14.22.52.52",
- "raw_meta_yaml": "{% set version = \"1.13.6\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-data.table\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/data.table_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/data.table/data.table_{{ version }}.tar.gz\n  sha256: d50cdd4c4f89cabf83baa9114e49a3b8179f403c499d6e0be7791a44ffcd3e9b\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 0\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}        # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n    - llvm-openmp                # [osx]\n    - pkg-config\n  host:\n    - r-base\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - llvm-openmp                # [osx]\n\ntest:\n  commands:\n    - $R -e \"library('data.table')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('data.table')\\\"\"  # [win]\n\nabout:\n  home: http://r-datatable.com\n  license: MPL-2.0\n  summary: Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and flexible syntax, for faster development.\n  license_family: OTHER\n\n  license_file:\n    - LICENSE\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n    - nick-youngblut\n\n# Package: data.table\n# Version: 1.12.0\n# Title: Extension of `data.frame`\n# Authors@R: c( person(\"Matt\",\"Dowle\",      role=c(\"aut\",\"cre\"), email=\"mattjdowle@gmail.com\"), person(\"Arun\",\"Srinivasan\", role=\"aut\",          email=\"arunkumar.sriniv@gmail.com\"), person(\"Jan\",\"Gorecki\",     role=\"ctb\"), person(\"Michael\",\"Chirico\", role=\"ctb\"), person(\"Pasha\",\"Stetsenko\", role=\"ctb\"), person(\"Tom\",\"Short\",       role=\"ctb\"), person(\"Steve\",\"Lianoglou\", role=\"ctb\"), person(\"Eduard\",\"Antonyan\", role=\"ctb\"), person(\"Markus\",\"Bonsch\",   role=\"ctb\"), person(\"Hugh\",\"Parsonage\",  role=\"ctb\"), person(\"Scott\",\"Ritchie\",   role=\"ctb\"))\n# Depends: R (>= 3.1.0)\n# Imports: methods\n# Suggests: bit64, curl, R.utils, knitr, xts, nanotime, zoo\n# Description: Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and flexible syntax, for faster development.\n# License: MPL-2.0 | file LICENSE\n# URL: http://r-datatable.com\n# BugReports: https://github.com/Rdatatable/data.table/issues\n# VignetteBuilder: knitr\n# ByteCompile: TRUE\n# NeedsCompilation: yes\n# Packaged: 2019-01-12 04:09:37.913 UTC; mdowle\n# Author: Matt Dowle [aut, cre], Arun Srinivasan [aut], Jan Gorecki [ctb], Michael Chirico [ctb], Pasha Stetsenko [ctb], Tom Short [ctb], Steve Lianoglou [ctb], Eduard Antonyan [ctb], Markus Bonsch [ctb], Hugh Parsonage [ctb], Scott Ritchie [ctb]\n# Maintainer: Matt Dowle <mattjdowle@gmail.com>\n# Repository: CRAN\n# Date/Publication: 2019-01-13 11:50:03 UTC\n",
+ "raw_meta_yaml": "{% set version = \"1.13.6\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-data.table\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/data.table_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/data.table/data.table_{{ version }}.tar.gz\n  sha256: d50cdd4c4f89cabf83baa9114e49a3b8179f403c499d6e0be7791a44ffcd3e9b\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 0\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - cross-r-base {{ r_base }}  # [build_platform != target_platform]\n    - {{ compiler('c') }}        # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n    - llvm-openmp                # [osx]\n    - pkg-config\n  host:\n    - r-base\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - llvm-openmp                # [osx]\n\ntest:\n  commands:\n    - $R -e \"library('data.table')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('data.table')\\\"\"  # [win]\n\nabout:\n  home: http://r-datatable.com\n  license: MPL-2.0\n  summary: Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and flexible syntax, for faster development.\n  license_family: OTHER\n\n  license_file:\n    - LICENSE\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n    - nick-youngblut\n\n# Package: data.table\n# Version: 1.12.0\n# Title: Extension of `data.frame`\n# Authors@R: c( person(\"Matt\",\"Dowle\",      role=c(\"aut\",\"cre\"), email=\"mattjdowle@gmail.com\"), person(\"Arun\",\"Srinivasan\", role=\"aut\",          email=\"arunkumar.sriniv@gmail.com\"), person(\"Jan\",\"Gorecki\",     role=\"ctb\"), person(\"Michael\",\"Chirico\", role=\"ctb\"), person(\"Pasha\",\"Stetsenko\", role=\"ctb\"), person(\"Tom\",\"Short\",       role=\"ctb\"), person(\"Steve\",\"Lianoglou\", role=\"ctb\"), person(\"Eduard\",\"Antonyan\", role=\"ctb\"), person(\"Markus\",\"Bonsch\",   role=\"ctb\"), person(\"Hugh\",\"Parsonage\",  role=\"ctb\"), person(\"Scott\",\"Ritchie\",   role=\"ctb\"))\n# Depends: R (>= 3.1.0)\n# Imports: methods\n# Suggests: bit64, curl, R.utils, knitr, xts, nanotime, zoo\n# Description: Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and flexible syntax, for faster development.\n# License: MPL-2.0 | file LICENSE\n# URL: http://r-datatable.com\n# BugReports: https://github.com/Rdatatable/data.table/issues\n# VignetteBuilder: knitr\n# ByteCompile: TRUE\n# NeedsCompilation: yes\n# Packaged: 2019-01-12 04:09:37.913 UTC; mdowle\n# Author: Matt Dowle [aut, cre], Arun Srinivasan [aut], Jan Gorecki [ctb], Michael Chirico [ctb], Pasha Stetsenko [ctb], Tom Short [ctb], Steve Lianoglou [ctb], Eduard Antonyan [ctb], Markus Bonsch [ctb], Hugh Parsonage [ctb], Scott Ritchie [ctb]\n# Maintainer: Matt Dowle <mattjdowle@gmail.com>\n# Repository: CRAN\n# Date/Publication: 2019-01-13 11:50:03 UTC\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -920,6 +1018,8 @@
   }
  },
  "url": [
+  "https://cran.r-project.org/src/contrib/data.table_1.13.6.tar.gz",
+  "https://cran.r-project.org/src/contrib/Archive/data.table/data.table_1.13.6.tar.gz",
   "https://cran.r-project.org/src/contrib/data.table_1.13.6.tar.gz",
   "https://cran.r-project.org/src/contrib/Archive/data.table/data.table_1.13.6.tar.gz",
   "https://cran.r-project.org/src/contrib/data.table_1.13.6.tar.gz",
