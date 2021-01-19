@@ -56,6 +56,23 @@
     "__lazy_json__": "pr_json/556711430.json"
    },
    "data": {
+    "bot_rerun": 1611015305.2546575,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "8.0.23"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/557094075.json"
+   },
+   "data": {
     "bot_rerun": false,
     "migrator_name": "Version",
     "migrator_version": 0,
@@ -85,8 +102,11 @@
    "summary": "MySQL Connector/C++, the C++ interface for communicating with MySQL servers."
   },
   "build": {
+   "ignore_run_exports": [
+    "mysql-libs"
+   ],
    "missing_dso_whitelist": null,
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -105,7 +125,10 @@
     "c_compiler_stub"
    ],
    "host": [
-    "openssl"
+    "openssl",
+    "boost",
+    "mysql-devel 8.0.22",
+    "zlib"
    ]
   },
   "source": {
@@ -146,7 +169,10 @@
   "host": {
    "__set__": true,
    "elements": [
-    "openssl"
+    "boost",
+    "mysql-devel",
+    "openssl",
+    "zlib"
    ]
   },
   "run": {
@@ -172,8 +198,13 @@
    "summary": "MySQL Connector/C++, the C++ interface for communicating with MySQL servers."
   },
   "build": {
+   "ignore_run_exports": [
+    "mysql-libs",
+    "mysql-libs",
+    "mysql-libs"
+   ],
    "missing_dso_whitelist": null,
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -203,8 +234,18 @@
    ],
    "host": [
     "openssl",
+    "boost",
+    "mysql-devel 8.0.22",
+    "zlib",
     "openssl",
-    "openssl"
+    "boost",
+    "mysql-devel 8.0.22",
+    "zlib",
+    "openssl",
+    "boost",
+    "mysql-devel 8.0.22",
+    "zlib",
+    "zstd"
    ]
   },
   "source": {
@@ -245,7 +286,7 @@
   "8.0.20": 1,
   "8.0.21": 1,
   "8.0.22": 1,
-  "8.0.23": 1
+  "8.0.23": 2
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -258,10 +299,13 @@
    "summary": "MySQL Connector/C++, the C++ interface for communicating with MySQL servers."
   },
   "build": {
+   "ignore_run_exports": [
+    "mysql-libs"
+   ],
    "missing_dso_whitelist": [
     "/usr/lib/libresolv.9.dylib"
    ],
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -280,7 +324,10 @@
     "c_compiler_stub"
    ],
    "host": [
-    "openssl"
+    "openssl",
+    "boost",
+    "mysql-devel 8.0.22",
+    "zlib"
    ]
   },
   "source": {
@@ -321,7 +368,10 @@
   "host": {
    "__set__": true,
    "elements": [
-    "openssl"
+    "boost",
+    "mysql-devel",
+    "openssl",
+    "zlib"
    ]
   },
   "run": {
@@ -343,17 +393,21 @@
    "mysql-connector-cpp"
   ]
  },
- "pinning_version": "2021.01.18.09.10.39",
- "raw_meta_yaml": "{% set name = \"mysql-connector-cpp\" %}\n{% set url_name = \"mysql-connector-c++\" %}\n{% set version = \"8.0.22\" %}\n{% set build_number = 0 %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://dev.mysql.com/get/Downloads/Connector-C++/{{ url_name|lower }}-{{ version }}-src.tar.gz\n  sha256: 74ff7662444dc214ec737baaf48a7f6c44f6e999549bf6930c2a97af24332b47\n  patches:\n    - 0001-Override-custom-install-layout.patch\n    - 0002-cmake-libutils-add-support-for-using-Ninja-VS.patch\n\nbuild:\n  skip: true  # [win and vc<14]\n  number: {{ build_number }}\n  missing_dso_whitelist:\n    - /usr/lib/libresolv.9.dylib  # [osx]\n\nrequirements:\n  build:\n    - cmake\n    - make   # [unix]\n    - ninja  # [win]\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n  host:\n    - openssl\n\ntest:\n  files:\n    - cmake_test             # [unix]\n  requires:\n    - cmake                  # [unix]\n    - {{ compiler('cxx') }}  # [unix]\n    - {{ compiler('c') }}    # [unix]\n  commands:\n    - test -f \"${PREFIX}/include/mysqlx/common.h\"             # [unix]\n    - test -f \"${PREFIX}/include/mysqlx/devapi/collations.h\"  # [unix]\n    - test -f \"${PREFIX}/lib/libmysqlcppconn8${SHLIB_EXT}\"    # [unix]\n    - if not exist %LIBRARY_INC%\\mysqlx\\common.h            exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\mysqlx\\devapi\\collations.h exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\mysqlcppconn8.lib          exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\mysqlcppconn8-static.lib   exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\mysqlcppconn8-2-vs14.dll   exit 1  # [win]\n    - cmake -Scmake_test -Bcmake_test/build                   # [unix]\n\nabout:\n  home: https://dev.mysql.com/doc/connector-cpp/8.0/en/\n  license: GPL-2.0-or-later WITH Universal-FOSS-exception-1.0\n  license_family: GPL\n  license_file: LICENSE.txt\n  summary: MySQL Connector/C++, the C++ interface for communicating with MySQL servers.\n  description: |\n    MySQL Connector/C++ 8.0 is a MySQL database connector for C++ applications\n    that connect to MySQL servers.\n\nextra:\n  recipe-maintainers:\n    - nehaljwani\n",
+ "pinning_version": "2021.01.18.20.12.31",
+ "raw_meta_yaml": "{% set name = \"mysql-connector-cpp\" %}\n{% set url_name = \"mysql-connector-c++\" %}\n{% set version = \"8.0.22\" %}\n{% set build_number = 1 %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://dev.mysql.com/get/Downloads/Connector-C++/{{ url_name|lower }}-{{ version }}-src.tar.gz\n  sha256: 74ff7662444dc214ec737baaf48a7f6c44f6e999549bf6930c2a97af24332b47\n  patches:\n    - 0001-Override-custom-install-layout.patch\n    - 0002-cmake-libutils-add-support-for-using-Ninja-VS.patch\n\nbuild:\n  skip: true  # [win and vc<14]\n  number: {{ build_number }}\n  missing_dso_whitelist:\n    - /usr/lib/libresolv.9.dylib  # [osx]\n  ignore_run_exports:\n    # Only headers are required, license is same\n    - mysql-libs\n\nrequirements:\n  build:\n    - cmake\n    - make   # [unix]\n    - ninja  # [win]\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n  host:\n    - openssl\n    # The following are required only if JDBC support is enabled\n    - boost\n    - mysql-devel {{ version }}\n    - zlib\n    - zstd  # [win]\n\ntest:\n  files:\n    - cmake_test             # [unix]\n  requires:\n    - cmake                  # [unix]\n    - {{ compiler('cxx') }}  # [unix]\n    - {{ compiler('c') }}    # [unix]\n  commands:\n    - test -f \"${PREFIX}/include/mysqlx/common.h\"             # [unix]\n    - test -f \"${PREFIX}/include/mysqlx/devapi/collations.h\"  # [unix]\n    - test -f \"${PREFIX}/lib/libmysqlcppconn8${SHLIB_EXT}\"    # [unix]\n    - if not exist %LIBRARY_INC%\\mysqlx\\common.h            exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\mysqlx\\devapi\\collations.h exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\mysqlcppconn8.lib          exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\mysqlcppconn8-static.lib   exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\mysqlcppconn8-2-vs14.dll   exit 1  # [win]\n    - cmake -Scmake_test -Bcmake_test/build                   # [unix]\n\nabout:\n  home: https://dev.mysql.com/doc/connector-cpp/8.0/en/\n  license: GPL-2.0-or-later WITH Universal-FOSS-exception-1.0\n  license_family: GPL\n  license_file: LICENSE.txt\n  summary: MySQL Connector/C++, the C++ interface for communicating with MySQL servers.\n  description: |\n    MySQL Connector/C++ 8.0 is a MySQL database connector for C++ applications\n    that connect to MySQL servers.\n\nextra:\n  recipe-maintainers:\n    - nehaljwani\n",
  "req": {
   "__set__": true,
   "elements": [
+   "boost",
    "c_compiler_stub",
    "cmake",
    "cxx_compiler_stub",
    "make",
+   "mysql-devel",
    "ninja",
-   "openssl"
+   "openssl",
+   "zlib",
+   "zstd"
   ]
  },
  "requirements": {
@@ -370,9 +424,13 @@
   "host": {
    "__set__": true,
    "elements": [
+    "boost",
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "openssl"
+    "mysql-devel",
+    "openssl",
+    "zlib",
+    "zstd"
    ]
   },
   "run": {
@@ -403,7 +461,11 @@
   "host": {
    "__set__": true,
    "elements": [
-    "openssl"
+    "boost",
+    "mysql-devel 8.0.22",
+    "openssl",
+    "zlib",
+    "zstd"
    ]
   },
   "run": {
@@ -427,8 +489,11 @@
    "summary": "MySQL Connector/C++, the C++ interface for communicating with MySQL servers."
   },
   "build": {
+   "ignore_run_exports": [
+    "mysql-libs"
+   ],
    "missing_dso_whitelist": null,
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -447,7 +512,11 @@
     "c_compiler_stub"
    ],
    "host": [
-    "openssl"
+    "openssl",
+    "boost",
+    "mysql-devel 8.0.22",
+    "zlib",
+    "zstd"
    ]
   },
   "source": {
@@ -483,7 +552,11 @@
   "host": {
    "__set__": true,
    "elements": [
-    "openssl"
+    "boost",
+    "mysql-devel",
+    "openssl",
+    "zlib",
+    "zstd"
    ]
   },
   "run": {
