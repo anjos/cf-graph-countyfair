@@ -106,6 +106,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/563399370.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.10.4"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -512,12 +529,13 @@
   }
  },
  "name": "libmbd",
- "new_version": "0.10.3",
+ "new_version": "0.10.4",
  "new_version_attempts": {
   "0.10.0": 1,
   "0.10.1": 1,
   "0.10.2": 1,
   "0.10.3": 1,
+  "0.10.4": 1,
   "0.9.3": 1
  },
  "new_version_errors": {},
@@ -701,7 +719,7 @@
    "libmbd"
   ]
  },
- "pinning_version": "2020.11.13.16.40.26",
+ "pinning_version": "2021.01.27.21.31.49",
  "raw_meta_yaml": "{% set name = \"libmbd\" %}\n{% set version = \"0.10.3\" %}\n{% set build = 0 %}\n{% set mpi = mpi or \"nompi\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/jhrmnn/{{ name }}/archive/{{ version }}.tar.gz\n  sha256: bdc2b601f6b714324cd0caa821895e7b0f42cea0bf6f9b9054e1ac73b2175715\n\n{% if mpi == \"nompi\" %}\n{% set build = build + 100 %}\n{% endif %}\nbuild:\n  number: {{ build }}\n  skip: true  # [win]\n\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\n  {% if mpi != \"nompi\" %}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [osx]\n    - {{ compiler('fortran') }}\n    - cmake\n    - ninja\n  host:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux and not aarch64]\n  run:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libmbd.dylib  # [osx]\n    - test -f $PREFIX/lib/libmbd.so  # [linux]\n\nabout:\n  home: https://github.com/jhrmnn/{{ name }}\n  license: MPL-2.0\n  license_file:\n    - LICENSE\n  summary: Many-body dispersion library\n  doc_url: https://jhrmnn.github.io/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - jhrmnn\n",
  "req": {
   "__set__": true,
@@ -764,7 +782,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.8.5",
+ "smithy_version": "3.8.6",
  "strong_exports": false,
  "total_requirements": {
   "build": {
