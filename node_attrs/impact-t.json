@@ -17,12 +17,12 @@
    "summary": "IMPACT-T, A 3D Parallel Particle Tracking Code in Time Domain"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "impact-t * mpi_mpich_*",
     "impact-t * mpi_openmpi_*"
    ],
-   "string": "mpi_openmpi_h1234567_0"
+   "string": "mpi_openmpi_h1234567_1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -54,11 +54,11 @@
     "cmake"
    ],
    "host": [
-    "mpich",
+    "mpich ==3.3.2",
     "openmpi"
    ],
    "run": [
-    "mpich",
+    "mpich ==3.3.2",
     "openmpi"
    ]
   },
@@ -117,12 +117,12 @@
    "summary": "IMPACT-T, A 3D Parallel Particle Tracking Code in Time Domain"
   },
   "build": {
-   "number": "100",
+   "number": "101",
    "run_exports": [
     "impact-t * mpi_mpich_*",
     "impact-t * mpi_openmpi_*"
    ],
-   "string": "nompi_h1234567_100"
+   "string": "nompi_h1234567_101"
   },
   "extra": {
    "recipe-maintainers": [
@@ -178,15 +178,15 @@
     "cmake"
    ],
    "host": [
-    "mpich",
+    "mpich ==3.3.2",
     "openmpi",
-    "mpich",
+    "mpich ==3.3.2",
     "openmpi"
    ],
    "run": [
-    "mpich",
+    "mpich ==3.3.2",
     "openmpi",
-    "mpich",
+    "mpich ==3.3.2",
     "openmpi"
    ]
   },
@@ -224,12 +224,12 @@
    "summary": "IMPACT-T, A 3D Parallel Particle Tracking Code in Time Domain"
   },
   "build": {
-   "number": "100",
+   "number": "101",
    "run_exports": [
     "impact-t * mpi_mpich_*",
     "impact-t * mpi_openmpi_*"
    ],
-   "string": "nompi_h1234567_100"
+   "string": "nompi_h1234567_101"
   },
   "extra": {
    "recipe-maintainers": [
@@ -261,11 +261,11 @@
     "cmake"
    ],
    "host": [
-    "mpich",
+    "mpich ==3.3.2",
     "openmpi"
    ],
    "run": [
-    "mpich",
+    "mpich ==3.3.2",
     "openmpi"
    ]
   },
@@ -318,7 +318,7 @@
    "impact-t"
   ]
  },
- "raw_meta_yaml": "{% set name = \"impact-t\" %}\n{% set version = \"2.0\" %}\n\n{% set build = 0 %}\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n\n{% if mpi == 'nompi' %}\n# prioritize nompi variant via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/hhslepicka/IMPACT-T/archive/v{{ version }}.tar.gz\n  sha256: a486ba796af3b7a937d168a9208c92e156c02735cb5d42b25a10fb8516e98f34\n\nbuild:\n  number: {{ build }}\n\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `pkg * mpi_mpich_*` for mpich\n  # `pkg * mpi_*` for any mpi\n  # `pkg * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: \"{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\"\n\n  {% if mpi != 'nompi' %}\n\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - make\n    - {{ compiler('c') }}                    # [not win]\n    - {{ compiler('m2w64_c') }}              # [win]\n    - {{ compiler('fortran') }}              # [not win]\n    - {{ compiler('m2w64_fortran') }}        # [win]\n    - cmake\n  host:\n    - {{ mpi }}  # [mpi != 'nompi']\n  run:\n    - {{ mpi }}  # [mpi != 'nompi']\n\ntest:\n  commands:\n    - which ImpactTexe  # [unix]\n    - which ImpactTexe-mpi  # [unix and mpi != 'nompi']\n    - where ImpactTexe  # [win]\n\nabout:\n  home: https://github.com/hhslepicka/IMPACT-T\n  license: BSD-3-Clause-LBNL\n  license_family: BSD\n  license_file: src/license.txt\n  summary: IMPACT-T, A 3D Parallel Particle Tracking Code in Time Domain\n  description: |\n    IMPACT-T is a fully three-dimensional program to track relativistic\n    charged particles taking into account space charge forces, \n    short-range longitudinal and transverse wakefields, coherent\n    synchrotron radiation (CSR) wakefield in accelerators.\n  doc_url: https://amac.lbl.gov/~jiqiang/IMPACT-T/index.html\n  dev_url: https://github.com/hhslepicka/IMPACT-T\n\nextra:\n  recipe-maintainers:\n    - hhslepicka\n    - ChristopherMayes\n",
+ "raw_meta_yaml": "{% set name = \"impact-t\" %}\n{% set version = \"2.0\" %}\n\n{% set build = 1 %}\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n\n{% if mpi == 'nompi' %}\n# prioritize nompi variant via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/hhslepicka/IMPACT-T/archive/v{{ version }}.tar.gz\n  sha256: a486ba796af3b7a937d168a9208c92e156c02735cb5d42b25a10fb8516e98f34\n\nbuild:\n  number: {{ build }}\n\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `pkg * mpi_mpich_*` for mpich\n  # `pkg * mpi_*` for any mpi\n  # `pkg * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: \"{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\"\n\n  {% if mpi != 'nompi' %}\n\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - make\n    - {{ compiler('c') }}                    # [not win]\n    - {{ compiler('m2w64_c') }}              # [win]\n    - {{ compiler('fortran') }}              # [not win]\n    - {{ compiler('m2w64_fortran') }}        # [win]\n    - cmake\n  host:\n    - mpich ==3.3.2  # [mpi == 'mpich']\n    - openmpi  # [mpi == 'openmpi']\n  run:\n    - mpich ==3.3.2  # [mpi == 'mpich']\n    - openmpi  # [mpi == 'openmpi']\n\ntest:\n  commands:\n    - which ImpactTexe  # [unix]\n    - which ImpactTexe-mpi  # [unix and mpi != 'nompi']\n    - where ImpactTexe  # [win]\n\nabout:\n  home: https://github.com/hhslepicka/IMPACT-T\n  license: BSD-3-Clause-LBNL\n  license_family: BSD\n  license_file: src/license.txt\n  summary: IMPACT-T, A 3D Parallel Particle Tracking Code in Time Domain\n  description: |\n    IMPACT-T is a fully three-dimensional program to track relativistic\n    charged particles taking into account space charge forces, \n    short-range longitudinal and transverse wakefields, coherent\n    synchrotron radiation (CSR) wakefield in accelerators.\n  doc_url: https://amac.lbl.gov/~jiqiang/IMPACT-T/index.html\n  dev_url: https://github.com/hhslepicka/IMPACT-T\n\nextra:\n  recipe-maintainers:\n    - hhslepicka\n    - ChristopherMayes\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -383,14 +383,14 @@
   "host": {
    "__set__": true,
    "elements": [
-    "mpich",
+    "mpich ==3.3.2",
     "openmpi"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "mpich",
+    "mpich ==3.3.2",
     "openmpi"
    ]
   },
@@ -413,8 +413,8 @@
    "summary": "IMPACT-T, A 3D Parallel Particle Tracking Code in Time Domain"
   },
   "build": {
-   "number": "100",
-   "string": "nompi_h1234567_100"
+   "number": "101",
+   "string": "nompi_h1234567_101"
   },
   "extra": {
    "recipe-maintainers": [
