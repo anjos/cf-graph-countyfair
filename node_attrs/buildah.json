@@ -67,6 +67,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/564139952.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.19.3"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -243,12 +260,13 @@
   }
  },
  "name": "buildah",
- "new_version": "1.19.2",
+ "new_version": "1.19.3",
  "new_version_attempts": {
   "1.18.0": 1,
   "1.19.0": 1,
   "1.19.1": 1,
-  "1.19.2": 1
+  "1.19.2": 1,
+  "1.19.3": 1
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -257,7 +275,7 @@
    "buildah"
   ]
  },
- "pinning_version": "2021.01.15.10.51.29",
+ "pinning_version": "2021.01.27.21.31.49",
  "raw_meta_yaml": "{% set version = \"1.18.0\" %}\n\npackage:\n  name: buildah\n  version: {{ version }}\n\nsource:\n  url: https://github.com/containers/buildah/archive/v{{ version }}.tar.gz\n  sha256: 500c82fb369fd08a9bb9a41f294c5975f17575770dbfaba5cce9a6e09b6a3fb9\n  patches:\n    # NOTE: This adds the memfd_create syscall which is not available on CentOS 6's kernels.\n    - 0001-Add-missing-defines-for-CentOS-6.patch\n    - 0002-Use-config-files-in-prefix-as-fallback.patch\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n  # Binary relocation causes:\n  #   buildah-in-a-user-namespace: error while loading shared libraries: libseccomp.so.2: cannot open shared object file: No such file or directory\n  # because of https://github.com/containers/buildah/commit/a6ed6883017fa8f1c7e6bd2ccd19e600107dd675\n  binary_relocation: false\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cgo') }}\n    - go-licenses\n    - make\n    - pkg-config\n    - {{ cdt('libselinux') }}\n  host:\n    - btrfs-progs\n    - containers-common\n    - gpgme\n    - libdevmapper\n    - libseccomp\n  run:\n    - conmon\n    - cni-plugins\n    - containers-common\n    - runc\n    - slirp4netns\n\ntest:\n  commands:\n    - buildah --help\n    - buildah --version\n\n    # NOTE: Our build container is not set up to handle subuids etc., hence we\n    #       can't run any extended tests during builds in that container.\n\n    # We cannot really test buildah's functionality here because we'd need to\n    # run it as root and/or in a build container with more capabilities.\n    # Instead, let's see if it's a least able to find and download an image.\n    # - |\n    #   # We use mktemp instead of a path in the test work directory to avoid\n    #   # \"Error: the specified runroot is longer than 50 characters\".\n    #   tmp=\"$( mktemp -d )\"\n    #   trap 'rm -r \"${tmp}\" ; trap - EXIT ; exit' EXIT INT HUP\n    #   buildah --storage-driver=vfs \\\n    #     --root=\"${tmp}/root\" --runroot=\"${tmp}/runroot\" \\\n    #     pull busybox 2>&1 \\\n    #     | grep -qF 'Writing manifest to image destination'\n\nabout:\n  home: https://buildah.io\n  dev_url: https://github.com/containers/buildah\n  doc_url: https://github.com/containers/buildah\n  license: Apache-2.0\n  license_file:\n    - LICENSE\n    - thirdparty-licenses.txt\n  summary: A command line tool that facilitates building OCI container images.\n  description: |\n    The Buildah package provides a command line tool which can be used to:\n\n      * Create a working container, either from scratch or using an image as a starting point.\n      * Mount a working container's root filesystem for manipulation.\n      * Unmount a working container's root filesystem.\n      * Use the updated contents of a container's root filesystem as a filesystem layer to create a new image.\n      * Delete a working container or an image.\n      * Rename a local container.\n\nextra:\n  recipe-maintainers:\n    - mbargull\n",
  "req": {
   "__set__": true,
