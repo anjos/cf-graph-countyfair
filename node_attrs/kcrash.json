@@ -384,7 +384,7 @@
   "5.75.0": 5,
   "5.76.0": 12,
   "5.77.0": 274,
-  "5.78.0": 35
+  "5.78.0": 36
  },
  "new_version_errors": {
   "5.77.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '5.77.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://download.kde.org/stable/frameworks/{{ major_minor }}/kcrash-{{ version }}.tar.xz'\n"
@@ -397,7 +397,7 @@
  },
  "pinning_version": "2020.11.15.13.01.59",
  "pre_pr_migrator_status": {
-  "version": "not solvable: master: ['linux_64_: Encountered problems while solving.\\nProblem: nothing provides requested extra-cmake-modules >=5.78.0\\n', 'linux_64_: Encountered problems while solving.\\nProblem: nothing provides requested kcoreaddons >=5.78.0\\nProblem: nothing provides requested kwindowsystem >=5.78.0\\n']"
+  "version": "not solvable: master: ['linux_64_: Encountered problems while solving.\\nProblem: nothing provides requested extra-cmake-modules >=5.78.0\\n', 'linux_64_: Encountered problems while solving.\\nProblem: nothing provides requested kwindowsystem >=5.78.0\\nProblem: nothing provides requested kcoreaddons >=5.78.0\\n']"
  },
  "raw_meta_yaml": "{% set name = \"kcrash\" %}\n{% set version = \"5.76.0\" %}\n{% set major_minor = \".\".join(version.split(\".\")[:2]) %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://download.kde.org/stable/frameworks/{{ major_minor }}/kcrash-{{ version }}.tar.xz\n  sha256: c4e32254b22f1f02db556be2ad40000cc52cac2e30a35682af3c75ac69710993\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n  run_exports:\n    - {{ pin_subpackage('kcrash', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make\n    - extra-cmake-modules >={{ version }}\n    - {{ cdt('mesa-libgl-devel') }}  # [linux]\n    - {{ cdt('mesa-dri-drivers') }}  # [linux]\n    - {{ cdt('libselinux') }}  # [linux]\n    - {{ cdt('libxdamage') }}  # [linux]\n    - {{ cdt('libxxf86vm') }}  # [linux]\n  host:\n    - xorg-libxfixes  # [linux]\n    - xorg-libx11\n    - xorg-libxext\n    - xcb-util-keysyms\n    - qt\n    - kcoreaddons >={{ version }}\n    - kwindowsystem >={{ version }}\n  run:\n    - xorg-libx11\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libKF5Crash.so\n\nabout:\n  home: https://api.kde.org/frameworks/kcrash/html/index.html\n  license: LGPL-2.0-or-later\n  license_file: LICENSES/LGPL-2.0-or-later.txt\n  summary: Graceful handling of application crashes\n  description: |\n    KCrash provides support for intercepting and handling application crashes.\n  dev_url: https://cgit.kde.org/kcrash.git/tree\n\nextra:\n  recipe-maintainers:\n    - scopatz\n",
  "req": {
