@@ -35,6 +35,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/563681891.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.4"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -331,9 +348,10 @@
   }
  },
  "name": "genesis2",
- "new_version": "2.3",
+ "new_version": "2.4",
  "new_version_attempts": {
-  "2.2": 1
+  "2.2": 1,
+  "2.4": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -469,7 +487,7 @@
    "genesis2"
   ]
  },
- "pinning_version": "2020.10.21.13.25.30",
+ "pinning_version": "2021.01.27.21.31.49",
  "raw_meta_yaml": "{% set name = \"genesis2\" %}\n{% set version = \"2.3\" %}\n\n{% set build = 1000 %}\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n\n{% if mpi == 'nompi' %}\n# prioritize nompi variant via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/slaclab/Genesis-1.3-Version2/archive/v{{ version }}.tar.gz\n  sha256: a5f8ef65cc224a7428d38e291c7a03cdd08e4690ad01831758e2f864e9e7270a\n\nbuild:\n  number: {{ build }}\n\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `pkg * mpi_mpich_*` for mpich\n  # `pkg * mpi_*` for any mpi\n  # `pkg * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: \"{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\"\n\n  {% if mpi != 'nompi' %}\n\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\n\nrequirements:\n  build:\n    - make\n    - {{ compiler('c') }}                    # [not win]\n    - {{ compiler('m2w64_c') }}              # [win]\n    - {{ compiler('fortran') }}              # [not win]\n    - {{ compiler('m2w64_fortran') }}        # [win]\n    - cmake\n    - {{ mpi }}  # [mpi != 'nompi']\n  host:\n  run:\n    - {{ mpi }}  # [mpi != 'nompi']\n\ntest:\n  commands:\n    - which genesis2  # [unix]\n    - which genesis2-mpi  # [unix and mpi != 'nompi']\n    - genesis2   # [win]\n\nabout:\n  home: hhttps://github.com/slaclab/Genesis-1.3-Version\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: GENESIS 1.3 is a time-dependent three-dimensional FEL code.\n\n  description: |\n    GENESIS 1.3 is a time-dependent three-dimensional FEL code.\n    It is focused to simulate single-pass free-electron lasers, \n    both FEL amplifier and SASE FEL, although the flexible input\n    can be used to easily extend the capacity of GENESIS 1.3 to\n    cover FEL oscillators or multistage set-ups.\n  doc_url: http://genesis.web.psi.ch/\n  dev_url: https://github.com/slaclab/Genesis-1.3-Version2\n\nextra:\n  recipe-maintainers:\n    - hhslepicka\n    - ChristopherMayes\n",
  "req": {
   "__set__": true,
@@ -519,7 +537,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.8.2",
+ "smithy_version": "3.8.6",
  "strong_exports": false,
  "total_requirements": {
   "build": {
