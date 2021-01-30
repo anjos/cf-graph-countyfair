@@ -129,6 +129,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/564430742.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.35.2"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -3440,9 +3457,10 @@
   ]
  },
  "name": "binutils_split",
- "new_version": "2.35",
+ "new_version": "2.35.2",
  "new_version_attempts": {
-  "2.35": 2
+  "2.35": 2,
+  "2.35.2": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -4364,7 +4382,7 @@
    "ld_impl_linux-ppc64le"
   ]
  },
- "pinning_version": "2020.12.12.12.24.07",
+ "pinning_version": "2021.01.29.20.41.28",
  "raw_meta_yaml": "{% set name = \"binutils\" %}\n{% set version = \"2.35.1\" %}\n{% set chost = ctng_cpu_arch ~ \"-\" ~ ctng_vendor ~ \"-linux-gnu-\" %}\n{% set build_num = 1 %}\n\npackage:\n  name: binutils_split\n  version: {{ version }}\n\nsource:\n  - url: https://ftp.gnu.org/gnu/{{ name }}/{{ name }}-{{ version }}.tar.bz2\n    sha256: 320e7a1d0f46fcd9f413f1046e216cbe23bb2bce6deb6c6a63304425e48b1942\n    folder: .\n\n  # Get the patches from crosstool-ng\n  - url: https://github.com/crosstool-ng/crosstool-ng/archive/ed3a1ff4b938f12bcb9bbfdb90d4e3d933d28b2d.tar.gz\n    sha256: 0f06cca6b662f01c48badc0ab36d99854c402731aa01049aa757dbb32d245d5e\n    folder: crosstool_ng\n\nbuild:\n  number: {{ build_num }}\n  skip: true  # [win]\n  detect_binary_files_with_prefix: false\n\nrequirements:\n  build:\n  host:\n  run:\n\noutputs:\n  - name: ld_impl_{{ ctng_target_platform }}\n    script: install_ld.sh\n    build:\n      merge_build_host: false\n      detect_binary_files_with_prefix: false\n    requirements:\n      build:\n      host:\n      run:\n      run_constrained:\n        - binutils_impl_{{ ctng_target_platform }} {{ version }}\n    test:\n      commands:\n        - {{ chost }}ld --help\n        - echo \"{{ ctng_vendor }}\"\n        - echo {{ c_compiler_version }}\n\n  - name: binutils_impl_{{ ctng_target_platform }}\n    script: install_binutils.sh\n    build:\n      merge_build_host: false\n      detect_binary_files_with_prefix: false\n      ignore_run_exports:\n        - __glibc\n    requirements:\n      build:\n      host:\n        - ld_impl_{{ ctng_target_platform }} {{ version }}\n      run:\n        - {{ pin_subpackage(\"ld_impl_\" ~ ctng_target_platform, exact=True) }}\n        - sysroot_{{ ctng_target_platform }}\n    test:\n      downstreams:\n        - gfortran_impl_{{ ctng_target_platform }}\n        - gcc_impl_{{ ctng_target_platform }}\n      commands:\n        - {{ chost }}addr2line --help\n        - {{ chost }}ar --help\n        - {{ chost }}as --help\n        - {{ chost }}c++filt --help\n        - {{ chost }}elfedit --help\n        - {{ chost }}gprof --help\n        - {{ chost }}ld --help\n        - {{ chost }}ld.bfd --help\n        - {{ chost }}ld.gold --help\n        - {{ chost }}nm --help\n        - {{ chost }}objcopy --help\n        - {{ chost }}objdump --help\n        - {{ chost }}ranlib --help\n        - {{ chost }}readelf --help\n        - {{ chost }}size --help\n        - {{ chost }}strings --help\n        - {{ chost }}strip --help\n        - echo {{ c_compiler_version }}\n\n  - name: binutils\n    script: install_binutils_symlinks.sh\n    build:\n      merge_build_host: false\n      detect_binary_files_with_prefix: false\n      skip: true  # [ctng_target_platform != target_platform]\n    requirements:\n      build:\n      host:\n        - binutils_impl_{{ ctng_target_platform }}\n      run:\n        - {{ pin_subpackage(\"binutils_impl_\" ~ ctng_target_platform, max_pin=\"x.x.x\") }}\n        - libcxx >=4.0.0  # [osx]\n    test:\n      commands:\n        - $PREFIX/bin/addr2line --help\n        - $PREFIX/bin/ar --help\n        - $PREFIX/bin/as --help\n        - $PREFIX/bin/c++filt --help\n        - $PREFIX/bin/elfedit --help\n        - $PREFIX/bin/gold --help\n        - $PREFIX/bin/gprof --help\n        - $PREFIX/bin/ld --help\n        - $PREFIX/bin/ld.bfd --help\n        - $PREFIX/bin/ld.gold --help\n        - $PREFIX/bin/nm --help\n        - $PREFIX/bin/objcopy --help\n        - $PREFIX/bin/objdump --help\n        - $PREFIX/bin/ranlib --help\n        - $PREFIX/bin/readelf --help\n        - $PREFIX/bin/size --help\n        - $PREFIX/bin/strings --help\n        - $PREFIX/bin/strip --help\n\nabout:\n  home: https://www.gnu.org/software/binutils/\n  license: GPL-3.0-only\n  license_file:\n    - COPYING\n    - COPYING.LIB\n    - COPYING3\n    - COPYING3.LIB\n  summary: |\n    A set of programming tools for creating and managing binary programs, object files,\n    libraries, profile data, and assembly source code.\n\nextra:\n  recipe-maintainers:\n    - frol\n    - isuruf\n    - jjhelmus\n    - beckermr\n",
  "req": {
   "__set__": true,
@@ -4421,7 +4439,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.8.5",
+ "smithy_version": "3.8.6",
  "strong_exports": false,
  "total_requirements": {
   "build": {
