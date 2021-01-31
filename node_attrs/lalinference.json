@@ -304,7 +304,7 @@
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
   "about": {
-   "description": "The LSC Algorithm Inference Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL Inference library.  If you want to install\nthe Python bindings, please install the associated python-lalinference\npackage.\n",
+   "description": "The LSC Algorithm Inference Library for gravitational wave data analysis.\n",
    "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
    "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinference/",
    "home": "https://wiki.ligo.org/Computing/LALSuite",
@@ -316,17 +316,11 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "0",
-   "string": "mpi_openmpi_h1234567_0"
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "lalinference",
    "recipe-maintainers": [
-    "duncanmmacleod",
-    "skymoo",
-    "vivienr",
-    "duncanmmacleod",
-    "skymoo",
-    "vivienr",
     "duncanmmacleod",
     "skymoo",
     "vivienr"
@@ -335,11 +329,50 @@
   "outputs": [
    {
     "build": {
+     "error_overdepending": true,
+     "error_overlinking": true,
      "run_exports": [
-      "lalinference mpi_mpich_*"
+      "liblalinference"
      ]
     },
-    "name": "lalinference"
+    "name": "liblalinference",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "gsl",
+      "libgomp",
+      "liblal >=7.1.0 fftw*",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=2.5.0",
+      "liblalburst >=1.5.3",
+      "liblalinspiral >=2.0.0",
+      "liblalpulsar >=3.0.0"
+     ],
+     "run": [
+      "gsl",
+      "liblal >=7.1.0 fftw*",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=2.5.0",
+      "liblalburst >=1.5.3",
+      "liblalinspiral >=2.0.0",
+      "liblalpulsar >=3.0.0"
+     ]
+    },
+    "script": "install-lib.sh",
+    "test": {
+     "commands": [
+      "test $(pkg-config --modversion --print-errors lalinference) == \"${PKG_VERSION}\""
+     ],
+     "requires": [
+      "pkg-config"
+     ]
+    }
    },
    {
     "about": {
@@ -357,95 +390,45 @@
      "error_overlinking": true,
      "ignore_run_exports": [
       "python"
-     ],
-     "string": "mpi_mpich_pyh1234567_0"
+     ]
     },
     "name": "python-lalinference",
     "requirements": {
      "build": [
       "c_compiler_stub",
-      "help2man",
       "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
+      "pkg-config",
+      "swig >=3.0.10"
      ],
      "host": [
-      "lalinference",
-      "numpy",
+      "liblalinference",
       "python",
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "numpy"
      ],
      "run": [
       "astropy >=1.1.1",
-      "gsl",
       "healpy >=1.9.1",
       "h5py",
-      "lal >=7.1.0",
-      "lalframe >=1.5.0",
-      "lalmetaio >=2.0.0",
-      "lalsimulation >=2.3.0",
-      "lalburst >=1.5.3",
-      "lalinspiral >=2.0.0",
-      "lalpulsar >=2.1.0",
-      "lalinference",
+      "liblalinference",
+      "ligo-segments",
       "lscsoft-glue >=1.54.1",
       "matplotlib-base >=1.2.0",
       "numpy",
       "python",
       "python-lal >=7.1.0",
       "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
+      "python-lalsimulation >=2.5.0",
       "python-lalburst >=1.5.3",
       "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
+      "python-lalpulsar >=3.0.0",
       "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "scipy >=0.9.0"
      ]
     },
     "script": "install-python.sh",
     "test": {
      "commands": [
-      "cbcBayesBurstPPAnalysis --help",
-      "cbcBayesBurstPostProc --help",
-      "cbcBayesCombinePTMCMCh5s --help",
-      "cbcBayesCombinePosteriors --help",
-      "cbcBayesCompPos --help",
-      "cbcBayesDIEvidence --help",
-      "cbcBayesGraceDBinfo --help",
-      "cbcBayesMCMC2pos --help",
-      "cbcBayesPPAnalysis --help",
-      "cbcBayesPlotSpinDisk --help",
-      "cbcBayesPosToSimBurst --help",
-      "cbcBayesPosToSimInspiral --help",
-      "cbcBayesPostProc --help",
-      "cbcBayesThermoInt --help",
-      "imrtgr_imr_consistency_test --help",
-      "lalinference_burst_pp_pipe --help",
-      "lalinference_coherence_test --help",
-      "lalinference_compute_roq_weights --help",
-      "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
-      "lalinference_merge_posteriors --help",
-      "lalinference_multi_pipe --help",
-      "lalinference_nest2pos --help",
-      "lalinference_pipe --help",
-      "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
+      "python -m pytest -rs -v test/python/"
      ],
      "imports": [
       "lalinference",
@@ -456,6 +439,7 @@
       "lalinference.imrtgr.pneqns",
       "lalinference.lalinference_pipe_utils",
       "lalinference.nest2pos",
+      "lalinference.plot",
       "lalinference.tiger",
       "lalinference.tiger.make_injtimes",
       "lalinference.tiger.omegascans_dag",
@@ -463,7 +447,6 @@
       "lalinference.wrapper"
      ],
      "requires": [
-      "cpnest",
       "pytest >=4.0.0a0"
      ],
      "source_files": [
@@ -472,16 +455,8 @@
     }
    },
    {
-    "build": {
-     "run_exports": [
-      "lalinference"
-     ]
-    },
-    "name": "lalinference"
-   },
-   {
     "about": {
-     "description": "The LSC Algorithm Inference Library for gravitational wave data\nanalysis.  This package contains the python bindings.\n",
+     "description": "The LSC Algorithm Inference Library for gravitational wave data analysis.\n",
      "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
      "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinference/",
      "home": "https://wiki.ligo.org/Computing/LALSuite",
@@ -491,210 +466,65 @@
      "summary": "LSC Algorithm Inference Library"
     },
     "build": {
-     "error_overdepending": true,
-     "error_overlinking": true,
      "ignore_run_exports": [
       "python"
      ],
-     "string": "nompi_pyh1234567_100"
-    },
-    "name": "python-lalinference",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "help2man",
-      "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
-     ],
-     "host": [
-      "lalinference",
-      "numpy",
-      "python",
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
-     ],
-     "run": [
-      "astropy >=1.1.1",
-      "gsl",
-      "healpy >=1.9.1",
-      "h5py",
-      "lal >=7.1.0",
-      "lalframe >=1.5.0",
-      "lalmetaio >=2.0.0",
-      "lalsimulation >=2.3.0",
-      "lalburst >=1.5.3",
-      "lalinspiral >=2.0.0",
-      "lalpulsar >=2.1.0",
-      "lalinference",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "numpy",
-      "python",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
-     ]
-    },
-    "script": "install-python.sh",
-    "test": {
-     "commands": [
-      "cbcBayesBurstPPAnalysis --help",
-      "cbcBayesBurstPostProc --help",
-      "cbcBayesCombinePTMCMCh5s --help",
-      "cbcBayesCombinePosteriors --help",
-      "cbcBayesCompPos --help",
-      "cbcBayesDIEvidence --help",
-      "cbcBayesGraceDBinfo --help",
-      "cbcBayesMCMC2pos --help",
-      "cbcBayesPPAnalysis --help",
-      "cbcBayesPlotSpinDisk --help",
-      "cbcBayesPosToSimBurst --help",
-      "cbcBayesPosToSimInspiral --help",
-      "cbcBayesPostProc --help",
-      "cbcBayesThermoInt --help",
-      "imrtgr_imr_consistency_test --help",
-      "lalinference_burst_pp_pipe --help",
-      "lalinference_coherence_test --help",
-      "lalinference_compute_roq_weights --help",
-      "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
-      "lalinference_merge_posteriors --help",
-      "lalinference_multi_pipe --help",
-      "lalinference_nest2pos --help",
-      "lalinference_pipe --help",
-      "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
-     ],
-     "imports": [
-      "lalinference",
-      "lalinference.bayespputils",
-      "lalinference.imrtgr",
-      "lalinference.imrtgr.imrtgrutils",
-      "lalinference.imrtgr.nrutils",
-      "lalinference.imrtgr.pneqns",
-      "lalinference.lalinference_pipe_utils",
-      "lalinference.nest2pos",
-      "lalinference.tiger",
-      "lalinference.tiger.make_injtimes",
-      "lalinference.tiger.omegascans_dag",
-      "lalinference.tiger.postproc",
-      "lalinference.wrapper"
-     ],
-     "requires": [
-      "cpnest",
-      "pytest >=4.0.0a0"
-     ],
-     "source_files": [
-      "test/python"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "lalinference mpi_openmpi_*"
-     ]
-    },
-    "name": "lalinference"
-   },
-   {
-    "about": {
-     "description": "The LSC Algorithm Inference Library for gravitational wave data\nanalysis.  This package contains the python bindings.\n",
-     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
-     "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinference/",
-     "home": "https://wiki.ligo.org/Computing/LALSuite",
-     "license": "GPL-2.0-or-later",
-     "license_family": "GPL",
-     "license_file": "COPYING",
-     "summary": "LSC Algorithm Inference Library"
-    },
-    "build": {
-     "error_overdepending": true,
-     "error_overlinking": true,
-     "ignore_run_exports": [
-      "python"
-     ],
+     "number": "0",
      "string": "mpi_openmpi_pyh1234567_0"
     },
-    "name": "python-lalinference",
+    "name": "lalinference",
     "requirements": {
      "build": [
       "c_compiler_stub",
-      "help2man",
+      "help2man >=1.37",
       "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
+      "pkg-config >=0.18.0"
      ],
      "host": [
-      "lalinference",
-      "numpy",
+      "gsl",
+      "libgomp",
+      "liblal >=7.1.0",
+      "liblalinference",
+      "liblalinspiral >=2.0.0",
+      "openmpi",
       "python",
+      "python-lalinference",
       "astropy >=1.1.1",
       "healpy >=1.9.1",
       "h5py",
+      "ligo-segments",
       "lscsoft-glue >=1.54.1",
       "matplotlib-base >=1.2.0",
       "python-lal >=7.1.0",
       "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
+      "python-lalsimulation >=2.5.0",
       "python-lalburst >=1.5.3",
       "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
+      "python-lalpulsar >=3.0.0",
       "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "scipy >=0.9.0"
      ],
      "run": [
-      "astropy >=1.1.1",
       "gsl",
-      "healpy >=1.9.1",
-      "h5py",
-      "lal >=7.1.0",
-      "lalframe >=1.5.0",
-      "lalmetaio >=2.0.0",
-      "lalsimulation >=2.3.0",
-      "lalburst >=1.5.3",
-      "lalinspiral >=2.0.0",
-      "lalpulsar >=2.1.0",
-      "lalinference",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "numpy",
+      "liblal >=7.1.0",
+      "liblalinference",
+      "liblalinspiral >=2.0.0",
+      "openmpi",
       "python",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "python-lalinference"
      ]
     },
-    "script": "install-python.sh",
+    "script": "install-bin.sh",
     "test": {
      "commands": [
+      "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
+      "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
+      "lalinference_datadump --help",
+      "lalinference_injectedlike --help",
+      "lalinference_kombine --help",
+      "lalinference_mcmc --help",
+      "lalinference_nest --help",
+      "lalinference_version --verbose",
       "cbcBayesBurstPPAnalysis --help",
       "cbcBayesBurstPostProc --help",
       "cbcBayesCombinePTMCMCh5s --help",
@@ -714,165 +544,49 @@
       "lalinference_coherence_test --help",
       "lalinference_compute_roq_weights --help",
       "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
       "lalinference_merge_posteriors --help",
       "lalinference_multi_pipe --help",
       "lalinference_nest2pos --help",
       "lalinference_pipe --help",
       "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
+      "lalinference_review_test --help"
      ],
      "imports": [
-      "lalinference",
-      "lalinference.bayespputils",
-      "lalinference.imrtgr",
-      "lalinference.imrtgr.imrtgrutils",
-      "lalinference.imrtgr.nrutils",
-      "lalinference.imrtgr.pneqns",
-      "lalinference.lalinference_pipe_utils",
-      "lalinference.nest2pos",
-      "lalinference.tiger",
-      "lalinference.tiger.make_injtimes",
-      "lalinference.tiger.omegascans_dag",
-      "lalinference.tiger.postproc",
-      "lalinference.wrapper"
+      "lalinference"
      ],
      "requires": [
       "cpnest",
-      "pytest >=4.0.0a0"
-     ],
-     "source_files": [
-      "test/python"
+      "openssh"
      ]
     }
    }
   ],
   "package": {
-   "name": "lalinference",
-   "version": "2.0.5"
+   "name": "lalinference-split",
+   "version": "2.0.6"
   },
   "requirements": {
    "build": [
     "c_compiler_stub",
-    "help2man",
-    "libgomp",
     "make",
     "pkg-config >=0.18.0",
-    "swig >=3.0.9",
-    "c_compiler_stub",
-    "help2man",
-    "libgomp",
-    "make",
-    "pkg-config >=0.18.0",
-    "swig >=3.0.9",
-    "c_compiler_stub",
-    "help2man",
-    "libgomp",
-    "make",
-    "pkg-config >=0.18.0",
-    "swig >=3.0.9"
+    "swig >=3.0.10"
    ],
    "host": [
     "gsl",
     "lal >=7.1.0 fftw*",
     "lalframe >=1.5.0",
     "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
+    "lalsimulation >=2.5.0",
     "lalburst >=1.5.3",
     "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "libgomp",
-    "mpich",
-    "gsl",
-    "lal >=7.1.0 fftw*",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "libgomp",
-    "gsl",
-    "lal >=7.1.0 fftw*",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "libgomp",
-    "openmpi"
-   ],
-   "run": [
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "mpich",
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "openmpi"
+    "lalpulsar >=3.0.0",
+    "libgomp"
    ]
   },
   "source": {
-   "sha256": "3ffb345b5266f81267260fd0a021f9a24cffc7e7392b79603ecb486383073734",
-   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinference-2.0.5.tar.xz"
-  },
-  "test": {
-   "commands": [
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_kombine --help",
-    "lalinference_mcmc --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"",
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"",
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_kombine --help",
-    "lalinference_mcmc --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\""
-   ],
-   "requires": [
-    "openssh",
-    "pkg-config",
-    "openssh",
-    "pkg-config",
-    "openssh",
-    "pkg-config"
-   ]
+   "sha256": "b58195713edf23da074e9f08cc9a767d5d5e11d6d94f4771618ff6a70dc278c0",
+   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinference-2.0.6.tar.xz"
   }
  },
  "linux_64_requirements": {
@@ -881,7 +595,6 @@
    "elements": [
     "c_compiler_stub",
     "help2man",
-    "libgomp",
     "make",
     "pkg-config",
     "swig"
@@ -897,27 +610,34 @@
     "lal",
     "lalburst",
     "lalframe",
-    "lalinference",
     "lalinspiral",
     "lalmetaio",
     "lalpulsar",
     "lalsimulation",
     "libgomp",
+    "liblal",
+    "liblalburst",
+    "liblalframe",
+    "liblalinference",
+    "liblalinspiral",
+    "liblalmetaio",
+    "liblalpulsar",
+    "liblalsimulation",
+    "ligo-segments",
     "lscsoft-glue",
     "matplotlib-base",
-    "mpich",
     "numpy",
     "openmpi",
     "python",
     "python-lal",
     "python-lalburst",
+    "python-lalinference",
     "python-lalinspiral",
     "python-lalmetaio",
     "python-lalpulsar",
     "python-lalsimulation",
     "python-ligo-lw",
-    "scipy",
-    "six"
+    "scipy"
    ]
   },
   "run": {
@@ -927,29 +647,29 @@
     "gsl",
     "h5py",
     "healpy",
-    "lal",
-    "lalburst",
-    "lalframe",
-    "lalinference",
-    "lalinspiral",
-    "lalmetaio",
-    "lalpulsar",
-    "lalsimulation",
+    "liblal",
+    "liblalburst",
+    "liblalframe",
+    "liblalinference",
+    "liblalinspiral",
+    "liblalmetaio",
+    "liblalpulsar",
+    "liblalsimulation",
+    "ligo-segments",
     "lscsoft-glue",
     "matplotlib-base",
-    "mpich",
     "numpy",
     "openmpi",
     "python",
     "python-lal",
     "python-lalburst",
+    "python-lalinference",
     "python-lalinspiral",
     "python-lalmetaio",
     "python-lalpulsar",
     "python-lalsimulation",
     "python-ligo-lw",
-    "scipy",
-    "six"
+    "scipy"
    ]
   },
   "test": {
@@ -964,7 +684,7 @@
  },
  "meta_yaml": {
   "about": {
-   "description": "The LSC Algorithm Inference Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL Inference library.  If you want to install\nthe Python bindings, please install the associated python-lalinference\npackage.\n",
+   "description": "The LSC Algorithm Inference Library for gravitational wave data analysis.\n",
    "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
    "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinference/",
    "home": "https://wiki.ligo.org/Computing/LALSuite",
@@ -976,23 +696,11 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "100",
-   "string": "nompi_h1234567_100"
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "lalinference",
    "recipe-maintainers": [
-    "duncanmmacleod",
-    "skymoo",
-    "vivienr",
-    "duncanmmacleod",
-    "skymoo",
-    "vivienr",
-    "duncanmmacleod",
-    "skymoo",
-    "vivienr",
-    "duncanmmacleod",
-    "skymoo",
-    "vivienr",
     "duncanmmacleod",
     "skymoo",
     "vivienr",
@@ -1004,11 +712,50 @@
   "outputs": [
    {
     "build": {
+     "error_overdepending": true,
+     "error_overlinking": true,
      "run_exports": [
-      "lalinference mpi_mpich_*"
+      "liblalinference"
      ]
     },
-    "name": "lalinference"
+    "name": "liblalinference",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "gsl",
+      "libgomp",
+      "liblal >=7.1.0 fftw*",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=2.5.0",
+      "liblalburst >=1.5.3",
+      "liblalinspiral >=2.0.0",
+      "liblalpulsar >=3.0.0"
+     ],
+     "run": [
+      "gsl",
+      "liblal >=7.1.0 fftw*",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=2.5.0",
+      "liblalburst >=1.5.3",
+      "liblalinspiral >=2.0.0",
+      "liblalpulsar >=3.0.0"
+     ]
+    },
+    "script": "install-lib.sh",
+    "test": {
+     "commands": [
+      "test $(pkg-config --modversion --print-errors lalinference) == \"${PKG_VERSION}\""
+     ],
+     "requires": [
+      "pkg-config"
+     ]
+    }
    },
    {
     "about": {
@@ -1026,95 +773,45 @@
      "error_overlinking": true,
      "ignore_run_exports": [
       "python"
-     ],
-     "string": "mpi_mpich_pyh1234567_0"
+     ]
     },
     "name": "python-lalinference",
     "requirements": {
      "build": [
       "c_compiler_stub",
-      "help2man",
       "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
+      "pkg-config",
+      "swig >=3.0.10"
      ],
      "host": [
-      "lalinference",
-      "numpy",
+      "liblalinference",
       "python",
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "numpy"
      ],
      "run": [
       "astropy >=1.1.1",
-      "gsl",
       "healpy >=1.9.1",
       "h5py",
-      "lal >=7.1.0",
-      "lalframe >=1.5.0",
-      "lalmetaio >=2.0.0",
-      "lalsimulation >=2.3.0",
-      "lalburst >=1.5.3",
-      "lalinspiral >=2.0.0",
-      "lalpulsar >=2.1.0",
-      "lalinference",
+      "liblalinference",
+      "ligo-segments",
       "lscsoft-glue >=1.54.1",
       "matplotlib-base >=1.2.0",
       "numpy",
       "python",
       "python-lal >=7.1.0",
       "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
+      "python-lalsimulation >=2.5.0",
       "python-lalburst >=1.5.3",
       "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
+      "python-lalpulsar >=3.0.0",
       "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "scipy >=0.9.0"
      ]
     },
     "script": "install-python.sh",
     "test": {
      "commands": [
-      "cbcBayesBurstPPAnalysis --help",
-      "cbcBayesBurstPostProc --help",
-      "cbcBayesCombinePTMCMCh5s --help",
-      "cbcBayesCombinePosteriors --help",
-      "cbcBayesCompPos --help",
-      "cbcBayesDIEvidence --help",
-      "cbcBayesGraceDBinfo --help",
-      "cbcBayesMCMC2pos --help",
-      "cbcBayesPPAnalysis --help",
-      "cbcBayesPlotSpinDisk --help",
-      "cbcBayesPosToSimBurst --help",
-      "cbcBayesPosToSimInspiral --help",
-      "cbcBayesPostProc --help",
-      "cbcBayesThermoInt --help",
-      "imrtgr_imr_consistency_test --help",
-      "lalinference_burst_pp_pipe --help",
-      "lalinference_coherence_test --help",
-      "lalinference_compute_roq_weights --help",
-      "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
-      "lalinference_merge_posteriors --help",
-      "lalinference_multi_pipe --help",
-      "lalinference_nest2pos --help",
-      "lalinference_pipe --help",
-      "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
+      "python -m pytest -rs -v test/python/"
      ],
      "imports": [
       "lalinference",
@@ -1125,6 +822,7 @@
       "lalinference.imrtgr.pneqns",
       "lalinference.lalinference_pipe_utils",
       "lalinference.nest2pos",
+      "lalinference.plot",
       "lalinference.tiger",
       "lalinference.tiger.make_injtimes",
       "lalinference.tiger.omegascans_dag",
@@ -1132,7 +830,6 @@
       "lalinference.wrapper"
      ],
      "requires": [
-      "cpnest",
       "pytest >=4.0.0a0"
      ],
      "source_files": [
@@ -1141,16 +838,8 @@
     }
    },
    {
-    "build": {
-     "run_exports": [
-      "lalinference"
-     ]
-    },
-    "name": "lalinference"
-   },
-   {
     "about": {
-     "description": "The LSC Algorithm Inference Library for gravitational wave data\nanalysis.  This package contains the python bindings.\n",
+     "description": "The LSC Algorithm Inference Library for gravitational wave data analysis.\n",
      "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
      "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinference/",
      "home": "https://wiki.ligo.org/Computing/LALSuite",
@@ -1160,210 +849,65 @@
      "summary": "LSC Algorithm Inference Library"
     },
     "build": {
-     "error_overdepending": true,
-     "error_overlinking": true,
      "ignore_run_exports": [
       "python"
      ],
-     "string": "nompi_pyh1234567_100"
-    },
-    "name": "python-lalinference",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "help2man",
-      "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
-     ],
-     "host": [
-      "lalinference",
-      "numpy",
-      "python",
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
-     ],
-     "run": [
-      "astropy >=1.1.1",
-      "gsl",
-      "healpy >=1.9.1",
-      "h5py",
-      "lal >=7.1.0",
-      "lalframe >=1.5.0",
-      "lalmetaio >=2.0.0",
-      "lalsimulation >=2.3.0",
-      "lalburst >=1.5.3",
-      "lalinspiral >=2.0.0",
-      "lalpulsar >=2.1.0",
-      "lalinference",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "numpy",
-      "python",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
-     ]
-    },
-    "script": "install-python.sh",
-    "test": {
-     "commands": [
-      "cbcBayesBurstPPAnalysis --help",
-      "cbcBayesBurstPostProc --help",
-      "cbcBayesCombinePTMCMCh5s --help",
-      "cbcBayesCombinePosteriors --help",
-      "cbcBayesCompPos --help",
-      "cbcBayesDIEvidence --help",
-      "cbcBayesGraceDBinfo --help",
-      "cbcBayesMCMC2pos --help",
-      "cbcBayesPPAnalysis --help",
-      "cbcBayesPlotSpinDisk --help",
-      "cbcBayesPosToSimBurst --help",
-      "cbcBayesPosToSimInspiral --help",
-      "cbcBayesPostProc --help",
-      "cbcBayesThermoInt --help",
-      "imrtgr_imr_consistency_test --help",
-      "lalinference_burst_pp_pipe --help",
-      "lalinference_coherence_test --help",
-      "lalinference_compute_roq_weights --help",
-      "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
-      "lalinference_merge_posteriors --help",
-      "lalinference_multi_pipe --help",
-      "lalinference_nest2pos --help",
-      "lalinference_pipe --help",
-      "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
-     ],
-     "imports": [
-      "lalinference",
-      "lalinference.bayespputils",
-      "lalinference.imrtgr",
-      "lalinference.imrtgr.imrtgrutils",
-      "lalinference.imrtgr.nrutils",
-      "lalinference.imrtgr.pneqns",
-      "lalinference.lalinference_pipe_utils",
-      "lalinference.nest2pos",
-      "lalinference.tiger",
-      "lalinference.tiger.make_injtimes",
-      "lalinference.tiger.omegascans_dag",
-      "lalinference.tiger.postproc",
-      "lalinference.wrapper"
-     ],
-     "requires": [
-      "cpnest",
-      "pytest >=4.0.0a0"
-     ],
-     "source_files": [
-      "test/python"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "lalinference mpi_openmpi_*"
-     ]
-    },
-    "name": "lalinference"
-   },
-   {
-    "about": {
-     "description": "The LSC Algorithm Inference Library for gravitational wave data\nanalysis.  This package contains the python bindings.\n",
-     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
-     "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinference/",
-     "home": "https://wiki.ligo.org/Computing/LALSuite",
-     "license": "GPL-2.0-or-later",
-     "license_family": "GPL",
-     "license_file": "COPYING",
-     "summary": "LSC Algorithm Inference Library"
-    },
-    "build": {
-     "error_overdepending": true,
-     "error_overlinking": true,
-     "ignore_run_exports": [
-      "python"
-     ],
+     "number": "0",
      "string": "mpi_openmpi_pyh1234567_0"
     },
-    "name": "python-lalinference",
+    "name": "lalinference",
     "requirements": {
      "build": [
       "c_compiler_stub",
-      "help2man",
+      "help2man >=1.37",
       "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
+      "pkg-config >=0.18.0"
      ],
      "host": [
-      "lalinference",
-      "numpy",
-      "python",
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
-     ],
-     "run": [
-      "astropy >=1.1.1",
       "gsl",
+      "libgomp",
+      "liblal >=7.1.0",
+      "liblalinference",
+      "liblalinspiral >=2.0.0",
+      "openmpi",
+      "python",
+      "python-lalinference",
+      "astropy >=1.1.1",
       "healpy >=1.9.1",
       "h5py",
-      "lal >=7.1.0",
-      "lalframe >=1.5.0",
-      "lalmetaio >=2.0.0",
-      "lalsimulation >=2.3.0",
-      "lalburst >=1.5.3",
-      "lalinspiral >=2.0.0",
-      "lalpulsar >=2.1.0",
-      "lalinference",
+      "ligo-segments",
       "lscsoft-glue >=1.54.1",
       "matplotlib-base >=1.2.0",
-      "numpy",
-      "python",
       "python-lal >=7.1.0",
       "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
+      "python-lalsimulation >=2.5.0",
       "python-lalburst >=1.5.3",
       "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
+      "python-lalpulsar >=3.0.0",
       "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "scipy >=0.9.0"
+     ],
+     "run": [
+      "gsl",
+      "liblal >=7.1.0",
+      "liblalinference",
+      "liblalinspiral >=2.0.0",
+      "openmpi",
+      "python",
+      "python-lalinference"
      ]
     },
-    "script": "install-python.sh",
+    "script": "install-bin.sh",
     "test": {
      "commands": [
+      "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
+      "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
+      "lalinference_datadump --help",
+      "lalinference_injectedlike --help",
+      "lalinference_kombine --help",
+      "lalinference_mcmc --help",
+      "lalinference_nest --help",
+      "lalinference_version --verbose",
       "cbcBayesBurstPPAnalysis --help",
       "cbcBayesBurstPostProc --help",
       "cbcBayesCombinePTMCMCh5s --help",
@@ -1383,46 +927,70 @@
       "lalinference_coherence_test --help",
       "lalinference_compute_roq_weights --help",
       "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
       "lalinference_merge_posteriors --help",
       "lalinference_multi_pipe --help",
       "lalinference_nest2pos --help",
       "lalinference_pipe --help",
       "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
+      "lalinference_review_test --help"
      ],
      "imports": [
-      "lalinference",
-      "lalinference.bayespputils",
-      "lalinference.imrtgr",
-      "lalinference.imrtgr.imrtgrutils",
-      "lalinference.imrtgr.nrutils",
-      "lalinference.imrtgr.pneqns",
-      "lalinference.lalinference_pipe_utils",
-      "lalinference.nest2pos",
-      "lalinference.tiger",
-      "lalinference.tiger.make_injtimes",
-      "lalinference.tiger.omegascans_dag",
-      "lalinference.tiger.postproc",
-      "lalinference.wrapper"
+      "lalinference"
      ],
      "requires": [
       "cpnest",
-      "pytest >=4.0.0a0"
-     ],
-     "source_files": [
-      "test/python"
+      "openssh"
      ]
     }
    },
    {
     "build": {
+     "error_overdepending": true,
+     "error_overlinking": true,
      "run_exports": [
-      "lalinference mpi_mpich_*"
+      "liblalinference"
      ]
     },
-    "name": "lalinference"
+    "name": "liblalinference",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "llvm-openmp",
+      "make",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "gsl",
+      "liblal >=7.1.0 fftw*",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=2.5.0",
+      "liblalburst >=1.5.3",
+      "liblalinspiral >=2.0.0",
+      "liblalpulsar >=3.0.0",
+      "llvm-openmp"
+     ],
+     "run": [
+      "gsl",
+      "liblal >=7.1.0 fftw*",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=2.5.0",
+      "liblalburst >=1.5.3",
+      "liblalinspiral >=2.0.0",
+      "liblalpulsar >=3.0.0",
+      "llvm-openmp"
+     ]
+    },
+    "script": "install-lib.sh",
+    "test": {
+     "commands": [
+      "test $(pkg-config --modversion --print-errors lalinference) == \"${PKG_VERSION}\""
+     ],
+     "requires": [
+      "pkg-config"
+     ]
+    }
    },
    {
     "about": {
@@ -1440,88 +1008,45 @@
      "error_overlinking": true,
      "ignore_run_exports": [
       "python"
-     ],
-     "string": "mpi_mpich_pyh1234567_0"
+     ]
     },
     "name": "python-lalinference",
     "requirements": {
      "build": [
       "c_compiler_stub",
-      "help2man",
       "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
+      "pkg-config",
+      "swig >=3.0.10"
      ],
      "host": [
-      "lalinference",
-      "numpy",
+      "liblalinference",
       "python",
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "numpy"
      ],
      "run": [
       "astropy >=1.1.1",
       "healpy >=1.9.1",
       "h5py",
-      "lal >=7.1.0",
-      "lalinference",
+      "liblalinference",
+      "ligo-segments",
       "lscsoft-glue >=1.54.1",
       "matplotlib-base >=1.2.0",
       "numpy",
       "python",
       "python-lal >=7.1.0",
       "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
+      "python-lalsimulation >=2.5.0",
       "python-lalburst >=1.5.3",
       "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
+      "python-lalpulsar >=3.0.0",
       "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "scipy >=0.9.0"
      ]
     },
     "script": "install-python.sh",
     "test": {
      "commands": [
-      "cbcBayesBurstPPAnalysis --help",
-      "cbcBayesBurstPostProc --help",
-      "cbcBayesCombinePTMCMCh5s --help",
-      "cbcBayesCombinePosteriors --help",
-      "cbcBayesCompPos --help",
-      "cbcBayesDIEvidence --help",
-      "cbcBayesGraceDBinfo --help",
-      "cbcBayesMCMC2pos --help",
-      "cbcBayesPPAnalysis --help",
-      "cbcBayesPlotSpinDisk --help",
-      "cbcBayesPosToSimBurst --help",
-      "cbcBayesPosToSimInspiral --help",
-      "cbcBayesPostProc --help",
-      "cbcBayesThermoInt --help",
-      "imrtgr_imr_consistency_test --help",
-      "lalinference_burst_pp_pipe --help",
-      "lalinference_coherence_test --help",
-      "lalinference_compute_roq_weights --help",
-      "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
-      "lalinference_merge_posteriors --help",
-      "lalinference_multi_pipe --help",
-      "lalinference_nest2pos --help",
-      "lalinference_pipe --help",
-      "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
+      "python -m pytest -rs -v test/python/"
      ],
      "imports": [
       "lalinference",
@@ -1532,6 +1057,7 @@
       "lalinference.imrtgr.pneqns",
       "lalinference.lalinference_pipe_utils",
       "lalinference.nest2pos",
+      "lalinference.plot",
       "lalinference.tiger",
       "lalinference.tiger.make_injtimes",
       "lalinference.tiger.omegascans_dag",
@@ -1539,7 +1065,6 @@
       "lalinference.wrapper"
      ],
      "requires": [
-      "cpnest",
       "pytest >=4.0.0a0"
      ],
      "source_files": [
@@ -1548,16 +1073,8 @@
     }
    },
    {
-    "build": {
-     "run_exports": [
-      "lalinference mpi_openmpi_*"
-     ]
-    },
-    "name": "lalinference"
-   },
-   {
     "about": {
-     "description": "The LSC Algorithm Inference Library for gravitational wave data\nanalysis.  This package contains the python bindings.\n",
+     "description": "The LSC Algorithm Inference Library for gravitational wave data analysis.\n",
      "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
      "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinference/",
      "home": "https://wiki.ligo.org/Computing/LALSuite",
@@ -1567,65 +1084,67 @@
      "summary": "LSC Algorithm Inference Library"
     },
     "build": {
-     "error_overdepending": true,
-     "error_overlinking": true,
      "ignore_run_exports": [
       "python"
      ],
+     "number": "0",
      "string": "mpi_openmpi_pyh1234567_0"
     },
-    "name": "python-lalinference",
+    "name": "lalinference",
     "requirements": {
      "build": [
       "c_compiler_stub",
-      "help2man",
+      "help2man >=1.37",
+      "llvm-openmp",
       "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
+      "pkg-config >=0.18.0"
      ],
      "host": [
-      "lalinference",
-      "numpy",
+      "gsl",
+      "liblal >=7.1.0",
+      "liblalinference",
+      "liblalinspiral >=2.0.0",
+      "llvm-openmp",
+      "openmpi",
       "python",
+      "python-lalinference",
       "astropy >=1.1.1",
       "healpy >=1.9.1",
       "h5py",
+      "ligo-segments",
       "lscsoft-glue >=1.54.1",
       "matplotlib-base >=1.2.0",
       "python-lal >=7.1.0",
       "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
+      "python-lalsimulation >=2.5.0",
       "python-lalburst >=1.5.3",
       "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
+      "python-lalpulsar >=3.0.0",
       "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "scipy >=0.9.0"
      ],
      "run": [
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lal >=7.1.0",
-      "lalinference",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "numpy",
+      "gsl",
+      "liblal >=7.1.0",
+      "liblalinference",
+      "liblalinspiral >=2.0.0",
+      "llvm-openmp",
+      "openmpi",
       "python",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "python-lalinference"
      ]
     },
-    "script": "install-python.sh",
+    "script": "install-bin.sh",
     "test": {
      "commands": [
+      "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
+      "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
+      "lalinference_datadump --help",
+      "lalinference_injectedlike --help",
+      "lalinference_kombine --help",
+      "lalinference_mcmc --help",
+      "lalinference_nest --help",
+      "lalinference_version --verbose",
       "cbcBayesBurstPPAnalysis --help",
       "cbcBayesBurstPostProc --help",
       "cbcBayesCombinePTMCMCh5s --help",
@@ -1645,406 +1164,66 @@
       "lalinference_coherence_test --help",
       "lalinference_compute_roq_weights --help",
       "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
       "lalinference_merge_posteriors --help",
       "lalinference_multi_pipe --help",
       "lalinference_nest2pos --help",
       "lalinference_pipe --help",
       "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
+      "lalinference_review_test --help"
      ],
      "imports": [
-      "lalinference",
-      "lalinference.bayespputils",
-      "lalinference.imrtgr",
-      "lalinference.imrtgr.imrtgrutils",
-      "lalinference.imrtgr.nrutils",
-      "lalinference.imrtgr.pneqns",
-      "lalinference.lalinference_pipe_utils",
-      "lalinference.nest2pos",
-      "lalinference.tiger",
-      "lalinference.tiger.make_injtimes",
-      "lalinference.tiger.omegascans_dag",
-      "lalinference.tiger.postproc",
-      "lalinference.wrapper"
-     ],
-     "requires": [
-      "cpnest",
-      "pytest >=4.0.0a0"
-     ],
-     "source_files": [
-      "test/python"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
       "lalinference"
-     ]
-    },
-    "name": "lalinference"
-   },
-   {
-    "about": {
-     "description": "The LSC Algorithm Inference Library for gravitational wave data\nanalysis.  This package contains the python bindings.\n",
-     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
-     "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinference/",
-     "home": "https://wiki.ligo.org/Computing/LALSuite",
-     "license": "GPL-2.0-or-later",
-     "license_family": "GPL",
-     "license_file": "COPYING",
-     "summary": "LSC Algorithm Inference Library"
-    },
-    "build": {
-     "error_overdepending": true,
-     "error_overlinking": true,
-     "ignore_run_exports": [
-      "python"
-     ],
-     "string": "nompi_pyh1234567_100"
-    },
-    "name": "python-lalinference",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "help2man",
-      "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
-     ],
-     "host": [
-      "lalinference",
-      "numpy",
-      "python",
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
-     ],
-     "run": [
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lal >=7.1.0",
-      "lalinference",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "numpy",
-      "python",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
-     ]
-    },
-    "script": "install-python.sh",
-    "test": {
-     "commands": [
-      "cbcBayesBurstPPAnalysis --help",
-      "cbcBayesBurstPostProc --help",
-      "cbcBayesCombinePTMCMCh5s --help",
-      "cbcBayesCombinePosteriors --help",
-      "cbcBayesCompPos --help",
-      "cbcBayesDIEvidence --help",
-      "cbcBayesGraceDBinfo --help",
-      "cbcBayesMCMC2pos --help",
-      "cbcBayesPPAnalysis --help",
-      "cbcBayesPlotSpinDisk --help",
-      "cbcBayesPosToSimBurst --help",
-      "cbcBayesPosToSimInspiral --help",
-      "cbcBayesPostProc --help",
-      "cbcBayesThermoInt --help",
-      "imrtgr_imr_consistency_test --help",
-      "lalinference_burst_pp_pipe --help",
-      "lalinference_coherence_test --help",
-      "lalinference_compute_roq_weights --help",
-      "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
-      "lalinference_merge_posteriors --help",
-      "lalinference_multi_pipe --help",
-      "lalinference_nest2pos --help",
-      "lalinference_pipe --help",
-      "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
-     ],
-     "imports": [
-      "lalinference",
-      "lalinference.bayespputils",
-      "lalinference.imrtgr",
-      "lalinference.imrtgr.imrtgrutils",
-      "lalinference.imrtgr.nrutils",
-      "lalinference.imrtgr.pneqns",
-      "lalinference.lalinference_pipe_utils",
-      "lalinference.nest2pos",
-      "lalinference.tiger",
-      "lalinference.tiger.make_injtimes",
-      "lalinference.tiger.omegascans_dag",
-      "lalinference.tiger.postproc",
-      "lalinference.wrapper"
      ],
      "requires": [
       "cpnest",
-      "pytest >=4.0.0a0"
-     ],
-     "source_files": [
-      "test/python"
+      "openssh"
      ]
     }
    }
   ],
   "package": {
-   "name": "lalinference",
-   "version": "2.0.5"
+   "name": "lalinference-split",
+   "version": "2.0.6"
   },
   "requirements": {
    "build": [
     "c_compiler_stub",
-    "help2man",
-    "libgomp",
     "make",
     "pkg-config >=0.18.0",
-    "swig >=3.0.9",
+    "swig >=3.0.10",
     "c_compiler_stub",
-    "help2man",
-    "libgomp",
-    "make",
-    "pkg-config >=0.18.0",
-    "swig >=3.0.9",
-    "c_compiler_stub",
-    "help2man",
-    "libgomp",
-    "make",
-    "pkg-config >=0.18.0",
-    "swig >=3.0.9",
-    "c_compiler_stub",
-    "help2man",
     "llvm-openmp",
     "make",
     "pkg-config >=0.18.0",
-    "swig >=3.0.9",
-    "c_compiler_stub",
-    "help2man",
-    "llvm-openmp",
-    "make",
-    "pkg-config >=0.18.0",
-    "swig >=3.0.9",
-    "c_compiler_stub",
-    "help2man",
-    "llvm-openmp",
-    "make",
-    "pkg-config >=0.18.0",
-    "swig >=3.0.9"
+    "swig >=3.0.10"
    ],
    "host": [
     "gsl",
     "lal >=7.1.0 fftw*",
     "lalframe >=1.5.0",
     "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
+    "lalsimulation >=2.5.0",
     "lalburst >=1.5.3",
     "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "libgomp",
-    "mpich",
-    "gsl",
-    "lal >=7.1.0 fftw*",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
+    "lalpulsar >=3.0.0",
     "libgomp",
     "gsl",
     "lal >=7.1.0 fftw*",
     "lalframe >=1.5.0",
     "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
+    "lalsimulation >=2.5.0",
     "lalburst >=1.5.3",
     "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "libgomp",
-    "openmpi",
-    "gsl",
-    "lal >=7.1.0 fftw*",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "llvm-openmp",
-    "mpich",
-    "gsl",
-    "lal >=7.1.0 fftw*",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "llvm-openmp",
-    "openmpi",
-    "gsl",
-    "lal >=7.1.0 fftw*",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "llvm-openmp"
-   ],
-   "run": [
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "mpich",
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "openmpi",
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "llvm-openmp",
-    "mpich",
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "llvm-openmp",
-    "openmpi",
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
+    "lalpulsar >=3.0.0",
     "llvm-openmp"
    ]
   },
   "source": {
-   "sha256": "3ffb345b5266f81267260fd0a021f9a24cffc7e7392b79603ecb486383073734",
-   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinference-2.0.5.tar.xz"
-  },
-  "test": {
-   "commands": [
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_kombine --help",
-    "lalinference_mcmc --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"",
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"",
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_kombine --help",
-    "lalinference_mcmc --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"",
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_kombine --help",
-    "lalinference_mcmc --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"",
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_kombine --help",
-    "lalinference_mcmc --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"",
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\""
-   ],
-   "requires": [
-    "openssh",
-    "pkg-config",
-    "openssh",
-    "pkg-config",
-    "openssh",
-    "pkg-config",
-    "openssh",
-    "pkg-config",
-    "openssh",
-    "pkg-config",
-    "openssh",
-    "pkg-config"
-   ]
+   "sha256": "b58195713edf23da074e9f08cc9a767d5d5e11d6d94f4771618ff6a70dc278c0",
+   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinference-2.0.6.tar.xz"
   }
  },
- "name": "lalinference",
+ "name": "lalinference-split",
  "new_version": "2.0.6",
  "new_version_attempts": {
   "2.0.1": 1,
@@ -2056,7 +1235,7 @@
  "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
-   "description": "The LSC Algorithm Inference Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL Inference library.  If you want to install\nthe Python bindings, please install the associated python-lalinference\npackage.\n",
+   "description": "The LSC Algorithm Inference Library for gravitational wave data analysis.\n",
    "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
    "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinference/",
    "home": "https://wiki.ligo.org/Computing/LALSuite",
@@ -2068,17 +1247,11 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "100",
-   "string": "nompi_h1234567_100"
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "lalinference",
    "recipe-maintainers": [
-    "duncanmmacleod",
-    "skymoo",
-    "vivienr",
-    "duncanmmacleod",
-    "skymoo",
-    "vivienr",
     "duncanmmacleod",
     "skymoo",
     "vivienr"
@@ -2087,11 +1260,52 @@
   "outputs": [
    {
     "build": {
+     "error_overdepending": true,
+     "error_overlinking": true,
      "run_exports": [
-      "lalinference mpi_mpich_*"
+      "liblalinference"
      ]
     },
-    "name": "lalinference"
+    "name": "liblalinference",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "llvm-openmp",
+      "make",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "gsl",
+      "liblal >=7.1.0 fftw*",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=2.5.0",
+      "liblalburst >=1.5.3",
+      "liblalinspiral >=2.0.0",
+      "liblalpulsar >=3.0.0",
+      "llvm-openmp"
+     ],
+     "run": [
+      "gsl",
+      "liblal >=7.1.0 fftw*",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=2.5.0",
+      "liblalburst >=1.5.3",
+      "liblalinspiral >=2.0.0",
+      "liblalpulsar >=3.0.0",
+      "llvm-openmp"
+     ]
+    },
+    "script": "install-lib.sh",
+    "test": {
+     "commands": [
+      "test $(pkg-config --modversion --print-errors lalinference) == \"${PKG_VERSION}\""
+     ],
+     "requires": [
+      "pkg-config"
+     ]
+    }
    },
    {
     "about": {
@@ -2109,88 +1323,45 @@
      "error_overlinking": true,
      "ignore_run_exports": [
       "python"
-     ],
-     "string": "mpi_mpich_pyh1234567_0"
+     ]
     },
     "name": "python-lalinference",
     "requirements": {
      "build": [
       "c_compiler_stub",
-      "help2man",
       "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
+      "pkg-config",
+      "swig >=3.0.10"
      ],
      "host": [
-      "lalinference",
-      "numpy",
+      "liblalinference",
       "python",
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "numpy"
      ],
      "run": [
       "astropy >=1.1.1",
       "healpy >=1.9.1",
       "h5py",
-      "lal >=7.1.0",
-      "lalinference",
+      "liblalinference",
+      "ligo-segments",
       "lscsoft-glue >=1.54.1",
       "matplotlib-base >=1.2.0",
       "numpy",
       "python",
       "python-lal >=7.1.0",
       "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
+      "python-lalsimulation >=2.5.0",
       "python-lalburst >=1.5.3",
       "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
+      "python-lalpulsar >=3.0.0",
       "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "scipy >=0.9.0"
      ]
     },
     "script": "install-python.sh",
     "test": {
      "commands": [
-      "cbcBayesBurstPPAnalysis --help",
-      "cbcBayesBurstPostProc --help",
-      "cbcBayesCombinePTMCMCh5s --help",
-      "cbcBayesCombinePosteriors --help",
-      "cbcBayesCompPos --help",
-      "cbcBayesDIEvidence --help",
-      "cbcBayesGraceDBinfo --help",
-      "cbcBayesMCMC2pos --help",
-      "cbcBayesPPAnalysis --help",
-      "cbcBayesPlotSpinDisk --help",
-      "cbcBayesPosToSimBurst --help",
-      "cbcBayesPosToSimInspiral --help",
-      "cbcBayesPostProc --help",
-      "cbcBayesThermoInt --help",
-      "imrtgr_imr_consistency_test --help",
-      "lalinference_burst_pp_pipe --help",
-      "lalinference_coherence_test --help",
-      "lalinference_compute_roq_weights --help",
-      "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
-      "lalinference_merge_posteriors --help",
-      "lalinference_multi_pipe --help",
-      "lalinference_nest2pos --help",
-      "lalinference_pipe --help",
-      "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
+      "python -m pytest -rs -v test/python/"
      ],
      "imports": [
       "lalinference",
@@ -2201,6 +1372,7 @@
       "lalinference.imrtgr.pneqns",
       "lalinference.lalinference_pipe_utils",
       "lalinference.nest2pos",
+      "lalinference.plot",
       "lalinference.tiger",
       "lalinference.tiger.make_injtimes",
       "lalinference.tiger.omegascans_dag",
@@ -2208,7 +1380,6 @@
       "lalinference.wrapper"
      ],
      "requires": [
-      "cpnest",
       "pytest >=4.0.0a0"
      ],
      "source_files": [
@@ -2217,16 +1388,8 @@
     }
    },
    {
-    "build": {
-     "run_exports": [
-      "lalinference mpi_openmpi_*"
-     ]
-    },
-    "name": "lalinference"
-   },
-   {
     "about": {
-     "description": "The LSC Algorithm Inference Library for gravitational wave data\nanalysis.  This package contains the python bindings.\n",
+     "description": "The LSC Algorithm Inference Library for gravitational wave data analysis.\n",
      "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
      "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinference/",
      "home": "https://wiki.ligo.org/Computing/LALSuite",
@@ -2236,65 +1399,67 @@
      "summary": "LSC Algorithm Inference Library"
     },
     "build": {
-     "error_overdepending": true,
-     "error_overlinking": true,
      "ignore_run_exports": [
       "python"
      ],
+     "number": "0",
      "string": "mpi_openmpi_pyh1234567_0"
     },
-    "name": "python-lalinference",
+    "name": "lalinference",
     "requirements": {
      "build": [
       "c_compiler_stub",
-      "help2man",
+      "help2man >=1.37",
+      "llvm-openmp",
       "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
+      "pkg-config >=0.18.0"
      ],
      "host": [
-      "lalinference",
-      "numpy",
+      "gsl",
+      "liblal >=7.1.0",
+      "liblalinference",
+      "liblalinspiral >=2.0.0",
+      "llvm-openmp",
+      "openmpi",
       "python",
+      "python-lalinference",
       "astropy >=1.1.1",
       "healpy >=1.9.1",
       "h5py",
+      "ligo-segments",
       "lscsoft-glue >=1.54.1",
       "matplotlib-base >=1.2.0",
       "python-lal >=7.1.0",
       "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
+      "python-lalsimulation >=2.5.0",
       "python-lalburst >=1.5.3",
       "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
+      "python-lalpulsar >=3.0.0",
       "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "scipy >=0.9.0"
      ],
      "run": [
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lal >=7.1.0",
-      "lalinference",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "numpy",
+      "gsl",
+      "liblal >=7.1.0",
+      "liblalinference",
+      "liblalinspiral >=2.0.0",
+      "llvm-openmp",
+      "openmpi",
       "python",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
+      "python-lalinference"
      ]
     },
-    "script": "install-python.sh",
+    "script": "install-bin.sh",
     "test": {
      "commands": [
+      "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
+      "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
+      "lalinference_datadump --help",
+      "lalinference_injectedlike --help",
+      "lalinference_kombine --help",
+      "lalinference_mcmc --help",
+      "lalinference_nest --help",
+      "lalinference_version --verbose",
       "cbcBayesBurstPPAnalysis --help",
       "cbcBayesBurstPostProc --help",
       "cbcBayesCombinePTMCMCh5s --help",
@@ -2314,299 +1479,50 @@
       "lalinference_coherence_test --help",
       "lalinference_compute_roq_weights --help",
       "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
       "lalinference_merge_posteriors --help",
       "lalinference_multi_pipe --help",
       "lalinference_nest2pos --help",
       "lalinference_pipe --help",
       "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
+      "lalinference_review_test --help"
      ],
      "imports": [
-      "lalinference",
-      "lalinference.bayespputils",
-      "lalinference.imrtgr",
-      "lalinference.imrtgr.imrtgrutils",
-      "lalinference.imrtgr.nrutils",
-      "lalinference.imrtgr.pneqns",
-      "lalinference.lalinference_pipe_utils",
-      "lalinference.nest2pos",
-      "lalinference.tiger",
-      "lalinference.tiger.make_injtimes",
-      "lalinference.tiger.omegascans_dag",
-      "lalinference.tiger.postproc",
-      "lalinference.wrapper"
-     ],
-     "requires": [
-      "cpnest",
-      "pytest >=4.0.0a0"
-     ],
-     "source_files": [
-      "test/python"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
       "lalinference"
-     ]
-    },
-    "name": "lalinference"
-   },
-   {
-    "about": {
-     "description": "The LSC Algorithm Inference Library for gravitational wave data\nanalysis.  This package contains the python bindings.\n",
-     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
-     "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinference/",
-     "home": "https://wiki.ligo.org/Computing/LALSuite",
-     "license": "GPL-2.0-or-later",
-     "license_family": "GPL",
-     "license_file": "COPYING",
-     "summary": "LSC Algorithm Inference Library"
-    },
-    "build": {
-     "error_overdepending": true,
-     "error_overlinking": true,
-     "ignore_run_exports": [
-      "python"
-     ],
-     "string": "nompi_pyh1234567_100"
-    },
-    "name": "python-lalinference",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "help2man",
-      "make",
-      "pkg-config >=0.18.0",
-      "swig >=3.0.9"
-     ],
-     "host": [
-      "lalinference",
-      "numpy",
-      "python",
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
-     ],
-     "run": [
-      "astropy >=1.1.1",
-      "healpy >=1.9.1",
-      "h5py",
-      "lal >=7.1.0",
-      "lalinference",
-      "lscsoft-glue >=1.54.1",
-      "matplotlib-base >=1.2.0",
-      "numpy",
-      "python",
-      "python-lal >=7.1.0",
-      "python-lalmetaio >=2.0.0",
-      "python-lalsimulation >=2.3.0",
-      "python-lalburst >=1.5.3",
-      "python-lalinspiral >=2.0.0",
-      "python-lalpulsar >=2.1.0",
-      "python-ligo-lw",
-      "scipy >=0.9.0",
-      "six"
-     ]
-    },
-    "script": "install-python.sh",
-    "test": {
-     "commands": [
-      "cbcBayesBurstPPAnalysis --help",
-      "cbcBayesBurstPostProc --help",
-      "cbcBayesCombinePTMCMCh5s --help",
-      "cbcBayesCombinePosteriors --help",
-      "cbcBayesCompPos --help",
-      "cbcBayesDIEvidence --help",
-      "cbcBayesGraceDBinfo --help",
-      "cbcBayesMCMC2pos --help",
-      "cbcBayesPPAnalysis --help",
-      "cbcBayesPlotSpinDisk --help",
-      "cbcBayesPosToSimBurst --help",
-      "cbcBayesPosToSimInspiral --help",
-      "cbcBayesPostProc --help",
-      "cbcBayesThermoInt --help",
-      "imrtgr_imr_consistency_test --help",
-      "lalinference_burst_pp_pipe --help",
-      "lalinference_coherence_test --help",
-      "lalinference_compute_roq_weights --help",
-      "lalinference_cpnest --help",
-      "lalinference_evolve_spins_and_append_samples --help",
-      "lalinference_merge_posteriors --help",
-      "lalinference_multi_pipe --help",
-      "lalinference_nest2pos --help",
-      "lalinference_pipe --help",
-      "lalinference_pp_pipe --help",
-      "lalinference_review_test --help",
-      "pushd test/python; python -m pytest -rs -v; popd"
-     ],
-     "imports": [
-      "lalinference",
-      "lalinference.bayespputils",
-      "lalinference.imrtgr",
-      "lalinference.imrtgr.imrtgrutils",
-      "lalinference.imrtgr.nrutils",
-      "lalinference.imrtgr.pneqns",
-      "lalinference.lalinference_pipe_utils",
-      "lalinference.nest2pos",
-      "lalinference.tiger",
-      "lalinference.tiger.make_injtimes",
-      "lalinference.tiger.omegascans_dag",
-      "lalinference.tiger.postproc",
-      "lalinference.wrapper"
      ],
      "requires": [
       "cpnest",
-      "pytest >=4.0.0a0"
-     ],
-     "source_files": [
-      "test/python"
+      "openssh"
      ]
     }
    }
   ],
   "package": {
-   "name": "lalinference",
-   "version": "2.0.5"
+   "name": "lalinference-split",
+   "version": "2.0.6"
   },
   "requirements": {
    "build": [
     "c_compiler_stub",
-    "help2man",
     "llvm-openmp",
     "make",
     "pkg-config >=0.18.0",
-    "swig >=3.0.9",
-    "c_compiler_stub",
-    "help2man",
-    "llvm-openmp",
-    "make",
-    "pkg-config >=0.18.0",
-    "swig >=3.0.9",
-    "c_compiler_stub",
-    "help2man",
-    "llvm-openmp",
-    "make",
-    "pkg-config >=0.18.0",
-    "swig >=3.0.9"
+    "swig >=3.0.10"
    ],
    "host": [
     "gsl",
     "lal >=7.1.0 fftw*",
     "lalframe >=1.5.0",
     "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
+    "lalsimulation >=2.5.0",
     "lalburst >=1.5.3",
     "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "llvm-openmp",
-    "mpich",
-    "gsl",
-    "lal >=7.1.0 fftw*",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "llvm-openmp",
-    "openmpi",
-    "gsl",
-    "lal >=7.1.0 fftw*",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "llvm-openmp"
-   ],
-   "run": [
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "llvm-openmp",
-    "mpich",
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "llvm-openmp",
-    "openmpi",
-    "gsl",
-    "lal >=7.1.0",
-    "lalframe >=1.5.0",
-    "lalmetaio >=2.0.0",
-    "lalsimulation >=2.3.0",
-    "lalburst >=1.5.3",
-    "lalinspiral >=2.0.0",
-    "lalpulsar >=2.1.0",
+    "lalpulsar >=3.0.0",
     "llvm-openmp"
    ]
   },
   "source": {
-   "sha256": "3ffb345b5266f81267260fd0a021f9a24cffc7e7392b79603ecb486383073734",
-   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinference-2.0.5.tar.xz"
-  },
-  "test": {
-   "commands": [
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_kombine --help",
-    "lalinference_mcmc --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"",
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_kombine --help",
-    "lalinference_mcmc --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"",
-    "test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"",
-    "lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21",
-    "lalinference_datadump --help",
-    "lalinference_injectedlike --help",
-    "lalinference_nest --help",
-    "lalinference_version --verbose",
-    "test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\""
-   ],
-   "requires": [
-    "openssh",
-    "pkg-config",
-    "openssh",
-    "pkg-config",
-    "openssh",
-    "pkg-config"
-   ]
+   "sha256": "b58195713edf23da074e9f08cc9a767d5d5e11d6d94f4771618ff6a70dc278c0",
+   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinference-2.0.6.tar.xz"
   }
  },
  "osx_64_requirements": {
@@ -2631,27 +1547,34 @@
     "lal",
     "lalburst",
     "lalframe",
-    "lalinference",
     "lalinspiral",
     "lalmetaio",
     "lalpulsar",
     "lalsimulation",
+    "liblal",
+    "liblalburst",
+    "liblalframe",
+    "liblalinference",
+    "liblalinspiral",
+    "liblalmetaio",
+    "liblalpulsar",
+    "liblalsimulation",
+    "ligo-segments",
     "llvm-openmp",
     "lscsoft-glue",
     "matplotlib-base",
-    "mpich",
     "numpy",
     "openmpi",
     "python",
     "python-lal",
     "python-lalburst",
+    "python-lalinference",
     "python-lalinspiral",
     "python-lalmetaio",
     "python-lalpulsar",
     "python-lalsimulation",
     "python-ligo-lw",
-    "scipy",
-    "six"
+    "scipy"
    ]
   },
   "run": {
@@ -2661,30 +1584,30 @@
     "gsl",
     "h5py",
     "healpy",
-    "lal",
-    "lalburst",
-    "lalframe",
-    "lalinference",
-    "lalinspiral",
-    "lalmetaio",
-    "lalpulsar",
-    "lalsimulation",
+    "liblal",
+    "liblalburst",
+    "liblalframe",
+    "liblalinference",
+    "liblalinspiral",
+    "liblalmetaio",
+    "liblalpulsar",
+    "liblalsimulation",
+    "ligo-segments",
     "llvm-openmp",
     "lscsoft-glue",
     "matplotlib-base",
-    "mpich",
     "numpy",
     "openmpi",
     "python",
     "python-lal",
     "python-lalburst",
+    "python-lalinference",
     "python-lalinspiral",
     "python-lalmetaio",
     "python-lalpulsar",
     "python-lalsimulation",
     "python-ligo-lw",
-    "scipy",
-    "six"
+    "scipy"
    ]
   },
   "test": {
@@ -2701,6 +1624,7 @@
   "__set__": true,
   "elements": [
    "lalinference",
+   "liblalinference",
    "python-lalinference"
   ]
  },
@@ -2708,7 +1632,7 @@
  "pre_pr_migrator_status": {
   "python39": "not solvable: master: ['linux_64_mpimpich: Encountered problems while solving.\\nProblem: package python-lalmetaio-1.6.0-py27hc1659b7_0 requires lalmetaio 1.6.0 h516909a_0, but none of the providers can be installed\\n', 'linux_64_mpinompi: Encountered problems while solving.\\nProblem: package python-lalmetaio-1.6.0-py27hc1659b7_0 requires lalmetaio 1.6.0 h516909a_0, but none of the providers can be installed\\n', 'linux_64_mpiopenmpi: Encountered problems while solving.\\nProblem: package python-lalmetaio-1.6.0-py27hc1659b7_0 requires lalmetaio 1.6.0 h516909a_0, but none of the providers can be installed\\n', 'osx_64_mpimpich: Encountered problems while solving.\\nProblem: package python-lalmetaio-1.6.0-py27h3b54f70_0 requires lalmetaio 1.6.0 h0b31af3_0, but none of the providers can be installed\\n', 'osx_64_mpinompi: Encountered problems while solving.\\nProblem: package python-lalmetaio-1.6.0-py27h3b54f70_0 requires lalmetaio 1.6.0 h0b31af3_0, but none of the providers can be installed\\n', 'osx_64_mpiopenmpi: Encountered problems while solving.\\nProblem: package python-lalmetaio-1.6.0-py27h3b54f70_0 requires lalmetaio 1.6.0 h0b31af3_0, but none of the providers can be installed\\n']"
  },
- "raw_meta_yaml": "{% set name = \"lalinference\" %}\n{% set version = \"2.0.5\" %}\n{% set sha256 = \"3ffb345b5266f81267260fd0a021f9a24cffc7e7392b79603ecb486383073734\" %}\n{% set build = 0 %}\n\n# set mpi (prioritise nompi via build number)\n{% set mpi = mpi or \"nompi\" %}\n{% if mpi == \"nompi\" %}\n{% set build = build + 100 %}\n{% set mpi_prefix = \"nompi\" %}\n{% set build_pin = \"\" %}\n{% else %}\n{% set mpi_prefix = \"mpi_\" + mpi %}\n{% set build_pin = mpi_prefix + \"_*\" %}\n{% endif %}\n\n# dependencies\n{% set lal_version = \"7.1.0\" %}\n{% set lalburst_version = \"1.5.3\" %}\n{% set lalframe_version = \"1.5.0\" %}\n{% set lalinspiral_version = \"2.0.0\" %}\n{% set lalmetaio_version = \"2.0.0\" %}\n{% set lalpulsar_version = \"2.1.0\" %}\n{% set lalsimulation_version = \"2.3.0\" %}\n{% set swig_version = \"3.0.9\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz\n  sha256: {{ sha256 }}\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: {{ build }}\n  skip: true  # [win]\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - help2man\n    - libgomp  # [linux]\n    - llvm-openmp  # [osx]\n    - make\n    - pkg-config >=0.18.0\n    - swig >={{ swig_version }}\n  host:\n    - gsl\n    - lal >={{ lal_version }} fftw*\n    - lalframe >={{ lalframe_version }}\n    - lalmetaio >={{ lalmetaio_version }}\n    - lalsimulation >={{ lalsimulation_version }}\n    - lalburst >={{ lalburst_version }}\n    - lalinspiral >={{ lalinspiral_version }}\n    - lalpulsar >={{ lalpulsar_version }}\n    - libgomp  # [linux]\n    - llvm-openmp  # [osx]\n    - {{ mpi }}  # [mpi != 'nompi']\n  run:\n    - gsl\n    - lal >={{ lal_version }}\n    - lalframe >={{ lalframe_version }}\n    - lalmetaio >={{ lalmetaio_version }}\n    - lalsimulation >={{ lalsimulation_version }}\n    - lalburst >={{ lalburst_version }}\n    - lalinspiral >={{ lalinspiral_version }}\n    - lalpulsar >={{ lalpulsar_version }}\n    - llvm-openmp  # [osx]\n    - {{ mpi }}  # [mpi != 'nompi']\n\ntest:\n  requires:\n    - openssh\n    - pkg-config  # [unix]\n  commands:\n    - test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"  # [unix]\n    - lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21\n    #- lalinference_burst --help\n    - lalinference_datadump --help\n    - lalinference_injectedlike --help\n    - lalinference_kombine --help  # [mpi != 'nompi']\n    - lalinference_mcmc --help  # [mpi != 'nompi']\n    - lalinference_nest --help\n    - lalinference_version --verbose\n    - test \"$(pkg-config --modversion ${PKG_NAME})\" == \"${PKG_VERSION}\"  # [unix]\n\noutputs:\n  - name: lalinference\n    build:\n      run_exports:\n        - {{ pin_subpackage(\"lalinference\", max_pin=\"x\") }} {{ build_pin }}\n\n  - name: python-lalinference\n    script: install-python.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        - python\n      string: {{ mpi_prefix }}_py{{ py }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - help2man\n        - make\n        - pkg-config >=0.18.0\n        - swig >={{ swig_version }}\n      host:\n        - {{ pin_subpackage('lalinference', exact=True) }}\n        - numpy\n        - python\n        # run requirements needed for help2man\n        - astropy >=1.1.1\n        - healpy >=1.9.1\n        - h5py\n        - lscsoft-glue >=1.54.1\n        - matplotlib-base >=1.2.0\n        - python-lal >={{ lal_version }}\n        - python-lalmetaio >={{ lalmetaio_version }}\n        - python-lalsimulation >={{ lalsimulation_version }}\n        - python-lalburst >={{ lalburst_version }}\n        - python-lalinspiral >={{ lalinspiral_version }}\n        - python-lalpulsar >={{ lalpulsar_version }}\n        - python-ligo-lw\n        - scipy >=0.9.0\n        - six\n      run:\n        - astropy >=1.1.1\n        - gsl  # [linux]\n        - healpy >=1.9.1\n        - h5py\n        - lal >={{ lal_version }}\n        - lalframe >={{ lalframe_version }}  # [linux]\n        - lalmetaio >={{ lalmetaio_version }}  # [linux]\n        - lalsimulation >={{ lalsimulation_version }}  # [linux]\n        - lalburst >={{ lalburst_version }}  # [linux]\n        - lalinspiral >={{ lalinspiral_version }}  # [linux]\n        - lalpulsar >={{ lalpulsar_version }}  # [linux]\n        - {{ pin_subpackage('lalinference', exact=True) }}\n        - lscsoft-glue >=1.54.1\n        - matplotlib-base >=1.2.0\n        - {{ pin_compatible('numpy') }}\n        - python\n        - python-lal >={{ lal_version }}\n        - python-lalmetaio >={{ lalmetaio_version }}\n        - python-lalsimulation >={{ lalsimulation_version }}\n        - python-lalburst >={{ lalburst_version }}\n        - python-lalinspiral >={{ lalinspiral_version }}\n        - python-lalpulsar >={{ lalpulsar_version }}\n        - python-ligo-lw\n        - scipy >=0.9.0\n        - six\n    test:\n      imports:\n        - lalinference\n        - lalinference.bayespputils\n        - lalinference.imrtgr\n        - lalinference.imrtgr.imrtgrutils\n        - lalinference.imrtgr.nrutils\n        - lalinference.imrtgr.pneqns\n        - lalinference.lalinference_pipe_utils\n        - lalinference.nest2pos\n        - lalinference.tiger\n        - lalinference.tiger.make_injtimes\n        - lalinference.tiger.omegascans_dag\n        - lalinference.tiger.postproc\n        - lalinference.wrapper\n      requires:\n        - cpnest\n        - pytest >=4.0.0a0\n      source_files:\n        - test/python\n      commands:\n        - cbcBayesBurstPPAnalysis --help\n        - cbcBayesBurstPostProc --help\n        - cbcBayesCombinePTMCMCh5s --help\n        - cbcBayesCombinePosteriors --help\n        - cbcBayesCompPos --help\n        - cbcBayesDIEvidence --help\n        - cbcBayesGraceDBinfo --help\n        - cbcBayesMCMC2pos --help\n        - cbcBayesPPAnalysis --help\n        - cbcBayesPlotSpinDisk --help\n        - cbcBayesPosToSimBurst --help\n        - cbcBayesPosToSimInspiral --help\n        - cbcBayesPostProc --help\n        - cbcBayesThermoInt --help\n        - imrtgr_imr_consistency_test --help\n        - lalinference_burst_pp_pipe --help\n        - lalinference_coherence_test --help\n        - lalinference_compute_roq_weights --help\n        - lalinference_cpnest --help\n        - lalinference_evolve_spins_and_append_samples --help\n        - lalinference_merge_posteriors --help\n        - lalinference_multi_pipe --help\n        - lalinference_nest2pos --help\n        - lalinference_pipe --help\n        - lalinference_pp_pipe --help\n        - lalinference_review_test --help\n        - pushd test/python; python -m pytest -rs -v; popd\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinference/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Inference Library\n      description: |\n        The LSC Algorithm Inference Library for gravitational wave data\n        analysis.  This package contains the python bindings.\n\nabout:\n  home: https://wiki.ligo.org/Computing/LALSuite\n  doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinference/\n  dev_url: https://git.ligo.org/lscsoft/lalsuite/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LSC Algorithm Inference Library\n  description: |\n    The LSC Algorithm Inference Library for gravitational wave data analysis.\n    This package contains the shared-object libraries needed to run\n    applications that use the LAL Inference library.  If you want to install\n    the Python bindings, please install the associated python-lalinference\n    package.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - skymoo\n    - vivienr\n",
+ "raw_meta_yaml": "{% set name = \"lalinference\" %}\n{% set version = \"2.0.6\" %}\n{% set sha256 = \"b58195713edf23da074e9f08cc9a767d5d5e11d6d94f4771618ff6a70dc278c0\" %}\n{% set build = 0 %}\n\n# dependencies\n{% set lal_version = \"7.1.0\" %}\n{% set lalburst_version = \"1.5.3\" %}\n{% set lalframe_version = \"1.5.0\" %}\n{% set lalinspiral_version = \"2.0.0\" %}\n{% set lalmetaio_version = \"2.0.0\" %}\n{% set lalpulsar_version = \"3.0.0\" %}\n{% set lalsimulation_version = \"2.5.0\" %}\n{% set swig_version = \"3.0.10\" %}\n\npackage:\n  name: {{ name }}-split\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz\n  sha256: {{ sha256 }}\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: {{ build }}\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - llvm-openmp  # [osx]\n    - make\n    - pkg-config >=0.18.0\n    - swig >={{ swig_version }}\n  host:\n    - gsl\n    - lal >={{ lal_version }} fftw*\n    - lalframe >={{ lalframe_version }}\n    - lalmetaio >={{ lalmetaio_version }}\n    - lalsimulation >={{ lalsimulation_version }}\n    - lalburst >={{ lalburst_version }}\n    - lalinspiral >={{ lalinspiral_version }}\n    - lalpulsar >={{ lalpulsar_version }}\n    - libgomp  # [linux]\n    - llvm-openmp  # [osx]\n\noutputs:\n  - name: liblalinference\n    script: install-lib.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      run_exports:\n        - {{ pin_subpackage(\"liblalinference\", max_pin=\"x\") }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - llvm-openmp  # [osx]\n        - make\n        - swig >={{ swig_version }}\n      host:\n        - gsl\n        - libgomp  # [linux]\n        - liblal >={{ lal_version }} fftw*\n        - liblalframe >={{ lalframe_version }}\n        - liblalmetaio >={{ lalmetaio_version }}\n        - liblalsimulation >={{ lalsimulation_version }}\n        - liblalburst >={{ lalburst_version }}\n        - liblalinspiral >={{ lalinspiral_version }}\n        - liblalpulsar >={{ lalpulsar_version }}\n        - llvm-openmp  # [osx]\n      run:\n        - gsl\n        - liblal >={{ lal_version }} fftw*\n        - liblalframe >={{ lalframe_version }}\n        - liblalmetaio >={{ lalmetaio_version }}\n        - liblalsimulation >={{ lalsimulation_version }}\n        - liblalburst >={{ lalburst_version }}\n        - liblalinspiral >={{ lalinspiral_version }}\n        - liblalpulsar >={{ lalpulsar_version }}\n        - llvm-openmp  # [osx]\n    test:\n      requires:\n        - pkg-config\n      commands:\n        - test $(pkg-config --modversion --print-errors lalinference) == \"${PKG_VERSION}\"\n\n  - name: python-lalinference\n    script: install-python.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        # ignore run_exports from python's recipe\n        - python\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - make\n        - pkg-config\n        - swig >={{ swig_version }}\n      host:\n        - {{ pin_subpackage('liblalinference', exact=True) }}\n        - python\n        - numpy\n      run:\n        - astropy >=1.1.1\n        - healpy >=1.9.1\n        - h5py\n        - {{ pin_subpackage('liblalinference', exact=True) }}\n        - ligo-segments\n        - lscsoft-glue >=1.54.1\n        - matplotlib-base >=1.2.0\n        - {{ pin_compatible('numpy') }}\n        - python\n        - python-lal >={{ lal_version }}\n        - python-lalmetaio >={{ lalmetaio_version }}\n        - python-lalsimulation >={{ lalsimulation_version }}\n        - python-lalburst >={{ lalburst_version }}\n        - python-lalinspiral >={{ lalinspiral_version }}\n        - python-lalpulsar >={{ lalpulsar_version }}\n        - python-ligo-lw\n        - scipy >=0.9.0\n    test:\n      requires:\n        - pytest >=4.0.0a0\n      source_files:\n        - test/python\n      commands:\n        - python -m pytest -rs -v test/python/\n      imports:\n        - lalinference\n        - lalinference.bayespputils\n        - lalinference.imrtgr\n        - lalinference.imrtgr.imrtgrutils\n        - lalinference.imrtgr.nrutils\n        - lalinference.imrtgr.pneqns\n        - lalinference.lalinference_pipe_utils\n        - lalinference.nest2pos\n        - lalinference.plot\n        - lalinference.tiger\n        - lalinference.tiger.make_injtimes\n        - lalinference.tiger.omegascans_dag\n        - lalinference.tiger.postproc\n        - lalinference.wrapper\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinference/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Inference Library\n      description: |\n        The LSC Algorithm Inference Library for gravitational wave data\n        analysis.  This package contains the python bindings.\n\n  - name: lalinference\n    script: install-bin.sh\n    build:\n      ignore_run_exports:\n        - python\n      # Prioritise nompi via build number\n      number: {{ (build + 100) if (mpi or \"nompi\") == \"nompi\" else build }}\n      string: {{ \"nompi\" if (mpi or \"nompi\") == \"nompi\" else (\"mpi_\" + mpi) }}_py{{ py }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - help2man >=1.37\n        - llvm-openmp  # [osx and mpi != 'nompi']\n        - make\n        - pkg-config >=0.18.0\n      host:\n        - gsl  # [mpi != 'nompi']\n        - libgomp  # [linux and mpi != 'nompi']\n        - liblal >={{ lal_version }}\n        - {{ pin_subpackage('liblalinference', exact=True) }}\n        - liblalinspiral >={{ lalinspiral_version }}  # [mpi != 'nompi']\n        - llvm-openmp  # [osx and mpi != 'nompi']\n        - {{ mpi }}  # [mpi != 'nompi']\n        - python\n        - {{ pin_subpackage('python-lalinference', exact=True) }}\n        # run requirements needed for help2man\n        - astropy >=1.1.1\n        - healpy >=1.9.1\n        - h5py\n        - ligo-segments\n        - lscsoft-glue >=1.54.1\n        - matplotlib-base >=1.2.0\n        - python-lal >={{ lal_version }}\n        - python-lalmetaio >={{ lalmetaio_version }}\n        - python-lalsimulation >={{ lalsimulation_version }}\n        - python-lalburst >={{ lalburst_version }}\n        - python-lalinspiral >={{ lalinspiral_version }}\n        - python-lalpulsar >={{ lalpulsar_version }}\n        - python-ligo-lw\n        - scipy >=0.9.0\n      run:\n        - gsl  # [mpi != 'nompi']\n        - liblal >={{ lal_version }}\n        - {{ pin_subpackage('liblalinference', exact=True) }}\n        - liblalinspiral >={{ lalinspiral_version }}  # [mpi != 'nompi']\n        - llvm-openmp  # [osx and mpi != 'nompi']\n        - {{ mpi }}  # [mpi != 'nompi']\n        - python\n        - {{ pin_subpackage('python-lalinference', exact=True) }}\n    test:\n      requires:\n        - cpnest\n        - openssh\n      commands:\n        # data files\n        - test -f \"${LALINFERENCE_DATADIR}/lalinference_pipe_example.ini\"  # [unix]\n        # C executables\n        - lalinference_bench --psdlength 1000 --psdstart 1 --seglen 8 --srate 4096 --trigtime 0 --ifo H1 --H1-channel LALSimAdLIGO --H1-cache LALSimAdLIGO --dataseed 1324 --Niter 10 --fix-chirpmass 1.21\n        #- lalinference_burst --help\n        - lalinference_datadump --help\n        - lalinference_injectedlike --help\n        - lalinference_kombine --help  # [mpi != 'nompi']\n        - lalinference_mcmc --help  # [mpi != 'nompi']\n        - lalinference_nest --help\n        - lalinference_version --verbose\n        # python scripts\n        - cbcBayesBurstPPAnalysis --help\n        - cbcBayesBurstPostProc --help\n        - cbcBayesCombinePTMCMCh5s --help\n        - cbcBayesCombinePosteriors --help\n        - cbcBayesCompPos --help\n        - cbcBayesDIEvidence --help\n        - cbcBayesGraceDBinfo --help\n        - cbcBayesMCMC2pos --help\n        - cbcBayesPPAnalysis --help\n        - cbcBayesPlotSpinDisk --help\n        - cbcBayesPosToSimBurst --help\n        - cbcBayesPosToSimInspiral --help\n        - cbcBayesPostProc --help\n        - cbcBayesThermoInt --help\n        - imrtgr_imr_consistency_test --help\n        - lalinference_burst_pp_pipe --help\n        - lalinference_coherence_test --help\n        - lalinference_compute_roq_weights --help\n        - lalinference_cpnest --help\n        - lalinference_merge_posteriors --help\n        - lalinference_multi_pipe --help\n        - lalinference_nest2pos --help\n        - lalinference_pipe --help\n        - lalinference_pp_pipe --help\n        - lalinference_review_test --help\n      imports:\n        - lalinference\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinference/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Inference Library\n      description: |\n        The LSC Algorithm Inference Library for gravitational wave data analysis.\n\nabout:\n  home: https://wiki.ligo.org/Computing/LALSuite\n  doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinference/\n  dev_url: https://git.ligo.org/lscsoft/lalsuite/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LSC Algorithm Inference Library\n  description: |\n    The LSC Algorithm Inference Library for gravitational wave data analysis.\n\nextra:\n  feedstock-name: lalinference\n  recipe-maintainers:\n    - duncanmmacleod\n    - skymoo\n    - vivienr\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -2721,30 +1645,37 @@
    "lal",
    "lalburst",
    "lalframe",
-   "lalinference",
    "lalinspiral",
    "lalmetaio",
    "lalpulsar",
    "lalsimulation",
    "libgomp",
+   "liblal",
+   "liblalburst",
+   "liblalframe",
+   "liblalinference",
+   "liblalinspiral",
+   "liblalmetaio",
+   "liblalpulsar",
+   "liblalsimulation",
+   "ligo-segments",
    "llvm-openmp",
    "lscsoft-glue",
    "make",
    "matplotlib-base",
-   "mpich",
    "numpy",
    "openmpi",
    "pkg-config",
    "python",
    "python-lal",
    "python-lalburst",
+   "python-lalinference",
    "python-lalinspiral",
    "python-lalmetaio",
    "python-lalpulsar",
    "python-lalsimulation",
    "python-ligo-lw",
    "scipy",
-   "six",
    "swig"
   ]
  },
@@ -2754,7 +1685,6 @@
    "elements": [
     "c_compiler_stub",
     "help2man",
-    "libgomp",
     "llvm-openmp",
     "make",
     "pkg-config",
@@ -2773,29 +1703,36 @@
     "lal",
     "lalburst",
     "lalframe",
-    "lalinference",
     "lalinspiral",
     "lalmetaio",
     "lalpulsar",
     "lalsimulation",
     "libgomp",
+    "liblal",
+    "liblalburst",
+    "liblalframe",
+    "liblalinference",
+    "liblalinspiral",
+    "liblalmetaio",
+    "liblalpulsar",
+    "liblalsimulation",
+    "ligo-segments",
     "llvm-openmp",
     "lscsoft-glue",
     "matplotlib-base",
-    "mpich",
     "numpy",
     "openmp",
     "openmpi",
     "python",
     "python-lal",
     "python-lalburst",
+    "python-lalinference",
     "python-lalinspiral",
     "python-lalmetaio",
     "python-lalpulsar",
     "python-lalsimulation",
     "python-ligo-lw",
-    "scipy",
-    "six"
+    "scipy"
    ]
   },
   "run": {
@@ -2807,31 +1744,31 @@
     "gsl",
     "h5py",
     "healpy",
-    "lal",
-    "lalburst",
-    "lalframe",
-    "lalinference",
-    "lalinspiral",
-    "lalmetaio",
-    "lalpulsar",
-    "lalsimulation",
+    "liblal",
+    "liblalburst",
+    "liblalframe",
+    "liblalinference",
+    "liblalinspiral",
+    "liblalmetaio",
+    "liblalpulsar",
+    "liblalsimulation",
+    "ligo-segments",
     "llvm-openmp",
     "lscsoft-glue",
     "matplotlib-base",
-    "mpich",
     "numpy",
     "openmp",
     "openmpi",
     "python",
     "python-lal",
     "python-lalburst",
+    "python-lalinference",
     "python-lalinspiral",
     "python-lalmetaio",
     "python-lalpulsar",
     "python-lalsimulation",
     "python-ligo-lw",
-    "scipy",
-    "six"
+    "scipy"
    ]
   },
   "test": {
@@ -2851,12 +1788,12 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
-    "help2man",
-    "libgomp",
+    "help2man >=1.37",
     "llvm-openmp",
     "make",
+    "pkg-config",
     "pkg-config >=0.18.0",
-    "swig >=3.0.9"
+    "swig >=3.0.10"
    ]
   },
   "host": {
@@ -2869,28 +1806,36 @@
     "lal >=7.1.0 fftw*",
     "lalburst >=1.5.3",
     "lalframe >=1.5.0",
-    "lalinference",
     "lalinspiral >=2.0.0",
     "lalmetaio >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "lalsimulation >=2.3.0",
+    "lalpulsar >=3.0.0",
+    "lalsimulation >=2.5.0",
     "libgomp",
+    "liblal >=7.1.0",
+    "liblal >=7.1.0 fftw*",
+    "liblalburst >=1.5.3",
+    "liblalframe >=1.5.0",
+    "liblalinference",
+    "liblalinspiral >=2.0.0",
+    "liblalmetaio >=2.0.0",
+    "liblalpulsar >=3.0.0",
+    "liblalsimulation >=2.5.0",
+    "ligo-segments",
     "llvm-openmp",
     "lscsoft-glue >=1.54.1",
     "matplotlib-base >=1.2.0",
-    "mpich",
     "numpy",
     "openmpi",
     "python",
     "python-lal >=7.1.0",
     "python-lalburst >=1.5.3",
+    "python-lalinference",
     "python-lalinspiral >=2.0.0",
     "python-lalmetaio >=2.0.0",
-    "python-lalpulsar >=2.1.0",
-    "python-lalsimulation >=2.3.0",
+    "python-lalpulsar >=3.0.0",
+    "python-lalsimulation >=2.5.0",
     "python-ligo-lw",
-    "scipy >=0.9.0",
-    "six"
+    "scipy >=0.9.0"
    ]
   },
   "run": {
@@ -2900,30 +1845,31 @@
     "gsl",
     "h5py",
     "healpy >=1.9.1",
-    "lal >=7.1.0",
-    "lalburst >=1.5.3",
-    "lalframe >=1.5.0",
-    "lalinference",
-    "lalinspiral >=2.0.0",
-    "lalmetaio >=2.0.0",
-    "lalpulsar >=2.1.0",
-    "lalsimulation >=2.3.0",
+    "liblal >=7.1.0",
+    "liblal >=7.1.0 fftw*",
+    "liblalburst >=1.5.3",
+    "liblalframe >=1.5.0",
+    "liblalinference",
+    "liblalinspiral >=2.0.0",
+    "liblalmetaio >=2.0.0",
+    "liblalpulsar >=3.0.0",
+    "liblalsimulation >=2.5.0",
+    "ligo-segments",
     "llvm-openmp",
     "lscsoft-glue >=1.54.1",
     "matplotlib-base >=1.2.0",
-    "mpich",
     "numpy",
     "openmpi",
     "python",
     "python-lal >=7.1.0",
     "python-lalburst >=1.5.3",
+    "python-lalinference",
     "python-lalinspiral >=2.0.0",
     "python-lalmetaio >=2.0.0",
-    "python-lalpulsar >=2.1.0",
-    "python-lalsimulation >=2.3.0",
+    "python-lalpulsar >=3.0.0",
+    "python-lalsimulation >=2.5.0",
     "python-ligo-lw",
-    "scipy >=0.9.0",
-    "six"
+    "scipy >=0.9.0"
    ]
   },
   "test": {
@@ -2936,6 +1882,6 @@
    ]
   }
  },
- "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinference-2.0.5.tar.xz",
- "version": "2.0.5"
+ "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinference-2.0.6.tar.xz",
+ "version": "2.0.6"
 }
