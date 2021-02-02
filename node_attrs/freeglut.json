@@ -91,7 +91,7 @@
    "summary": "A GUI based on OpenGL."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "freeglut"
    ]
@@ -137,6 +137,9 @@
   },
   "source": {
    "fn": "freeglut-3.2.1.tar.bz2",
+   "patches": [
+    "disable_autolink_windows.patch"
+   ],
    "sha256": "d4000e02102acaf259998c870e25214739d1f16f67f99cb35e4f46841399da68",
    "url": "http://sourceforge.net/projects/freeglut/files/freeglut/3.2.1/freeglut-3.2.1.tar.gz"
   },
@@ -232,7 +235,7 @@
    "summary": "A GUI based on OpenGL."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "freeglut"
    ]
@@ -278,6 +281,9 @@
   },
   "source": {
    "fn": "freeglut-3.2.1.tar.bz2",
+   "patches": [
+    "disable_autolink_windows.patch"
+   ],
    "sha256": "d4000e02102acaf259998c870e25214739d1f16f67f99cb35e4f46841399da68",
    "url": "http://sourceforge.net/projects/freeglut/files/freeglut/3.2.1/freeglut-3.2.1.tar.gz"
   },
@@ -373,7 +379,7 @@
    "summary": "A GUI based on OpenGL."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "freeglut"
    ]
@@ -419,6 +425,9 @@
   },
   "source": {
    "fn": "freeglut-3.2.1.tar.bz2",
+   "patches": [
+    "disable_autolink_windows.patch"
+   ],
    "sha256": "d4000e02102acaf259998c870e25214739d1f16f67f99cb35e4f46841399da68",
    "url": "http://sourceforge.net/projects/freeglut/files/freeglut/3.2.1/freeglut-3.2.1.tar.gz"
   },
@@ -514,7 +523,7 @@
    "summary": "A GUI based on OpenGL."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "freeglut",
     "freeglut",
@@ -615,6 +624,12 @@
   },
   "source": {
    "fn": "freeglut-3.2.1.tar.bz2",
+   "patches": [
+    "disable_autolink_windows.patch",
+    "disable_autolink_windows.patch",
+    "disable_autolink_windows.patch",
+    "disable_autolink_windows.patch"
+   ],
    "sha256": "d4000e02102acaf259998c870e25214739d1f16f67f99cb35e4f46841399da68",
    "url": "http://sourceforge.net/projects/freeglut/files/freeglut/3.2.1/freeglut-3.2.1.tar.gz"
   },
@@ -715,7 +730,7 @@
   ]
  },
  "pinning_version": "2020.06.23.15.05.51",
- "raw_meta_yaml": "{% set version = \"3.2.1\" %}\n\npackage:\n  name: freeglut\n  version: {{ version }}\n\nsource:\n  fn: freeglut-{{ version }}.tar.bz2\n  url: http://sourceforge.net/projects/freeglut/files/freeglut/{{ version }}/freeglut-{{ version }}.tar.gz\n  sha256: d4000e02102acaf259998c870e25214739d1f16f67f99cb35e4f46841399da68\n\nbuild:\n  number: 1\n  skip: true  # [osx]\n  run_exports:\n    # https://abi-laboratory.pro/index.php?view=timeline&l=freeglut\n    # very good backwards compatibility\n    - {{ pin_subpackage(\"freeglut\", max_pin=\"x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make                               # [linux]\n    - {{ cdt('mesa-libgl-devel') }}      # [linux]\n    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]\n    - {{ cdt('libxxf86vm-devel') }}      # [linux]\n  host:\n    - libglu                             # [linux]\n    - libxcb                             # [linux]\n    - xorg-libx11                        # [linux]\n    - xorg-libxau                        # [linux]\n    - xorg-libxext                       # [linux]\n    - xorg-libxfixes                     # [linux]\n    - xorg-libxi                         # [linux]\n  run:\n    - libxcb                             # [linux]\n    - xorg-libx11                        # [linux]\n    - xorg-libxau                        # [linux]\n    - xorg-libxext                       # [linux]\n    - xorg-libxfixes                     # [linux]\n    - xorg-libxi                         # [linux]\n\ntest:\n  files:\n    - test\n\n  requires:\n    - {{ compiler('c') }}\n    - cmake\n    - ninja\n    - {{ cdt('mesa-libgl-devel') }}      # [linux]\n    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]\n    - {{ cdt('libxxf86vm-devel') }}      # [linux]\n    - libglu                             # [linux]\n    - libxcb                             # [linux]\n    - xorg-libx11                        # [linux]\n    - xorg-libxau                        # [linux]\n    - xorg-libxext                       # [linux]\n    - xorg-libxfixes                     # [linux]\n    - xorg-libxi                         # [linux]\n    - {{ cdt('mesa-dri-drivers') }}      # [linux]\n    - {{ cdt('libselinux') }}            # [linux]\n    - {{ cdt('libxdamage') }}            # [linux]\n    - {{ cdt('libxext') }}               # [linux]\n    - xorg-libxfixes                     # [linux]\n\n  commands:\n    # Test includes.\n    - test -d \"${PREFIX}/include/GL\"  # [linux]\n\n      # Test libraries.\n    - test ! -f \"${PREFIX}/lib/libglut.a\"   # [linux]\n    - test -f \"${PREFIX}/lib/libglut.so\"    # [linux]\n    - ldd \"${PREFIX}/lib/libglut.so\"        # [linux]\n\n    # Test Windows includes and libraries.\n    - if not exist %LIBRARY_INC%\\\\GL\\\\freeglut.h     exit 1   # [win]\n    - if not exist %LIBRARY_INC%\\\\GL\\\\freeglut_ext.h exit 1   # [win]\n    - if not exist %LIBRARY_INC%\\\\GL\\\\freeglut_std.h exit 1   # [win]\n    - if not exist %LIBRARY_INC%\\\\GL\\\\glut.h         exit 1   # [win]\n    - if not exist %LIBRARY_LIB%\\\\freeglut.lib       exit 1   # [win]\n    - if not exist %LIBRARY_BIN%\\\\freeglut.dll       exit 1   # [win]\n\nabout:\n  home: http://freeglut.sourceforge.net/\n  license: MIT\n  license_family: MIT\n  license_file: COPYING\n  summary: A GUI based on OpenGL.\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n    - shadowwalkersb\n    - wolfv\n",
+ "raw_meta_yaml": "{% set version = \"3.2.1\" %}\n\npackage:\n  name: freeglut\n  version: {{ version }}\n\nsource:\n  fn: freeglut-{{ version }}.tar.bz2\n  url: http://sourceforge.net/projects/freeglut/files/freeglut/{{ version }}/freeglut-{{ version }}.tar.gz\n  sha256: d4000e02102acaf259998c870e25214739d1f16f67f99cb35e4f46841399da68\n  patches:\n    - disable_autolink_windows.patch\n\nbuild:\n  number: 2\n  skip: true  # [osx]\n  run_exports:\n    # https://abi-laboratory.pro/index.php?view=timeline&l=freeglut\n    # very good backwards compatibility\n    - {{ pin_subpackage(\"freeglut\", max_pin=\"x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make                               # [linux]\n    - {{ cdt('mesa-libgl-devel') }}      # [linux]\n    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]\n    - {{ cdt('libxxf86vm-devel') }}      # [linux]\n  host:\n    - libglu                             # [linux]\n    - libxcb                             # [linux]\n    - xorg-libx11                        # [linux]\n    - xorg-libxau                        # [linux]\n    - xorg-libxext                       # [linux]\n    - xorg-libxfixes                     # [linux]\n    - xorg-libxi                         # [linux]\n  run:\n    - libxcb                             # [linux]\n    - xorg-libx11                        # [linux]\n    - xorg-libxau                        # [linux]\n    - xorg-libxext                       # [linux]\n    - xorg-libxfixes                     # [linux]\n    - xorg-libxi                         # [linux]\n\ntest:\n  files:\n    - test\n\n  requires:\n    - {{ compiler('c') }}\n    - cmake\n    - ninja\n    - {{ cdt('mesa-libgl-devel') }}      # [linux]\n    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]\n    - {{ cdt('libxxf86vm-devel') }}      # [linux]\n    - libglu                             # [linux]\n    - libxcb                             # [linux]\n    - xorg-libx11                        # [linux]\n    - xorg-libxau                        # [linux]\n    - xorg-libxext                       # [linux]\n    - xorg-libxfixes                     # [linux]\n    - xorg-libxi                         # [linux]\n    - {{ cdt('mesa-dri-drivers') }}      # [linux]\n    - {{ cdt('libselinux') }}            # [linux]\n    - {{ cdt('libxdamage') }}            # [linux]\n    - {{ cdt('libxext') }}               # [linux]\n    - xorg-libxfixes                     # [linux]\n\n  commands:\n    # Test includes.\n    - test -d \"${PREFIX}/include/GL\"  # [linux]\n\n      # Test libraries.\n    - test ! -f \"${PREFIX}/lib/libglut.a\"   # [linux]\n    - test -f \"${PREFIX}/lib/libglut.so\"    # [linux]\n    - ldd \"${PREFIX}/lib/libglut.so\"        # [linux]\n\n    # Test Windows includes and libraries.\n    - if not exist %LIBRARY_INC%\\\\GL\\\\freeglut.h     exit 1   # [win]\n    - if not exist %LIBRARY_INC%\\\\GL\\\\freeglut_ext.h exit 1   # [win]\n    - if not exist %LIBRARY_INC%\\\\GL\\\\freeglut_std.h exit 1   # [win]\n    - if not exist %LIBRARY_INC%\\\\GL\\\\glut.h         exit 1   # [win]\n    - if not exist %LIBRARY_LIB%\\\\freeglut.lib       exit 1   # [win]\n    - if not exist %LIBRARY_BIN%\\\\freeglut.dll       exit 1   # [win]\n\nabout:\n  home: http://freeglut.sourceforge.net/\n  license: MIT\n  license_family: MIT\n  license_file: COPYING\n  summary: A GUI based on OpenGL.\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n    - shadowwalkersb\n    - wolfv\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -852,7 +867,7 @@
    "summary": "A GUI based on OpenGL."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "freeglut"
    ]
@@ -879,6 +894,9 @@
   },
   "source": {
    "fn": "freeglut-3.2.1.tar.bz2",
+   "patches": [
+    "disable_autolink_windows.patch"
+   ],
    "sha256": "d4000e02102acaf259998c870e25214739d1f16f67f99cb35e4f46841399da68",
    "url": "http://sourceforge.net/projects/freeglut/files/freeglut/3.2.1/freeglut-3.2.1.tar.gz"
   },
