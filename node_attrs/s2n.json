@@ -169,6 +169,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/566502790.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.10.26"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -816,13 +833,14 @@
   }
  },
  "name": "s2n",
- "new_version": "0.10.25",
+ "new_version": "0.10.26",
  "new_version_attempts": {
   "0.10.21": 3,
   "0.10.22": 1,
   "0.10.23": 1,
   "0.10.24": 2,
-  "0.10.25": 1
+  "0.10.25": 1,
+  "0.10.26": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1052,7 +1070,7 @@
    "s2n-static"
   ]
  },
- "pinning_version": "2021.01.21.20.05.24",
+ "pinning_version": "2021.02.02.22.13.44",
  "raw_meta_yaml": "{% set name = \"s2n\" %}\n{% set version = \"0.10.25\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/awslabs/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: c18d9f1d6705d96d85ae1d1066cfcedcea1577a815402d217a6480513dcfd1b6\n  patches:\n    - ppc64le_support.patch\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(\"s2n\", max_pin=\"x.x.x\") }}\n\noutputs:\n  - name: s2n\n    script: build-shared.sh  # [unix]\n    script: bld-shared.bat  # [win]\n    build:\n      activate_in_script: true\n      run_exports:\n        - {{ pin_subpackage(\"s2n\", max_pin=\"x.x.x\") }}\n    requirements:\n      build:\n        - cmake\n        - {{ compiler('c') }}\n        - ninja\n      host:\n        - openssl\n    test:\n      commands:\n        - test -f $PREFIX/lib/libs2n${SHLIB_EXT}  # [unix]\n        - test ! -f $PREFIX/lib/libs2n.a  # [unix]\n        - test -f $PREFIX/include/s2n.h  # [unix]\n  - name: s2n-static\n    script: build-static.sh  # [unix]\n    script: bld-static.bat  # [win]\n    build:\n      activate_in_script: true\n    requirements:\n      build:\n        - cmake\n        - {{ compiler('c') }}\n        - ninja\n      host:\n        - libopenssl-static\n        - {{ pin_subpackage(\"s2n\", exact=True) }}\n    test:\n      commands:\n        - test -f $PREFIX/lib/libs2n.a  # [unix]\n\nabout:\n  home: https://github.com/awslabs/s2n\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: an implementation of the TLS/SSL protocols\n\nextra:\n  recipe-maintainers:\n    - xhochy\n    - davidbrochart\n",
  "req": {
   "__set__": true,
