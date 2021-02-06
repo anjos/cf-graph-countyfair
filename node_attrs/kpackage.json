@@ -362,7 +362,7 @@
   "5.75.0": 62,
   "5.76.0": 4,
   "5.77.0": 284,
-  "5.78.0": 35
+  "5.78.0": 36
  },
  "new_version_errors": {
   "5.77.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '5.77.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://download.kde.org/stable/frameworks/{{ major_minor }}/kpackage-{{ version }}.tar.xz'\n"
@@ -375,7 +375,7 @@
  },
  "pinning_version": "2020.11.14.14.16.41",
  "pre_pr_migrator_status": {
-  "version": "not solvable: master: ['linux_64_: Encountered problems while solving.\\nProblem: nothing provides requested extra-cmake-modules >=5.78\\n', 'linux_64_: Encountered problems while solving.\\nProblem: nothing provides requested karchive >=5.78\\nProblem: nothing provides requested ki18n >=5.78\\nProblem: nothing provides requested kcoreaddons >=5.78\\n']"
+  "version": "not solvable: master: ['linux_64_: Encountered problems while solving.\\nProblem: nothing provides requested extra-cmake-modules >=5.78\\n', 'linux_64_: Encountered problems while solving.\\nProblem: nothing provides requested kcoreaddons >=5.78\\nProblem: nothing provides requested ki18n >=5.78\\nProblem: nothing provides requested karchive >=5.78\\n']"
  },
  "raw_meta_yaml": "{% set name = \"kpackage\" %}\n{% set version = \"5.76.0\" %}\n{% set major_minor = \".\".join(version.split(\".\")[:2]) %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://download.kde.org/stable/frameworks/{{ major_minor }}/kpackage-{{ version }}.tar.xz\n  sha256: 97791ef08ca18892d6aa6a50fa0a87ae72cad10de9f17e3fb503a370de829772\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n  run_exports:\n    - {{ pin_subpackage('kpackage', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make\n    - extra-cmake-modules >={{ major_minor }}\n  host:\n    - qt\n    - ki18n >={{ major_minor }}\n    - karchive >={{ major_minor }}\n    - kcoreaddons >={{ major_minor }}\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libKF5Package.so\n\nabout:\n  home: https://api.kde.org/frameworks/kpackage/html/index.html\n  license: GPL-2.0-or-later AND LGPL-2.0-or-later\n  license_file:\n    - LICENSES/GPL-2.0-or-later.txt\n    - LICENSES/LGPL-2.0-or-later.txt\n  summary: 'Installation and loading of additional content (ex: scripts, images...) as packages'\n  description: |\n    The KPackage framework lets the user install and load packages of\n    non binary content such as scripted extensions or graphic assets,\n    as if they were traditional plugins.\n  dev_url: https://cgit.kde.org/kpackage.git/tree\n\nextra:\n  recipe-maintainers:\n    - scopatz\n",
  "req": {
