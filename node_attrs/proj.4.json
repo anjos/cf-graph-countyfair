@@ -268,6 +268,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/569784050.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -858,7 +875,7 @@
    "proj"
   ]
  },
- "pinning_version": "2021.01.01.06.39.05",
+ "pinning_version": "2021.02.08.19.19.27",
  "raw_meta_yaml": "{% set version = \"7.2.1\" %}\n\npackage:\n  name: proj\n  version: {{ version }}\n\nsource:\n  url: http://download.osgeo.org/proj/proj-{{ version }}.tar.gz\n  sha256: b384f42e5fb9c6d01fe5fa4d31da2e91329668863a684f97be5d4760dbbf0a14\n\nbuild:\n  number: 0\n  run_exports:\n    # so name changes in bugfix revisions.  Pin to bugfix revision.\n    #    https://abi-laboratory.pro/tracker/timeline/proj/\n    - {{ pin_subpackage('proj', max_pin='x.x.x') }}\n\nrequirements:\n  build:\n    - cmake  # [win]\n    - pkg-config  # [not win]\n    - make  # [not win]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - automake  # [not win]\n    - libtool  # [not win]\n  host:\n    - sqlite\n    - libtiff\n    - libcurl\n  run:\n    - sqlite\n    - libtiff\n    - libcurl\n  run_constrained:\n    - proj4 ==999999999999\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libproj${SHLIB_EXT}  # [unix]\n    - test ! -f ${PREFIX}/lib/libproj.a          # [unix]\n    - if not exist %LIBRARY_LIB%\\\\proj.lib exit 1  # [win]\n    - echo -105 40 | proj +proj=utm +zone=13 +ellps=WGS84\n    - echo -117 30 | cs2cs +proj=latlong +datum=NAD27 +to +proj=latlong +datum=NAD83\n    - echo -105 40 | cs2cs +init=epsg:4326 +to +init=epsg:2975\n\nabout:\n  home: https://proj.org/\n  license: MIT\n  license_file: COPYING\n  summary: Cartographic Projections and Coordinate Transformations Library\n\nextra:\n  recipe-maintainers:\n    - hobu\n    - msarahan\n    - mwtoews\n    - ocefpaf\n    - pelson\n    - snowman2\n    - xylar\n",
  "req": {
   "__set__": true,
