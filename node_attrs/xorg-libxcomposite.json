@@ -1,4 +1,23 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/571214809.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "branch": "master",
@@ -273,6 +292,7 @@
    "xorg-libxcomposite"
   ]
  },
+ "pinning_version": "2021.02.10.13.52.40",
  "raw_meta_yaml": "{% set xorg_ident = \"Xcomposite\" %}\n{% set xorg_name = \"lib\" ~ xorg_ident %}\n{% set xorg_category = \"lib\" %}\n{% set name = \"xorg-\" ~ xorg_name %}\n{% set version = \"0.4.5\" %}\n{% set sha256 = \"b3218a2c15bab8035d16810df5b8251ffc7132ff3aa70651a1fba0bfe9634e8f\" %}\n{% set am_version = \"1.15\" %} # keep synchronized with build.sh\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.bz2\n  url: https://www.x.org/releases/individual/{{ xorg_category }}/{{ xorg_name }}-{{ version }}.tar.bz2\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 0\n  detect_binary_files_with_prefix: true\n\nrequirements:\n  build:\n    - m2-autoconf  # [win]\n    - m2-automake{{ am_version }}  # [win]\n    - m2-libtool  # [win]\n    - m2w64-pkg-config  # [win]\n    - pkg-config  # [not win]\n    - posix  # [win]\n    - {{ compiler('c') }}        # [unix]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - make   # [unix]\n  host:\n    - xorg-compositeproto\n    - xorg-xproto\n    - xorg-libx11 1.6.*\n    - xorg-libxfixes\n    - xorg-util-macros\n  run:\n    - xorg-compositeproto\n    - xorg-xproto\n    - xorg-libx11 1.6.*\n    - xorg-libxfixes\n\ntest:\n  commands:\n    {% set lib_idents = [ xorg_ident ] %}\n    {% for lib_ident in lib_idents %}\n    - test -f $PREFIX/lib/lib{{ lib_ident }}.dylib  # [osx]\n    - test -f $PREFIX/lib/lib{{ lib_ident }}.so  # [linux]\n    - if not exist %PREFIX%/Library/lib/lib{{ lib_ident }}.dll.a exit /b 1  # [win]\n    - if not exist %PREFIX%/Library/bin/msys-{{ lib_ident }}-*.dll exit /b 1  # [win]\n    {% endfor %}\n    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]\n    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]\n\nabout:\n  home: https://www.x.org/\n  license: MIT\n  license_family: MIT\n  license_file: COPYING\n  summary: 'X.org X11 Xlib-based client library for the Composite extension to the X11 protocol'\n\nextra:\n  recipe-maintainers:\n    - zklaus\n",
  "req": {
   "__set__": true,
@@ -334,6 +354,7 @@
    "elements": []
   }
  },
+ "smithy_version": "3.8.6",
  "strong_exports": false,
  "total_requirements": {
   "build": {
