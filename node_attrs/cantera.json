@@ -136,6 +136,25 @@
     "__lazy_json__": "pr_json/554558782.json"
    },
    "data": {
+    "bot_rerun": 1612926377.725719,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/570797503.json"
+   },
+   "data": {
     "bot_rerun": false,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
@@ -5351,7 +5370,7 @@
    "libcantera-devel"
   ]
  },
- "pinning_version": "2021.01.13.21.45.44",
+ "pinning_version": "2021.02.10.00.55.52",
  "raw_meta_yaml": "{% set version = \"2.5.0\" %}\n\npackage:\n  name: cantera-recipe\n  version: {{ version }}\n\nsource:\n  url: https://github.com/Cantera/cantera/archive/v{{ version }}.tar.gz\n  sha256: 61a18311aa308d761182a2e94c6a6eb16a58a7f87dadee64a80e9dc122cef971\n\nbuild:\n  number: 0\n  include_recipe: True\n  skip: True  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - scons >=3.1\n    - setuptools\n  host:\n    - python >=3.5\n    - boost-cpp\n    - numpy\n    - fmt\n    - eigen\n    - yaml-cpp\n    - gtest\n    - gmock\n    - sundials\n    - pywin32  # [win]\n    - libblas\n    - liblapack\n\noutputs:\n  - name: libcantera\n    script: build_lib.sh  # [not win]\n    script: build_lib.bat  # [win]\n    build:\n      ignore_run_exports_from:\n        # only the header part of these libraries are used\n        - boost-cpp\n        - fmt\n        - python\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - scons >=3.1\n        - setuptools\n      host:\n        - python >=3.5\n        - boost-cpp\n        - numpy\n        - fmt\n        - eigen\n        - yaml-cpp\n        - gtest\n        - gmock\n        - sundials\n        - pywin32  # [win]\n        - libblas\n        - liblapack\n    test:\n      commands:\n        - test -f $PREFIX/lib/libcantera${SHLIB_EXT}  # [not win]\n\n  - name: libcantera-devel\n    script: build_devel.sh  # [not win]\n    script: build_devel.bat  # [win]\n    build:\n      ignore_run_exports_from:\n        # only the header part of these libraries are used\n        - boost-cpp\n        - fmt\n        - python\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - scons >=3.1\n        - setuptools\n      host:\n        - python >=3.5\n        - boost-cpp\n        - numpy\n        - fmt\n        - eigen\n        - yaml-cpp\n        - gtest\n        - gmock\n        - sundials\n        - pywin32  # [win]\n        - libcantera {{ version }}\n        - libblas\n        - liblapack\n      run:\n        - libcantera {{ version }}\n\n  - name: cantera\n    script: build_py.sh  # [not win]\n    script: build_py.bat  # [win]\n    build:\n      ignore_run_exports_from:\n        # only the header part of these libraries are used\n        - boost-cpp\n        - fmt\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - scons >=3.1\n        - cython\n        - setuptools\n      host:\n        - python {{ python }}\n        - setuptools\n        - boost-cpp\n        - numpy\n        - fmt\n        - eigen\n        - yaml-cpp\n        - gtest\n        - gmock\n        - sundials\n        - pywin32  # [win]\n        - cython\n        # These two are added here so that conda-build doesn't package their files into cantera too\n        - libcantera-devel {{ version }}\n        - libcantera {{ version }}\n        - libblas\n        - liblapack\n      run:\n        - python\n        - setuptools\n        - {{ pin_compatible('numpy') }}\n        - h5py\n        - ruamel_yaml\n        - libcantera {{ version }}\n    build:\n      entry_points:\n        - ck2cti = cantera.ck2cti:script_entry_point\n        - ctml_writer = cantera.ctml_writer:main\n        - ck2yaml = cantera.ck2yaml:script_entry_point\n        - cti2yaml = cantera.cti2yaml:main\n        - ctml2yaml = cantera.ctml2yaml:main\n      include_recipe: True\n    test:\n      imports:\n        - cantera\n      commands:\n        - python -m unittest -v cantera.test\n        - ck2cti --help\n        - cti2yaml --help\n        - ck2yaml --help\n        - ctml2yaml --help\n\nabout:\n  home: https://cantera.org\n  summary: \"Chemical kinetics, thermodynamics, and transport tool suite\"\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: License.txt\n  dev_url: https://github.com/cantera/cantera\n  description: Cantera is an open-source suite of tools for problems involving chemical kinetics, thermodynamics, and transport processes\n  doc_url: https://cantera.org/documentation\n\nextra:\n  feedstock-name: cantera\n  recipe-maintainers:\n    - inducer\n    - bryanwweber\n",
  "req": {
   "__set__": true,
