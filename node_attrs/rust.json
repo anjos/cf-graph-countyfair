@@ -625,6 +625,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/571944766.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.50.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1336,7 +1353,7 @@
   }
  },
  "name": "rust-split",
- "new_version": "1.49.0",
+ "new_version": "1.50.0",
  "new_version_attempts": {
   "1.42.0": 1,
   "1.43.0": 1,
@@ -1349,7 +1366,8 @@
   "1.46.0": 1,
   "1.47.0": 1,
   "1.48.0": 1,
-  "1.49.0": 1
+  "1.49.0": 1,
+  "1.50.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1574,7 +1592,7 @@
    "rust-std-x86_64-unknown-linux-gnu"
   ]
  },
- "pinning_version": "2020.12.31.00.10.22",
+ "pinning_version": "2021.02.11.03.11.06",
  "raw_meta_yaml": "{% set version = \"1.49.0\" %}\n\npackage:\n  name: rust-split\n  version: {{ version }}\n\nsource:\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-unknown-linux-gnu.tar.gz  # [linux and x86_64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-aarch64-unknown-linux-gnu.tar.gz  # [aarch64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-powerpc64le-unknown-linux-gnu.tar.gz  # [ppc64le]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-apple-darwin.tar.gz  # [osx and x86_64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-aarch64-apple-darwin.tar.gz  # [osx and arm64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-pc-windows-msvc.tar.gz  # [win64]\n  sha256: 8b14446df82f3707d69cf58fed92f18e0bff91621c62baf89288ef70e3e92981  # [linux and x86_64]\n  sha256: b551bd482041307fa3373a687d6d6a2c4c0931c2e0a68b8b75dc80bc5cf5f002  # [aarch64]\n  sha256: 365d7721dd2521e5dad12aa73651bad2be375e798e443636d2c523cad5b54359  # [ppc64le]\n  sha256: fe3e248bc4b0ee0a2595693687ad845c8a8bda824a56c9321520bcca02433716  # [osx and x86_64]\n  sha256: ce7d689e6f73dd9c07b672ba23dabe5159fa8c194dce71b4f3f95baeaf564082  # [osx and arm64]\n  sha256: 5340831dcf98344de4a6888b50237f82568a97a46d9814f1400720dde0c7b6e5  # [win64]\n\nbuild:\n  number: 0\n\noutputs:\n  - name: rust-std-{{ rust_arch }}\n    build:\n      noarch: generic\n      binary_relocation: false\n      merge_build_host: false\n    requirements:\n      build:\n        - posix  # [win]\n      host:\n      run:\n    script: install-rust-std.sh  # [unix]\n    script: install-rust-std.bat  # [win]\n    test:\n      commands:\n        - test -d $PREFIX/lib/rustlib   # [unix]\n        - if not exist %LIBRARY_PREFIX%/lib/rustlib exit 1  # [win]\n        - echo {{ rust_arch }}\n\n  - name: rust\n    script: install-rust.sh  # [unix]\n    script: install-rust.bat  # [win]\n    build:\n      # the distributed binaries are already relocatable\n      binary_relocation: false\n    requirements:\n      build:\n        - posix  # [win]\n      host:\n        - {{ pin_subpackage(\"rust-std-\" ~ rust_arch, exact=True) }}\n        - {{ compiler('c') }}  # [linux] -- rustc needs a toolchain to link executables\n      run:\n        - {{ pin_subpackage(\"rust-std-\" ~ rust_arch, exact=True) }}\n        - gcc_impl_{{ target_platform }}  # [linux]\n    test:\n      requires:\n        - posix  # [win]\n      commands:\n        - set \"REQUESTS_CA_BUNDLE=\"  # [win]\n        - set \"SSL_CERT_FILE=\"       # [win]\n        - unset REQUESTS_CA_BUNDLE  # [unix]\n        - unset SSL_CERT_FILE       # [unix]\n        - rustc --help\n        - rustdoc --help\n        - cargo --help\n        - cargo install --force xsv\n        - echo {{ rust_arch }}\n\nabout:\n  home: https://www.rust-lang.org\n  license: MIT\n  license_file:\n    - LICENSE-APACHE\n    - LICENSE-MIT\n  summary: |\n    Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\n    This package provides the compiler (rustc) and the documentation utilities rustdoc.\n  dev_url: https://doc.rust-lang.org/std/\n  doc_url: https://www.rust-lang.org/en-US/documentation.html\n\nextra:\n  recipe-maintainers:\n    - johanneskoester\n    - abhi18av\n    - pkgw\n    - dlaehnemann\n    - isuruf\n",
  "req": {
   "__set__": true,
