@@ -484,8 +484,8 @@
     "nc4tonc3 = netCDF4.utils:nc4tonc3",
     "nc3tonc4 = netCDF4.utils:nc3tonc4"
    ],
-   "number": "101",
-   "string": "nompi_py39h1234567_101"
+   "number": "100",
+   "string": "nompi_py39h1234567_100"
   },
   "extra": {
    "recipe-maintainers": [
@@ -565,7 +565,7 @@
   },
   "package": {
    "name": "netcdf4",
-   "version": "1.5.5.1"
+   "version": "1.5.6"
   },
   "requirements": {
    "build": [
@@ -924,8 +924,8 @@
    ]
   },
   "source": {
-   "sha256": "d957e55a667d1fc651ddef22fea10ded0f142b7d9dbbf4d08c0012d32f445abd",
-   "url": "https://pypi.io/packages/source/n/netCDF4/netCDF4-1.5.5.1.tar.gz"
+   "sha256": "7577f4656af8431b2fa6b6797acb45f81fa1890120e9123b3645e14765da5a7c",
+   "url": "https://pypi.io/packages/source/n/netCDF4/netCDF4-1.5.6.tar.gz"
   },
   "test": {
    "commands": [
@@ -1212,8 +1212,8 @@
     "nc4tonc3 = netCDF4.utils:nc4tonc3",
     "nc3tonc4 = netCDF4.utils:nc3tonc4"
    ],
-   "number": "101",
-   "string": "nompi_py37h1234567_101"
+   "number": "100",
+   "string": "nompi_py37h1234567_100"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1381,7 +1381,7 @@
   },
   "package": {
    "name": "netcdf4",
-   "version": "1.5.5.1"
+   "version": "1.5.6"
   },
   "requirements": {
    "build": [
@@ -2152,8 +2152,8 @@
    ]
   },
   "source": {
-   "sha256": "d957e55a667d1fc651ddef22fea10ded0f142b7d9dbbf4d08c0012d32f445abd",
-   "url": "https://pypi.io/packages/source/n/netCDF4/netCDF4-1.5.5.1.tar.gz"
+   "sha256": "7577f4656af8431b2fa6b6797acb45f81fa1890120e9123b3645e14765da5a7c",
+   "url": "https://pypi.io/packages/source/n/netCDF4/netCDF4-1.5.6.tar.gz"
   },
   "test": {
    "commands": [
@@ -2469,8 +2469,8 @@
     "nc4tonc3 = netCDF4.utils:nc4tonc3",
     "nc3tonc4 = netCDF4.utils:nc3tonc4"
    ],
-   "number": "1",
-   "string": "mpi_mpich_py38h1234567_1"
+   "number": "0",
+   "string": "mpi_mpich_py38h1234567_0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -2550,7 +2550,7 @@
   },
   "package": {
    "name": "netcdf4",
-   "version": "1.5.5.1"
+   "version": "1.5.6"
   },
   "requirements": {
    "build": [
@@ -2909,8 +2909,8 @@
    ]
   },
   "source": {
-   "sha256": "d957e55a667d1fc651ddef22fea10ded0f142b7d9dbbf4d08c0012d32f445abd",
-   "url": "https://pypi.io/packages/source/n/netCDF4/netCDF4-1.5.5.1.tar.gz"
+   "sha256": "7577f4656af8431b2fa6b6797acb45f81fa1890120e9123b3645e14765da5a7c",
+   "url": "https://pypi.io/packages/source/n/netCDF4/netCDF4-1.5.6.tar.gz"
   },
   "test": {
    "commands": [
@@ -3075,7 +3075,7 @@
   ]
  },
  "pinning_version": "2021.02.13.16.08.32",
- "raw_meta_yaml": "{% set version = \"1.5.5.1\" %}\n{% set build = 1 %}\n\n# recipe-lint fails if mpi is undefined\n{% set mpi = mpi or 'nompi' %}\n{% if mpi == \"nompi\" %}\n# prioritize nompi via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: netcdf4\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/n/netCDF4/netCDF4-{{ version }}.tar.gz\n  sha256: d957e55a667d1fc651ddef22fea10ded0f142b7d9dbbf4d08c0012d32f445abd\n\nbuild:\n  skip: true  # [(win and vc<14) or (win and mpi != 'nompi')]\n  number: {{ build }}\n\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `netcdf4 * mpi_mpich_*` for mpich\n  # `netcdf4 * mpi_*` for any mpi\n  # `netcdf4 * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}\n  entry_points:\n    - ncinfo = netCDF4.utils:ncinfo\n    - nc4tonc3 = netCDF4.utils:nc4tonc3\n    - nc3tonc4 = netCDF4.utils:nc3tonc4\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n  host:\n    - python\n    - pip\n    - numpy\n    - cython >=0.19\n    - cftime >=1.0.1\n    # need to list hdf5 and libnetcdf twice to get version pinning from conda_build_config\n    # and build pinning from {{ mpi_prefix }}\n    - hdf5\n    - hdf5 * {{ mpi_prefix }}_*\n    - libnetcdf\n    - libnetcdf * {{ mpi_prefix }}_*\n    - {{ mpi }}  # [mpi != 'nompi']\n    - mpich-mpicc  # [mpi == 'mpich']\n    - mpi4py  # [mpi != 'nompi']\n  run:\n    - python\n    - setuptools\n    - {{ pin_compatible('numpy') }}\n    - cftime\n    # the 'nompi' build should work with both non-MPI and MPI variants of the\n    # following libs\n    - hdf5  # [mpi == 'nompi']\n    - libnetcdf  # [mpi == 'nompi']\n    - hdf5 * {{ mpi_prefix }}_*  # [mpi != 'nompi']\n    - libnetcdf * {{ mpi_prefix }}_*  # [mpi != 'nompi']\n    - {{ mpi }}  # [mpi != 'nompi']\n    - mpi4py  # [mpi != 'nompi']\n    - openssh  # [mpi == 'openmpi']\n\ntest:\n  files:\n    - parallel_test.py  # [mpi != 'nompi']\n  imports:\n    - netCDF4\n    - cftime\n  commands:\n    - ncinfo -h\n    - nc4tonc3 -h\n    - nc3tonc4 -h\n    - mpirun -np 4 python parallel_test.py  # [mpi == 'mpich']\n    - mpirun --oversubscribe -np 4 python parallel_test.py  # [mpi == 'openmpi']\n\nabout:\n  home: http://github.com/Unidata/netcdf4-python\n  license: MIT\n  license_file: LICENSE\n  summary: Provides an object-oriented python interface to the netCDF version 4 library\n  dev_url: https://github.com/Unidata/netcdf4-python\n  doc_url: https://unidata.github.io/netcdf4-python\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - pelson\n    - dopplershift\n    - xylar\n",
+ "raw_meta_yaml": "{% set version = \"1.5.6\" %}\n{% set build = 0 %}\n\n# recipe-lint fails if mpi is undefined\n{% set mpi = mpi or 'nompi' %}\n{% if mpi == \"nompi\" %}\n# prioritize nompi via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: netcdf4\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/n/netCDF4/netCDF4-{{ version }}.tar.gz\n  sha256: 7577f4656af8431b2fa6b6797acb45f81fa1890120e9123b3645e14765da5a7c\n\nbuild:\n  skip: true  # [(win and vc<14) or (win and mpi != 'nompi')]\n  number: {{ build }}\n\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `netcdf4 * mpi_mpich_*` for mpich\n  # `netcdf4 * mpi_*` for any mpi\n  # `netcdf4 * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}\n  entry_points:\n    - ncinfo = netCDF4.utils:ncinfo\n    - nc4tonc3 = netCDF4.utils:nc4tonc3\n    - nc3tonc4 = netCDF4.utils:nc3tonc4\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n  host:\n    - python\n    - pip\n    - numpy\n    - cython >=0.19\n    - cftime >=1.0.1\n    # need to list hdf5 and libnetcdf twice to get version pinning from conda_build_config\n    # and build pinning from {{ mpi_prefix }}\n    - hdf5\n    - hdf5 * {{ mpi_prefix }}_*\n    - libnetcdf\n    - libnetcdf * {{ mpi_prefix }}_*\n    - {{ mpi }}  # [mpi != 'nompi']\n    - mpich-mpicc  # [mpi == 'mpich']\n    - mpi4py  # [mpi != 'nompi']\n  run:\n    - python\n    - setuptools\n    - {{ pin_compatible('numpy') }}\n    - cftime\n    # the 'nompi' build should work with both non-MPI and MPI variants of the\n    # following libs\n    - hdf5  # [mpi == 'nompi']\n    - libnetcdf  # [mpi == 'nompi']\n    - hdf5 * {{ mpi_prefix }}_*  # [mpi != 'nompi']\n    - libnetcdf * {{ mpi_prefix }}_*  # [mpi != 'nompi']\n    - {{ mpi }}  # [mpi != 'nompi']\n    - mpi4py  # [mpi != 'nompi']\n    - openssh  # [mpi == 'openmpi']\n\ntest:\n  files:\n    - parallel_test.py  # [mpi != 'nompi']\n  imports:\n    - netCDF4\n    - cftime\n  commands:\n    - ncinfo -h\n    - nc4tonc3 -h\n    - nc3tonc4 -h\n    - mpirun -np 4 python parallel_test.py  # [mpi == 'mpich']\n    - mpirun --oversubscribe -np 4 python parallel_test.py  # [mpi == 'openmpi']\n\nabout:\n  home: http://github.com/Unidata/netcdf4-python\n  license: MIT\n  license_file: LICENSE\n  summary: Provides an object-oriented python interface to the netCDF version 4 library\n  dev_url: https://github.com/Unidata/netcdf4-python\n  doc_url: https://unidata.github.io/netcdf4-python\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - pelson\n    - dopplershift\n    - xylar\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -3196,8 +3196,8 @@
    "elements": []
   }
  },
- "url": "https://pypi.io/packages/source/n/netCDF4/netCDF4-1.5.5.1.tar.gz",
- "version": "1.5.5.1",
+ "url": "https://pypi.io/packages/source/n/netCDF4/netCDF4-1.5.6.tar.gz",
+ "version": "1.5.6",
  "win_64_meta_yaml": {
   "about": {
    "dev_url": "https://github.com/Unidata/netcdf4-python",
@@ -3222,8 +3222,8 @@
     "nc4tonc3 = netCDF4.utils:nc4tonc3",
     "nc3tonc4 = netCDF4.utils:nc3tonc4"
    ],
-   "number": "101",
-   "string": "nompi_py37h1234567_101"
+   "number": "100",
+   "string": "nompi_py37h1234567_100"
   },
   "extra": {
    "recipe-maintainers": [
@@ -3247,7 +3247,7 @@
   },
   "package": {
    "name": "netcdf4",
-   "version": "1.5.5.1"
+   "version": "1.5.6"
   },
   "requirements": {
    "build": [
@@ -3322,8 +3322,8 @@
    ]
   },
   "source": {
-   "sha256": "d957e55a667d1fc651ddef22fea10ded0f142b7d9dbbf4d08c0012d32f445abd",
-   "url": "https://pypi.io/packages/source/n/netCDF4/netCDF4-1.5.5.1.tar.gz"
+   "sha256": "7577f4656af8431b2fa6b6797acb45f81fa1890120e9123b3645e14765da5a7c",
+   "url": "https://pypi.io/packages/source/n/netCDF4/netCDF4-1.5.6.tar.gz"
   },
   "test": {
    "commands": [
