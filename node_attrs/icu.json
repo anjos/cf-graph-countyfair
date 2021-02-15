@@ -99,6 +99,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/573366026.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "68.2"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -698,7 +715,7 @@
  "new_version": "68.2",
  "new_version_attempts": {
   "68-2": 265,
-  "68.2": 24
+  "68.2": 25
  },
  "new_version_errors": {
   "68-2": "We found a problem parsing the recipe: \n\nwhile parsing a block mapping\n  in \"<unicode string>\", line 41, column 3:\n      files:\n      ^ (line: 41)\nexpected <block end>, but found ','\n  in \"<unicode string>\", line 49, column 20:\n           \"libicudata\",\n                       ^ (line: 49)",
@@ -916,7 +933,7 @@
    "icu"
   ]
  },
- "pinning_version": "2020.08.15.14.59.48",
+ "pinning_version": "2021.02.14.11.06.31",
  "raw_meta_yaml": "{% set version = \"68.1\" %}\n{% set version_under = version.replace(\".\", \"_\") %}\n{% set version_hyphen = version.replace(\".\", \"-\") %}\n\npackage:\n  name: icu\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/unicode-org/icu/releases/download/release-{{ version_hyphen }}/icu4c-{{ version_under }}-src.tgz\n    sha256: a9f2e3d8b4434b8e53878b4308bd1e6ee51c9c7042e2b1a376abefb6fbb29f2d\n    patches:\n      # Include an extra header when using mingw.\n      - icu4c-4_9_1-mingw-w64-mkdir-compatibility.patch  # [win]\n      # Omit lib prefix on libraries.\n      - icu-config.patch  # [win]\n      - mach-port-t.patch  # [osx]\n\n  - url: https://github.com/unicode-org/icu/releases/download/release-{{ version_hyphen }}/icu4c-{{ version_under }}-data.zip\n    sha256: 03ea8b4694155620548c8c0ba20444f1e7db246cc79e3b9c4fc7a960b160d510\n    folder: source/data\n\nbuild:\n  number: 0\n  run_exports:\n    # icu changes their file extension with each major rev.  Default pin OK.\n    - {{ pin_subpackage('icu') }}\n\nrequirements:\n  build:\n    - m2-base  # [win]\n    - m2-make  # [win]\n    - libtool  # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - make     # [unix]\n  host:\n  run:\n\ntest:\n  files:\n    # From http://source.icu-project.org/repos/icu/data/trunk/charset/data/ucm/gb-18030-2000.ucm\n    - gb-18030-2000.ucm\n    # From ICU's data folder.\n    - de.txt\n  commands:\n    # Libraries\n    {% set libs = [\n       \"libicudata\",\n       \"libicui18n\",\n       \"libicuio\",\n       \"libicutest\",\n       \"libicutu\",\n       \"libicuuc\"\n     ] %}\n    {% for each_lib in libs %}\n    - test -f $PREFIX/lib/{{ each_lib }}.a  # [not win]\n    - test -f $PREFIX/lib/{{ each_lib }}.{{ version }}.dylib   # [osx]\n    - test -f $PREFIX/lib/{{ each_lib }}.so.{{ version }}  # [linux]\n    {% endfor %}\n\n    # CLI tests\n    - genbrk --help\n    - gencfu --help\n    - gencnval --help\n    - gendict --help\n    - icuinfo --help\n    - icu-config --help  # [not win]\n    - makeconv gb-18030-2000.ucm\n    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]\n    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]\n\nabout:\n  home: http://site.icu-project.org/\n  license: MIT\n  license_file: LICENSE\n  summary: 'International Components for Unicode.'\n\nextra:\n  recipe-maintainers:\n    - ccordoba12\n    - jakirkham\n    - msarahan\n    - ocefpaf\n    - xhochy\n",
  "req": {
   "__set__": true,
@@ -960,7 +977,7 @@
    "elements": []
   }
  },
- "smithy_version": "No azure token. Create a token and\nput it in ~/.conda-smithy/azure.token\n3.7.10",
+ "smithy_version": "3.8.6",
  "strong_exports": false,
  "total_requirements": {
   "build": {
