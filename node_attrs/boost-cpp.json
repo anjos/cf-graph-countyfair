@@ -261,6 +261,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/574014473.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.75.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1308,7 +1325,7 @@
  "new_version_attempts": {
   "1.73.0": 104,
   "1.74.0": 448,
-  "1.75.0": 350
+  "1.75.0": 351
  },
  "new_version_errors": {
   "1.73.0": "We found a problem parsing the recipe: \n\nwhile parsing a block collection\n  in \"<unicode string>\", line 38, column 5:\n        - \"! test -f $PREFIX/include/boo ... \n        ^ (line: 38)\nexpected <block end>, but found '<scalar>'\n  in \"<unicode string>\", line 49, column 13:\n                \"atomic\",\n                ^ (line: 49)",
@@ -1627,7 +1644,7 @@
    "boost-cpp"
   ]
  },
- "pinning_version": "2020.11.23.21.32.28",
+ "pinning_version": "2021.02.15.18.17.52",
  "raw_meta_yaml": "{% set version = \"1.74.0\" %}\n{% set filename = \"boost_%s.tar.bz2\" % version.replace(\".\", \"_\") %}\n\npackage:\n  name: boost-cpp\n  version: {{ version }}\n\nsource:\n  url: https://dl.bintray.com/boostorg/release/{{ version }}/source/{{ filename }}\n  sha256: 83bfc1507731a0906e387fc28b7ef5417d591429e51e788417fe9ff025e116b1\n  patches:\n    # https://github.com/boostorg/build/pull/642\n    - 456be0b7ecca065fbccf380c2f51e0985e608ba0.patch  # [osx and arm64]\n\nbuild:\n  number: 2\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n\n  host:\n    - icu               # [unix]\n    - xz                # [unix]\n    - bzip2\n    - zstd\n\n  run:\n    - icu               # [unix]\n    - xz                # [unix]\n    - bzip2\n    - zstd\n\n  run_constrained:\n    - libboost <0\n\ntest:\n  commands:\n    # Verify Python headers are removed.\n    - \"! test -f $PREFIX/include/boost/python.hpp\"                      # [unix]\n    - \"! test -d $PREFIX/include/boost/python\"                          # [unix]\n    - if exist %PREFIX%\\\\Library\\\\include\\\\boost\\\\python.hpp exit 1     # [win]\n    - if exist %PREFIX%\\\\Library\\\\include\\\\boost\\\\python exit 1         # [win]\n\n    # Verify static-only libraries.\n    - test -f $PREFIX/lib/libboost_exception.a                   # [unix]\n    - test -f $PREFIX/lib/libboost_test_exec_monitor.a           # [unix]\n\n    # Verify libraries.\n    {% set boost_libs = [\n            \"atomic\",\n            \"chrono\",\n            \"container\",\n            \"context\",\n            \"contract\",\n            \"coroutine\",\n            \"date_time\",\n            \"filesystem\",\n            \"graph\",\n            \"iostreams\",\n            \"locale\",\n            \"log\",\n            \"log_setup\",\n            \"math_c99\",\n            \"math_c99f\",\n            \"math_c99l\",\n            \"math_tr1\",\n            \"math_tr1f\",\n            \"math_tr1l\",\n            \"prg_exec_monitor\",\n            \"program_options\",\n            \"random\",\n            \"regex\",\n            \"serialization\",\n            \"system\",\n            \"thread\",\n            \"timer\",\n            \"type_erasure\",\n            \"unit_test_framework\",\n            \"wave\",\n            \"wserialization\"\n    ] %}\n    {% for each_boost_lib in boost_libs %}\n    - test ! -f $PREFIX/lib/libboost_{{ each_boost_lib }}.a                                                 # [unix]\n    - test -f $PREFIX/lib/libboost_{{ each_boost_lib }}.dylib                                             # [osx]\n    - test -f $PREFIX/lib/libboost_{{ each_boost_lib }}.so                                                # [linux]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\boost_{{ each_boost_lib }}.dll exit 1                          # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\boost_{{ each_boost_lib }}.lib exit 1                          # [win]\n    - if exist %PREFIX%\\\\Library\\\\lib\\\\libboost_{{ each_boost_lib }}.lib exit 1                       # [win]\n    {% endfor %}\n\nabout:\n  home: http://www.boost.org/\n  license: BSL-1.0\n  license_file: LICENSE_1_0.txt\n  summary: Free peer-reviewed portable C++ source libraries.\n\nextra:\n  recipe-maintainers:\n    - ccordoba12\n    - jakirkham\n    - msarahan\n    - ocefpaf\n    - jschueller\n    - isuruf\n    - xhochy\n    - beckermr\n",
  "req": {
   "__set__": true,
@@ -1671,7 +1688,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.8.5",
+ "smithy_version": "3.8.6",
  "strong_exports": false,
  "total_requirements": {
   "build": {
