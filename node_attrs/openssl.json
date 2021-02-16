@@ -65,6 +65,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/574366900.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.1.1j"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -755,7 +772,11 @@
   }
  },
  "name": "openssl_split",
- "new_version": false,
+ "new_version": "1.1.1j",
+ "new_version_attempts": {
+  "1.1.1j": 1
+ },
+ "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
    "dev_url": "https://github.com/openssl/openssl",
@@ -983,7 +1004,7 @@
    "openssl"
   ]
  },
- "pinning_version": "2020.08.10.21.36.31",
+ "pinning_version": "2021.02.16.14.13.27",
  "raw_meta_yaml": "{% set version = \"1.1.1i\" %}\n\npackage:\n  name: openssl_split\n  version: {{ version }}\n\nsource:\n  url: http://www.openssl.org/source/openssl-{{ version }}.tar.gz\n  sha256: e8be6a35fe41d10603c3cc635e93289ed00bf34b79671a3a4de64fcee00d5242\n  patches:\n    - 0001-Don-t-use-USE_BCRYPTGENRANDOM-for-VS-older-than-2015.patch\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - nasm               # [win]\n    - make               # [unix]\n    - perl               # [not win]\n  # Empty host section to ensure that this is identified as cb3\n  host:\n    # technically a build tool, but the windows makefile really wants to find it in the host env.\n    #    easier to do this than carry a patch.\n    - perl  # [win]\n\noutputs:\n  - name: openssl\n    build:\n      no_link: lib/libcrypto.so.1.1        # [linux]\n      no_link: lib/libcrypto.1.1.dylib     # [osx]\n      run_exports:\n        # openssl's versioning is X.Y.Z(rev), where rev is really the patch release ID\n        #    This pin allows the patch release to be >= the build-time openssl version.\n        - {{ pin_subpackage('openssl', max_pin='x.x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - make\n        - perl               # [not win]\n      # Empty host section to ensure that this is identified as cb3\n      host:\n        # technically a build tool, but the windows makefile really wants to find it in the host env.\n        #    easier to do this than carry a patch.\n        - perl  # [win]\n      run:\n        - ca-certificates\n    script: install_openssl.sh    # [unix]\n    script: install_openssl.bat   # [win]\n    test:\n      commands:\n        - copy NUL checksum.txt        # [win]\n        - touch checksum.txt           # [unix]\n        - openssl sha256 checksum.txt\n\n  - name: libopenssl-static\n    requirements:\n      build:\n        - {{ compiler('c') }}\n    script: install_libopenssl-static.sh      # [unix]\n    script: install_libopenssl-static.bat     # [win]\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/libcrypto.a                   # [unix]\n        - test -f ${PREFIX}/lib/libssl.a                      # [unix]\n        - if exist %LIBRARY_PREFIX%\\lib\\libcrypto_static.lib (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\libssl_static.lib (exit 0) else (exit 1)     # [win]\n\nabout:\n  home: http://www.openssl.org/\n  license_file: LICENSE\n  license: OpenSSL\n  license_family: Apache\n  summary: OpenSSL is an open-source implementation of the SSL and TLS protocols\n  dev_url: https://github.com/openssl/openssl\n  doc_url: https://www.openssl.org/docs/man1.1.1/\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n    - msarahan\n    - ocefpaf\n    - pelson\n    - carlodri\n",
  "req": {
   "__set__": true,
@@ -1024,7 +1045,7 @@
    "elements": []
   }
  },
- "smithy_version": "No azure token. Create a token and\nput it in ~/.conda-smithy/azure.token\n3.7.8",
+ "smithy_version": "3.8.6",
  "strong_exports": false,
  "total_requirements": {
   "build": {
