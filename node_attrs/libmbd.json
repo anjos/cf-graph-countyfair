@@ -150,8 +150,8 @@
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
   "about": {
-   "doc_url": "https://jhrmnn.github.io/libmbd",
-   "home": "https://github.com/jhrmnn/libmbd",
+   "doc_url": "https://libmbd.github.io",
+   "home": "https://github.com/libmbd/libmbd",
    "license": "MPL-2.0",
    "license_file": [
     "LICENSE",
@@ -161,12 +161,12 @@
    "summary": "Many-body dispersion library"
   },
   "build": {
-   "number": "100",
+   "number": "101",
    "run_exports": [
     "libmbd * mpi_mpich_*",
     "libmbd * mpi_openmpi_*"
    ],
-   "string": "nompi_h1234567_100"
+   "string": "nompi_h1234567_101"
   },
   "extra": {
    "recipe-maintainers": [
@@ -224,7 +224,7 @@
   },
   "source": {
    "sha256": "8ee26a0d39cdea88f148238692b64624e7b30bf13e4a66b2bab408fded5fda7b",
-   "url": "https://github.com/jhrmnn/libmbd/archive/0.12.0.tar.gz"
+   "url": "https://github.com/libmbd/libmbd/archive/0.12.0.tar.gz"
   },
   "test": {
    "commands": [
@@ -271,8 +271,8 @@
  },
  "meta_yaml": {
   "about": {
-   "doc_url": "https://jhrmnn.github.io/libmbd",
-   "home": "https://github.com/jhrmnn/libmbd",
+   "doc_url": "https://libmbd.github.io",
+   "home": "https://github.com/libmbd/libmbd",
    "license": "MPL-2.0",
    "license_file": [
     "LICENSE",
@@ -285,14 +285,14 @@
    "summary": "Many-body dispersion library"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "libmbd * mpi_mpich_*",
     "libmbd * mpi_openmpi_*",
     "libmbd * mpi_openmpi_*",
     "libmbd * mpi_mpich_*"
    ],
-   "string": "mpi_mpich_h1234567_0"
+   "string": "mpi_mpich_h1234567_1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -391,7 +391,7 @@
   },
   "source": {
    "sha256": "8ee26a0d39cdea88f148238692b64624e7b30bf13e4a66b2bab408fded5fda7b",
-   "url": "https://github.com/jhrmnn/libmbd/archive/0.12.0.tar.gz"
+   "url": "https://github.com/libmbd/libmbd/archive/0.12.0.tar.gz"
   },
   "test": {
    "commands": [
@@ -418,8 +418,8 @@
  "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
-   "doc_url": "https://jhrmnn.github.io/libmbd",
-   "home": "https://github.com/jhrmnn/libmbd",
+   "doc_url": "https://libmbd.github.io",
+   "home": "https://github.com/libmbd/libmbd",
    "license": "MPL-2.0",
    "license_file": [
     "LICENSE",
@@ -429,12 +429,12 @@
    "summary": "Many-body dispersion library"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "libmbd * mpi_openmpi_*",
     "libmbd * mpi_mpich_*"
    ],
-   "string": "mpi_mpich_h1234567_0"
+   "string": "mpi_mpich_h1234567_1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -495,7 +495,7 @@
   },
   "source": {
    "sha256": "8ee26a0d39cdea88f148238692b64624e7b30bf13e4a66b2bab408fded5fda7b",
-   "url": "https://github.com/jhrmnn/libmbd/archive/0.12.0.tar.gz"
+   "url": "https://github.com/libmbd/libmbd/archive/0.12.0.tar.gz"
   },
   "test": {
    "commands": [
@@ -548,7 +548,7 @@
   ]
  },
  "pinning_version": "2021.02.03.13.27.35",
- "raw_meta_yaml": "{% set name = \"libmbd\" %}\n{% set version = \"0.12.0\" %}\n{% set build = 0 %}\n{% set mpi = mpi or \"nompi\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/jhrmnn/{{ name }}/archive/{{ version }}.tar.gz\n  sha256: 8ee26a0d39cdea88f148238692b64624e7b30bf13e4a66b2bab408fded5fda7b\n\n{% if mpi == \"nompi\" %}\n{% set build = build + 100 %}\n{% endif %}\nbuild:\n  number: {{ build }}\n  skip: true  # [win]\n\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\n  {% if mpi != \"nompi\" %}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [osx]\n    - {{ compiler('fortran') }}\n    - cmake\n    - ninja\n  host:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux and not aarch64]\n  run:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libmbd${SHLIB_EXT}\n\nabout:\n  home: https://github.com/jhrmnn/{{ name }}\n  license: MPL-2.0\n  license_file:\n    - LICENSE\n  summary: Many-body dispersion library\n  doc_url: https://jhrmnn.github.io/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - jhrmnn\n",
+ "raw_meta_yaml": "{% set name = \"libmbd\" %}\n{% set version = \"0.12.0\" %}\n{% set build = 1 %}\n{% set mpi = mpi or \"nompi\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/libmbd/{{ name }}/archive/{{ version }}.tar.gz\n  sha256: 8ee26a0d39cdea88f148238692b64624e7b30bf13e4a66b2bab408fded5fda7b\n\n{% if mpi == \"nompi\" %}\n{% set build = build + 100 %}\n{% endif %}\nbuild:\n  number: {{ build }}\n  skip: true  # [win]\n\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\n  {% if mpi != \"nompi\" %}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [osx]\n    - {{ compiler('fortran') }}\n    - cmake\n    - ninja\n  host:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux and not aarch64]\n  run:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libmbd${SHLIB_EXT}\n\nabout:\n  home: https://github.com/libmbd/{{ name }}\n  license: MPL-2.0\n  license_file:\n    - LICENSE\n  summary: Many-body dispersion library\n  doc_url: https://libmbd.github.io\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - jhrmnn\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -649,6 +649,6 @@
    "elements": []
   }
  },
- "url": "https://github.com/jhrmnn/libmbd/archive/0.12.0.tar.gz",
+ "url": "https://github.com/libmbd/libmbd/archive/0.12.0.tar.gz",
  "version": "0.12.0"
 }
