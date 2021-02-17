@@ -249,6 +249,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/574710049.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "11.1.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -578,7 +595,8 @@
  "new_version_attempts": {
   "10.0.1": 33,
   "11.0.0": 1,
-  "11.0.1": 1
+  "11.0.1": 1,
+  "11.1.0": 1
  },
  "new_version_errors": {
   "10.0.1": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '10.0.1' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version }}/lld-{{ version }}.src.tar.xz'\n"
@@ -731,7 +749,7 @@
    "lld"
   ]
  },
- "pinning_version": "2021.01.04.22.18.20",
+ "pinning_version": "2021.02.16.22.51.53",
  "raw_meta_yaml": "{% set version = \"11.0.1\" %}\n{% set sha256 = \"60ba0da01a391078dcc437fee629f3bf7e30e06467a3a060b4a2a3aa661308b7\" %}\n\npackage:\n  name: lld\n  version: {{ version }}\n\nsource:\n  url: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/lld-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz\n  sha256: {{ sha256 }}\n  patches:\n    - cmake.diff\n\nbuild:\n  number: 0\n  skip: true  # [win and vc<14]\n\nrequirements:\n  build:\n    - cmake >=3.4.3\n    - ninja    # [win]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - make     # [not win]\n    - llvmdev =={{ version }}    # [build_platform != target_platform]\n  host:\n    - llvmdev =={{ version }}\n    - llvm\n  run_constrained:\n    - llvm =={{ version }}\n\ntest:\n  commands:\n    - ld.lld --version  # [linux]\n    - lld-link /?  # [win]\n\nabout:\n  home: http://llvm.org/\n  license: NCSA\n  license_file: LICENSE.TXT\n  summary: The LLVM Linker\n\nextra:\n  recipe-maintainers:\n    - isuruf\n",
  "req": {
   "__set__": true,
