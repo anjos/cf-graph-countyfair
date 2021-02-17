@@ -240,6 +240,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/574580159.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "cuda111_112"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -3411,7 +3430,7 @@
    "openmm"
   ]
  },
- "pinning_version": "2021.01.22.02.33.32",
+ "pinning_version": "2021.02.16.22.51.53",
  "raw_meta_yaml": "{% set name = \"openmm\" %}\n{% set version = \"7.5.0\" %}\n{% set build = 5 %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  # pre-rc\n  git_url: https://github.com/openmm/{{ name }}.git\n  git_rev: {{ version }}\n  patches:  # [arm64]\n    - osx_arm64.patch  # [arm64]\n\nbuild:\n  number: {{ build }}\n  string: \"py{{ PY_VER.replace('.', '') }}h{{ PKG_HASH }}_{{ build }}_{{ opencl_impl }}\"  # [osx]\n  track_features:  # make khronos low priority\n    - openmm_opencl_khronos  # [osx and (opencl_impl == 'khronos')]\n  skip: true  # [(cuda_compiler_version in (undefined, 'None') and (linux64 or win)) or ((cuda_compiler_version != '10.2') and (ppc64le))]\n  script_env:\n    - CONFIG\n  missing_dso_whitelist:\n    - \"*/libcuda.*\"    # [linux64 or ppc64le]\n    - \"*/libOpenCL.*\"  # [unix]\n    - \"*/nvcuda.dll\"   # [win]\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - cython                                 # [build_platform != target_platform]\n    - numpy                                  # [build_platform != target_platform]\n    - swig                                   # [build_platform != target_platform]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}  # [linux64 or ppc64le or win]\n    - {{ cdt('mesa-libgl-devel') }}  # [linux]\n    - cmake\n    - make  # [unix]\n    - jom  # [win]\n    # needed for Python wrappers\n    - doxygen\n{% if with_test_suite == 'true' %}\n    - conda-build  # [osx]\n    - m2-findutils  # [win]\n    - m2-coreutils  # [win]\n{% endif %}\n\n  host:\n    - python\n    - fftw\n    - swig\n    - pthread-stubs\n    - lxml\n    - numpy\n    - cython\n    # OpenCL ICD\n    - ocl-icd  # [linux]\n    - khronos-opencl-icd-loader  # [win or (osx and opencl_impl == 'khronos')]\n\n  run:\n    - python\n    - fftw\n    - numpy\n    # OpenCL ICD\n    - ocl-icd  # [linux]\n    - ocl-icd-system  # [linux]\n    - khronos-opencl-icd-loader  # [win or (osx and opencl_impl == 'khronos')]\n    - ocl_icd_wrapper_apple      # [osx and opencl_impl == 'khronos']\n\n  run_constrained:\n    - khronos-opencl-icd-loader  ==9999999999  # [osx and opencl_impl == 'apple']\n    - ocl_icd_wrapper_apple      ==9999999999  # [osx and opencl_impl == 'apple']\n\ntest:\n  requires:\n    - git\n    - pocl  # [linux]\n{% if with_test_suite == 'true' %}\n    - pytest\n    - pytest-xdist\n{% endif %}\n  imports:\n    - simtk\n    - simtk.openmm\n\nabout:\n  home: http://openmm.org\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file:\n    - docs-source/licenses/Licenses.txt\n    - docs-source/licenses/LGPL.txt\n    - docs-source/licenses/GPL.txt\n  summary: A high performance toolkit for molecular simulation.\n\n  description: |\n    OpenMM is a toolkit for molecular simulation. It can be used either as a\n    stand-alone application for running simulations, or as a library you call\n    from your own code. It provides a combination of extreme flexibility\n    (through custom forces and integrators), openness, and high performance\n    (especially on recent GPUs) that make it truly unique among simulation\n    codes. OpenMM is MIT licensed with some LGPL portions (CUDA and OpenCL\n    platforms).\n  doc_url: http://docs.openmm.org\n  dev_url: https://github.com/openmm/openmm\n\nextra:\n  recipe-maintainers:\n    - jchodera\n    - jaimergp\n    - peastman\n",
  "req": {
   "__set__": true,
