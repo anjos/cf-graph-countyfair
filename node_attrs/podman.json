@@ -69,6 +69,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/576126592.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.0.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -269,11 +286,12 @@
   }
  },
  "name": "podman",
- "new_version": "3.0.0",
+ "new_version": "3.0.1",
  "new_version_attempts": {
   "2.2.0": 1,
   "2.2.1": 1,
-  "3.0.0": 1
+  "3.0.0": 1,
+  "3.0.1": 1
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -282,7 +300,7 @@
    "podman"
   ]
  },
- "pinning_version": "2021.02.11.20.02.02",
+ "pinning_version": "2021.02.18.01.26.24",
  "raw_meta_yaml": "{% set version = \"2.2.1\" %}\n\npackage:\n  name: podman\n  version: {{ version }}\n\nsource:\n  url: https://github.com/containers/podman/archive/v{{ version }}.tar.gz\n  sha256: bd86b181251e2308cb52f18410fb52d89df7f130cecf0298bbf9a848fe7daf60\n  folder: src/github.com/containers/podman\n  patches:\n    # NOTE: This adds the memfd_create syscall which is not available on CentOS 6's kernels.\n    - 0001-Add-missing-defines-for-CentOS-6.patch\n    # NOTE: If the patch for relative paths stops working, see the buildah\n    #       feedstock for an alternative with an hardcoded prefix path.\n    - 0002-Allow-relative-paths-for-system-config-files.patch\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n\nrequirements:\n  build:\n    - {{ compiler('cgo') }}\n    - {{ compiler('c') }}\n    - go-licenses\n    - go-md2man\n    - pkg-config\n    - make\n    - {{ cdt('libselinux') }}\n  host:\n    - btrfs-progs\n    - containers-common\n    - glib\n    # Header+pkgconfig files for libglib are in the glib package.\n    - libglib\n    - gpgme\n    - libassuan\n    - libgpg-error\n    - libseccomp\n  run:\n    - conmon\n    - containers-common\n    - cni-plugins\n    - runc\n    - slirp4netns\n\ntest:\n  requires:\n    # NOTE: Some binaries from util-linux, like `nsenter`, are needed. To avoid\n    #       clashes with users' system-provided base utils, let's not add\n    #       util-linux to requirements/run for now.\n    - util-linux\n  commands:\n    - podman --help\n    - podman --version\n    # We cannot really test podman's functionality here because we'd need to\n    # run it as root and/or in a build container with more capabilities.\n    # Instead let's at least see if it read the config from containers-common.\n    # NOTE: This does not test if registries.conf is used because the program\n    #       terminates before reading the file (if built rootless in container).\n    - |\n      # We use mktemp instead of a path in the test work directory to avoid\n      # \"Error: the specified runroot is longer than 50 characters\".\n      tmp=\"$( mktemp -d )\"\n      trap 'rm -r \"${tmp}\" ; trap - EXIT ; exit' EXIT INT HUP\n      conf=\"$(\n        {\n          podman --log-level=debug --storage-driver=vfs \\\n          --root=\"${tmp}/root\" --runroot=\"${tmp}/runroot\" \\\n          info 2>&1 \\\n          || true\n        } | grep 'Merged system config' | tr ' ' '\\n'\n      )\"\n      printf %s \"${conf}\" | grep -qF \"${PREFIX}/share/containers/containers.conf\"\n      printf %s \"${conf}\" | grep -qF \"SeccompProfile:${PREFIX}/share/containers/seccomp.json\"\n      printf %s \"${conf}\" | grep -qF \"HooksDir:[${PREFIX}/share/containers/oci/hooks.d]\"\n      printf %s \"${conf}\" | grep -qF \"SignaturePolicyPath:${PREFIX}/etc/containers/policy.json\"\n\nabout:\n  home: https://podman.io/\n  dev_url: https://github.com/containers/podman\n  doc_url: https://docs.podman.io/en/latest/\n  license: Apache-2.0\n  license_family: Apache\n  license_file:\n    - src/github.com/containers/podman/LICENSE\n    - licenses.txt\n  summary: 'Podman: A tool for managing OCI containers and pods.'\n  description: >\n    Podman (the POD MANager) is a tool for managing containers and images, volumes mounted into those containers, and pods made from groups of containers. Podman is based on libpod, a library for container lifecycle management that is also contained in this repository. The libpod library provides APIs for managing containers,\n    pods, container images, and volumes.\n\nextra:\n  recipe-maintainers:\n    - mbargull\n",
  "req": {
   "__set__": true,
