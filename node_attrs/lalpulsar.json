@@ -253,7 +253,7 @@
     "__lazy_json__": "pr_json/567139719.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1613818897.1709657,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -283,6 +283,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/576922663.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -305,7 +324,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "2"
+   "number": "0"
   },
   "extra": {
    "feedstock-name": "lalpulsar",
@@ -316,6 +335,16 @@
   },
   "outputs": [
    {
+    "about": {
+     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL Pulsar library.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Pulsar Library shared object libraries"
+    },
     "build": {
      "error_overdepending": true,
      "error_overlinking": true,
@@ -338,14 +367,14 @@
       "cfitsio",
       "fftw * nompi*",
       "gsl",
-      "liblal >=7.1.0a0 fftw*",
+      "liblal >=7.1.0 fftw*",
       "libgomp"
      ],
      "run": [
       "cfitsio",
       "fftw",
       "gsl",
-      "liblal >=7.1.0a0"
+      "liblal >=7.1.0"
      ],
      "run_constrained": [
       "lalpulsar >=3.0.0",
@@ -355,7 +384,9 @@
     "script": "install-lib.sh",
     "test": {
      "commands": [
-      "test \"$(pkg-config --modversion lalpulsar)\" == \"${PKG_VERSION}\""
+      "test -f ${PREFIX}/lib/liblalpulsar${SHLIB_EXT}",
+      "test \"${LALPULSAR_DATADIR}\" = \"${PREFIX}/share/lalpulsar\"",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalpulsar"
      ],
      "requires": [
       "pkg-config"
@@ -364,14 +395,14 @@
    },
    {
     "about": {
-     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the python bindings.\n",
-     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the Python bindings of the LALPulsar C libraries\nand additional Python modules.\n\nNote: this package only provides the importable Python libraries.\nAll command-line interfaces, scripts, and executables are\npart of the `lalpulsar` package.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
      "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/",
      "home": "https://wiki.ligo.org/Computing/LALSuite",
      "license": "GPL-2.0-or-later",
      "license_family": "GPL",
      "license_file": "COPYING",
-     "summary": "LSC Algorithm Pulsar Library"
+     "summary": "LSC Algorithm Pulsar Library Python libraries"
     },
     "build": {
      "error_overdepending": true,
@@ -399,15 +430,14 @@
       "liblalpulsar",
       "numpy",
       "python",
-      "python-lal >=7.1.0a0",
-      "six",
-      "numpy <1.20.0a0"
+      "python-lal >=7.1.0",
+      "six"
      ]
     },
     "script": "install-python.sh",
     "test": {
      "commands": [
-      "LAL_TEST_PKGDATADIR=\"./lib\" python -m pytest -rs -v test/python"
+      "LAL_TEST_PKGDATADIR=\"./lib\" python -m pytest -ra -v test/python"
      ],
      "imports": [
       "lalpulsar",
@@ -448,12 +478,12 @@
       "make"
      ],
      "host": [
-      "liblal >=7.1.0a0",
+      "liblal >=7.1.0",
       "liblalpulsar",
       "python"
      ],
      "run": [
-      "liblal >=7.1.0a0",
+      "liblal >=7.1.0",
       "liblalpulsar",
       "python",
       "python-lalpulsar"
@@ -469,11 +499,12 @@
   ],
   "package": {
    "name": "lalpulsar-split",
-   "version": "3.0.0"
+   "version": "3.0.1"
   },
   "requirements": {
    "build": [
     "c_compiler_stub",
+    "help2man >=1.37",
     "libgomp",
     "make",
     "pkg-config >=0.18.0",
@@ -483,13 +514,13 @@
     "cfitsio",
     "fftw * nompi*",
     "gsl",
-    "lal >=7.1.0a0 fftw*",
+    "lal >=7.1.0 fftw*",
     "libgomp"
    ]
   },
   "source": {
-   "sha256": "36c28202f9962b7292fefd1f8c53880eb79a6900a329873e2c53a674e780d7c0",
-   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalpulsar-3.0.0.tar.xz"
+   "sha256": "bb34a2e41209a90922d883724bf0bfa821e3b1d90f0ac4e372142921570298e4",
+   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalpulsar-3.0.1.tar.xz"
   }
  },
  "linux_64_requirements": {
@@ -556,7 +587,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "2"
+   "number": "0"
   },
   "extra": {
    "feedstock-name": "lalpulsar",
@@ -569,6 +600,16 @@
   },
   "outputs": [
    {
+    "about": {
+     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL Pulsar library.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Pulsar Library shared object libraries"
+    },
     "build": {
      "error_overdepending": true,
      "error_overlinking": true,
@@ -591,14 +632,14 @@
       "cfitsio",
       "fftw * nompi*",
       "gsl",
-      "liblal >=7.1.0a0 fftw*",
+      "liblal >=7.1.0 fftw*",
       "libgomp"
      ],
      "run": [
       "cfitsio",
       "fftw",
       "gsl",
-      "liblal >=7.1.0a0"
+      "liblal >=7.1.0"
      ],
      "run_constrained": [
       "lalpulsar >=3.0.0",
@@ -608,7 +649,9 @@
     "script": "install-lib.sh",
     "test": {
      "commands": [
-      "test \"$(pkg-config --modversion lalpulsar)\" == \"${PKG_VERSION}\""
+      "test -f ${PREFIX}/lib/liblalpulsar${SHLIB_EXT}",
+      "test \"${LALPULSAR_DATADIR}\" = \"${PREFIX}/share/lalpulsar\"",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalpulsar"
      ],
      "requires": [
       "pkg-config"
@@ -617,14 +660,14 @@
    },
    {
     "about": {
-     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the python bindings.\n",
-     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the Python bindings of the LALPulsar C libraries\nand additional Python modules.\n\nNote: this package only provides the importable Python libraries.\nAll command-line interfaces, scripts, and executables are\npart of the `lalpulsar` package.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
      "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/",
      "home": "https://wiki.ligo.org/Computing/LALSuite",
      "license": "GPL-2.0-or-later",
      "license_family": "GPL",
      "license_file": "COPYING",
-     "summary": "LSC Algorithm Pulsar Library"
+     "summary": "LSC Algorithm Pulsar Library Python libraries"
     },
     "build": {
      "error_overdepending": true,
@@ -652,15 +695,14 @@
       "liblalpulsar",
       "numpy",
       "python",
-      "python-lal >=7.1.0a0",
-      "six",
-      "numpy <1.20.0a0"
+      "python-lal >=7.1.0",
+      "six"
      ]
     },
     "script": "install-python.sh",
     "test": {
      "commands": [
-      "LAL_TEST_PKGDATADIR=\"./lib\" python -m pytest -rs -v test/python"
+      "LAL_TEST_PKGDATADIR=\"./lib\" python -m pytest -ra -v test/python"
      ],
      "imports": [
       "lalpulsar",
@@ -701,12 +743,12 @@
       "make"
      ],
      "host": [
-      "liblal >=7.1.0a0",
+      "liblal >=7.1.0",
       "liblalpulsar",
       "python"
      ],
      "run": [
-      "liblal >=7.1.0a0",
+      "liblal >=7.1.0",
       "liblalpulsar",
       "python",
       "python-lalpulsar"
@@ -720,6 +762,16 @@
     }
    },
    {
+    "about": {
+     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL Pulsar library.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Pulsar Library shared object libraries"
+    },
     "build": {
      "error_overdepending": true,
      "error_overlinking": true,
@@ -742,14 +794,14 @@
       "cfitsio",
       "fftw * nompi*",
       "gsl",
-      "liblal >=7.1.0a0 fftw*",
+      "liblal >=7.1.0 fftw*",
       "llvm-openmp"
      ],
      "run": [
       "cfitsio",
       "fftw",
       "gsl",
-      "liblal >=7.1.0a0"
+      "liblal >=7.1.0"
      ],
      "run_constrained": [
       "lalpulsar >=3.0.0",
@@ -759,7 +811,9 @@
     "script": "install-lib.sh",
     "test": {
      "commands": [
-      "test \"$(pkg-config --modversion lalpulsar)\" == \"${PKG_VERSION}\""
+      "test -f ${PREFIX}/lib/liblalpulsar${SHLIB_EXT}",
+      "test \"${LALPULSAR_DATADIR}\" = \"${PREFIX}/share/lalpulsar\"",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalpulsar"
      ],
      "requires": [
       "pkg-config"
@@ -768,14 +822,14 @@
    },
    {
     "about": {
-     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the python bindings.\n",
-     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the Python bindings of the LALPulsar C libraries\nand additional Python modules.\n\nNote: this package only provides the importable Python libraries.\nAll command-line interfaces, scripts, and executables are\npart of the `lalpulsar` package.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
      "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/",
      "home": "https://wiki.ligo.org/Computing/LALSuite",
      "license": "GPL-2.0-or-later",
      "license_family": "GPL",
      "license_file": "COPYING",
-     "summary": "LSC Algorithm Pulsar Library"
+     "summary": "LSC Algorithm Pulsar Library Python libraries"
     },
     "build": {
      "error_overdepending": true,
@@ -803,15 +857,14 @@
       "liblalpulsar",
       "numpy",
       "python",
-      "python-lal >=7.1.0a0",
-      "six",
-      "numpy <1.20.0a0"
+      "python-lal >=7.1.0",
+      "six"
      ]
     },
     "script": "install-python.sh",
     "test": {
      "commands": [
-      "LAL_TEST_PKGDATADIR=\"./lib\" python -m pytest -rs -v test/python"
+      "LAL_TEST_PKGDATADIR=\"./lib\" python -m pytest -ra -v test/python"
      ],
      "imports": [
       "lalpulsar",
@@ -852,12 +905,12 @@
       "make"
      ],
      "host": [
-      "liblal >=7.1.0a0",
+      "liblal >=7.1.0",
       "liblalpulsar",
       "python"
      ],
      "run": [
-      "liblal >=7.1.0a0",
+      "liblal >=7.1.0",
       "liblalpulsar",
       "python",
       "python-lalpulsar"
@@ -873,16 +926,18 @@
   ],
   "package": {
    "name": "lalpulsar-split",
-   "version": "3.0.0"
+   "version": "3.0.1"
   },
   "requirements": {
    "build": [
     "c_compiler_stub",
+    "help2man >=1.37",
     "libgomp",
     "make",
     "pkg-config >=0.18.0",
     "swig >=3.0.10",
     "c_compiler_stub",
+    "help2man >=1.37",
     "llvm-openmp",
     "make",
     "pkg-config >=0.18.0",
@@ -892,18 +947,18 @@
     "cfitsio",
     "fftw * nompi*",
     "gsl",
-    "lal >=7.1.0a0 fftw*",
+    "lal >=7.1.0 fftw*",
     "libgomp",
     "cfitsio",
     "fftw * nompi*",
     "gsl",
-    "lal >=7.1.0a0 fftw*",
+    "lal >=7.1.0 fftw*",
     "llvm-openmp"
    ]
   },
   "source": {
-   "sha256": "36c28202f9962b7292fefd1f8c53880eb79a6900a329873e2c53a674e780d7c0",
-   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalpulsar-3.0.0.tar.xz"
+   "sha256": "bb34a2e41209a90922d883724bf0bfa821e3b1d90f0ac4e372142921570298e4",
+   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalpulsar-3.0.1.tar.xz"
   }
  },
  "name": "lalpulsar-split",
@@ -929,7 +984,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "2"
+   "number": "0"
   },
   "extra": {
    "feedstock-name": "lalpulsar",
@@ -940,6 +995,16 @@
   },
   "outputs": [
    {
+    "about": {
+     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL Pulsar library.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Pulsar Library shared object libraries"
+    },
     "build": {
      "error_overdepending": true,
      "error_overlinking": true,
@@ -962,14 +1027,14 @@
       "cfitsio",
       "fftw * nompi*",
       "gsl",
-      "liblal >=7.1.0a0 fftw*",
+      "liblal >=7.1.0 fftw*",
       "llvm-openmp"
      ],
      "run": [
       "cfitsio",
       "fftw",
       "gsl",
-      "liblal >=7.1.0a0"
+      "liblal >=7.1.0"
      ],
      "run_constrained": [
       "lalpulsar >=3.0.0",
@@ -979,7 +1044,9 @@
     "script": "install-lib.sh",
     "test": {
      "commands": [
-      "test \"$(pkg-config --modversion lalpulsar)\" == \"${PKG_VERSION}\""
+      "test -f ${PREFIX}/lib/liblalpulsar${SHLIB_EXT}",
+      "test \"${LALPULSAR_DATADIR}\" = \"${PREFIX}/share/lalpulsar\"",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalpulsar"
      ],
      "requires": [
       "pkg-config"
@@ -988,14 +1055,14 @@
    },
    {
     "about": {
-     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the python bindings.\n",
-     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "description": "The LSC Algorithm Pulsar Library for gravitational wave data analysis.\nThis package contains the Python bindings of the LALPulsar C libraries\nand additional Python modules.\n\nNote: this package only provides the importable Python libraries.\nAll command-line interfaces, scripts, and executables are\npart of the `lalpulsar` package.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
      "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/",
      "home": "https://wiki.ligo.org/Computing/LALSuite",
      "license": "GPL-2.0-or-later",
      "license_family": "GPL",
      "license_file": "COPYING",
-     "summary": "LSC Algorithm Pulsar Library"
+     "summary": "LSC Algorithm Pulsar Library Python libraries"
     },
     "build": {
      "error_overdepending": true,
@@ -1023,15 +1090,14 @@
       "liblalpulsar",
       "numpy",
       "python",
-      "python-lal >=7.1.0a0",
-      "six",
-      "numpy <1.20.0a0"
+      "python-lal >=7.1.0",
+      "six"
      ]
     },
     "script": "install-python.sh",
     "test": {
      "commands": [
-      "LAL_TEST_PKGDATADIR=\"./lib\" python -m pytest -rs -v test/python"
+      "LAL_TEST_PKGDATADIR=\"./lib\" python -m pytest -ra -v test/python"
      ],
      "imports": [
       "lalpulsar",
@@ -1072,12 +1138,12 @@
       "make"
      ],
      "host": [
-      "liblal >=7.1.0a0",
+      "liblal >=7.1.0",
       "liblalpulsar",
       "python"
      ],
      "run": [
-      "liblal >=7.1.0a0",
+      "liblal >=7.1.0",
       "liblalpulsar",
       "python",
       "python-lalpulsar"
@@ -1093,11 +1159,12 @@
   ],
   "package": {
    "name": "lalpulsar-split",
-   "version": "3.0.0"
+   "version": "3.0.1"
   },
   "requirements": {
    "build": [
     "c_compiler_stub",
+    "help2man >=1.37",
     "llvm-openmp",
     "make",
     "pkg-config >=0.18.0",
@@ -1107,13 +1174,13 @@
     "cfitsio",
     "fftw * nompi*",
     "gsl",
-    "lal >=7.1.0a0 fftw*",
+    "lal >=7.1.0 fftw*",
     "llvm-openmp"
    ]
   },
   "source": {
-   "sha256": "36c28202f9962b7292fefd1f8c53880eb79a6900a329873e2c53a674e780d7c0",
-   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalpulsar-3.0.0.tar.xz"
+   "sha256": "bb34a2e41209a90922d883724bf0bfa821e3b1d90f0ac4e372142921570298e4",
+   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalpulsar-3.0.1.tar.xz"
   }
  },
  "osx_64_requirements": {
@@ -1174,8 +1241,8 @@
    "python-lalpulsar"
   ]
  },
- "pinning_version": "2021.02.18.01.26.24",
- "raw_meta_yaml": "{% set name = \"lalpulsar\" %}\n{% set version = \"3.0.0\" %}\n{% set sha256 = \"36c28202f9962b7292fefd1f8c53880eb79a6900a329873e2c53a674e780d7c0\" %}\n\n# dependencies\n{% set lal_version = \"7.1.0a0\" %}\n{% set swig_version = \"3.0.10\" %}\n\npackage:\n  name: {{ name }}-split\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz\n  sha256: {{ sha256 }}\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: 2\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - libgomp  # [linux]\n    - llvm-openmp  # [osx]\n    - make\n    - pkg-config >=0.18.0\n    - swig >={{ swig_version }}\n  host:\n    - cfitsio\n    - fftw * nompi*\n    - gsl\n    - lal >={{ lal_version }} fftw*\n    - libgomp  # [linux]\n    - llvm-openmp  # [osx]\n\noutputs:\n  - name: liblalpulsar\n    script: install-lib.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        # run_exports parsing for fftw is broken, so we ignore it\n        # manually, for now\n        - fftw\n      run_exports:\n        - {{ pin_subpackage(\"liblalpulsar\", max_pin=\"x\") }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - libgomp  # [linux]\n        - llvm-openmp  # [osx]\n        - make\n        - swig >={{ swig_version }}\n      host:\n        - cfitsio\n        - fftw * nompi*\n        - gsl\n        - liblal >={{ lal_version }} fftw*\n        - libgomp  # [linux]\n        - llvm-openmp  # [osx]\n      run:\n        - cfitsio\n        - fftw\n        - gsl\n        - liblal >={{ lal_version }}\n      run_constrained:\n        - lalpulsar >=3.0.0\n        - python-lalpulsar >=3.0.0\n    test:\n      requires:\n        - pkg-config  # [unix]\n      commands:\n        - test \"$(pkg-config --modversion lalpulsar)\" == \"${PKG_VERSION}\"  # [unix]\n\n  - name: python-lalpulsar\n    script: install-python.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        # ignore run_exports from python's recipe\n        - python\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - help2man >=1.37\n        - make\n        - pkg-config\n        - swig >={{ swig_version }}\n      host:\n        - {{ pin_subpackage('liblalpulsar', exact=True) }}\n        - numpy\n        - python\n      run:\n        - astropy\n        - {{ pin_subpackage('liblalpulsar', exact=True) }}\n        - {{ pin_compatible('numpy') }}\n        - python\n        - python-lal >={{ lal_version }}\n        - six\n        # swig bindings cause segmentation fault\n        - numpy <1.20.0a0\n    test:\n      requires:\n        - pytest >=4.0.0a0\n      source_files:\n        - test/python\n        - lib/*.dat.gz\n      commands:\n        - LAL_TEST_PKGDATADIR=\"./lib\" python -m pytest -rs -v test/python\n      imports:\n        - lalpulsar\n        - lalpulsar.NstarTools\n        - lalpulsar.PulsarParametersWrapper\n        - lalpulsar.simulateCW\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Pulsar Library\n      description: |\n        The LSC Algorithm Pulsar Library for gravitational wave data analysis.\n        This package contains the python bindings.\n\n  - name: lalpulsar\n    script: install-bin.sh\n    build:\n      ignore_run_exports:\n        - python\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - help2man >=1.37\n        - make\n      host:\n        - liblal >={{ lal_version }}\n        - {{ pin_subpackage('liblalpulsar', exact=True) }}\n        - python\n      run:\n        - liblal >={{ lal_version }}\n        - {{ pin_subpackage('liblalpulsar', exact=True) }}\n        - python\n        - {{ pin_subpackage('python-lalpulsar', exact=True) }}\n    test:\n      commands:\n        - lalpulsar_version --verbose\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Pulsar Library\n      description: |\n        The LSC Algorithm Pulsar Library for gravitational wave data analysis.\n        This package contains the shared-object libraries needed to run\n        applications that use the LAL Pulsar library.  If you want to install\n        the Python bindings, please install the associated python-lalpulsar\n        package.\n\nabout:\n  home: https://wiki.ligo.org/Computing/LALSuite\n  doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/\n  dev_url: https://git.ligo.org/lscsoft/lalsuite/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LSC Algorithm Pulsar Library\n  description: |\n    The LSC Algorithm Pulsar Library for gravitational wave data analysis.\n\nextra:\n  feedstock-name: lalpulsar\n  recipe-maintainers:\n    - duncanmmacleod\n    - skymoo\n",
+ "pinning_version": "2021.02.19.15.24.04",
+ "raw_meta_yaml": "{% set name = \"lalpulsar\" %}\n{% set version = \"3.0.1\" %}\n{% set sha256 = \"bb34a2e41209a90922d883724bf0bfa821e3b1d90f0ac4e372142921570298e4\" %}\n\n# dependencies\n{% set lal_version = \"7.1.0\" %}\n{% set swig_version = \"3.0.10\" %}\n\npackage:\n  name: {{ name }}-split\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz\n  sha256: {{ sha256 }}\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: 0\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - help2man >=1.37\n    - libgomp  # [linux]\n    - llvm-openmp  # [osx]\n    - make\n    - pkg-config >=0.18.0\n    - swig >={{ swig_version }}\n  host:\n    - cfitsio\n    - fftw * nompi*\n    - gsl\n    - lal >={{ lal_version }} fftw*\n    - libgomp  # [linux]\n    - llvm-openmp  # [osx]\n\noutputs:\n  - name: liblalpulsar\n    script: install-lib.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        # run_exports parsing for fftw is broken, so we ignore it\n        # manually, for now\n        - fftw\n      run_exports:\n        - {{ pin_subpackage(\"liblalpulsar\", max_pin=\"x\") }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - libgomp  # [linux]\n        - llvm-openmp  # [osx]\n        - make\n        - swig >={{ swig_version }}\n      host:\n        - cfitsio\n        - fftw * nompi*\n        - gsl\n        - liblal >={{ lal_version }} fftw*\n        - libgomp  # [linux]\n        - llvm-openmp  # [osx]\n      run:\n        - cfitsio\n        - fftw\n        - gsl\n        - liblal >={{ lal_version }}\n      run_constrained:\n        - lalpulsar >=3.0.0\n        - python-lalpulsar >=3.0.0\n    test:\n      requires:\n        - pkg-config  # [unix]\n      commands:\n        # check library\n        - test -f ${PREFIX}/lib/liblalpulsar${SHLIB_EXT}  # [unix]\n        # check activate variables\n        - test \"${LALPULSAR_DATADIR}\" = \"${PREFIX}/share/lalpulsar\"  # [unix]\n        # check pkg-config\n        - pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalpulsar\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite.git\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Pulsar Library shared object libraries\n      description: |\n        The LSC Algorithm Pulsar Library for gravitational wave data analysis.\n        This package contains the shared-object libraries needed to run\n        applications that use the LAL Pulsar library.\n\n  - name: python-lalpulsar\n    script: install-python.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        # ignore run_exports from python's recipe\n        - python\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - help2man >=1.37\n        - make\n        - pkg-config\n        - swig >={{ swig_version }}\n      host:\n        - {{ pin_subpackage('liblalpulsar', exact=True) }}\n        - numpy\n        - python\n      run:\n        - astropy\n        - {{ pin_subpackage('liblalpulsar', exact=True) }}\n        - {{ pin_compatible('numpy') }}\n        - python\n        - python-lal >={{ lal_version }}\n        - six\n    test:\n      requires:\n        - pytest >=4.0.0a0\n      source_files:\n        - test/python\n        - lib/*.dat.gz\n      commands:\n        - LAL_TEST_PKGDATADIR=\"./lib\" python -m pytest -ra -v test/python\n      imports:\n        - lalpulsar\n        - lalpulsar.NstarTools\n        - lalpulsar.PulsarParametersWrapper\n        - lalpulsar.simulateCW\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite.git\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Pulsar Library Python libraries\n      description: |\n        The LSC Algorithm Pulsar Library for gravitational wave data analysis.\n        This package contains the Python bindings of the LALPulsar C libraries\n        and additional Python modules.\n\n        Note: this package only provides the importable Python libraries.\n        All command-line interfaces, scripts, and executables are\n        part of the `lalpulsar` package.\n\n  - name: lalpulsar\n    script: install-bin.sh\n    build:\n      ignore_run_exports:\n        - python\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - help2man >=1.37\n        - make\n      host:\n        - liblal >={{ lal_version }}\n        - {{ pin_subpackage('liblalpulsar', exact=True) }}\n        - python\n      run:\n        - liblal >={{ lal_version }}\n        - {{ pin_subpackage('liblalpulsar', exact=True) }}\n        - python\n        - {{ pin_subpackage('python-lalpulsar', exact=True) }}\n    test:\n      commands:\n        - lalpulsar_version --verbose\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Pulsar Library\n      description: |\n        The LSC Algorithm Pulsar Library for gravitational wave data analysis.\n        This package contains the shared-object libraries needed to run\n        applications that use the LAL Pulsar library.  If you want to install\n        the Python bindings, please install the associated python-lalpulsar\n        package.\n\nabout:\n  home: https://wiki.ligo.org/Computing/LALSuite\n  doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalpulsar/\n  dev_url: https://git.ligo.org/lscsoft/lalsuite/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LSC Algorithm Pulsar Library\n  description: |\n    The LSC Algorithm Pulsar Library for gravitational wave data analysis.\n\nextra:\n  feedstock-name: lalpulsar\n  recipe-maintainers:\n    - duncanmmacleod\n    - skymoo\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1280,10 +1347,10 @@
     "cfitsio",
     "fftw * nompi*",
     "gsl",
-    "lal >=7.1.0a0 fftw*",
+    "lal >=7.1.0 fftw*",
     "libgomp",
-    "liblal >=7.1.0a0",
-    "liblal >=7.1.0a0 fftw*",
+    "liblal >=7.1.0",
+    "liblal >=7.1.0 fftw*",
     "liblalpulsar",
     "llvm-openmp",
     "numpy",
@@ -1297,12 +1364,11 @@
     "cfitsio",
     "fftw",
     "gsl",
-    "liblal >=7.1.0a0",
+    "liblal >=7.1.0",
     "liblalpulsar",
     "numpy",
-    "numpy <1.20.0a0",
     "python",
-    "python-lal >=7.1.0a0",
+    "python-lal >=7.1.0",
     "python-lalpulsar",
     "six"
    ]
@@ -1315,6 +1381,6 @@
    ]
   }
  },
- "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalpulsar-3.0.0.tar.xz",
- "version": "3.0.0"
+ "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalpulsar-3.0.1.tar.xz",
+ "version": "3.0.1"
 }
