@@ -538,6 +538,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/576852220.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.15.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1319,7 +1336,7 @@
   ]
  },
  "name": "libprotobuf",
- "new_version": "3.15.0",
+ "new_version": "3.15.1",
  "new_version_attempts": {
   "3.12.0": 1,
   "3.12.1": 1,
@@ -1329,7 +1346,8 @@
   "3.13.0": 1,
   "3.13.0.1": 1,
   "3.14.0": 1,
-  "3.15.0": 1
+  "3.15.0": 1,
+  "3.15.1": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1589,7 +1607,7 @@
    "libprotobuf-static"
   ]
  },
- "pinning_version": "2021.02.18.01.26.24",
+ "pinning_version": "2021.02.19.15.24.04",
  "raw_meta_yaml": "{% set version = \"3.14.0\" %}\n\npackage:\n  name: libprotobuf\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/libprotobuf-v{{ version }}.tar.gz\n    sha256: d0f5f605d0d656007ce6c8b5a82df3037e1d8fe8b121ed42e536f569dec16113\n    patches:\n      - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]\n      # This issue gets fixed and then reintroduced often\n      # https://github.com/protocolbuffers/protobuf/issues/7567\n      #- issue-7567.patch\n  # these are git submodules from the 3.10.1 release\n  # https://github.com/protocolbuffers/protobuf/tree/v3.10.1/third_party\n  - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz\n    sha256: 5dc92703f811f94e2aa63bdab07ab749f28a094befa6cdfd5fe177f947590a48\n    folder: third_party/benchmark\n  - url: https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz\n    sha256: 0e2f36e8e403c125fd0ab02171bdb786d3b6b3875b6ccf3b2eb7969be8faecd0\n    folder: third_party/googletest\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake  # [win]\n    - ninja  # [win]\n    - autoconf  # [not win]\n    - automake  # [not win]\n    - libtool  # [not win]\n    - pkg-config  # [not win]\n    - unzip  # [not win]\n    - make  # [not win]\n  host:\n    - zlib\n  run:\n    - zlib\n\noutputs:\n  - name: libprotobuf\n    build:\n      run_exports:\n        # breaks backwards compatibility and new SONAME each minor release\n        # https://abi-laboratory.pro/tracker/timeline/protobuf/\n        # One exception was that 3.6.1 was incompatible with 3.6.0\n        - {{ pin_subpackage('libprotobuf', max_pin='x.x') }}\n    test:\n      commands:\n        - protoc --help\n        - test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}  # [not win]\n        - test ! -f ${PREFIX}/lib/libprotobuf.a  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotoc.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf-lite.lib exit 1  # [win]\n  - name: libprotobuf-static\n    script: build_static.sh  # [unix]\n    build:\n      skip: true  # [win]\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/libprotobuf.a  # [unix]\n        - test -f ${PREFIX}/lib/libprotobuf-lite.a  # [unix]\n        - test -f ${PREFIX}/lib/libprotoc.a  # [unix]\n\nabout:\n  home: https://developers.google.com/protocol-buffers/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler.\n  description: |\n    Protocol buffers are Google's language-neutral,\n    platform-neutral, extensible mechanism for serializing structured data-\n    think XML, but smaller, faster, and simpler.\n  doc_url: https://developers.google.com/protocol-buffers/\n  doc_source_url: https://github.com/protocolbuffers/protobuf/releases\n\nextra:\n  recipe-maintainers:\n    - dopplershift\n    - jakirkham\n    - jjhelmus\n    - ocefpaf\n    - wesm\n    - hajapy\n    - xhochy\n",
  "req": {
   "__set__": true,
