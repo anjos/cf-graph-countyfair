@@ -36,7 +36,7 @@
    "summary": "provides tools to minimize disk space use and maximize storage throughput, security, and resilience."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -49,8 +49,8 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub",
-    "nasm >=2.14",
+    "gcc_linux-64 ==7.5.0",
+    "nasm",
     "autoconf",
     "automake",
     "libtool",
@@ -82,7 +82,7 @@
    "elements": [
     "autoconf",
     "automake",
-    "c_compiler_stub",
+    "gcc_linux-64",
     "libtool",
     "make",
     "nasm"
@@ -113,7 +113,7 @@
    "summary": "provides tools to minimize disk space use and maximize storage throughput, security, and resilience."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -127,8 +127,8 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub",
-    "nasm >=2.14",
+    "gcc_linux-64 ==7.5.0",
+    "nasm",
     "autoconf",
     "automake",
     "libtool",
@@ -184,7 +184,7 @@
    "summary": "provides tools to minimize disk space use and maximize storage throughput, security, and resilience."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -256,13 +256,14 @@
   ]
  },
  "pinning_version": "2020.11.11.15.57.25",
- "raw_meta_yaml": "{% set version = \"2.30.0\" %}\n\npackage:\n  name: isa-l\n  version: {{ version }}\n\nsource:\n  url: https://github.com/intel/isa-l/archive/v{{ version }}.tar.gz\n  sha256: bcf592c04fdfa19e723d2adf53d3e0f4efd5b956bb618fed54a1108d76a6eb56\n  patches:\n        # Conda adds some CFLAGS to the environment which are not properly \n        # filtered by the original nasm-filter.sh\n        # This patch also makes sure the nasm executable from the BUILD_PREFIX is used.\n    - nasm-filter.patch\n\nbuild:\n    # Package is buildable on windows and mac osx. But current maintainer can not test and maintain that.\n  skip: true  # [not unix]\n  number: 1\n\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - nasm >=2.14\n    - autoconf\n    - automake\n    - libtool\n    - make\n\ntest:\n  files:\n    - LICENSE\n  commands:\n    - igzip --help\n        # Test compression and decompression. \n    - igzip -k LICENSE\n        # Original file should be larger than compressed file.\n    - bash -c '[ $(stat -c %s LICENSE) -gt $(stat -c %s LICENSE.gz) ]'\n    - bash -c '[ \"$(igzip -cd LICENSE.gz)\" == \"$(cat LICENSE)\" ]'\n\nabout:\n  home: https://software.intel.com/content/www/us/en/develop/tools/isa-l.html\n  license: BSD-3-Clause\n  summary: provides tools to minimize disk space use and maximize storage throughput, security, and resilience.\n  license_family: BSD\n  license_file: LICENSE\n\n  description: |\n    ISA-L is a collection of optimized low-level functions targeting storage applications. ISA-L includes:\n    Erasure codes - Fast block Reed-Solomon type erasure codes for any encode/decode matrix in GF(2^8).\n    CRC - Fast implementations of cyclic redundancy check. Six different polynomials supported.\n        iscsi32, ieee32, t10dif, ecma64, iso64, jones64.\n    Raid - calculate and operate on XOR and P+Q parity found in common RAID implementations.\n    Compression - Fast deflate-compatible data compression.\n    De-compression - Fast inflate-compatible data compression.\n    This package includes the igzip program.\n\n  doc_url: https://github.com/intel/isa-l/wiki/\n  dev_url: https://github.com/intel/isa-l\n\nextra:\n  recipe-maintainers:\n    - rhpvorderman\n",
+ "raw_meta_yaml": "{% set version = \"2.30.0\" %}\n\npackage:\n  name: isa-l\n  version: {{ version }}\n\nsource:\n  url: https://github.com/intel/isa-l/archive/v{{ version }}.tar.gz\n  sha256: bcf592c04fdfa19e723d2adf53d3e0f4efd5b956bb618fed54a1108d76a6eb56\n  patches:\n        # Conda adds some CFLAGS to the environment which are not properly \n        # filtered by the original nasm-filter.sh\n        # This patch also makes sure the nasm executable from the BUILD_PREFIX is used.\n    - nasm-filter.patch\n\nbuild:\n    # Package is buildable on windows and mac osx. But current maintainer can not test and maintain that.\n  skip: true  # [not unix]\n  number: 2\n\n\nrequirements:\n  build:\n    # igzip needs to be compiled with 7.5.0 to prevent an issue:\n    # https://github.com/conda-forge/isa-l-feedstock/issues/7\n    - {{ compiler('c') }}  # [not linux]\n    - gcc_linux-64 ==7.5.0  # [linux]\n    - nasm  # [linux]\n    # Osx needs some flags that are available from 2.14 on\n    - nasm >=2.14  # [osx]\n    - autoconf\n    - automake\n    - libtool\n    - make\n\ntest:\n  files:\n    - LICENSE\n  commands:\n    - igzip --help\n        # Test compression and decompression. \n    - igzip -k LICENSE\n        # Original file should be larger than compressed file.\n    - bash -c '[ $(stat -c %s LICENSE) -gt $(stat -c %s LICENSE.gz) ]'\n    - bash -c '[ \"$(igzip -cd LICENSE.gz)\" == \"$(cat LICENSE)\" ]'\n\nabout:\n  home: https://software.intel.com/content/www/us/en/develop/tools/isa-l.html\n  license: BSD-3-Clause\n  summary: provides tools to minimize disk space use and maximize storage throughput, security, and resilience.\n  license_family: BSD\n  license_file: LICENSE\n\n  description: |\n    ISA-L is a collection of optimized low-level functions targeting storage applications. ISA-L includes:\n    Erasure codes - Fast block Reed-Solomon type erasure codes for any encode/decode matrix in GF(2^8).\n    CRC - Fast implementations of cyclic redundancy check. Six different polynomials supported.\n        iscsi32, ieee32, t10dif, ecma64, iso64, jones64.\n    Raid - calculate and operate on XOR and P+Q parity found in common RAID implementations.\n    Compression - Fast deflate-compatible data compression.\n    De-compression - Fast inflate-compatible data compression.\n    This package includes the igzip program.\n\n  doc_url: https://github.com/intel/isa-l/wiki/\n  dev_url: https://github.com/intel/isa-l\n\nextra:\n  recipe-maintainers:\n    - rhpvorderman\n",
  "req": {
   "__set__": true,
   "elements": [
    "autoconf",
    "automake",
    "c_compiler_stub",
+   "gcc_linux-64",
    "libtool",
    "make",
    "nasm"
@@ -275,6 +276,7 @@
     "autoconf",
     "automake",
     "c_compiler_stub",
+    "gcc_linux-64",
     "libtool",
     "make",
     "nasm"
@@ -306,8 +308,10 @@
     "autoconf",
     "automake",
     "c_compiler_stub",
+    "gcc_linux-64 ==7.5.0",
     "libtool",
     "make",
+    "nasm",
     "nasm >=2.14"
    ]
   },
