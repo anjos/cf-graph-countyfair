@@ -112,7 +112,33 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "'py_ver_split' is undefined",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1082, in main",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 191, in run",
+   "    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/version.py\", line 542, in migrate",
+   "    _did_update, _errors = _try_to_update_version(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/version.py\", line 260, in _try_to_update_version",
+   "    evaled_context = cmeta.eval_jinja2_exprs(context)",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/recipe_parser/_parser.py\", line 501, in eval_jinja2_exprs",
+   "    return _parser.load(jinja2.Template(tmpl).render(**jinja2_vars))",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/jinja2/environment.py\", line 1090, in render",
+   "    self.environment.handle_exception()",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/jinja2/environment.py\", line 832, in handle_exception",
+   "    reraise(*rewrite_traceback_stack(source=source))",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/jinja2/_compat.py\", line 28, in reraise",
+   "    raise value.with_traceback(tb)",
+   "  File \"<template>\", line 1, in top-level template code",
+   "  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/jinja2/environment.py\", line 452, in getitem",
+   "    return obj[argument]",
+   "jinja2.exceptions.UndefinedError: 'py_ver_split' is undefined",
+   ""
+  ]
+ },
  "branch": "master",
  "conda-forge.yml": {},
  "feedstock_name": "cramjam",
@@ -311,10 +337,11 @@
   }
  },
  "name": "cramjam",
- "new_version": "2.0.1",
+ "new_version": "2.0.2",
  "new_version_attempts": {
   "2.0.0": 1,
-  "2.0.1": 1
+  "2.0.1": 1,
+  "2.0.2": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -408,6 +435,9 @@
   ]
  },
  "pinning_version": "2021.02.19.04.55.39",
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/590741887\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1082, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 191, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/version.py\", line 542, in migrate\n    _did_update, _errors = _try_to_update_version(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/version.py\", line 260, in _try_to_update_version\n    evaled_context = cmeta.eval_jinja2_exprs(context)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/recipe_parser/_parser.py\", line 501, in eval_jinja2_exprs\n    return _parser.load(jinja2.Template(tmpl).render(**jinja2_vars))\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/jinja2/environment.py\", line 1090, in render\n    self.environment.handle_exception()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/jinja2/environment.py\", line 832, in handle_exception\n    reraise(*rewrite_traceback_stack(source=source))\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/jinja2/_compat.py\", line 28, in reraise\n    raise value.with_traceback(tb)\n  File \"<template>\", line 1, in top-level template code\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/jinja2/environment.py\", line 452, in getitem\n    return obj[argument]\njinja2.exceptions.UndefinedError: 'py_ver_split' is undefined\n"
+ },
  "raw_meta_yaml": "{% set name = \"cramjam\" %}\n{% set version = \"2.0.1\" %}\n{% set py_ver_split = PY_VER.split(\".\") %}\n{% set major_minor = py_ver_split[0] + py_ver_split[1] %}\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: e769cee0badd4f02b59777b86aa3bc1e308e84b2c069490a7048a72a9a1e5c1a\n\nbuild:\n  number: 0\n  {% set m_postfix = 'm' if major_minor in ('36', '37') else '' %}\n  script: pip install --no-deps https://pypi.debian.net/cramjam/cramjam-{{ version }}-cp{{ major_minor }}-cp{{ major_minor + m_postfix }}-manylinux2010_x86_64.whl  # [linux]\n  script: pip install --no-deps https://pypi.debian.net/cramjam/cramjam-{{ version }}-cp{{ major_minor }}-cp{{ major_minor + m_postfix }}-macosx_10_7_{{ OSX_ARCH }}.whl  # [osx]\n  script: pip install --no-deps https://pypi.debian.net/cramjam/cramjam-{{ version }}-cp{{ major_minor }}-none-win_amd64.whl  # [win]\n\n\nrequirements:\n  host:\n    - python\n    - pip\n  run:\n    - python\n\ntest:\n  imports:\n    - cramjam\n\nabout:\n  home: https://github.com/milesgranger/pyrus-cramjam\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: python bindings to rust-implemented compression\n  # The remaining entries in this section are optional, but recommended.\n  description: |\n    Extremely thin Python bindings to de/compression algorithms in Rust. \n    Allows for using algorithms such as Snappy, without any system dependencies.\n    This is handy when being used in environments like AWS Lambda, \n    where installing packages like python-snappy becomes difficult because of \n    system level dependencies.\n  doc_url: https://docs.rs/cramjam\n\nextra:\n  recipe-maintainers:\n    - martindurant\n    - milesgranger\n",
  "req": {
   "__set__": true,
