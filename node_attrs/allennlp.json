@@ -171,6 +171,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/579675998.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.1.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -764,11 +781,12 @@
   }
  },
  "name": "allennlp",
- "new_version": "2.0.1",
+ "new_version": "2.1.0",
  "new_version_attempts": {
   "1.4.0": 1,
   "2.0.0": 1,
-  "2.0.1": 1
+  "2.0.1": 1,
+  "2.1.0": 1
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -777,7 +795,7 @@
    "allennlp"
   ]
  },
- "pinning_version": "2021.01.29.20.41.28",
+ "pinning_version": "2021.02.24.15.35.41",
  "raw_meta_yaml": "{% set version = \"1.4.0\" %}\n\n{% set spacy_model = \"en_core_web_sm\" %}\n\npackage:\n  name: allennlp\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/allenai/allennlp/archive/v{{ version }}.tar.gz\n    sha256: f9d5a3e2cb865d576fce30efe2d9507bcc34ecec13d45b954a87e797cf1e83b0\n    patches:\n      # upstream expectes the folders /tests & /test_fixtures to be relative\n      # to the finished package, even though those folders are not packaged;\n      # effectively, the upstream test suite can currently only be run in (their)\n      # development mode, so patch it that we can properly test the package here.\n      - patches/0001-patch-AllenNlpTestCase-so-that-test-suite-can-be-run.patch\n      - patches/0002-look-for-README-in-packaging-compatible-location.patch\n      # one test is failing with tolerance 1e-6, bump to 1e-5 for the moment\n      - patches/0003-marginally-increase-tolerance-for-failing-test.patch\n\nbuild:\n  entry_points:\n    - allennlp=allennlp.__main__:run\n  number: 0\n  script: {{ PYTHON }} -m pip install . --no-deps -vv\n  skip: true  # [not linux or py<36 or py==39]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n  host:\n    - python\n    - pip\n  run:\n    - python\n    - boto3 >=1.14,<2.0\n    - dataclasses               # [py<37]\n    - filelock >=3.0,<3.1\n    - h5py\n    - jsonnet >=0.10.0          # [not win]\n    - jsonpickle\n    - nltk\n    - numpy\n    - overrides ==3.1.0\n    - pytorch >=1.6.0,<1.8.0\n    - requests >=2.18\n    - scikit-learn\n    - scipy\n    - sentencepiece\n    - spacy >=2.1.0,<2.4\n    - tensorboardx >=1.2\n    - tqdm >=4.19\n    - transformers >=4.1,<4.3\n\ntest:\n  requires:\n    - flaky\n    - matplotlib\n    - pytest\n    - responses >=0.12.1\n    - spacy-model-{{ spacy_model }}\n  source_files:\n    - tests/\n    - test_fixtures/\n    # needed by one of the tests\n    - README.md\n  commands:\n    - python -m spacy link {{ spacy_model }} {{ spacy_model }}\n    - allennlp test-install\n    - pytest tests/\n  imports:\n    - allennlp\n    - allennlp.commands\n    - allennlp.common\n    - allennlp.common.testing\n    - allennlp.data\n    - allennlp.data.dataset_readers\n    - allennlp.data.dataset_readers.dataset_utils\n    - allennlp.data.fields\n    - allennlp.data.samplers\n    - allennlp.data.token_indexers\n    - allennlp.data.tokenizers\n    - allennlp.models\n    - allennlp.modules\n    - allennlp.modules.attention\n    - allennlp.modules.matrix_attention\n    - allennlp.modules.seq2seq_encoders\n    - allennlp.modules.seq2vec_encoders\n    - allennlp.modules.span_extractors\n    - allennlp.modules.text_field_embedders\n    - allennlp.modules.token_embedders\n    - allennlp.nn\n    - allennlp.nn.regularizers\n    - allennlp.predictors\n    - allennlp.tools\n    - allennlp.training\n    - allennlp.training.learning_rate_schedulers\n    - allennlp.training.metrics\n    - allennlp.training.momentum_schedulers\n\nabout:\n  home: https://allennlp.org/\n  license: Apache-2.0\n  license_family: APACHE\n  license_file: LICENSE\n  summary: An open-source NLP research library, built on PyTorch.\n  description: |\n    An Apache 2.0 NLP research library, built on PyTorch, for developing state-of-the-art \n    deep learning models on a wide variety of linguistic tasks.\n  doc_url: https://allenai.github.io/allennlp-docs/\n  dev_url: https://github.com/allenai/allennlp\n\nextra:\n  recipe-maintainers:\n    - CurtLH\n    - sodre\n    - h-vetinari\n    - dirkgr\n",
  "req": {
   "__set__": true,
@@ -854,7 +872,7 @@
    ]
   }
  },
- "smithy_version": "3.8.6",
+ "smithy_version": "3.9.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
