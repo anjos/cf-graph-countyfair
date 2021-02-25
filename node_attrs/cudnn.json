@@ -130,7 +130,7 @@
     "__lazy_json__": "pr_json/546302661.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1614213953.0521896,
     "migrator_name": "ArchRebuild",
     "migrator_version": 1,
     "name": "aarch64 and ppc64le addition"
@@ -145,6 +145,25 @@
   {
    "PR": {
     "__lazy_json__": "pr_json/579341062.json"
+   },
+   "data": {
+    "bot_rerun": 1614213953.0524101,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "cuda111_112"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/fd066328-954e-4af6-91d3-2b0975b04676.json"
    },
    "data": {
     "bot_rerun": false,
@@ -185,13 +204,21 @@
   },
   "build": {
    "ignore_run_exports_from": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "cuda_compiler_stub",
+    "c_compiler_stub",
+    "cuda_compiler_stub"
    ],
-   "number": "1",
+   "number": "0",
    "run_exports": [
+    "cudnn",
     "cudnn"
    ],
    "script": [
+    "mkdir -p $PREFIX/include",
+    "cp include/cudnn*.h $PREFIX/include/",
+    "mkdir -p $PREFIX/lib",
+    "mv lib64/libcudnn*.so* $PREFIX/lib/",
     "mkdir -p $PREFIX/include",
     "cp include/cudnn*.h $PREFIX/include/",
     "mkdir -p $PREFIX/lib",
@@ -200,15 +227,19 @@
   },
   "extra": {
    "recipe-maintainers": [
-    "isuruf"
+    "kkraus14",
+    "kkraus14"
    ]
   },
   "package": {
    "name": "cudnn",
-   "version": "8.0.5.39"
+   "version": "8.1.0.77"
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
+    "cuda_compiler_stub",
+    "sysroot_linux-64 2.17",
     "c_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17"
@@ -216,16 +247,24 @@
    "host": [],
    "run": [
     "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4"
+    "libstdcxx-ng >=3.4",
+    "cudatoolkit 10.2",
+    "libgcc-ng >=3.0",
+    "libstdcxx-ng >=3.4",
+    "cudatoolkit 11.*"
    ],
    "run_constrained": null
   },
   "source": {
-   "sha256": "21f84c05c67bf1ec859e77c38ccd5bf154964fa1c308f449959be4c356e382f3",
-   "url": "https://developer.download.nvidia.com/compute/redist/cudnn/v8.0.5/cudnn-10.2-linux-x64-v8.0.5.39.tgz"
+   "sha256": "dbe82faf071d91ba9bcf00480146ad33f462482dfee56caf4479c1b8dabe3ecb",
+   "url": "https://developer.download.nvidia.com/compute/redist/cudnn/v8.1.0/cudnn-11.2-linux-x64-v8.1.0.77.tgz"
   },
   "test": {
    "commands": [
+    "test -f $PREFIX/include/cudnn.h",
+    "test -f $PREFIX/include/cudnn_adv_train.h",
+    "test -f $PREFIX/lib/libcudnn.so",
+    "test -f $PREFIX/lib/libcudnn_adv_train.so",
     "test -f $PREFIX/include/cudnn.h",
     "test -f $PREFIX/include/cudnn_adv_train.h",
     "test -f $PREFIX/lib/libcudnn.so",
@@ -249,6 +288,7 @@
   "run": {
    "__set__": true,
    "elements": [
+    "cudatoolkit",
     "libgcc-ng",
     "libstdcxx-ng"
    ]
@@ -271,51 +311,107 @@
   },
   "build": {
    "ignore_run_exports_from": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "cuda_compiler_stub",
+    "c_compiler_stub",
+    "cuda_compiler_stub",
+    "cuda_compiler_stub",
+    "cuda_compiler_stub"
    ],
-   "number": "1",
+   "number": "0",
    "run_exports": [
+    "cudnn",
+    "cudnn",
+    "cudnn",
     "cudnn"
    ],
    "script": [
     "mkdir -p $PREFIX/include",
     "cp include/cudnn*.h $PREFIX/include/",
     "mkdir -p $PREFIX/lib",
-    "mv lib64/libcudnn*.so* $PREFIX/lib/"
+    "mv lib64/libcudnn*.so* $PREFIX/lib/",
+    "mkdir -p $PREFIX/include",
+    "cp include/cudnn*.h $PREFIX/include/",
+    "mkdir -p $PREFIX/lib",
+    "mv lib64/libcudnn*.so* $PREFIX/lib/",
+    "mkdir %LIBRARY_INC%",
+    "copy %SRC_DIR%\\\\include\\\\cudnn*.h %LIBRARY_INC%\\\\",
+    "mkdir %LIBRARY_LIB%",
+    "copy %SRC_DIR%\\\\lib\\\\x64\\\\cudnn*.lib %LIBRARY_LIB%\\\\",
+    "mkdir %LIBRARY_BIN%",
+    "copy %SRC_DIR%\\\\bin\\\\cudnn*_8.dll %LIBRARY_BIN%\\\\",
+    "mkdir %LIBRARY_INC%",
+    "copy %SRC_DIR%\\\\include\\\\cudnn*.h %LIBRARY_INC%\\\\",
+    "mkdir %LIBRARY_LIB%",
+    "copy %SRC_DIR%\\\\lib\\\\x64\\\\cudnn*.lib %LIBRARY_LIB%\\\\",
+    "mkdir %LIBRARY_BIN%",
+    "copy %SRC_DIR%\\\\bin\\\\cudnn*_8.dll %LIBRARY_BIN%\\\\"
    ]
   },
   "extra": {
    "recipe-maintainers": [
-    "isuruf"
+    "kkraus14",
+    "kkraus14",
+    "kkraus14",
+    "kkraus14"
    ]
   },
   "package": {
    "name": "cudnn",
-   "version": "8.0.5.39"
+   "version": "8.1.0.77"
   },
   "requirements": {
    "build": [
     "c_compiler_stub",
     "cuda_compiler_stub",
-    "sysroot_linux-64 2.17"
+    "sysroot_linux-64 2.17",
+    "c_compiler_stub",
+    "cuda_compiler_stub",
+    "sysroot_linux-64 2.17",
+    "c_compiler_stub",
+    "cuda_compiler_stub",
+    "c_compiler_stub",
+    "cuda_compiler_stub"
    ],
    "host": [],
    "run": [
     "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4"
+    "libstdcxx-ng >=3.4",
+    "cudatoolkit 10.2",
+    "libgcc-ng >=3.0",
+    "libstdcxx-ng >=3.4",
+    "cudatoolkit 11.*",
+    "cudatoolkit 10.2",
+    "cudatoolkit 11.*"
    ],
    "run_constrained": null
   },
   "source": {
-   "sha256": "21f84c05c67bf1ec859e77c38ccd5bf154964fa1c308f449959be4c356e382f3",
-   "url": "https://developer.download.nvidia.com/compute/redist/cudnn/v8.0.5/cudnn-10.2-linux-x64-v8.0.5.39.tgz"
+   "sha256": "f5a23402ebed5b2add2ae0dc79df42f055f5851bbb3b1d0f6aa9dcdeeb9346ce",
+   "url": "https://developer.download.nvidia.com/compute/redist/cudnn/v8.1.0/cudnn-11.2-windows-x64-v8.1.0.77.zip"
   },
   "test": {
    "commands": [
     "test -f $PREFIX/include/cudnn.h",
     "test -f $PREFIX/include/cudnn_adv_train.h",
     "test -f $PREFIX/lib/libcudnn.so",
-    "test -f $PREFIX/lib/libcudnn_adv_train.so"
+    "test -f $PREFIX/lib/libcudnn_adv_train.so",
+    "test -f $PREFIX/include/cudnn.h",
+    "test -f $PREFIX/include/cudnn_adv_train.h",
+    "test -f $PREFIX/lib/libcudnn.so",
+    "test -f $PREFIX/lib/libcudnn_adv_train.so",
+    "if not exist %LIBRARY_INC%/cudnn.h exit 1",
+    "if not exist %LIBRARY_INC%/cudnn_adv_train.h exit 1",
+    "if not exist %LIBRARY_LIB%/cudnn.lib exit 1",
+    "if not exist %LIBRARY_LIB%/cudnn_adv_train.lib exit 1",
+    "if not exist %LIBRARY_BIN%/cudnn64_8.dll exit 1",
+    "if not exist %LIBRARY_BIN%/cudnn_adv_train64_8.dll exit 1",
+    "if not exist %LIBRARY_INC%/cudnn.h exit 1",
+    "if not exist %LIBRARY_INC%/cudnn_adv_train.h exit 1",
+    "if not exist %LIBRARY_LIB%/cudnn.lib exit 1",
+    "if not exist %LIBRARY_LIB%/cudnn_adv_train.lib exit 1",
+    "if not exist %LIBRARY_BIN%/cudnn64_8.dll exit 1",
+    "if not exist %LIBRARY_BIN%/cudnn_adv_train64_8.dll exit 1"
    ]
   }
  },
@@ -327,16 +423,17 @@
    "cudnn"
   ]
  },
- "pinning_version": "2021.02.23.06.49.59",
+ "pinning_version": "2021.02.24.15.35.41",
  "pre_pr_migrator_status": {
   "cuda111_112": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/595996429\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1082, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 187, in run\n    migrator.run_pre_piggyback_migrations(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/core.py\", line 258, in run_pre_piggyback_migrations\n    mini_migrator.migrate(recipe_dir, attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/cos7.py\", line 70, in migrate\n    with open(cfg) as fp:\nFileNotFoundError: [Errno 2] No such file or directory: 'conda_build_config.yaml'\n"
  },
- "raw_meta_yaml": "{% set version = \"8.0.5.39\" %}\n\npackage:\n  name: cudnn\n  version: {{ version }}\n\nsource:\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cuda_compiler_version }}-linux-x64-v{{ version }}.tgz  # [linux64]\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cuda_compiler_version }}-linux-ppc64le-v{{ version }}.tgz  # [ppc64le]\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cuda_compiler_version }}-windows10-x64-v{{ version }}.zip  # [win and cuda_compiler_version in (\"10.1\", \"10.2\")]\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cuda_compiler_version }}-windows-x64-v{{ version }}.zip  # [win and cuda_compiler_version not in (\"10.1\", \"10.2\")]\n  sha256: 3726c58065187f5fc196652481ed05f0b8291dc0ebb6cc274dd7205a11f83d11  # [win64 and cuda_compiler_version == \"10.1\"]\n  sha256: 6a79e51776eef2d0653c9b457d79c0c14b27b64f0e675db9617f03e08e184da4  # [win64 and cuda_compiler_version == \"10.2\"]\n  sha256: a982fbfdecb7a632190c5d2346c19a3cbff86fb2780663b57f3ce547fdd3ce75  # [win64 and cuda_compiler_version == \"11.0\"]\n  sha256: 90908495298896b33aa95063a3471f93c36627d7ac01c17dc36d75c65eea4a00  # [linux64 and cuda_compiler_version == \"10.1\"]\n  sha256: 21f84c05c67bf1ec859e77c38ccd5bf154964fa1c308f449959be4c356e382f3  # [linux64 and cuda_compiler_version == \"10.2\"]\n  sha256: 4e16ee7895deb4a8b1c194b812ba49586ef7d26902051401d3717511898a9b73  # [linux64 and cuda_compiler_version == \"11.0\"]\n\nbuild:\n  number: 1\n  skip: True   # [cuda_compiler_version in (\"None\", \"9.2\", \"10.0\")]\n  script:\n    - mkdir -p $PREFIX/include               # [unix]\n    - cp include/cudnn*.h $PREFIX/include/    # [unix]\n    - mkdir -p $PREFIX/lib                   # [unix]\n    - mv lib64/libcudnn*.so* $PREFIX/lib/     # [linux64]\n    - mv lib/libcudnn*.so* $PREFIX/lib/       # [ppc64le]\n    - mkdir %LIBRARY_INC%                    # [win]\n    - copy %SRC_DIR%\\\\include\\\\cudnn*.h %LIBRARY_INC%\\\\     # [win]\n    - mkdir %LIBRARY_LIB%                    # [win]\n    - copy %SRC_DIR%\\\\lib\\\\x64\\\\cudnn*.lib %LIBRARY_LIB%\\\\  # [win]\n    - mkdir %LIBRARY_BIN%                    # [win]\n    - copy %SRC_DIR%\\\\bin\\\\cudnn*_8.dll %LIBRARY_BIN%\\\\     # [win]\n  ignore_run_exports_from:\n    - {{ compiler('c') }}    # [linux]\n  run_exports:\n    - {{ pin_subpackage('cudnn') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n  run:\n    # Only GCC_3.0 or older symbols present\n    - libgcc-ng >=3.0     # [linux]\n    # Only GLIBCXX_3.4 or older symbols present\n    - libstdcxx-ng >=3.4  # [linux]\n  run_constrained:\n    # Only GLIBC_2.17 or older symbols present\n    - __glibc >=2.17      # [ppc64le]\n\ntest:\n  commands:\n    - if not exist %LIBRARY_INC%/cudnn.h exit 1        # [win]\n    - if not exist %LIBRARY_INC%/cudnn_adv_train.h exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/cudnn.lib exit 1      # [win]\n    - if not exist %LIBRARY_LIB%/cudnn_adv_train.lib exit 1      # [win]\n    - if not exist %LIBRARY_BIN%/cudnn64_8.dll exit 1  # [win]\n    - if not exist %LIBRARY_BIN%/cudnn_adv_train64_8.dll exit 1  # [win]\n    - test -f $PREFIX/include/cudnn.h                  # [linux]\n    - test -f $PREFIX/include/cudnn_adv_train.h        # [linux]\n    - test -f $PREFIX/lib/libcudnn.so                  # [linux]\n    - test -f $PREFIX/lib/libcudnn_adv_train.so        # [linux]\n\nabout:\n  home: https://developer.nvidia.com/cudnn\n  license: cuDNN Software License Agreement\n  license_file: NVIDIA_SLA_cuDNN_Support.txt\n  license_url: https://docs.nvidia.com/deeplearning/cudnn/sla/index.html\n  summary: \"NVIDIA's cuDNN deep neural network acceleration library\"\n  description: |\n    NVIDIA CUDA Deep Neural Network (cuDNN) is a GPU-accelerated library of\n    primitives for deep neural networks. It provides highly tuned\n    implementations of routines arising frequently in DNN applications.\n\n    License Agreements:- The packages are governed by the NVIDIA cuDNN\n    Software License Agreement (EULA). By downloading and using the packages,\n    you accept the terms and conditions of the NVIDIA cuDNN EULA -\n    https://docs.nvidia.com/deeplearning/cudnn/sla/index.html\n  doc_url: https://docs.nvidia.com/deeplearning/cudnn/\n  dev_url: https://developer.nvidia.com/rdp/cudnn-download\n\nextra:\n  recipe-maintainers:\n    - isuruf\n",
+ "raw_meta_yaml": "{% set version = \"8.1.0.77\" %}\n\npackage:\n  name: cudnn\n  version: {{ version }}\n\nsource:\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cuda_compiler_version }}-linux-x64-v{{ version }}.tgz  # [linux64]\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cuda_compiler_version }}-linux-ppc64le-v{{ version }}.tgz  # [ppc64le]\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cuda_compiler_version }}-windows10-x64-v{{ version }}.zip  # [win and cuda_compiler_version == \"10.2\"]\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cuda_compiler_version }}-windows-x64-v{{ version }}.zip  # [win and cuda_compiler_version == \"11.2\"]\n  sha256: 508a7aaad4e9a167b63cc063018541c74e089a1f548715832c50249dc2098dfa  # [win64 and cuda_compiler_version == \"10.2\"]\n  sha256: f5a23402ebed5b2add2ae0dc79df42f055f5851bbb3b1d0f6aa9dcdeeb9346ce  # [win64 and cuda_compiler_version == \"11.2\"]\n  sha256: c5bc617d89198b0fbe485156446be15a08aee37f7aff41c797b120912f2b14b4  # [linux64 and cuda_compiler_version == \"10.2\"]\n  sha256: dbe82faf071d91ba9bcf00480146ad33f462482dfee56caf4479c1b8dabe3ecb  # [linux64 and cuda_compiler_version == \"11.2\"]\n\nbuild:\n  number: 0\n  skip: True   # [cuda_compiler_version in (\"None\", \"9.2\", \"10.0\", \"10.1\", \"11.0\", \"11.1\")]\n  script:\n    - mkdir -p $PREFIX/include               # [unix]\n    - cp include/cudnn*.h $PREFIX/include/    # [unix]\n    - mkdir -p $PREFIX/lib                   # [unix]\n    - mv lib64/libcudnn*.so* $PREFIX/lib/     # [linux64]\n    - mv lib/libcudnn*.so* $PREFIX/lib/       # [ppc64le]\n    - mkdir %LIBRARY_INC%                    # [win]\n    - copy %SRC_DIR%\\\\include\\\\cudnn*.h %LIBRARY_INC%\\\\     # [win]\n    - mkdir %LIBRARY_LIB%                    # [win]\n    - copy %SRC_DIR%\\\\lib\\\\x64\\\\cudnn*.lib %LIBRARY_LIB%\\\\  # [win]\n    - mkdir %LIBRARY_BIN%                    # [win]\n    - copy %SRC_DIR%\\\\bin\\\\cudnn*_8.dll %LIBRARY_BIN%\\\\     # [win]\n  ignore_run_exports_from:\n    - {{ compiler('c') }}    # [linux]\n    - {{ compiler('cuda') }}\n  run_exports:\n    - {{ pin_subpackage('cudnn') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n  run:\n    # Only GCC_3.0 or older symbols present\n    - libgcc-ng >=3.0     # [linux]\n    # Only GLIBCXX_3.4 or older symbols present\n    - libstdcxx-ng >=3.4  # [linux]\n    - cudatoolkit {{ cuda_compiler_version }}  # [cuda_compiler_version == \"10.2\"]\n    - cudatoolkit 11.*  # [cuda_compiler_version == \"11.2\"]\n  run_constrained:\n    # Only GLIBC_2.17 or older symbols present\n    - __glibc >=2.17      # [ppc64le]\n\ntest:\n  commands:\n    - if not exist %LIBRARY_INC%/cudnn.h exit 1        # [win]\n    - if not exist %LIBRARY_INC%/cudnn_adv_train.h exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/cudnn.lib exit 1      # [win]\n    - if not exist %LIBRARY_LIB%/cudnn_adv_train.lib exit 1      # [win]\n    - if not exist %LIBRARY_BIN%/cudnn64_8.dll exit 1  # [win]\n    - if not exist %LIBRARY_BIN%/cudnn_adv_train64_8.dll exit 1  # [win]\n    - test -f $PREFIX/include/cudnn.h                  # [linux]\n    - test -f $PREFIX/include/cudnn_adv_train.h        # [linux]\n    - test -f $PREFIX/lib/libcudnn.so                  # [linux]\n    - test -f $PREFIX/lib/libcudnn_adv_train.so        # [linux]\n\nabout:\n  home: https://developer.nvidia.com/cudnn\n  license: cuDNN Software License Agreement\n  license_file: NVIDIA_SLA_cuDNN_Support.txt\n  license_url: https://docs.nvidia.com/deeplearning/cudnn/sla/index.html\n  summary: \"NVIDIA's cuDNN deep neural network acceleration library\"\n  description: |\n    NVIDIA CUDA Deep Neural Network (cuDNN) is a GPU-accelerated library of\n    primitives for deep neural networks. It provides highly tuned\n    implementations of routines arising frequently in DNN applications.\n\n    License Agreements:- The packages are governed by the NVIDIA cuDNN\n    Software License Agreement (EULA). By downloading and using the packages,\n    you accept the terms and conditions of the NVIDIA cuDNN EULA -\n    https://docs.nvidia.com/deeplearning/cudnn/sla/index.html\n  doc_url: https://docs.nvidia.com/deeplearning/cudnn/\n  dev_url: https://developer.nvidia.com/rdp/cudnn-download\n\nextra:\n  recipe-maintainers:\n    - kkraus14\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "cuda_compiler_stub",
+   "cudatoolkit",
    "libgcc-ng",
    "libstdcxx-ng",
    "sysroot_linux-64"
@@ -366,6 +463,7 @@
     "c_compiler_stub",
     "ctng-compilers",
     "cuda_compiler_stub",
+    "cudatoolkit",
     "libgcc-ng",
     "libstdcxx-ng",
     "linux-sysroot"
@@ -376,7 +474,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.8.6",
+ "smithy_version": "3.9.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
@@ -394,6 +492,8 @@
   "run": {
    "__set__": true,
    "elements": [
+    "cudatoolkit 10.2",
+    "cudatoolkit 11.*",
     "libgcc-ng >=3.0",
     "libstdcxx-ng >=3.4"
    ]
@@ -403,6 +503,110 @@
    "elements": []
   }
  },
- "url": "https://developer.download.nvidia.com/compute/redist/cudnn/v8.0.5/cudnn-10.2-linux-x64-v8.0.5.39.tgz",
- "version": "8.0.5.39"
+ "url": "https://developer.download.nvidia.com/compute/redist/cudnn/v8.1.0/cudnn-11.2-windows-x64-v8.1.0.77.zip",
+ "version": "8.1.0.77",
+ "win_64_meta_yaml": {
+  "about": {
+   "description": "NVIDIA CUDA Deep Neural Network (cuDNN) is a GPU-accelerated library of\nprimitives for deep neural networks. It provides highly tuned\nimplementations of routines arising frequently in DNN applications.\n\nLicense Agreements:- The packages are governed by the NVIDIA cuDNN\nSoftware License Agreement (EULA). By downloading and using the packages,\nyou accept the terms and conditions of the NVIDIA cuDNN EULA -\nhttps://docs.nvidia.com/deeplearning/cudnn/sla/index.html\n",
+   "dev_url": "https://developer.nvidia.com/rdp/cudnn-download",
+   "doc_url": "https://docs.nvidia.com/deeplearning/cudnn/",
+   "home": "https://developer.nvidia.com/cudnn",
+   "license": "cuDNN Software License Agreement",
+   "license_file": "NVIDIA_SLA_cuDNN_Support.txt",
+   "license_url": "https://docs.nvidia.com/deeplearning/cudnn/sla/index.html",
+   "summary": "NVIDIA's cuDNN deep neural network acceleration library"
+  },
+  "build": {
+   "ignore_run_exports_from": [
+    "cuda_compiler_stub",
+    "cuda_compiler_stub"
+   ],
+   "number": "0",
+   "run_exports": [
+    "cudnn",
+    "cudnn"
+   ],
+   "script": [
+    "mkdir %LIBRARY_INC%",
+    "copy %SRC_DIR%\\\\include\\\\cudnn*.h %LIBRARY_INC%\\\\",
+    "mkdir %LIBRARY_LIB%",
+    "copy %SRC_DIR%\\\\lib\\\\x64\\\\cudnn*.lib %LIBRARY_LIB%\\\\",
+    "mkdir %LIBRARY_BIN%",
+    "copy %SRC_DIR%\\\\bin\\\\cudnn*_8.dll %LIBRARY_BIN%\\\\",
+    "mkdir %LIBRARY_INC%",
+    "copy %SRC_DIR%\\\\include\\\\cudnn*.h %LIBRARY_INC%\\\\",
+    "mkdir %LIBRARY_LIB%",
+    "copy %SRC_DIR%\\\\lib\\\\x64\\\\cudnn*.lib %LIBRARY_LIB%\\\\",
+    "mkdir %LIBRARY_BIN%",
+    "copy %SRC_DIR%\\\\bin\\\\cudnn*_8.dll %LIBRARY_BIN%\\\\"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "kkraus14",
+    "kkraus14"
+   ]
+  },
+  "package": {
+   "name": "cudnn",
+   "version": "8.1.0.77"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cuda_compiler_stub",
+    "c_compiler_stub",
+    "cuda_compiler_stub"
+   ],
+   "host": [],
+   "run": [
+    "cudatoolkit 10.2",
+    "cudatoolkit 11.*"
+   ],
+   "run_constrained": null
+  },
+  "source": {
+   "sha256": "f5a23402ebed5b2add2ae0dc79df42f055f5851bbb3b1d0f6aa9dcdeeb9346ce",
+   "url": "https://developer.download.nvidia.com/compute/redist/cudnn/v8.1.0/cudnn-11.2-windows-x64-v8.1.0.77.zip"
+  },
+  "test": {
+   "commands": [
+    "if not exist %LIBRARY_INC%/cudnn.h exit 1",
+    "if not exist %LIBRARY_INC%/cudnn_adv_train.h exit 1",
+    "if not exist %LIBRARY_LIB%/cudnn.lib exit 1",
+    "if not exist %LIBRARY_LIB%/cudnn_adv_train.lib exit 1",
+    "if not exist %LIBRARY_BIN%/cudnn64_8.dll exit 1",
+    "if not exist %LIBRARY_BIN%/cudnn_adv_train64_8.dll exit 1",
+    "if not exist %LIBRARY_INC%/cudnn.h exit 1",
+    "if not exist %LIBRARY_INC%/cudnn_adv_train.h exit 1",
+    "if not exist %LIBRARY_LIB%/cudnn.lib exit 1",
+    "if not exist %LIBRARY_LIB%/cudnn_adv_train.lib exit 1",
+    "if not exist %LIBRARY_BIN%/cudnn64_8.dll exit 1",
+    "if not exist %LIBRARY_BIN%/cudnn_adv_train64_8.dll exit 1"
+   ]
+  }
+ },
+ "win_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cuda_compiler_stub"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "cudatoolkit"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ }
 }
