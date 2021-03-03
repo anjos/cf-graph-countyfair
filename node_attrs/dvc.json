@@ -2720,25 +2720,6 @@
   },
   "outputs": [
    {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
-     ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dvc = dvc.main:main"
@@ -2747,7 +2728,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -2759,7 +2740,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -2780,6 +2762,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -2788,7 +2771,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -2812,8 +2797,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -2825,8 +2822,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -2838,8 +2847,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -2851,9 +2872,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -2865,8 +2899,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -2878,9 +2924,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -2892,8 +2950,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -2905,27 +2975,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -2938,7 +3001,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -2950,7 +3013,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -2971,6 +3035,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -2979,7 +3044,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -3003,8 +3070,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3016,8 +3095,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3029,8 +3120,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3042,9 +3145,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3056,8 +3172,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3069,9 +3197,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3083,8 +3223,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3096,27 +3248,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3129,7 +3274,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -3141,7 +3286,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -3162,6 +3308,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -3170,7 +3317,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -3194,8 +3343,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3207,8 +3368,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3220,8 +3393,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3233,9 +3418,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3247,8 +3445,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3260,9 +3470,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3274,8 +3496,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3287,15 +3521,27 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    }
   ],
   "package": {
    "name": "dvc",
-   "version": "1.11.16"
+   "version": "2.0.0"
   },
   "source": {
    "patches": [
@@ -3303,28 +3549,8 @@
     "build.patch",
     "build.patch"
    ],
-   "sha256": "016339ca6bcd33e674a118cbb5836ae8c014ad346da7dbd5f46f9192328f11ed",
-   "url": "https://pypi.io/packages/source/d/dvc/dvc-1.11.16.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\""
-   ],
-   "imports": [
-    "dvc",
-    "dvc",
-    "dvc"
-   ],
-   "requires": [
-    "git",
-    "git",
-    "git"
-   ]
+   "sha256": "85690d95667c6360224f107161e5886ecdd25d570bac80593f64718438208623",
+   "url": "https://pypi.io/packages/source/d/dvc/dvc-2.0.0.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -3342,28 +3568,24 @@
   "run": {
    "__set__": true,
    "elements": [
+    "adlfs",
     "appdirs",
-    "azure-storage-blob",
+    "azure-identity",
     "boto3",
     "colorama",
     "configobj",
+    "diskcache",
     "distro",
     "dpath",
     "dulwich",
-    "dvc-azure",
-    "dvc-base",
-    "dvc-gdrive",
-    "dvc-gs",
-    "dvc-hdfs",
-    "dvc-oss",
-    "dvc-s3",
-    "dvc-ssh",
+    "dvc",
     "flatten-dict",
     "flufl.lock",
+    "fsspec",
     "funcy",
+    "gcsfs",
     "gitdb2",
     "gitpython",
-    "google-cloud-storage",
     "grandalf",
     "invoke",
     "jsonpath-ng",
@@ -3375,10 +3597,12 @@
     "paramiko",
     "pathspec",
     "ply",
+    "psutil",
     "pyarrow",
     "pyasn1",
     "pydot",
     "pydrive2",
+    "pygit2",
     "pygtrie",
     "pyparsing",
     "python",
@@ -3460,25 +3684,6 @@
   },
   "outputs": [
    {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
-     ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dvc = dvc.main:main"
@@ -3487,7 +3692,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -3499,7 +3704,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -3520,6 +3726,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -3528,7 +3735,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -3552,8 +3761,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3565,8 +3786,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3578,8 +3811,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3591,9 +3836,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3605,8 +3863,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3618,9 +3888,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3632,8 +3914,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3645,27 +3939,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3678,7 +3965,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -3690,7 +3977,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -3711,6 +3999,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -3719,7 +4008,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -3743,8 +4034,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3756,8 +4059,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3769,8 +4084,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3782,9 +4109,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3796,8 +4136,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3809,9 +4161,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3823,8 +4187,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3836,27 +4212,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3869,7 +4238,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -3881,7 +4250,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -3902,6 +4272,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -3910,7 +4281,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -3934,8 +4307,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3947,8 +4332,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3960,8 +4357,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3973,9 +4382,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -3987,8 +4409,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4000,9 +4434,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4014,8 +4460,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4027,27 +4485,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4060,7 +4511,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -4072,7 +4523,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -4093,6 +4545,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -4101,7 +4554,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -4125,8 +4580,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4138,8 +4605,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4151,8 +4630,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4164,9 +4655,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4178,8 +4682,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4191,9 +4707,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4205,8 +4733,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4218,27 +4758,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4251,7 +4784,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -4263,7 +4796,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -4284,6 +4818,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -4292,7 +4827,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -4316,8 +4853,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4329,8 +4878,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4342,8 +4903,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4355,9 +4928,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4369,8 +4955,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4382,9 +4980,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4396,8 +5006,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4409,27 +5031,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4442,7 +5057,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -4454,7 +5069,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -4475,6 +5091,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -4483,7 +5100,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -4507,8 +5126,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4520,8 +5151,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4533,8 +5176,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4546,9 +5201,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4560,8 +5228,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4573,9 +5253,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4587,8 +5279,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4600,27 +5304,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4633,7 +5330,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -4645,7 +5342,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -4668,6 +5366,7 @@
       "win_unicode_console >=0.5",
       "pywin32 >=225",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -4676,7 +5375,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -4700,8 +5401,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4713,8 +5426,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4726,8 +5451,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4739,9 +5476,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4753,8 +5503,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4766,9 +5528,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4780,8 +5554,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4793,27 +5579,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4826,7 +5605,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -4838,7 +5617,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -4861,6 +5641,7 @@
       "win_unicode_console >=0.5",
       "pywin32 >=225",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -4869,7 +5650,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -4893,8 +5676,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4906,8 +5701,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4919,8 +5726,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4932,9 +5751,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4946,8 +5778,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4959,9 +5803,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4973,8 +5829,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -4986,27 +5854,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5019,7 +5880,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -5031,7 +5892,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -5054,6 +5916,7 @@
       "win_unicode_console >=0.5",
       "pywin32 >=225",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -5062,7 +5925,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -5086,8 +5951,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5099,8 +5976,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5112,8 +6001,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5125,9 +6026,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5139,8 +6053,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5152,9 +6078,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5166,8 +6104,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5179,15 +6129,27 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    }
   ],
   "package": {
    "name": "dvc",
-   "version": "1.11.16"
+   "version": "2.0.0"
   },
   "source": {
    "patches": [
@@ -5201,52 +6163,8 @@
     "build.patch",
     "build.patch"
    ],
-   "sha256": "016339ca6bcd33e674a118cbb5836ae8c014ad346da7dbd5f46f9192328f11ed",
-   "url": "https://pypi.io/packages/source/d/dvc/dvc-1.11.16.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\""
-   ],
-   "imports": [
-    "dvc",
-    "dvc",
-    "dvc",
-    "dvc",
-    "dvc",
-    "dvc",
-    "dvc",
-    "dvc",
-    "dvc"
-   ],
-   "requires": [
-    "git",
-    "git",
-    "git",
-    "git",
-    "git",
-    "git",
-    "git",
-    "git",
-    "git"
-   ]
+   "sha256": "85690d95667c6360224f107161e5886ecdd25d570bac80593f64718438208623",
+   "url": "https://pypi.io/packages/source/d/dvc/dvc-2.0.0.tar.gz"
   }
  },
  "name": "dvc",
@@ -5352,25 +6270,6 @@
   },
   "outputs": [
    {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
-     ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dvc = dvc.main:main"
@@ -5379,7 +6278,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -5391,7 +6290,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -5412,6 +6312,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -5420,7 +6321,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -5444,8 +6347,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5457,8 +6372,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5470,8 +6397,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5483,9 +6422,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5497,8 +6449,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5510,9 +6474,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5524,8 +6500,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5537,27 +6525,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5570,7 +6551,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -5582,7 +6563,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -5603,6 +6585,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -5611,7 +6594,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -5635,8 +6620,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5648,8 +6645,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5661,8 +6670,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5674,9 +6695,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5688,8 +6722,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5701,9 +6747,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5715,8 +6773,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5728,27 +6798,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5761,7 +6824,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -5773,7 +6836,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -5794,6 +6858,7 @@
       "zc.lockfile >=1.2.1",
       "flufl.lock >=3.2,<4",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -5802,7 +6867,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -5826,8 +6893,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5839,8 +6918,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5852,8 +6943,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5865,9 +6968,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5879,8 +6995,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5892,9 +7020,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5906,8 +7046,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -5919,15 +7071,27 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    }
   ],
   "package": {
    "name": "dvc",
-   "version": "1.11.16"
+   "version": "2.0.0"
   },
   "source": {
    "patches": [
@@ -5935,28 +7099,8 @@
     "build.patch",
     "build.patch"
    ],
-   "sha256": "016339ca6bcd33e674a118cbb5836ae8c014ad346da7dbd5f46f9192328f11ed",
-   "url": "https://pypi.io/packages/source/d/dvc/dvc-1.11.16.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\""
-   ],
-   "imports": [
-    "dvc",
-    "dvc",
-    "dvc"
-   ],
-   "requires": [
-    "git",
-    "git",
-    "git"
-   ]
+   "sha256": "85690d95667c6360224f107161e5886ecdd25d570bac80593f64718438208623",
+   "url": "https://pypi.io/packages/source/d/dvc/dvc-2.0.0.tar.gz"
   }
  },
  "osx_64_requirements": {
@@ -5974,28 +7118,24 @@
   "run": {
    "__set__": true,
    "elements": [
+    "adlfs",
     "appdirs",
-    "azure-storage-blob",
+    "azure-identity",
     "boto3",
     "colorama",
     "configobj",
+    "diskcache",
     "distro",
     "dpath",
     "dulwich",
-    "dvc-azure",
-    "dvc-base",
-    "dvc-gdrive",
-    "dvc-gs",
-    "dvc-hdfs",
-    "dvc-oss",
-    "dvc-s3",
-    "dvc-ssh",
+    "dvc",
     "flatten-dict",
     "flufl.lock",
+    "fsspec",
     "funcy",
+    "gcsfs",
     "gitdb2",
     "gitpython",
-    "google-cloud-storage",
     "grandalf",
     "invoke",
     "jsonpath-ng",
@@ -6007,10 +7147,12 @@
     "paramiko",
     "pathspec",
     "ply",
+    "psutil",
     "pyarrow",
     "pyasn1",
     "pydot",
     "pydrive2",
+    "pygit2",
     "pygtrie",
     "pyparsing",
     "python",
@@ -6041,7 +7183,6 @@
   "elements": [
    "dvc",
    "dvc-azure",
-   "dvc-base",
    "dvc-gdrive",
    "dvc-gs",
    "dvc-hdfs",
@@ -6052,32 +7193,28 @@
   ]
  },
  "pinning_version": "2021.03.03.10.54.47",
- "raw_meta_yaml": "{% set name = \"dvc\" %}\n{% set version = \"1.11.16\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 016339ca6bcd33e674a118cbb5836ae8c014ad346da7dbd5f46f9192328f11ed\n  patches:\n    - build.patch\n\n# The \"true\" build is specified in the dvc-base output below.\n# Of the build properties here and below:\n# number is propagated into the outputs below\nbuild:\n  number: 0\n  skip: true  # [py<36]\n\n# These tests are executed for the top-level `dvc` package\ntest:\n  requires:\n    - git\n  imports:\n    - dvc\n  commands:\n    - dvc version\n    - 'dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"'\n\n# DVC includes requirements-only extras to enable support for different\n# remotes. Here we build a `dvc` conda package equivalent to the `dvc[all]` pip\n# package, with a `dvc` base package containing dvc alone. This allows a\n# happy-path of:\n#\n#   `conda install -c conda-forge dvc`\n#\n# supporting dvc and all remotes and a power-user path of:\n#\n#   `conda install -c conda-forge dvc-base dvc-s3`\n#\n# for dvc and specific remotes.\n#\n# Here's how it works...\n#\n# We define extras through \"private\" subpackages and a single top-level `dvc`\n# metapackage. The metapackage at a given build version references the extras\n# subpackages at the same build version. `dvc-base` includes the dvc package itself\n# and core dependencies. `dvc-gs`, `dvc-s3`, et al contain no code, but\n# reference the `dvc` base package and the requirements for that extra.\n#\n# Adding a new extra...\n#\n# Each extra needs to be added in two places:\n# 1. Under a new output specifying the additional runtime requirements\n# 2. Under outputs->dvc->requirements.run with a pin_subpackage directive, to\n#    include it in the `dvc` metapackage\noutputs:\n  - name: dvc\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc-base\", exact=True) }}\n        - {{ pin_subpackage(\"dvc-gs\", exact=True) }}\n        - {{ pin_subpackage(\"dvc-gdrive\", exact=True) }}\n        - {{ pin_subpackage(\"dvc-s3\", exact=True) }}\n        - {{ pin_subpackage(\"dvc-azure\", exact=True) }}\n        - {{ pin_subpackage(\"dvc-oss\", exact=True) }}\n        - {{ pin_subpackage(\"dvc-ssh\", exact=True) }}\n        - {{ pin_subpackage(\"dvc-hdfs\", exact=True) }}\n\n  - name: dvc-base\n    build:\n      entry_points:\n        - dvc = dvc.main:main\n      script:\n        - python -m pip install . --no-deps -vv\n\n    # Base package supports dvc, but only supports built-in remotes\n    test:\n      requires:\n        - git\n      imports:\n        - dvc\n      commands:\n        - dvc version\n        - 'dvc version | grep \"Supports: http, https\"'\n\n    requirements:\n      host:\n        - python\n        - pip\n      run:\n        - python\n        - ply >=3.9\n        - colorama >=0.3.9\n        - configobj >=5.0.6\n        - gitpython >=2.1.8\n        - dulwich >=0.20.11\n        - gitdb2 >=2.0.6\n        - setuptools >=34.0.0\n        - nanotime >=0.5.2\n        - pyasn1 >=0.4.1\n        - voluptuous >=0.11.7\n        - jsonpath-ng >=1.4.3\n        - requests >=2.22.0\n        - grandalf ==0.6\n        - distro >=1.3.0\n        - appdirs >=1.4.3\n        - ruamel.yaml >=0.16.1\n        - toml >=0.10.1\n        - funcy >=1.14\n        - pathspec >=0.6.0\n        - shortuuid >=0.5.0\n        - tqdm >=4.45.0,<5\n        - packaging >=19.0\n        - zc.lockfile >=1.2.1\n        - flufl.lock >=3.2,<4\n        - win_unicode_console >=0.5  # [win]\n        - pywin32 >=225  # [win]\n        - networkx >=2.1\n        - pydot >=1.2.4\n        - dataclasses  # [py<37]\n        - flatten-dict >=0.3.0,<1\n        - tabulate >=0.8.7\n        - pygtrie ==2.3.2\n        - dpath >=1.4.2\n        - shtab >=1.3.2,<2\n        - rich >=3.0.5\n        - pyparsing ==2.4.7\n        - typing_extensions >=3.7.4\n\n  - name: dvc-gs\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc-base\", exact=True) }}\n        - google-cloud-storage ==1.19.0\n\n  - name: dvc-gdrive\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc-base\", exact=True) }}\n        - pydrive2 >=1.6.3\n\n  - name: dvc-s3\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc-base\", exact=True) }}\n        - boto3 >=1.9.201\n\n  - name: dvc-azure\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc-base\", exact=True) }}\n        - azure-storage-blob >=12.0\n        - knack\n\n  - name: dvc-oss\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc-base\", exact=True) }}\n        - oss2 >=2.11.0\n\n  - name: dvc-ssh\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc-base\", exact=True) }}\n        - paramiko >=2.7.0\n        # for paramiko, see https://github.com/iterative/dvc/issues/4589\n        - invoke >=1.3\n\n  - name: dvc-hdfs\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc-base\", exact=True) }}\n        - pyarrow >=0.17.1\n\n  - name: dvc-webhdfs\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc-base\", exact=True) }}\n        - python-hdfs >=2.5.7\n\nabout:\n  home: https://dvc.org/\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: DVC tracks ML models and data sets\n\n  description: |\n    Data Version Control or DVC is an open-source tool for data science\n    and machine learning projects.\n  doc_url: https://dvc.org/doc\n  dev_url: https://github.com/iterative/dvc\n\nextra:\n  recipe-maintainers:\n    - shcheklein\n    - efiop\n    - skshetry\n    # metapackage support\n    - asford\n",
+ "raw_meta_yaml": "{% set name = \"dvc\" %}\n{% set version = \"2.0.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 85690d95667c6360224f107161e5886ecdd25d570bac80593f64718438208623\n  patches:\n    - build.patch\n\n# The \"true\" build is specified in the dvc output below.\n# Of the build properties here and below:\n# number is propagated into the outputs below\nbuild:\n  number: 0\n  skip: true  # [py<36]\n\noutputs:\n  - name: dvc\n    build:\n      entry_points:\n        - dvc = dvc.main:main\n      script:\n        - python -m pip install . --no-deps -vv\n\n    # Base package supports dvc, but only supports built-in remotes\n    test:\n      requires:\n        - git\n      imports:\n        - dvc\n      commands:\n        - dvc version\n        - 'dvc version | grep \"Supports: http, https\"'\n\n    requirements:\n      host:\n        - python\n        - pip\n      run:\n        - python\n        - ply >=3.9\n        - colorama >=0.3.9\n        - configobj >=5.0.6\n        - gitpython >=2.1.8\n        - dulwich >=0.20.19\n        - pygit2 >=1.4.0\n        - gitdb2 >=2.0.6\n        - setuptools >=34.0.0\n        - nanotime >=0.5.2\n        - pyasn1 >=0.4.1\n        - voluptuous >=0.11.7\n        - jsonpath-ng >=1.4.3\n        - requests >=2.22.0\n        - grandalf ==0.6\n        - distro >=1.3.0\n        - appdirs >=1.4.3\n        - ruamel.yaml >=0.16.1\n        - toml >=0.10.1\n        - funcy >=1.14\n        - pathspec >=0.6.0\n        - shortuuid >=0.5.0\n        - tqdm >=4.45.0,<5\n        - packaging >=19.0\n        - zc.lockfile >=1.2.1\n        - flufl.lock >=3.2,<4\n        - win_unicode_console >=0.5  # [win]\n        - pywin32 >=225  # [win]\n        - networkx >=2.1\n        - psutil >=5.8.0\n        - pydot >=1.2.4\n        - dataclasses  # [py<37]\n        - flatten-dict >=0.3.0,<1\n        - tabulate >=0.8.7\n        - pygtrie ==2.3.2\n        - dpath >=1.4.2\n        - shtab >=1.3.2,<2\n        - rich >=3.0.5\n        - pyparsing ==2.4.7\n        - typing_extensions >=3.7.4\n        - fsspec >=0.8.5\n        - diskcache >=5.2.1\n\n  - name: dvc-gs\n    test:\n      requires:\n        - git\n      imports:\n        - dvc\n      commands:\n        - dvc version\n        - 'dvc version | grep gs'\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc\", exact=True) }}\n        - gcsfs >=0.7.2\n\n  - name: dvc-gdrive\n    test:\n      requires:\n        - git\n      imports:\n        - dvc\n      commands:\n        - dvc version\n        - 'dvc version | grep gdrive'\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc\", exact=True) }}\n        - pydrive2 >=1.6.3\n\n  - name: dvc-s3\n    test:\n      requires:\n        - git\n      imports:\n        - dvc\n      commands:\n        - dvc version\n        - 'dvc version | grep s3'\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc\", exact=True) }}\n        - boto3 >=1.9.201\n\n  - name: dvc-azure\n    test:\n      requires:\n        - git\n      imports:\n        - dvc\n      commands:\n        - dvc version\n        - 'dvc version | grep azure'\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc\", exact=True) }}\n        - adlfs >=0.6.3\n        - azure-identity >=1.4.0\n        - knack\n\n  - name: dvc-oss\n    test:\n      requires:\n        - git\n      imports:\n        - dvc\n      commands:\n        - dvc version\n        - 'dvc version | grep oss'\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc\", exact=True) }}\n        - oss2 >=2.11.0\n\n  - name: dvc-ssh\n    test:\n      requires:\n        - git\n      imports:\n        - dvc\n      commands:\n        - dvc version\n        - 'dvc version | grep ssh'\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc\", exact=True) }}\n        - paramiko >=2.7.0\n        # for paramiko, see https://github.com/iterative/dvc/issues/4589\n        - invoke >=1.3\n\n  - name: dvc-hdfs\n    test:\n      requires:\n        - git\n      imports:\n        - dvc\n      commands:\n        - dvc version\n        - 'dvc version | grep hdfs'\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc\", exact=True) }}\n        - pyarrow >=0.17.1\n\n  - name: dvc-webhdfs\n    test:\n      requires:\n        - git\n      imports:\n        - dvc\n      commands:\n        - dvc version\n        - 'dvc version | grep webhdfs'\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"dvc\", exact=True) }}\n        - python-hdfs >=2.5.7\n\nabout:\n  home: https://dvc.org/\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: DVC tracks ML models and data sets\n\n  description: |\n    Data Version Control or DVC is an open-source tool for data science\n    and machine learning projects.\n  doc_url: https://dvc.org/doc\n  dev_url: https://github.com/iterative/dvc\n\nextra:\n  recipe-maintainers:\n    - shcheklein\n    - efiop\n    - skshetry\n    # metapackage support\n    - asford\n",
  "req": {
   "__set__": true,
   "elements": [
+   "adlfs",
    "appdirs",
-   "azure-storage-blob",
+   "azure-identity",
    "boto3",
    "colorama",
    "configobj",
+   "diskcache",
    "distro",
    "dpath",
    "dulwich",
-   "dvc-azure",
-   "dvc-base",
-   "dvc-gdrive",
-   "dvc-gs",
-   "dvc-hdfs",
-   "dvc-oss",
-   "dvc-s3",
-   "dvc-ssh",
+   "dvc",
    "flatten-dict",
    "flufl.lock",
+   "fsspec",
    "funcy",
+   "gcsfs",
    "gitdb2",
    "gitpython",
-   "google-cloud-storage",
    "grandalf",
    "invoke",
    "jsonpath-ng",
@@ -6090,10 +7227,12 @@
    "pathspec",
    "pip",
    "ply",
+   "psutil",
    "pyarrow",
    "pyasn1",
    "pydot",
    "pydrive2",
+   "pygit2",
    "pygtrie",
    "pyparsing",
    "python",
@@ -6129,28 +7268,24 @@
   "run": {
    "__set__": true,
    "elements": [
+    "adlfs",
     "appdirs",
-    "azure-storage-blob",
+    "azure-identity",
     "boto3",
     "colorama",
     "configobj",
+    "diskcache",
     "distro",
     "dpath",
     "dulwich",
-    "dvc-azure",
-    "dvc-base",
-    "dvc-gdrive",
-    "dvc-gs",
-    "dvc-hdfs",
-    "dvc-oss",
-    "dvc-s3",
-    "dvc-ssh",
+    "dvc",
     "flatten-dict",
     "flufl.lock",
+    "fsspec",
     "funcy",
+    "gcsfs",
     "gitdb2",
     "gitpython",
-    "google-cloud-storage",
     "grandalf",
     "invoke",
     "jsonpath-ng",
@@ -6162,10 +7297,12 @@
     "paramiko",
     "pathspec",
     "ply",
+    "psutil",
     "pyarrow",
     "pyasn1",
     "pydot",
     "pydrive2",
+    "pygit2",
     "pygtrie",
     "pyparsing",
     "python",
@@ -6210,28 +7347,24 @@
   "run": {
    "__set__": true,
    "elements": [
+    "adlfs >=0.6.3",
     "appdirs >=1.4.3",
-    "azure-storage-blob >=12.0",
+    "azure-identity >=1.4.0",
     "boto3 >=1.9.201",
     "colorama >=0.3.9",
     "configobj >=5.0.6",
+    "diskcache >=5.2.1",
     "distro >=1.3.0",
     "dpath >=1.4.2",
-    "dulwich >=0.20.11",
-    "dvc-azure",
-    "dvc-base",
-    "dvc-gdrive",
-    "dvc-gs",
-    "dvc-hdfs",
-    "dvc-oss",
-    "dvc-s3",
-    "dvc-ssh",
+    "dulwich >=0.20.19",
+    "dvc",
     "flatten-dict >=0.3.0,<1",
     "flufl.lock >=3.2,<4",
+    "fsspec >=0.8.5",
     "funcy >=1.14",
+    "gcsfs >=0.7.2",
     "gitdb2 >=2.0.6",
     "gitpython >=2.1.8",
-    "google-cloud-storage ==1.19.0",
     "grandalf ==0.6",
     "invoke >=1.3",
     "jsonpath-ng >=1.4.3",
@@ -6243,10 +7376,12 @@
     "paramiko >=2.7.0",
     "pathspec >=0.6.0",
     "ply >=3.9",
+    "psutil >=5.8.0",
     "pyarrow >=0.17.1",
     "pyasn1 >=0.4.1",
     "pydot >=1.2.4",
     "pydrive2 >=1.6.3",
+    "pygit2 >=1.4.0",
     "pygtrie ==2.3.2",
     "pyparsing ==2.4.7",
     "python",
@@ -6274,8 +7409,8 @@
    ]
   }
  },
- "url": "https://pypi.io/packages/source/d/dvc/dvc-1.11.16.tar.gz",
- "version": "1.11.16",
+ "url": "https://pypi.io/packages/source/d/dvc/dvc-2.0.0.tar.gz",
+ "version": "2.0.0",
  "win_64_meta_yaml": {
   "about": {
    "description": "Data Version Control or DVC is an open-source tool for data science\nand machine learning projects.\n",
@@ -6308,25 +7443,6 @@
   },
   "outputs": [
    {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
-     ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dvc = dvc.main:main"
@@ -6335,7 +7451,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -6347,7 +7463,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -6370,6 +7487,7 @@
       "win_unicode_console >=0.5",
       "pywin32 >=225",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -6378,7 +7496,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -6402,8 +7522,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6415,8 +7547,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6428,8 +7572,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6441,9 +7597,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6455,8 +7624,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6468,9 +7649,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6482,8 +7675,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6495,27 +7700,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6528,7 +7726,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -6540,7 +7738,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -6563,6 +7762,7 @@
       "win_unicode_console >=0.5",
       "pywin32 >=225",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -6571,7 +7771,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -6595,8 +7797,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6608,8 +7822,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6621,8 +7847,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6634,9 +7872,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6648,8 +7899,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6661,9 +7924,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6675,8 +7950,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6688,27 +7975,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
      ]
-    }
-   },
-   {
-    "name": "dvc",
-    "requirements": {
-     "host": [
-      "python"
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
      ],
-     "run": [
-      "python",
-      "dvc-base",
-      "dvc-gs",
-      "dvc-gdrive",
-      "dvc-s3",
-      "dvc-azure",
-      "dvc-oss",
-      "dvc-ssh",
-      "dvc-hdfs"
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6721,7 +8001,7 @@
       "python -m pip install . --no-deps -vv"
      ]
     },
-    "name": "dvc-base",
+    "name": "dvc",
     "requirements": {
      "host": [
       "python",
@@ -6733,7 +8013,8 @@
       "colorama >=0.3.9",
       "configobj >=5.0.6",
       "gitpython >=2.1.8",
-      "dulwich >=0.20.11",
+      "dulwich >=0.20.19",
+      "pygit2 >=1.4.0",
       "gitdb2 >=2.0.6",
       "setuptools >=34.0.0",
       "nanotime >=0.5.2",
@@ -6756,6 +8037,7 @@
       "win_unicode_console >=0.5",
       "pywin32 >=225",
       "networkx >=2.1",
+      "psutil >=5.8.0",
       "pydot >=1.2.4",
       "flatten-dict >=0.3.0,<1",
       "tabulate >=0.8.7",
@@ -6764,7 +8046,9 @@
       "shtab >=1.3.2,<2",
       "rich >=3.0.5",
       "pyparsing ==2.4.7",
-      "typing_extensions >=3.7.4"
+      "typing_extensions >=3.7.4",
+      "fsspec >=0.8.5",
+      "diskcache >=5.2.1"
      ]
     },
     "test": {
@@ -6788,8 +8072,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "google-cloud-storage ==1.19.0"
+      "dvc",
+      "gcsfs >=0.7.2"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6801,8 +8097,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pydrive2 >=1.6.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep gdrive"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6814,8 +8122,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "boto3 >=1.9.201"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep s3"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6827,9 +8147,22 @@
      ],
      "run": [
       "python",
-      "dvc-base",
-      "azure-storage-blob >=12.0",
+      "dvc",
+      "adlfs >=0.6.3",
+      "azure-identity >=1.4.0",
       "knack"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep azure"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6841,8 +8174,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "oss2 >=2.11.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep oss"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6854,9 +8199,21 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "paramiko >=2.7.0",
       "invoke >=1.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep ssh"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6868,8 +8225,20 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "pyarrow >=0.17.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep hdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    },
@@ -6881,15 +8250,27 @@
      ],
      "run": [
       "python",
-      "dvc-base",
+      "dvc",
       "python-hdfs >=2.5.7"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dvc version",
+      "dvc version | grep webhdfs"
+     ],
+     "imports": [
+      "dvc"
+     ],
+     "requires": [
+      "git"
      ]
     }
    }
   ],
   "package": {
    "name": "dvc",
-   "version": "1.11.16"
+   "version": "2.0.0"
   },
   "source": {
    "patches": [
@@ -6897,28 +8278,8 @@
     "build.patch",
     "build.patch"
    ],
-   "sha256": "016339ca6bcd33e674a118cbb5836ae8c014ad346da7dbd5f46f9192328f11ed",
-   "url": "https://pypi.io/packages/source/d/dvc/dvc-1.11.16.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\"",
-    "dvc version",
-    "dvc version | grep \"Supports: azure, gdrive, gs, hdfs, http, https, s3, ssh, oss\""
-   ],
-   "imports": [
-    "dvc",
-    "dvc",
-    "dvc"
-   ],
-   "requires": [
-    "git",
-    "git",
-    "git"
-   ]
+   "sha256": "85690d95667c6360224f107161e5886ecdd25d570bac80593f64718438208623",
+   "url": "https://pypi.io/packages/source/d/dvc/dvc-2.0.0.tar.gz"
   }
  },
  "win_64_requirements": {
@@ -6936,28 +8297,24 @@
   "run": {
    "__set__": true,
    "elements": [
+    "adlfs",
     "appdirs",
-    "azure-storage-blob",
+    "azure-identity",
     "boto3",
     "colorama",
     "configobj",
+    "diskcache",
     "distro",
     "dpath",
     "dulwich",
-    "dvc-azure",
-    "dvc-base",
-    "dvc-gdrive",
-    "dvc-gs",
-    "dvc-hdfs",
-    "dvc-oss",
-    "dvc-s3",
-    "dvc-ssh",
+    "dvc",
     "flatten-dict",
     "flufl.lock",
+    "fsspec",
     "funcy",
+    "gcsfs",
     "gitdb2",
     "gitpython",
-    "google-cloud-storage",
     "grandalf",
     "invoke",
     "jsonpath-ng",
@@ -6969,10 +8326,12 @@
     "paramiko",
     "pathspec",
     "ply",
+    "psutil",
     "pyarrow",
     "pyasn1",
     "pydot",
     "pydrive2",
+    "pygit2",
     "pygtrie",
     "pyparsing",
     "python",
