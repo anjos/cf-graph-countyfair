@@ -224,7 +224,12 @@
  "archived": false,
  "bad": false,
  "branch": "master",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "provider": {
+   "linux_aarch64": "default",
+   "linux_ppc64le": "default"
+  }
+ },
  "feedstock_name": "singularity",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -234,7 +239,6 @@
    "doc_url": "https://www.sylabs.io/docs/",
    "home": "https://www.sylabs.io/singularity/",
    "license": "BSD-3-Clause",
-   "license_family": "BSD",
    "license_file": "src/github.com/sylabs/singularity/LICENSE-LBNL.md",
    "summary": "Singularity: Application containers for Linux"
   },
@@ -252,7 +256,7 @@
   },
   "package": {
    "name": "singularity",
-   "version": "3.6.4"
+   "version": "3.7.1"
   },
   "requirements": {
    "build": [
@@ -283,27 +287,251 @@
      "patches/0001-Make-runtime-relocatable.patch",
      "patches/0002-Fix-configuration-for-conda-forge.patch",
      "patches/0003-Use-external-CNI.patch",
+     "patches/0004-Find-unsquashfs-from-PATH.diff",
      "patches/set-version-from-env.patch"
     ],
-    "sha256": "71233a81d6bb4d686d8dc636b3e3e962a372f54001921c89a12b062cefd9e79f",
-    "url": "https://github.com/sylabs/singularity/releases/download/v3.6.4/singularity-3.6.4.tar.gz"
+    "sha256": "82d2c65063560195ec34551931be3c325b95e8e2009e92755fd7daad346e083c",
+    "url": "https://github.com/sylabs/singularity/releases/download/v3.7.1/singularity-3.7.1.tar.gz"
    }
   ],
   "test": {
    "commands": [
     "singularity --help",
     "singularity --version",
-    "singularity --version | grep 3.6.4",
+    "singularity --version | grep 3.7.1",
     "test ! -d $PREFIX/libexec/singularity/cni",
     "test -d $PREFIX/lib/cni",
     "test ! -d $PREFIX/etc/singularity/network",
     "test -f $PREFIX/etc/cni/net.d/00_bridge.conflist",
     "singularity build --sandbox lolcow docker://godlovedc/lolcow",
-    "singularity --verbose --debug run -u lolcow || (singularity --verbose --debug run -u lolcow 2>&1 | grep 'Failed to create user namespace: user namespace requires to set')"
+    "singularity --verbose --debug run -u lolcow || (singularity --verbose --debug run -u lolcow 2>&1 | grep 'Failed to create user namespace: user namespace requires to set')",
+    "singularity pull library://alpine",
+    "singularity --verbose --debug run -u alpine_latest.sif echo \"Hello world\""
    ]
   }
  },
  "linux_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cgo_compiler_stub",
+    "cxx_compiler_stub",
+    "go-dep",
+    "make",
+    "pkg-config",
+    "sed"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libarchive",
+    "libseccomp",
+    "libuuid",
+    "openssl"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "cni-plugins",
+    "squashfs-tools"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "description": "Singularity is a container platform focused on supporting \"Mobility of\nCompute\"\n\nMobility of Compute encapsulates the development to compute model where\ndevelopers can work in an environment of their choosing and creation and\nwhen the developer needs additional compute resources, this environment\ncan easily be copied and executed on other platforms. Additionally as the\nprimary use case for Singularity is targeted towards computational\nportability, many of the barriers to entry of other container solutions do\nnot apply to Singularity making it an ideal solution for users (both\ncomputational and non-computational) and HPC centers.\n",
+   "dev_url": "https://github.com/singularityware/singularity",
+   "doc_url": "https://www.sylabs.io/docs/",
+   "home": "https://www.sylabs.io/singularity/",
+   "license": "BSD-3-Clause",
+   "license_file": "src/github.com/sylabs/singularity/LICENSE-LBNL.md",
+   "summary": "Singularity: Application containers for Linux"
+  },
+  "build": {
+   "detect_binary_files_with_prefix": false,
+   "number": "0"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "bgruening",
+    "jakirkham",
+    "sodre",
+    "chrisburr"
+   ]
+  },
+  "package": {
+   "name": "singularity",
+   "version": "3.7.1"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cgo_compiler_stub",
+    "make",
+    "pkg-config",
+    "go-dep",
+    "sed"
+   ],
+   "host": [
+    "libuuid",
+    "libarchive",
+    "libseccomp",
+    "openssl"
+   ],
+   "run": [
+    "cni-plugins >=0.7.4",
+    "squashfs-tools"
+   ],
+   "run_constrained": null
+  },
+  "source": [
+   {
+    "folder": "src/github.com/sylabs/singularity",
+    "patches": [
+     "patches/0001-Make-runtime-relocatable.patch",
+     "patches/0002-Fix-configuration-for-conda-forge.patch",
+     "patches/0003-Use-external-CNI.patch",
+     "patches/0004-Find-unsquashfs-from-PATH.diff",
+     "patches/set-version-from-env.patch"
+    ],
+    "sha256": "82d2c65063560195ec34551931be3c325b95e8e2009e92755fd7daad346e083c",
+    "url": "https://github.com/sylabs/singularity/releases/download/v3.7.1/singularity-3.7.1.tar.gz"
+   }
+  ],
+  "test": {
+   "commands": [
+    "singularity --help",
+    "singularity --version",
+    "singularity --version | grep 3.7.1",
+    "test ! -d $PREFIX/libexec/singularity/cni",
+    "test -d $PREFIX/lib/cni",
+    "test ! -d $PREFIX/etc/singularity/network",
+    "test -f $PREFIX/etc/cni/net.d/00_bridge.conflist",
+    "singularity build --sandbox lolcow docker://godlovedc/lolcow",
+    "singularity --verbose --debug run -u lolcow || (singularity --verbose --debug run -u lolcow 2>&1 | grep 'Failed to create user namespace: user namespace requires to set')",
+    "singularity pull library://alpine",
+    "singularity --verbose --debug run -u alpine_latest.sif echo \"Hello world\""
+   ]
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cgo_compiler_stub",
+    "cxx_compiler_stub",
+    "go-dep",
+    "make",
+    "pkg-config",
+    "sed"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libarchive",
+    "libseccomp",
+    "libuuid",
+    "openssl"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "cni-plugins",
+    "squashfs-tools"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "linux_ppc64le_meta_yaml": {
+  "about": {
+   "description": "Singularity is a container platform focused on supporting \"Mobility of\nCompute\"\n\nMobility of Compute encapsulates the development to compute model where\ndevelopers can work in an environment of their choosing and creation and\nwhen the developer needs additional compute resources, this environment\ncan easily be copied and executed on other platforms. Additionally as the\nprimary use case for Singularity is targeted towards computational\nportability, many of the barriers to entry of other container solutions do\nnot apply to Singularity making it an ideal solution for users (both\ncomputational and non-computational) and HPC centers.\n",
+   "dev_url": "https://github.com/singularityware/singularity",
+   "doc_url": "https://www.sylabs.io/docs/",
+   "home": "https://www.sylabs.io/singularity/",
+   "license": "BSD-3-Clause",
+   "license_file": "src/github.com/sylabs/singularity/LICENSE-LBNL.md",
+   "summary": "Singularity: Application containers for Linux"
+  },
+  "build": {
+   "detect_binary_files_with_prefix": false,
+   "number": "0"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "bgruening",
+    "jakirkham",
+    "sodre",
+    "chrisburr"
+   ]
+  },
+  "package": {
+   "name": "singularity",
+   "version": "3.7.1"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cgo_compiler_stub",
+    "make",
+    "pkg-config",
+    "go-dep",
+    "sed"
+   ],
+   "host": [
+    "libuuid",
+    "libarchive",
+    "libseccomp",
+    "openssl"
+   ],
+   "run": [
+    "cni-plugins >=0.7.4",
+    "squashfs-tools"
+   ],
+   "run_constrained": null
+  },
+  "source": [
+   {
+    "folder": "src/github.com/sylabs/singularity",
+    "patches": [
+     "patches/0001-Make-runtime-relocatable.patch",
+     "patches/0002-Fix-configuration-for-conda-forge.patch",
+     "patches/0003-Use-external-CNI.patch",
+     "patches/0004-Find-unsquashfs-from-PATH.diff",
+     "patches/set-version-from-env.patch"
+    ],
+    "sha256": "82d2c65063560195ec34551931be3c325b95e8e2009e92755fd7daad346e083c",
+    "url": "https://github.com/sylabs/singularity/releases/download/v3.7.1/singularity-3.7.1.tar.gz"
+   }
+  ],
+  "test": {
+   "commands": [
+    "singularity --help",
+    "singularity --version",
+    "singularity --version | grep 3.7.1",
+    "test ! -d $PREFIX/libexec/singularity/cni",
+    "test -d $PREFIX/lib/cni",
+    "test ! -d $PREFIX/etc/singularity/network",
+    "test -f $PREFIX/etc/cni/net.d/00_bridge.conflist",
+    "singularity build --sandbox lolcow docker://godlovedc/lolcow"
+   ]
+  }
+ },
+ "linux_ppc64le_requirements": {
   "build": {
    "__set__": true,
    "elements": [
@@ -344,7 +572,6 @@
    "doc_url": "https://www.sylabs.io/docs/",
    "home": "https://www.sylabs.io/singularity/",
    "license": "BSD-3-Clause",
-   "license_family": "BSD",
    "license_file": "src/github.com/sylabs/singularity/LICENSE-LBNL.md",
    "summary": "Singularity: Application containers for Linux"
   },
@@ -357,15 +584,37 @@
     "bgruening",
     "jakirkham",
     "sodre",
+    "chrisburr",
+    "bgruening",
+    "jakirkham",
+    "sodre",
+    "chrisburr",
+    "bgruening",
+    "jakirkham",
+    "sodre",
     "chrisburr"
    ]
   },
   "package": {
    "name": "singularity",
-   "version": "3.6.4"
+   "version": "3.7.1"
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cgo_compiler_stub",
+    "make",
+    "pkg-config",
+    "go-dep",
+    "sed",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cgo_compiler_stub",
+    "make",
+    "pkg-config",
+    "go-dep",
+    "sed",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cgo_compiler_stub",
@@ -378,9 +627,21 @@
     "libuuid",
     "libarchive",
     "libseccomp",
+    "openssl",
+    "libuuid",
+    "libarchive",
+    "libseccomp",
+    "openssl",
+    "libuuid",
+    "libarchive",
+    "libseccomp",
     "openssl"
    ],
    "run": [
+    "cni-plugins >=0.7.4",
+    "squashfs-tools",
+    "cni-plugins >=0.7.4",
+    "squashfs-tools",
     "cni-plugins >=0.7.4",
     "squashfs-tools"
    ],
@@ -393,23 +654,69 @@
      "patches/0001-Make-runtime-relocatable.patch",
      "patches/0002-Fix-configuration-for-conda-forge.patch",
      "patches/0003-Use-external-CNI.patch",
+     "patches/0004-Find-unsquashfs-from-PATH.diff",
      "patches/set-version-from-env.patch"
     ],
-    "sha256": "71233a81d6bb4d686d8dc636b3e3e962a372f54001921c89a12b062cefd9e79f",
-    "url": "https://github.com/sylabs/singularity/releases/download/v3.6.4/singularity-3.6.4.tar.gz"
+    "sha256": "82d2c65063560195ec34551931be3c325b95e8e2009e92755fd7daad346e083c",
+    "url": "https://github.com/sylabs/singularity/releases/download/v3.7.1/singularity-3.7.1.tar.gz"
+   },
+   {
+    "folder": "src/github.com/sylabs/singularity",
+    "patches": [
+     "patches/0001-Make-runtime-relocatable.patch",
+     "patches/0002-Fix-configuration-for-conda-forge.patch",
+     "patches/0003-Use-external-CNI.patch",
+     "patches/0004-Find-unsquashfs-from-PATH.diff",
+     "patches/set-version-from-env.patch"
+    ],
+    "sha256": "82d2c65063560195ec34551931be3c325b95e8e2009e92755fd7daad346e083c",
+    "url": "https://github.com/sylabs/singularity/releases/download/v3.7.1/singularity-3.7.1.tar.gz"
+   },
+   {
+    "folder": "src/github.com/sylabs/singularity",
+    "patches": [
+     "patches/0001-Make-runtime-relocatable.patch",
+     "patches/0002-Fix-configuration-for-conda-forge.patch",
+     "patches/0003-Use-external-CNI.patch",
+     "patches/0004-Find-unsquashfs-from-PATH.diff",
+     "patches/set-version-from-env.patch"
+    ],
+    "sha256": "82d2c65063560195ec34551931be3c325b95e8e2009e92755fd7daad346e083c",
+    "url": "https://github.com/sylabs/singularity/releases/download/v3.7.1/singularity-3.7.1.tar.gz"
    }
   ],
   "test": {
    "commands": [
     "singularity --help",
     "singularity --version",
-    "singularity --version | grep 3.6.4",
+    "singularity --version | grep 3.7.1",
     "test ! -d $PREFIX/libexec/singularity/cni",
     "test -d $PREFIX/lib/cni",
     "test ! -d $PREFIX/etc/singularity/network",
     "test -f $PREFIX/etc/cni/net.d/00_bridge.conflist",
     "singularity build --sandbox lolcow docker://godlovedc/lolcow",
-    "singularity --verbose --debug run -u lolcow || (singularity --verbose --debug run -u lolcow 2>&1 | grep 'Failed to create user namespace: user namespace requires to set')"
+    "singularity --verbose --debug run -u lolcow || (singularity --verbose --debug run -u lolcow 2>&1 | grep 'Failed to create user namespace: user namespace requires to set')",
+    "singularity pull library://alpine",
+    "singularity --verbose --debug run -u alpine_latest.sif echo \"Hello world\"",
+    "singularity --help",
+    "singularity --version",
+    "singularity --version | grep 3.7.1",
+    "test ! -d $PREFIX/libexec/singularity/cni",
+    "test -d $PREFIX/lib/cni",
+    "test ! -d $PREFIX/etc/singularity/network",
+    "test -f $PREFIX/etc/cni/net.d/00_bridge.conflist",
+    "singularity build --sandbox lolcow docker://godlovedc/lolcow",
+    "singularity --verbose --debug run -u lolcow || (singularity --verbose --debug run -u lolcow 2>&1 | grep 'Failed to create user namespace: user namespace requires to set')",
+    "singularity pull library://alpine",
+    "singularity --verbose --debug run -u alpine_latest.sif echo \"Hello world\"",
+    "singularity --help",
+    "singularity --version",
+    "singularity --version | grep 3.7.1",
+    "test ! -d $PREFIX/libexec/singularity/cni",
+    "test -d $PREFIX/lib/cni",
+    "test ! -d $PREFIX/etc/singularity/network",
+    "test -f $PREFIX/etc/cni/net.d/00_bridge.conflist",
+    "singularity build --sandbox lolcow docker://godlovedc/lolcow"
    ]
   }
  },
@@ -431,7 +738,7 @@
   ]
  },
  "pinning_version": "2021.03.04.15.24.59",
- "raw_meta_yaml": "{% set version = \"3.6.4\" %}\n\npackage:\n  name: singularity\n  version: {{ version }}\n\nsource:\n  - folder: src/github.com/sylabs/singularity\n    url: https://github.com/sylabs/singularity/releases/download/v{{ version }}/singularity-{{ version }}.tar.gz\n    sha256: 71233a81d6bb4d686d8dc636b3e3e962a372f54001921c89a12b062cefd9e79f\n    patches:\n      - patches/0001-Make-runtime-relocatable.patch\n      - patches/0002-Fix-configuration-for-conda-forge.patch\n      - patches/0003-Use-external-CNI.patch\n      - patches/set-version-from-env.patch\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n  # The binary is made runtime relocatable using the included patch\n  detect_binary_files_with_prefix: false\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cgo') }}\n    - make\n    - pkg-config\n    - go-dep\n    - sed\n  host:\n    - libuuid  # [linux]\n    - libarchive\n    - libseccomp  # [linux]\n    - openssl\n  run:\n    # CNI version from singularity/Gopkg.lock\n    - cni-plugins >=0.7.4  # [linux]\n    - squashfs-tools  # [linux]\n  run_constrained:\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx]\n\ntest:\n  commands:\n    - singularity --help\n    - singularity --version\n\n    # Ensure the version is set correctly\n    - singularity --version | grep {{ version }}\n\n    # Ensure we are using conda's CNI\n    - test ! -d $PREFIX/libexec/singularity/cni\n    - test -d $PREFIX/lib/cni\n\n    - test ! -d $PREFIX/etc/singularity/network\n    - test -f $PREFIX/etc/cni/net.d/00_bridge.conflist\n\n    # UserNS test\n    - singularity build --sandbox lolcow docker://godlovedc/lolcow\n\n    # Either run the container or fail due to user namespaces being disabled\n    - \"singularity --verbose --debug run -u lolcow || (singularity --verbose --debug run -u lolcow 2>&1 | grep 'Failed to create user namespace: user namespace requires to set')\"\n\nabout:\n  home: https://www.sylabs.io/singularity/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: src/github.com/sylabs/singularity/LICENSE-LBNL.md\n  summary: 'Singularity: Application containers for Linux'\n\n  description: |\n    Singularity is a container platform focused on supporting \"Mobility of\n    Compute\"\n\n    Mobility of Compute encapsulates the development to compute model where\n    developers can work in an environment of their choosing and creation and\n    when the developer needs additional compute resources, this environment\n    can easily be copied and executed on other platforms. Additionally as the\n    primary use case for Singularity is targeted towards computational\n    portability, many of the barriers to entry of other container solutions do\n    not apply to Singularity making it an ideal solution for users (both\n    computational and non-computational) and HPC centers.\n\n  dev_url: https://github.com/singularityware/singularity\n  doc_url: https://www.sylabs.io/docs/\n\nextra:\n  recipe-maintainers:\n    - bgruening\n    - jakirkham\n    - sodre\n    - chrisburr\n",
+ "raw_meta_yaml": "{% set version = \"3.7.1\" %}\n\npackage:\n  name: singularity\n  version: {{ version }}\n\nsource:\n  - folder: src/github.com/sylabs/singularity\n    url: https://github.com/sylabs/singularity/releases/download/v{{ version }}/singularity-{{ version }}.tar.gz\n    sha256: 82d2c65063560195ec34551931be3c325b95e8e2009e92755fd7daad346e083c\n    patches:\n      - patches/0001-Make-runtime-relocatable.patch\n      - patches/0002-Fix-configuration-for-conda-forge.patch\n      - patches/0003-Use-external-CNI.patch\n      - patches/0004-Find-unsquashfs-from-PATH.diff\n      - patches/set-version-from-env.patch\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n  # The binary is made runtime relocatable using the included patch\n  detect_binary_files_with_prefix: false\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cgo') }}\n    - make\n    - pkg-config\n    - go-dep\n    - sed\n  host:\n    - libuuid  # [linux]\n    - libarchive\n    - libseccomp  # [linux]\n    - openssl\n  run:\n    # CNI version from singularity/Gopkg.lock\n    - cni-plugins >=0.7.4  # [linux]\n    - squashfs-tools  # [linux]\n  run_constrained:\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx]\n\ntest:\n  commands:\n    - singularity --help\n    - singularity --version\n\n    # Ensure the version is set correctly\n    - singularity --version | grep {{ version }}\n\n    # Ensure we are using conda's CNI\n    - test ! -d $PREFIX/libexec/singularity/cni\n    - test -d $PREFIX/lib/cni\n\n    - test ! -d $PREFIX/etc/singularity/network\n    - test -f $PREFIX/etc/cni/net.d/00_bridge.conflist\n\n    # UserNS test\n    - singularity build --sandbox lolcow docker://godlovedc/lolcow\n\n    # The remaining tests are disabled on ppc64le due to issues launching docker with --privileged\n    # Either run the container or fail due to user namespaces being disabled\n    - \"singularity --verbose --debug run -u lolcow || (singularity --verbose --debug run -u lolcow 2>&1 | grep 'Failed to create user namespace: user namespace requires to set')\"  # [not ppc64le]\n\n    # https://github.com/hpcng/singularity/issues/5668\n    - singularity pull library://alpine  # [not ppc64le]\n    - singularity --verbose --debug run -u alpine_latest.sif echo \"Hello world\"  # [not ppc64le]\n\nabout:\n  home: https://www.sylabs.io/singularity/\n  license: BSD-3-Clause\n  license_file: src/github.com/sylabs/singularity/LICENSE-LBNL.md\n  summary: 'Singularity: Application containers for Linux'\n\n  description: |\n    Singularity is a container platform focused on supporting \"Mobility of\n    Compute\"\n\n    Mobility of Compute encapsulates the development to compute model where\n    developers can work in an environment of their choosing and creation and\n    when the developer needs additional compute resources, this environment\n    can easily be copied and executed on other platforms. Additionally as the\n    primary use case for Singularity is targeted towards computational\n    portability, many of the barriers to entry of other container solutions do\n    not apply to Singularity making it an ideal solution for users (both\n    computational and non-computational) and HPC centers.\n\n  dev_url: https://github.com/singularityware/singularity\n  doc_url: https://www.sylabs.io/docs/\n\nextra:\n  recipe-maintainers:\n    - bgruening\n    - jakirkham\n    - sodre\n    - chrisburr\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -525,6 +832,6 @@
    "elements": []
   }
  },
- "url": "https://github.com/sylabs/singularity/releases/download/v3.6.4/singularity-3.6.4.tar.gz",
- "version": "3.6.4"
+ "url": "https://github.com/sylabs/singularity/releases/download/v3.7.1/singularity-3.7.1.tar.gz",
+ "version": "3.7.1"
 }
