@@ -113,21 +113,22 @@
   "about": {
    "home": "https://github.com/dropbox/mypy-protobuf",
    "license": "Apache-2.0",
-   "license_family": "Apache",
    "license_file": "LICENSE",
    "summary": "Generate mypy stub files from protobuf specs"
   },
   "build": {
    "entry_points": [
-    "protoc-gen-mypy = mypy_protobuf:main"
+    "protoc-gen-mypy = mypy_protobuf.main:main",
+    "protoc-gen-mypy_grpc = mypy_protobuf.main:grpc"
    ],
    "noarch": "python",
-   "number": "0",
+   "number": "1",
    "script": "/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/bin/python -m pip install . -vv"
   },
   "extra": {
    "recipe-maintainers": [
-    "hmaarrfk"
+    "hmaarrfk",
+    "asford"
    ]
   },
   "package": {
@@ -136,15 +137,12 @@
   },
   "requirements": {
    "host": [
-    "python >=3",
     "pip",
-    "setuptools"
+    "python >=3.6"
    ],
    "run": [
-    "python >=3",
-    "protobuf",
-    "six",
-    "setuptools"
+    "protobuf >=3.14.0",
+    "python >=3.6"
    ]
   },
   "source": {
@@ -153,10 +151,16 @@
   },
   "test": {
    "commands": [
-    "which protoc-gen-mypy"
+    "cat /dev/null | protoc-gen-mypy",
+    "cat /dev/null | protoc-gen-mypy_grpc",
+    "pip check"
    ],
    "imports": [
-    "mypy_protobuf"
+    "mypy_protobuf",
+    "mypy_protobuf.extensions_pb2"
+   ],
+   "requires": [
+    "pip"
    ]
   }
  },
@@ -169,43 +173,43 @@
    "__set__": true,
    "elements": [
     "pip",
-    "python",
-    "setuptools"
+    "python"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "protobuf",
-    "python",
-    "setuptools",
-    "six"
+    "python"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "meta_yaml": {
   "about": {
    "home": "https://github.com/dropbox/mypy-protobuf",
    "license": "Apache-2.0",
-   "license_family": "Apache",
    "license_file": "LICENSE",
    "summary": "Generate mypy stub files from protobuf specs"
   },
   "build": {
    "entry_points": [
-    "protoc-gen-mypy = mypy_protobuf:main"
+    "protoc-gen-mypy = mypy_protobuf.main:main",
+    "protoc-gen-mypy_grpc = mypy_protobuf.main:grpc"
    ],
    "noarch": "python",
-   "number": "0",
+   "number": "1",
    "script": "/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/bin/python -m pip install . -vv"
   },
   "extra": {
    "recipe-maintainers": [
-    "hmaarrfk"
+    "hmaarrfk",
+    "asford"
    ]
   },
   "package": {
@@ -214,15 +218,12 @@
   },
   "requirements": {
    "host": [
-    "python >=3",
     "pip",
-    "setuptools"
+    "python >=3.6"
    ],
    "run": [
-    "python >=3",
-    "protobuf",
-    "six",
-    "setuptools"
+    "protobuf >=3.14.0",
+    "python >=3.6"
    ]
   },
   "source": {
@@ -231,10 +232,16 @@
   },
   "test": {
    "commands": [
-    "which protoc-gen-mypy"
+    "cat /dev/null | protoc-gen-mypy",
+    "cat /dev/null | protoc-gen-mypy_grpc",
+    "pip check"
    ],
    "imports": [
-    "mypy_protobuf"
+    "mypy_protobuf",
+    "mypy_protobuf.extensions_pb2"
+   ],
+   "requires": [
+    "pip"
    ]
   }
  },
@@ -256,15 +263,13 @@
   ]
  },
  "pinning_version": "2021.02.05.20.43.41",
- "raw_meta_yaml": "{% set name = \"mypy-protobuf\" %}\n{% set version = \"2.4\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 77e10c476cdd3ee14535c2357e64deac6b1a69f33eb500d795b064acda48c66f\n\nbuild:\n  noarch: python\n  number: 0\n  script: {{ PYTHON }} -m pip install . -vv\n  entry_points:\n    - protoc-gen-mypy = mypy_protobuf:main\n\nrequirements:\n  host:\n    - python >=3\n    - pip\n    - setuptools\n  run:\n    - python >=3\n    - protobuf\n    - six\n    - setuptools\n\ntest:\n  imports:\n    - mypy_protobuf\n  commands:\n    - which protoc-gen-mypy\n\nabout:\n  home: https://github.com/dropbox/mypy-protobuf\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: Generate mypy stub files from protobuf specs\n\nextra:\n  recipe-maintainers:\n    - hmaarrfk\n",
+ "raw_meta_yaml": "{% set name = \"mypy-protobuf\" %}\n{% set version = \"2.4\" %}\n\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/mypy-protobuf-{{ version }}.tar.gz\n  sha256: 77e10c476cdd3ee14535c2357e64deac6b1a69f33eb500d795b064acda48c66f\n\nbuild:\n  number: 1\n  noarch: python\n  entry_points:\n    - protoc-gen-mypy = mypy_protobuf.main:main\n    - protoc-gen-mypy_grpc = mypy_protobuf.main:grpc\n  script: {{ PYTHON }} -m pip install . -vv\n\nrequirements:\n  host:\n    - pip\n    - python >=3.6\n  run:\n    - protobuf >=3.14.0\n    - python >=3.6\n\ntest:\n  imports:\n    - mypy_protobuf\n    - mypy_protobuf.extensions_pb2\n  commands:\n    - cat /dev/null | protoc-gen-mypy\n    - cat /dev/null | protoc-gen-mypy_grpc\n    - pip check\n  requires:\n    - pip\n\nabout:\n  home: https://github.com/dropbox/mypy-protobuf\n  summary: Generate mypy stub files from protobuf specs\n  license: Apache-2.0\n  license_file: LICENSE\n\nextra:\n  recipe-maintainers:\n    - hmaarrfk\n    - asford\n",
  "req": {
   "__set__": true,
   "elements": [
    "pip",
    "protobuf",
-   "python",
-   "setuptools",
-   "six"
+   "python"
   ]
  },
  "requirements": {
@@ -276,22 +281,21 @@
    "__set__": true,
    "elements": [
     "pip",
-    "python",
-    "setuptools"
+    "python"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "protobuf",
-    "python",
-    "setuptools",
-    "six"
+    "python"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "smithy_version": "3.8.6",
@@ -305,22 +309,21 @@
    "__set__": true,
    "elements": [
     "pip",
-    "python >=3",
-    "setuptools"
+    "python >=3.6"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "protobuf",
-    "python >=3",
-    "setuptools",
-    "six"
+    "protobuf >=3.14.0",
+    "python >=3.6"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "url": "https://pypi.io/packages/source/m/mypy-protobuf/mypy-protobuf-2.4.tar.gz",
