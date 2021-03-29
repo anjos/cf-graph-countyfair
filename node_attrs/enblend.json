@@ -16,7 +16,7 @@
    "summary": "Enblend combines images that overlap like this into a single large image with no seams."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -44,7 +44,9 @@
     "vigra",
     "libblas",
     "libcblas",
-    "perl"
+    "perl",
+    "clhpp 2.0.10",
+    "ocl-icd"
    ],
    "run": [
     "vigra",
@@ -53,7 +55,8 @@
   },
   "source": {
    "patches": [
-    "windows_compatibility_fixmath_h.patch",
+    "windows_opencl_compatibility.patch",
+    "linux_opencl_dont_fail_no_platform_found.patch",
     "experimental_filesystem.patch",
     "0002-Make-CMAKE_INSTALL_PREFIX-override-conditional.patch",
     "0003-Avoid-usage-of-.value-which-requires-macOS-10.14.patch",
@@ -83,6 +86,7 @@
   "host": {
    "__set__": true,
    "elements": [
+    "clhpp",
     "gsl",
     "jpeg",
     "lcms2",
@@ -90,6 +94,7 @@
     "libcblas",
     "libpng",
     "libtiff",
+    "ocl-icd",
     "openexr",
     "perl",
     "vigra"
@@ -118,7 +123,7 @@
    "summary": "Enblend combines images that overlap like this into a single large image with no seams."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -157,6 +162,8 @@
     "libblas",
     "libcblas",
     "perl",
+    "clhpp 2.0.10",
+    "ocl-icd",
     "libpng",
     "jpeg",
     "libtiff",
@@ -167,6 +174,8 @@
     "libblas",
     "libcblas",
     "perl",
+    "clhpp 2.0.10",
+    "khronos-opencl-icd-loader",
     "libpng",
     "jpeg",
     "libtiff",
@@ -176,7 +185,9 @@
     "vigra",
     "libblas",
     "libcblas",
-    "perl"
+    "perl",
+    "clhpp 2.0.10",
+    "khronos-opencl-icd-loader"
    ],
    "run": [
     "vigra",
@@ -189,17 +200,20 @@
   },
   "source": {
    "patches": [
-    "windows_compatibility_fixmath_h.patch",
+    "windows_opencl_compatibility.patch",
+    "linux_opencl_dont_fail_no_platform_found.patch",
     "experimental_filesystem.patch",
     "0002-Make-CMAKE_INSTALL_PREFIX-override-conditional.patch",
     "0003-Avoid-usage-of-.value-which-requires-macOS-10.14.patch",
     "openmp_nested_deprecation.patch",
-    "windows_compatibility_fixmath_h.patch",
+    "windows_opencl_compatibility.patch",
+    "linux_opencl_dont_fail_no_platform_found.patch",
     "0001-Revert-Update-filenameparse.cc-module-to-reflect-the.patch",
     "0002-Make-CMAKE_INSTALL_PREFIX-override-conditional.patch",
     "0003-Avoid-usage-of-.value-which-requires-macOS-10.14.patch",
     "openmp_nested_deprecation.patch",
-    "windows_compatibility_fixmath_h.patch",
+    "windows_opencl_compatibility.patch",
+    "linux_opencl_dont_fail_no_platform_found.patch",
     "0002-Make-CMAKE_INSTALL_PREFIX-override-conditional.patch",
     "0003-Avoid-usage-of-.value-which-requires-macOS-10.14.patch"
    ],
@@ -233,7 +247,7 @@
    "summary": "Enblend combines images that overlap like this into a single large image with no seams."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -261,7 +275,9 @@
     "vigra",
     "libblas",
     "libcblas",
-    "perl"
+    "perl",
+    "clhpp 2.0.10",
+    "khronos-opencl-icd-loader"
    ],
    "run": [
     "vigra",
@@ -270,7 +286,8 @@
   },
   "source": {
    "patches": [
-    "windows_compatibility_fixmath_h.patch",
+    "windows_opencl_compatibility.patch",
+    "linux_opencl_dont_fail_no_platform_found.patch",
     "0001-Revert-Update-filenameparse.cc-module-to-reflect-the.patch",
     "0002-Make-CMAKE_INSTALL_PREFIX-override-conditional.patch",
     "0003-Avoid-usage-of-.value-which-requires-macOS-10.14.patch",
@@ -300,8 +317,10 @@
   "host": {
    "__set__": true,
    "elements": [
+    "clhpp",
     "gsl",
     "jpeg",
+    "khronos-opencl-icd-loader",
     "lcms2",
     "libblas",
     "libcblas",
@@ -330,15 +349,17 @@
    "enblend"
   ]
  },
- "raw_meta_yaml": "# No new release in 4 years\n# Really old 4.2 version basically doesn't compile.\n# Hugin released their own 4.3 version\n{% set version = \"4.3\" %}\n\npackage:\n  name: enblend\n  version: {{ version }}\n\nsource:\n  # hmaarrfk's private mirror, making it possible to download the source\n  # without mercurial\n  # I really tried hard to use patches.... i just dn't have the skills\n  url: https://github.com/ramonaoptics/enblend-code/archive/{{ version }}.tar.gz\n  sha256: b9510a419cb23f2964d6095bc295f9b19097362c05723425e78b0497741dcc17\n  patches:\n    - windows_compatibility_fixmath_h.patch\n    # Remove once we move to gcc 9+\n    - experimental_filesystem.patch  # [linux]\n    # Use of std::filesystem requires macOS 10.15+\n    - 0001-Revert-Update-filenameparse.cc-module-to-reflect-the.patch  # [osx]\n    - 0002-Make-CMAKE_INSTALL_PREFIX-override-conditional.patch\n    - 0003-Avoid-usage-of-.value-which-requires-macOS-10.14.patch\n    # Linux gives deprecation warnings about using\n    # omp_get_nested/omp_set_nested\n    # But windows compilers don't have omp_get_max_active_levels\n    # as of 2021/03/28 on conda-forge\n    - openmp_nested_deprecation.patch  # [not win]\n\nbuild:\n  number: 3\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make   # [unix]\n    - ninja  # [win]\n  host:\n    - libpng\n    - jpeg\n    - libtiff\n    - lcms2\n    - openexr\n    - gsl\n    - vigra\n    - libblas\n    - libcblas\n    - perl\n  run:\n    - vigra\n    - gsl\n\ntest:\n  commands:\n    - enblend --help\n    - enfuse --help\n    # Print capabilities in log\n    - enblend -v -V\n\nabout:\n  home: http://enblend.sourceforge.net/\n  license: GPL-2.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: Enblend combines images that overlap like this into a single large image with no seams.\n\n  description: |\n    Enblend blends away the seams in a panoramic image mosaic using a\n    multi-resolution spline. Enfuse merges different exposures of the same\n    scene to produce an image that looks much like a tone-mapped image.\n  doc_url: https://sourceforge.net/p/enblend/_list/hg\n\nextra:\n  recipe-maintainers:\n    - hmaarrfk\n",
+ "raw_meta_yaml": "# No new release in 4 years\n# Really old 4.2 version basically doesn't compile.\n# Hugin released their own 4.3 version\n{% set version = \"4.3\" %}\n\npackage:\n  name: enblend\n  version: {{ version }}\n\nsource:\n  # hmaarrfk's private mirror, making it possible to download the source\n  # without mercurial\n  # I really tried hard to use patches.... i just dn't have the skills\n  url: https://github.com/ramonaoptics/enblend-code/archive/{{ version }}.tar.gz\n  sha256: b9510a419cb23f2964d6095bc295f9b19097362c05723425e78b0497741dcc17\n  patches:\n    - windows_opencl_compatibility.patch\n    - linux_opencl_dont_fail_no_platform_found.patch\n    # Remove once we move to gcc 9+\n    - experimental_filesystem.patch  # [linux]\n    # Use of std::filesystem requires macOS 10.15+\n    - 0001-Revert-Update-filenameparse.cc-module-to-reflect-the.patch  # [osx]\n    - 0002-Make-CMAKE_INSTALL_PREFIX-override-conditional.patch\n    - 0003-Avoid-usage-of-.value-which-requires-macOS-10.14.patch\n    # Linux gives deprecation warnings about using\n    # omp_get_nested/omp_set_nested\n    # But windows compilers don't have omp_get_max_active_levels\n    # as of 2021/03/28 on conda-forge\n    - openmp_nested_deprecation.patch  # [not win]\n\nbuild:\n  number: 4\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make   # [unix]\n    - ninja  # [win]\n  host:\n    - libpng\n    - jpeg\n    - libtiff\n    - lcms2\n    - openexr\n    - gsl\n    - vigra\n    - libblas\n    - libcblas\n    - perl\n    # Compiling with OpenCL\n    # https://github.com/conda-forge/conda-forge-pinning-feedstock/issues/1379\n    # I tried compiling with the 2.0.13 headers, but it didn't work\n    # enblend code is quite old. Needs migration to get to 2.0.13\n    - clhpp 2.0.10\n    # While the source only depends on the clhpp headers\n    # depending on ocl-icd will ensure we have the correct run-export\n    # dependency at runtime\n    - ocl-icd                    # [linux]\n    - khronos-opencl-icd-loader  # [not linux]\n  run:\n    - vigra\n    - gsl\n\ntest:\n  commands:\n    - enblend --help\n    - enfuse --help\n    # Print capabilities in log\n    - enblend -v -V\n\nabout:\n  home: http://enblend.sourceforge.net/\n  license: GPL-2.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: Enblend combines images that overlap like this into a single large image with no seams.\n\n  description: |\n    Enblend blends away the seams in a panoramic image mosaic using a\n    multi-resolution spline. Enfuse merges different exposures of the same\n    scene to produce an image that looks much like a tone-mapped image.\n  doc_url: https://sourceforge.net/p/enblend/_list/hg\n\nextra:\n  recipe-maintainers:\n    - hmaarrfk\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
+   "clhpp",
    "cmake",
    "cxx_compiler_stub",
    "gsl",
    "jpeg",
+   "khronos-opencl-icd-loader",
    "lcms2",
    "libblas",
    "libcblas",
@@ -346,6 +367,7 @@
    "libtiff",
    "make",
    "ninja",
+   "ocl-icd",
    "openexr",
    "perl",
    "vigra"
@@ -366,14 +388,17 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
+    "clhpp",
     "cxx_compiler_stub",
     "gsl",
     "jpeg",
+    "khronos-opencl-icd-loader",
     "lcms2",
     "libblas",
     "libcblas",
     "libpng",
     "libtiff",
+    "ocl-icd",
     "openexr",
     "perl",
     "vigra"
@@ -408,13 +433,16 @@
   "host": {
    "__set__": true,
    "elements": [
+    "clhpp 2.0.10",
     "gsl",
     "jpeg",
+    "khronos-opencl-icd-loader",
     "lcms2",
     "libblas",
     "libcblas",
     "libpng",
     "libtiff",
+    "ocl-icd",
     "openexr",
     "perl",
     "vigra"
@@ -445,7 +473,7 @@
    "summary": "Enblend combines images that overlap like this into a single large image with no seams."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -473,7 +501,9 @@
     "vigra",
     "libblas",
     "libcblas",
-    "perl"
+    "perl",
+    "clhpp 2.0.10",
+    "khronos-opencl-icd-loader"
    ],
    "run": [
     "vigra",
@@ -482,7 +512,8 @@
   },
   "source": {
    "patches": [
-    "windows_compatibility_fixmath_h.patch",
+    "windows_opencl_compatibility.patch",
+    "linux_opencl_dont_fail_no_platform_found.patch",
     "0002-Make-CMAKE_INSTALL_PREFIX-override-conditional.patch",
     "0003-Avoid-usage-of-.value-which-requires-macOS-10.14.patch"
    ],
@@ -510,8 +541,10 @@
   "host": {
    "__set__": true,
    "elements": [
+    "clhpp",
     "gsl",
     "jpeg",
+    "khronos-opencl-icd-loader",
     "lcms2",
     "libblas",
     "libcblas",
