@@ -375,6 +375,44 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/602606456.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "cuda110"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/0e056661-664a-4c49-9cdd-cd2c358ce3eb.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "libthrift0141"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -395,10 +433,14 @@
    "summary": "The OmniSci database"
   },
   "build": {
-   "number": "1"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
+    "xmnlab",
+    "pearu",
+    "andrewseidl",
+    "jclay",
     "xmnlab",
     "pearu",
     "andrewseidl",
@@ -421,9 +463,13 @@
      "ignore_run_exports": [
       "cudatoolkit"
      ],
-     "missing_dso_whitelist": null,
-     "string": "h1234567_1_cpu",
-     "track_features": null
+     "missing_dso_whitelist": [
+      "*/libcuda.*"
+     ],
+     "string": "h1234567_0_cuda",
+     "track_features": [
+      "arrow-cuda"
+     ]
     },
     "name": "omniscidb",
     "requirements": {
@@ -431,6 +477,7 @@
       "c_compiler_stub",
       "cgo_compiler_stub",
       "cxx_compiler_stub",
+      "cuda_compiler_stub",
       "clangdev <12",
       "clangxx <12",
       "cmake",
@@ -440,7 +487,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cuda",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -462,7 +509,138 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
+     ],
+     "run": [
+      "boost-cpp",
+      "bzip2",
+      "gxx_linux-64",
+      "libclang-cpp <12",
+      "ncurses",
+      "openjdk 8",
+      "xz",
+      "zlib"
+     ],
+     "run_constrained": [
+      "arrow-cpp-proc * cuda",
+      "cudatoolkit >=10.2"
+     ]
+    },
+    "script": "build-omniscidb.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/etc/conda/activate.d/omniscidb-ext_activate.sh\"",
+      "test -f \"${PREFIX}/etc/conda/deactivate.d/omniscidb-ext_deactivate.sh\"",
+      "if [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Found omnisql in PATH\"\nelse\n  echo \"omnisql not found in PATH(=$PATH)\" && exit 1\nfi\nsource ${PREFIX}/etc/conda/deactivate.d/omniscidb-ext_deactivate.sh\nif [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Unexpectedly found omnisql in PATH(=$PATH) after deactivation\"  && exit 1\nelse\n  echo \"omnisql not in PATH after deactivation\"\nfi\nsource ${PREFIX}/etc/conda/activate.d/omniscidb-ext_activate.sh\n",
+      "omnisql -v",
+      "which omnisci_initdb",
+      "which omnisci_server",
+      "if [ -x \"$(command -v nvidia-smi)\" ]; then\n  mkdir data && omnisci_initdb data\n  omnisci_server --version\n  rm -rf data\nfi\n",
+      "which omnisci_insert_sample_data",
+      "which startomnisci"
+     ]
+    },
+    "version": "5.5.2"
+   },
+   {
+    "about": {
+     "description": "A python DB API 2 compatible client for OmniSci (formerly MapD).\n",
+     "dev_url": "https://github.com/omnisci/pyomnisci",
+     "doc_url": "https://pyomnisci.readthedocs.io",
+     "home": "http://github.com/omnisci/pyomnisci",
+     "license": "Apache-2.0",
+     "license_family": "Apache",
+     "license_file": "./python/LICENSE.md",
+     "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
+    },
+    "build": {
+     "skip": true,
+     "string": "py38h1234567_0"
+    },
+    "name": "pyomniscidb",
+    "requirements": {
+     "host": [
+      "python",
+      "setuptools_scm",
+      "packaging >=20.0",
+      "rbc >=0.2.2"
+     ],
+     "run": [
+      "python",
+      "setuptools",
+      "numpy",
+      "thrift 0.13.*",
+      "packaging >=20.0",
+      "sqlalchemy >=1.3",
+      "rbc >=0.2.2",
+      "requests"
+     ]
+    },
+    "script": "build-pyomniscidb.sh",
+    "test": {
+     "imports": [
+      "omnisci.cursor"
+     ]
+    },
+    "version": "5.5.2"
+   },
+   {
+    "about": {
+     "description": "OmniSciDB is an in-memory, column store, SQL relational database\nthat was designed from the ground up to run on GPUs.\n\nThis recipe provides both CUDA enabled and CUDA disabled omniscidb\npackages.\n",
+     "dev_url": "https://github.com/omnisci/omniscidb",
+     "doc_url": "https://www.omnisci.com/docs/latest/",
+     "home": "https://www.omnisci.com/",
+     "license": "Apache-2.0",
+     "license_family": "APACHE",
+     "license_file": "LICENSE.md",
+     "summary": "The OmniSci database"
+    },
+    "build": {
+     "ignore_run_exports": [
+      "cudatoolkit"
+     ],
+     "missing_dso_whitelist": null,
+     "string": "h1234567_0_cpu",
+     "track_features": null
+    },
+    "name": "omniscidb",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cgo_compiler_stub",
+      "cxx_compiler_stub",
+      "clangdev <12",
+      "clangxx <12",
+      "cmake",
+      "llvmdev <12",
+      "make",
+      "ninja",
+      "maven"
+     ],
+     "host": [
+      "arrow-cpp =2.*=*cpu",
+      "bisonpp",
+      "blosc",
+      "boost-cpp",
+      "clangdev <12",
+      "double-conversion",
+      "flex",
+      "gflags",
+      "glog",
+      "llvmdev <12",
+      "llvm <12",
+      "libarchive",
+      "libgdal",
+      "libkml",
+      "libpng",
+      "librdkafka",
+      "ncurses",
+      "openldap",
+      "openssl",
+      "snappy",
+      "tbb",
+      "tbb-devel",
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -492,7 +670,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -506,7 +684,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py38h1234567_1"
+     "string": "py38h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -533,19 +711,16 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    }
   ],
   "package": {
    "name": "omniscidb-ext",
-   "version": "5.5.1"
+   "version": "5.5.2"
   },
   "source": {
-   "patches": [
-    "pyomniscidb-5.5.0.patch"
-   ],
-   "sha256": "7d3bfbe4326088570c5ee5841891f1d86a7c4c52415327ea7008c53fa75a604e",
-   "url": "https://github.com/omnisci/omniscidb/archive/v5.5.1.tar.gz"
+   "sha256": "a9b2b8aa167120cb26c7b897593980422d5ed859a732b5465009a5fbb2784476",
+   "url": "https://github.com/omnisci/omniscidb/archive/v5.5.2.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -557,6 +732,7 @@
     "clangdev",
     "clangxx",
     "cmake",
+    "cuda_compiler_stub",
     "cxx_compiler_stub",
     "llvmdev",
     "make",
@@ -634,10 +810,14 @@
    "summary": "The OmniSci database"
   },
   "build": {
-   "number": "1"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
+    "xmnlab",
+    "pearu",
+    "andrewseidl",
+    "jclay",
     "xmnlab",
     "pearu",
     "andrewseidl",
@@ -684,9 +864,13 @@
      "ignore_run_exports": [
       "cudatoolkit"
      ],
-     "missing_dso_whitelist": null,
-     "string": "h1234567_1_cpu",
-     "track_features": null
+     "missing_dso_whitelist": [
+      "*/libcuda.*"
+     ],
+     "string": "h1234567_0_cuda",
+     "track_features": [
+      "arrow-cuda"
+     ]
     },
     "name": "omniscidb",
     "requirements": {
@@ -694,6 +878,7 @@
       "c_compiler_stub",
       "cgo_compiler_stub",
       "cxx_compiler_stub",
+      "cuda_compiler_stub",
       "clangdev <12",
       "clangxx <12",
       "cmake",
@@ -703,7 +888,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cuda",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -725,7 +910,138 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
+     ],
+     "run": [
+      "boost-cpp",
+      "bzip2",
+      "gxx_linux-64",
+      "libclang-cpp <12",
+      "ncurses",
+      "openjdk 8",
+      "xz",
+      "zlib"
+     ],
+     "run_constrained": [
+      "arrow-cpp-proc * cuda",
+      "cudatoolkit >=10.2"
+     ]
+    },
+    "script": "build-omniscidb.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/etc/conda/activate.d/omniscidb-ext_activate.sh\"",
+      "test -f \"${PREFIX}/etc/conda/deactivate.d/omniscidb-ext_deactivate.sh\"",
+      "if [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Found omnisql in PATH\"\nelse\n  echo \"omnisql not found in PATH(=$PATH)\" && exit 1\nfi\nsource ${PREFIX}/etc/conda/deactivate.d/omniscidb-ext_deactivate.sh\nif [[ -x \"$(command -v omnisql)\" ]]\nthen\n  echo \"Unexpectedly found omnisql in PATH(=$PATH) after deactivation\"  && exit 1\nelse\n  echo \"omnisql not in PATH after deactivation\"\nfi\nsource ${PREFIX}/etc/conda/activate.d/omniscidb-ext_activate.sh\n",
+      "omnisql -v",
+      "which omnisci_initdb",
+      "which omnisci_server",
+      "if [ -x \"$(command -v nvidia-smi)\" ]; then\n  mkdir data && omnisci_initdb data\n  omnisci_server --version\n  rm -rf data\nfi\n",
+      "which omnisci_insert_sample_data",
+      "which startomnisci"
+     ]
+    },
+    "version": "5.5.2"
+   },
+   {
+    "about": {
+     "description": "A python DB API 2 compatible client for OmniSci (formerly MapD).\n",
+     "dev_url": "https://github.com/omnisci/pyomnisci",
+     "doc_url": "https://pyomnisci.readthedocs.io",
+     "home": "http://github.com/omnisci/pyomnisci",
+     "license": "Apache-2.0",
+     "license_family": "Apache",
+     "license_file": "./python/LICENSE.md",
+     "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
+    },
+    "build": {
+     "skip": true,
+     "string": "py38h1234567_0"
+    },
+    "name": "pyomniscidb",
+    "requirements": {
+     "host": [
+      "python",
+      "setuptools_scm",
+      "packaging >=20.0",
+      "rbc >=0.2.2"
+     ],
+     "run": [
+      "python",
+      "setuptools",
+      "numpy",
+      "thrift 0.13.*",
+      "packaging >=20.0",
+      "sqlalchemy >=1.3",
+      "rbc >=0.2.2",
+      "requests"
+     ]
+    },
+    "script": "build-pyomniscidb.sh",
+    "test": {
+     "imports": [
+      "omnisci.cursor"
+     ]
+    },
+    "version": "5.5.2"
+   },
+   {
+    "about": {
+     "description": "OmniSciDB is an in-memory, column store, SQL relational database\nthat was designed from the ground up to run on GPUs.\n\nThis recipe provides both CUDA enabled and CUDA disabled omniscidb\npackages.\n",
+     "dev_url": "https://github.com/omnisci/omniscidb",
+     "doc_url": "https://www.omnisci.com/docs/latest/",
+     "home": "https://www.omnisci.com/",
+     "license": "Apache-2.0",
+     "license_family": "APACHE",
+     "license_file": "LICENSE.md",
+     "summary": "The OmniSci database"
+    },
+    "build": {
+     "ignore_run_exports": [
+      "cudatoolkit"
+     ],
+     "missing_dso_whitelist": null,
+     "string": "h1234567_0_cpu",
+     "track_features": null
+    },
+    "name": "omniscidb",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cgo_compiler_stub",
+      "cxx_compiler_stub",
+      "clangdev <12",
+      "clangxx <12",
+      "cmake",
+      "llvmdev <12",
+      "make",
+      "ninja",
+      "maven"
+     ],
+     "host": [
+      "arrow-cpp =2.*=*cpu",
+      "bisonpp",
+      "blosc",
+      "boost-cpp",
+      "clangdev <12",
+      "double-conversion",
+      "flex",
+      "gflags",
+      "glog",
+      "llvmdev <12",
+      "llvm <12",
+      "libarchive",
+      "libgdal",
+      "libkml",
+      "libpng",
+      "librdkafka",
+      "ncurses",
+      "openldap",
+      "openssl",
+      "snappy",
+      "tbb",
+      "tbb-devel",
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -755,7 +1071,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -769,7 +1085,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py38h1234567_1"
+     "string": "py38h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -796,7 +1112,7 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -815,7 +1131,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -833,7 +1149,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -855,7 +1171,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -885,7 +1201,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -899,7 +1215,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py37h1234567_1"
+     "string": "py37h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -926,7 +1242,7 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -945,7 +1261,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -963,7 +1279,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -985,7 +1301,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -1015,7 +1331,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1029,7 +1345,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py36h1234567_1"
+     "string": "py36h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -1056,7 +1372,7 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1075,7 +1391,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -1093,7 +1409,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -1115,7 +1431,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -1145,7 +1461,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1159,7 +1475,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py38h1234567_1"
+     "string": "py38h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -1186,7 +1502,7 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1205,7 +1521,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -1223,7 +1539,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -1245,7 +1561,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -1275,7 +1591,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1289,7 +1605,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py36h1234567_1"
+     "string": "py36h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -1316,7 +1632,7 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1335,7 +1651,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -1353,7 +1669,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -1375,7 +1691,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -1405,7 +1721,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1419,7 +1735,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py37h1234567_1"
+     "string": "py37h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -1446,7 +1762,7 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1465,7 +1781,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -1483,7 +1799,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -1505,7 +1821,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -1535,7 +1851,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1549,7 +1865,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py38h1234567_1"
+     "string": "py38h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -1576,25 +1892,16 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    }
   ],
   "package": {
    "name": "omniscidb-ext",
-   "version": "5.5.1"
+   "version": "5.5.2"
   },
   "source": {
-   "patches": [
-    "pyomniscidb-5.5.0.patch",
-    "pyomniscidb-5.5.0.patch",
-    "pyomniscidb-5.5.0.patch",
-    "pyomniscidb-5.5.0.patch",
-    "pyomniscidb-5.5.0.patch",
-    "pyomniscidb-5.5.0.patch",
-    "pyomniscidb-5.5.0.patch"
-   ],
-   "sha256": "7d3bfbe4326088570c5ee5841891f1d86a7c4c52415327ea7008c53fa75a604e",
-   "url": "https://github.com/omnisci/omniscidb/archive/v5.5.1.tar.gz"
+   "sha256": "a9b2b8aa167120cb26c7b897593980422d5ed859a732b5465009a5fbb2784476",
+   "url": "https://github.com/omnisci/omniscidb/archive/v5.5.2.tar.gz"
   }
  },
  "name": "omniscidb-ext",
@@ -1622,7 +1929,7 @@
    "summary": "The OmniSci database"
   },
   "build": {
-   "number": "1"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1658,7 +1965,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -1676,7 +1983,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -1698,7 +2005,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -1728,7 +2035,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1742,7 +2049,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py37h1234567_1"
+     "string": "py37h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -1769,7 +2076,7 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1788,7 +2095,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -1806,7 +2113,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -1828,7 +2135,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -1858,7 +2165,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1872,7 +2179,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py36h1234567_1"
+     "string": "py36h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -1899,7 +2206,7 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -1918,7 +2225,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -1936,7 +2243,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -1958,7 +2265,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -1988,7 +2295,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -2002,7 +2309,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py38h1234567_1"
+     "string": "py38h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -2029,21 +2336,16 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    }
   ],
   "package": {
    "name": "omniscidb-ext",
-   "version": "5.5.1"
+   "version": "5.5.2"
   },
   "source": {
-   "patches": [
-    "pyomniscidb-5.5.0.patch",
-    "pyomniscidb-5.5.0.patch",
-    "pyomniscidb-5.5.0.patch"
-   ],
-   "sha256": "7d3bfbe4326088570c5ee5841891f1d86a7c4c52415327ea7008c53fa75a604e",
-   "url": "https://github.com/omnisci/omniscidb/archive/v5.5.1.tar.gz"
+   "sha256": "a9b2b8aa167120cb26c7b897593980422d5ed859a732b5465009a5fbb2784476",
+   "url": "https://github.com/omnisci/omniscidb/archive/v5.5.2.tar.gz"
   }
  },
  "osx_64_requirements": {
@@ -2127,7 +2429,7 @@
    "pyomniscidb"
   ]
  },
- "pinning_version": "2021.03.10.08.11.17",
+ "pinning_version": "2021.03.28.21.25.09",
  "pre_pr_migrator_status": {
   "cuda110": "bot error: master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1042, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 222, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 216, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 444, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n",
   "librdkafka16": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/640172853\">bot CI job</a>): master: ['linux_64_cuda_compiler_versionNone: Encountered problems while solving.\\nProblem: package arrow-cpp-1.0.1-py36h001c72f_19_cpu requires libthrift >=0.13.0,<0.14.0a0, but none of the providers can be installed\\n']",
@@ -2135,7 +2437,7 @@
   "version": "bot error: master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1079, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 224, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 224, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 444, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n",
   "windows_cuda": "bot error: master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1042, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 222, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 216, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 444, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
  },
- "raw_meta_yaml": "{% set version = \"5.5.1\" %}\n{% set number = \"1\" %}\n{% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '10.1' %}\n{% set build_ext_version = \"1.0.0\" %}\n{% set build_ext = \"cuda\" if cuda_enabled else \"cpu\" %}\n{% set build_string = \"h{}_{}_{}\".format(PKG_HASH, number, build_ext) %}\n{% set py_build_string = \"py{}h{}_{}\".format(CONDA_PY, PKG_HASH, number) %}\n\npackage:\n  name: omniscidb-ext\n  version: {{ version }}\n\nsource:\n  url: https://github.com/omnisci/omniscidb/archive/v{{ version }}.tar.gz\n  sha256: 7d3bfbe4326088570c5ee5841891f1d86a7c4c52415327ea7008c53fa75a604e\n  patches:\n    - pyomniscidb-5.5.0.patch\n\nbuild:\n  number: {{ number }}\n  skip: true  # [cuda_compiler_version not in (undefined, \"None\", \"10.1\")]\n\noutputs:\n\n  - name: omniscidb\n    version: {{ version }}\n    script: build-omniscidb.sh\n    build:\n      string: {{ build_string }}\n      skip: true  # [cuda_compiler_version not in (undefined, \"None\", \"10.1\")]\n      skip: true  # [not linux64]\n      missing_dso_whitelist:\n        - '*/libcuda.*'  # [cuda_compiler_version not in (undefined, \"None\")]\n      track_features: {{ \"- arrow-cuda\" if cuda_enabled else \"\" }}\n      ignore_run_exports:\n        - cudatoolkit\n\n    requirements:\n      build:\n        # c compiler is specified here to get run constraint pins correct, presumably..\n        - {{ compiler('c') }}\n        - {{ compiler('cgo') }}\n        - {{ compiler('cxx') }}\n        - {{ compiler(\"cuda\") }}  # [cuda_compiler_version not in (undefined, \"None\")]\n        # omniscidb 5.5 is not LLVM 12 ready\n        - clangdev <12\n        # clang++ is used for generating the bytecodes of extension functions\n        - clangxx <12\n        - cmake\n        - llvmdev <12\n        - make\n        - ninja\n        - maven\n      host:\n        - arrow-cpp =1.*=*{{ build_ext }}\n        - bisonpp\n        - blosc\n        - boost-cpp\n        - clangdev <12\n        - double-conversion\n        - flex\n        - gflags\n        - glog\n        - llvmdev <12\n        - llvm <12\n        - libarchive\n        - libgdal\n        - libkml\n        - libpng\n        - librdkafka\n        - ncurses\n        - openldap\n        - openssl\n        - snappy\n        - tbb\n        - tbb-devel\n        - thrift-cpp\n      run:\n        - boost-cpp\n        - bzip2\n        # omnscidb Load-time UDF support calls clang++\n        - gxx_{{ target_platform }}\n        - libclang-cpp <12\n        - ncurses\n        - openjdk 8\n        - xz\n        - zlib\n      run_constrained:\n        - arrow-cpp-proc * {{ build_ext }}\n        - cudatoolkit >=10.1  # [cuda_compiler_version not in (undefined, \"None\")]\n\n    test:\n      commands:\n        # Verify the activation scripts are in-place.\n        {% for state in [\"activate\", \"deactivate\"] %}\n        - test -f \"${PREFIX}/etc/conda/{{ state }}.d/{{ PKG_NAME }}_{{ state }}.sh\"\n        {% endfor %}\n        # Try using the activation scripts.\n        - |\n          if [[ -x \"$(command -v omnisql)\" ]]\n          then\n            echo \"Found omnisql in PATH\"\n          else\n            echo \"omnisql not found in PATH(=$PATH)\" && exit 1\n          fi\n          source ${PREFIX}/etc/conda/deactivate.d/{{ PKG_NAME }}_deactivate.sh\n          if [[ -x \"$(command -v omnisql)\" ]]\n          then\n            echo \"Unexpectedly found omnisql in PATH(=$PATH) after deactivation\"  && exit 1\n          else\n            echo \"omnisql not in PATH after deactivation\"\n          fi\n          source ${PREFIX}/etc/conda/activate.d/{{ PKG_NAME }}_activate.sh\n        # Test installation\n        - omnisql -v\n        - which omnisci_initdb\n        - which omnisci_server\n        - |\n          if [ -x \"$(command -v nvidia-smi)\" ]; then  # [cuda_compiler_version not in (undefined, \"None\")]\n            mkdir data && omnisci_initdb data\n            omnisci_server --version\n            rm -rf data\n          fi                                          # [cuda_compiler_version not in (undefined, \"None\")]\n        - which omnisci_insert_sample_data\n        - which startomnisci\n\n    about:\n      home: https://www.omnisci.com/\n      license: Apache-2.0\n      license_family: APACHE\n      license_file: LICENSE.md\n      summary: The OmniSci database\n\n      description: |\n        OmniSciDB is an in-memory, column store, SQL relational database\n        that was designed from the ground up to run on GPUs.\n\n        This recipe provides both CUDA enabled and CUDA disabled omniscidb\n        packages.\n      doc_url: https://www.omnisci.com/docs/latest/\n      dev_url: https://github.com/omnisci/omniscidb\n\n  - name: pyomniscidb\n    version: {{ version }}\n    script: build-pyomniscidb.sh\n    build:\n      string: {{ py_build_string }}\n    requirements:\n      host:\n        - python\n        - setuptools_scm\n        - packaging >=20.0\n        - rbc >=0.2.2\n      run:\n        - python\n        - setuptools\n        - {{ pin_compatible('numpy', lower_bound='1.16') }}\n        - thrift 0.13.*\n        - packaging >=20.0\n        - sqlalchemy >=1.3\n        - rbc >=0.2.2\n        - requests\n\n    about:\n      home: http://github.com/omnisci/pyomnisci\n      license: Apache-2.0\n      license_family: Apache\n      license_file: ./python/LICENSE.md\n      summary: A python DB API 2 compatible client for OmniSci (formerly MapD).\n      description: |\n        A python DB API 2 compatible client for OmniSci (formerly MapD).\n      doc_url: https://pyomnisci.readthedocs.io\n      dev_url: https://github.com/omnisci/pyomnisci\n\n    test:\n      imports:\n        - omnisci.cursor\n\nabout:\n  home: https://www.omnisci.com/\n  license: Apache-2.0\n  license_family: APACHE\n  license_file: LICENSE.md\n  summary: The OmniSci database\n\n  description: |\n    OmniSciDB is an in-memory, column store, SQL relational database\n    that was designed from the ground up to run on GPUs.\n\n    This recipe provides both CUDA enabled and CUDA disabled omniscidb\n    packages.\n  doc_url: https://www.omnisci.com/docs/latest/\n  dev_url: https://github.com/omnisci/omniscidb\n\nextra:\n  recipe-maintainers:\n    - xmnlab\n    - pearu\n    - andrewseidl\n    - jclay\n",
+ "raw_meta_yaml": "{% set version = \"5.5.2\" %}\n{% set number = \"0\" %}\n{% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '10.2' %}\n{% set build_ext_version = \"1.0.0\" %}\n{% set build_ext = \"cuda\" if cuda_enabled else \"cpu\" %}\n{% set build_string = \"h{}_{}_{}\".format(PKG_HASH, number, build_ext) %}\n{% set py_build_string = \"py{}h{}_{}\".format(CONDA_PY, PKG_HASH, number) %}\n\npackage:\n  name: omniscidb-ext\n  version: {{ version }}\n\nsource:\n  url: https://github.com/omnisci/omniscidb/archive/v{{ version }}.tar.gz\n  sha256: a9b2b8aa167120cb26c7b897593980422d5ed859a732b5465009a5fbb2784476\n\nbuild:\n  number: {{ number }}\n  skip: true  # [cuda_compiler_version not in (undefined, \"None\", \"10.2\")]\n\noutputs:\n\n  - name: omniscidb\n    version: {{ version }}\n    script: build-omniscidb.sh\n    build:\n      string: {{ build_string }}\n      skip: true  # [cuda_compiler_version not in (undefined, \"None\", \"10.2\") or not linux64]\n      missing_dso_whitelist:\n        - '*/libcuda.*'  # [cuda_compiler_version not in (undefined, \"None\")]\n      track_features:\n        {{ \"- arrow-cuda\" if cuda_enabled else \"\" }}\n      ignore_run_exports:\n        - cudatoolkit\n\n    requirements:\n      build:\n        # c compiler is specified here to get run constraint pins correct, presumably..\n        - {{ compiler('c') }}\n        - {{ compiler('cgo') }}\n        - {{ compiler('cxx') }}\n        - {{ compiler(\"cuda\") }}  # [cuda_compiler_version not in (undefined, \"None\")]\n        # omniscidb 5.5 is not LLVM 12 ready\n        - clangdev <12\n        # clang++ is used for generating the bytecodes of extension functions\n        - clangxx <12\n        - cmake\n        - llvmdev <12\n        - make\n        - ninja\n        - maven\n      host:\n        - arrow-cpp =2.*=*{{ build_ext }}\n        - bisonpp\n        - blosc\n        - boost-cpp\n        - clangdev <12\n        - double-conversion\n        - flex\n        - gflags\n        - glog\n        - llvmdev <12\n        - llvm <12\n        - libarchive\n        - libgdal\n        - libkml\n        - libpng\n        - librdkafka\n        - ncurses\n        - openldap\n        - openssl\n        - snappy\n        - tbb\n        - tbb-devel\n        - thrift-cpp 0.13\n      run:\n        - boost-cpp\n        - bzip2\n        # omnscidb Load-time UDF support calls clang++\n        - gxx_{{ target_platform }}\n        - libclang-cpp <12\n        - ncurses\n        - openjdk 8\n        - xz\n        - zlib\n      run_constrained:\n        - arrow-cpp-proc * {{ build_ext }}\n        - cudatoolkit >=10.2  # [cuda_compiler_version not in (undefined, \"None\")]\n\n    test:\n      commands:\n        # Verify the activation scripts are in-place.\n        {% for state in [\"activate\", \"deactivate\"] %}\n        - test -f \"${PREFIX}/etc/conda/{{ state }}.d/{{ PKG_NAME }}_{{ state }}.sh\"\n        {% endfor %}\n        # Try using the activation scripts.\n        - |\n          if [[ -x \"$(command -v omnisql)\" ]]\n          then\n            echo \"Found omnisql in PATH\"\n          else\n            echo \"omnisql not found in PATH(=$PATH)\" && exit 1\n          fi\n          source ${PREFIX}/etc/conda/deactivate.d/{{ PKG_NAME }}_deactivate.sh\n          if [[ -x \"$(command -v omnisql)\" ]]\n          then\n            echo \"Unexpectedly found omnisql in PATH(=$PATH) after deactivation\"  && exit 1\n          else\n            echo \"omnisql not in PATH after deactivation\"\n          fi\n          source ${PREFIX}/etc/conda/activate.d/{{ PKG_NAME }}_activate.sh\n        # Test installation\n        - omnisql -v\n        - which omnisci_initdb\n        - which omnisci_server\n        - |\n          if [ -x \"$(command -v nvidia-smi)\" ]; then  # [cuda_compiler_version not in (undefined, \"None\")]\n            mkdir data && omnisci_initdb data\n            omnisci_server --version\n            rm -rf data\n          fi                                          # [cuda_compiler_version not in (undefined, \"None\")]\n        - which omnisci_insert_sample_data\n        - which startomnisci\n\n    about:\n      home: https://www.omnisci.com/\n      license: Apache-2.0\n      license_family: APACHE\n      license_file: LICENSE.md\n      summary: The OmniSci database\n\n      description: |\n        OmniSciDB is an in-memory, column store, SQL relational database\n        that was designed from the ground up to run on GPUs.\n\n        This recipe provides both CUDA enabled and CUDA disabled omniscidb\n        packages.\n      doc_url: https://www.omnisci.com/docs/latest/\n      dev_url: https://github.com/omnisci/omniscidb\n\n  - name: pyomniscidb\n    version: {{ version }}\n    script: build-pyomniscidb.sh\n    build:\n      skip: true  # [cuda_compiler_version in (\"10.2\",)]\n      string: {{ py_build_string }}\n    requirements:\n      host:\n        - python\n        - setuptools_scm\n        - packaging >=20.0\n        - rbc >=0.2.2\n      run:\n        - python\n        - setuptools\n        - {{ pin_compatible('numpy', lower_bound='1.16') }}\n        - thrift 0.13.*\n        - packaging >=20.0\n        - sqlalchemy >=1.3\n        - rbc >=0.2.2\n        - requests\n\n    about:\n      home: http://github.com/omnisci/pyomnisci\n      license: Apache-2.0\n      license_family: Apache\n      license_file: ./python/LICENSE.md\n      summary: A python DB API 2 compatible client for OmniSci (formerly MapD).\n      description: |\n        A python DB API 2 compatible client for OmniSci (formerly MapD).\n      doc_url: https://pyomnisci.readthedocs.io\n      dev_url: https://github.com/omnisci/pyomnisci\n\n    test:\n      imports:\n        - omnisci.cursor\n\nabout:\n  home: https://www.omnisci.com/\n  license: Apache-2.0\n  license_family: APACHE\n  license_file: LICENSE.md\n  summary: The OmniSci database\n\n  description: |\n    OmniSciDB is an in-memory, column store, SQL relational database\n    that was designed from the ground up to run on GPUs.\n\n    This recipe provides both CUDA enabled and CUDA disabled omniscidb\n    packages.\n  doc_url: https://www.omnisci.com/docs/latest/\n  dev_url: https://github.com/omnisci/omniscidb\n\nextra:\n  recipe-maintainers:\n    - xmnlab\n    - pearu\n    - andrewseidl\n    - jclay\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -2149,6 +2451,7 @@
    "clangdev",
    "clangxx",
    "cmake",
+   "cuda_compiler_stub",
    "cxx_compiler_stub",
    "double-conversion",
    "flex",
@@ -2198,6 +2501,7 @@
     "clangdev",
     "clangxx",
     "cmake",
+    "cuda_compiler_stub",
     "cxx_compiler_stub",
     "llvmdev",
     "make",
@@ -2214,6 +2518,7 @@
     "boost-cpp",
     "c_compiler_stub",
     "clangdev",
+    "cuda_compiler_stub",
     "cxx_compiler_stub",
     "double-conversion",
     "flex",
@@ -2245,6 +2550,7 @@
     "boost-cpp",
     "bzip2",
     "c_compiler_stub",
+    "cuda_compiler_stub",
     "cxx_compiler_stub",
     "gxx_linux-64",
     "gxx_osx-64",
@@ -2280,6 +2586,7 @@
     "clangdev <12",
     "clangxx <12",
     "cmake",
+    "cuda_compiler_stub",
     "cxx_compiler_stub",
     "llvmdev <12",
     "make",
@@ -2290,7 +2597,8 @@
   "host": {
    "__set__": true,
    "elements": [
-    "arrow-cpp =1.*=*cpu",
+    "arrow-cpp =2.*=*cpu",
+    "arrow-cpp =2.*=*cuda",
     "bisonpp",
     "blosc",
     "boost-cpp",
@@ -2316,7 +2624,7 @@
     "snappy",
     "tbb",
     "tbb-devel",
-    "thrift-cpp"
+    "thrift-cpp 0.13"
    ]
   },
   "run": {
@@ -2347,8 +2655,8 @@
    "elements": []
   }
  },
- "url": "https://github.com/omnisci/omniscidb/archive/v5.5.1.tar.gz",
- "version": "5.5.1",
+ "url": "https://github.com/omnisci/omniscidb/archive/v5.5.2.tar.gz",
+ "version": "5.5.2",
  "win_64_meta_yaml": {
   "about": {
    "description": "OmniSciDB is an in-memory, column store, SQL relational database\nthat was designed from the ground up to run on GPUs.\n\nThis recipe provides both CUDA enabled and CUDA disabled omniscidb\npackages.\n",
@@ -2361,7 +2669,7 @@
    "summary": "The OmniSci database"
   },
   "build": {
-   "number": "1"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -2397,7 +2705,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -2415,7 +2723,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -2437,7 +2745,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -2467,7 +2775,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -2481,7 +2789,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py36h1234567_1"
+     "string": "py36h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -2508,7 +2816,7 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -2527,7 +2835,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -2545,7 +2853,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -2567,7 +2875,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -2597,7 +2905,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -2611,7 +2919,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py37h1234567_1"
+     "string": "py37h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -2638,7 +2946,7 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -2657,7 +2965,7 @@
      ],
      "missing_dso_whitelist": null,
      "skip": true,
-     "string": "h1234567_1_cpu",
+     "string": "h1234567_0_cpu",
      "track_features": null
     },
     "name": "omniscidb",
@@ -2675,7 +2983,7 @@
       "maven"
      ],
      "host": [
-      "arrow-cpp =1.*=*cpu",
+      "arrow-cpp =2.*=*cpu",
       "bisonpp",
       "blosc",
       "boost-cpp",
@@ -2697,7 +3005,7 @@
       "snappy",
       "tbb",
       "tbb-devel",
-      "thrift-cpp"
+      "thrift-cpp 0.13"
      ],
      "run": [
       "boost-cpp",
@@ -2727,7 +3035,7 @@
       "which startomnisci"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    },
    {
     "about": {
@@ -2741,7 +3049,7 @@
      "summary": "A python DB API 2 compatible client for OmniSci (formerly MapD)."
     },
     "build": {
-     "string": "py38h1234567_1"
+     "string": "py38h1234567_0"
     },
     "name": "pyomniscidb",
     "requirements": {
@@ -2768,21 +3076,16 @@
       "omnisci.cursor"
      ]
     },
-    "version": "5.5.1"
+    "version": "5.5.2"
    }
   ],
   "package": {
    "name": "omniscidb-ext",
-   "version": "5.5.1"
+   "version": "5.5.2"
   },
   "source": {
-   "patches": [
-    "pyomniscidb-5.5.0.patch",
-    "pyomniscidb-5.5.0.patch",
-    "pyomniscidb-5.5.0.patch"
-   ],
-   "sha256": "7d3bfbe4326088570c5ee5841891f1d86a7c4c52415327ea7008c53fa75a604e",
-   "url": "https://github.com/omnisci/omniscidb/archive/v5.5.1.tar.gz"
+   "sha256": "a9b2b8aa167120cb26c7b897593980422d5ed859a732b5465009a5fbb2784476",
+   "url": "https://github.com/omnisci/omniscidb/archive/v5.5.2.tar.gz"
   }
  },
  "win_64_requirements": {
