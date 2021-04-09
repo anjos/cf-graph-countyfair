@@ -115,6 +115,9 @@
  "bad": false,
  "branch": "master",
  "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default"
@@ -209,6 +212,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "cxx_compiler_stub",
     "cmake",
     "c_compiler_stub",
@@ -222,7 +226,8 @@
   },
   "source": {
    "patches": [
-    "add-rt-to-dotpc.patch"
+    "add-rt-to-dotpc.patch",
+    "macos-do-not-use-deprecated.patch"
    ],
    "sha256": "b26aebdcb015e2d89720ef48e0cb2e8a3ca77915f89d853893e7cc861f810f22",
    "url": "https://bitbucket.org/odedevs/ode/downloads/ode-0.16.2.tar.gz"
@@ -235,6 +240,7 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "gnuconfig",
     "make",
     "pkg-config"
    ]
@@ -348,6 +354,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "cxx_compiler_stub",
     "cmake",
     "c_compiler_stub",
@@ -361,7 +368,8 @@
   },
   "source": {
    "patches": [
-    "add-rt-to-dotpc.patch"
+    "add-rt-to-dotpc.patch",
+    "macos-do-not-use-deprecated.patch"
    ],
    "sha256": "b26aebdcb015e2d89720ef48e0cb2e8a3ca77915f89d853893e7cc861f810f22",
    "url": "https://bitbucket.org/odedevs/ode/downloads/ode-0.16.2.tar.gz"
@@ -374,6 +382,7 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "gnuconfig",
     "make",
     "pkg-config"
    ]
@@ -487,6 +496,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "cxx_compiler_stub",
     "cmake",
     "c_compiler_stub",
@@ -500,7 +510,8 @@
   },
   "source": {
    "patches": [
-    "add-rt-to-dotpc.patch"
+    "add-rt-to-dotpc.patch",
+    "macos-do-not-use-deprecated.patch"
    ],
    "sha256": "b26aebdcb015e2d89720ef48e0cb2e8a3ca77915f89d853893e7cc861f810f22",
    "url": "https://bitbucket.org/odedevs/ode/downloads/ode-0.16.2.tar.gz"
@@ -513,6 +524,7 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "gnuconfig",
     "make",
     "pkg-config"
    ]
@@ -553,6 +565,8 @@
     "LICENSE.TXT",
     "LICENSE-BSD.TXT",
     "LICENSE.TXT",
+    "LICENSE-BSD.TXT",
+    "LICENSE.TXT",
     "LICENSE-BSD.TXT"
    ],
    "summary": "Open Dynamics Engine, dynamics simulation"
@@ -584,12 +598,15 @@
     "/lib*/libpthread.*",
     "/lib*/libc.*",
     "lib/libode*",
+    "lib/libode*",
     "lib/libode*"
    ],
    "number": "5"
   },
   "extra": {
    "recipe-maintainers": [
+    "repagh",
+    "traversaro",
     "repagh",
     "traversaro",
     "repagh",
@@ -744,6 +761,54 @@
       "pthread-stubs",
       "libstdcxx-ng",
       "libgcc-ng",
+      "python 3.9*"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ode"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/libode*",
+     "lib/pkgconfig/ode.pc",
+     "lib/cmake/ode-0.16.2",
+     "bin/ode-config",
+     "include/ode"
+    ],
+    "name": "libode",
+    "requirements": {
+     "run": [
+      "pthread-stubs",
+      "libcxx"
+     ]
+    },
+    "run_exports": [
+     "libode"
+    ],
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libode${SHLIB_EXT}",
+      "test -f $PREFIX/lib/libode.0.16.2${SHLIB_EXT}",
+      "test -f $PREFIX/include/ode/ode.h",
+      "test -f $PREFIX/lib/pkgconfig/ode.pc",
+      "test -f $PREFIX/lib/cmake/ode-0.16.2/ode-config.cmake"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/python3.9/site-packages/ode.*",
+     "lib/python3.9/site-packages/Open_Dynamics_Engine*egg-info"
+    ],
+    "name": "pyode",
+    "requirements": {
+     "run": [
+      "libode",
+      "pthread-stubs",
+      "libcxx",
       "python 3.9*"
      ]
     },
@@ -853,21 +918,31 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "cxx_compiler_stub",
     "cmake",
     "c_compiler_stub",
     "pkg-config",
     "make",
+    "gnuconfig",
     "cxx_compiler_stub",
     "cmake",
     "c_compiler_stub",
     "pkg-config",
     "make",
+    "gnuconfig",
     "cxx_compiler_stub",
     "cmake",
     "c_compiler_stub",
     "pkg-config",
     "make",
+    "gnuconfig",
+    "cxx_compiler_stub",
+    "cmake",
+    "c_compiler_stub",
+    "pkg-config",
+    "make",
+    "gnuconfig",
     "cxx_compiler_stub",
     "cmake",
     "c_compiler_stub",
@@ -889,12 +964,23 @@
     "python 3.9*",
     "cython",
     "python 3.9*",
+    "cython",
+    "python 3.9*",
     "cython"
    ]
   },
   "source": {
    "patches": [
-    "modify-dotpc-win.patch"
+    "add-rt-to-dotpc.patch",
+    "macos-do-not-use-deprecated.patch",
+    "add-rt-to-dotpc.patch",
+    "macos-do-not-use-deprecated.patch",
+    "add-rt-to-dotpc.patch",
+    "macos-do-not-use-deprecated.patch",
+    "macos-do-not-use-deprecated.patch",
+    "macos-do-not-use-deprecated.patch",
+    "modify-dotpc-win.patch",
+    "macos-do-not-use-deprecated.patch"
    ],
    "sha256": "b26aebdcb015e2d89720ef48e0cb2e8a3ca77915f89d853893e7cc861f810f22",
    "url": "https://bitbucket.org/odedevs/ode/downloads/ode-0.16.2.tar.gz"
@@ -980,6 +1066,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "cxx_compiler_stub",
     "cmake",
     "c_compiler_stub",
@@ -992,7 +1079,9 @@
    ]
   },
   "source": {
-   "patches": null,
+   "patches": [
+    "macos-do-not-use-deprecated.patch"
+   ],
    "sha256": "b26aebdcb015e2d89720ef48e0cb2e8a3ca77915f89d853893e7cc861f810f22",
    "url": "https://bitbucket.org/odedevs/ode/downloads/ode-0.16.2.tar.gz"
   }
@@ -1004,6 +1093,138 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "gnuconfig",
+    "make",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "cython",
+    "python"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libcxx",
+    "libode",
+    "pthread-stubs",
+    "python"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "https://www.ode.org/",
+   "license": "LGPL-2.1-or-later OR BSD-4-Clause",
+   "license_file": [
+    "LICENSE.TXT",
+    "LICENSE-BSD.TXT"
+   ],
+   "summary": "Open Dynamics Engine, dynamics simulation"
+  },
+  "build": {
+   "missing_dso_whitelist": [
+    "lib/libode*"
+   ],
+   "number": "5"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "repagh",
+    "traversaro"
+   ]
+  },
+  "outputs": [
+   {
+    "files": [
+     "lib/libode*",
+     "lib/pkgconfig/ode.pc",
+     "lib/cmake/ode-0.16.2",
+     "bin/ode-config",
+     "include/ode"
+    ],
+    "name": "libode",
+    "requirements": {
+     "run": [
+      "pthread-stubs",
+      "libcxx"
+     ]
+    },
+    "run_exports": [
+     "libode"
+    ],
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libode${SHLIB_EXT}",
+      "test -f $PREFIX/lib/libode.0.16.2${SHLIB_EXT}",
+      "test -f $PREFIX/include/ode/ode.h",
+      "test -f $PREFIX/lib/pkgconfig/ode.pc",
+      "test -f $PREFIX/lib/cmake/ode-0.16.2/ode-config.cmake"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/python3.9/site-packages/ode.*",
+     "lib/python3.9/site-packages/Open_Dynamics_Engine*egg-info"
+    ],
+    "name": "pyode",
+    "requirements": {
+     "run": [
+      "libode",
+      "pthread-stubs",
+      "libcxx",
+      "python 3.9*"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ode"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "libode",
+   "version": "0.16.2"
+  },
+  "requirements": {
+   "build": [
+    "gnuconfig",
+    "cxx_compiler_stub",
+    "cmake",
+    "c_compiler_stub",
+    "pkg-config",
+    "make"
+   ],
+   "host": [
+    "python 3.9*",
+    "cython"
+   ]
+  },
+  "source": {
+   "patches": [
+    "macos-do-not-use-deprecated.patch"
+   ],
+   "sha256": "b26aebdcb015e2d89720ef48e0cb2e8a3ca77915f89d853893e7cc861f810f22",
+   "url": "https://bitbucket.org/odedevs/ode/downloads/ode-0.16.2.tar.gz"
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "gnuconfig",
     "make",
     "pkg-config"
    ]
@@ -1037,7 +1258,7 @@
   ]
  },
  "pinning_version": "2021.04.02.15.43.00",
- "raw_meta_yaml": "# defining package and version\n{% set name = \"libode\" %}\n{% set version = \"0.16.2\" %}\n{% set soversion = \"0.16.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://bitbucket.org/odedevs/ode/downloads/ode-{{ version }}.tar.gz\n  sha256: b26aebdcb015e2d89720ef48e0cb2e8a3ca77915f89d853893e7cc861f810f22\n  patches:\n    - add-rt-to-dotpc.patch          # [linux]\n    - modify-dotpc-win.patch         # [win]\n\nbuild:\n  number: 5\n  skip: true                         # [win and py==27]\n  # add libode to the whitelist; it can apparently not be found yet when\n  # pyode is built\n  missing_dso_whitelist:\n    - lib/libode*\n    - $RPATH/librt.*                      # [linux]\n    - $RPATH/libpthread.*                 # [linux]\n    - $RPATH/libc.*                       # [linux]\n    - $RPATH/libpython.*                  # [linux]\n    - /lib*/librt.*                       # [linux]\n    - /lib*/libpthread.*                  # [linux]\n    - /lib*/libc.*                        # [linux]\n  \nrequirements:\n  build:\n    - {{ compiler('cxx') }}          # stage 1, library\n    - cmake\n    - {{ compiler('c') }}            # stage 2, generate bindings\n    - pkg-config\n    - m2-patch                       # [win]\n    - make                           # [unix]\n  host:\n    - python {{ PY_VER }}*\n    - cython\n\noutputs:\n  - name: {{ name }}\n    requirements:\n      run:\n        - pthread-stubs                                              # [unix]\n        - libstdcxx-ng                                               # [linux]\n        - libgcc-ng                                                  # [linux]\n        - libcxx                                                     # [osx]\n        - vs2015_runtime                                             # [win]\n    run_exports:\n      # No ABI docs or ABI Laboratory history, better be conservative\n      - {{ pin_subpackage(name, max_pin='x.x.x') }}\n    files:\n      - lib/libode*                                                  # [unix]\n      - lib/pkgconfig/ode.pc                                         # [unix]\n      - lib/cmake/ode-{{ soversion }}                                # [unix]\n      - bin/ode-config                                               # [unix]\n      - include/ode                                                  # [unix]\n      - Library/lib/ode_double.lib                                   # [win]\n      - Library/bin/ode_double.dll                                   # [win]\n      - Library/lib/pkgconfig/ode.pc                                 # [win]\n      - Library/lib/cmake/ode-{{ soversion }}                        # [win]\n      - Library/include/ode                                          # [win]\n \n     \n    test:\n      commands:\n        - test -f $PREFIX/lib/libode${SHLIB_EXT}                     # [unix]\n        - test -f $PREFIX/lib/libode${SHLIB_EXT}.{{ soversion }}     # [linux]\n        - test -f $PREFIX/lib/libode.{{ soversion }}${SHLIB_EXT}     # [osx]\n        - test -f $PREFIX/include/ode/ode.h                          # [unix]\n        - test -f $PREFIX/lib/pkgconfig/ode.pc                       # [unix]\n        - test -f $PREFIX/lib/cmake/ode-{{ soversion }}/ode-config.cmake  # [unix]\n        - if not exist %PREFIX%\\Library\\lib\\ode_double.lib exit 1    # [win]\n        - if not exist %PREFIX%\\Library\\bin\\ode_double.dll exit 1    # [win]\n        - if not exist %PREFIX%\\Library\\lib\\pkgconfig\\ode.pc exit 1   # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\ode-{{ soversion }}\\\\ode-config.cmake exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\ode\\\\ode.h exit 1  # [win]\n\n  - name: pyode\n    requirements:\n      run:\n        - libode\n        - pthread-stubs                                              # [unix]\n        - libstdcxx-ng                                               # [linux]\n        - libgcc-ng                                                  # [linux]\n        - libcxx                                                     # [osx]\n        - python {{ PY_VER }}*\n    files:\n      - lib/python{{ PY_VER }}/site-packages/ode.*                   # [unix]\n      - lib/python{{ PY_VER }}/site-packages/Open_Dynamics_Engine*egg-info  # [unix]\n      - Lib/site-packages/ode.*.pyd                                  # [win]\n      - Lib/site-packages/Open_Dynamics_Engine*egg-info              # [win]\n    test:\n      imports:\n        - ode\n\nabout:\n  home: https://www.ode.org/\n  license: LGPL-2.1-or-later OR BSD-4-Clause\n  summary: Open Dynamics Engine, dynamics simulation\n  license_file:\n    - LICENSE.TXT\n    - LICENSE-BSD.TXT\n\nextra:\n  recipe-maintainers:\n    - repagh\n    - traversaro\n",
+ "raw_meta_yaml": "# defining package and version\n{% set name = \"libode\" %}\n{% set version = \"0.16.2\" %}\n{% set soversion = \"0.16.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://bitbucket.org/odedevs/ode/downloads/ode-{{ version }}.tar.gz\n  sha256: b26aebdcb015e2d89720ef48e0cb2e8a3ca77915f89d853893e7cc861f810f22\n  patches:\n    - add-rt-to-dotpc.patch          # [linux]\n    - modify-dotpc-win.patch         # [win]\n    - macos-do-not-use-deprecated.patch\n\nbuild:\n  number: 5\n  skip: true                         # [win and py==27]\n  # add libode to the whitelist; it can apparently not be found yet when\n  # pyode is built\n  missing_dso_whitelist:\n    - lib/libode*\n    - $RPATH/librt.*                      # [linux]\n    - $RPATH/libpthread.*                 # [linux]\n    - $RPATH/libc.*                       # [linux]\n    - $RPATH/libpython.*                  # [linux]\n    - /lib*/librt.*                       # [linux]\n    - /lib*/libpthread.*                  # [linux]\n    - /lib*/libc.*                        # [linux]\n  \nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - cython                                 # [build_platform != target_platform]\n    - gnuconfig  # [unix]\n    - {{ compiler('cxx') }}          # stage 1, library\n    - cmake\n    - {{ compiler('c') }}            # stage 2, generate bindings\n    - pkg-config\n    - m2-patch                       # [win]\n    - make                           # [unix]\n  host:\n    - python {{ PY_VER }}*\n    - cython\n\noutputs:\n  - name: {{ name }}\n    requirements:\n      run:\n        - pthread-stubs                                              # [unix]\n        - libstdcxx-ng                                               # [linux]\n        - libgcc-ng                                                  # [linux]\n        - libcxx                                                     # [osx]\n        - vs2015_runtime                                             # [win]\n    run_exports:\n      # No ABI docs or ABI Laboratory history, better be conservative\n      - {{ pin_subpackage(name, max_pin='x.x.x') }}\n    files:\n      - lib/libode*                                                  # [unix]\n      - lib/pkgconfig/ode.pc                                         # [unix]\n      - lib/cmake/ode-{{ soversion }}                                # [unix]\n      - bin/ode-config                                               # [unix]\n      - include/ode                                                  # [unix]\n      - Library/lib/ode_double.lib                                   # [win]\n      - Library/bin/ode_double.dll                                   # [win]\n      - Library/lib/pkgconfig/ode.pc                                 # [win]\n      - Library/lib/cmake/ode-{{ soversion }}                        # [win]\n      - Library/include/ode                                          # [win]\n \n     \n    test:\n      commands:\n        - test -f $PREFIX/lib/libode${SHLIB_EXT}                     # [unix]\n        - test -f $PREFIX/lib/libode${SHLIB_EXT}.{{ soversion }}     # [linux]\n        - test -f $PREFIX/lib/libode.{{ soversion }}${SHLIB_EXT}     # [osx]\n        - test -f $PREFIX/include/ode/ode.h                          # [unix]\n        - test -f $PREFIX/lib/pkgconfig/ode.pc                       # [unix]\n        - test -f $PREFIX/lib/cmake/ode-{{ soversion }}/ode-config.cmake  # [unix]\n        - if not exist %PREFIX%\\Library\\lib\\ode_double.lib exit 1    # [win]\n        - if not exist %PREFIX%\\Library\\bin\\ode_double.dll exit 1    # [win]\n        - if not exist %PREFIX%\\Library\\lib\\pkgconfig\\ode.pc exit 1   # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\ode-{{ soversion }}\\\\ode-config.cmake exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\ode\\\\ode.h exit 1  # [win]\n\n  - name: pyode\n    requirements:\n      run:\n        - libode\n        - pthread-stubs                                              # [unix]\n        - libstdcxx-ng                                               # [linux]\n        - libgcc-ng                                                  # [linux]\n        - libcxx                                                     # [osx]\n        - python {{ PY_VER }}*\n    files:\n      - lib/python{{ PY_VER }}/site-packages/ode.*                   # [unix]\n      - lib/python{{ PY_VER }}/site-packages/Open_Dynamics_Engine*egg-info  # [unix]\n      - Lib/site-packages/ode.*.pyd                                  # [win]\n      - Lib/site-packages/Open_Dynamics_Engine*egg-info              # [win]\n    test:\n      imports:\n        - ode\n\nabout:\n  home: https://www.ode.org/\n  license: LGPL-2.1-or-later OR BSD-4-Clause\n  summary: Open Dynamics Engine, dynamics simulation\n  license_file:\n    - LICENSE.TXT\n    - LICENSE-BSD.TXT\n\nextra:\n  recipe-maintainers:\n    - repagh\n    - traversaro\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1045,6 +1266,7 @@
    "cmake",
    "cxx_compiler_stub",
    "cython",
+   "gnuconfig",
    "libcxx",
    "libgcc-ng",
    "libode",
@@ -1064,6 +1286,7 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "gnuconfig",
     "m2-patch",
     "make",
     "pkg-config"
@@ -1110,6 +1333,7 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "gnuconfig",
     "m2-patch",
     "make",
     "pkg-config"
@@ -1229,7 +1453,8 @@
   },
   "source": {
    "patches": [
-    "modify-dotpc-win.patch"
+    "modify-dotpc-win.patch",
+    "macos-do-not-use-deprecated.patch"
    ],
    "sha256": "b26aebdcb015e2d89720ef48e0cb2e8a3ca77915f89d853893e7cc861f810f22",
    "url": "https://bitbucket.org/odedevs/ode/downloads/ode-0.16.2.tar.gz"
