@@ -123,8 +123,8 @@
    "summary": "Quantum chemistry and solid state physics software package"
   },
   "build": {
-   "number": "6",
-   "string": "py_openmpi_6"
+   "number": "7",
+   "string": "py_openmpi_7"
   },
   "extra": {
    "recipe-maintainers": [
@@ -176,7 +176,8 @@
     "fftw"
    ],
    "run": [
-    "openmpi"
+    "openmpi",
+    "scalapack"
    ]
   },
   "source": {
@@ -221,7 +222,8 @@
   "run": {
    "__set__": true,
    "elements": [
-    "openmpi"
+    "openmpi",
+    "scalapack"
    ]
   },
   "test": {
@@ -241,8 +243,8 @@
    "summary": "Quantum chemistry and solid state physics software package"
   },
   "build": {
-   "number": "1006",
-   "string": "py_nompi_1006"
+   "number": "1007",
+   "string": "py_nompi_1007"
   },
   "extra": {
    "recipe-maintainers": [
@@ -311,7 +313,8 @@
     "fftw"
    ],
    "run": [
-    "openmpi"
+    "openmpi",
+    "scalapack"
    ]
   },
   "source": {
@@ -348,8 +351,8 @@
    "summary": "Quantum chemistry and solid state physics software package"
   },
   "build": {
-   "number": "1006",
-   "string": "py_nompi_1006"
+   "number": "1007",
+   "string": "py_nompi_1007"
   },
   "extra": {
    "recipe-maintainers": [
@@ -438,7 +441,7 @@
   ]
  },
  "pinning_version": "2021.04.13.13.54.57",
- "raw_meta_yaml": "{% set name = \"cp2k\" %}\n{% set version = \"7.1.0\" %}\n\n# Define build matrix for MPI vs. non-mpi\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n{% set build = 6 %}\n{% if mpi == 'nompi' %}\n# prioritize nompi variant via build number\n{% set build = build + 1000 %}\n{% endif %}\n\n{% set build_string = \"py{}_{}_{}\".format(environ.get('CONDA_PY', ''), mpi, build) %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name }}/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version[:-2] }}.tar.bz2\n  sha256: ccd711a09a426145440e666310dd01cc5772ab103493c4ae6a3470898cd0addb\n  patches: \n    - regtest.patch\n    - macosxtest.patch  # [osx]\n\nbuild:\n  number: {{ build }}\n  skip: True  # [not (linux or osx) or osx and mpi != 'nompi']\n  string: {{ build_string }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n    - autoconf\n    - automake\n    - cmake \n    - libtool\n    - python \n  host:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - scalapack  # [mpi != 'nompi']\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n    - libxsmm\n    - fftw\n  run:\n    - {{ mpi }}  # [mpi != 'nompi']\n\ntest:\n  commands:\n    # note: regtests are running at \"build\" stage\n    # this is just a dummy\n    - cp2k.ssmp --help  # [mpi == 'nompi']\n\nabout:\n  home: https://www.cp2k.org\n  license: GPL-2.0-only\n  license_family: GPL\n  license_file: LICENSE\n  summary: 'Quantum chemistry and solid state physics software package'\n\n  description: |\n    CP2K is a quantum chemistry and solid state physics software package \n    that can perform atomistic simulations of solid state, liquid, \n    molecular, periodic, material, crystal, and biological systems. \n  doc_url: https://manual.cp2k.org\n  dev_url: https://github.com/cp2k/cp2k\n\nextra:\n  recipe-maintainers:\n    - jan-janssen\n    - oschuett\n    - ltalirz\n",
+ "raw_meta_yaml": "{% set name = \"cp2k\" %}\n{% set version = \"7.1.0\" %}\n\n# Define build matrix for MPI vs. non-mpi\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n{% set build = 7 %}\n{% if mpi == 'nompi' %}\n# prioritize nompi variant via build number\n{% set build = build + 1000 %}\n{% endif %}\n\n{% set build_string = \"py{}_{}_{}\".format(environ.get('CONDA_PY', ''), mpi, build) %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name }}/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version[:-2] }}.tar.bz2\n  sha256: ccd711a09a426145440e666310dd01cc5772ab103493c4ae6a3470898cd0addb\n  patches: \n    - regtest.patch\n    - macosxtest.patch  # [osx]\n\nbuild:\n  number: {{ build }}\n  skip: True  # [not (linux or osx) or osx and mpi != 'nompi']\n  string: {{ build_string }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n    - autoconf\n    - automake\n    - cmake \n    - libtool\n    - python \n  host:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - scalapack  # [mpi != 'nompi']\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n    - libxsmm\n    - fftw\n  run:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - scalapack  # [mpi != 'nompi']\n\ntest:\n  commands:\n    # note: regtests are running at \"build\" stage\n    # this is just a dummy\n    - cp2k.ssmp --help  # [mpi == 'nompi']\n\nabout:\n  home: https://www.cp2k.org\n  license: GPL-2.0-only\n  license_family: GPL\n  license_file: LICENSE\n  summary: 'Quantum chemistry and solid state physics software package'\n\n  description: |\n    CP2K is a quantum chemistry and solid state physics software package \n    that can perform atomistic simulations of solid state, liquid, \n    molecular, periodic, material, crystal, and biological systems. \n  doc_url: https://manual.cp2k.org\n  dev_url: https://github.com/cp2k/cp2k\n\nextra:\n  recipe-maintainers:\n    - jan-janssen\n    - oschuett\n    - ltalirz\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -502,7 +505,8 @@
     "cxx_compiler_stub",
     "fortran_compiler_stub",
     "openmp",
-    "openmpi"
+    "openmpi",
+    "scalapack"
    ]
   },
   "test": {
@@ -543,7 +547,8 @@
   "run": {
    "__set__": true,
    "elements": [
-    "openmpi"
+    "openmpi",
+    "scalapack"
    ]
   },
   "test": {
