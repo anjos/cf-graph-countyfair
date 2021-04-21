@@ -13,7 +13,7 @@
    "summary": ".NET Core is a free and open-source managed computer software\nframework for the Windows, Linux, and macOS operating systems.\n"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -68,7 +68,7 @@
     "script": "build-runtime.sh",
     "test": {
      "commands": [
-      "test -f $PREFIX/lib/dotnet/dotnet"
+      "dotnet --list-runtimes"
      ]
     },
     "version": "5.0.5"
@@ -196,7 +196,7 @@
    "summary": ".NET Core is a free and open-source managed computer software\nframework for the Windows, Linux, and macOS operating systems.\n"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -257,7 +257,7 @@
     "script": "build-runtime.sh",
     "test": {
      "commands": [
-      "test -f $PREFIX/lib/dotnet/dotnet"
+      "dotnet --list-runtimes"
      ]
     },
     "version": "5.0.5"
@@ -373,7 +373,7 @@
     "script": "build-runtime.sh",
     "test": {
      "commands": [
-      "test -f $PREFIX/lib/dotnet/dotnet"
+      "dotnet --list-runtimes"
      ]
     },
     "version": "5.0.5"
@@ -476,7 +476,7 @@
     "script": "build-runtime.bat",
     "test": {
      "commands": [
-      "if not exist %PREFIX%\\\\dotnet\\\\dotnet.exe exit 1"
+      "dotnet --list-runtimes"
      ]
     },
     "version": "5.0.5"
@@ -578,7 +578,7 @@
    "summary": ".NET Core is a free and open-source managed computer software\nframework for the Windows, Linux, and macOS operating systems.\n"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -629,7 +629,7 @@
     "script": "build-runtime.sh",
     "test": {
      "commands": [
-      "test -f $PREFIX/lib/dotnet/dotnet"
+      "dotnet --list-runtimes"
      ]
     },
     "version": "5.0.5"
@@ -747,7 +747,7 @@
    "dotnet-sdk"
   ]
  },
- "raw_meta_yaml": "{% set sdk_version = \"5.0.202\" %}\n{% set runtime_version = \"5.0.5\" %}\n{% set sha256 = \"6f270432de6c41d74f8ec19c999ae62189f253dacfd1d095131ddc10bf6d9d52\" %}  # [osx]\n{% set sha256 = \"d2994d4e995bbab003b2d1b137807936fd96c94ba9982822893d62904aab54cf\" %}  # [linux]\n{% set sha256 = \"f40261b4d443840a4924a5007c735e635873ff64999188a4edfe8640d616417b\" %}  # [win]\n{% set platform = \"linux\" %}  # [linux]\n{% set platform = \"osx\" %}    # [osx]\n{% set platform = \"win\" %}    # [win]\n{% set ext = \"tar.gz\" %}      # [not win]\n{% set ext = \"zip\" %}         # [win]\n\npackage:\n  name: dotnet\n  version: {{ sdk_version }}\n\nsource:\n  url: https://dotnetcli.azureedge.net/dotnet/Sdk/{{ sdk_version }}/dotnet-sdk-{{ sdk_version }}-{{ platform }}-x64.{{ ext }}\n  sha256: {{ sha256 }}\n  folder: dotnet\n\nbuild:\n  number: 1\n\noutputs:\n  - name: dotnet\n    version: {{ sdk_version }}\n    requirements:\n      run:\n        - {{ pin_subpackage('dotnet-runtime', exact=True) }}\n        - {{ pin_subpackage('dotnet-aspnetcore', exact=True) }}\n        - {{ pin_subpackage('dotnet-desktop', exact=True) }}  # [win]\n        - {{ pin_subpackage('dotnet-sdk', exact=True) }}\n    test:\n      commands:\n       - dotnet --version\n\n  - name: dotnet-runtime\n    version: {{ runtime_version }}\n    script: build-runtime.bat       # [win]\n    script: build-runtime.sh        # [not win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - posix                  # [win]\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - zlib                   # [unix]\n        - libcurl                # [unix]\n        - lttng-ust              # [linux]\n      run:\n        - lttng-ust                 # [linux]\n        - libcurl                   # [unix]\n        - icu                       # [unix]\n        - krb5                      # [unix]\n        - __glibc >=2.17            # [linux64]\n    test:\n      commands:\n        - test -f $PREFIX/lib/dotnet/dotnet                 # [not win]\n        - if not exist %PREFIX%\\\\dotnet\\\\dotnet.exe exit 1  # [win]\n    about:\n      home: https://github.com/dotnet/runtime\n      license: MIT\n      license_file: dotnet/LICENSE.txt\n      summary: |\n        .NET Core is a free and open-source managed computer software\n        framework for the Windows, Linux, and macOS operating systems.\n\n  - name: dotnet-sdk\n    version: {{ sdk_version }}\n    script: build-sdk.bat       # [win]\n    script: build-sdk.sh        # [not win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - posix                  # [win]\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - zlib                   # [unix]\n        - libcurl                # [unix]\n        - lttng-ust              # [linux]\n      run:\n        - lttng-ust             # [linux]\n        - libcurl               # [unix]\n        - icu                   # [unix]\n        - krb5                  # [unix]\n        - __glibc >=2.17        # [linux64]\n        - dotnet-runtime ={{ runtime_version }}\n    test:\n      commands:\n        - dotnet --version\n    about:\n      home: https://github.com/dotnet/sdk\n      license: MIT\n      license_file: dotnet/LICENSE.txt\n      summary: |\n        .NET Core is a free and open-source managed computer software\n        framework for the Windows, Linux, and macOS operating systems.\n\n  - name: dotnet-aspnetcore\n    version: {{ runtime_version }}\n    script: build-aspnetcore.bat    # [win]\n    script: build-aspnetcore.sh     # [not win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - posix                  # [win]\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - zlib                   # [unix]\n        - libcurl                # [unix]\n        - lttng-ust              # [linux]\n      run:\n        - lttng-ust                 # [linux]\n        - libcurl                   # [unix]\n        - icu                       # [unix]\n        - krb5                      # [unix]\n        - __glibc >=2.17            # [linux64]\n        - dotnet-runtime ={{ runtime_version }}\n    test:\n      commands:\n        - test -d $PREFIX/lib/dotnet/shared/Microsoft.AspNetCore.App              # [not win]\n        - if not exist %PREFIX%\\\\dotnet\\\\shared\\\\Microsoft.AspNetCore.App exit 1  # [win]\n    about:\n      home: https://github.com/dotnet/aspnetcore\n      license: MIT\n      license_file: dotnet/LICENSE.txt\n      summary: |\n        .NET Core is a free and open-source managed computer software\n        framework for the Windows, Linux, and macOS operating systems.\n\n  - name: dotnet-desktop                                                              # [win]\n    version: {{ runtime_version }}                                                    # [win]\n    script: build-desktop.bat                                                         # [win]\n    requirements:                                                                     # [win]\n      build:                                                                          # [win]\n        - posix                                                                       # [win]\n      run:                                                                            # [win]\n        - dotnet-runtime ={{ runtime_version }}                                       # [win]\n    test:                                                                             # [win]\n      commands:                                                                       # [win]\n        - if not exist %PREFIX%\\\\dotnet\\\\shared\\\\Microsoft.WindowsDesktop.App exit 1  # [win]\n    about:                                                                            # [win]\n      home: https://github.com/dotnet/desktop                                         # [win]\n      license: MIT                                                                    # [win]\n      license_file: dotnet/LICENSE.txt                                                # [win]\n      summary: |                                                                      # [win]\n        .NET Core is a free and open-source managed computer software\n        framework for the Windows, Linux, and macOS operating systems.\n\nabout:\n  home: https://github.com/dotnet/core\n  license: MIT\n  license_file: dotnet/LICENSE.txt\n  summary: |\n    .NET Core is a free and open-source managed computer software\n    framework for the Windows, Linux, and macOS operating systems.\n\nextra:\n  recipe-maintainers:\n    - dhirschfeld\n    - ZimmerA\n    - acesnik\n",
+ "raw_meta_yaml": "{% set sdk_version = \"5.0.202\" %}\n{% set runtime_version = \"5.0.5\" %}\n{% set sha256 = \"6f270432de6c41d74f8ec19c999ae62189f253dacfd1d095131ddc10bf6d9d52\" %}  # [osx]\n{% set sha256 = \"d2994d4e995bbab003b2d1b137807936fd96c94ba9982822893d62904aab54cf\" %}  # [linux]\n{% set sha256 = \"f40261b4d443840a4924a5007c735e635873ff64999188a4edfe8640d616417b\" %}  # [win]\n{% set platform = \"linux\" %}  # [linux]\n{% set platform = \"osx\" %}    # [osx]\n{% set platform = \"win\" %}    # [win]\n{% set ext = \"tar.gz\" %}      # [not win]\n{% set ext = \"zip\" %}         # [win]\n\npackage:\n  name: dotnet\n  version: {{ sdk_version }}\n\nsource:\n  url: https://dotnetcli.azureedge.net/dotnet/Sdk/{{ sdk_version }}/dotnet-sdk-{{ sdk_version }}-{{ platform }}-x64.{{ ext }}\n  sha256: {{ sha256 }}\n  folder: dotnet\n\nbuild:\n  number: 2 \n\noutputs:\n  - name: dotnet\n    version: {{ sdk_version }}\n    requirements:\n      run:\n        - {{ pin_subpackage('dotnet-runtime', exact=True) }}\n        - {{ pin_subpackage('dotnet-aspnetcore', exact=True) }}\n        - {{ pin_subpackage('dotnet-desktop', exact=True) }}  # [win]\n        - {{ pin_subpackage('dotnet-sdk', exact=True) }}\n    test:\n      commands:\n       - dotnet --version\n\n  - name: dotnet-runtime\n    version: {{ runtime_version }}\n    script: build-runtime.bat       # [win]\n    script: build-runtime.sh        # [not win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - posix                  # [win]\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - zlib                   # [unix]\n        - libcurl                # [unix]\n        - lttng-ust              # [linux]\n      run:\n        - lttng-ust                 # [linux]\n        - libcurl                   # [unix]\n        - icu                       # [unix]\n        - krb5                      # [unix]\n        - __glibc >=2.17            # [linux64]\n    test:\n      commands:\n        - dotnet --list-runtimes\n    about:\n      home: https://github.com/dotnet/runtime\n      license: MIT\n      license_file: dotnet/LICENSE.txt\n      summary: |\n        .NET Core is a free and open-source managed computer software\n        framework for the Windows, Linux, and macOS operating systems.\n\n  - name: dotnet-sdk\n    version: {{ sdk_version }}\n    script: build-sdk.bat       # [win]\n    script: build-sdk.sh        # [not win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - posix                  # [win]\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - zlib                   # [unix]\n        - libcurl                # [unix]\n        - lttng-ust              # [linux]\n      run:\n        - lttng-ust             # [linux]\n        - libcurl               # [unix]\n        - icu                   # [unix]\n        - krb5                  # [unix]\n        - __glibc >=2.17        # [linux64]\n        - dotnet-runtime ={{ runtime_version }}\n    test:\n      commands:\n        - dotnet --version\n    about:\n      home: https://github.com/dotnet/sdk\n      license: MIT\n      license_file: dotnet/LICENSE.txt\n      summary: |\n        .NET Core is a free and open-source managed computer software\n        framework for the Windows, Linux, and macOS operating systems.\n\n  - name: dotnet-aspnetcore\n    version: {{ runtime_version }}\n    script: build-aspnetcore.bat    # [win]\n    script: build-aspnetcore.sh     # [not win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - posix                  # [win]\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - zlib                   # [unix]\n        - libcurl                # [unix]\n        - lttng-ust              # [linux]\n      run:\n        - lttng-ust                 # [linux]\n        - libcurl                   # [unix]\n        - icu                       # [unix]\n        - krb5                      # [unix]\n        - __glibc >=2.17            # [linux64]\n        - dotnet-runtime ={{ runtime_version }}\n    test:\n      commands:\n        - test -d $PREFIX/lib/dotnet/shared/Microsoft.AspNetCore.App              # [not win]\n        - if not exist %PREFIX%\\\\dotnet\\\\shared\\\\Microsoft.AspNetCore.App exit 1  # [win]\n    about:\n      home: https://github.com/dotnet/aspnetcore\n      license: MIT\n      license_file: dotnet/LICENSE.txt\n      summary: |\n        .NET Core is a free and open-source managed computer software\n        framework for the Windows, Linux, and macOS operating systems.\n\n  - name: dotnet-desktop                                                              # [win]\n    version: {{ runtime_version }}                                                    # [win]\n    script: build-desktop.bat                                                         # [win]\n    requirements:                                                                     # [win]\n      build:                                                                          # [win]\n        - posix                                                                       # [win]\n      run:                                                                            # [win]\n        - dotnet-runtime ={{ runtime_version }}                                       # [win]\n    test:                                                                             # [win]\n      commands:                                                                       # [win]\n        - if not exist %PREFIX%\\\\dotnet\\\\shared\\\\Microsoft.WindowsDesktop.App exit 1  # [win]\n    about:                                                                            # [win]\n      home: https://github.com/dotnet/desktop                                         # [win]\n      license: MIT                                                                    # [win]\n      license_file: dotnet/LICENSE.txt                                                # [win]\n      summary: |                                                                      # [win]\n        .NET Core is a free and open-source managed computer software\n        framework for the Windows, Linux, and macOS operating systems.\n\nabout:\n  home: https://github.com/dotnet/core\n  license: MIT\n  license_file: dotnet/LICENSE.txt\n  summary: |\n    .NET Core is a free and open-source managed computer software\n    framework for the Windows, Linux, and macOS operating systems.\n\nextra:\n  recipe-maintainers:\n    - dhirschfeld\n    - ZimmerA\n    - acesnik\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -854,7 +854,7 @@
    "summary": ".NET Core is a free and open-source managed computer software\nframework for the Windows, Linux, and macOS operating systems.\n"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -900,7 +900,7 @@
     "script": "build-runtime.bat",
     "test": {
      "commands": [
-      "if not exist %PREFIX%\\\\dotnet\\\\dotnet.exe exit 1"
+      "dotnet --list-runtimes"
      ]
     },
     "version": "5.0.5"
