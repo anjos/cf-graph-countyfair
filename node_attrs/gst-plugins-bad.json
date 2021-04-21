@@ -14,7 +14,7 @@
    "summary": "GStreamer Bad Plug-ins"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "gst-plugins-bad"
    ]
@@ -60,12 +60,15 @@
     "pthread-stubs",
     "openssl",
     "xorg-libx11",
-    "libxml2"
+    "libxml2",
+    "libsndfile",
+    "libopus"
    ],
    "run": [
     "gstreamer",
     "gst-plugins-base",
-    "xorg-libx11"
+    "xorg-libx11",
+    "libopus"
    ]
   },
   "source": {
@@ -109,6 +112,8 @@
     "gobject-introspection",
     "gst-plugins-base",
     "gstreamer",
+    "libopus",
+    "libsndfile",
     "libxcb",
     "libxml2",
     "openssl",
@@ -121,6 +126,7 @@
    "elements": [
     "gst-plugins-base",
     "gstreamer",
+    "libopus",
     "xorg-libx11"
    ]
   },
@@ -138,7 +144,7 @@
    "summary": "GStreamer Bad Plug-ins"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "gst-plugins-bad"
    ]
@@ -184,12 +190,15 @@
     "pthread-stubs",
     "openssl",
     "xorg-libx11",
-    "libxml2"
+    "libxml2",
+    "libsndfile",
+    "libopus"
    ],
    "run": [
     "gstreamer",
     "gst-plugins-base",
-    "xorg-libx11"
+    "xorg-libx11",
+    "libopus"
    ]
   },
   "source": {
@@ -219,7 +228,7 @@
    "gst-plugins-bad"
   ]
  },
- "raw_meta_yaml": "{% set name = \"gst-plugins-bad\" %}\n{% set version = \"1.18.4\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-{{ version }}.tar.xz\n  sha256: 74e806bc5595b18c70e9ca93571e27e79dfb808e5d2e7967afa952b52e99c85f\n\nbuild:\n  number: 0\n  skip: true  # [win or osx]\n  run_exports:\n    # remove symbols at .90 patch releases just before minor versions?\n    #    https://abi-laboratory.pro/tracker/timeline/gstreamer/\n    - {{ pin_subpackage('gst-plugins-bad', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ cdt('libxau-devel') }}          # [linux]\n    - {{ cdt('libxext-devel') }}         # [linux]\n    - {{ cdt('libx11-devel') }}          # [linux]\n    - {{ cdt('libxrender-devel') }}      # [linux]\n    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]\n    - {{ cdt('mesa-libgl-devel') }}      # [linux]\n    - {{ cdt('libdrm-devel') }}          # [linux]\n    - {{ cdt('libxdamage-devel') }}      # [linux]\n    - {{ cdt('libxfixes-devel') }}       # [linux]\n    - {{ cdt('libxxf86vm-devel') }}      # [linux]\n    - {{ cdt('mesa-dri-drivers') }}      # [linux]\n    # expat here is _only_ required for mesa-dri-drivers\n    - {{ cdt('expat') }}                 # [linux]\n    - {{ cdt('libselinux-devel') }}      # [linux]\n    - pkg-config\n    - perl\n    - libtool\n    - meson\n    - ninja\n  host:\n    - gstreamer\n    - gst-plugins-base\n    - gobject-introspection  # [linux]\n    - glib\n    - gettext                            # [osx]\n    - libxcb                             # [linux]\n    - pthread-stubs                      # [linux]\n    - openssl\n    - xorg-libx11  # [linux]\n    - libxml2\n  run:\n    - gstreamer\n    - gst-plugins-base\n    - xorg-libx11  # [linux]\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libgstallocators-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstapp-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstaudio-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstfft-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstpbutils-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstriff-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstrtp-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstrtsp-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstsdp-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgsttag-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstvideo-1.0${SHLIB_EXT}\n\nabout:\n  home: http://gstreamer.freedesktop.org/\n  license: LGPL-2.1-or-later\n  license_file: COPYING\n  summary: \"GStreamer Bad Plug-ins\"\n  dev_url: https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad\n\nextra:\n  recipe-maintainers:\n    - scopatz\n",
+ "raw_meta_yaml": "{% set name = \"gst-plugins-bad\" %}\n{% set version = \"1.18.4\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-{{ version }}.tar.xz\n  sha256: 74e806bc5595b18c70e9ca93571e27e79dfb808e5d2e7967afa952b52e99c85f\n\nbuild:\n  number: 1\n  skip: true  # [win or osx]\n  run_exports:\n    # remove symbols at .90 patch releases just before minor versions?\n    #    https://abi-laboratory.pro/tracker/timeline/gstreamer/\n    - {{ pin_subpackage('gst-plugins-bad', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ cdt('libxau-devel') }}          # [linux]\n    - {{ cdt('libxext-devel') }}         # [linux]\n    - {{ cdt('libx11-devel') }}          # [linux]\n    - {{ cdt('libxrender-devel') }}      # [linux]\n    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]\n    - {{ cdt('mesa-libgl-devel') }}      # [linux]\n    - {{ cdt('libdrm-devel') }}          # [linux]\n    - {{ cdt('libxdamage-devel') }}      # [linux]\n    - {{ cdt('libxfixes-devel') }}       # [linux]\n    - {{ cdt('libxxf86vm-devel') }}      # [linux]\n    - {{ cdt('mesa-dri-drivers') }}      # [linux]\n    # expat here is _only_ required for mesa-dri-drivers\n    - {{ cdt('expat') }}                 # [linux]\n    - {{ cdt('libselinux-devel') }}      # [linux]\n    - pkg-config\n    - perl\n    - libtool\n    - meson\n    - ninja\n  host:\n    - gstreamer\n    - gst-plugins-base\n    - gobject-introspection  # [linux]\n    - glib\n    - gettext                            # [osx]\n    - libxcb                             # [linux]\n    - pthread-stubs                      # [linux]\n    - openssl\n    - xorg-libx11  # [linux]\n    - libxml2\n    - libsndfile\n    - libopus\n  run:\n    - gstreamer\n    - gst-plugins-base\n    - xorg-libx11  # [linux]\n    - libopus\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libgstallocators-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstapp-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstaudio-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstfft-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstpbutils-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstriff-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstrtp-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstrtsp-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstsdp-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgsttag-1.0${SHLIB_EXT}\n    - test -f $PREFIX/lib/libgstvideo-1.0${SHLIB_EXT}\n\nabout:\n  home: http://gstreamer.freedesktop.org/\n  license: LGPL-2.1-or-later\n  license_file: COPYING\n  summary: \"GStreamer Bad Plug-ins\"\n  dev_url: https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad\n\nextra:\n  recipe-maintainers:\n    - scopatz\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -230,6 +239,8 @@
    "gobject-introspection",
    "gst-plugins-base",
    "gstreamer",
+   "libopus",
+   "libsndfile",
    "libtool",
    "libxcb",
    "libxml2",
@@ -265,6 +276,8 @@
     "gobject-introspection",
     "gst-plugins-base",
     "gstreamer",
+    "libopus",
+    "libsndfile",
     "libxcb",
     "libxml2",
     "openssl",
@@ -279,6 +292,7 @@
     "cxx_compiler_stub",
     "gst-plugins-base",
     "gstreamer",
+    "libopus",
     "xorg-libx11"
    ]
   },
@@ -309,6 +323,8 @@
     "gobject-introspection",
     "gst-plugins-base",
     "gstreamer",
+    "libopus",
+    "libsndfile",
     "libxcb",
     "libxml2",
     "openssl",
@@ -321,6 +337,7 @@
    "elements": [
     "gst-plugins-base",
     "gstreamer",
+    "libopus",
     "xorg-libx11"
    ]
   },
