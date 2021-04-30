@@ -15,7 +15,10 @@
    "summary": "Base library for Virgo processes"
   },
   "build": {
-   "number": "1"
+   "number": "2",
+   "run_exports": [
+    "cfg"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -98,7 +101,10 @@
    "summary": "Base library for Virgo processes"
   },
   "build": {
-   "number": "1"
+   "number": "2",
+   "run_exports": [
+    "cfg"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -147,7 +153,7 @@
    "cfg"
   ]
  },
- "raw_meta_yaml": "{% set name = \"Cfg\" %}\n{% set version = \"9.0.0\" %}\n\npackage:\n  name: \"{{ name|lower }}\"\n  version: \"{{ version }}\"\nsource:\n  url: http://software.igwn.org/sources/source/{{ name|lower }}-{{ version }}.tar.gz\n  sha256: 3151c52234e1afc5540aad004b28dddf702377c939bf9e68181de6ee9ac86701\n\nbuild:\n  number: 1\n  skip: true  # [win or osx]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - meson\n    - ninja\n    - make  # [unix]\n    - pkg-config  # [unix]\n  host:\n    - cm >=9.0.1\n  run:\n    - cm >=9.0.1\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - test -r ${PREFIX}/lib/libcfg.so\n    - pkg-config --print-errors --exact-version ${PKG_VERSION} ${PKG_NAME}  # [unix]\n\nabout:\n  home: \"https://git.ligo.org/virgo/virgoapp/Cfg\"\n  license: \"LGPL-2.1-or-later\"\n  license_family: GPL\n  license_file: COPYING\n  summary: \"Base library for Virgo processes\"\n  description: |\n    The Cfg package provide a base library for Virgo process \n    configuration parsing, log output and process state \n    management. Cfg is based on the Cm library.\n\nextra:\n  recipe-maintainers:\n      - rhyspoulton\n      - fcarbogn \n",
+ "raw_meta_yaml": "{% set name = \"Cfg\" %}\n{% set version = \"9.0.0\" %}\n\npackage:\n  name: \"{{ name|lower }}\"\n  version: \"{{ version }}\"\nsource:\n  url: http://software.igwn.org/sources/source/{{ name|lower }}-{{ version }}.tar.gz\n  sha256: 3151c52234e1afc5540aad004b28dddf702377c939bf9e68181de6ee9ac86701\n\nbuild:\n  run_exports:\n    - {{ pin_subpackage(\"cfg\", max_pin=\"x\") }}\n  number: 2\n  skip: true  # [win or osx]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - meson\n    - ninja\n    - make  # [unix]\n    - pkg-config  # [unix]\n  host:\n    - cm >=9.0.1\n  run:\n    - cm >=9.0.1\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - test -r ${PREFIX}/lib/libcfg.so\n    - pkg-config --print-errors --exact-version ${PKG_VERSION} ${PKG_NAME}  # [unix]\n\nabout:\n  home: \"https://git.ligo.org/virgo/virgoapp/Cfg\"\n  license: \"LGPL-2.1-or-later\"\n  license_family: GPL\n  license_file: COPYING\n  summary: \"Base library for Virgo processes\"\n  description: |\n    The Cfg package provide a base library for Virgo process \n    configuration parsing, log output and process state \n    management. Cfg is based on the Cm library.\n\nextra:\n  recipe-maintainers:\n      - rhyspoulton\n      - fcarbogn \n",
  "req": {
   "__set__": true,
   "elements": [

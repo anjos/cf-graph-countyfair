@@ -17,7 +17,10 @@
   },
   "build": {
    "ignore_run_exports": null,
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "frv"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -108,7 +111,12 @@
    "ignore_run_exports": [
     "m2w64-gcc-libs"
    ],
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "frv",
+    "frv",
+    "frv"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -197,7 +205,10 @@
   },
   "build": {
    "ignore_run_exports": null,
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "frv"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -280,7 +291,7 @@
    "frv"
   ]
  },
- "raw_meta_yaml": "{% set name = \"Frv\" %}\n{% set version = \"v4r35p6\" %}\n\n# handle Virgo version number format\n{% set semver_version = version|\n    replace('v', '', 1)|\n    replace('r', '.', 1)|\n    replace('p', '.', 1)\n %}\n\n# dependencies\n{% set framel_version = \"8.41.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ semver_version }}\n\nsource:\n  url: https://git.ligo.org/virgo/virgoapp/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 3d07a5df369620a842c370eece499a02cce78d3ef7eb5d0a89026f11b2ba55b4\n  patches:\n    # remove whitespace from pkg-config requirements in cmake\n    - pkg-config-requirements.patch\n\nbuild:\n  ignore_run_exports:\n    - m2w64-gcc-libs  # [win]\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - cmake\n    - make  # [unix]\n    - ninja  # [win]\n    - pkg-config\n  host:\n    - fftw\n    - libframel >={{ framel_version }}\n  run:\n    - fftw\n    - libframel >={{ framel_version }}\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - if not exist %LIBRARY_INC%\\\\frv\\\\Frv.h exit 1  # [win]\n    - test -f ${PREFIX}/include/frv/Frv.h  # [unix]\n    - pkg-config --print-errors --exact-version \"{{ semver_version }}\" frv\n\nabout:\n  home: https://git.ligo.org/virgo/virgoApp/{{ name }}/\n  dev_url: https://git.ligo.org/virgo/virgoApp/{{ name }}.git\n  license: LGPL-2.1-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: The Frame Vector Library (Frv)\n  description: |\n    Frv is a utility library dedicated to vector manipulation.\n    The vectors used in this package are the Frame Library vectors (FrVect)\n    described in the frame specification.\n    The only part frame library part used in this library is the vector\n    definition from the FrameL.h.\n\n    This library is intended to simplify the access of date for the various\n    vectors.\n    It provides most of the basic tools to do vector algebra and basic signal\n    processing.\n\n    This code is written in C. It is thread safe and could be easily used in C\n    or C++ software.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - fcarbogn\n    - rhyspoulton\n",
+ "raw_meta_yaml": "{% set name = \"Frv\" %}\n{% set version = \"v4r35p6\" %}\n\n# handle Virgo version number format\n{% set semver_version = version|\n    replace('v', '', 1)|\n    replace('r', '.', 1)|\n    replace('p', '.', 1)\n %}\n\n# dependencies\n{% set framel_version = \"8.41.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ semver_version }}\n\nsource:\n  url: https://git.ligo.org/virgo/virgoapp/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 3d07a5df369620a842c370eece499a02cce78d3ef7eb5d0a89026f11b2ba55b4\n  patches:\n    # remove whitespace from pkg-config requirements in cmake\n    - pkg-config-requirements.patch\n\nbuild:\n  run_exports:\n    - {{ pin_subpackage(\"frv\", max_pin=\"x\") }}\n  ignore_run_exports:\n    - m2w64-gcc-libs  # [win]\n  number: 1\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - cmake\n    - make  # [unix]\n    - ninja  # [win]\n    - pkg-config\n  host:\n    - fftw\n    - libframel >={{ framel_version }}\n  run:\n    - fftw\n    - libframel >={{ framel_version }}\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - if not exist %LIBRARY_INC%\\\\frv\\\\Frv.h exit 1  # [win]\n    - test -f ${PREFIX}/include/frv/Frv.h  # [unix]\n    - pkg-config --print-errors --exact-version \"{{ semver_version }}\" frv\n\nabout:\n  home: https://git.ligo.org/virgo/virgoApp/{{ name }}/\n  dev_url: https://git.ligo.org/virgo/virgoApp/{{ name }}.git\n  license: LGPL-2.1-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: The Frame Vector Library (Frv)\n  description: |\n    Frv is a utility library dedicated to vector manipulation.\n    The vectors used in this package are the Frame Library vectors (FrVect)\n    described in the frame specification.\n    The only part frame library part used in this library is the vector\n    definition from the FrameL.h.\n\n    This library is intended to simplify the access of date for the various\n    vectors.\n    It provides most of the basic tools to do vector algebra and basic signal\n    processing.\n\n    This code is written in C. It is thread safe and could be easily used in C\n    or C++ software.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - fcarbogn\n    - rhyspoulton\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -379,7 +390,10 @@
    "ignore_run_exports": [
     "m2w64-gcc-libs"
    ],
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "frv"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
