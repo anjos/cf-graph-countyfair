@@ -69,6 +69,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/627836264.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 2,
+    "migrator_version": 0,
+    "name": "python39"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1630,7 +1649,7 @@
    "fluidfft"
   ]
  },
- "pinning_version": "2020.10.14.22.34.53",
+ "pinning_version": "2021.04.30.14.06.07",
  "raw_meta_yaml": "{% set name = \"fluidfft\" %}\n{% set version = \"0.3.2\" %}\n{% set build = 1 %}\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n\n{% if mpi == 'nompi' %}\n# prioritize nompi variant via build number\n{% set build = build + 100 %}\n{% endif %}\n\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 9f1bb551a45a1ad196d8f1f8c81eb0611299f84a0320a1f910e54601e2bae39f\n\nbuild:\n  number: {{ build }}\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `pkg * mpi_mpich_*` for mpich\n  # `pkg * mpi_*` for any mpi\n  # `pkg * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\n  {% if mpi != 'nompi' %}\n\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n\n  {% endif %}\n\n  # skip: true  # [win and (mpi != 'nompi')]\n  skip: true  # [py<36 or (osx and py==36)]\n  entry_points:\n    - fluidfft-bench = fluidfft.bench:run\n    - fluidfft-bench-analysis = fluidfft.bench_analysis:run\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n  host:\n    - pip\n    - python\n    - {{ mpi }}  # [ mpi != 'nompi' ]\n    - openssh  # [ mpi == 'openmpi' ]\n    - transonic\n    - fftw\n    - fftw * mpi_{{ mpi }}_*  # [mpi != 'nompi']\n    - jinja2\n    - cython\n    - mpi4py  # [ mpi != 'nompi' ]\n    - pythran  # [ not win ]\n    - libblas\n    - libcblas\n  run:\n    - python\n    - {{ mpi }}  # [ mpi != 'nompi' ]\n    - mpi4py  # [ mpi != 'nompi' ]\n    - openssh  # [ mpi == 'openmpi' ]\n    - fluiddyn\n    - pandas\n    - transonic\n    - fftw\n    - fftw * mpi_{{ mpi }}_*  # [mpi != 'nompi']\n    - pyfftw\n\ntest:\n  imports:\n    - fluidfft\n    - fluidfft.bench\n    - fluidfft.bench_analysis\n    - fluidfft.fft2d\n    - fluidfft.fft3d\n    - fluidfft.test_init\n    - fluidfft.util\n    - fluidfft.fft2d.with_fftw2d  # [not win]\n    - fluidfft.fft3d.with_fftw3d  # [not win]\n    - fluidfft.fft2d.mpi_with_fftw1d  # [ mpi != 'nompi' ]\n    - fluidfft.fft3d.mpi_with_fftw1d  # [ mpi != 'nompi' ]\n    - fluidfft.fft2d.mpi_with_fftwmpi2d  # [ mpi != 'nompi' ]\n    - fluidfft.fft3d.mpi_with_fftwmpi3d  # [ mpi != 'nompi' ]\n  commands:\n    - fluidfft-bench\n    - fluidfft-bench-analysis\n    - fluidfft-bench 32 -d 3\n\nabout:\n  home: https://foss.heptapod.net/fluiddyn/fluidfft\n  license: LicenseRef-CeCILL\n  license_file: LICENSE.txt\n  summary: Efficient and easy Fast Fourier Transform (FFT) for Python.\n  description: |\n    Fluidfft provides C++ classes and their Python wrapper classes written in\n    Cython useful to perform Fast Fourier Transform (FFT) with different\n    libraries\n  doc_url: https://fluidfft.readthedocs.io\n\nextra:\n  recipe-maintainers:\n    - CyrilleBonamy\n    - paugier\n    - ashwinvis\n",
  "req": {
   "__set__": true,
@@ -1701,7 +1720,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.8.2",
+ "smithy_version": "3.10.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
