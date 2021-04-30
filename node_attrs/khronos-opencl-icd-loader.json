@@ -154,6 +154,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/627051407.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2021.04.29"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -272,10 +289,11 @@
   }
  },
  "name": "khronos-opencl-icd-loader",
- "new_version": "2020.12.18",
+ "new_version": "2021.04.29",
  "new_version_attempts": {
   "2020.06.16": 1,
-  "2020.12.18": 1
+  "2020.12.18": 1,
+  "2021.04.29": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -446,7 +464,7 @@
    "khronos-opencl-icd-loader"
   ]
  },
- "pinning_version": "2020.12.18.18.05.13",
+ "pinning_version": "2021.04.30.05.29.14",
  "raw_meta_yaml": "{% set version = \"2020.12.18\" %}\n{% set sha256 = \"559648e4d9f72b68f3800d3938ce2e6b910bd0eb85e53049c5898f59906e1240\" %}\n{% set headers_sha256 = \"10c0d3b9baabd3ce76993f4836a35bed8b45126196101541fdea78e7f3752e2a\" %}\n\npackage:\n  name: khronos-opencl-icd-loader\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/KhronosGroup/OpenCL-ICD-Loader/archive/v{{ version }}.zip\n    sha256: {{ sha256 }}\n    patches:\n      - no_check_integrity_win.patch\n\n  - url: https://github.com/KhronosGroup/OpenCL-Headers/archive/v{{ version }}.zip\n    sha256: {{ headers_sha256 }}\n    folder: inc\n\nbuild:\n  number: 3\n  run_exports:\n    - {{ pin_subpackage(\"khronos-opencl-icd-loader\", max_pin=None) }}\n\n  # We've got ocl-icd on Linux which has better debugging support\n  # and was used before khronos adopted an open source license.\n  # new versions don't support older MSVC\n  skip: true  # [linux or (win and vc<14)]\n\nrequirements:\n  build:\n    - cmake\n    - {{ compiler('c') }}\n    - python\n    - make   # [not win]\n    - ninja  # [win]\n  host:\n  run:\n\ntest:\n  commands:\n    - if not exist %LIBRARY_INC%\\\\CL\\\\cl.h exit 1       # [win]\n    - if not exist %LIBRARY_BIN%\\\\OpenCL.dll exit 1     # [win]\n    - test -f $PREFIX/include/OpenCL/cl.h               # [osx]\n    - test -f $PREFIX/include/CL/cl.h                   # [linux]\n    - test -f $PREFIX/lib/libOpenCL${SHLIB_EXT}         # [unix]\n\n    # This crashes with a segfault. Likely for a lack of ICD to talk to.\n    # - cd %SRC_DIR%/build && ctest\n  downstreams:\n    # Run the pyopencl test suite\n    - pyopencl\n\nabout:\n  home: https://www.khronos.org/registry/cl/\n  dev_url: https://github.com/KhronosGroup/OpenCL-ICD-Loader\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: A driver loader for OpenCL\n\nextra:\n  recipe-maintainers:\n    - inducer\n    - isuruf\n",
  "req": {
   "__set__": true,
@@ -486,7 +504,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.8.5",
+ "smithy_version": "3.10.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
