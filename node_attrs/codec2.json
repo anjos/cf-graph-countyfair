@@ -1,4 +1,40 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/627105947.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/627108364.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "branch": "master",
@@ -273,6 +309,7 @@
    "codec2"
   ]
  },
+ "pinning_version": "2021.04.30.05.29.14",
  "raw_meta_yaml": "{% set name = \"codec2\" %}\n{% set version = \"0.9.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/drowe67/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c\n  patches:\n    - 0001-Fix-CMake-include-of-GetPrerequisites.patch\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage('codec2', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    # upstream does not support compiling with MSVC\n    - {{ compiler('m2w64_c') }}  # [win]\n    - cmake\n    - make  # [not win]\n    - ninja  # [win]\n\ntest:\n  commands:\n    # verify that executables can be run\n    {% set cmds = [\"c2dec\", \"c2enc\", \"drs232\", \"drs232_ldpc\", \"fdmdv_demod\"] %}\n    {% set cmds = cmds + [\"fdmdv_get_test_bits\", \"fdmdv_mod\", \"fdmdv_put_test_bits\"] %}\n    {% set cmds = cmds + [\"fm_demod\", \"fsk_mod\", \"insert_errors\"] %}\n    {% for cmd in cmds %}\n    - {{ cmd }} --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi  # [not win]\n    - {{ cmd }} --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"  # [win]\n    {% endfor %}\n\n    # verify that (some) headers get installed\n    - test -f $PREFIX/include/codec2/codec2.h  # [not win]\n    - test -f $PREFIX/include/codec2/version.h  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\codec2.h exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\version.h exit 1  # [win]\n\n    # verify that libraries get installed\n    - test -f $PREFIX/lib/libcodec2${SHLIB_EXT}  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\libcodec2.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.dll.a exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.lib exit 1  # [win]\n\nabout:\n  home: http://www.rowetel.com/codec2.html\n  license: LGPL-2.1-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: 'An open source low bit rate speech codec'\n  description: |\n    Open source speech codec designed for communications quality speech between 450\n    and 3200 bit/s. The main application is low bandwidth HF/VHF digital radio.\n  dev_url: https://github.com/drowe67/codec2\n\nextra:\n  recipe-maintainers:\n    - ryanvolz\n",
  "req": {
   "__set__": true,
@@ -312,6 +349,7 @@
    "elements": []
   }
  },
+ "smithy_version": "3.10.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
