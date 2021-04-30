@@ -56,6 +56,9 @@
  "bad": false,
  "branch": "master",
  "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default"
@@ -92,12 +95,13 @@
    "build": [
     "c_compiler_stub",
     "cmake",
-    "make"
+    "ninja"
    ]
   },
   "source": {
    "patches": [
-    "0001-Fix-CMake-include-of-GetPrerequisites.patch"
+    "0001-Fix-CMake-include-of-GetPrerequisites.patch",
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
    ],
    "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
    "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
@@ -127,7 +131,7 @@
    "elements": [
     "c_compiler_stub",
     "cmake",
-    "make"
+    "ninja"
    ]
   },
   "host": {
@@ -172,12 +176,13 @@
    "build": [
     "c_compiler_stub",
     "cmake",
-    "make"
+    "ninja"
    ]
   },
   "source": {
    "patches": [
-    "0001-Fix-CMake-include-of-GetPrerequisites.patch"
+    "0001-Fix-CMake-include-of-GetPrerequisites.patch",
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
    ],
    "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
    "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
@@ -207,7 +212,7 @@
    "elements": [
     "c_compiler_stub",
     "cmake",
-    "make"
+    "ninja"
    ]
   },
   "host": {
@@ -252,12 +257,13 @@
    "build": [
     "c_compiler_stub",
     "cmake",
-    "make"
+    "ninja"
    ]
   },
   "source": {
    "patches": [
-    "0001-Fix-CMake-include-of-GetPrerequisites.patch"
+    "0001-Fix-CMake-include-of-GetPrerequisites.patch",
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
    ],
    "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
    "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
@@ -287,7 +293,7 @@
    "elements": [
     "c_compiler_stub",
     "cmake",
-    "make"
+    "ninja"
    ]
   },
   "host": {
@@ -320,11 +326,13 @@
     "codec2",
     "codec2",
     "codec2",
+    "codec2",
     "codec2"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "ryanvolz",
     "ryanvolz",
     "ryanvolz",
     "ryanvolz",
@@ -340,16 +348,19 @@
    "build": [
     "c_compiler_stub",
     "cmake",
-    "make",
+    "ninja",
     "c_compiler_stub",
     "cmake",
-    "make",
+    "ninja",
     "c_compiler_stub",
     "cmake",
-    "make",
+    "ninja",
     "c_compiler_stub",
     "cmake",
-    "make",
+    "ninja",
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
     "m2w64_c_compiler_stub",
     "cmake",
     "ninja"
@@ -358,16 +369,37 @@
   "source": {
    "patches": [
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch",
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch",
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch",
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0001-Fix-CMake-include-of-GetPrerequisites.patch"
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch",
+    "0001-Fix-CMake-include-of-GetPrerequisites.patch",
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch",
+    "0001-Fix-CMake-include-of-GetPrerequisites.patch",
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
    ],
    "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
    "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
   },
   "test": {
    "commands": [
+    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "test -f $PREFIX/include/codec2/codec2.h",
+    "test -f $PREFIX/include/codec2/version.h",
+    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}",
     "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
     "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
     "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
@@ -474,12 +506,13 @@
    "build": [
     "c_compiler_stub",
     "cmake",
-    "make"
+    "ninja"
    ]
   },
   "source": {
    "patches": [
-    "0001-Fix-CMake-include-of-GetPrerequisites.patch"
+    "0001-Fix-CMake-include-of-GetPrerequisites.patch",
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
    ],
    "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
    "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
@@ -509,7 +542,88 @@
    "elements": [
     "c_compiler_stub",
     "cmake",
-    "make"
+    "ninja"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "Open source speech codec designed for communications quality speech between 450\nand 3200 bit/s. The main application is low bandwidth HF/VHF digital radio.\n",
+   "dev_url": "https://github.com/drowe67/codec2",
+   "home": "http://www.rowetel.com/codec2.html",
+   "license": "LGPL-2.1-or-later",
+   "license_family": "LGPL",
+   "license_file": "COPYING",
+   "summary": "An open source low bit rate speech codec"
+  },
+  "build": {
+   "number": "1",
+   "run_exports": [
+    "codec2"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "ryanvolz"
+   ]
+  },
+  "package": {
+   "name": "codec2",
+   "version": "0.9.2"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cmake",
+    "ninja"
+   ]
+  },
+  "source": {
+   "patches": [
+    "0001-Fix-CMake-include-of-GetPrerequisites.patch",
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
+   ],
+   "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
+   "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+    "test -f $PREFIX/include/codec2/codec2.h",
+    "test -f $PREFIX/include/codec2/version.h",
+    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "ninja"
    ]
   },
   "host": {
@@ -532,14 +646,13 @@
   ]
  },
  "pinning_version": "2021.04.30.07.03.20",
- "raw_meta_yaml": "{% set name = \"codec2\" %}\n{% set version = \"0.9.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/drowe67/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c\n  patches:\n    - 0001-Fix-CMake-include-of-GetPrerequisites.patch\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage('codec2', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    # upstream does not support compiling with MSVC\n    - {{ compiler('m2w64_c') }}  # [win]\n    - cmake\n    - make  # [not win]\n    - ninja  # [win]\n\ntest:\n  commands:\n    # verify that executables can be run\n    {% set cmds = [\"c2dec\", \"c2enc\", \"drs232\", \"drs232_ldpc\", \"fdmdv_demod\"] %}\n    {% set cmds = cmds + [\"fdmdv_get_test_bits\", \"fdmdv_mod\", \"fdmdv_put_test_bits\"] %}\n    {% set cmds = cmds + [\"fm_demod\", \"fsk_mod\", \"insert_errors\"] %}\n    {% for cmd in cmds %}\n    - {{ cmd }} --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi  # [not win]\n    - {{ cmd }} --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"  # [win]\n    {% endfor %}\n\n    # verify that (some) headers get installed\n    - test -f $PREFIX/include/codec2/codec2.h  # [not win]\n    - test -f $PREFIX/include/codec2/version.h  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\codec2.h exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\version.h exit 1  # [win]\n\n    # verify that libraries get installed\n    - test -f $PREFIX/lib/libcodec2${SHLIB_EXT}  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\libcodec2.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.dll.a exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.lib exit 1  # [win]\n\nabout:\n  home: http://www.rowetel.com/codec2.html\n  license: LGPL-2.1-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: 'An open source low bit rate speech codec'\n  description: |\n    Open source speech codec designed for communications quality speech between 450\n    and 3200 bit/s. The main application is low bandwidth HF/VHF digital radio.\n  dev_url: https://github.com/drowe67/codec2\n\nextra:\n  recipe-maintainers:\n    - ryanvolz\n",
+ "raw_meta_yaml": "{% set name = \"codec2\" %}\n{% set version = \"0.9.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/drowe67/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c\n  patches:\n    - 0001-Fix-CMake-include-of-GetPrerequisites.patch\n    - 0002-Make-native-build-compatible-with-cmake-within-cmake.patch\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage('codec2', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    # upstream does not support compiling with MSVC\n    - {{ compiler('m2w64_c') }}  # [win]\n    - cmake\n    - ninja\n\ntest:\n  commands:\n    # verify that executables can be run\n    {% set cmds = [\"c2dec\", \"c2enc\", \"drs232\", \"drs232_ldpc\", \"fdmdv_demod\"] %}\n    {% set cmds = cmds + [\"fdmdv_get_test_bits\", \"fdmdv_mod\", \"fdmdv_put_test_bits\"] %}\n    {% set cmds = cmds + [\"fm_demod\", \"fsk_mod\", \"insert_errors\"] %}\n    {% for cmd in cmds %}\n    - {{ cmd }} --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi  # [not win]\n    - {{ cmd }} --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"  # [win]\n    {% endfor %}\n\n    # verify that (some) headers get installed\n    - test -f $PREFIX/include/codec2/codec2.h  # [not win]\n    - test -f $PREFIX/include/codec2/version.h  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\codec2.h exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\version.h exit 1  # [win]\n\n    # verify that libraries get installed\n    - test -f $PREFIX/lib/libcodec2${SHLIB_EXT}  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\libcodec2.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.dll.a exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.lib exit 1  # [win]\n\nabout:\n  home: http://www.rowetel.com/codec2.html\n  license: LGPL-2.1-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: 'An open source low bit rate speech codec'\n  description: |\n    Open source speech codec designed for communications quality speech between 450\n    and 3200 bit/s. The main application is low bandwidth HF/VHF digital radio.\n  dev_url: https://github.com/drowe67/codec2\n\nextra:\n  recipe-maintainers:\n    - ryanvolz\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "cmake",
    "m2w64_c_compiler_stub",
-   "make",
    "ninja"
   ]
  },
@@ -550,7 +663,6 @@
     "c_compiler_stub",
     "cmake",
     "m2w64_c_compiler_stub",
-    "make",
     "ninja"
    ]
   },
@@ -580,7 +692,6 @@
     "c_compiler_stub",
     "cmake",
     "m2w64_c_compiler_stub",
-    "make",
     "ninja"
    ]
   },
@@ -633,7 +744,8 @@
   },
   "source": {
    "patches": [
-    "0001-Fix-CMake-include-of-GetPrerequisites.patch"
+    "0001-Fix-CMake-include-of-GetPrerequisites.patch",
+    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
    ],
    "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
    "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
