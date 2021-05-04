@@ -109,7 +109,7 @@
     "__lazy_json__": "pr_json/607049549.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1620088998.737393,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -189,6 +189,25 @@
     "migrator_name",
     "migrator_version",
     "version"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/629454324.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "tbb2021"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
    ]
   }
  ],
@@ -937,7 +956,7 @@
    "onednn-cpu-tbb"
   ]
  },
- "pinning_version": "2021.04.28.12.37.37",
+ "pinning_version": "2021.05.03.19.31.03",
  "raw_meta_yaml": "{% set name = \"oneDNN\" %}\n{% set version = \"2.2.2\" %}\n# TODO: Put this in conda_build_config.yaml once we support multiple variants\n{% set dnnl_cpu_runtime = \"tbb\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/oneapi-src/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 01e651eb20ca1943bbdf756804fd02d13e5ff3c84b89e3aa5d40abdeb5bb07ee\n  patches:\n    - 1009.patch\n\nbuild:\n  number: 0\n\noutputs:\n  - name: {{ name|lower }}\n    script: build-onednn.sh  # [not win]\n    script: bld-onednn.bat  # [win]\n    version: {{ version }}\n    build:\n      string: {{ dnnl_cpu_runtime }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}\n      run_exports:\n        - {{ pin_subpackage(\"onednn\", max_pin=\"x\") }}\n      # TODO: Add track_features once we support more than a single variant\n    requirements:\n      build:\n        - cmake\n        - ninja\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - llvm-openmp  # [osx]\n      host:\n        - tbb\n        - tbb-devel\n    about:\n      home: https://github.com/oneapi-src/oneDNN\n      license: Apache-2.0\n      license_file:\n        - THIRD-PARTY-PROGRAMS\n        - LICENSE\n      summary: oneAPI Deep Neural Network Library (oneDNN)\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/libdnnl${SHLIB_EXT}  # [unix]\n        - test -f ${PREFIX}/lib/libmkldnn${SHLIB_EXT}  # [unix]\n        - test -f ${PREFIX}/include/oneapi/dnnl/dnnl.h  # [unix]\n        - if not exist %LIBRARY_PREFIX%\\\\bin\\\\dnnl.dll exit 1  # [win]\n        - if not exist %LIBRARY_PREFIX%\\\\lib\\\\dnnl.lib exit 1  # [win]\n        - if not exist %LIBRARY_PREFIX%\\\\include\\\\dnnl.h exit 1  # [win]\n  - name: {{ name|lower }}-cpu-{{ dnnl_cpu_runtime }}\n    version: {{ version }}\n    build:\n      string: {{ dnnl_cpu_runtime }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}\n      run_exports:\n        - {{ pin_subpackage(\"onednn\", max_pin=\"x\") }}\n      # TODO: Add track_features once we support more than a single variant\n    requirements:\n      host:\n        - {{ pin_subpackage('onednn', exact=True) }}\n      run:\n        - {{ pin_subpackage('onednn', exact=True) }}\n    about:\n      home: https://github.com/oneapi-src/oneDNN\n      license: Apache-2.0\n      license_file: LICENSE\n      summary: oneAPI Deep Neural Network Library (oneDNN)\n    test:\n      commands:\n        - exit 0\n\nabout:\n  home: https://github.com/oneapi-src/oneDNN\n  license: Apache-2.0\n  license_file:\n    - LICENSE\n    - THIRD-PARTY-PROGRAMS\n  summary: oneAPI Deep Neural Network Library (oneDNN)\n\nextra:\n  feedstock-name: {{ name|lower }}\n  recipe-maintainers:\n    - xhochy\n    - igorsafo\n",
  "req": {
   "__set__": true,
