@@ -521,7 +521,7 @@
   "build": {
    "merge_build_host": true,
    "number": "10",
-   "script": "mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DBLAS_LIBRARIES=\"/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libcblas.dylib;/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libblas.dylib\"           \\\n  -DLAPACK_LIBRARIES=\"/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/liblapacke.dylib;/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/liblapack.dylib;/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libcblas.dylib;/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libblas.dylib\"     \\\n  -DBLA_VENDOR=Generic\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
+   "script": "mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DLICENSE_GPL_SHOGUN=OFF                                \\\n  -DBLAS_LIBRARIES=/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libmkl_rt.dylib                                                    \\\n  -DLAPACK_LIBRARIES=/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libmkl_rt.dylib                                                  \\\n  -DBLA_VENDOR=Intel\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
   },
   "extra": {
    "recipe-maintainers": [
@@ -606,7 +606,10 @@
     "json-c",
     "libxml2",
     "lzo",
-    "mkl-devel",
+    "libblas 3.8 *netlib",
+    "libcblas 3.8 *netlib",
+    "liblapack 3.8 *netlib",
+    "liblapacke 3.8 *netlib",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -622,10 +625,7 @@
     "json-c",
     "libxml2",
     "lzo",
-    "libblas 3.8 *netlib",
-    "libcblas 3.8 *netlib",
-    "liblapack 3.8 *netlib",
-    "liblapacke 3.8 *netlib",
+    "mkl-devel",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -643,14 +643,12 @@
     "ctags",
     "glpk",
     "json-c",
-    "libblas * *_mkl",
     "ctags",
     "glpk",
-    "json-c"
+    "json-c",
+    "libblas * *_mkl"
    ],
-   "run_constrained": [
-    "mkl <0.0.a0"
-   ]
+   "run_constrained": null
   },
   "source": [
    {
@@ -720,10 +718,10 @@
     "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
     "cat $PREFIX/include/shogun/lib/config.h",
     "$PREFIX/share/shogun/examples/libshogun/minimal",
+    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
     "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
     "cat $PREFIX/include/shogun/lib/config.h",
     "$PREFIX/share/shogun/examples/libshogun/minimal",
-    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
     "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
     "cat $PREFIX/include/shogun/lib/config.h"
    ],
@@ -750,7 +748,7 @@
   },
   "build": {
    "number": "10",
-   "script": "mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DBLAS_LIBRARIES=\"/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libcblas.dylib;/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libblas.dylib\"           \\\n  -DLAPACK_LIBRARIES=\"/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/liblapacke.dylib;/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/liblapack.dylib;/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libcblas.dylib;/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libblas.dylib\"     \\\n  -DBLA_VENDOR=Generic\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
+   "script": "mkdir build\ncd build\ncmake ..                                                  \\\n  -G\"$CMAKE_GENERATOR\"                     \\\n  -DCMAKE_PREFIX_PATH=\"$PREFIX\"                      \\\n  -DCMAKE_INSTALL_PREFIX=\"$PREFIX\"                   \\\n  -DCMAKE_BUILD_TYPE=Release                              \\\n  -DBUILD_EXAMPLES=OFF                                    \\\n  -DBUILD_META_EXAMPLES=OFF                               \\\n  -DBUNDLE_JSON=OFF                                       \\\n  -DBUNDLE_NLOPT=OFF                                      \\\n  -DUSE_SVMLIGHT=OFF                                      \\\n  -DENABLE_TESTING=OFF                                    \\\n  -DENABLE_COVERAGE=OFF                                   \\\n  -DUSE_SWIG_DIRECTORS=ON                                 \\\n  -DLICENSE_GPL_SHOGUN=OFF                                \\\n  -DBLAS_LIBRARIES=/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libmkl_rt.dylib                                                    \\\n  -DLAPACK_LIBRARIES=/usr/share/miniconda/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/lib/libmkl_rt.dylib                                                  \\\n  -DBLA_VENDOR=Intel\ncmake --build . --target shogun --config Release -- -j $CPU_COUNT\ncmake --build . --target install --config Release -- -j $CPU_COUNT\n"
   },
   "extra": {
    "recipe-maintainers": [
@@ -786,7 +784,10 @@
     "json-c",
     "libxml2",
     "lzo",
-    "mkl-devel",
+    "libblas 3.8 *netlib",
+    "libcblas 3.8 *netlib",
+    "liblapack 3.8 *netlib",
+    "liblapacke 3.8 *netlib",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -802,10 +803,7 @@
     "json-c",
     "libxml2",
     "lzo",
-    "libblas 3.8 *netlib",
-    "libcblas 3.8 *netlib",
-    "liblapack 3.8 *netlib",
-    "liblapacke 3.8 *netlib",
+    "mkl-devel",
     "libprotobuf",
     "rxcpp 4.1.0",
     "snappy",
@@ -816,14 +814,12 @@
     "ctags",
     "glpk",
     "json-c",
-    "libblas * *_mkl",
     "ctags",
     "glpk",
-    "json-c"
+    "json-c",
+    "libblas * *_mkl"
    ],
-   "run_constrained": [
-    "mkl <0.0.a0"
-   ]
+   "run_constrained": null
   },
   "source": [
    {
@@ -858,10 +854,10 @@
   "test": {
    "commands": [
     "$PREFIX/share/shogun/examples/libshogun/minimal",
+    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
     "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
     "cat $PREFIX/include/shogun/lib/config.h",
     "$PREFIX/share/shogun/examples/libshogun/minimal",
-    "test -f $PREFIX/include/shogun/mathematics/SparseInverseCovariance.h",
     "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libshogun${SHLIB_EXT}']\"",
     "cat $PREFIX/include/shogun/lib/config.h"
    ],
