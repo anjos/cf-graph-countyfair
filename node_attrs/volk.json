@@ -257,7 +257,7 @@
     "__lazy_json__": "pr_json/630901679.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1620272430.916357,
     "migrator_name": "OSXArm",
     "migrator_version": 1,
     "name": "arm osx addition"
@@ -278,7 +278,7 @@
    "automerge": true
   },
   "provider": {
-   "linux_aarch64": "azure",
+   "linux_aarch64": "default",
    "linux_ppc64le": "default"
   }
  },
@@ -293,43 +293,103 @@
    "license": "GPL-3.0-or-later AND Apache-2.0",
    "license_file": [
     "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
     "LICENSE_CPU_FEATURES"
    ],
    "summary": "The Vector Optimized Library of Kernels"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk"
-   ]
+   "number": "2"
   },
   "extra": {
+   "feedstock-name": "volk",
    "recipe-maintainers": [
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "gstreamer-orc"
+     ],
+     "run": [
+      "gstreamer-orc"
+     ]
+    },
+    "script": "install_volk.sh",
+    "test": {
+     "commands": [
+      "command -v volk-config-info",
+      "command -v volk_profile",
+      "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "volk_modtool = volk_modtool.__main__:main"
+     ],
+     "noarch": "python",
+     "string": "py_2"
+    },
+    "name": "volk-modtool",
+    "requirements": {
+     "build": [
+      "cmake"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_volk_modtool.sh",
+    "test": {
+     "commands": [
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk-dev",
+    "requirements": {
+     "run": [
+      "volk",
+      "volk-modtool"
+     ]
+    },
+    "test": {
+     "commands": [
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "volk",
+   "name": "volk-split",
    "version": "2.4.1"
   },
   "requirements": {
@@ -337,102 +397,21 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.8",
+    "mako >=0.4.2",
     "ninja",
     "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config"
+    "python >=3.6"
    ],
    "host": [
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python"
-   ],
-   "run": [
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python"
+    "gstreamer-orc"
    ]
   },
   "source": {
+   "patches": [
+    "0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch"
+   ],
    "sha256": "61d681f90e0f30894f806ab050e9ba28260799c01f1ed0f58623942d8c7f4d48",
    "url": "https://github.com/gnuradio/volk/releases/download/v2.4.1/volk-2.4.1.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
-   ],
-   "imports": [
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool"
-   ]
   }
  },
  "linux_64_requirements": {
@@ -442,21 +421,25 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "mako",
     "ninja",
-    "pkg-config"
+    "pkg-config",
+    "python"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
-    "mako",
-    "python"
+    "gstreamer-orc"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "python"
+    "gstreamer-orc",
+    "python",
+    "volk",
+    "volk-modtool"
    ]
   },
   "test": {
@@ -473,43 +456,99 @@
    "license": "GPL-3.0-or-later AND Apache-2.0",
    "license_file": [
     "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
     "LICENSE_CPU_FEATURES"
    ],
    "summary": "The Vector Optimized Library of Kernels"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk"
-   ]
+   "number": "2"
   },
   "extra": {
+   "feedstock-name": "volk",
    "recipe-maintainers": [
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": null,
+     "run": null
+    },
+    "script": "install_volk.sh",
+    "test": {
+     "commands": [
+      "command -v volk-config-info",
+      "command -v volk_profile",
+      "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "volk_modtool = volk_modtool.__main__:main"
+     ],
+     "noarch": "python",
+     "string": "py_2"
+    },
+    "name": "volk-modtool",
+    "requirements": {
+     "build": [
+      "cmake"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_volk_modtool.sh",
+    "test": {
+     "commands": [
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk-dev",
+    "requirements": {
+     "run": [
+      "volk",
+      "volk-modtool"
+     ]
+    },
+    "test": {
+     "commands": [
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "volk",
+   "name": "volk-split",
    "version": "2.4.1"
   },
   "requirements": {
@@ -517,102 +556,19 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.8",
+    "mako >=0.4.2",
     "ninja",
     "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config"
+    "python >=3.6"
    ],
-   "host": [
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python"
-   ],
-   "run": [
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python"
-   ]
+   "host": []
   },
   "source": {
+   "patches": [
+    "0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch"
+   ],
    "sha256": "61d681f90e0f30894f806ab050e9ba28260799c01f1ed0f58623942d8c7f4d48",
    "url": "https://github.com/gnuradio/volk/releases/download/v2.4.1/volk-2.4.1.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
-   ],
-   "imports": [
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool"
-   ]
   }
  },
  "linux_aarch64_requirements": {
@@ -622,21 +578,22 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "mako",
     "ninja",
-    "pkg-config"
+    "pkg-config",
+    "python"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "mako",
-    "python"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
    "elements": [
-    "python"
+    "python",
+    "volk",
+    "volk-modtool"
    ]
   },
   "test": {
@@ -653,43 +610,99 @@
    "license": "GPL-3.0-or-later AND Apache-2.0",
    "license_file": [
     "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
     "LICENSE_CPU_FEATURES"
    ],
    "summary": "The Vector Optimized Library of Kernels"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk"
-   ]
+   "number": "2"
   },
   "extra": {
+   "feedstock-name": "volk",
    "recipe-maintainers": [
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": null,
+     "run": null
+    },
+    "script": "install_volk.sh",
+    "test": {
+     "commands": [
+      "command -v volk-config-info",
+      "command -v volk_profile",
+      "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "volk_modtool = volk_modtool.__main__:main"
+     ],
+     "noarch": "python",
+     "string": "py_2"
+    },
+    "name": "volk-modtool",
+    "requirements": {
+     "build": [
+      "cmake"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_volk_modtool.sh",
+    "test": {
+     "commands": [
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk-dev",
+    "requirements": {
+     "run": [
+      "volk",
+      "volk-modtool"
+     ]
+    },
+    "test": {
+     "commands": [
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "volk",
+   "name": "volk-split",
    "version": "2.4.1"
   },
   "requirements": {
@@ -697,102 +710,19 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.8",
+    "mako >=0.4.2",
     "ninja",
     "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config"
+    "python >=3.6"
    ],
-   "host": [
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python"
-   ],
-   "run": [
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python"
-   ]
+   "host": []
   },
   "source": {
+   "patches": [
+    "0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch"
+   ],
    "sha256": "61d681f90e0f30894f806ab050e9ba28260799c01f1ed0f58623942d8c7f4d48",
    "url": "https://github.com/gnuradio/volk/releases/download/v2.4.1/volk-2.4.1.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
-   ],
-   "imports": [
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool"
-   ]
   }
  },
  "linux_ppc64le_requirements": {
@@ -802,21 +732,22 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "mako",
     "ninja",
-    "pkg-config"
+    "pkg-config",
+    "python"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "mako",
-    "python"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
    "elements": [
-    "python"
+    "python",
+    "volk",
+    "volk-modtool"
    ]
   },
   "test": {
@@ -841,114 +772,16 @@
     "COPYING",
     "LICENSE_CPU_FEATURES",
     "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
     "LICENSE_CPU_FEATURES"
    ],
    "summary": "The Vector Optimized Library of Kernels"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk"
-   ]
+   "number": "2"
   },
   "extra": {
+   "feedstock-name": "volk",
    "recipe-maintainers": [
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
     "ryanvolz",
     "ryanvolz",
     "ryanvolz",
@@ -956,8 +789,401 @@
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "gstreamer-orc"
+     ],
+     "run": [
+      "gstreamer-orc"
+     ]
+    },
+    "script": "install_volk.sh",
+    "test": {
+     "commands": [
+      "command -v volk-config-info",
+      "command -v volk_profile",
+      "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "volk_modtool = volk_modtool.__main__:main"
+     ],
+     "noarch": "python",
+     "string": "py_2"
+    },
+    "name": "volk-modtool",
+    "requirements": {
+     "build": [
+      "cmake"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_volk_modtool.sh",
+    "test": {
+     "commands": [
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk-dev",
+    "requirements": {
+     "run": [
+      "volk",
+      "volk-modtool"
+     ]
+    },
+    "test": {
+     "commands": [
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": null,
+     "run": null
+    },
+    "script": "install_volk.sh",
+    "test": {
+     "commands": [
+      "command -v volk-config-info",
+      "command -v volk_profile",
+      "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "volk_modtool = volk_modtool.__main__:main"
+     ],
+     "noarch": "python",
+     "string": "py_2"
+    },
+    "name": "volk-modtool",
+    "requirements": {
+     "build": [
+      "cmake"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_volk_modtool.sh",
+    "test": {
+     "commands": [
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk-dev",
+    "requirements": {
+     "run": [
+      "volk",
+      "volk-modtool"
+     ]
+    },
+    "test": {
+     "commands": [
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": null,
+     "run": null
+    },
+    "script": "install_volk.sh",
+    "test": {
+     "commands": [
+      "command -v volk-config-info",
+      "command -v volk_profile",
+      "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "volk_modtool = volk_modtool.__main__:main"
+     ],
+     "noarch": "python",
+     "string": "py_2"
+    },
+    "name": "volk-modtool",
+    "requirements": {
+     "build": [
+      "cmake"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_volk_modtool.sh",
+    "test": {
+     "commands": [
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk-dev",
+    "requirements": {
+     "run": [
+      "volk",
+      "volk-modtool"
+     ]
+    },
+    "test": {
+     "commands": [
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "boost-cpp",
+      "gstreamer-orc"
+     ],
+     "run": [
+      "boost-cpp",
+      "gstreamer-orc"
+     ]
+    },
+    "script": "install_volk.sh",
+    "test": {
+     "commands": [
+      "command -v volk-config-info",
+      "command -v volk_profile",
+      "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "volk_modtool = volk_modtool.__main__:main"
+     ],
+     "noarch": "python",
+     "string": "py_2"
+    },
+    "name": "volk-modtool",
+    "requirements": {
+     "build": [
+      "cmake"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_volk_modtool.sh",
+    "test": {
+     "commands": [
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk-dev",
+    "requirements": {
+     "run": [
+      "volk",
+      "volk-modtool"
+     ]
+    },
+    "test": {
+     "commands": [
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": null,
+     "run": null
+    },
+    "script": "install_volk.bat",
+    "test": {
+     "commands": [
+      "where volk-config-info",
+      "where volk_profile",
+      "if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1",
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "volk_modtool = volk_modtool.__main__:main"
+     ],
+     "noarch": "python",
+     "string": "py_2"
+    },
+    "name": "volk-modtool",
+    "requirements": {
+     "build": [
+      "cmake"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_volk_modtool.bat",
+    "test": {
+     "commands": [
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk-dev",
+    "requirements": {
+     "run": [
+      "volk",
+      "volk-modtool"
+     ]
+    },
+    "test": {
+     "commands": [
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "volk",
+   "name": "volk-split",
    "version": "2.4.1"
   },
   "requirements": {
@@ -965,425 +1191,57 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.8",
+    "mako >=0.4.2",
     "ninja",
     "pkg-config",
+    "python >=3.6",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.8",
+    "mako >=0.4.2",
     "ninja",
     "pkg-config",
+    "python >=3.6",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.8",
+    "mako >=0.4.2",
     "ninja",
     "pkg-config",
+    "python >=3.6",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.8",
+    "mako >=0.4.2",
     "ninja",
     "pkg-config",
+    "python >=3.6",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.8",
+    "mako >=0.4.2",
     "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja"
+    "python >=3.6"
    ],
    "host": [
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
+    "gstreamer-orc",
     "boost-cpp",
-    "mako >=0.4.2",
-    "python",
-    "boost-cpp",
-    "mako >=0.4.2",
-    "python",
-    "boost-cpp",
-    "mako >=0.4.2",
-    "python",
-    "boost-cpp",
-    "mako >=0.4.2",
-    "python",
-    "boost-cpp",
-    "mako >=0.4.2",
-    "python",
-    "boost-cpp",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python"
-   ],
-   "run": [
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "boost-cpp",
-    "python",
-    "boost-cpp",
-    "python",
-    "boost-cpp",
-    "python",
-    "boost-cpp",
-    "python",
-    "boost-cpp",
-    "python",
-    "boost-cpp",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python"
+    "gstreamer-orc"
    ]
   },
   "source": {
+   "patches": [
+    "0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch",
+    "0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch",
+    "0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch",
+    "0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch",
+    "0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch"
+   ],
    "sha256": "61d681f90e0f30894f806ab050e9ba28260799c01f1ed0f58623942d8c7f4d48",
    "url": "https://github.com/gnuradio/volk/releases/download/v2.4.1/volk-2.4.1.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "where volk-config-info",
-    "where volk_profile",
-    "where volk_modtool.py",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "where volk-config-info",
-    "where volk_profile",
-    "where volk_modtool.py",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "where volk-config-info",
-    "where volk_profile",
-    "where volk_modtool.py",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "where volk-config-info",
-    "where volk_profile",
-    "where volk_modtool.py",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
-   ],
-   "imports": [
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool"
-   ]
   }
  },
- "name": "volk",
+ "name": "volk-split",
  "new_version": "2.4.1",
  "new_version_attempts": {
   "2.3.0": 96,
@@ -1402,43 +1260,105 @@
    "license": "GPL-3.0-or-later AND Apache-2.0",
    "license_file": [
     "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
     "LICENSE_CPU_FEATURES"
    ],
    "summary": "The Vector Optimized Library of Kernels"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk",
-    "volk"
-   ]
+   "number": "2"
   },
   "extra": {
+   "feedstock-name": "volk",
    "recipe-maintainers": [
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "boost-cpp",
+      "gstreamer-orc"
+     ],
+     "run": [
+      "boost-cpp",
+      "gstreamer-orc"
+     ]
+    },
+    "script": "install_volk.sh",
+    "test": {
+     "commands": [
+      "command -v volk-config-info",
+      "command -v volk_profile",
+      "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "volk_modtool = volk_modtool.__main__:main"
+     ],
+     "noarch": "python",
+     "string": "py_2"
+    },
+    "name": "volk-modtool",
+    "requirements": {
+     "build": [
+      "cmake"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_volk_modtool.sh",
+    "test": {
+     "commands": [
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk-dev",
+    "requirements": {
+     "run": [
+      "volk",
+      "volk-modtool"
+     ]
+    },
+    "test": {
+     "commands": [
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "volk",
+   "name": "volk-split",
    "version": "2.4.1"
   },
   "requirements": {
@@ -1446,114 +1366,22 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.8",
+    "mako >=0.4.2",
     "ninja",
     "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "pkg-config"
+    "python >=3.6"
    ],
    "host": [
     "boost-cpp",
-    "mako >=0.4.2",
-    "python",
-    "boost-cpp",
-    "mako >=0.4.2",
-    "python",
-    "boost-cpp",
-    "mako >=0.4.2",
-    "python",
-    "boost-cpp",
-    "mako >=0.4.2",
-    "python",
-    "boost-cpp",
-    "mako >=0.4.2",
-    "python",
-    "boost-cpp",
-    "mako >=0.4.2",
-    "python"
-   ],
-   "run": [
-    "boost-cpp",
-    "python",
-    "boost-cpp",
-    "python",
-    "boost-cpp",
-    "python",
-    "boost-cpp",
-    "python",
-    "boost-cpp",
-    "python",
-    "boost-cpp",
-    "python"
+    "gstreamer-orc"
    ]
   },
   "source": {
+   "patches": [
+    "0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch"
+   ],
    "sha256": "61d681f90e0f30894f806ab050e9ba28260799c01f1ed0f58623942d8c7f4d48",
    "url": "https://github.com/gnuradio/volk/releases/download/v2.4.1/volk-2.4.1.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "command -v volk-config-info",
-    "command -v volk_profile",
-    "command -v volk_modtool.py",
-    "test -f $PREFIX/lib/libvolk${SHLIB_EXT}",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
-   ],
-   "imports": [
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool"
-   ]
   }
  },
  "osx_64_requirements": {
@@ -1563,23 +1391,27 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "mako",
     "ninja",
-    "pkg-config"
+    "pkg-config",
+    "python"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
     "boost-cpp",
-    "mako",
-    "python"
+    "gstreamer-orc"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "boost-cpp",
-    "python"
+    "gstreamer-orc",
+    "python",
+    "volk",
+    "volk-modtool"
    ]
   },
   "test": {
@@ -1590,11 +1422,13 @@
  "outputs_names": {
   "__set__": true,
   "elements": [
-   "volk"
+   "volk",
+   "volk-dev",
+   "volk-modtool"
   ]
  },
  "pinning_version": "2021.05.05.08.35.31",
- "raw_meta_yaml": "{% set volk_lib = \"volk\" %}\n{% set name = \"volk\" %}\n{% set version = \"2.4.1\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/gnuradio/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 61d681f90e0f30894f806ab050e9ba28260799c01f1ed0f58623942d8c7f4d48\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage('volk', max_pin='x.x') }}\n  skip: true  # [py2k]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.8\n    - ninja\n    - pkg-config  # [not win]\n\n  host:\n    - boost-cpp  # [osx]\n    - mako >=0.4.2\n    - python\n\n  run:\n    - boost-cpp  # [osx]\n    - python\n\ntest:\n  commands:\n    # verify CLI tools\n    {% set volk_cmds = [\"volk-config-info\", \"volk_profile\"] %}\n    {% set volk_python_cmds = [\"volk_modtool\"] %}  # [unix]\n    {% set volk_python_cmds = [\"volk_modtool.py\"] %}  # [win]\n    {% for each_cmd in volk_cmds + volk_python_cmds %}\n    - command -v {{ each_cmd }}  # [unix]\n    - where {{ each_cmd }}  # [win]\n    {% endfor %}\n\n    # verify libraries\n    {% set volk_lib = \"volk\" %}\n    - test -f $PREFIX/lib/lib{{ volk_lib }}${SHLIB_EXT}  # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ volk_lib }}.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ volk_lib }}.lib exit 1  # [win]\n\n    # run selection of commands\n    - volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc\n\n  imports:\n    - volk_modtool\n\nabout:\n  home: https://github.com/gnuradio/volk\n  license: GPL-3.0-or-later AND Apache-2.0\n  license_file:\n    - COPYING\n    - LICENSE_CPU_FEATURES\n  summary: The Vector Optimized Library of Kernels\n  description: |\n    VOLK is the Vector-Optimized Library of Kernels. It is a free library,\n    currently offered under the GPLv3, that contains kernels of hand-written\n    SIMD code for different mathematical operations. Since each SIMD\n    architecture can be very different and no compiler has yet come along to\n    handle vectorization properly or highly efficiently, VOLK approaches the\n    problem differently.\n\n    For each architecture or platform that a developer wishes to vectorize for,\n    a new proto-kernel is added to VOLK. At runtime, VOLK will select the\n    correct proto-kernel. In this way, the users of VOLK call a kernel for\n    performing the operation that is platform/architecture agnostic. This\n    allows us to write portable SIMD code that is optimized for a variety of\n    platforms.\n\n  doc_url: http://libvolk.org/doxygen/index.html\n  dev_url: https://github.com/gnuradio/volk\n\nextra:\n  recipe-maintainers:\n    - ryanvolz\n",
+ "raw_meta_yaml": "{% set version = \"2.4.1\" %}\n{% set build_num = \"2\" %}\n\npackage:\n  name: volk-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/gnuradio/volk/releases/download/v{{ version }}/volk-{{ version }}.tar.gz\n  sha256: 61d681f90e0f30894f806ab050e9ba28260799c01f1ed0f58623942d8c7f4d48\n  patches:\n    - 0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch\n\nbuild:\n  number: {{ build_num }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.8\n    - mako >=0.4.2\n    - ninja\n    - pkg-config  # [not win]\n    # set constraint to avoid a matrix for different python versions\n    - python >=3.6\n  host:\n    - boost-cpp  # [osx]\n    - gstreamer-orc  # [x86_64 and (linux or osx)]\n\noutputs:\n  - name: volk\n    script: install_volk.bat  # [win]\n    script: install_volk.sh  # [not win]\n    build:\n      run_exports:\n        - {{ pin_subpackage('volk', max_pin='x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake\n      host:\n        - boost-cpp  # [osx]\n        - gstreamer-orc  # [x86_64 and (linux or osx)]\n      run:\n        - boost-cpp  # [osx]\n        - {{ pin_compatible('gstreamer-orc', max_pin='x.x') }}  # [x86_64 and (linux or osx)]\n    test:\n      commands:\n        # verify CLI tools\n        {% set volk_cmds = [\"volk-config-info\", \"volk_profile\"] %}\n        {% for cmd in volk_cmds %}\n        - command -v {{ cmd }}  # [unix]\n        - where {{ cmd }}  # [win]\n        {% endfor %}\n\n        # verify libraries\n        - test -f $PREFIX/lib/libvolk${SHLIB_EXT}  # [unix]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1  # [win]\n\n        # run selection of commands\n        - volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc\n\n  - name: volk-modtool\n    script: install_volk_modtool.bat  # [win]\n    script: install_volk_modtool.sh  # [not win]\n    build:\n      string: py_{{ build_num }}\n      noarch: python\n      entry_points:\n        - volk_modtool = volk_modtool.__main__:main\n    requirements:\n      build:\n        - cmake\n      run:\n        - python\n    test:\n      commands:\n        - volk_modtool\n      imports:\n        - volk_modtool\n\n  - name: volk-dev\n    build:\n      run_exports:\n        - {{ pin_subpackage('volk', max_pin='x.x') }}\n    requirements:\n      run:\n        - {{ pin_subpackage('volk', exact=True) }}\n        - {{ pin_subpackage('volk-modtool', exact=True) }}\n    test:\n      commands:\n        - volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc\n        - volk_modtool\n      imports:\n        - volk_modtool\n\nabout:\n  home: https://github.com/gnuradio/volk\n  license: GPL-3.0-or-later AND Apache-2.0\n  license_file:\n    - COPYING\n    - LICENSE_CPU_FEATURES\n  summary: The Vector Optimized Library of Kernels\n  description: |\n    VOLK is the Vector-Optimized Library of Kernels. It is a free library,\n    currently offered under the GPLv3, that contains kernels of hand-written\n    SIMD code for different mathematical operations. Since each SIMD\n    architecture can be very different and no compiler has yet come along to\n    handle vectorization properly or highly efficiently, VOLK approaches the\n    problem differently.\n\n    For each architecture or platform that a developer wishes to vectorize for,\n    a new proto-kernel is added to VOLK. At runtime, VOLK will select the\n    correct proto-kernel. In this way, the users of VOLK call a kernel for\n    performing the operation that is platform/architecture agnostic. This\n    allows us to write portable SIMD code that is optimized for a variety of\n    platforms.\n\n  doc_url: http://libvolk.org/doxygen/index.html\n  dev_url: https://github.com/gnuradio/volk\n\nextra:\n  feedstock-name: volk\n  recipe-maintainers:\n    - ryanvolz\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1602,10 +1436,13 @@
    "c_compiler_stub",
    "cmake",
    "cxx_compiler_stub",
+   "gstreamer-orc",
    "mako",
    "ninja",
    "pkg-config",
-   "python"
+   "python",
+   "volk",
+   "volk-modtool"
   ]
  },
  "requirements": {
@@ -1615,8 +1452,10 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "mako",
     "ninja",
-    "pkg-config"
+    "pkg-config",
+    "python"
    ]
   },
   "host": {
@@ -1625,8 +1464,7 @@
     "boost-cpp",
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "mako",
-    "python"
+    "gstreamer-orc"
    ]
   },
   "run": {
@@ -1635,7 +1473,10 @@
     "boost-cpp",
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "python"
+    "gstreamer-orc",
+    "python",
+    "volk",
+    "volk-modtool"
    ]
   },
   "test": {
@@ -1650,25 +1491,30 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
+    "cmake",
     "cmake >=3.8",
     "cxx_compiler_stub",
+    "mako >=0.4.2",
     "ninja",
-    "pkg-config"
+    "pkg-config",
+    "python >=3.6"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
     "boost-cpp",
-    "mako >=0.4.2",
-    "python"
+    "gstreamer-orc"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "boost-cpp",
-    "python"
+    "gstreamer-orc",
+    "python",
+    "volk",
+    "volk-modtool"
    ]
   },
   "test": {
@@ -1687,35 +1533,100 @@
    "license": "GPL-3.0-or-later AND Apache-2.0",
    "license_file": [
     "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
-    "LICENSE_CPU_FEATURES",
-    "COPYING",
     "LICENSE_CPU_FEATURES"
    ],
    "summary": "The Vector Optimized Library of Kernels"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "volk",
-    "volk",
-    "volk",
-    "volk"
-   ]
+   "number": "2"
   },
   "extra": {
+   "feedstock-name": "volk",
    "recipe-maintainers": [
-    "ryanvolz",
-    "ryanvolz",
-    "ryanvolz",
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": null,
+     "run": null
+    },
+    "script": "install_volk.bat",
+    "test": {
+     "commands": [
+      "where volk-config-info",
+      "where volk_profile",
+      "if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1",
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "volk_modtool = volk_modtool.__main__:main"
+     ],
+     "noarch": "python",
+     "string": "py_2"
+    },
+    "name": "volk-modtool",
+    "requirements": {
+     "build": [
+      "cmake"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_volk_modtool.bat",
+    "test": {
+     "commands": [
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "volk"
+     ]
+    },
+    "name": "volk-dev",
+    "requirements": {
+     "run": [
+      "volk",
+      "volk-modtool"
+     ]
+    },
+    "test": {
+     "commands": [
+      "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
+      "volk_modtool"
+     ],
+     "imports": [
+      "volk_modtool"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "volk",
+   "name": "volk-split",
    "version": "2.4.1"
   },
   "requirements": {
@@ -1723,74 +1634,18 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.8",
+    "mako >=0.4.2",
     "ninja",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake >=3.8",
-    "ninja"
+    "python >=3.6"
    ],
-   "host": [
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python",
-    "mako >=0.4.2",
-    "python"
-   ],
-   "run": [
-    "python",
-    "python",
-    "python",
-    "python"
-   ]
+   "host": []
   },
   "source": {
+   "patches": [
+    "0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch"
+   ],
    "sha256": "61d681f90e0f30894f806ab050e9ba28260799c01f1ed0f58623942d8c7f4d48",
    "url": "https://github.com/gnuradio/volk/releases/download/v2.4.1/volk-2.4.1.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "where volk-config-info",
-    "where volk_profile",
-    "where volk_modtool.py",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "where volk-config-info",
-    "where volk_profile",
-    "where volk_modtool.py",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "where volk-config-info",
-    "where volk_profile",
-    "where volk_modtool.py",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc",
-    "where volk-config-info",
-    "where volk_profile",
-    "where volk_modtool.py",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1",
-    "volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc"
-   ],
-   "imports": [
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool",
-    "volk_modtool"
-   ]
   }
  },
  "win_64_requirements": {
@@ -1800,20 +1655,21 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "ninja"
+    "mako",
+    "ninja",
+    "python"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "mako",
-    "python"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
    "elements": [
-    "python"
+    "python",
+    "volk",
+    "volk-modtool"
    ]
   },
   "test": {
