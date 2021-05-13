@@ -5,6 +5,23 @@
     "__lazy_json__": "pr_json/555293178.json"
    },
    "data": {
+    "bot_rerun": 1620940547.677026,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/644267266.json"
+   },
+   "data": {
     "bot_rerun": false,
     "migrator_name": "ArchRebuild",
     "migrator_version": 1,
@@ -1313,7 +1330,7 @@
    "nvcc_win-64"
   ]
  },
- "pinning_version": "2021.01.14.19.12.27",
+ "pinning_version": "2021.05.13.19.15.21",
  "raw_meta_yaml": "{% set name = \"nvcc\" %}\n{% set number = 13 %}\n\n{% if cuda_compiler_version in (None, \"None\", True, False) %}\n{% set cuda_major = 0 %}\n{% set cuda_minor = 0 %}\n{% set cuda_major_minor = (0, 0) %}\n{% else %}\n{% set cuda_major = environ.get(\"cuda_compiler_version\", \"11.2\").split(\".\")[0]|int %}\n{% set cuda_minor = environ.get(\"cuda_compiler_version\", \"11.2\").split(\".\")[1]|int %}\n{% set cuda_major_minor = (cuda_major, cuda_minor) %}\n{% endif %}\n\npackage:\n  name: \"{{ name }}\"\n\nbuild:\n  number: {{ number }}\n{% if cuda_major == 0 or (target_platform == \"linux-ppc64le\" and cuda_major_minor != (10, 2)) %}\n  skip: true\n{% endif %}\n\noutputs:\n  - name: \"{{ name }}_{{ target_platform }}\"\n    version: \"{{ cuda_compiler_version }}\"\n    number: {{ number }}\n    script: install_nvcc.sh   # [linux]\n    script: windows/install_nvcc.bat  # [win]\n    build:\n      ignore_run_exports:\n        - libgcc-ng\n      run_exports:\n        strong:\n          - cudatoolkit {{ cuda_compiler_version }}|{{ cuda_compiler_version }}.*\n{% if cdt_name == \"cos7\" %}       # [linux]\n          - __glibc >=2.17        # [linux]\n{% endif %}                       # [linux]\n    requirements:\n      build:      # [win]\n        - m2-sed  # [win]\n      host:\n        # Needed to symlink libcuda into sysroot libs.\n        - {{ compiler(\"c\") }}\n{% if cdt_name == \"cos7\" %}                    # [linux]\n        - sysroot_{{ target_platform }} 2.17   # [linux]\n        - __glibc >=2.17                       # [linux]\n{% endif %}                                    # [linux]\n      run:\n        - sed                                  # [linux]\n{% if cdt_name == \"cos7\" %}                    # [linux]\n        - sysroot_{{ target_platform }} 2.17   # [linux]\n        - __glibc >=2.17                       # [linux]\n{% endif %}                                    # [linux]\n    test:\n      requires:\n        - {{ compiler(\"c\") }}\n        # Host code is forwarded to a C++ compiler\n        - {{ compiler(\"cxx\") }}\n{% if cdt_name == \"cos7\" %}                    # [linux]\n        - sysroot_{{ target_platform }} 2.17   # [linux]\n{% endif %}                                    # [linux]\n      files:\n        - test.cu\n        - test_nvcc.sh  # [linux]\n        - windows\\test_nvcc.bat  # [win]\n      commands:\n        - bash test_nvcc.sh  # [linux]\n        - windows\\test_nvcc.bat  # [win]\n    about:\n      home: https://github.com/conda-forge/nvcc-feedstock\n      license: BSD-3-Clause\n      license_file: LICENSE.txt\n      summary: A meta-package to enable the right nvcc.\n\nabout:\n  home: https://github.com/conda-forge/nvcc-feedstock\n  license: BSD-3-Clause\n  license_file: LICENSE.txt\n  summary: A meta-package to enable the right nvcc.\n\nextra:\n  recipe-maintainers:\n    - dillon-cullinan\n    - isuruf\n    - jakirkham\n    - kkraus14\n    - mike-wendt\n    - raydouglass\n    - jaimergp\n",
  "req": {
   "__set__": true,
@@ -1366,7 +1383,7 @@
    ]
   }
  },
- "smithy_version": "3.8.6",
+ "smithy_version": "3.10.1",
  "strong_exports": true,
  "time": 1568135311.4851289,
  "total_requirements": {
