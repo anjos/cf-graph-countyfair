@@ -127,6 +127,9 @@
   "bot": {
    "automerge": true
   },
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default"
@@ -462,6 +465,8 @@
     "/lib/R/share/licenses/MIT",
     "LICENSE",
     "/lib/R/share/licenses/MIT",
+    "LICENSE",
+    "/lib/R/share/licenses/MIT",
     "LICENSE"
    ],
    "summary": "Key-value stores with automatic pruning. Caches can limit either their total size or the age of the oldest object (or both), automatically pruning objects to maintain the constraints."
@@ -470,6 +475,8 @@
    "merge_build_host": true,
    "number": "0",
    "rpaths": [
+    "lib/R/lib/",
+    "lib/",
     "lib/R/lib/",
     "lib/",
     "lib/R/lib/",
@@ -503,6 +510,7 @@
     "conda-forge/r",
     "conda-forge/r",
     "conda-forge/r",
+    "conda-forge/r",
     "conda-forge/r"
    ]
   },
@@ -512,6 +520,8 @@
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
+    "make",
     "c_compiler_stub",
     "make",
     "c_compiler_stub",
@@ -571,9 +581,15 @@
     "r-rlang",
     "r-base",
     "r-fastmap",
+    "r-rlang",
+    "r-base",
+    "r-fastmap",
     "r-rlang"
    ],
    "run": [
+    "r-base",
+    "r-fastmap",
+    "r-rlang",
     "r-base",
     "r-fastmap",
     "r-rlang",
@@ -630,11 +646,14 @@
     "https://cran.r-project.org/src/contrib/cachem_1.0.5.tar.gz",
     "https://cran.r-project.org/src/contrib/Archive/cachem/cachem_1.0.5.tar.gz",
     "https://cran.r-project.org/src/contrib/cachem_1.0.5.tar.gz",
+    "https://cran.r-project.org/src/contrib/Archive/cachem/cachem_1.0.5.tar.gz",
+    "https://cran.r-project.org/src/contrib/cachem_1.0.5.tar.gz",
     "https://cran.r-project.org/src/contrib/Archive/cachem/cachem_1.0.5.tar.gz"
    ]
   },
   "test": {
    "commands": [
+    "$R -e \"library('cachem')\"",
     "$R -e \"library('cachem')\"",
     "$R -e \"library('cachem')\"",
     "$R -e \"library('cachem')\"",
@@ -758,6 +777,91 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "https://cachem.r-lib.org/, https://github.com/r-lib/cachem",
+   "license": "MIT",
+   "license_family": "MIT",
+   "license_file": [
+    "/lib/R/share/licenses/MIT",
+    "LICENSE"
+   ],
+   "summary": "Key-value stores with automatic pruning. Caches can limit either their total size or the age of the oldest object (or both), automatically pruning objects to maintain the constraints."
+  },
+  "build": {
+   "number": "0",
+   "rpaths": [
+    "lib/R/lib/",
+    "lib/"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "conda-forge/r"
+   ]
+  },
+  "package": {
+   "name": "r-cachem",
+   "version": "1.0.5"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "make"
+   ],
+   "host": [
+    "r-base",
+    "r-fastmap",
+    "r-rlang"
+   ],
+   "run": [
+    "r-base",
+    "r-fastmap",
+    "r-rlang"
+   ]
+  },
+  "source": {
+   "sha256": "82cf4af8363740cdefde655322570c109c99d6c64bd8271732c7123aa1c32ff6",
+   "url": [
+    "https://cran.r-project.org/src/contrib/cachem_1.0.5.tar.gz",
+    "https://cran.r-project.org/src/contrib/Archive/cachem/cachem_1.0.5.tar.gz"
+   ]
+  },
+  "test": {
+   "commands": [
+    "$R -e \"library('cachem')\""
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "r-base",
+    "r-fastmap",
+    "r-rlang"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "r-base",
+    "r-fastmap",
+    "r-rlang"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -765,7 +869,7 @@
   ]
  },
  "pinning_version": "2021.05.20.13.08.59",
- "raw_meta_yaml": "{% set version = \"1.0.5\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-cachem\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/cachem_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/cachem/cachem_{{ version }}.tar.gz\n  sha256: 82cf4af8363740cdefde655322570c109c99d6c64bd8271732c7123aa1c32ff6\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 0\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n  host:\n    - r-base\n    - r-fastmap\n    - r-rlang\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - r-fastmap\n    - r-rlang\n\ntest:\n  commands:\n    - $R -e \"library('cachem')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('cachem')\\\"\"  # [win]\n\nabout:\n  home: https://cachem.r-lib.org/, https://github.com/r-lib/cachem\n  license: MIT\n  summary: Key-value stores with automatic pruning. Caches can limit either their total size or the age of the oldest object (or both), automatically pruning objects to maintain the constraints.\n  license_family: MIT\n  license_file:\n    - {{ environ[\"PREFIX\"] }}/lib/R/share/licenses/MIT\n    - LICENSE\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n\n# Package: cachem\n# Version: 1.0.1\n# Title: Cache R Objects with Automatic Pruning\n# Description: Key-value stores with automatic pruning. Caches can limit either their total size or the age of the oldest object (or both), automatically pruning objects to maintain the constraints.\n# Authors@R: c( person(\"Winston\", \"Chang\", , \"winston@rstudio.com\", c(\"aut\", \"cre\")), person(family = \"RStudio\", role = c(\"cph\", \"fnd\")))\n# License: MIT + file LICENSE\n# Encoding: UTF-8\n# LazyData: true\n# ByteCompile: true\n# URL: https://cachem.r-lib.org/, https://github.com/r-lib/cachem\n# Imports: rlang, fastmap\n# Suggests: testthat\n# RoxygenNote: 7.1.1\n# NeedsCompilation: yes\n# Packaged: 2021-01-19 15:09:27 UTC; winston\n# Author: Winston Chang [aut, cre], RStudio [cph, fnd]\n# Maintainer: Winston Chang <winston@rstudio.com>\n# Repository: CRAN\n# Date/Publication: 2021-01-21 17:20:17 UTC\n",
+ "raw_meta_yaml": "{% set version = \"1.0.5\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-cachem\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/cachem_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/cachem/cachem_{{ version }}.tar.gz\n  sha256: 82cf4af8363740cdefde655322570c109c99d6c64bd8271732c7123aa1c32ff6\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 0\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - cross-r-base {{ r_base }}  # [build_platform != target_platform]\n    - r-rlang                    # [build_platform != target_platform]\n    - r-fastmap                  # [build_platform != target_platform]\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n  host:\n    - r-base\n    - r-fastmap\n    - r-rlang\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - r-fastmap\n    - r-rlang\n\ntest:\n  commands:\n    - $R -e \"library('cachem')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('cachem')\\\"\"  # [win]\n\nabout:\n  home: https://cachem.r-lib.org/, https://github.com/r-lib/cachem\n  license: MIT\n  summary: Key-value stores with automatic pruning. Caches can limit either their total size or the age of the oldest object (or both), automatically pruning objects to maintain the constraints.\n  license_family: MIT\n  license_file:\n    - {{ environ[\"PREFIX\"] }}/lib/R/share/licenses/MIT\n    - LICENSE\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n\n# Package: cachem\n# Version: 1.0.1\n# Title: Cache R Objects with Automatic Pruning\n# Description: Key-value stores with automatic pruning. Caches can limit either their total size or the age of the oldest object (or both), automatically pruning objects to maintain the constraints.\n# Authors@R: c( person(\"Winston\", \"Chang\", , \"winston@rstudio.com\", c(\"aut\", \"cre\")), person(family = \"RStudio\", role = c(\"cph\", \"fnd\")))\n# License: MIT + file LICENSE\n# Encoding: UTF-8\n# LazyData: true\n# ByteCompile: true\n# URL: https://cachem.r-lib.org/, https://github.com/r-lib/cachem\n# Imports: rlang, fastmap\n# Suggests: testthat\n# RoxygenNote: 7.1.1\n# NeedsCompilation: yes\n# Packaged: 2021-01-19 15:09:27 UTC; winston\n# Author: Winston Chang [aut, cre], RStudio [cph, fnd]\n# Maintainer: Winston Chang <winston@rstudio.com>\n# Repository: CRAN\n# Date/Publication: 2021-01-21 17:20:17 UTC\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -857,6 +961,8 @@
   }
  },
  "url": [
+  "https://cran.r-project.org/src/contrib/cachem_1.0.5.tar.gz",
+  "https://cran.r-project.org/src/contrib/Archive/cachem/cachem_1.0.5.tar.gz",
   "https://cran.r-project.org/src/contrib/cachem_1.0.5.tar.gz",
   "https://cran.r-project.org/src/contrib/Archive/cachem/cachem_1.0.5.tar.gz",
   "https://cran.r-project.org/src/contrib/cachem_1.0.5.tar.gz",
