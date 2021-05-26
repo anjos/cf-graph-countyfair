@@ -16,6 +16,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/653211202.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "r410"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -364,10 +383,8 @@
    "r-duckdb"
   ]
  },
- "pinning_version": "2021.05.09.05.19.45",
- "pre_pr_migrator_status": {
-  "r410": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/868558591\">bot CI job</a>): master: ['linux_64_r_base4.1: Encountered problems while solving:\\n  - nothing provides icu 54.* needed by r-base-3.3.1-1\\n', 'osx_64_r_base4.1: Encountered problems while solving:\\n  - nothing provides icu 54.* needed by r-base-3.3.2-0\\n', 'win_64_r_base4.1: Encountered problems while solving:\\n  - package r-dbi-0.7-mro343h889e2dd_0 requires _r-mutex 1.* mro_2, but none of the providers can be installed\\n']"
- },
+ "pinning_version": "2021.05.25.06.47.12",
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"0.2.6\" %}\n\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-duckdb\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/duckdb_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/duckdb/duckdb_{{ version }}.tar.gz\n  sha256: 5cf2af519f349b54f3e91f143214aece31febf8d96720d3b29cd2def49ae1584\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 0\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ compiler('cxx') }}            # [not win]\n    - {{ compiler('m2w64_cxx') }}      # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n    - cross-r-base {{ r_base }}    # [build_platform != target_platform]\n\n  host:\n    - r-base\n    - r-dbi\n\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - r-dbi\n\ntest:\n  commands:\n    - $R -e \"library('duckdb')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('duckdb')\\\"\"  # [win]\n\nabout:\n  home: https://duckdb.org/, https://github.com/cwida/duckdb\n  license: MPL-2.0\n  summary: The DuckDB project is an embedded analytical data management system with support for the Structured Query Language (SQL). This package includes all of DuckDB and a R Database Interface (DBI) connector.\n  license_family: MOZILLA\n  license_file: LICENSE\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n    - izahn\n",
  "req": {
   "__set__": true,
