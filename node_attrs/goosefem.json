@@ -365,6 +365,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/658473990.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.12.2"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -713,7 +730,7 @@
   }
  },
  "name": "goosefem-split",
- "new_version": "0.12.1",
+ "new_version": "0.12.2",
  "new_version_attempts": {
   "0.10.0": 1,
   "0.10.2": 1,
@@ -721,6 +738,7 @@
   "0.11.0": 1,
   "0.12.0": 1,
   "0.12.1": 1,
+  "0.12.2": 1,
   "0.3.1": 1,
   "0.4.0": 1,
   "0.4.1": 1,
@@ -870,7 +888,7 @@
    "python-goosefem"
   ]
  },
- "pinning_version": "2021.05.07.07.46.32",
+ "pinning_version": "2021.05.31.15.51.19",
  "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"GooseFEM\" %}\n{% set version = \"0.12.1\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: f73ec358a68605a411c947f254cd39dc8991c61aa4fdad0b9ce2d7434ce32b4f\n\nbuild:\n  number: 0\n  script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - setuptools_scm\n        - xtensor\n      run:\n        - xtensor\n        - eigen\n\n    test:\n      commands:\n        - test -d ${PREFIX}/include/{{ name }}  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/{{ name }}.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\{{ name }}.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - ninja\n      host:\n        - xtensor\n        - eigen\n        - pybind11\n        - pyxtensor\n        - python\n        - pip\n        - setuptools_scm\n      run:\n        - python\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: GPL-3.0\n  license_family: GPL\n  license_file: LICENSE\n  summary: Finite element simulations.\n  description: Finite element simulations.\n  doc_url: https://goosefem.rtfd.io\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
  "req": {
   "__set__": true,
