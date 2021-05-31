@@ -1,4 +1,25 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/f3b160f2-4fea-4952-8e8a-9c3dc8233bbb.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "branch": "master",
@@ -633,6 +654,7 @@
    "finesse"
   ]
  },
+ "pinning_version": "2021.05.31.18.53.41",
  "raw_meta_yaml": "{% set name = \"finesse\" %}\n{% set version = \"3.0a1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/finesse-{{ version }}.tar.gz\n  sha256: a2645e8b3f39b34861ebf030dae81b49aa872f33a2782def5b327df74a4ea63a\n  patches:\n    # improve parallel build\n    # see https://git.ligo.org/finesse/finesse3/-/merge_requests/82\n    - parallel-build.patch\n    # patch test suite to prevent opening files twice\n    # see https://git.ligo.org/finesse/finesse3/-/merge_requests/80\n    - test-tmp-files.patch\n    # remove unnecessary cython runtime requirement (fixed upstream)\n    - no-cython-runtime-requirement.patch\n\nbuild:\n  number: 0\n  skip: true   # [py<38]\n  entry_points:\n    - kat3 = finesse.__main__:cli\n  script: {{ PYTHON }} -m pip install . -vv  # [not win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - libgomp  # [linux]\n    - llvm-openmp  # [osx]\n  host:\n    - cython\n    - libpython  # [win]\n    - numpy\n    - pip\n    - python\n    - setuptools\n    - setuptools-scm\n    - suitesparse\n  run:\n    - click\n    - click-default-group\n    - deprecated\n    - h5py\n    - matplotlib-base\n    - networkx\n    - {{ pin_compatible('numpy') }}\n    - python\n    - scipy\n    - sly\n    - sympy\n    - tabulate\n\ntest:\n  requires:\n    - faker\n    - hypothesis\n    - pip\n    - pytest\n  source_files:\n    - tests/\n  imports:\n    - finesse\n    - finesse.analysis\n  commands:\n    # check requirements\n    - python -m pip check\n    # run unit tests\n    - python -m pytest tests/\n    # check entry points\n    - kat3 --help\n\nabout:\n  home: https://www.gwoptics.org/finesse\n  dev_url: https://git.ligo.org/finesse/finesse3.git\n  doc_url: https://finesse.docs.ligo.org/finesse3/\n  license: MIT\n  license_file: LICENSES.md\n  summary: A simulation tool for modelling laser interferometers\n  description: |\n    Finesse 3 is a Python based interferometer simulation software.\n\nextra:\n  recipe-maintainers:\n    - db87\n    - duncanmmacleod\n    - freise\n",
  "req": {
   "__set__": true,
@@ -717,6 +739,7 @@
    ]
   }
  },
+ "smithy_version": "3.10.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
