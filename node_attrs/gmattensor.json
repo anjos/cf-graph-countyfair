@@ -118,6 +118,44 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/658261038.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/658263407.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy37"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -138,42 +176,82 @@
    "summary": "Tensor definitions supporting several GMat models."
   },
   "build": {
-   "number": "0"
+   "number": "0",
+   "script_env": "SETUPTOOLS_SCM_PRETEND_VERSION=0.7.1"
   },
   "extra": {
    "recipe-maintainers": [
     "tdegeus"
    ]
   },
+  "outputs": [
+   {
+    "name": "gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "setuptools_scm",
+      "xtensor"
+     ],
+     "run": [
+      "xtensor"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GMatTensor",
+      "test -f ${PREFIX}/include/GMatTensor/Cartesian2d.h",
+      "test -f ${PREFIX}/include/GMatTensor/Cartesian3d.h",
+      "test -f ${PREFIX}/lib/cmake/GMatTensor/GMatTensorConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "python",
+      "pip",
+      "setuptools_scm",
+      "numpy",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "GMatTensor"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "gmattensor",
-   "version": "0.7.0"
-  },
-  "requirements": {
-   "build": [
-    "cxx_compiler_stub",
-    "cmake",
-    "make"
-   ],
-   "host": [
-    "setuptools_scm",
-    "xtensor"
-   ],
-   "run": [
-    "xtensor"
-   ]
+   "name": "gmattensor-split",
+   "version": "0.7.1"
   },
   "source": {
-   "sha256": "7066f8c07466579ae9333eed9d889bcfceef9dd7ab016a2bd45fe6d4e056156b",
-   "url": "https://github.com/tdegeus/GMatTensor/archive/v0.7.0.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -d ${PREFIX}/include/GMatTensor",
-    "test -f ${PREFIX}/include/GMatTensor/Cartesian2d.h",
-    "test -f ${PREFIX}/include/GMatTensor/Cartesian3d.h",
-    "test -f ${PREFIX}/lib/cmake/GMatTensor/GMatTensorConfig.cmake"
-   ]
+   "sha256": "2fb4b0b92582abb54b34566f24b2f8b016cb18fe178b18feec91bad19d4a18aa",
+   "url": "https://github.com/tdegeus/GMatTensor/archive/v0.7.1.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -182,25 +260,33 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "make"
+    "make",
+    "ninja"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
+    "numpy",
+    "pip",
+    "python",
     "setuptools_scm",
-    "xtensor"
+    "xtensor",
+    "xtensor-python"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
+    "python",
     "xtensor"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "meta_yaml": {
@@ -215,7 +301,8 @@
    "summary": "Tensor definitions supporting several GMat models."
   },
   "build": {
-   "number": "0"
+   "number": "0",
+   "script_env": "SETUPTOOLS_SCM_PRETEND_VERSION=0.7.1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -224,56 +311,194 @@
     "tdegeus"
    ]
   },
+  "outputs": [
+   {
+    "name": "gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "setuptools_scm",
+      "xtensor"
+     ],
+     "run": [
+      "xtensor"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GMatTensor",
+      "test -f ${PREFIX}/include/GMatTensor/Cartesian2d.h",
+      "test -f ${PREFIX}/include/GMatTensor/Cartesian3d.h",
+      "test -f ${PREFIX}/lib/cmake/GMatTensor/GMatTensorConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "python",
+      "pip",
+      "setuptools_scm",
+      "numpy",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "GMatTensor"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "name": "gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "setuptools_scm",
+      "xtensor"
+     ],
+     "run": [
+      "xtensor"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GMatTensor",
+      "test -f ${PREFIX}/include/GMatTensor/Cartesian2d.h",
+      "test -f ${PREFIX}/include/GMatTensor/Cartesian3d.h",
+      "test -f ${PREFIX}/lib/cmake/GMatTensor/GMatTensorConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "python",
+      "pip",
+      "setuptools_scm",
+      "numpy",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "GMatTensor"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "name": "gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "setuptools_scm",
+      "xtensor"
+     ],
+     "run": [
+      "xtensor"
+     ]
+    },
+    "script": "install.bat",
+    "test": {
+     "commands": [
+      "if exist %LIBRARY_PREFIX%\\include\\GMatTensor\\Cartesian2d.h (exit 0) else (exit 1)",
+      "if exist %LIBRARY_PREFIX%\\include\\GMatTensor\\Cartesian3d.h (exit 0) else (exit 1)",
+      "if exist %LIBRARY_PREFIX%\\lib\\cmake\\GMatTensorConfig.cmake (exit 0) else (exit 1)"
+     ]
+    }
+   },
+   {
+    "name": "python-gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "python",
+      "pip",
+      "setuptools_scm",
+      "numpy",
+      "xtensor",
+      "xtensor-python",
+      "pyxtensor"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_python.bat",
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "GMatTensor"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "gmattensor",
-   "version": "0.7.0"
-  },
-  "requirements": {
-   "build": [
-    "cxx_compiler_stub",
-    "cmake",
-    "make",
-    "cxx_compiler_stub",
-    "cmake",
-    "make",
-    "cxx_compiler_stub",
-    "cmake"
-   ],
-   "host": [
-    "setuptools_scm",
-    "xtensor",
-    "setuptools_scm",
-    "xtensor",
-    "setuptools_scm",
-    "xtensor"
-   ],
-   "run": [
-    "xtensor",
-    "xtensor",
-    "xtensor"
-   ]
+   "name": "gmattensor-split",
+   "version": "0.7.1"
   },
   "source": {
-   "sha256": "7066f8c07466579ae9333eed9d889bcfceef9dd7ab016a2bd45fe6d4e056156b",
-   "url": "https://github.com/tdegeus/GMatTensor/archive/v0.7.0.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -d ${PREFIX}/include/GMatTensor",
-    "test -f ${PREFIX}/include/GMatTensor/Cartesian2d.h",
-    "test -f ${PREFIX}/include/GMatTensor/Cartesian3d.h",
-    "test -f ${PREFIX}/lib/cmake/GMatTensor/GMatTensorConfig.cmake",
-    "test -d ${PREFIX}/include/GMatTensor",
-    "test -f ${PREFIX}/include/GMatTensor/Cartesian2d.h",
-    "test -f ${PREFIX}/include/GMatTensor/Cartesian3d.h",
-    "test -f ${PREFIX}/lib/cmake/GMatTensor/GMatTensorConfig.cmake",
-    "if exist %LIBRARY_PREFIX%\\include\\GMatTensor\\Cartesian2d.h (exit 0) else (exit 1)",
-    "if exist %LIBRARY_PREFIX%\\include\\GMatTensor\\Cartesian3d.h (exit 0) else (exit 1)",
-    "if exist %LIBRARY_PREFIX%\\lib\\cmake\\GMatTensorConfig.cmake (exit 0) else (exit 1)"
-   ]
+   "sha256": "2fb4b0b92582abb54b34566f24b2f8b016cb18fe178b18feec91bad19d4a18aa",
+   "url": "https://github.com/tdegeus/GMatTensor/archive/v0.7.1.tar.gz"
   }
  },
- "name": "gmattensor",
+ "name": "gmattensor-split",
  "new_version": "0.7.1",
  "new_version_attempts": {
   "0.2.0": 1,
@@ -297,42 +522,82 @@
    "summary": "Tensor definitions supporting several GMat models."
   },
   "build": {
-   "number": "0"
+   "number": "0",
+   "script_env": "SETUPTOOLS_SCM_PRETEND_VERSION=0.7.1"
   },
   "extra": {
    "recipe-maintainers": [
     "tdegeus"
    ]
   },
+  "outputs": [
+   {
+    "name": "gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "setuptools_scm",
+      "xtensor"
+     ],
+     "run": [
+      "xtensor"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GMatTensor",
+      "test -f ${PREFIX}/include/GMatTensor/Cartesian2d.h",
+      "test -f ${PREFIX}/include/GMatTensor/Cartesian3d.h",
+      "test -f ${PREFIX}/lib/cmake/GMatTensor/GMatTensorConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "python",
+      "pip",
+      "setuptools_scm",
+      "numpy",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "GMatTensor"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "gmattensor",
-   "version": "0.7.0"
-  },
-  "requirements": {
-   "build": [
-    "cxx_compiler_stub",
-    "cmake",
-    "make"
-   ],
-   "host": [
-    "setuptools_scm",
-    "xtensor"
-   ],
-   "run": [
-    "xtensor"
-   ]
+   "name": "gmattensor-split",
+   "version": "0.7.1"
   },
   "source": {
-   "sha256": "7066f8c07466579ae9333eed9d889bcfceef9dd7ab016a2bd45fe6d4e056156b",
-   "url": "https://github.com/tdegeus/GMatTensor/archive/v0.7.0.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -d ${PREFIX}/include/GMatTensor",
-    "test -f ${PREFIX}/include/GMatTensor/Cartesian2d.h",
-    "test -f ${PREFIX}/include/GMatTensor/Cartesian3d.h",
-    "test -f ${PREFIX}/lib/cmake/GMatTensor/GMatTensorConfig.cmake"
-   ]
+   "sha256": "2fb4b0b92582abb54b34566f24b2f8b016cb18fe178b18feec91bad19d4a18aa",
+   "url": "https://github.com/tdegeus/GMatTensor/archive/v0.7.1.tar.gz"
   }
  },
  "osx_64_requirements": {
@@ -341,43 +606,58 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "make"
+    "make",
+    "ninja"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
+    "numpy",
+    "pip",
+    "python",
     "setuptools_scm",
-    "xtensor"
+    "xtensor",
+    "xtensor-python"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
+    "python",
     "xtensor"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "outputs_names": {
   "__set__": true,
   "elements": [
-   "gmattensor"
+   "gmattensor",
+   "python-gmattensor"
   ]
  },
- "pinning_version": "2021.05.30.13.57.26",
- "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"GMatTensor\" %}\n{% set version = \"0.7.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: \"7066f8c07466579ae9333eed9d889bcfceef9dd7ab016a2bd45fe6d4e056156b\"\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - make  # [unix]\n  host:\n    - setuptools_scm\n    - xtensor\n  run:\n    - xtensor\n\ntest:\n  commands:\n    - test -d ${PREFIX}/include/{{ name }}  # [unix]\n    - test -f ${PREFIX}/include/{{ name }}/Cartesian2d.h  # [unix]\n    - test -f ${PREFIX}/include/{{ name }}/Cartesian3d.h  # [unix]\n    - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n    - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\Cartesian2d.h (exit 0) else (exit 1)  # [win]\n    - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\Cartesian3d.h (exit 0) else (exit 1)  # [win]\n    - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Tensor definitions supporting several GMat models.\n  description: Tensor definitions supporting several GMat models.\n  doc_url: https://{{ org }}.github.io/{{ name }}\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
+ "pinning_version": "2021.05.30.21.14.06",
+ "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"GMatTensor\" %}\n{% set version = \"0.7.1\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 2fb4b0b92582abb54b34566f24b2f8b016cb18fe178b18feec91bad19d4a18aa\n\nbuild:\n  number: 0\n  script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - setuptools_scm\n        - xtensor\n      run:\n        - xtensor\n\n    test:\n      commands:\n        - test -d ${PREFIX}/include/{{ name }}  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/Cartesian2d.h  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/Cartesian3d.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\Cartesian2d.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\Cartesian3d.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - ninja\n      host:\n        - python\n        - pip\n        - setuptools_scm\n        - numpy\n        - xtensor\n        - xtensor-python\n        - pyxtensor  # [win]\n      run:\n        - python\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Tensor definitions supporting several GMat models.\n  description: Tensor definitions supporting several GMat models.\n  doc_url: https://{{ org }}.github.io/{{ name }}\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
  "req": {
   "__set__": true,
   "elements": [
    "cmake",
    "cxx_compiler_stub",
    "make",
+   "ninja",
+   "numpy",
+   "pip",
+   "python",
+   "pyxtensor",
    "setuptools_scm",
-   "xtensor"
+   "xtensor",
+   "xtensor-python"
   ]
  },
  "requirements": {
@@ -386,27 +666,36 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "make"
+    "make",
+    "ninja"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
     "cxx_compiler_stub",
+    "numpy",
+    "pip",
+    "python",
+    "pyxtensor",
     "setuptools_scm",
-    "xtensor"
+    "xtensor",
+    "xtensor-python"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "cxx_compiler_stub",
+    "python",
     "xtensor"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "smithy_version": "3.10.1",
@@ -417,29 +706,38 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "make"
+    "make",
+    "ninja"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
+    "numpy",
+    "pip",
+    "python",
+    "pyxtensor",
     "setuptools_scm",
-    "xtensor"
+    "xtensor",
+    "xtensor-python"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
+    "python",
     "xtensor"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
- "url": "https://github.com/tdegeus/GMatTensor/archive/v0.7.0.tar.gz",
- "version": "0.7.0",
+ "url": "https://github.com/tdegeus/GMatTensor/archive/v0.7.1.tar.gz",
+ "version": "0.7.1",
  "win_64_meta_yaml": {
   "about": {
    "description": "Tensor definitions supporting several GMat models.",
@@ -452,40 +750,81 @@
    "summary": "Tensor definitions supporting several GMat models."
   },
   "build": {
-   "number": "0"
+   "number": "0",
+   "script_env": "SETUPTOOLS_SCM_PRETEND_VERSION=0.7.1"
   },
   "extra": {
    "recipe-maintainers": [
     "tdegeus"
    ]
   },
+  "outputs": [
+   {
+    "name": "gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "setuptools_scm",
+      "xtensor"
+     ],
+     "run": [
+      "xtensor"
+     ]
+    },
+    "script": "install.bat",
+    "test": {
+     "commands": [
+      "if exist %LIBRARY_PREFIX%\\include\\GMatTensor\\Cartesian2d.h (exit 0) else (exit 1)",
+      "if exist %LIBRARY_PREFIX%\\include\\GMatTensor\\Cartesian3d.h (exit 0) else (exit 1)",
+      "if exist %LIBRARY_PREFIX%\\lib\\cmake\\GMatTensorConfig.cmake (exit 0) else (exit 1)"
+     ]
+    }
+   },
+   {
+    "name": "python-gmattensor",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "python",
+      "pip",
+      "setuptools_scm",
+      "numpy",
+      "xtensor",
+      "xtensor-python",
+      "pyxtensor"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_python.bat",
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "GMatTensor"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "gmattensor",
-   "version": "0.7.0"
-  },
-  "requirements": {
-   "build": [
-    "cxx_compiler_stub",
-    "cmake"
-   ],
-   "host": [
-    "setuptools_scm",
-    "xtensor"
-   ],
-   "run": [
-    "xtensor"
-   ]
+   "name": "gmattensor-split",
+   "version": "0.7.1"
   },
   "source": {
-   "sha256": "7066f8c07466579ae9333eed9d889bcfceef9dd7ab016a2bd45fe6d4e056156b",
-   "url": "https://github.com/tdegeus/GMatTensor/archive/v0.7.0.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "if exist %LIBRARY_PREFIX%\\include\\GMatTensor\\Cartesian2d.h (exit 0) else (exit 1)",
-    "if exist %LIBRARY_PREFIX%\\include\\GMatTensor\\Cartesian3d.h (exit 0) else (exit 1)",
-    "if exist %LIBRARY_PREFIX%\\lib\\cmake\\GMatTensorConfig.cmake (exit 0) else (exit 1)"
-   ]
+   "sha256": "2fb4b0b92582abb54b34566f24b2f8b016cb18fe178b18feec91bad19d4a18aa",
+   "url": "https://github.com/tdegeus/GMatTensor/archive/v0.7.1.tar.gz"
   }
  },
  "win_64_requirements": {
@@ -493,25 +832,34 @@
    "__set__": true,
    "elements": [
     "cmake",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "ninja"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
+    "numpy",
+    "pip",
+    "python",
+    "pyxtensor",
     "setuptools_scm",
-    "xtensor"
+    "xtensor",
+    "xtensor-python"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
+    "python",
     "xtensor"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  }
 }
