@@ -98,6 +98,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/659281709.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.7"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -549,7 +566,11 @@
   }
  },
  "name": "gsl",
- "new_version": false,
+ "new_version": "2.7",
+ "new_version_attempts": {
+  "2.7": 1
+ },
+ "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
    "home": "http://www.gnu.org/software/gsl/",
@@ -738,7 +759,7 @@
    "gsl"
   ]
  },
- "pinning_version": "2020.11.02.18.49.03",
+ "pinning_version": "2021.06.01.05.21.06",
  "raw_meta_yaml": "{% set version = \"2.6\" %}\n\npackage:\n  name: gsl\n  version: {{ version }}\n\nsource:\n  url: http://ftp.gnu.org/gnu/gsl/gsl-{{ version }}.tar.gz\n  sha256: b782339fc7a38fe17689cb39966c4d821236c28018b6593ddb6fd59ee40786a8\n  patches:\n    # Taken from https://github.com/ampl/gsl/tree/v2.4.0\n    - patch_for_windows.diff  # [win]\n\nbuild:\n  number: 2\n  skip:  True  # [win and vc<14]\n  run_exports:\n    # tends to break at minor revs\n    # https://abi-laboratory.pro/index.php?view=timeline&l=gsl\n    - {{ pin_subpackage(\"gsl\", max_pin=\"x.x\") }}\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n    - autotools_clang_conda     # [win]\n    - autoconf                  # [unix]\n    - automake                  # [unix]\n    - libtool                   # [unix]\n    - make                      # [unix]\n  host:\n    - libblas\n    - libcblas\n  run:\n\ntest:\n  files:\n    - test\n\n  requires:\n    - {{ compiler('c') }}\n\n  commands:\n    - gsl-config --prefix  # [not win]\n    - if not exist %LIBRARY_LIB%\\\\gsl.lib       exit 1   # [win]\n    - if not exist %LIBRARY_LIB%\\\\gslcblas.lib  exit 1   # [win]\n    - if not exist %LIBRARY_BIN%\\\\gsl*.dll      exit 1   # [win]\n    - ls -al $PREFIX/lib/libgsl${SHLIB_EXT}              # [not win]\n    - ls -al $PREFIX/lib/libgslcblas${SHLIB_EXT}         # [not win]\n    - ls -al $PREFIX/lib/libgslcblas.0.dylib             # [osx]\n    - ls -al $PREFIX/lib/libgsl.*.dylib                  # [osx]\n    - ls -al $PREFIX/lib/libgslcblas.so.0                # [linux]\n    - ls -al $PREFIX/lib/libgsl.so.*                     # [linux]\n\nabout:\n  home: http://www.gnu.org/software/gsl/\n  license: GPL-3.0-or-later\n  license_file:\n    - COPYING\n    - getopt_LICENSE.txt  # [win]\n  summary: 'GNU Scientific Library'\n\nextra:\n  recipe-maintainers:\n    - kwilcox\n    - mingwandroid\n    - ocefpaf\n    - traversaro\n",
  "req": {
   "__set__": true,
@@ -786,7 +807,7 @@
    ]
   }
  },
- "smithy_version": "3.8.4",
+ "smithy_version": "3.10.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
