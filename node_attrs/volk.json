@@ -285,6 +285,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/662450137.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.5.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1421,11 +1438,12 @@
   }
  },
  "name": "volk-split",
- "new_version": "2.4.1",
+ "new_version": "2.5.0",
  "new_version_attempts": {
   "2.3.0": 96,
   "2.4.0": 1,
-  "2.4.1": 1
+  "2.4.1": 1,
+  "2.5.0": 1
  },
  "new_version_errors": {
   "2.3.0": "We found a problem parsing the recipe: \n\nwhile parsing a block mapping\n  in \"<unicode string>\", line 35, column 3:\n      commands:\n      ^ (line: 35)\nexpected <block end>, but found ','\n  in \"<unicode string>\", line 38, column 27:\n            \"volk-config-info\",\n                              ^ (line: 38)"
@@ -1779,7 +1797,7 @@
    "volk-modtool"
   ]
  },
- "pinning_version": "2021.05.06.10.47.03",
+ "pinning_version": "2021.06.04.18.58.43",
  "raw_meta_yaml": "{% set version = \"2.4.1\" %}\n{% set build_num = \"3\" %}\n\npackage:\n  name: volk-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/gnuradio/volk/releases/download/v{{ version }}/volk-{{ version }}.tar.gz\n  sha256: 61d681f90e0f30894f806ab050e9ba28260799c01f1ed0f58623942d8c7f4d48\n  patches:\n    - 0001-Add-main-to-volk_modtool-script-usable-as-an-entry-p.patch\n    - 0002-Fix-CMAKE_SYSTEM_PROCESSOR-arm64-should-AARCH64-not-.patch\n    - 0003-Add-support-for-Apple-M1-AArch64-processor.patch\n\nbuild:\n  number: {{ build_num }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.8\n    - gstreamer-orc  # [not win]\n    - mako >=0.4.2\n    - ninja\n    - pkg-config\n    # set constraint to avoid a matrix for different python versions\n    - python >=3.6\n  host:\n    - boost-cpp  # [osx and not arm64]\n    - gstreamer-orc  # [not win]\n\noutputs:\n  - name: volk\n    script: install_volk.bat  # [win]\n    script: install_volk.sh  # [not win]\n    build:\n      run_exports:\n        - {{ pin_subpackage('volk', max_pin='x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake\n      host:\n        - boost-cpp  # [osx and not arm64]\n        - gstreamer-orc  # [not win]\n      run:\n        - boost-cpp  # [osx and not arm64]\n        - {{ pin_compatible('gstreamer-orc', max_pin='x.x') }}  # [not win]\n    test:\n      commands:\n        # verify CLI tools\n        {% set volk_cmds = [\"volk-config-info\", \"volk_profile\"] %}\n        {% for cmd in volk_cmds %}\n        - command -v {{ cmd }}  # [unix]\n        - where {{ cmd }}  # [win]\n        {% endfor %}\n\n        # verify libraries\n        - test -f $PREFIX/lib/libvolk${SHLIB_EXT}  # [unix]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\volk.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\volk.lib exit 1  # [win]\n\n        # run selection of commands\n        - list_cpu_features_volk\n        - volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc\n\n  - name: volk-modtool\n    script: install_volk_modtool.bat  # [win]\n    script: install_volk_modtool.sh  # [not win]\n    build:\n      string: py_{{ build_num }}\n      noarch: python\n      entry_points:\n        - volk_modtool = volk_modtool.__main__:main\n    requirements:\n      build:\n        - cmake\n      run:\n        - python\n    test:\n      commands:\n        - volk_modtool\n      imports:\n        - volk_modtool\n\n  - name: volk-dev\n    build:\n      run_exports:\n        - {{ pin_subpackage('volk', max_pin='x.x') }}\n    requirements:\n      run:\n        - {{ pin_subpackage('volk', exact=True) }}\n        - {{ pin_subpackage('volk-modtool', exact=True) }}\n    test:\n      commands:\n        - volk-config-info --version --prefix --cc --cflags --all-machines --avail-machines --machine --alignment --malloc\n        - volk_modtool\n      imports:\n        - volk_modtool\n\nabout:\n  home: https://github.com/gnuradio/volk\n  license: GPL-3.0-or-later AND Apache-2.0\n  license_file:\n    - COPYING\n    - LICENSE_CPU_FEATURES\n  summary: The Vector Optimized Library of Kernels\n  description: |\n    VOLK is the Vector-Optimized Library of Kernels. It is a free library,\n    currently offered under the GPLv3, that contains kernels of hand-written\n    SIMD code for different mathematical operations. Since each SIMD\n    architecture can be very different and no compiler has yet come along to\n    handle vectorization properly or highly efficiently, VOLK approaches the\n    problem differently.\n\n    For each architecture or platform that a developer wishes to vectorize for,\n    a new proto-kernel is added to VOLK. At runtime, VOLK will select the\n    correct proto-kernel. In this way, the users of VOLK call a kernel for\n    performing the operation that is platform/architecture agnostic. This\n    allows us to write portable SIMD code that is optimized for a variety of\n    platforms.\n\n  doc_url: http://libvolk.org/doxygen/index.html\n  dev_url: https://github.com/gnuradio/volk\n\nextra:\n  feedstock-name: volk\n  recipe-maintainers:\n    - ryanvolz\n",
  "req": {
   "__set__": true,
