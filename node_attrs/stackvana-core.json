@@ -307,6 +307,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/666771808.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.2021.24"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -581,7 +598,7 @@
   }
  },
  "name": "stackvana-core",
- "new_version": "0.2021.23",
+ "new_version": "0.2021.24",
  "new_version_attempts": {
   "0.2021.10": 1,
   "0.2021.11": 1,
@@ -597,6 +614,7 @@
   "0.2021.21": 1,
   "0.2021.22": 1,
   "0.2021.23": 1,
+  "0.2021.24": 1,
   "0.2021.7": 1,
   "0.2021.8": 1,
   "0.2021.9": 1
@@ -732,7 +750,7 @@
    "stackvana-core-impl"
   ]
  },
- "pinning_version": "2021.06.03.08.31.37",
+ "pinning_version": "2021.06.10.08.18.57",
  "raw_meta_yaml": "{% set name = \"stackvana-core\" %}\n# LSST DM versions are prefixed with letters\n#\n#  - a weekly build is 'w_2018_50'\n#  - a major release is 'v18_1'\n#\n# In order to play nice with conda, we take the following conventions\n#\n#  - for a weekly build 'w_2018_50', the conda version is '0.2018.50'\n#  - for a major version 'v18_1', the conda version is '18.1.0'\n#\n{% set version = \"0.2021.23\" %}\n{% set patch_version = version.split(\".\")[-1] if version.split(\".\")[-1].__len__() == 2 else \"0\" + version.split(\".\")[-1] %}\n{% set dm_tag = \"w_\" + version.split(\".\")[1] + \"_\" + patch_version if version.startswith(\"0.\") else \"v\" + version.replace(\".\", \"_\") %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://eups.lsst.codes/stack/src/tags/{{ dm_tag }}.list\n  sha256: 3b7fc44f158d89bf7058df7fab033e58b713c2ed6fdf431142b1e094d5a0e9b5\n\nbuild:\n  skip: true  # [win or py != 38]\n  number: 0\n  merge_build_host: true\n\nrequirements:\n  host:\n    - python\n  run:\n    - python\n\noutputs:\n  - name: stackvana-core\n    version: {{ version }}\n    run_exports:\n      - {{ pin_subpackage('stackvana-core-impl', exact=True) }}\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('stackvana-core-impl', exact=True) }}\n    test:\n      commands:\n        - eups -h\n        - eups list\n        - if [[ ! ${STACKVANA_ACTIVATED} ]]; then exit 1; fi\n\n  - name: stackvana-core-impl\n    version: {{ version }}\n    script: build_impl.sh\n    requirements:\n      host:\n        - python\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - rubin-env-nosysroot\n      run:\n        - python\n        - {{ pin_compatible('rubin-env-nosysroot', max_pin='x.x.x') }}\n        - libcxx =={{ cxx_compiler_version }}.*  # [osx]\n    test:\n      script: run_test_impl.sh\n      requires:\n        - python\n        - rubin-env-nosysroot\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n\nabout:\n  home: https://github.com/beckermr/stackvana-core\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file:\n    - LICENSE\n    - COPYRIGHT\n  summary: core build tooling for stackvana\n\nextra:\n  recipe-maintainers:\n    - beckermr\n",
  "req": {
   "__set__": true,
