@@ -1,4 +1,23 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/670165189.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.2.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "branch": "master",
@@ -138,7 +157,11 @@
   }
  },
  "name": "terraform-provider-ec",
- "new_version": "0.1.1",
+ "new_version": "0.2.0",
+ "new_version_attempts": {
+  "0.2.0": 1
+ },
+ "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
    "dev_url": "https://github.com/elastic/terraform-provider-ec",
@@ -212,6 +235,7 @@
    "terraform-provider-ec"
   ]
  },
+ "pinning_version": "2021.06.14.12.21.47",
  "raw_meta_yaml": "{% set provider = \"ec\" %}\n{% set goname = \"github.com/elastic/terraform-provider-\"+provider.lower() %}\n{% set version = \"0.1.1\" %}\n\n{% set name = goname.split('/')[-1] %}\n\n{% set x4_plugin = name + '_v' + version + \"_x4\"%}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n    url: https://{{ goname }}/archive/v{{ version }}.tar.gz\n    sha256: 0c19f8d2567e663991b351c8333d498ba28643c3c09ceadd107093b4e1825c21\n\nbuild:\n  number: 0\n  script:\n    - go build -v -o {{ target_gobin }}{{ x4_plugin }}{{ target_goexe }}\n\nrequirements:\n  build:\n    - {{ compiler('go') }} 1.16\n  run:\n    - terraform 0.13\n\ntest:\n  requires:         # [win]\n    - m2-bash       # [win]\n    - m2-coreutils  # [win]\n\n  commands:\n    # Create a sample init.tf loading the provider. Set source namespace since different than default 'hashicorp/'\n    - echo -e 'provider \"{{ provider|lower }}\" { version=\"{{ version }}\" }\\n\\nterraform {\\n required_providers {\\n {{ provider|lower }} = {\\n source=\"elastic/ec\"\\n version=\"{{ version }}\"\\n }\\n }\\n }' > init.tf  # [unix]\n    - (echo provider \"{{ provider|lower }}\" { version=\"{{ version }}\" } && echo. && echo terraform { && echo required_providers { && echo {{ provider|lower }} = { && echo source=\"elastic/ec\" && echo version=\"{{ version }}\" && echo } && echo } && echo }) > init.tf  # [win]\n\n    # Initialize\n    - terraform init\n\n    # Tests that init was successful\n    - test -f .terraform/plugins/registry.terraform.io/elastic/ec/{{ version }}/{{ target_goos }}_{{ target_goarch }}/LICENSE            # [unix]\n    - if not exist .terraform\\plugins\\registry.terraform.io\\elastic\\ec\\{{ version }}\\{{ target_goos }}_{{ target_goarch }}\\LICENSE exit 1  # [win]\n\n    # Test that the provider was not downloaded\n    - test ! -f .terraform/plugins/registry.terraform.io/elastic/ec/{{ version }}/{{ target_goos }}_{{ target_goarch }}/{{ x4_plugin }}{{ target_goexe }}        # [unix]\n    - if exist .terraform\\plugins\\registry.terraform.io\\elastic\\ec\\{{ version }}\\{{ target_goos }}_{{ target_goarch }}\\{{ x4_plugin }}{{ target_goexe }} exit 1  # [win]\nabout:\n  home: https://www.terraform.io\n  license: MPL-2.0\n  license_file: LICENSE\n  summary: Terraform provider for the Elastic Cloud API\n  doc_url: https://registry.terraform.io/providers/elastic/ec/latest/docs\n  dev_url: https://github.com/elastic/terraform-provider-ec\n\nextra:\n  recipe-maintainers:\n    - conda-forge/terraform\n",
  "req": {
   "__set__": true,
@@ -245,6 +269,7 @@
    ]
   }
  },
+ "smithy_version": "3.10.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
