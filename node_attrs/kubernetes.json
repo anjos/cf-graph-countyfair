@@ -844,6 +844,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/671811396.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.21.2"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1177,7 +1194,7 @@
   }
  },
  "name": "kubernetes",
- "new_version": "1.21.1",
+ "new_version": "1.21.2",
  "new_version_attempts": {
   "1.18.2": 1,
   "1.18.3": 1,
@@ -1193,7 +1210,8 @@
   "1.20.1": 1,
   "1.20.3": 1,
   "1.21.0": 1,
-  "1.21.1": 1
+  "1.21.1": 1,
+  "1.21.2": 1
  },
  "new_version_errors": {
   "1.18.4": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '1.18.4' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://dl.k8s.io/v{{ version }}/{{ name }}-node-windows-amd64.tar.gz'\n"
@@ -1331,7 +1349,7 @@
    "kubernetes-node"
   ]
  },
- "pinning_version": "2021.05.12.18.50.42",
+ "pinning_version": "2021.06.16.16.53.58",
  "raw_meta_yaml": "{% set name = \"kubernetes\" %}\n{% set version = \"1.21.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/kubernetes/{{ name }}/archive/v{{ version }}.tar.gz  # [not win]\n  sha256: a6b84fd47fcd5f341aa90994864622515d7173135458fb1b84c7f34d4ed82e95  # [not win]\n  patches:   # [not win]\n    - 0001-unset-conda-go-compiler.diff  # [not win]\n\n  url: https://dl.k8s.io/v{{ version }}/{{ name }}-node-windows-amd64.tar.gz  # [win]\n  sha256: 0b8293a1da1f1a58b72e077a4edb93e100f7d46677187c5614cabb6407ac6459  # [win]\n\nbuild:\n  number: 0\n\nrequirements:\n  run:\n    - {{ pin_subpackage('kubernetes-client', exact=True) }}\n    - {{ pin_subpackage('kubernetes-node', exact=True) }}\n    - {{ pin_subpackage('kubernetes-server', exact=True) }}  # [unix]\n\n\ntest:\n  commands:\n    - kubectl\n\n    - kubelet --help\n    - kube-proxy --help\n    - kubeadm --help\n\n    - kube-apiserver --help  # [unix]\n    - kube-controller-manager --help  # [unix]\n    - kube-scheduler --help  # [unix]\n\noutputs:\n  - name: {{ name }}-client\n    script: client/build.sh  # [unix]\n    script: client/bld.bat  # [win]\n    test:\n      script: client/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }} >=1.15  # [unix]\n        - {{ compiler('c') }}  # [unix]\n        - bash >=4.2  # [unix]\n        - make  # [unix]\n        - rsync  # [unix]\n        - jq  # [unix]\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      license_file: LICENSES/  # [win]\n      summary: Kubernetes client binaries\n\n  - name: {{ name }}-node\n    script: node/build.sh  # [unix]\n    script: node/bld.bat  # [win]\n    test:\n      script: node/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }} >=1.15  # [unix]\n        - {{ compiler('c') }}  # [unix]\n        - bash >=4.2  # [unix]\n        - make  # [unix]\n        - rsync  # [unix]\n        - jq  # [unix]\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      license_file: LICENSES/  # [win]\n      summary: Kubernetes node binaries\n\n  {% if unix %}\n  - name: {{ name }}-server\n    script: server/build.sh\n    test:\n      script: server/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }} >=1.15\n        - {{ compiler('c') }}\n        - bash >=4.2\n        - make\n        - rsync\n        - jq\n      run:\n        - {{ pin_subpackage('kubernetes-node', exact=True) }}\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      summary: Kubernetes server binaries\n  {% endif %}\n\nabout:\n  home: https://www.kubernetes.io\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE  # [not win]\n  license_file: LICENSES/  # [win]\n  summary: Production-Grade Container Orchestration\n  doc_url: https://docs.kubernetes.io\n  dev_url: https://github.com/kubernetes/kubernetes\n\nextra:\n  recipe-maintainers:\n    - mxr-conda\n    - sodre\n    - dhirschfeld\n",
  "req": {
   "__set__": true,
@@ -1379,7 +1397,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.10.1",
+ "smithy_version": "3.10.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
