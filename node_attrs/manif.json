@@ -16,6 +16,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/672454947.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy37"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -29,43 +48,81 @@
    "home": "https://github.com/artivis/manif",
    "license": "MIT",
    "license_file": "LICENSE",
-   "summary": "A small C++11 header-only library for Lie theory."
+   "summary": "A small C++11 header-only library (with Python bindings) for Lie theory."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
     "traversaro"
    ]
   },
+  "outputs": [
+   {
+    "name": "manif",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "gtest",
+      "gmock"
+     ]
+    },
+    "script": "build_cxx.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/include/manif/manif.h",
+      "test -f ${PREFIX}/share/manif/cmake/manifConfig.cmake"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "manifpy",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "python",
+      "pip",
+      "numpy",
+      "pybind11",
+      "pybind11-abi"
+     ],
+     "run": [
+      "python",
+      "numpy"
+     ]
+    },
+    "script": "build_py.sh",
+    "test": {
+     "imports": [
+      "manifpy"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "manif",
+   "name": "manif-split",
    "version": "0.0.4"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make",
-    "cmake"
-   ],
-   "host": [
-    "eigen"
-   ]
   },
   "source": [
    {
     "sha256": "739731e1eb83194c4977fa946ee63ba1aa8aadf757d67f3b183f2dfab64eff81",
     "url": "https://github.com/artivis/manif/archive/0.0.4.tar.gz"
    }
-  ],
-  "test": {
-   "commands": [
-    "test -f ${PREFIX}/include/manif/manif.h",
-    "test -f ${PREFIX}/share/manif/cmake/manifConfig.cmake"
-   ]
-  }
+  ]
  },
  "linux_64_requirements": {
   "build": {
@@ -80,12 +137,22 @@
   "host": {
    "__set__": true,
    "elements": [
-    "eigen"
+    "eigen",
+    "gmock",
+    "gtest",
+    "numpy",
+    "pip",
+    "pybind11",
+    "pybind11-abi",
+    "python"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "numpy",
+    "python"
+   ]
   },
   "test": {
    "__set__": true,
@@ -97,10 +164,10 @@
    "home": "https://github.com/artivis/manif",
    "license": "MIT",
    "license_file": "LICENSE",
-   "summary": "A small C++11 header-only library for Lie theory."
+   "summary": "A small C++11 header-only library (with Python bindings) for Lie theory."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -109,29 +176,170 @@
     "traversaro"
    ]
   },
+  "outputs": [
+   {
+    "name": "manif",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "gtest",
+      "gmock"
+     ]
+    },
+    "script": "build_cxx.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/include/manif/manif.h",
+      "test -f ${PREFIX}/share/manif/cmake/manifConfig.cmake"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "manifpy",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "python",
+      "pip",
+      "numpy",
+      "pybind11",
+      "pybind11-abi"
+     ],
+     "run": [
+      "python",
+      "numpy"
+     ]
+    },
+    "script": "build_py.sh",
+    "test": {
+     "imports": [
+      "manifpy"
+     ]
+    }
+   },
+   {
+    "name": "manif",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "gtest",
+      "gmock"
+     ]
+    },
+    "script": "build_cxx.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/include/manif/manif.h",
+      "test -f ${PREFIX}/share/manif/cmake/manifConfig.cmake"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "manifpy",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "python",
+      "pip",
+      "numpy",
+      "pybind11",
+      "pybind11-abi"
+     ],
+     "run": [
+      "python",
+      "numpy"
+     ]
+    },
+    "script": "build_py.sh",
+    "test": {
+     "imports": [
+      "manifpy"
+     ]
+    }
+   },
+   {
+    "name": "manif",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "gtest",
+      "gmock"
+     ]
+    },
+    "script": "bld_cxx.bat",
+    "test": {
+     "commands": [
+      "if not exist %PREFIX%\\\\Library\\\\include\\\\manif\\\\manif.h exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\share\\\\manif\\\\cmake\\\\manifConfig.cmake exit 1"
+     ]
+    }
+   },
+   {
+    "build": {
+     "skip": true
+    },
+    "name": "manifpy",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "python",
+      "pip",
+      "numpy",
+      "pybind11",
+      "pybind11-abi"
+     ],
+     "run": [
+      "python",
+      "numpy"
+     ]
+    },
+    "script": "bld_py.bat",
+    "test": {
+     "imports": [
+      "manifpy"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "manif",
+   "name": "manif-split",
    "version": "0.0.4"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make",
-    "cmake",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make",
-    "cmake",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake"
-   ],
-   "host": [
-    "eigen",
-    "eigen",
-    "eigen"
-   ]
   },
   "source": [
    {
@@ -146,19 +354,9 @@
     "sha256": "739731e1eb83194c4977fa946ee63ba1aa8aadf757d67f3b183f2dfab64eff81",
     "url": "https://github.com/artivis/manif/archive/0.0.4.tar.gz"
    }
-  ],
-  "test": {
-   "commands": [
-    "test -f ${PREFIX}/include/manif/manif.h",
-    "test -f ${PREFIX}/share/manif/cmake/manifConfig.cmake",
-    "test -f ${PREFIX}/include/manif/manif.h",
-    "test -f ${PREFIX}/share/manif/cmake/manifConfig.cmake",
-    "if exist %PREFIX%\\\\Library\\\\include\\\\manif\\\\manif.h (exit 0) else (exit 1)",
-    "if exist %PREFIX%\\\\Library\\\\share\\\\manif\\\\cmake\\\\manifConfig.cmake (exit 0) else (exit 1)"
-   ]
-  }
+  ]
  },
- "name": "manif",
+ "name": "manif-split",
  "new_version": "0.0.4",
  "new_version_attempts": {
   "0.0.4": 1
@@ -169,43 +367,81 @@
    "home": "https://github.com/artivis/manif",
    "license": "MIT",
    "license_file": "LICENSE",
-   "summary": "A small C++11 header-only library for Lie theory."
+   "summary": "A small C++11 header-only library (with Python bindings) for Lie theory."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
     "traversaro"
    ]
   },
+  "outputs": [
+   {
+    "name": "manif",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "gtest",
+      "gmock"
+     ]
+    },
+    "script": "build_cxx.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/include/manif/manif.h",
+      "test -f ${PREFIX}/share/manif/cmake/manifConfig.cmake"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "manifpy",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "python",
+      "pip",
+      "numpy",
+      "pybind11",
+      "pybind11-abi"
+     ],
+     "run": [
+      "python",
+      "numpy"
+     ]
+    },
+    "script": "build_py.sh",
+    "test": {
+     "imports": [
+      "manifpy"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "manif",
+   "name": "manif-split",
    "version": "0.0.4"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make",
-    "cmake"
-   ],
-   "host": [
-    "eigen"
-   ]
   },
   "source": [
    {
     "sha256": "739731e1eb83194c4977fa946ee63ba1aa8aadf757d67f3b183f2dfab64eff81",
     "url": "https://github.com/artivis/manif/archive/0.0.4.tar.gz"
    }
-  ],
-  "test": {
-   "commands": [
-    "test -f ${PREFIX}/include/manif/manif.h",
-    "test -f ${PREFIX}/share/manif/cmake/manifConfig.cmake"
-   ]
-  }
+  ]
  },
  "osx_64_requirements": {
   "build": {
@@ -220,12 +456,22 @@
   "host": {
    "__set__": true,
    "elements": [
-    "eigen"
+    "eigen",
+    "gmock",
+    "gtest",
+    "numpy",
+    "pip",
+    "pybind11",
+    "pybind11-abi",
+    "python"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "numpy",
+    "python"
+   ]
   },
   "test": {
    "__set__": true,
@@ -235,11 +481,12 @@
  "outputs_names": {
   "__set__": true,
   "elements": [
-   "manif"
+   "manif",
+   "manifpy"
   ]
  },
- "pinning_version": "2021.06.14.12.21.47",
- "raw_meta_yaml": "{% set name = \"manif\" %}\n{% set version = \"0.0.4\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/artivis/manif/archive/{{ version }}.tar.gz\n    sha256: 739731e1eb83194c4977fa946ee63ba1aa8aadf757d67f3b183f2dfab64eff81\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - make                               # [not win]\n    - cmake\n  host:\n    - eigen\n\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/manif/manif.h  # [not win]\n    - test -f ${PREFIX}/share/manif/cmake/manifConfig.cmake  # [not win]\n    - if exist %PREFIX%\\\\Library\\\\include\\\\manif\\\\manif.h (exit 0) else (exit 1)  # [win]\n    - if exist %PREFIX%\\\\Library\\\\share\\\\manif\\\\cmake\\\\manifConfig.cmake (exit 0) else (exit 1)  # [win]\n\nabout:\n  home: https://github.com/artivis/manif\n  license: MIT\n  license_file: LICENSE\n  summary: A small C++11 header-only library for Lie theory.\n\nextra:\n  recipe-maintainers:\n    - traversaro\n",
+ "pinning_version": "2021.06.16.19.20.17",
+ "raw_meta_yaml": "{% set name = \"manif-split\" %}\n{% set version = \"0.0.4\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/artivis/manif/archive/{{ version }}.tar.gz\n    sha256: 739731e1eb83194c4977fa946ee63ba1aa8aadf757d67f3b183f2dfab64eff81\n\nbuild:\n  number: 1\n\noutputs:\n  - name: manif\n    script: build_cxx.sh  # [unix]\n    script: bld_cxx.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - make                               # [not win]\n        - cmake\n      host:\n        - eigen\n        - gtest\n        - gmock\n    test:\n      commands:\n        - test -f ${PREFIX}/include/manif/manif.h  # [not win]\n        - test -f ${PREFIX}/share/manif/cmake/manifConfig.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\manif\\\\manif.h exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\share\\\\manif\\\\cmake\\\\manifConfig.cmake exit 1  # [win] \n\n  - name: manifpy\n    script: build_py.sh  # [unix]\n    script: bld_py.bat  # [win]\n    build:\n      skip: True  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - make                               # [not win]\n        - cmake\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n        - numpy                                  # [build_platform != target_platform]\n      host:\n        - eigen\n        - python\n        - pip\n        - numpy\n        - pybind11\n        - pybind11-abi\n      run:\n        - python\n        - {{ pin_compatible('numpy') }}\n    test:\n      imports:\n        - manifpy\n\nabout:\n  home: https://github.com/artivis/manif\n  license: MIT\n  license_file: LICENSE\n  summary: A small C++11 header-only library (with Python bindings) for Lie theory.\n\nextra:\n  recipe-maintainers:\n    - traversaro\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -247,7 +494,14 @@
    "cmake",
    "cxx_compiler_stub",
    "eigen",
-   "make"
+   "gmock",
+   "gtest",
+   "make",
+   "numpy",
+   "pip",
+   "pybind11",
+   "pybind11-abi",
+   "python"
   ]
  },
  "requirements": {
@@ -265,14 +519,23 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "eigen"
+    "eigen",
+    "gmock",
+    "gtest",
+    "numpy",
+    "pip",
+    "pybind11",
+    "pybind11-abi",
+    "python"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "c_compiler_stub",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "numpy",
+    "python"
    ]
   },
   "test": {
@@ -280,7 +543,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.10.2",
+ "smithy_version": "3.10.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
@@ -295,12 +558,22 @@
   "host": {
    "__set__": true,
    "elements": [
-    "eigen"
+    "eigen",
+    "gmock",
+    "gtest",
+    "numpy",
+    "pip",
+    "pybind11",
+    "pybind11-abi",
+    "python"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "numpy",
+    "python"
+   ]
   },
   "test": {
    "__set__": true,
@@ -314,42 +587,81 @@
    "home": "https://github.com/artivis/manif",
    "license": "MIT",
    "license_file": "LICENSE",
-   "summary": "A small C++11 header-only library for Lie theory."
+   "summary": "A small C++11 header-only library (with Python bindings) for Lie theory."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
     "traversaro"
    ]
   },
+  "outputs": [
+   {
+    "name": "manif",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "gtest",
+      "gmock"
+     ]
+    },
+    "script": "bld_cxx.bat",
+    "test": {
+     "commands": [
+      "if not exist %PREFIX%\\\\Library\\\\include\\\\manif\\\\manif.h exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\share\\\\manif\\\\cmake\\\\manifConfig.cmake exit 1"
+     ]
+    }
+   },
+   {
+    "build": {
+     "skip": true
+    },
+    "name": "manifpy",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "eigen",
+      "python",
+      "pip",
+      "numpy",
+      "pybind11",
+      "pybind11-abi"
+     ],
+     "run": [
+      "python",
+      "numpy"
+     ]
+    },
+    "script": "bld_py.bat",
+    "test": {
+     "imports": [
+      "manifpy"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "manif",
+   "name": "manif-split",
    "version": "0.0.4"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake"
-   ],
-   "host": [
-    "eigen"
-   ]
   },
   "source": [
    {
     "sha256": "739731e1eb83194c4977fa946ee63ba1aa8aadf757d67f3b183f2dfab64eff81",
     "url": "https://github.com/artivis/manif/archive/0.0.4.tar.gz"
    }
-  ],
-  "test": {
-   "commands": [
-    "if exist %PREFIX%\\\\Library\\\\include\\\\manif\\\\manif.h (exit 0) else (exit 1)",
-    "if exist %PREFIX%\\\\Library\\\\share\\\\manif\\\\cmake\\\\manifConfig.cmake (exit 0) else (exit 1)"
-   ]
-  }
+  ]
  },
  "win_64_requirements": {
   "build": {
@@ -363,12 +675,22 @@
   "host": {
    "__set__": true,
    "elements": [
-    "eigen"
+    "eigen",
+    "gmock",
+    "gtest",
+    "numpy",
+    "pip",
+    "pybind11",
+    "pybind11-abi",
+    "python"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "numpy",
+    "python"
+   ]
   },
   "test": {
    "__set__": true,
