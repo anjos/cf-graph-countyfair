@@ -476,6 +476,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/674851403.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.5.7"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -2653,7 +2670,7 @@
   }
  },
  "name": "netcdf4",
- "new_version": "1.5.6",
+ "new_version": "1.5.7",
  "new_version_attempts": {
   "1.5.4": 1,
   "1.5.4rel": 3,
@@ -2661,7 +2678,8 @@
   "1.5.5.1": 1,
   "1.5.5rel": 4,
   "1.5.5rel2": 2,
-  "1.5.6": 1
+  "1.5.6": 1,
+  "1.5.7": 1
  },
  "new_version_errors": {
   "1.5.4rel": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '1.5.4rel' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://pypi.io/packages/source/n/netCDF4/netCDF4-{{ version }}.tar.gz'\n",
@@ -3614,7 +3632,7 @@
    "netcdf4"
   ]
  },
- "pinning_version": "2021.04.19.16.42.48",
+ "pinning_version": "2021.06.21.13.14.31",
  "raw_meta_yaml": "{% set version = \"1.5.6\" %}\n{% set build = 3 %}\n\n# recipe-lint fails if mpi is undefined\n{% set mpi = mpi or 'nompi' %}\n{% if mpi == \"nompi\" %}\n# prioritize nompi via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: netcdf4\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/n/netCDF4/netCDF4-{{ version }}.tar.gz\n  sha256: 7577f4656af8431b2fa6b6797acb45f81fa1890120e9123b3645e14765da5a7c\n\nbuild:\n  skip: true  # [(win and vc<14) or (win and mpi != 'nompi')]\n  number: {{ build }}\n\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `netcdf4 * mpi_mpich_*` for mpich\n  # `netcdf4 * mpi_*` for any mpi\n  # `netcdf4 * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ build }}\n  entry_points:\n    - ncinfo = netCDF4.utils:ncinfo\n    - nc4tonc3 = netCDF4.utils:nc4tonc3\n    - nc3tonc4 = netCDF4.utils:nc3tonc4\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - cython                                 # [build_platform != target_platform]\n    - numpy                                  # [build_platform != target_platform]\n    - {{ compiler('c') }}\n  host:\n    - python\n    - pip\n    - numpy\n    - cython >=0.19\n    - cftime >=1.0.1\n    # need to list hdf5 and libnetcdf twice to get version pinning from conda_build_config\n    # and build pinning from {{ mpi_prefix }}\n    - hdf5\n    - hdf5 * {{ mpi_prefix }}_*\n    - libnetcdf\n    - libnetcdf * {{ mpi_prefix }}_*\n    - {{ mpi }}  # [mpi != 'nompi']\n    - mpich-mpicc  # [mpi == 'mpich']\n    - mpi4py  # [mpi != 'nompi']\n  run:\n    - python\n    - setuptools\n    - {{ pin_compatible('numpy') }}\n    - cftime\n    # the 'nompi' build should work with both non-MPI and MPI variants of the\n    # following libs\n    - hdf5  # [mpi == 'nompi']\n    - libnetcdf  # [mpi == 'nompi']\n    - hdf5 * {{ mpi_prefix }}_*  # [mpi != 'nompi']\n    - libnetcdf * {{ mpi_prefix }}_*  # [mpi != 'nompi']\n    - {{ mpi }}  # [mpi != 'nompi']\n    - mpi4py  # [mpi != 'nompi']\n    - openssh  # [mpi == 'openmpi']\n\ntest:\n  files:\n    - parallel_test.py  # [mpi != 'nompi']\n  imports:\n    - netCDF4\n    - cftime\n  commands:\n    - ncinfo -h\n    - nc4tonc3 -h\n    - nc3tonc4 -h\n    - mpirun -np 4 python parallel_test.py  # [mpi == 'mpich']\n    - mpirun --oversubscribe -np 4 python parallel_test.py  # [mpi == 'openmpi']\n\nabout:\n  home: http://github.com/Unidata/netcdf4-python\n  license: MIT\n  license_file: LICENSE\n  summary: Provides an object-oriented python interface to the netCDF version 4 library\n  dev_url: https://github.com/Unidata/netcdf4-python\n  doc_url: https://unidata.github.io/netcdf4-python\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - pelson\n    - dopplershift\n    - xylar\n",
  "req": {
   "__set__": true,
@@ -3680,7 +3698,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.10.0",
+ "smithy_version": "3.10.3",
  "strong_exports": false,
  "time": 1568135267.7063527,
  "total_requirements": {
