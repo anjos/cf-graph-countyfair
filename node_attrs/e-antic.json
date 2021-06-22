@@ -266,11 +266,9 @@
  "branch": "master",
  "conda-forge.yml": {
   "build_platform": {
+   "linux_aarch64": "linux_64",
+   "linux_ppc64le": "linux_64",
    "osx_arm64": "osx_64"
-  },
-  "provider": {
-   "linux_aarch64": "default",
-   "linux_ppc64le": "default"
   }
  },
  "feedstock_name": "e-antic",
@@ -279,17 +277,14 @@
   "about": {
    "description": "E-ANTIC is a C/C++ library to deal with real embedded number fields built\non top of ANTIC. Its aim is to have as fast as possible exact arithmetic\noperations and comparisons.\n",
    "dev_url": "https://github.com/videlec/e-antic",
-   "home": "https://github.com/videlec/e-antic",
+   "home": "https://github.com/flatsurf/e-antic",
    "license": "LGPL-3.0-or-later",
    "license_family": "LGPL",
    "license_file": "COPYING",
    "summary": "embedded algebraic number fields"
   },
   "build": {
-   "number": "0",
-   "run_exports": [
-    "e-antic"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -297,34 +292,82 @@
     "videlec"
    ]
   },
+  "outputs": [
+   {
+    "name": "e-antic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "antic",
+      "boost-cpp",
+      "gmp",
+      "arb",
+      "libflint"
+     ]
+    },
+    "run_exports": [
+     "e-antic"
+    ],
+    "script": "build-libeantic.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/e-antic/e-antic.h",
+      "test -f $PREFIX/lib/libeantic.so",
+      "test -f $PREFIX/lib/libeanticxx.so"
+     ]
+    }
+   },
+   {
+    "name": "pyeantic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "setuptools",
+      "pytest",
+      "e-antic"
+     ],
+     "run": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "e-antic"
+     ]
+    },
+    "script": "build-pyeantic.sh",
+    "test": {
+     "imports": [
+      "pyeantic"
+     ]
+    }
+   }
+  ],
   "package": {
    "name": "e-antic",
-   "version": "0.1.9"
-  },
-  "requirements": {
-   "build": [
-    "libtool",
-    "automake",
-    "make",
-    "gnuconfig",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "gmp",
-    "arb",
-    "libflint"
-   ]
+   "version": "1.0.0"
   },
   "source": {
-   "sha256": "f73dad444fd81422d9a1594668615da94405fb6428ce8f2535b58f4cfe88a72d",
-   "url": "http://www.labri.fr/perso/vdelecro/e-antic/e-antic-0.1.9.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f $PREFIX/include/e-antic/e-antic.h",
-    "test -f $PREFIX/lib/libeantic.so",
-    "test -f $PREFIX/lib/libeanticxx.so"
-   ]
+   "patches": [
+    "realalg.patch"
+   ],
+   "sha256": "8302e9d7fca4b33b1a2fd8ed88df6548d55c54694f428606e87bf8c6f129b317",
+   "url": "https://github.com/flatsurf/e-antic/releases/download/1.0.0/e-antic-1.0.0.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -341,14 +384,28 @@
   "host": {
    "__set__": true,
    "elements": [
+    "antic",
     "arb",
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
     "gmp",
-    "libflint"
+    "libflint",
+    "pytest",
+    "python",
+    "setuptools"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
+    "python"
+   ]
   },
   "test": {
    "__set__": true,
@@ -359,17 +416,14 @@
   "about": {
    "description": "E-ANTIC is a C/C++ library to deal with real embedded number fields built\non top of ANTIC. Its aim is to have as fast as possible exact arithmetic\noperations and comparisons.\n",
    "dev_url": "https://github.com/videlec/e-antic",
-   "home": "https://github.com/videlec/e-antic",
+   "home": "https://github.com/flatsurf/e-antic",
    "license": "LGPL-3.0-or-later",
    "license_family": "LGPL",
    "license_file": "COPYING",
    "summary": "embedded algebraic number fields"
   },
   "build": {
-   "number": "0",
-   "run_exports": [
-    "e-antic"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -377,34 +431,82 @@
     "videlec"
    ]
   },
+  "outputs": [
+   {
+    "name": "e-antic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "antic",
+      "boost-cpp",
+      "gmp",
+      "arb",
+      "libflint"
+     ]
+    },
+    "run_exports": [
+     "e-antic"
+    ],
+    "script": "build-libeantic.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/e-antic/e-antic.h",
+      "test -f $PREFIX/lib/libeantic.so",
+      "test -f $PREFIX/lib/libeanticxx.so"
+     ]
+    }
+   },
+   {
+    "name": "pyeantic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "setuptools",
+      "pytest",
+      "e-antic"
+     ],
+     "run": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "e-antic"
+     ]
+    },
+    "script": "build-pyeantic.sh",
+    "test": {
+     "imports": [
+      "pyeantic"
+     ]
+    }
+   }
+  ],
   "package": {
    "name": "e-antic",
-   "version": "0.1.9"
-  },
-  "requirements": {
-   "build": [
-    "libtool",
-    "automake",
-    "make",
-    "gnuconfig",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "gmp",
-    "arb",
-    "libflint"
-   ]
+   "version": "1.0.0"
   },
   "source": {
-   "sha256": "f73dad444fd81422d9a1594668615da94405fb6428ce8f2535b58f4cfe88a72d",
-   "url": "http://www.labri.fr/perso/vdelecro/e-antic/e-antic-0.1.9.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f $PREFIX/include/e-antic/e-antic.h",
-    "test -f $PREFIX/lib/libeantic.so",
-    "test -f $PREFIX/lib/libeanticxx.so"
-   ]
+   "patches": [
+    "realalg.patch"
+   ],
+   "sha256": "8302e9d7fca4b33b1a2fd8ed88df6548d55c54694f428606e87bf8c6f129b317",
+   "url": "https://github.com/flatsurf/e-antic/releases/download/1.0.0/e-antic-1.0.0.tar.gz"
   }
  },
  "linux_aarch64_requirements": {
@@ -421,14 +523,28 @@
   "host": {
    "__set__": true,
    "elements": [
+    "antic",
     "arb",
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
     "gmp",
-    "libflint"
+    "libflint",
+    "pytest",
+    "python",
+    "setuptools"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
+    "python"
+   ]
   },
   "test": {
    "__set__": true,
@@ -439,17 +555,14 @@
   "about": {
    "description": "E-ANTIC is a C/C++ library to deal with real embedded number fields built\non top of ANTIC. Its aim is to have as fast as possible exact arithmetic\noperations and comparisons.\n",
    "dev_url": "https://github.com/videlec/e-antic",
-   "home": "https://github.com/videlec/e-antic",
+   "home": "https://github.com/flatsurf/e-antic",
    "license": "LGPL-3.0-or-later",
    "license_family": "LGPL",
    "license_file": "COPYING",
    "summary": "embedded algebraic number fields"
   },
   "build": {
-   "number": "0",
-   "run_exports": [
-    "e-antic"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -457,34 +570,82 @@
     "videlec"
    ]
   },
+  "outputs": [
+   {
+    "name": "e-antic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "antic",
+      "boost-cpp",
+      "gmp",
+      "arb",
+      "libflint"
+     ]
+    },
+    "run_exports": [
+     "e-antic"
+    ],
+    "script": "build-libeantic.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/e-antic/e-antic.h",
+      "test -f $PREFIX/lib/libeantic.so",
+      "test -f $PREFIX/lib/libeanticxx.so"
+     ]
+    }
+   },
+   {
+    "name": "pyeantic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "setuptools",
+      "pytest",
+      "e-antic"
+     ],
+     "run": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "e-antic"
+     ]
+    },
+    "script": "build-pyeantic.sh",
+    "test": {
+     "imports": [
+      "pyeantic"
+     ]
+    }
+   }
+  ],
   "package": {
    "name": "e-antic",
-   "version": "0.1.9"
-  },
-  "requirements": {
-   "build": [
-    "libtool",
-    "automake",
-    "make",
-    "gnuconfig",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "gmp",
-    "arb",
-    "libflint"
-   ]
+   "version": "1.0.0"
   },
   "source": {
-   "sha256": "f73dad444fd81422d9a1594668615da94405fb6428ce8f2535b58f4cfe88a72d",
-   "url": "http://www.labri.fr/perso/vdelecro/e-antic/e-antic-0.1.9.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f $PREFIX/include/e-antic/e-antic.h",
-    "test -f $PREFIX/lib/libeantic.so",
-    "test -f $PREFIX/lib/libeanticxx.so"
-   ]
+   "patches": [
+    "realalg.patch"
+   ],
+   "sha256": "8302e9d7fca4b33b1a2fd8ed88df6548d55c54694f428606e87bf8c6f129b317",
+   "url": "https://github.com/flatsurf/e-antic/releases/download/1.0.0/e-antic-1.0.0.tar.gz"
   }
  },
  "linux_ppc64le_requirements": {
@@ -501,14 +662,28 @@
   "host": {
    "__set__": true,
    "elements": [
+    "antic",
     "arb",
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
     "gmp",
-    "libflint"
+    "libflint",
+    "pytest",
+    "python",
+    "setuptools"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
+    "python"
+   ]
   },
   "test": {
    "__set__": true,
@@ -519,21 +694,14 @@
   "about": {
    "description": "E-ANTIC is a C/C++ library to deal with real embedded number fields built\non top of ANTIC. Its aim is to have as fast as possible exact arithmetic\noperations and comparisons.\n",
    "dev_url": "https://github.com/videlec/e-antic",
-   "home": "https://github.com/videlec/e-antic",
+   "home": "https://github.com/flatsurf/e-antic",
    "license": "LGPL-3.0-or-later",
    "license_family": "LGPL",
    "license_file": "COPYING",
    "summary": "embedded algebraic number fields"
   },
   "build": {
-   "number": "0",
-   "run_exports": [
-    "e-antic",
-    "e-antic",
-    "e-antic",
-    "e-antic",
-    "e-antic"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -549,78 +717,342 @@
     "videlec"
    ]
   },
+  "outputs": [
+   {
+    "name": "e-antic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "antic",
+      "boost-cpp",
+      "gmp",
+      "arb",
+      "libflint"
+     ]
+    },
+    "run_exports": [
+     "e-antic"
+    ],
+    "script": "build-libeantic.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/e-antic/e-antic.h",
+      "test -f $PREFIX/lib/libeantic.so",
+      "test -f $PREFIX/lib/libeanticxx.so"
+     ]
+    }
+   },
+   {
+    "name": "pyeantic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "setuptools",
+      "pytest",
+      "e-antic"
+     ],
+     "run": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "e-antic"
+     ]
+    },
+    "script": "build-pyeantic.sh",
+    "test": {
+     "imports": [
+      "pyeantic"
+     ]
+    }
+   },
+   {
+    "name": "e-antic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "antic",
+      "boost-cpp",
+      "gmp",
+      "arb",
+      "libflint"
+     ]
+    },
+    "run_exports": [
+     "e-antic"
+    ],
+    "script": "build-libeantic.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/e-antic/e-antic.h",
+      "test -f $PREFIX/lib/libeantic.so",
+      "test -f $PREFIX/lib/libeanticxx.so"
+     ]
+    }
+   },
+   {
+    "name": "pyeantic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "setuptools",
+      "pytest",
+      "e-antic"
+     ],
+     "run": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "e-antic"
+     ]
+    },
+    "script": "build-pyeantic.sh",
+    "test": {
+     "imports": [
+      "pyeantic"
+     ]
+    }
+   },
+   {
+    "name": "e-antic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "antic",
+      "boost-cpp",
+      "gmp",
+      "arb",
+      "libflint"
+     ]
+    },
+    "run_exports": [
+     "e-antic"
+    ],
+    "script": "build-libeantic.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/e-antic/e-antic.h",
+      "test -f $PREFIX/lib/libeantic.so",
+      "test -f $PREFIX/lib/libeanticxx.so"
+     ]
+    }
+   },
+   {
+    "name": "pyeantic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "setuptools",
+      "pytest",
+      "e-antic"
+     ],
+     "run": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "e-antic"
+     ]
+    },
+    "script": "build-pyeantic.sh",
+    "test": {
+     "imports": [
+      "pyeantic"
+     ]
+    }
+   },
+   {
+    "name": "e-antic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "antic",
+      "boost-cpp",
+      "gmp",
+      "arb",
+      "libflint"
+     ]
+    },
+    "run_exports": [
+     "e-antic"
+    ],
+    "script": "build-libeantic.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/e-antic/e-antic.h",
+      "test -f $PREFIX/lib/libeantic.dylib",
+      "test -f $PREFIX/lib/libeanticxx.dylib"
+     ]
+    }
+   },
+   {
+    "name": "pyeantic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "setuptools",
+      "pytest",
+      "e-antic"
+     ],
+     "run": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "e-antic"
+     ]
+    },
+    "script": "build-pyeantic.sh",
+    "test": {
+     "imports": [
+      "pyeantic"
+     ]
+    }
+   },
+   {
+    "name": "e-antic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "antic",
+      "boost-cpp",
+      "gmp",
+      "arb",
+      "libflint"
+     ]
+    },
+    "run_exports": [
+     "e-antic"
+    ],
+    "script": "build-libeantic.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/e-antic/e-antic.h",
+      "test -f $PREFIX/lib/libeantic.dylib",
+      "test -f $PREFIX/lib/libeanticxx.dylib"
+     ]
+    }
+   },
+   {
+    "name": "pyeantic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "setuptools",
+      "pytest",
+      "e-antic"
+     ],
+     "run": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "e-antic"
+     ]
+    },
+    "script": "build-pyeantic.sh",
+    "test": {
+     "imports": [
+      "pyeantic"
+     ]
+    }
+   }
+  ],
   "package": {
    "name": "e-antic",
-   "version": "0.1.9"
-  },
-  "requirements": {
-   "build": [
-    "libtool",
-    "automake",
-    "make",
-    "gnuconfig",
-    "cxx_compiler_stub",
-    "libtool",
-    "automake",
-    "make",
-    "gnuconfig",
-    "cxx_compiler_stub",
-    "libtool",
-    "automake",
-    "make",
-    "gnuconfig",
-    "cxx_compiler_stub",
-    "libtool",
-    "automake",
-    "make",
-    "gnuconfig",
-    "cxx_compiler_stub",
-    "libtool",
-    "automake",
-    "make",
-    "gnuconfig",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "gmp",
-    "arb",
-    "libflint",
-    "gmp",
-    "arb",
-    "libflint",
-    "gmp",
-    "arb",
-    "libflint",
-    "gmp",
-    "arb",
-    "libflint",
-    "gmp",
-    "arb",
-    "libflint"
-   ]
+   "version": "1.0.0"
   },
   "source": {
-   "sha256": "f73dad444fd81422d9a1594668615da94405fb6428ce8f2535b58f4cfe88a72d",
-   "url": "http://www.labri.fr/perso/vdelecro/e-antic/e-antic-0.1.9.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f $PREFIX/include/e-antic/e-antic.h",
-    "test -f $PREFIX/lib/libeantic.so",
-    "test -f $PREFIX/lib/libeanticxx.so",
-    "test -f $PREFIX/include/e-antic/e-antic.h",
-    "test -f $PREFIX/lib/libeantic.so",
-    "test -f $PREFIX/lib/libeanticxx.so",
-    "test -f $PREFIX/include/e-antic/e-antic.h",
-    "test -f $PREFIX/lib/libeantic.so",
-    "test -f $PREFIX/lib/libeanticxx.so",
-    "test -f $PREFIX/include/e-antic/e-antic.h",
-    "test -f $PREFIX/lib/libeantic.dylib",
-    "test -f $PREFIX/lib/libeanticxx.dylib",
-    "test -f $PREFIX/include/e-antic/e-antic.h",
-    "test -f $PREFIX/lib/libeantic.dylib",
-    "test -f $PREFIX/lib/libeanticxx.dylib"
-   ]
+   "patches": [
+    "realalg.patch",
+    "realalg.patch",
+    "realalg.patch",
+    "realalg.patch",
+    "realalg.patch"
+   ],
+   "sha256": "8302e9d7fca4b33b1a2fd8ed88df6548d55c54694f428606e87bf8c6f129b317",
+   "url": "https://github.com/flatsurf/e-antic/releases/download/1.0.0/e-antic-1.0.0.tar.gz"
   }
  },
  "name": "e-antic",
@@ -637,17 +1069,14 @@
   "about": {
    "description": "E-ANTIC is a C/C++ library to deal with real embedded number fields built\non top of ANTIC. Its aim is to have as fast as possible exact arithmetic\noperations and comparisons.\n",
    "dev_url": "https://github.com/videlec/e-antic",
-   "home": "https://github.com/videlec/e-antic",
+   "home": "https://github.com/flatsurf/e-antic",
    "license": "LGPL-3.0-or-later",
    "license_family": "LGPL",
    "license_file": "COPYING",
    "summary": "embedded algebraic number fields"
   },
   "build": {
-   "number": "0",
-   "run_exports": [
-    "e-antic"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -655,34 +1084,82 @@
     "videlec"
    ]
   },
+  "outputs": [
+   {
+    "name": "e-antic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "antic",
+      "boost-cpp",
+      "gmp",
+      "arb",
+      "libflint"
+     ]
+    },
+    "run_exports": [
+     "e-antic"
+    ],
+    "script": "build-libeantic.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/e-antic/e-antic.h",
+      "test -f $PREFIX/lib/libeantic.dylib",
+      "test -f $PREFIX/lib/libeanticxx.dylib"
+     ]
+    }
+   },
+   {
+    "name": "pyeantic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "setuptools",
+      "pytest",
+      "e-antic"
+     ],
+     "run": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "e-antic"
+     ]
+    },
+    "script": "build-pyeantic.sh",
+    "test": {
+     "imports": [
+      "pyeantic"
+     ]
+    }
+   }
+  ],
   "package": {
    "name": "e-antic",
-   "version": "0.1.9"
-  },
-  "requirements": {
-   "build": [
-    "libtool",
-    "automake",
-    "make",
-    "gnuconfig",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "gmp",
-    "arb",
-    "libflint"
-   ]
+   "version": "1.0.0"
   },
   "source": {
-   "sha256": "f73dad444fd81422d9a1594668615da94405fb6428ce8f2535b58f4cfe88a72d",
-   "url": "http://www.labri.fr/perso/vdelecro/e-antic/e-antic-0.1.9.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f $PREFIX/include/e-antic/e-antic.h",
-    "test -f $PREFIX/lib/libeantic.dylib",
-    "test -f $PREFIX/lib/libeanticxx.dylib"
-   ]
+   "patches": [
+    "realalg.patch"
+   ],
+   "sha256": "8302e9d7fca4b33b1a2fd8ed88df6548d55c54694f428606e87bf8c6f129b317",
+   "url": "https://github.com/flatsurf/e-antic/releases/download/1.0.0/e-antic-1.0.0.tar.gz"
   }
  },
  "osx_64_requirements": {
@@ -699,14 +1176,28 @@
   "host": {
    "__set__": true,
    "elements": [
+    "antic",
     "arb",
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
     "gmp",
-    "libflint"
+    "libflint",
+    "pytest",
+    "python",
+    "setuptools"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
+    "python"
+   ]
   },
   "test": {
    "__set__": true,
@@ -717,17 +1208,14 @@
   "about": {
    "description": "E-ANTIC is a C/C++ library to deal with real embedded number fields built\non top of ANTIC. Its aim is to have as fast as possible exact arithmetic\noperations and comparisons.\n",
    "dev_url": "https://github.com/videlec/e-antic",
-   "home": "https://github.com/videlec/e-antic",
+   "home": "https://github.com/flatsurf/e-antic",
    "license": "LGPL-3.0-or-later",
    "license_family": "LGPL",
    "license_file": "COPYING",
    "summary": "embedded algebraic number fields"
   },
   "build": {
-   "number": "0",
-   "run_exports": [
-    "e-antic"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -735,34 +1223,82 @@
     "videlec"
    ]
   },
+  "outputs": [
+   {
+    "name": "e-antic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "antic",
+      "boost-cpp",
+      "gmp",
+      "arb",
+      "libflint"
+     ]
+    },
+    "run_exports": [
+     "e-antic"
+    ],
+    "script": "build-libeantic.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/e-antic/e-antic.h",
+      "test -f $PREFIX/lib/libeantic.dylib",
+      "test -f $PREFIX/lib/libeanticxx.dylib"
+     ]
+    }
+   },
+   {
+    "name": "pyeantic",
+    "requirements": {
+     "build": [
+      "libtool",
+      "automake",
+      "make",
+      "gnuconfig",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "setuptools",
+      "pytest",
+      "e-antic"
+     ],
+     "run": [
+      "boost-cpp",
+      "python",
+      "cppyy",
+      "cppyythonizations",
+      "e-antic"
+     ]
+    },
+    "script": "build-pyeantic.sh",
+    "test": {
+     "imports": [
+      "pyeantic"
+     ]
+    }
+   }
+  ],
   "package": {
    "name": "e-antic",
-   "version": "0.1.9"
-  },
-  "requirements": {
-   "build": [
-    "libtool",
-    "automake",
-    "make",
-    "gnuconfig",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "gmp",
-    "arb",
-    "libflint"
-   ]
+   "version": "1.0.0"
   },
   "source": {
-   "sha256": "f73dad444fd81422d9a1594668615da94405fb6428ce8f2535b58f4cfe88a72d",
-   "url": "http://www.labri.fr/perso/vdelecro/e-antic/e-antic-0.1.9.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f $PREFIX/include/e-antic/e-antic.h",
-    "test -f $PREFIX/lib/libeantic.dylib",
-    "test -f $PREFIX/lib/libeanticxx.dylib"
-   ]
+   "patches": [
+    "realalg.patch"
+   ],
+   "sha256": "8302e9d7fca4b33b1a2fd8ed88df6548d55c54694f428606e87bf8c6f129b317",
+   "url": "https://github.com/flatsurf/e-antic/releases/download/1.0.0/e-antic-1.0.0.tar.gz"
   }
  },
  "osx_arm64_requirements": {
@@ -779,14 +1315,28 @@
   "host": {
    "__set__": true,
    "elements": [
+    "antic",
     "arb",
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
     "gmp",
-    "libflint"
+    "libflint",
+    "pytest",
+    "python",
+    "setuptools"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
+    "python"
+   ]
   },
   "test": {
    "__set__": true,
@@ -796,22 +1346,34 @@
  "outputs_names": {
   "__set__": true,
   "elements": [
-   "e-antic"
+   "e-antic",
+   "pyeantic"
   ]
  },
  "pinning_version": "2021.03.20.03.34.19",
- "raw_meta_yaml": "{% set name = \"E-ANTIC\" %}\n{% set version = \"0.1.9\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: http://www.labri.fr/perso/vdelecro/{{ name | lower }}/{{ name | lower }}-{{ version }}.tar.gz\n  sha256: f73dad444fd81422d9a1594668615da94405fb6428ce8f2535b58f4cfe88a72d\n\nbuild:\n  number: 0\n  # Upstream doesn't support MSVC yet.\n  skip: true  # [win]\n  run_exports:\n  # e-antic uses semantic versioning https://github.com/videlec/e-antic/issues/12\n    - {{ pin_subpackage(\"e-antic\") }}\n\n\nrequirements:\n  build:\n    - libtool   # [unix]\n    - automake  # [unix]\n    - make      # [unix]\n    - autotools_clang_conda  # [win]\n    - gnuconfig  # [unix]\n    - {{ compiler('cxx') }}\n  host:\n    # E-ANTIC depends on antic; since antic has never been released officially\n    # (https://github.com/wbhart/antic/issues/31,) E-ANTIC ships the relevant\n    # parts of ANTIC.\n    # - antic\n    - gmp       # [unix]\n    - mpir      # [win]\n    - arb\n    - libflint\n\ntest:\n  commands:\n    - test -f $PREFIX/include/e-antic/e-antic.h  # [linux or osx]\n    - test -f $PREFIX/lib/libeantic.so           # [linux]\n    - test -f $PREFIX/lib/libeanticxx.so         # [linux]\n    - test -f $PREFIX/lib/libeantic.dylib        # [osx]\n    - test -f $PREFIX/lib/libeanticxx.dylib      # [osx]\n\nabout:\n  home: https://github.com/videlec/e-antic\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: embedded algebraic number fields\n  description: |\n    E-ANTIC is a C/C++ library to deal with real embedded number fields built\n    on top of ANTIC. Its aim is to have as fast as possible exact arithmetic\n    operations and comparisons.\n  dev_url: https://github.com/videlec/e-antic\n\nextra:\n  recipe-maintainers:\n    - saraedum\n    - videlec\n",
+ "pre_pr_migrator_status": {
+  "pypy37": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/960584210\">bot CI job</a>): master: ['linux_64_: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 2\\n', 'linux_64_: Encountered problems while solving:\\n  - package cppyythonizations-1.1.3-pyhd8ed1ab_0 requires cppyy, but none of the providers can be installed\\n', 'linux_aarch64_: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'linux_aarch64_: Encountered problems while solving:\\n  - package cppyy-2.0.0-py36h9203da5_0 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'linux_ppc64le_: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 0\\n', 'linux_ppc64le_: Encountered problems while solving:\\n  - package cppyy-2.0.0-py36h5bc72d0_0 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'osx_64_: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'osx_64_: Encountered problems while solving:\\n  - package cppyy-1.6.2-py36h6e7b999_0 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'osx_arm64_: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n']"
+ },
+ "raw_meta_yaml": "{% set name = \"E-ANTIC\" %}\n{% set version = \"1.0.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/flatsurf/e-antic/releases/download/{{ version }}/e-antic-{{ version }}.tar.gz\n  sha256: 8302e9d7fca4b33b1a2fd8ed88df6548d55c54694f428606e87bf8c6f129b317\n  patches:\n    # Patch from upstream to make --without-pytest work. We should remove\n    # --without-pytest once https://github.com/flatsurf/e-antic/pull/186 has\n    # been merged.\n    - realalg.patch\n\nbuild:\n  number: 0\n  # Upstream doesn't support MSVC yet.\n  skip: true  # [win]\n\noutputs:\n  - name: e-antic\n    script: build-libeantic.sh\n    run_exports:\n      # e-antic uses semantic versioning https://github.com/videlec/e-antic/issues/12\n      - {{ pin_subpackage(\"e-antic\") }}\n    requirements:\n      build:\n        - libtool   # [unix]\n        - automake  # [unix]\n        - make      # [unix]\n        - autotools_clang_conda  # [win]\n        - gnuconfig  # [unix]\n        - {{ compiler('cxx') }}\n      host:\n        - antic\n        - boost-cpp\n        - gmp       # [unix]\n        - mpir      # [win]\n        - arb\n        - libflint\n    test:\n      commands:\n        - test -f $PREFIX/include/e-antic/e-antic.h  # [linux or osx]\n        - test -f $PREFIX/lib/libeantic.so           # [linux]\n        - test -f $PREFIX/lib/libeanticxx.so         # [linux]\n        - test -f $PREFIX/lib/libeantic.dylib        # [osx]\n        - test -f $PREFIX/lib/libeanticxx.dylib      # [osx]\n  - name: pyeantic\n    script: build-pyeantic.sh\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - libtool   # [unix]\n        - automake  # [unix]\n        - make      # [unix]\n        - autotools_clang_conda  # [win]\n        - gnuconfig  # [unix]\n        - {{ compiler('cxx') }}\n      host:\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        - setuptools\n        - pytest\n        - {{ pin_subpackage(\"e-antic\") }}\n      run:\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        # A subpackage does not see the run_exports of another subpackage:\n        # https://github.com/conda/conda-build/issues/3478\n        - {{ pin_subpackage(\"e-antic\") }}\n    test:\n      imports:\n        - pyeantic\n\nabout:\n  home: https://github.com/flatsurf/e-antic\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: embedded algebraic number fields\n  description: |\n    E-ANTIC is a C/C++ library to deal with real embedded number fields built\n    on top of ANTIC. Its aim is to have as fast as possible exact arithmetic\n    operations and comparisons.\n  dev_url: https://github.com/videlec/e-antic\n\nextra:\n  recipe-maintainers:\n    - saraedum\n    - videlec\n",
  "req": {
   "__set__": true,
   "elements": [
+   "antic",
    "arb",
    "automake",
+   "boost-cpp",
+   "cppyy",
+   "cppyythonizations",
    "cxx_compiler_stub",
+   "e-antic",
    "gmp",
    "gnuconfig",
    "libflint",
    "libtool",
-   "make"
+   "make",
+   "pytest",
+   "python",
+   "setuptools"
   ]
  },
  "requirements": {
@@ -828,16 +1390,29 @@
   "host": {
    "__set__": true,
    "elements": [
+    "antic",
     "arb",
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
     "cxx_compiler_stub",
+    "e-antic",
     "gmp",
-    "libflint"
+    "libflint",
+    "pytest",
+    "python",
+    "setuptools"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "cxx_compiler_stub"
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "cxx_compiler_stub",
+    "e-antic",
+    "python"
    ]
   },
   "test": {
@@ -861,20 +1436,34 @@
   "host": {
    "__set__": true,
    "elements": [
+    "antic",
     "arb",
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
     "gmp",
-    "libflint"
+    "libflint",
+    "pytest",
+    "python",
+    "setuptools"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "boost-cpp",
+    "cppyy",
+    "cppyythonizations",
+    "e-antic",
+    "python"
+   ]
   },
   "test": {
    "__set__": true,
    "elements": []
   }
  },
- "url": "http://www.labri.fr/perso/vdelecro/e-antic/e-antic-0.1.9.tar.gz",
- "version": "0.1.9"
+ "url": "https://github.com/flatsurf/e-antic/releases/download/1.0.0/e-antic-1.0.0.tar.gz",
+ "version": "1.0.0"
 }
