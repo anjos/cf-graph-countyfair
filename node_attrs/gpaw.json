@@ -196,6 +196,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/677018672.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "21.6.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -626,10 +643,11 @@
   }
  },
  "name": "gpaw",
- "new_version": "21.1.0",
+ "new_version": "21.6.0",
  "new_version_attempts": {
   "20.10.0": 1,
-  "21.1.0": 1
+  "21.1.0": 1,
+  "21.6.0": 1
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -638,7 +656,7 @@
    "gpaw"
   ]
  },
- "pinning_version": "2021.01.22.19.19.10",
+ "pinning_version": "2021.06.24.07.39.41",
  "raw_meta_yaml": "{% set build = 1 %}\n{% set name = \"gpaw\" %}\n{% set version = \"21.1.0\" %}\n{% set sha256 = \"96843b68e04bd1c12606036c9f99b0ddfa5e6ee08ce46835e6bb347a6bd560a3\" %}\n{% set build_string = \"py{}_{}_{}\".format(environ.get('CONDA_PY', ''), mpi, build) %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    - 001_config-py.patch\n    # patch 001 is needed because gpaw's config.py assumes that libpython is a dynamic library,\n    # whereas the python version used by conda-forge provides a static library. Hopefully gpaw-devs\n    # will accept this as a future change upstream.\n\nbuild:\n  number: {{ build }}\n  string: {{ build_string }}\n  skip: true  # [not linux]\n  skip: true  # [py<36]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n  host:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - python\n    - pip\n    - libxc <5.0\n    - libblas\n    - scalapack\n    - fftw\n    - numpy\n    - ase\n  run:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - python\n    - pip\n    - libxc <5.0\n    - scalapack\n    - fftw\n    - {{ pin_compatible('numpy') }}\n    - scipy\n    - ase\n    - gpaw-data\n\ntest:\n  imports:\n    - gpaw  # [mpi == 'nompi']\n  commands:\n    - python -m pip check\n    - export OMPI_MCA_plm=isolated                          # [mpi == 'openmpi']\n    - export OMPI_MCA_btl_vader_single_copy_mechanism=none  # [mpi == 'openmpi']\n    - export OMPI_MCA_rmaps_base_oversubscribe=yes          # [mpi == 'openmpi']\n    - python -c \"import gpaw\"                               # [mpi == 'openmpi']\n    - gpaw test\n\nabout:\n  home: https://wiki.fysik.dtu.dk/gpaw\n  license: GPL-3.0\n  license_family: GPL\n  license_file: LICENSE\n  summary: 'GPAW: DFT and beyond within the projector-augmented wave method'\n  description: |\n    GPAW is a density-functional theory (DFT) Python code based on the\n    projector-augmented wave (PAW) method and the atomic simulation environment\n    (ASE). It uses plane-waves, atom-centered basis-functions or real-space\n    uniform grids combined with multigrid methods.\n  doc_url: https://wiki.fysik.dtu.dk/gpaw/documentation/documentation.html\n  dev_url: https://gitlab.com/gpaw/gpaw\n\nextra:\n  recipe-maintainers:\n    - bjodah\n    - jan-janssen\n",
  "req": {
   "__set__": true,
@@ -700,7 +718,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.8.6",
+ "smithy_version": "3.10.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
