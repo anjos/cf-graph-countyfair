@@ -287,6 +287,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/677547092.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "branch": "v10",
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "branch",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1138,7 +1157,7 @@
    "libsdformat11"
   ]
  },
- "pinning_version": "2021.06.24.04.59.31",
+ "pinning_version": "2021.06.24.19.19.34",
  "raw_meta_yaml": "{% set base_name = \"libsdformat\" %}\n{% set version = \"11.2.0\" %}\n{% set major_version = version.split('.')[0] %}\n{% set name = base_name + major_version %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/osrf/sdformat/archive/sdformat{{ major_version }}_{{ version }}.tar.gz\n    sha256: f0cf62fcd4309d5d62d47148ab01fee034d4f088f1b897cd694c8c75649488da\n    patches:\n      - sdformat.patch\n      - skipPoseNoValueTest.patch  # [osx]\n\nbuild:\n  number: 1\n  skip: false\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - ninja                              # [not win]\n    - ruby                               # [not win]\n    - ruby 2.7                           # [win]\n    - cmake\n    - pkg-config\n  host:\n    - libignition-cmake2\n    - libignition-math6\n    - libignition-tools1\n    - libignition-utils1\n    - urdfdom\n    - tinyxml2\n    - console_bridge\n  run:\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx and x86_64]\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/sdformat-{{ version.split('.')[0] }}.{{ version.split('.')[1] }}/sdf/sdf.hh  # [not win]\n    - test -f ${PREFIX}/lib/libsdformat{{ version.split('.')[0] }}${SHLIB_EXT}  # [unix]\n    - test -f ${PREFIX}/lib/cmake/sdformat{{ version.split('.')[0] }}/sdformat{{ version.split('.')[0] }}-config.cmake  # [not win]\n    - if not exist %LIBRARY_INC%\\\\sdformat-{{ version.split('.')[0] }}.{{ version.split('.')[1] }}\\\\sdf\\\\sdf.hh exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\sdformat{{ version.split('.')[0] }}.lib exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\sdformat{{ version.split('.')[0] }}.dll exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\cmake\\\\sdformat{{ version.split('.')[0] }}\\\\sdformat{{ version.split('.')[0] }}-config.cmake exit 1  # [win]\n\nabout:\n  home: http://sdformat.org/\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: |\n    Simulation Description Format (SDF) parser and description files.\n\nextra:\n  recipe-maintainers:\n    - seanyen\n    - j-rivero\n    - conda-forge/ros-core\n    - Tobias-Fischer\n    - traversaro\n",
  "req": {
   "__set__": true,
