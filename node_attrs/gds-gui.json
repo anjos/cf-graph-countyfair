@@ -37,7 +37,7 @@
    "summary": "GDS GUI libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -74,8 +74,7 @@
      "host": [
       "gds-base >=2.19.6",
       "gds-base-crtools >=2.19.6",
-      "root_base",
-      "root-binaries"
+      "root_base"
      ],
      "run": [
       "gds-base >=2.19.6",
@@ -95,8 +94,7 @@
       "pkg-config --print-errors --exact-version 2.19.5 gdsligogui"
      ],
      "requires": [
-      "pkg-config",
-      "root-binaries"
+      "pkg-config"
      ]
     }
    }
@@ -127,7 +125,6 @@
    "elements": [
     "gds-base",
     "gds-base-crtools",
-    "root-binaries",
     "root_base"
    ]
   },
@@ -142,8 +139,7 @@
   "test": {
    "__set__": true,
    "elements": [
-    "pkg-config",
-    "root-binaries"
+    "pkg-config"
    ]
   }
  },
@@ -158,7 +154,7 @@
    "summary": "GDS GUI libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -197,8 +193,7 @@
      "host": [
       "gds-base >=2.19.6",
       "gds-base-crtools >=2.19.6",
-      "root_base",
-      "root-binaries"
+      "root_base"
      ],
      "run": [
       "gds-base >=2.19.6",
@@ -218,8 +213,7 @@
       "pkg-config --print-errors --exact-version 2.19.5 gdsligogui"
      ],
      "requires": [
-      "pkg-config",
-      "root-binaries"
+      "pkg-config"
      ]
     }
    },
@@ -251,8 +245,7 @@
      "host": [
       "gds-base >=2.19.6",
       "gds-base-crtools >=2.19.6",
-      "root_base",
-      "root-binaries"
+      "root_base"
      ],
      "run": [
       "gds-base >=2.19.6",
@@ -269,8 +262,7 @@
       "pkg-config --print-errors --exact-version 2.19.5 gdsligogui"
      ],
      "requires": [
-      "pkg-config",
-      "root-binaries"
+      "pkg-config"
      ]
     }
    }
@@ -300,7 +292,7 @@
    "summary": "GDS GUI libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -337,8 +329,7 @@
      "host": [
       "gds-base >=2.19.6",
       "gds-base-crtools >=2.19.6",
-      "root_base",
-      "root-binaries"
+      "root_base"
      ],
      "run": [
       "gds-base >=2.19.6",
@@ -355,8 +346,7 @@
       "pkg-config --print-errors --exact-version 2.19.5 gdsligogui"
      ],
      "requires": [
-      "pkg-config",
-      "root-binaries"
+      "pkg-config"
      ]
     }
    }
@@ -387,7 +377,6 @@
    "elements": [
     "gds-base",
     "gds-base-crtools",
-    "root-binaries",
     "root_base"
    ]
   },
@@ -402,8 +391,7 @@
   "test": {
    "__set__": true,
    "elements": [
-    "pkg-config",
-    "root-binaries"
+    "pkg-config"
    ]
   }
  },
@@ -414,7 +402,7 @@
   ]
  },
  "pinning_version": "2021.06.29.15.41.36",
- "raw_meta_yaml": "{% set name = \"gds-gui\" %}\n{% set version = \"2.19.5\" %}\n\n# dependencies\n{% set gds_base_version = \"2.19.6\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://software.igwn.org/sources/source/{{ name }}-{{ version }}.tar.gz\n  sha256: b1050d7fc66619c6ea2fabad69f859e7ef115188fe2189f3be5905ffdebd358b\n  patches:\n    - tggtest-includes.patch\n\nbuild:\n  number: 0\n  skip: true  # [win]\n\noutputs:\n  - name: gds-gui-crtools\n    script: build-crtools.sh\n    build:\n      ignore_run_exports:\n        # header needed only\n        - gds-base-gdstrig\n      run_exports:\n        - {{ pin_subpackage(\"gds-gui-crtools\", max_pin=\"x.x\") }}\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - make\n        - pkg-config\n      host:\n        - gds-base >={{ gds_base_version }}\n        - gds-base-crtools >={{ gds_base_version }}\n        - root_base\n        - root-binaries\n      run:\n        - gds-base >={{ gds_base_version }}\n        - gds-base-crtools >={{ gds_base_version }}\n        - root_base\n    test:\n      requires:\n        - pkg-config\n        - root-binaries\n      commands:\n        # basic file existence\n        - test -f ${PREFIX}/include/gds/dttview/TLGMath.hh  # [unix]\n        - test -f ${PREFIX}/lib/libRdttview${SHLIB_EXT}  # [unix]\n        # check root extensions\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRdttview\\\");\"  # [linux]\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRgdsplot\\\");\"  # [linux]\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRligogui\\\");\"  # [linux]\n        # check pkg-config files\n        - pkg-config --print-errors --exact-version {{ version }} gdsdttview  # [unix]\n        - pkg-config --print-errors --exact-version {{ version }} gdsligogui  # [unix]\n    about:\n      home: https://wiki.ligo.org/Computing/DASWG/DMT\n      dev_url: https://git.ligo.org/gds/gds.git\n      license: GPL-2.0-only\n      license_family: GPL\n      license_file: COPYING\n      summary: GDS control room tools\n      description: |\n        GDS control room tools and GUI libraries\n\nabout:\n  home: https://wiki.ligo.org/Computing/DASWG/DMT\n  dev_url: https://git.ligo.org/gds/gds.git\n  license: GPL-2.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: GDS GUI libraries\n  description: |\n    GDS control room tools and GUI libraries\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - emaros\n",
+ "raw_meta_yaml": "{% set name = \"gds-gui\" %}\n{% set version = \"2.19.5\" %}\n\n# dependencies\n{% set gds_base_version = \"2.19.6\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://software.igwn.org/sources/source/{{ name }}-{{ version }}.tar.gz\n  sha256: b1050d7fc66619c6ea2fabad69f859e7ef115188fe2189f3be5905ffdebd358b\n  patches:\n    - tggtest-includes.patch\n\nbuild:\n  number: 1\n  skip: true  # [win]\n\noutputs:\n  - name: gds-gui-crtools\n    script: build-crtools.sh\n    build:\n      ignore_run_exports:\n        # header needed only\n        - gds-base-gdstrig\n      run_exports:\n        - {{ pin_subpackage(\"gds-gui-crtools\", max_pin=\"x.x\") }}\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - make\n        - pkg-config\n      host:\n        - gds-base >={{ gds_base_version }}\n        - gds-base-crtools >={{ gds_base_version }}\n        - root_base\n      run:\n        - gds-base >={{ gds_base_version }}\n        - gds-base-crtools >={{ gds_base_version }}\n        - root_base\n    test:\n      requires:\n        - pkg-config\n      commands:\n        # basic file existence\n        - test -f ${PREFIX}/include/gds/dttview/TLGMath.hh  # [unix]\n        - test -f ${PREFIX}/lib/libRdttview${SHLIB_EXT}  # [unix]\n        # check root extensions\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRdttview\\\");\"  # [linux]\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRgdsplot\\\");\"  # [linux]\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRligogui\\\");\"  # [linux]\n        # check pkg-config files\n        - pkg-config --print-errors --exact-version {{ version }} gdsdttview  # [unix]\n        - pkg-config --print-errors --exact-version {{ version }} gdsligogui  # [unix]\n    about:\n      home: https://wiki.ligo.org/Computing/DASWG/DMT\n      dev_url: https://git.ligo.org/gds/gds.git\n      license: GPL-2.0-only\n      license_family: GPL\n      license_file: COPYING\n      summary: GDS control room tools\n      description: |\n        GDS control room tools and GUI libraries\n\nabout:\n  home: https://wiki.ligo.org/Computing/DASWG/DMT\n  dev_url: https://git.ligo.org/gds/gds.git\n  license: GPL-2.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: GDS GUI libraries\n  description: |\n    GDS control room tools and GUI libraries\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - emaros\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -423,7 +411,6 @@
    "gds-base-crtools",
    "make",
    "pkg-config",
-   "root-binaries",
    "root_base"
   ]
  },
@@ -442,7 +429,6 @@
     "cxx_compiler_stub",
     "gds-base",
     "gds-base-crtools",
-    "root-binaries",
     "root_base"
    ]
   },
@@ -458,8 +444,7 @@
   "test": {
    "__set__": true,
    "elements": [
-    "pkg-config",
-    "root-binaries"
+    "pkg-config"
    ]
   }
  },
@@ -479,7 +464,6 @@
    "elements": [
     "gds-base >=2.19.6",
     "gds-base-crtools >=2.19.6",
-    "root-binaries",
     "root_base"
    ]
   },
@@ -494,8 +478,7 @@
   "test": {
    "__set__": true,
    "elements": [
-    "pkg-config",
-    "root-binaries"
+    "pkg-config"
    ]
   }
  },
