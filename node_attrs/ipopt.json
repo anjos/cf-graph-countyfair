@@ -448,11 +448,17 @@
    "number": "0",
    "run_exports": [
     "ipopt",
+    "ipopt",
     "ipopt"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "pstjohn",
+    "bluescarni",
+    "jschueller",
+    "moorepants",
+    "traversaro",
     "pstjohn",
     "bluescarni",
     "jschueller",
@@ -480,6 +486,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "wget",
+    "pkgconfig",
+    "fortran_compiler_stub",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
     "pkgconfig"
    ],
    "host": [
@@ -492,13 +503,24 @@
     "liblapack",
     "metis",
     "mumps-seq",
-    "ampl-mp"
+    "ampl-mp",
+    "libblas",
+    "liblapack",
+    "metis",
+    "mumps-seq"
    ]
   },
   "source": [
    {
     "patches": [
      "linux-configure.patch",
+     "pkg-config-do-not-add-requires-private.patch"
+    ],
+    "sha256": "afa37bbb0d91003c58284113717dc304718a1f236c97fe097dfab1672cb879c6",
+    "url": "https://github.com/coin-or/Ipopt/archive/releases/3.14.1.tar.gz"
+   },
+   {
+    "patches": [
      "pkg-config-do-not-add-requires-private.patch"
     ],
     "sha256": "afa37bbb0d91003c58284113717dc304718a1f236c97fe097dfab1672cb879c6",
@@ -517,9 +539,15 @@
     "test",
     "mytoy.nl",
     "test",
+    "mytoy.nl",
+    "test",
     "mytoy.nl"
    ],
    "requires": [
+    "fortran_compiler_stub",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "pkgconfig",
     "fortran_compiler_stub",
     "c_compiler_stub",
     "cxx_compiler_stub",
@@ -647,12 +675,13 @@
   ]
  },
  "pinning_version": "2021.06.24.19.19.34",
- "raw_meta_yaml": "{% set name = \"Ipopt\" %}\n{% set version = \"3.14.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/coin-or/Ipopt/archive/releases/{{ version }}.tar.gz\n    sha256: afa37bbb0d91003c58284113717dc304718a1f236c97fe097dfab1672cb879c6\n    patches:\n      - linux-configure.patch  # [linux]\n      - pkg-config-do-not-add-requires-private.patch\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage('ipopt', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake  # [win]\n    - wget  # [not win]\n    - pkgconfig\n  host:\n    - libblas\n    - liblapack\n    - metis\n    - mumps-seq\n    - ampl-mp  # [not win]\n\ntest:\n  files:\n    - test\n    - mytoy.nl\n\n  requires:\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - pkgconfig\n\nabout:\n  home: https://projects.coin-or.org/Ipopt/\n  license: EPL-1.0\n  license_file: LICENSE\n  summary: Software package for large-scale nonlinear optimization\n\nextra:\n  recipe-maintainers:\n    - pstjohn\n    - bluescarni\n    - jschueller\n    - moorepants\n    - traversaro\n",
+ "raw_meta_yaml": "{% set name = \"Ipopt\" %}\n{% set version = \"3.14.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/coin-or/Ipopt/archive/releases/{{ version }}.tar.gz\n    sha256: afa37bbb0d91003c58284113717dc304718a1f236c97fe097dfab1672cb879c6\n    patches:\n      - linux-configure.patch  # [linux]\n      - pkg-config-do-not-add-requires-private.patch\n\nbuild:\n  number: 0\n  run_exports:\n    - {{ pin_subpackage('ipopt', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake  # [win]\n    - wget  # [not win]\n    - pkgconfig\n  host:\n    - libblas\n    - liblapack\n    - metis\n    - mumps-seq\n    - ampl-mp  # [not win]\n\ntest:\n  files:\n    - test\n    - mytoy.nl\n\n  requires:\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - pkgconfig\n\nabout:\n  home: https://projects.coin-or.org/Ipopt/\n  license: EPL-1.0\n  license_file: LICENSE\n  summary: Software package for large-scale nonlinear optimization\n\nextra:\n  recipe-maintainers:\n    - pstjohn\n    - bluescarni\n    - jschueller\n    - moorepants\n    - traversaro\n",
  "req": {
   "__set__": true,
   "elements": [
    "ampl-mp",
    "c_compiler_stub",
+   "cmake",
    "cxx_compiler_stub",
    "fortran_compiler_stub",
    "libblas",
@@ -668,6 +697,7 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
+    "cmake",
     "cxx_compiler_stub",
     "fortran_compiler_stub",
     "pkgconfig",
@@ -712,6 +742,7 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
+    "cmake",
     "cxx_compiler_stub",
     "fortran_compiler_stub",
     "pkgconfig",
@@ -743,5 +774,102 @@
   }
  },
  "url": "https://github.com/coin-or/Ipopt/archive/releases/3.14.1.tar.gz",
- "version": "3.14.1"
+ "version": "3.14.1",
+ "win_64_meta_yaml": {
+  "about": {
+   "home": "https://projects.coin-or.org/Ipopt/",
+   "license": "EPL-1.0",
+   "license_file": "LICENSE",
+   "summary": "Software package for large-scale nonlinear optimization"
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "ipopt"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "pstjohn",
+    "bluescarni",
+    "jschueller",
+    "moorepants",
+    "traversaro"
+   ]
+  },
+  "package": {
+   "name": "ipopt",
+   "version": "3.14.1"
+  },
+  "requirements": {
+   "build": [
+    "fortran_compiler_stub",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "pkgconfig"
+   ],
+   "host": [
+    "libblas",
+    "liblapack",
+    "metis",
+    "mumps-seq"
+   ]
+  },
+  "source": [
+   {
+    "patches": [
+     "pkg-config-do-not-add-requires-private.patch"
+    ],
+    "sha256": "afa37bbb0d91003c58284113717dc304718a1f236c97fe097dfab1672cb879c6",
+    "url": "https://github.com/coin-or/Ipopt/archive/releases/3.14.1.tar.gz"
+   }
+  ],
+  "test": {
+   "files": [
+    "test",
+    "mytoy.nl"
+   ],
+   "requires": [
+    "fortran_compiler_stub",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "pkgconfig"
+   ]
+  }
+ },
+ "win_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "pkgconfig"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libblas",
+    "liblapack",
+    "metis",
+    "mumps-seq"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "pkgconfig"
+   ]
+  }
+ }
 }
