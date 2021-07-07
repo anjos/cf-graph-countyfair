@@ -229,10 +229,12 @@
    "summary": "PARI/GP is a widely used computer algebra system designed for fast computations in number theory"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
-    "pari"
-   ]
+    "pari",
+    "pari * *_single"
+   ],
+   "string": "h1234567_1_single"
   },
   "extra": {
    "recipe-maintainers": [
@@ -329,10 +331,12 @@
    "summary": "PARI/GP is a widely used computer algebra system designed for fast computations in number theory"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
-    "pari"
-   ]
+    "pari",
+    "pari * *_single"
+   ],
+   "string": "h1234567_1_single"
   },
   "extra": {
    "recipe-maintainers": [
@@ -429,10 +433,12 @@
    "summary": "PARI/GP is a widely used computer algebra system designed for fast computations in number theory"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
-    "pari"
-   ]
+    "pari",
+    "pari * *_single"
+   ],
+   "string": "h1234567_1_single"
   },
   "extra": {
    "recipe-maintainers": [
@@ -529,14 +535,20 @@
    "summary": "PARI/GP is a widely used computer algebra system designed for fast computations in number theory"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "pari",
+    "pari * *_single",
     "pari",
+    "pari * *_single",
     "pari",
+    "pari * *_single",
     "pari",
-    "pari"
-   ]
+    "pari * *_single",
+    "pari",
+    "pari * *_single"
+   ],
+   "string": "h1234567_1_single"
   },
   "extra": {
    "recipe-maintainers": [
@@ -698,10 +710,12 @@
    "summary": "PARI/GP is a widely used computer algebra system designed for fast computations in number theory"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
-    "pari"
-   ]
+    "pari",
+    "pari * *_single"
+   ],
+   "string": "h1234567_1_single"
   },
   "extra": {
    "recipe-maintainers": [
@@ -798,10 +812,12 @@
    "summary": "PARI/GP is a widely used computer algebra system designed for fast computations in number theory"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
-    "pari"
-   ]
+    "pari",
+    "pari * *_single"
+   ],
+   "string": "h1234567_1_single"
   },
   "extra": {
    "recipe-maintainers": [
@@ -895,7 +911,7 @@
   ]
  },
  "pinning_version": "2020.11.12.21.52.18",
- "raw_meta_yaml": "{% set version = \"2.13.2\" %}\n{% set name = \"pari\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url:\n    - http://pari.math.u-bordeaux.fr/pub/pari/unix/{{ name }}-{{ version }}.tar.gz\n    - http://pari.math.u-bordeaux.fr/pub/pari/OLD/{{ version.split('.')[:2] | join('.') }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 1679985094a0b723d14f49aa891dbe5ec967aa4040050a2c50bd764ddb3eba24\n  patches:\n    # Patches from sagemath\n    - patches/get_dlcflags.patch\n    # - patches/prot_none_cygwin.patch\n    - patches/pari_mainstack.diff\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage('pari', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - libtool\n    - curl\n    - make\n    - perl 5.*\n  host:\n    - gmp\n    - readline\n    - openssl\n  run:\n    - gmp\n    - readline\n    - perl 5.*\n    - pari-galdata\n    - pari-seadata-small\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/{{ name }}/{{ name }}.h\n    - test -f ${PREFIX}/include/{{ name }}/anal.h\n    - test -f ${PREFIX}/lib/lib{{ name }}.a\n    - test -f ${PREFIX}/lib/lib{{ name }}.dylib  # [osx]\n    - test -f ${PREFIX}/lib/lib{{ name }}.so     # [linux]\n\nabout:\n  home: http://pari.math.u-bordeaux.fr\n  license: GPL-2.0-or-later\n  license_file: COPYING\n  summary: PARI/GP is a widely used computer algebra system designed for fast computations in number theory\n  dev_url: http://pari.math.u-bordeaux.fr/cgi-bin/gitweb.cgi\n  doc_url: http://pari.math.u-bordeaux.fr/dochtml/html-stable/\n\nextra:\n  recipe-maintainers:\n    - isuruf\n    - saraedum\n",
+ "raw_meta_yaml": "{% set version = \"2.13.2\" %}\n{% set name = \"pari\" %}\n{% set build_num = 1 %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url:\n    - http://pari.math.u-bordeaux.fr/pub/pari/unix/{{ name }}-{{ version }}.tar.gz\n    - http://pari.math.u-bordeaux.fr/pub/pari/OLD/{{ version.split('.')[:2] | join('.') }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 1679985094a0b723d14f49aa891dbe5ec967aa4040050a2c50bd764ddb3eba24\n  patches:\n    # Patches from sagemath\n    - patches/get_dlcflags.patch\n    # - patches/prot_none_cygwin.patch\n    - patches/pari_mainstack.diff\n\nbuild:\n  number: {{ build_num }}\n  skip: true  # [win]\n  string: h{{ PKG_HASH }}_{{ build_num }}_{{ variant }}\n  run_exports:\n    - {{ pin_subpackage('pari', max_pin='x.x') }}\n    - pari * *_{{ variant }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - libtool\n    - curl\n    - make\n    - perl 5.*\n  host:\n    - gmp\n    - readline\n    - openssl\n  run:\n    - gmp\n    - readline\n    - perl 5.*\n    - pari-galdata\n    - pari-seadata-small\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/{{ name }}/{{ name }}.h\n    - test -f ${PREFIX}/include/{{ name }}/anal.h\n    - test -f ${PREFIX}/lib/lib{{ name }}.a\n    - test -f ${PREFIX}/lib/lib{{ name }}.dylib  # [osx]\n    - test -f ${PREFIX}/lib/lib{{ name }}.so     # [linux]\n\nabout:\n  home: http://pari.math.u-bordeaux.fr\n  license: GPL-2.0-or-later\n  license_file: COPYING\n  summary: PARI/GP is a widely used computer algebra system designed for fast computations in number theory\n  dev_url: http://pari.math.u-bordeaux.fr/cgi-bin/gitweb.cgi\n  doc_url: http://pari.math.u-bordeaux.fr/dochtml/html-stable/\n\nextra:\n  recipe-maintainers:\n    - isuruf\n    - saraedum\n",
  "req": {
   "__set__": true,
   "elements": [
