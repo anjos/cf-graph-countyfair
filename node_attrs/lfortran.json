@@ -249,7 +249,7 @@
    "summary": "Modern interactive LLVM-based Fortran compiler"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -258,7 +258,7 @@
   },
   "package": {
    "name": "lfortran",
-   "version": "0.10.0"
+   "version": "0.11.0"
   },
   "requirements": {
    "build": [
@@ -280,8 +280,8 @@
    "patches": [
     "lto.patch"
    ],
-   "sha256": "53b727fa795dd1f44656c50c647f80885c4eede98f719ab7129ee6502e27684f",
-   "url": "https://lfortran.github.io/tarballs/release/lfortran-0.10.0.tar.gz"
+   "sha256": "3bb930b24d7ca42a5cd187023a6424021be6485ca43c3e55c005563371391702",
+   "url": "https://lfortran.github.io/tarballs/release/lfortran-0.11.0.tar.gz"
   },
   "test": {
    "commands": [
@@ -339,7 +339,7 @@
    "summary": "Modern interactive LLVM-based Fortran compiler"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -351,7 +351,7 @@
   },
   "package": {
    "name": "lfortran",
-   "version": "0.10.0"
+   "version": "0.11.0"
   },
   "requirements": {
    "build": [
@@ -402,10 +402,11 @@
     "lto.patch",
     "lto.patch",
     "lto.patch",
+    "arm64.patch",
     "lto.patch"
    ],
-   "sha256": "53b727fa795dd1f44656c50c647f80885c4eede98f719ab7129ee6502e27684f",
-   "url": "https://lfortran.github.io/tarballs/release/lfortran-0.10.0.tar.gz"
+   "sha256": "3bb930b24d7ca42a5cd187023a6424021be6485ca43c3e55c005563371391702",
+   "url": "https://lfortran.github.io/tarballs/release/lfortran-0.11.0.tar.gz"
   },
   "test": {
    "commands": [
@@ -465,7 +466,7 @@
    "summary": "Modern interactive LLVM-based Fortran compiler"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -474,7 +475,7 @@
   },
   "package": {
    "name": "lfortran",
-   "version": "0.10.0"
+   "version": "0.11.0"
   },
   "requirements": {
    "build": [
@@ -496,8 +497,8 @@
    "patches": [
     "lto.patch"
    ],
-   "sha256": "53b727fa795dd1f44656c50c647f80885c4eede98f719ab7129ee6502e27684f",
-   "url": "https://lfortran.github.io/tarballs/release/lfortran-0.10.0.tar.gz"
+   "sha256": "3bb930b24d7ca42a5cd187023a6424021be6485ca43c3e55c005563371391702",
+   "url": "https://lfortran.github.io/tarballs/release/lfortran-0.11.0.tar.gz"
   },
   "test": {
    "commands": [
@@ -555,7 +556,7 @@
    "summary": "Modern interactive LLVM-based Fortran compiler"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -564,7 +565,7 @@
   },
   "package": {
    "name": "lfortran",
-   "version": "0.10.0"
+   "version": "0.11.0"
   },
   "requirements": {
    "build": [
@@ -584,10 +585,11 @@
   },
   "source": {
    "patches": [
-    "lto.patch"
+    "lto.patch",
+    "arm64.patch"
    ],
-   "sha256": "53b727fa795dd1f44656c50c647f80885c4eede98f719ab7129ee6502e27684f",
-   "url": "https://lfortran.github.io/tarballs/release/lfortran-0.10.0.tar.gz"
+   "sha256": "3bb930b24d7ca42a5cd187023a6424021be6485ca43c3e55c005563371391702",
+   "url": "https://lfortran.github.io/tarballs/release/lfortran-0.11.0.tar.gz"
   },
   "test": {
    "commands": [
@@ -640,7 +642,7 @@
   ]
  },
  "pinning_version": "2021.07.11.12.10.29",
- "raw_meta_yaml": "{% set name = \"lfortran\" %}\n{% set version = \"0.10.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://lfortran.github.io/tarballs/release/{{ name }}-{{ version }}.tar.gz\n  sha256: 53b727fa795dd1f44656c50c647f80885c4eede98f719ab7129ee6502e27684f\n  patches:\n    - lto.patch\n\nbuild:\n  number: 0\n  skip: true  # [py<36]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - make   # [unix]\n  host:\n    - xeus\n    - llvmdev =11.1.0\n    - xtl\n    - nlohmann_json\n    - cppzmq\n    - zlib\n  run:\n    # xeus breaks abi compatibility in patch versions even though\n    # run_exports say otherwise in https://github.com/conda-forge/xeus-feedstock/blob/0896038be810da2944ebcb612e22886815ea691e/recipe/meta.yaml#L18\n    - {{ pin_compatible(\"xeus\", max_pin=\"x.x.x\") }}  # [win]\n\ntest:\n  requires:\n    - jupyter\n  commands:\n    - test -f ${PREFIX}/bin/lfortran  # [unix]\n    - if not exist %LIBRARY_PREFIX%\\bin\\lfortran.exe exit 1  # [win]\n    - lfortran --help\n    - lfortran --version\n    - jupyter kernelspec list --json\n      # This fails if the `fortran` spec is not installed\n    - jupyter kernelspec remove -f fortran\n\nabout:\n  home: https://lfortran.org\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Modern interactive LLVM-based Fortran compiler\n  description: |\n    LFortran is a modern open-source (BSD licensed) interactive Fortran\n    compiler built on top of LLVM. It can execute user's code interactively to\n    allow exploratory work (much like Python, MATLAB or Julia) as well as\n    compile to binaries with the goal to run user\u2019s code on modern\n    architectures such as multi-core CPUs and GPUs.\n  doc_url: https://docs.lfortran.org/\n  dev_url: https://gitlab.com/lfortran/lfortran\n\nextra:\n  recipe-maintainers:\n    - certik\n",
+ "raw_meta_yaml": "{% set name = \"lfortran\" %}\n{% set version = \"0.11.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://lfortran.github.io/tarballs/release/{{ name }}-{{ version }}.tar.gz\n  sha256: 3bb930b24d7ca42a5cd187023a6424021be6485ca43c3e55c005563371391702\n  patches:\n    - lto.patch\n    - arm64.patch  # [arm64]\n\nbuild:\n  number: 1\n  skip: true  # [py<36]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - make   # [unix]\n  host:\n    - xeus\n    - llvmdev =11.1.0\n    - xtl\n    - nlohmann_json\n    - cppzmq\n    - zlib\n  run:\n    # xeus breaks abi compatibility in patch versions even though\n    # run_exports say otherwise in https://github.com/conda-forge/xeus-feedstock/blob/0896038be810da2944ebcb612e22886815ea691e/recipe/meta.yaml#L18\n    - {{ pin_compatible(\"xeus\", max_pin=\"x.x.x\") }}  # [win]\n\ntest:\n  requires:\n    - jupyter\n  commands:\n    - test -f ${PREFIX}/bin/lfortran  # [unix]\n    - if not exist %LIBRARY_PREFIX%\\bin\\lfortran.exe exit 1  # [win]\n    - lfortran --help\n    - lfortran --version\n    - jupyter kernelspec list --json\n      # This fails if the `fortran` spec is not installed\n    - jupyter kernelspec remove -f fortran\n\nabout:\n  home: https://lfortran.org\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Modern interactive LLVM-based Fortran compiler\n  description: |\n    LFortran is a modern open-source (BSD licensed) interactive Fortran\n    compiler built on top of LLVM. It can execute user's code interactively to\n    allow exploratory work (much like Python, MATLAB or Julia) as well as\n    compile to binaries with the goal to run user\u2019s code on modern\n    architectures such as multi-core CPUs and GPUs.\n  doc_url: https://docs.lfortran.org/\n  dev_url: https://gitlab.com/lfortran/lfortran\n\nextra:\n  recipe-maintainers:\n    - certik\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -725,8 +727,8 @@
    ]
   }
  },
- "url": "https://lfortran.github.io/tarballs/release/lfortran-0.10.0.tar.gz",
- "version": "0.10.0",
+ "url": "https://lfortran.github.io/tarballs/release/lfortran-0.11.0.tar.gz",
+ "version": "0.11.0",
  "win_64_meta_yaml": {
   "about": {
    "description": "LFortran is a modern open-source (BSD licensed) interactive Fortran\ncompiler built on top of LLVM. It can execute user's code interactively to\nallow exploratory work (much like Python, MATLAB or Julia) as well as\ncompile to binaries with the goal to run user\u2019s code on modern\narchitectures such as multi-core CPUs and GPUs.\n",
@@ -739,7 +741,7 @@
    "summary": "Modern interactive LLVM-based Fortran compiler"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -748,7 +750,7 @@
   },
   "package": {
    "name": "lfortran",
-   "version": "0.10.0"
+   "version": "0.11.0"
   },
   "requirements": {
    "build": [
@@ -771,8 +773,8 @@
    "patches": [
     "lto.patch"
    ],
-   "sha256": "53b727fa795dd1f44656c50c647f80885c4eede98f719ab7129ee6502e27684f",
-   "url": "https://lfortran.github.io/tarballs/release/lfortran-0.10.0.tar.gz"
+   "sha256": "3bb930b24d7ca42a5cd187023a6424021be6485ca43c3e55c005563371391702",
+   "url": "https://lfortran.github.io/tarballs/release/lfortran-0.11.0.tar.gz"
   },
   "test": {
    "commands": [
