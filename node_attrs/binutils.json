@@ -178,6 +178,10 @@
     "COPYING",
     "COPYING.LIB",
     "COPYING3",
+    "COPYING3.LIB",
+    "COPYING",
+    "COPYING.LIB",
+    "COPYING3",
     "COPYING3.LIB"
    ],
    "summary": "A set of programming tools for creating and managing binary programs, object files,\nlibraries, profile data, and assembly source code.\n"
@@ -188,6 +192,10 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "frol",
+    "isuruf",
+    "jjhelmus",
+    "beckermr",
     "frol",
     "isuruf",
     "jjhelmus",
@@ -427,6 +435,116 @@
      "detect_binary_files_with_prefix": false,
      "merge_build_host": false
     },
+    "name": "ld_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": null,
+     "run": null,
+     "run_constrained": [
+      "binutils_impl_linux-s390x 2.36.1"
+     ]
+    },
+    "script": "install_ld.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "echo \"conda_cos7\"",
+      "echo 9"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "ignore_run_exports": [
+      "__glibc"
+     ],
+     "merge_build_host": false
+    },
+    "name": "binutils_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": [
+      "ld_impl_linux-s390x 2.36.1"
+     ],
+     "run": [
+      "ld_impl_linux-s390x",
+      "sysroot_linux-s390x"
+     ]
+    },
+    "script": "install_binutils.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-addr2line --help",
+      "s390x-conda_cos7-linux-gnu-ar --help",
+      "s390x-conda_cos7-linux-gnu-as --help",
+      "s390x-conda_cos7-linux-gnu-c++filt --help",
+      "s390x-conda_cos7-linux-gnu-elfedit --help",
+      "s390x-conda_cos7-linux-gnu-gprof --help",
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "s390x-conda_cos7-linux-gnu-ld.bfd --help",
+      "s390x-conda_cos7-linux-gnu-ld.gold --help",
+      "s390x-conda_cos7-linux-gnu-nm --help",
+      "s390x-conda_cos7-linux-gnu-objcopy --help",
+      "s390x-conda_cos7-linux-gnu-objdump --help",
+      "s390x-conda_cos7-linux-gnu-ranlib --help",
+      "s390x-conda_cos7-linux-gnu-readelf --help",
+      "s390x-conda_cos7-linux-gnu-size --help",
+      "s390x-conda_cos7-linux-gnu-strings --help",
+      "s390x-conda_cos7-linux-gnu-strip --help",
+      "echo 9"
+     ],
+     "downstreams": [
+      "gfortran_impl_linux-s390x",
+      "gcc_impl_linux-s390x"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false,
+     "skip": true
+    },
+    "name": "binutils",
+    "requirements": {
+     "build": null,
+     "host": [
+      "binutils_impl_linux-s390x"
+     ],
+     "run": [
+      "binutils_impl_linux-s390x"
+     ]
+    },
+    "script": "install_binutils_symlinks.sh",
+    "test": {
+     "commands": [
+      "$PREFIX/bin/addr2line --help",
+      "$PREFIX/bin/ar --help",
+      "$PREFIX/bin/as --help",
+      "$PREFIX/bin/c++filt --help",
+      "$PREFIX/bin/elfedit --help",
+      "$PREFIX/bin/gold --help",
+      "$PREFIX/bin/gprof --help",
+      "$PREFIX/bin/ld --help",
+      "$PREFIX/bin/ld.bfd --help",
+      "$PREFIX/bin/ld.gold --help",
+      "$PREFIX/bin/nm --help",
+      "$PREFIX/bin/objcopy --help",
+      "$PREFIX/bin/objdump --help",
+      "$PREFIX/bin/ranlib --help",
+      "$PREFIX/bin/readelf --help",
+      "$PREFIX/bin/size --help",
+      "$PREFIX/bin/strings --help",
+      "$PREFIX/bin/strip --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false
+    },
     "name": "ld_impl_linux-aarch64",
     "requirements": {
      "build": null,
@@ -543,6 +661,19 @@
    "run": []
   },
   "source": [
+   {
+    "folder": ".",
+    "patches": [
+     "patches/0001-fallback-sysroot.diff"
+    ],
+    "sha256": "5b4bd2e79e30ce8db0abd76dd2c2eae14a94ce212cfc59d3c37d23e24bc6d7a3",
+    "url": "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.bz2"
+   },
+   {
+    "folder": "crosstool_ng",
+    "sha256": "0d8a827c90cb11988fb15a5a284b287b58e43d7575104771d17df98ce9f30f2d",
+    "url": "https://github.com/crosstool-ng/crosstool-ng/archive/94b98a4cc96ff6c4ca982ea19db953447e802919.tar.gz"
+   },
    {
     "folder": ".",
     "patches": [
@@ -595,9 +726,11 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
-    "ld_impl_linux-ppc64le"
+    "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x"
    ]
   },
   "run": {
@@ -606,12 +739,15 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
     "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x",
     "sysroot_linux-64",
     "sysroot_linux-aarch64",
-    "sysroot_linux-ppc64le"
+    "sysroot_linux-ppc64le",
+    "sysroot_linux-s390x"
    ]
   },
   "test": {
@@ -635,6 +771,10 @@
     "COPYING",
     "COPYING.LIB",
     "COPYING3",
+    "COPYING3.LIB",
+    "COPYING",
+    "COPYING.LIB",
+    "COPYING3",
     "COPYING3.LIB"
    ],
    "summary": "A set of programming tools for creating and managing binary programs, object files,\nlibraries, profile data, and assembly source code.\n"
@@ -645,6 +785,10 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "frol",
+    "isuruf",
+    "jjhelmus",
+    "beckermr",
     "frol",
     "isuruf",
     "jjhelmus",
@@ -988,6 +1132,116 @@
       "$PREFIX/bin/strip --help"
      ]
     }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false
+    },
+    "name": "ld_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": null,
+     "run": null,
+     "run_constrained": [
+      "binutils_impl_linux-s390x 2.36.1"
+     ]
+    },
+    "script": "install_ld.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "echo \"conda_cos7\"",
+      "echo 9"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "ignore_run_exports": [
+      "__glibc"
+     ],
+     "merge_build_host": false
+    },
+    "name": "binutils_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": [
+      "ld_impl_linux-s390x 2.36.1"
+     ],
+     "run": [
+      "ld_impl_linux-s390x",
+      "sysroot_linux-s390x"
+     ]
+    },
+    "script": "install_binutils.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-addr2line --help",
+      "s390x-conda_cos7-linux-gnu-ar --help",
+      "s390x-conda_cos7-linux-gnu-as --help",
+      "s390x-conda_cos7-linux-gnu-c++filt --help",
+      "s390x-conda_cos7-linux-gnu-elfedit --help",
+      "s390x-conda_cos7-linux-gnu-gprof --help",
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "s390x-conda_cos7-linux-gnu-ld.bfd --help",
+      "s390x-conda_cos7-linux-gnu-ld.gold --help",
+      "s390x-conda_cos7-linux-gnu-nm --help",
+      "s390x-conda_cos7-linux-gnu-objcopy --help",
+      "s390x-conda_cos7-linux-gnu-objdump --help",
+      "s390x-conda_cos7-linux-gnu-ranlib --help",
+      "s390x-conda_cos7-linux-gnu-readelf --help",
+      "s390x-conda_cos7-linux-gnu-size --help",
+      "s390x-conda_cos7-linux-gnu-strings --help",
+      "s390x-conda_cos7-linux-gnu-strip --help",
+      "echo 9"
+     ],
+     "downstreams": [
+      "gfortran_impl_linux-s390x",
+      "gcc_impl_linux-s390x"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false,
+     "skip": true
+    },
+    "name": "binutils",
+    "requirements": {
+     "build": null,
+     "host": [
+      "binutils_impl_linux-s390x"
+     ],
+     "run": [
+      "binutils_impl_linux-s390x"
+     ]
+    },
+    "script": "install_binutils_symlinks.sh",
+    "test": {
+     "commands": [
+      "$PREFIX/bin/addr2line --help",
+      "$PREFIX/bin/ar --help",
+      "$PREFIX/bin/as --help",
+      "$PREFIX/bin/c++filt --help",
+      "$PREFIX/bin/elfedit --help",
+      "$PREFIX/bin/gold --help",
+      "$PREFIX/bin/gprof --help",
+      "$PREFIX/bin/ld --help",
+      "$PREFIX/bin/ld.bfd --help",
+      "$PREFIX/bin/ld.gold --help",
+      "$PREFIX/bin/nm --help",
+      "$PREFIX/bin/objcopy --help",
+      "$PREFIX/bin/objdump --help",
+      "$PREFIX/bin/ranlib --help",
+      "$PREFIX/bin/readelf --help",
+      "$PREFIX/bin/size --help",
+      "$PREFIX/bin/strings --help",
+      "$PREFIX/bin/strip --help"
+     ]
+    }
    }
   ],
   "package": {
@@ -1000,6 +1254,19 @@
    "run": []
   },
   "source": [
+   {
+    "folder": ".",
+    "patches": [
+     "patches/0001-fallback-sysroot.diff"
+    ],
+    "sha256": "5b4bd2e79e30ce8db0abd76dd2c2eae14a94ce212cfc59d3c37d23e24bc6d7a3",
+    "url": "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.bz2"
+   },
+   {
+    "folder": "crosstool_ng",
+    "sha256": "0d8a827c90cb11988fb15a5a284b287b58e43d7575104771d17df98ce9f30f2d",
+    "url": "https://github.com/crosstool-ng/crosstool-ng/archive/94b98a4cc96ff6c4ca982ea19db953447e802919.tar.gz"
+   },
    {
     "folder": ".",
     "patches": [
@@ -1052,9 +1319,11 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
-    "ld_impl_linux-ppc64le"
+    "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x"
    ]
   },
   "run": {
@@ -1063,12 +1332,15 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
     "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x",
     "sysroot_linux-64",
     "sysroot_linux-aarch64",
-    "sysroot_linux-ppc64le"
+    "sysroot_linux-ppc64le",
+    "sysroot_linux-s390x"
    ]
   },
   "test": {
@@ -1081,6 +1353,10 @@
    "home": "https://www.gnu.org/software/binutils/",
    "license": "GPL-3.0-only",
    "license_file": [
+    "COPYING",
+    "COPYING.LIB",
+    "COPYING3",
+    "COPYING3.LIB",
     "COPYING",
     "COPYING.LIB",
     "COPYING3",
@@ -1113,10 +1389,124 @@
     "frol",
     "isuruf",
     "jjhelmus",
+    "beckermr",
+    "frol",
+    "isuruf",
+    "jjhelmus",
     "beckermr"
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false
+    },
+    "name": "ld_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": null,
+     "run": null,
+     "run_constrained": [
+      "binutils_impl_linux-s390x 2.36.1"
+     ]
+    },
+    "script": "install_ld.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "echo \"conda_cos7\"",
+      "echo 9"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "ignore_run_exports": [
+      "__glibc"
+     ],
+     "merge_build_host": false
+    },
+    "name": "binutils_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": [
+      "ld_impl_linux-s390x 2.36.1"
+     ],
+     "run": [
+      "ld_impl_linux-s390x",
+      "sysroot_linux-s390x"
+     ]
+    },
+    "script": "install_binutils.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-addr2line --help",
+      "s390x-conda_cos7-linux-gnu-ar --help",
+      "s390x-conda_cos7-linux-gnu-as --help",
+      "s390x-conda_cos7-linux-gnu-c++filt --help",
+      "s390x-conda_cos7-linux-gnu-elfedit --help",
+      "s390x-conda_cos7-linux-gnu-gprof --help",
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "s390x-conda_cos7-linux-gnu-ld.bfd --help",
+      "s390x-conda_cos7-linux-gnu-ld.gold --help",
+      "s390x-conda_cos7-linux-gnu-nm --help",
+      "s390x-conda_cos7-linux-gnu-objcopy --help",
+      "s390x-conda_cos7-linux-gnu-objdump --help",
+      "s390x-conda_cos7-linux-gnu-ranlib --help",
+      "s390x-conda_cos7-linux-gnu-readelf --help",
+      "s390x-conda_cos7-linux-gnu-size --help",
+      "s390x-conda_cos7-linux-gnu-strings --help",
+      "s390x-conda_cos7-linux-gnu-strip --help",
+      "echo 9"
+     ],
+     "downstreams": [
+      "gfortran_impl_linux-s390x",
+      "gcc_impl_linux-s390x"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false,
+     "skip": true
+    },
+    "name": "binutils",
+    "requirements": {
+     "build": null,
+     "host": [
+      "binutils_impl_linux-s390x"
+     ],
+     "run": [
+      "binutils_impl_linux-s390x"
+     ]
+    },
+    "script": "install_binutils_symlinks.sh",
+    "test": {
+     "commands": [
+      "$PREFIX/bin/addr2line --help",
+      "$PREFIX/bin/ar --help",
+      "$PREFIX/bin/as --help",
+      "$PREFIX/bin/c++filt --help",
+      "$PREFIX/bin/elfedit --help",
+      "$PREFIX/bin/gold --help",
+      "$PREFIX/bin/gprof --help",
+      "$PREFIX/bin/ld --help",
+      "$PREFIX/bin/ld.bfd --help",
+      "$PREFIX/bin/ld.gold --help",
+      "$PREFIX/bin/nm --help",
+      "$PREFIX/bin/objcopy --help",
+      "$PREFIX/bin/objdump --help",
+      "$PREFIX/bin/ranlib --help",
+      "$PREFIX/bin/readelf --help",
+      "$PREFIX/bin/size --help",
+      "$PREFIX/bin/strings --help",
+      "$PREFIX/bin/strip --help"
+     ]
+    }
+   },
    {
     "build": {
      "detect_binary_files_with_prefix": false,
@@ -1495,6 +1885,19 @@
     "folder": "crosstool_ng",
     "sha256": "0d8a827c90cb11988fb15a5a284b287b58e43d7575104771d17df98ce9f30f2d",
     "url": "https://github.com/crosstool-ng/crosstool-ng/archive/94b98a4cc96ff6c4ca982ea19db953447e802919.tar.gz"
+   },
+   {
+    "folder": ".",
+    "patches": [
+     "patches/0001-fallback-sysroot.diff"
+    ],
+    "sha256": "5b4bd2e79e30ce8db0abd76dd2c2eae14a94ce212cfc59d3c37d23e24bc6d7a3",
+    "url": "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.bz2"
+   },
+   {
+    "folder": "crosstool_ng",
+    "sha256": "0d8a827c90cb11988fb15a5a284b287b58e43d7575104771d17df98ce9f30f2d",
+    "url": "https://github.com/crosstool-ng/crosstool-ng/archive/94b98a4cc96ff6c4ca982ea19db953447e802919.tar.gz"
    }
   ]
  },
@@ -1509,9 +1912,11 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
-    "ld_impl_linux-ppc64le"
+    "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x"
    ]
   },
   "run": {
@@ -1520,12 +1925,15 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
     "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x",
     "sysroot_linux-64",
     "sysroot_linux-aarch64",
-    "sysroot_linux-ppc64le"
+    "sysroot_linux-ppc64le",
+    "sysroot_linux-s390x"
    ]
   },
   "test": {
@@ -1597,6 +2005,26 @@
     "COPYING",
     "COPYING.LIB",
     "COPYING3",
+    "COPYING3.LIB",
+    "COPYING",
+    "COPYING.LIB",
+    "COPYING3",
+    "COPYING3.LIB",
+    "COPYING",
+    "COPYING.LIB",
+    "COPYING3",
+    "COPYING3.LIB",
+    "COPYING",
+    "COPYING.LIB",
+    "COPYING3",
+    "COPYING3.LIB",
+    "COPYING",
+    "COPYING.LIB",
+    "COPYING3",
+    "COPYING3.LIB",
+    "COPYING",
+    "COPYING.LIB",
+    "COPYING3",
     "COPYING3.LIB"
    ],
    "summary": "A set of programming tools for creating and managing binary programs, object files,\nlibraries, profile data, and assembly source code.\n"
@@ -1607,6 +2035,26 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "frol",
+    "isuruf",
+    "jjhelmus",
+    "beckermr",
+    "frol",
+    "isuruf",
+    "jjhelmus",
+    "beckermr",
+    "frol",
+    "isuruf",
+    "jjhelmus",
+    "beckermr",
+    "frol",
+    "isuruf",
+    "jjhelmus",
+    "beckermr",
+    "frol",
+    "isuruf",
+    "jjhelmus",
+    "beckermr",
     "frol",
     "isuruf",
     "jjhelmus",
@@ -1894,6 +2342,116 @@
      "detect_binary_files_with_prefix": false,
      "merge_build_host": false
     },
+    "name": "ld_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": null,
+     "run": null,
+     "run_constrained": [
+      "binutils_impl_linux-s390x 2.36.1"
+     ]
+    },
+    "script": "install_ld.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "echo \"conda_cos7\"",
+      "echo 9"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "ignore_run_exports": [
+      "__glibc"
+     ],
+     "merge_build_host": false
+    },
+    "name": "binutils_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": [
+      "ld_impl_linux-s390x 2.36.1"
+     ],
+     "run": [
+      "ld_impl_linux-s390x",
+      "sysroot_linux-s390x"
+     ]
+    },
+    "script": "install_binutils.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-addr2line --help",
+      "s390x-conda_cos7-linux-gnu-ar --help",
+      "s390x-conda_cos7-linux-gnu-as --help",
+      "s390x-conda_cos7-linux-gnu-c++filt --help",
+      "s390x-conda_cos7-linux-gnu-elfedit --help",
+      "s390x-conda_cos7-linux-gnu-gprof --help",
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "s390x-conda_cos7-linux-gnu-ld.bfd --help",
+      "s390x-conda_cos7-linux-gnu-ld.gold --help",
+      "s390x-conda_cos7-linux-gnu-nm --help",
+      "s390x-conda_cos7-linux-gnu-objcopy --help",
+      "s390x-conda_cos7-linux-gnu-objdump --help",
+      "s390x-conda_cos7-linux-gnu-ranlib --help",
+      "s390x-conda_cos7-linux-gnu-readelf --help",
+      "s390x-conda_cos7-linux-gnu-size --help",
+      "s390x-conda_cos7-linux-gnu-strings --help",
+      "s390x-conda_cos7-linux-gnu-strip --help",
+      "echo 9"
+     ],
+     "downstreams": [
+      "gfortran_impl_linux-s390x",
+      "gcc_impl_linux-s390x"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false,
+     "skip": true
+    },
+    "name": "binutils",
+    "requirements": {
+     "build": null,
+     "host": [
+      "binutils_impl_linux-s390x"
+     ],
+     "run": [
+      "binutils_impl_linux-s390x"
+     ]
+    },
+    "script": "install_binutils_symlinks.sh",
+    "test": {
+     "commands": [
+      "$PREFIX/bin/addr2line --help",
+      "$PREFIX/bin/ar --help",
+      "$PREFIX/bin/as --help",
+      "$PREFIX/bin/c++filt --help",
+      "$PREFIX/bin/elfedit --help",
+      "$PREFIX/bin/gold --help",
+      "$PREFIX/bin/gprof --help",
+      "$PREFIX/bin/ld --help",
+      "$PREFIX/bin/ld.bfd --help",
+      "$PREFIX/bin/ld.gold --help",
+      "$PREFIX/bin/nm --help",
+      "$PREFIX/bin/objcopy --help",
+      "$PREFIX/bin/objdump --help",
+      "$PREFIX/bin/ranlib --help",
+      "$PREFIX/bin/readelf --help",
+      "$PREFIX/bin/size --help",
+      "$PREFIX/bin/strings --help",
+      "$PREFIX/bin/strip --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false
+    },
     "name": "ld_impl_linux-aarch64",
     "requirements": {
      "build": null,
@@ -2302,6 +2860,226 @@
      ],
      "run": [
       "binutils_impl_linux-64"
+     ]
+    },
+    "script": "install_binutils_symlinks.sh",
+    "test": {
+     "commands": [
+      "$PREFIX/bin/addr2line --help",
+      "$PREFIX/bin/ar --help",
+      "$PREFIX/bin/as --help",
+      "$PREFIX/bin/c++filt --help",
+      "$PREFIX/bin/elfedit --help",
+      "$PREFIX/bin/gold --help",
+      "$PREFIX/bin/gprof --help",
+      "$PREFIX/bin/ld --help",
+      "$PREFIX/bin/ld.bfd --help",
+      "$PREFIX/bin/ld.gold --help",
+      "$PREFIX/bin/nm --help",
+      "$PREFIX/bin/objcopy --help",
+      "$PREFIX/bin/objdump --help",
+      "$PREFIX/bin/ranlib --help",
+      "$PREFIX/bin/readelf --help",
+      "$PREFIX/bin/size --help",
+      "$PREFIX/bin/strings --help",
+      "$PREFIX/bin/strip --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false
+    },
+    "name": "ld_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": null,
+     "run": null,
+     "run_constrained": [
+      "binutils_impl_linux-s390x 2.36.1"
+     ]
+    },
+    "script": "install_ld.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "echo \"conda_cos7\"",
+      "echo 9"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "ignore_run_exports": [
+      "__glibc"
+     ],
+     "merge_build_host": false
+    },
+    "name": "binutils_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": [
+      "ld_impl_linux-s390x 2.36.1"
+     ],
+     "run": [
+      "ld_impl_linux-s390x",
+      "sysroot_linux-s390x"
+     ]
+    },
+    "script": "install_binutils.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-addr2line --help",
+      "s390x-conda_cos7-linux-gnu-ar --help",
+      "s390x-conda_cos7-linux-gnu-as --help",
+      "s390x-conda_cos7-linux-gnu-c++filt --help",
+      "s390x-conda_cos7-linux-gnu-elfedit --help",
+      "s390x-conda_cos7-linux-gnu-gprof --help",
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "s390x-conda_cos7-linux-gnu-ld.bfd --help",
+      "s390x-conda_cos7-linux-gnu-ld.gold --help",
+      "s390x-conda_cos7-linux-gnu-nm --help",
+      "s390x-conda_cos7-linux-gnu-objcopy --help",
+      "s390x-conda_cos7-linux-gnu-objdump --help",
+      "s390x-conda_cos7-linux-gnu-ranlib --help",
+      "s390x-conda_cos7-linux-gnu-readelf --help",
+      "s390x-conda_cos7-linux-gnu-size --help",
+      "s390x-conda_cos7-linux-gnu-strings --help",
+      "s390x-conda_cos7-linux-gnu-strip --help",
+      "echo 9"
+     ],
+     "downstreams": [
+      "gfortran_impl_linux-s390x",
+      "gcc_impl_linux-s390x"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false,
+     "skip": true
+    },
+    "name": "binutils",
+    "requirements": {
+     "build": null,
+     "host": [
+      "binutils_impl_linux-s390x"
+     ],
+     "run": [
+      "binutils_impl_linux-s390x"
+     ]
+    },
+    "script": "install_binutils_symlinks.sh",
+    "test": {
+     "commands": [
+      "$PREFIX/bin/addr2line --help",
+      "$PREFIX/bin/ar --help",
+      "$PREFIX/bin/as --help",
+      "$PREFIX/bin/c++filt --help",
+      "$PREFIX/bin/elfedit --help",
+      "$PREFIX/bin/gold --help",
+      "$PREFIX/bin/gprof --help",
+      "$PREFIX/bin/ld --help",
+      "$PREFIX/bin/ld.bfd --help",
+      "$PREFIX/bin/ld.gold --help",
+      "$PREFIX/bin/nm --help",
+      "$PREFIX/bin/objcopy --help",
+      "$PREFIX/bin/objdump --help",
+      "$PREFIX/bin/ranlib --help",
+      "$PREFIX/bin/readelf --help",
+      "$PREFIX/bin/size --help",
+      "$PREFIX/bin/strings --help",
+      "$PREFIX/bin/strip --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false
+    },
+    "name": "ld_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": null,
+     "run": null,
+     "run_constrained": [
+      "binutils_impl_linux-s390x 2.36.1"
+     ]
+    },
+    "script": "install_ld.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "echo \"conda_cos7\"",
+      "echo 9"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "ignore_run_exports": [
+      "__glibc"
+     ],
+     "merge_build_host": false
+    },
+    "name": "binutils_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": [
+      "ld_impl_linux-s390x 2.36.1"
+     ],
+     "run": [
+      "ld_impl_linux-s390x",
+      "sysroot_linux-s390x"
+     ]
+    },
+    "script": "install_binutils.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-addr2line --help",
+      "s390x-conda_cos7-linux-gnu-ar --help",
+      "s390x-conda_cos7-linux-gnu-as --help",
+      "s390x-conda_cos7-linux-gnu-c++filt --help",
+      "s390x-conda_cos7-linux-gnu-elfedit --help",
+      "s390x-conda_cos7-linux-gnu-gprof --help",
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "s390x-conda_cos7-linux-gnu-ld.bfd --help",
+      "s390x-conda_cos7-linux-gnu-ld.gold --help",
+      "s390x-conda_cos7-linux-gnu-nm --help",
+      "s390x-conda_cos7-linux-gnu-objcopy --help",
+      "s390x-conda_cos7-linux-gnu-objdump --help",
+      "s390x-conda_cos7-linux-gnu-ranlib --help",
+      "s390x-conda_cos7-linux-gnu-readelf --help",
+      "s390x-conda_cos7-linux-gnu-size --help",
+      "s390x-conda_cos7-linux-gnu-strings --help",
+      "s390x-conda_cos7-linux-gnu-strip --help",
+      "echo 9"
+     ],
+     "downstreams": [
+      "gfortran_impl_linux-s390x",
+      "gcc_impl_linux-s390x"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false,
+     "skip": true
+    },
+    "name": "binutils",
+    "requirements": {
+     "build": null,
+     "host": [
+      "binutils_impl_linux-s390x"
+     ],
+     "run": [
+      "binutils_impl_linux-s390x"
      ]
     },
     "script": "install_binutils_symlinks.sh",
@@ -2995,6 +3773,117 @@
      "detect_binary_files_with_prefix": false,
      "merge_build_host": false
     },
+    "name": "ld_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": null,
+     "run": null,
+     "run_constrained": [
+      "binutils_impl_linux-s390x 2.36.1"
+     ]
+    },
+    "script": "install_ld.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "echo \"conda_cos7\"",
+      "echo 11"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "ignore_run_exports": [
+      "__glibc"
+     ],
+     "merge_build_host": false
+    },
+    "name": "binutils_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": [
+      "ld_impl_linux-s390x 2.36.1"
+     ],
+     "run": [
+      "ld_impl_linux-s390x",
+      "sysroot_linux-s390x"
+     ]
+    },
+    "script": "install_binutils.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-addr2line --help",
+      "s390x-conda_cos7-linux-gnu-ar --help",
+      "s390x-conda_cos7-linux-gnu-as --help",
+      "s390x-conda_cos7-linux-gnu-c++filt --help",
+      "s390x-conda_cos7-linux-gnu-elfedit --help",
+      "s390x-conda_cos7-linux-gnu-gprof --help",
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "s390x-conda_cos7-linux-gnu-ld.bfd --help",
+      "s390x-conda_cos7-linux-gnu-ld.gold --help",
+      "s390x-conda_cos7-linux-gnu-nm --help",
+      "s390x-conda_cos7-linux-gnu-objcopy --help",
+      "s390x-conda_cos7-linux-gnu-objdump --help",
+      "s390x-conda_cos7-linux-gnu-ranlib --help",
+      "s390x-conda_cos7-linux-gnu-readelf --help",
+      "s390x-conda_cos7-linux-gnu-size --help",
+      "s390x-conda_cos7-linux-gnu-strings --help",
+      "s390x-conda_cos7-linux-gnu-strip --help",
+      "echo 11"
+     ],
+     "downstreams": [
+      "gfortran_impl_linux-s390x",
+      "gcc_impl_linux-s390x"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false,
+     "skip": true
+    },
+    "name": "binutils",
+    "requirements": {
+     "build": null,
+     "host": [
+      "binutils_impl_linux-s390x"
+     ],
+     "run": [
+      "binutils_impl_linux-s390x",
+      "libcxx >=4.0.0"
+     ]
+    },
+    "script": "install_binutils_symlinks.sh",
+    "test": {
+     "commands": [
+      "$PREFIX/bin/addr2line --help",
+      "$PREFIX/bin/ar --help",
+      "$PREFIX/bin/as --help",
+      "$PREFIX/bin/c++filt --help",
+      "$PREFIX/bin/elfedit --help",
+      "$PREFIX/bin/gold --help",
+      "$PREFIX/bin/gprof --help",
+      "$PREFIX/bin/ld --help",
+      "$PREFIX/bin/ld.bfd --help",
+      "$PREFIX/bin/ld.gold --help",
+      "$PREFIX/bin/nm --help",
+      "$PREFIX/bin/objcopy --help",
+      "$PREFIX/bin/objdump --help",
+      "$PREFIX/bin/ranlib --help",
+      "$PREFIX/bin/readelf --help",
+      "$PREFIX/bin/size --help",
+      "$PREFIX/bin/strings --help",
+      "$PREFIX/bin/strip --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false
+    },
     "name": "ld_impl_linux-aarch64",
     "requirements": {
      "build": null,
@@ -3296,6 +4185,117 @@
      ],
      "run": [
       "binutils_impl_linux-64",
+      "libcxx >=4.0.0"
+     ]
+    },
+    "script": "install_binutils_symlinks.sh",
+    "test": {
+     "commands": [
+      "$PREFIX/bin/addr2line --help",
+      "$PREFIX/bin/ar --help",
+      "$PREFIX/bin/as --help",
+      "$PREFIX/bin/c++filt --help",
+      "$PREFIX/bin/elfedit --help",
+      "$PREFIX/bin/gold --help",
+      "$PREFIX/bin/gprof --help",
+      "$PREFIX/bin/ld --help",
+      "$PREFIX/bin/ld.bfd --help",
+      "$PREFIX/bin/ld.gold --help",
+      "$PREFIX/bin/nm --help",
+      "$PREFIX/bin/objcopy --help",
+      "$PREFIX/bin/objdump --help",
+      "$PREFIX/bin/ranlib --help",
+      "$PREFIX/bin/readelf --help",
+      "$PREFIX/bin/size --help",
+      "$PREFIX/bin/strings --help",
+      "$PREFIX/bin/strip --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false
+    },
+    "name": "ld_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": null,
+     "run": null,
+     "run_constrained": [
+      "binutils_impl_linux-s390x 2.36.1"
+     ]
+    },
+    "script": "install_ld.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "echo \"conda_cos7\"",
+      "echo 11"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "ignore_run_exports": [
+      "__glibc"
+     ],
+     "merge_build_host": false
+    },
+    "name": "binutils_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": [
+      "ld_impl_linux-s390x 2.36.1"
+     ],
+     "run": [
+      "ld_impl_linux-s390x",
+      "sysroot_linux-s390x"
+     ]
+    },
+    "script": "install_binutils.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-addr2line --help",
+      "s390x-conda_cos7-linux-gnu-ar --help",
+      "s390x-conda_cos7-linux-gnu-as --help",
+      "s390x-conda_cos7-linux-gnu-c++filt --help",
+      "s390x-conda_cos7-linux-gnu-elfedit --help",
+      "s390x-conda_cos7-linux-gnu-gprof --help",
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "s390x-conda_cos7-linux-gnu-ld.bfd --help",
+      "s390x-conda_cos7-linux-gnu-ld.gold --help",
+      "s390x-conda_cos7-linux-gnu-nm --help",
+      "s390x-conda_cos7-linux-gnu-objcopy --help",
+      "s390x-conda_cos7-linux-gnu-objdump --help",
+      "s390x-conda_cos7-linux-gnu-ranlib --help",
+      "s390x-conda_cos7-linux-gnu-readelf --help",
+      "s390x-conda_cos7-linux-gnu-size --help",
+      "s390x-conda_cos7-linux-gnu-strings --help",
+      "s390x-conda_cos7-linux-gnu-strip --help",
+      "echo 11"
+     ],
+     "downstreams": [
+      "gfortran_impl_linux-s390x",
+      "gcc_impl_linux-s390x"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false,
+     "skip": true
+    },
+    "name": "binutils",
+    "requirements": {
+     "build": null,
+     "host": [
+      "binutils_impl_linux-s390x"
+     ],
+     "run": [
+      "binutils_impl_linux-s390x",
       "libcxx >=4.0.0"
      ]
     },
@@ -3334,6 +4334,71 @@
    "run": []
   },
   "source": [
+   {
+    "folder": ".",
+    "patches": [
+     "patches/0001-fallback-sysroot.diff"
+    ],
+    "sha256": "5b4bd2e79e30ce8db0abd76dd2c2eae14a94ce212cfc59d3c37d23e24bc6d7a3",
+    "url": "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.bz2"
+   },
+   {
+    "folder": "crosstool_ng",
+    "sha256": "0d8a827c90cb11988fb15a5a284b287b58e43d7575104771d17df98ce9f30f2d",
+    "url": "https://github.com/crosstool-ng/crosstool-ng/archive/94b98a4cc96ff6c4ca982ea19db953447e802919.tar.gz"
+   },
+   {
+    "folder": ".",
+    "patches": [
+     "patches/0001-fallback-sysroot.diff"
+    ],
+    "sha256": "5b4bd2e79e30ce8db0abd76dd2c2eae14a94ce212cfc59d3c37d23e24bc6d7a3",
+    "url": "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.bz2"
+   },
+   {
+    "folder": "crosstool_ng",
+    "sha256": "0d8a827c90cb11988fb15a5a284b287b58e43d7575104771d17df98ce9f30f2d",
+    "url": "https://github.com/crosstool-ng/crosstool-ng/archive/94b98a4cc96ff6c4ca982ea19db953447e802919.tar.gz"
+   },
+   {
+    "folder": ".",
+    "patches": [
+     "patches/0001-fallback-sysroot.diff"
+    ],
+    "sha256": "5b4bd2e79e30ce8db0abd76dd2c2eae14a94ce212cfc59d3c37d23e24bc6d7a3",
+    "url": "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.bz2"
+   },
+   {
+    "folder": "crosstool_ng",
+    "sha256": "0d8a827c90cb11988fb15a5a284b287b58e43d7575104771d17df98ce9f30f2d",
+    "url": "https://github.com/crosstool-ng/crosstool-ng/archive/94b98a4cc96ff6c4ca982ea19db953447e802919.tar.gz"
+   },
+   {
+    "folder": ".",
+    "patches": [
+     "patches/0001-fallback-sysroot.diff"
+    ],
+    "sha256": "5b4bd2e79e30ce8db0abd76dd2c2eae14a94ce212cfc59d3c37d23e24bc6d7a3",
+    "url": "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.bz2"
+   },
+   {
+    "folder": "crosstool_ng",
+    "sha256": "0d8a827c90cb11988fb15a5a284b287b58e43d7575104771d17df98ce9f30f2d",
+    "url": "https://github.com/crosstool-ng/crosstool-ng/archive/94b98a4cc96ff6c4ca982ea19db953447e802919.tar.gz"
+   },
+   {
+    "folder": ".",
+    "patches": [
+     "patches/0001-fallback-sysroot.diff"
+    ],
+    "sha256": "5b4bd2e79e30ce8db0abd76dd2c2eae14a94ce212cfc59d3c37d23e24bc6d7a3",
+    "url": "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.bz2"
+   },
+   {
+    "folder": "crosstool_ng",
+    "sha256": "0d8a827c90cb11988fb15a5a284b287b58e43d7575104771d17df98ce9f30f2d",
+    "url": "https://github.com/crosstool-ng/crosstool-ng/archive/94b98a4cc96ff6c4ca982ea19db953447e802919.tar.gz"
+   },
    {
     "folder": ".",
     "patches": [
@@ -3554,6 +4619,10 @@
     "COPYING",
     "COPYING.LIB",
     "COPYING3",
+    "COPYING3.LIB",
+    "COPYING",
+    "COPYING.LIB",
+    "COPYING3",
     "COPYING3.LIB"
    ],
    "summary": "A set of programming tools for creating and managing binary programs, object files,\nlibraries, profile data, and assembly source code.\n"
@@ -3564,6 +4633,10 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "frol",
+    "isuruf",
+    "jjhelmus",
+    "beckermr",
     "frol",
     "isuruf",
     "jjhelmus",
@@ -3911,6 +4984,117 @@
       "$PREFIX/bin/strip --help"
      ]
     }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false
+    },
+    "name": "ld_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": null,
+     "run": null,
+     "run_constrained": [
+      "binutils_impl_linux-s390x 2.36.1"
+     ]
+    },
+    "script": "install_ld.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "echo \"conda_cos7\"",
+      "echo 11"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "ignore_run_exports": [
+      "__glibc"
+     ],
+     "merge_build_host": false
+    },
+    "name": "binutils_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": [
+      "ld_impl_linux-s390x 2.36.1"
+     ],
+     "run": [
+      "ld_impl_linux-s390x",
+      "sysroot_linux-s390x"
+     ]
+    },
+    "script": "install_binutils.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-addr2line --help",
+      "s390x-conda_cos7-linux-gnu-ar --help",
+      "s390x-conda_cos7-linux-gnu-as --help",
+      "s390x-conda_cos7-linux-gnu-c++filt --help",
+      "s390x-conda_cos7-linux-gnu-elfedit --help",
+      "s390x-conda_cos7-linux-gnu-gprof --help",
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "s390x-conda_cos7-linux-gnu-ld.bfd --help",
+      "s390x-conda_cos7-linux-gnu-ld.gold --help",
+      "s390x-conda_cos7-linux-gnu-nm --help",
+      "s390x-conda_cos7-linux-gnu-objcopy --help",
+      "s390x-conda_cos7-linux-gnu-objdump --help",
+      "s390x-conda_cos7-linux-gnu-ranlib --help",
+      "s390x-conda_cos7-linux-gnu-readelf --help",
+      "s390x-conda_cos7-linux-gnu-size --help",
+      "s390x-conda_cos7-linux-gnu-strings --help",
+      "s390x-conda_cos7-linux-gnu-strip --help",
+      "echo 11"
+     ],
+     "downstreams": [
+      "gfortran_impl_linux-s390x",
+      "gcc_impl_linux-s390x"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false,
+     "skip": true
+    },
+    "name": "binutils",
+    "requirements": {
+     "build": null,
+     "host": [
+      "binutils_impl_linux-s390x"
+     ],
+     "run": [
+      "binutils_impl_linux-s390x",
+      "libcxx >=4.0.0"
+     ]
+    },
+    "script": "install_binutils_symlinks.sh",
+    "test": {
+     "commands": [
+      "$PREFIX/bin/addr2line --help",
+      "$PREFIX/bin/ar --help",
+      "$PREFIX/bin/as --help",
+      "$PREFIX/bin/c++filt --help",
+      "$PREFIX/bin/elfedit --help",
+      "$PREFIX/bin/gold --help",
+      "$PREFIX/bin/gprof --help",
+      "$PREFIX/bin/ld --help",
+      "$PREFIX/bin/ld.bfd --help",
+      "$PREFIX/bin/ld.gold --help",
+      "$PREFIX/bin/nm --help",
+      "$PREFIX/bin/objcopy --help",
+      "$PREFIX/bin/objdump --help",
+      "$PREFIX/bin/ranlib --help",
+      "$PREFIX/bin/readelf --help",
+      "$PREFIX/bin/size --help",
+      "$PREFIX/bin/strings --help",
+      "$PREFIX/bin/strip --help"
+     ]
+    }
    }
   ],
   "package": {
@@ -3923,6 +5107,19 @@
    "run": []
   },
   "source": [
+   {
+    "folder": ".",
+    "patches": [
+     "patches/0001-fallback-sysroot.diff"
+    ],
+    "sha256": "5b4bd2e79e30ce8db0abd76dd2c2eae14a94ce212cfc59d3c37d23e24bc6d7a3",
+    "url": "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.bz2"
+   },
+   {
+    "folder": "crosstool_ng",
+    "sha256": "0d8a827c90cb11988fb15a5a284b287b58e43d7575104771d17df98ce9f30f2d",
+    "url": "https://github.com/crosstool-ng/crosstool-ng/archive/94b98a4cc96ff6c4ca982ea19db953447e802919.tar.gz"
+   },
    {
     "folder": ".",
     "patches": [
@@ -3975,9 +5172,11 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
-    "ld_impl_linux-ppc64le"
+    "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x"
    ]
   },
   "run": {
@@ -3986,13 +5185,16 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
     "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x",
     "libcxx",
     "sysroot_linux-64",
     "sysroot_linux-aarch64",
-    "sysroot_linux-ppc64le"
+    "sysroot_linux-ppc64le",
+    "sysroot_linux-s390x"
    ]
   },
   "test": {
@@ -4016,6 +5218,10 @@
     "COPYING",
     "COPYING.LIB",
     "COPYING3",
+    "COPYING3.LIB",
+    "COPYING",
+    "COPYING.LIB",
+    "COPYING3",
     "COPYING3.LIB"
    ],
    "summary": "A set of programming tools for creating and managing binary programs, object files,\nlibraries, profile data, and assembly source code.\n"
@@ -4026,6 +5232,10 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "frol",
+    "isuruf",
+    "jjhelmus",
+    "beckermr",
     "frol",
     "isuruf",
     "jjhelmus",
@@ -4373,6 +5583,117 @@
       "$PREFIX/bin/strip --help"
      ]
     }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false
+    },
+    "name": "ld_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": null,
+     "run": null,
+     "run_constrained": [
+      "binutils_impl_linux-s390x 2.36.1"
+     ]
+    },
+    "script": "install_ld.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "echo \"conda_cos7\"",
+      "echo 11"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "ignore_run_exports": [
+      "__glibc"
+     ],
+     "merge_build_host": false
+    },
+    "name": "binutils_impl_linux-s390x",
+    "requirements": {
+     "build": null,
+     "host": [
+      "ld_impl_linux-s390x 2.36.1"
+     ],
+     "run": [
+      "ld_impl_linux-s390x",
+      "sysroot_linux-s390x"
+     ]
+    },
+    "script": "install_binutils.sh",
+    "test": {
+     "commands": [
+      "s390x-conda_cos7-linux-gnu-addr2line --help",
+      "s390x-conda_cos7-linux-gnu-ar --help",
+      "s390x-conda_cos7-linux-gnu-as --help",
+      "s390x-conda_cos7-linux-gnu-c++filt --help",
+      "s390x-conda_cos7-linux-gnu-elfedit --help",
+      "s390x-conda_cos7-linux-gnu-gprof --help",
+      "s390x-conda_cos7-linux-gnu-ld --help",
+      "s390x-conda_cos7-linux-gnu-ld.bfd --help",
+      "s390x-conda_cos7-linux-gnu-ld.gold --help",
+      "s390x-conda_cos7-linux-gnu-nm --help",
+      "s390x-conda_cos7-linux-gnu-objcopy --help",
+      "s390x-conda_cos7-linux-gnu-objdump --help",
+      "s390x-conda_cos7-linux-gnu-ranlib --help",
+      "s390x-conda_cos7-linux-gnu-readelf --help",
+      "s390x-conda_cos7-linux-gnu-size --help",
+      "s390x-conda_cos7-linux-gnu-strings --help",
+      "s390x-conda_cos7-linux-gnu-strip --help",
+      "echo 11"
+     ],
+     "downstreams": [
+      "gfortran_impl_linux-s390x",
+      "gcc_impl_linux-s390x"
+     ]
+    }
+   },
+   {
+    "build": {
+     "detect_binary_files_with_prefix": false,
+     "merge_build_host": false,
+     "skip": true
+    },
+    "name": "binutils",
+    "requirements": {
+     "build": null,
+     "host": [
+      "binutils_impl_linux-s390x"
+     ],
+     "run": [
+      "binutils_impl_linux-s390x",
+      "libcxx >=4.0.0"
+     ]
+    },
+    "script": "install_binutils_symlinks.sh",
+    "test": {
+     "commands": [
+      "$PREFIX/bin/addr2line --help",
+      "$PREFIX/bin/ar --help",
+      "$PREFIX/bin/as --help",
+      "$PREFIX/bin/c++filt --help",
+      "$PREFIX/bin/elfedit --help",
+      "$PREFIX/bin/gold --help",
+      "$PREFIX/bin/gprof --help",
+      "$PREFIX/bin/ld --help",
+      "$PREFIX/bin/ld.bfd --help",
+      "$PREFIX/bin/ld.gold --help",
+      "$PREFIX/bin/nm --help",
+      "$PREFIX/bin/objcopy --help",
+      "$PREFIX/bin/objdump --help",
+      "$PREFIX/bin/ranlib --help",
+      "$PREFIX/bin/readelf --help",
+      "$PREFIX/bin/size --help",
+      "$PREFIX/bin/strings --help",
+      "$PREFIX/bin/strip --help"
+     ]
+    }
    }
   ],
   "package": {
@@ -4385,6 +5706,19 @@
    "run": []
   },
   "source": [
+   {
+    "folder": ".",
+    "patches": [
+     "patches/0001-fallback-sysroot.diff"
+    ],
+    "sha256": "5b4bd2e79e30ce8db0abd76dd2c2eae14a94ce212cfc59d3c37d23e24bc6d7a3",
+    "url": "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.bz2"
+   },
+   {
+    "folder": "crosstool_ng",
+    "sha256": "0d8a827c90cb11988fb15a5a284b287b58e43d7575104771d17df98ce9f30f2d",
+    "url": "https://github.com/crosstool-ng/crosstool-ng/archive/94b98a4cc96ff6c4ca982ea19db953447e802919.tar.gz"
+   },
    {
     "folder": ".",
     "patches": [
@@ -4437,9 +5771,11 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
-    "ld_impl_linux-ppc64le"
+    "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x"
    ]
   },
   "run": {
@@ -4448,13 +5784,16 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
     "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x",
     "libcxx",
     "sysroot_linux-64",
     "sysroot_linux-aarch64",
-    "sysroot_linux-ppc64le"
+    "sysroot_linux-ppc64le",
+    "sysroot_linux-s390x"
    ]
   },
   "test": {
@@ -4469,10 +5808,12 @@
    "binutils_impl_linux-64",
    "binutils_impl_linux-aarch64",
    "binutils_impl_linux-ppc64le",
+   "binutils_impl_linux-s390x",
    "binutils_split",
    "ld_impl_linux-64",
    "ld_impl_linux-aarch64",
-   "ld_impl_linux-ppc64le"
+   "ld_impl_linux-ppc64le",
+   "ld_impl_linux-s390x"
   ]
  },
  "pinning_version": "2021.01.29.20.41.28",
@@ -4483,13 +5824,16 @@
    "binutils_impl_linux-64",
    "binutils_impl_linux-aarch64",
    "binutils_impl_linux-ppc64le",
+   "binutils_impl_linux-s390x",
    "ld_impl_linux-64",
    "ld_impl_linux-aarch64",
    "ld_impl_linux-ppc64le",
+   "ld_impl_linux-s390x",
    "libcxx",
    "sysroot_linux-64",
    "sysroot_linux-aarch64",
-   "sysroot_linux-ppc64le"
+   "sysroot_linux-ppc64le",
+   "sysroot_linux-s390x"
   ]
  },
  "requirements": {
@@ -4503,10 +5847,12 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ctng-compilers",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
     "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x",
     "linux-sysroot"
    ]
   },
@@ -4516,15 +5862,18 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ctng-compilers",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
     "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x",
     "libcxx",
     "linux-sysroot",
     "sysroot_linux-64",
     "sysroot_linux-aarch64",
-    "sysroot_linux-ppc64le"
+    "sysroot_linux-ppc64le",
+    "sysroot_linux-s390x"
    ]
   },
   "test": {
@@ -4545,9 +5894,11 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64 2.36.1",
     "ld_impl_linux-aarch64 2.36.1",
-    "ld_impl_linux-ppc64le 2.36.1"
+    "ld_impl_linux-ppc64le 2.36.1",
+    "ld_impl_linux-s390x 2.36.1"
    ]
   },
   "run": {
@@ -4556,13 +5907,16 @@
     "binutils_impl_linux-64",
     "binutils_impl_linux-aarch64",
     "binutils_impl_linux-ppc64le",
+    "binutils_impl_linux-s390x",
     "ld_impl_linux-64",
     "ld_impl_linux-aarch64",
     "ld_impl_linux-ppc64le",
+    "ld_impl_linux-s390x",
     "libcxx >=4.0.0",
     "sysroot_linux-64",
     "sysroot_linux-aarch64",
-    "sysroot_linux-ppc64le"
+    "sysroot_linux-ppc64le",
+    "sysroot_linux-s390x"
    ]
   },
   "test": {
