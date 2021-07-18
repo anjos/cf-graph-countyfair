@@ -120,6 +120,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/692160940.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "4_4.1.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -623,7 +640,7 @@
   "3_3.1.0": 355,
   "4.0.0": 1,
   "4_4.0.0": 72,
-  "4_4.1.0": 29
+  "4_4.1.0": 30
  },
  "new_version_errors": {
   "3_3.1.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '3_3.1.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/ignitionrobotics/ign-physics/archive/ignition-physics{{ major_version }}_{{ version }}.tar.gz'\n",
@@ -738,7 +755,7 @@
    "libignition-physics4"
   ]
  },
- "pinning_version": "2021.06.24.19.19.34",
+ "pinning_version": "2021.07.18.08.46.59",
  "raw_meta_yaml": "{% set base_name = \"libignition-physics\" %}\n{% set version = \"4_4.0.0\" %}\n{% set version_package = version.split('_')[1] %}\n{% set major_version = version_package.split('.')[0] %}\n{% set name = base_name + major_version %}\n\npackage:\n  name: {{ name }}\n  version: {{ version_package }}\n\nsource:\n  - url: https://github.com/ignitionrobotics/ign-physics/archive/ignition-physics{{ version }}.tar.gz\n    sha256: b7128f5666a2a7ff60bfb03de7f1d08c194bddf3c8e52c6e3e3d05e6b4421494\n    patches:\n      - vs2017_support.patch\n      - disable_fake_install.patch\n      - 249.patch\n\nbuild:\n  number: 1\n  skip: false\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - cmake\n    - ninja\n    - pkg-config\n  host:\n    - libignition-cmake2\n    - libignition-plugin1\n    - libignition-math6\n    - libignition-common4\n    - libignition-utils1\n    - libsdformat11\n    - eigen\n    - dartsim\n    - libode\n\n  run:\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx and x86_64]\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ignition/physics{{ major_version }}/ignition/physics.hh  # [not win]\n    - test -f ${PREFIX}/lib/cmake/ignition-physics{{ major_version }}-dartsim/ignition-physics{{ major_version }}-dartsim-config.cmake  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ignition\\physics{{ major_version }}\\ignition\\physics.hh (exit 1)  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\ignition-physics{{ major_version }}-dartsim\\\\ignition-physics{{ major_version }}-dartsim-config.cmake  exit 1  # [win]\n\nabout:\n  home: https://github.com/ignitionrobotics/ign-physics\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: |\n    Ignition Physics, a component of Ignition Robotics, provides an abstract physics interface designed to support simulation \n    and rapid development of robot applications.\n\nextra:\n  recipe-maintainers:\n    - seanyen\n    - traversaro\n    - Tobias-Fischer\n",
  "req": {
   "__set__": true,
