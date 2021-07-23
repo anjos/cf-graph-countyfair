@@ -172,6 +172,9 @@
  "bad": false,
  "branch": "master",
  "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "azure",
    "linux_ppc64le": "azure"
@@ -203,6 +206,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "c_compiler_stub",
     "make",
     "pkg-config"
@@ -228,6 +232,7 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
+    "gnuconfig",
     "make",
     "pkg-config"
    ]
@@ -272,6 +277,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "c_compiler_stub",
     "make",
     "pkg-config"
@@ -297,6 +303,7 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
+    "gnuconfig",
     "make",
     "pkg-config"
    ]
@@ -341,6 +348,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "c_compiler_stub",
     "make",
     "pkg-config"
@@ -366,6 +374,7 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
+    "gnuconfig",
     "make",
     "pkg-config"
    ]
@@ -399,11 +408,13 @@
     "libidn2",
     "libidn2",
     "libidn2",
+    "libidn2",
     "libidn2"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "hmaarrfk",
     "hmaarrfk",
     "hmaarrfk",
     "hmaarrfk",
@@ -416,20 +427,30 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "c_compiler_stub",
     "make",
     "pkg-config",
+    "gnuconfig",
     "c_compiler_stub",
     "make",
     "pkg-config",
+    "gnuconfig",
     "c_compiler_stub",
     "make",
     "pkg-config",
+    "gnuconfig",
+    "c_compiler_stub",
+    "make",
+    "pkg-config",
+    "gnuconfig",
     "c_compiler_stub",
     "make",
     "pkg-config"
    ],
    "host": [
+    "gettext",
+    "libunistring",
     "gettext",
     "libunistring",
     "gettext",
@@ -446,6 +467,8 @@
   },
   "test": {
    "commands": [
+    "test -f \"${PREFIX}/include/idn2.h\"",
+    "test -f \"${PREFIX}/lib/libidn2${SHLIB_EXT}\"",
     "test -f \"${PREFIX}/include/idn2.h\"",
     "test -f \"${PREFIX}/lib/libidn2${SHLIB_EXT}\"",
     "test -f \"${PREFIX}/include/idn2.h\"",
@@ -488,6 +511,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "c_compiler_stub",
     "make",
     "pkg-config"
@@ -513,6 +537,78 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
+    "gnuconfig",
+    "make",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "gettext",
+    "libunistring"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "https://www.gnu.org/software/libidn/#libidn2",
+   "license": "LGPLv2",
+   "license_file": "COPYING",
+   "summary": "Library for internationalized domain names (IDNA2008) support"
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "libidn2"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "hmaarrfk"
+   ]
+  },
+  "package": {
+   "name": "libidn2",
+   "version": "2.3.2"
+  },
+  "requirements": {
+   "build": [
+    "gnuconfig",
+    "c_compiler_stub",
+    "make",
+    "pkg-config"
+   ],
+   "host": [
+    "gettext",
+    "libunistring"
+   ]
+  },
+  "source": {
+   "sha256": "76940cd4e778e8093579a9d195b25fff5e936e9dc6242068528b437a76764f91",
+   "url": "https://ftp.gnu.org/gnu/libidn/libidn2-2.3.2.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -f \"${PREFIX}/include/idn2.h\"",
+    "test -f \"${PREFIX}/lib/libidn2${SHLIB_EXT}\""
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "gnuconfig",
     "make",
     "pkg-config"
    ]
@@ -540,12 +636,13 @@
   ]
  },
  "pinning_version": "2021.07.22.10.53.36",
- "raw_meta_yaml": "{% set version = \"2.3.2\" %}\n\npackage:\n  name: libidn2\n  version: {{ version }}\n\nsource:\n  url: https://ftp.gnu.org/gnu/libidn/libidn2-{{ version }}.tar.gz\n  sha256: 76940cd4e778e8093579a9d195b25fff5e936e9dc6242068528b437a76764f91\n\nbuild:\n  skip: true  # [win]\n  number: 0\n  run_exports:\n    # _Amazing_ backwards compatibility so pin to major number:\n    #    https://abi-laboratory.pro/tracker/timeline/libidn2/\n    - {{ pin_subpackage('libidn2', min_pin='x', max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - make\n    - pkg-config\n  host:\n    - gettext\n    - libunistring\n\ntest:\n  commands:\n    - test -f \"${PREFIX}/include/idn2.h\"\n    - test -f \"${PREFIX}/lib/libidn2${SHLIB_EXT}\"\n\nabout:\n  home: https://www.gnu.org/software/libidn/#libidn2\n  license: LGPLv2\n  license_file: COPYING\n  summary: Library for internationalized domain names (IDNA2008) support\n\nextra:\n  recipe-maintainers:\n    - hmaarrfk\n    # This recipe I got from\n    # - chenghlee\n",
+ "raw_meta_yaml": "{% set version = \"2.3.2\" %}\n\npackage:\n  name: libidn2\n  version: {{ version }}\n\nsource:\n  url: https://ftp.gnu.org/gnu/libidn/libidn2-{{ version }}.tar.gz\n  sha256: 76940cd4e778e8093579a9d195b25fff5e936e9dc6242068528b437a76764f91\n\nbuild:\n  skip: true  # [win]\n  number: 0\n  run_exports:\n    # _Amazing_ backwards compatibility so pin to major number:\n    #    https://abi-laboratory.pro/tracker/timeline/libidn2/\n    - {{ pin_subpackage('libidn2', min_pin='x', max_pin='x') }}\n\nrequirements:\n  build:\n    - gnuconfig  # [unix]\n    - {{ compiler('c') }}\n    - make\n    - pkg-config\n  host:\n    - gettext\n    - libunistring\n\ntest:\n  commands:\n    - test -f \"${PREFIX}/include/idn2.h\"\n    - test -f \"${PREFIX}/lib/libidn2${SHLIB_EXT}\"\n\nabout:\n  home: https://www.gnu.org/software/libidn/#libidn2\n  license: LGPLv2\n  license_file: COPYING\n  summary: Library for internationalized domain names (IDNA2008) support\n\nextra:\n  recipe-maintainers:\n    - hmaarrfk\n    # This recipe I got from\n    # - chenghlee\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "gettext",
+   "gnuconfig",
    "libunistring",
    "make",
    "pkg-config"
@@ -556,6 +653,7 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
+    "gnuconfig",
     "make",
     "pkg-config"
    ]
@@ -586,6 +684,7 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
+    "gnuconfig",
     "make",
     "pkg-config"
    ]
