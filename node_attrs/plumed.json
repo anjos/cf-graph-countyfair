@@ -177,6 +177,23 @@
     "__lazy_json__": "pr_json/698000134.json"
    },
    "data": {
+    "bot_rerun": 1627430993.909292,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.7.2"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/698268105.json"
+   },
+   "data": {
     "bot_rerun": false,
     "migrator_name": "Version",
     "migrator_version": 0,
@@ -1021,7 +1038,7 @@
   "2.6.2": 1,
   "2.7.0": 1,
   "2.7.1": 1,
-  "2.7.2": 1
+  "2.7.2": 2
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1291,7 +1308,7 @@
    "plumed"
   ]
  },
- "pinning_version": "2021.07.27.13.04.27",
+ "pinning_version": "2021.07.27.19.47.02",
  "raw_meta_yaml": "{% set name = \"plumed\" %}\n{% set version = \"2.7.1\" %}\n{% set build = 2 %}\n{% set mpi = mpi or \"nompi\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/plumed/plumed2/archive/v{{ version }}.tar.gz\n  sha256: cb8b5735d8dd61980fa6441f3dde3f33544240ae4177da0f529fb5abb355cd4a\n# This patch is needed for plumed 2.7. It should be removed when upgrading to plumed 2.8\n  patches:\n    - remove-xxd-dep.patch\n\nbuild:\n  number: {{ build }}\n  skip: true  # [win]\n# Most programs should link libplumedWrapper.a so that libplumedKernel.so will be loaded\n# with dlopen. There is no need for pinning thus.\n# Programs linking libplumed.so should pin to min_pin='x.x', max_pin='x'.\n# Programs linking libplumedKernel.so should pin to min_pin='x.x.x'. max_pin='x.x.x'.\n\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\n  {% if mpi != \"nompi\" %}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - llvm-openmp  # [osx]\n    - make\n  host:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - fftw\n    - gsl\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - xdrfile\n    - zlib\n  run:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - gawk\n    - llvm-openmp  # [osx]\n\ntest:\n  commands:\n    - export OMPI_MCA_plm=isolated  # [mpi == \"openmpi\" and linux]\n    - export OMPI_MCA_btl_vader_single_copy_mechanism=none  # [mpi == \"openmpi\" and linux]\n    - export OMPI_MCA_rmaps_base_oversubscribe=yes  # [mpi == \"openmpi\" and linux]\n    - plumed info --root\n    - plumed info --long-version\n    - plumed-patch -h\n    - plumed config has external_blas external_lapack fftw gsl xdrfile zlib\n    - plumed config has asmjit  # [not ppc64le and not aarch64 and not arm64]\n    - plumed config has mpi  # [mpi != \"nompi\"]\n    - $PREFIX/lib/plumed/plumed-runtime -h\n    - test -f $PREFIX/lib/libplumed$SHLIB_EXT\n    - test -f $PREFIX/lib/libplumedWrapper.a\n    - test -f $PREFIX/lib/libplumedKernel$SHLIB_EXT\n\nabout:\n  home: http://www.plumed.org/\n  license: LGPL-3.0-only\n  license_family: GPL\n  license_file: COPYING.LESSER\n  summary: Free energy calculations in molecular systems\n  description: |\n    PLUMED is an open source library for free energy calculations in\n    molecular systems which works together with some of the most\n    popular molecular dynamics engines.\n  doc_url: https://www.plumed.org/doc\n  dev_url: https://github.com/plumed/plumed2\n\nextra:\n  recipe-maintainers:\n    - GiovanniBussi\n",
  "req": {
   "__set__": true,
