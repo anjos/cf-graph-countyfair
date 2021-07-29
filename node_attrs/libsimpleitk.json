@@ -94,7 +94,6 @@
    "osx_arm64": "osx_64"
   },
   "provider": {
-   "linux_ppc64le": "default",
    "win": "azure"
   }
  },
@@ -108,7 +107,7 @@
    "summary": "Development headers and libraries for SimpleITK a simplified interface to the Insight Toolkit."
   },
   "build": {
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -200,10 +199,12 @@
    "summary": "Development headers and libraries for SimpleITK a simplified interface to the Insight Toolkit."
   },
   "build": {
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
+    "blowekamp",
+    "zivy",
     "blowekamp",
     "zivy",
     "blowekamp",
@@ -235,14 +236,22 @@
     "lua     5.3.*",
     "swig    4.0.*",
     "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake   >=3.15",
+    "ninja",
+    "lua     5.3.*",
+    "swig    4.0.*",
+    "c_compiler_stub",
     "cxx_compiler_stub"
    ],
    "host": [
     "libitk-devel  5.2.*",
     "libitk-devel  5.2.*",
+    "libitk-devel  5.2.*",
     "libitk-devel  5.2.*"
    ],
    "run": [
+    "libitk-devel",
     "libitk-devel",
     "libitk-devel",
     "vs2015_runtime",
@@ -253,6 +262,7 @@
    "patches": [
     "0001-Remove-forward-declaration-of-Image-of-deque.patch",
     "0001-Remove-forward-declaration-of-Image-of-deque.patch",
+    "0001-Remove-forward-declaration-of-Image-of-deque.patch",
     "0001-Remove-forward-declaration-of-Image-of-deque.patch"
    ],
    "sha256": "a551636e5d33dff88818bdb2fdaba190184b225d0eee015bfa2ce3a4fb6bdb24",
@@ -260,6 +270,9 @@
   },
   "test": {
    "commands": [
+    "test -d $PREFIX/include/SimpleITK*",
+    "cmake -D \"CMAKE_SYSTEM_PREFIX_PATH:FILEPATH=${PREFIX}\" ./Examples",
+    "cmake --build . --config Release",
     "test -d $PREFIX/include/SimpleITK*",
     "cmake -D \"CMAKE_SYSTEM_PREFIX_PATH:FILEPATH=${PREFIX}\" ./Examples",
     "cmake --build . --config Release",
@@ -277,9 +290,13 @@
     "cxx_compiler_stub",
     "cmake",
     "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "c_compiler_stub",
     "cxx_compiler_stub"
    ],
    "source_files": [
+    "Examples",
     "Examples",
     "Examples",
     "Examples"
@@ -308,7 +325,7 @@
    "summary": "Development headers and libraries for SimpleITK a simplified interface to the Insight Toolkit."
   },
   "build": {
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -392,6 +409,98 @@
    ]
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "http::/www.simpleitk.org",
+   "license": "Apache-2.0",
+   "license_file": "LICENSE",
+   "summary": "Development headers and libraries for SimpleITK a simplified interface to the Insight Toolkit."
+  },
+  "build": {
+   "number": "3"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "blowekamp",
+    "zivy"
+   ]
+  },
+  "package": {
+   "name": "libsimpleitk",
+   "version": "2.1.0"
+  },
+  "requirements": {
+   "build": [
+    "cmake   >=3.15",
+    "ninja",
+    "lua     5.3.*",
+    "swig    4.0.*",
+    "c_compiler_stub",
+    "cxx_compiler_stub"
+   ],
+   "host": [
+    "libitk-devel  5.2.*"
+   ],
+   "run": [
+    "libitk-devel"
+   ]
+  },
+  "source": {
+   "patches": [
+    "0001-Remove-forward-declaration-of-Image-of-deque.patch"
+   ],
+   "sha256": "a551636e5d33dff88818bdb2fdaba190184b225d0eee015bfa2ce3a4fb6bdb24",
+   "url": "https://github.com/SimpleITK/SimpleITK/releases/download/v2.1.0/SimpleITK-2.1.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -d $PREFIX/include/SimpleITK*",
+    "cmake -D \"CMAKE_SYSTEM_PREFIX_PATH:FILEPATH=${PREFIX}\" ./Examples",
+    "cmake --build . --config Release"
+   ],
+   "requires": [
+    "cmake",
+    "c_compiler_stub",
+    "cxx_compiler_stub"
+   ],
+   "source_files": [
+    "Examples"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "lua",
+    "ninja",
+    "swig"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libitk-devel"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libitk-devel"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub"
+   ]
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -399,7 +508,7 @@
   ]
  },
  "pinning_version": "2020.12.02.10.35.15",
- "raw_meta_yaml": "{% set name = \"libsimpleitk\" %}\n{% set version = \"2.1.0\" %}\n{% set sha256 = \"a551636e5d33dff88818bdb2fdaba190184b225d0eee015bfa2ce3a4fb6bdb24\" %}\n\n\n{% set test_cmake_args = \"-D \\\"CMAKE_SYSTEM_PREFIX_PATH:FILEPATH=${PREFIX}\\\" ./Examples\" %}  # [not win]\n{% set test_cmake_args = \"-D \\\"CMAKE_SYSTEM_PREFIX_PATH:FILEPATH=%PREFIX%\\\" ./Examples\" %}  # [win]\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/SimpleITK/SimpleITK/releases/download/v{{ version }}/SimpleITK-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    -  0001-Remove-forward-declaration-of-Image-of-deque.patch\n\nbuild:\n  number: 2\n  skip: true  # [ win and py27]\n\nrequirements:\n  build:\n    - cmake   >=3.15\n    - ninja\n    - lua     5.3.*\n    - swig    4.0.*\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n\n  host:\n    - libitk-devel  5.2.*\n\n  run:\n    - vs2015_runtime  # [win]\n    - {{ pin_compatible('libitk-devel', exact=True) }}\n\ntest:\n  requires:\n    - cmake\n    - {{ compiler(\"c\") }}\n    - {{ compiler(\"cxx\") }}\n  source_files:\n    - Examples\n  commands:\n    - test -d $PREFIX/include/SimpleITK*                                 # [not win]\n    - if not exist %LIBRARY_INC%\\\\SimpleITK* exit 1                      # [win]\n    - cmake -D \"CMAKE_SYSTEM_PREFIX_PATH:FILEPATH=${PREFIX}\" ./Examples  # [not win]\n    - cmake --build . --config Release                                   # [not win]\n\nabout:\n  home: http::/www.simpleitk.org\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: Development headers and libraries for SimpleITK a simplified interface to the Insight Toolkit.\n\nextra:\n  recipe-maintainers:\n    - blowekamp\n    - zivy\n",
+ "raw_meta_yaml": "{% set name = \"libsimpleitk\" %}\n{% set version = \"2.1.0\" %}\n{% set sha256 = \"a551636e5d33dff88818bdb2fdaba190184b225d0eee015bfa2ce3a4fb6bdb24\" %}\n\n\n{% set test_cmake_args = \"-D \\\"CMAKE_SYSTEM_PREFIX_PATH:FILEPATH=${PREFIX}\\\" ./Examples\" %}  # [not win]\n{% set test_cmake_args = \"-D \\\"CMAKE_SYSTEM_PREFIX_PATH:FILEPATH=%PREFIX%\\\" ./Examples\" %}  # [win]\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/SimpleITK/SimpleITK/releases/download/v{{ version }}/SimpleITK-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    -  0001-Remove-forward-declaration-of-Image-of-deque.patch\n\nbuild:\n  number: 3\n  skip: true  # [ win and py27]\n\nrequirements:\n  build:\n    - cmake   >=3.15\n    - ninja\n    - lua     5.3.*\n    - swig    4.0.*\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n\n  host:\n    - libitk-devel  5.2.*\n\n  run:\n    - vs2015_runtime  # [win]\n    - {{ pin_compatible('libitk-devel', exact=True) }}\n\ntest:\n  requires:\n    - cmake\n    - {{ compiler(\"c\") }}\n    - {{ compiler(\"cxx\") }}\n  source_files:\n    - Examples\n  commands:\n    - test -d $PREFIX/include/SimpleITK*                                 # [not win]\n    - if not exist %LIBRARY_INC%\\\\SimpleITK* exit 1                      # [win]\n    - cmake -D \"CMAKE_SYSTEM_PREFIX_PATH:FILEPATH=${PREFIX}\" ./Examples  # [not win]\n    - cmake --build . --config Release                                   # [not win]\n\nabout:\n  home: http::/www.simpleitk.org\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: Development headers and libraries for SimpleITK a simplified interface to the Insight Toolkit.\n\nextra:\n  recipe-maintainers:\n    - blowekamp\n    - zivy\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -499,7 +608,7 @@
    "summary": "Development headers and libraries for SimpleITK a simplified interface to the Insight Toolkit."
   },
   "build": {
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
