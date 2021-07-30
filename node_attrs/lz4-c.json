@@ -205,7 +205,7 @@
    "summary": "Extremely Fast Compression algorithm"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -271,7 +271,9 @@
   },
   "source": {
    "fn": "lz4-1.9.3.tar.gz",
-   "patches": null,
+   "patches": [
+    "patches/CVE-2021-3520.patch"
+   ],
    "sha256": "030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1",
    "url": "https://github.com/lz4/lz4/archive/v1.9.3.tar.gz"
   }
@@ -310,7 +312,7 @@
    "summary": "Extremely Fast Compression algorithm"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -376,7 +378,9 @@
   },
   "source": {
    "fn": "lz4-1.9.3.tar.gz",
-   "patches": null,
+   "patches": [
+    "patches/CVE-2021-3520.patch"
+   ],
    "sha256": "030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1",
    "url": "https://github.com/lz4/lz4/archive/v1.9.3.tar.gz"
   }
@@ -415,7 +419,7 @@
    "summary": "Extremely Fast Compression algorithm"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -481,7 +485,9 @@
   },
   "source": {
    "fn": "lz4-1.9.3.tar.gz",
-   "patches": null,
+   "patches": [
+    "patches/CVE-2021-3520.patch"
+   ],
    "sha256": "030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1",
    "url": "https://github.com/lz4/lz4/archive/v1.9.3.tar.gz"
   }
@@ -520,7 +526,7 @@
    "summary": "Extremely Fast Compression algorithm"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -810,7 +816,13 @@
   "source": {
    "fn": "lz4-1.9.3.tar.gz",
    "patches": [
-    "patches/0002-include-local-header-directory.patch"
+    "patches/CVE-2021-3520.patch",
+    "patches/CVE-2021-3520.patch",
+    "patches/CVE-2021-3520.patch",
+    "patches/CVE-2021-3520.patch",
+    "patches/CVE-2021-3520.patch",
+    "patches/0002-include-local-header-directory.patch",
+    "patches/CVE-2021-3520.patch"
    ],
    "sha256": "030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1",
    "url": "https://github.com/lz4/lz4/archive/v1.9.3.tar.gz"
@@ -832,7 +844,7 @@
    "summary": "Extremely Fast Compression algorithm"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -898,7 +910,9 @@
   },
   "source": {
    "fn": "lz4-1.9.3.tar.gz",
-   "patches": null,
+   "patches": [
+    "patches/CVE-2021-3520.patch"
+   ],
    "sha256": "030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1",
    "url": "https://github.com/lz4/lz4/archive/v1.9.3.tar.gz"
   }
@@ -937,7 +951,7 @@
    "summary": "Extremely Fast Compression algorithm"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1003,7 +1017,9 @@
   },
   "source": {
    "fn": "lz4-1.9.3.tar.gz",
-   "patches": null,
+   "patches": [
+    "patches/CVE-2021-3520.patch"
+   ],
    "sha256": "030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1",
    "url": "https://github.com/lz4/lz4/archive/v1.9.3.tar.gz"
   }
@@ -1041,7 +1057,7 @@
   ]
  },
  "pinning_version": "2020.11.15.19.46.57",
- "raw_meta_yaml": "{% set pkg_name = \"lz4-c\" %}\n{% set name = \"lz4\" %}\n{% set version = \"1.9.3\" %}\n\npackage:\n  name: {{ pkg_name }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1\n  patches:\n    # https://github.com/lz4/lz4/pull/962\n    - patches/0002-include-local-header-directory.patch  # [win]\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}  # [not win]\n    - make  # [not win]\n    - patch  # [unix]\n    - m2-patch  # [win]\n    - m2-gcc-libs  # [win]\n  host:\n  run:\n\noutputs:\n  - name: lz4-c\n    build:\n      # https://abi-laboratory.pro/index.php?view=timeline&l=lz4\n      run_exports:\n        - {{ pin_subpackage(pkg_name, max_pin='x.x') }}\n    test:\n      requires:\n        - pkg-config  # [unix]\n\n      commands:\n        - lz4 -h\n        - lz4c -h    # [unix]\n        - lz4cat -h  # [unix]\n        - unlz4 -h   # [unix]\n\n        - test -f ${PREFIX}/include/lz4.h       # [unix]\n        - test -f ${PREFIX}/include/lz4hc.h     # [unix]\n        - test -f ${PREFIX}/include/lz4frame.h  # [unix]\n\n        - if not exist %LIBRARY_INC%\\\\lz4.h exit 1       # [win]\n        - if not exist %LIBRARY_INC%\\\\lz4hc.h exit 1     # [win]\n        - if not exist %LIBRARY_INC%\\\\lz4frame.h exit 1  # [win]\n\n        - test ! -f ${PREFIX}/lib/liblz4.a      # [unix]\n        - test -f ${PREFIX}/lib/liblz4.dylib  # [osx]\n        - test -f ${PREFIX}/lib/liblz4.so     # [linux]\n\n        - if not exist %LIBRARY_BIN%\\\\liblz4.dll exit 1         # [win]\n        - if not exist %LIBRARY_LIB%\\\\liblz4.lib exit 1         # [win]\n        - if exist %LIBRARY_LIB%\\\\liblz4_static.lib exit 1  # [win]\n\n        - test -f ${PREFIX}/lib/pkgconfig/liblz4.pc  # [unix]\n        - pkg-config --cflags --libs liblz4          # [unix]\n\n  - name: lz4-c-static\n    build:\n      activate_in_script: true\n    script: build_static.sh  # [unix]\n    script: bld_static.bat  # [win]\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/liblz4.a      # [unix]\n        - if not exist %LIBRARY_LIB%\\\\liblz4_static.lib exit 1  # [win]\n\n\nabout:\n  home: https://www.lz4.org\n  license: BSD-2-Clause\n  license_file: lib/LICENSE\n  summary: Extremely Fast Compression algorithm\n  description: |\n    LZ4 is lossless compression algorithm, providing compression speed at 400\n    MB/s per core (0.16 Bytes/cycle). It features an extremely fast decoder,\n    with speed in multiple GB/s per core (0.71 Bytes/cycle). A high compression\n    derivative, called LZ4_HC, is available, trading customizable CPU time for\n    compression ratio. LZ4 library is provided as open source software using a\n    BSD license.\n\nextra:\n  recipe-maintainers:\n    - mingwandroid\n    - rmax\n    - wesm\n    - xhochy\n",
+ "raw_meta_yaml": "{% set pkg_name = \"lz4-c\" %}\n{% set name = \"lz4\" %}\n{% set version = \"1.9.3\" %}\n\npackage:\n  name: {{ pkg_name }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1\n  patches:\n    # https://github.com/lz4/lz4/pull/962\n    - patches/0002-include-local-header-directory.patch  # [win]\n    - patches/CVE-2021-3520.patch\n\nbuild:\n  number: 1\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}  # [not win]\n    - make  # [not win]\n    - patch  # [unix]\n    - m2-patch  # [win]\n    - m2-gcc-libs  # [win]\n  host:\n  run:\n\noutputs:\n  - name: lz4-c\n    build:\n      # https://abi-laboratory.pro/index.php?view=timeline&l=lz4\n      run_exports:\n        - {{ pin_subpackage(pkg_name, max_pin='x.x') }}\n    test:\n      requires:\n        - pkg-config  # [unix]\n\n      commands:\n        - lz4 -h\n        - lz4c -h    # [unix]\n        - lz4cat -h  # [unix]\n        - unlz4 -h   # [unix]\n\n        - test -f ${PREFIX}/include/lz4.h       # [unix]\n        - test -f ${PREFIX}/include/lz4hc.h     # [unix]\n        - test -f ${PREFIX}/include/lz4frame.h  # [unix]\n\n        - if not exist %LIBRARY_INC%\\\\lz4.h exit 1       # [win]\n        - if not exist %LIBRARY_INC%\\\\lz4hc.h exit 1     # [win]\n        - if not exist %LIBRARY_INC%\\\\lz4frame.h exit 1  # [win]\n\n        - test ! -f ${PREFIX}/lib/liblz4.a      # [unix]\n        - test -f ${PREFIX}/lib/liblz4.dylib  # [osx]\n        - test -f ${PREFIX}/lib/liblz4.so     # [linux]\n\n        - if not exist %LIBRARY_BIN%\\\\liblz4.dll exit 1         # [win]\n        - if not exist %LIBRARY_LIB%\\\\liblz4.lib exit 1         # [win]\n        - if exist %LIBRARY_LIB%\\\\liblz4_static.lib exit 1  # [win]\n\n        - test -f ${PREFIX}/lib/pkgconfig/liblz4.pc  # [unix]\n        - pkg-config --cflags --libs liblz4          # [unix]\n\n  - name: lz4-c-static\n    build:\n      activate_in_script: true\n    script: build_static.sh  # [unix]\n    script: bld_static.bat  # [win]\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/liblz4.a      # [unix]\n        - if not exist %LIBRARY_LIB%\\\\liblz4_static.lib exit 1  # [win]\n\n\nabout:\n  home: https://www.lz4.org\n  license: BSD-2-Clause\n  license_file: lib/LICENSE\n  summary: Extremely Fast Compression algorithm\n  description: |\n    LZ4 is lossless compression algorithm, providing compression speed at 400\n    MB/s per core (0.16 Bytes/cycle). It features an extremely fast decoder,\n    with speed in multiple GB/s per core (0.71 Bytes/cycle). A high compression\n    derivative, called LZ4_HC, is available, trading customizable CPU time for\n    compression ratio. LZ4 library is provided as open source software using a\n    BSD license.\n\nextra:\n  recipe-maintainers:\n    - mingwandroid\n    - rmax\n    - wesm\n    - xhochy\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1126,7 +1142,7 @@
    "summary": "Extremely Fast Compression algorithm"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1186,7 +1202,8 @@
   "source": {
    "fn": "lz4-1.9.3.tar.gz",
    "patches": [
-    "patches/0002-include-local-header-directory.patch"
+    "patches/0002-include-local-header-directory.patch",
+    "patches/CVE-2021-3520.patch"
    ],
    "sha256": "030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1",
    "url": "https://github.com/lz4/lz4/archive/v1.9.3.tar.gz"
