@@ -438,7 +438,11 @@
  "archived": false,
  "bad": false,
  "branch": "master",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  }
+ },
  "feedstock_name": "goosefem",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -592,10 +596,73 @@
    "recipe-maintainers": [
     "tdegeus",
     "tdegeus",
+    "tdegeus",
     "tdegeus"
    ]
   },
   "outputs": [
+   {
+    "name": "goosefem",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "setuptools_scm",
+      "xtensor"
+     ],
+     "run": [
+      "xtensor",
+      "eigen"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GooseFEM",
+      "test -f ${PREFIX}/include/GooseFEM/GooseFEM.h",
+      "test -f ${PREFIX}/lib/cmake/GooseFEM/GooseFEMConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-goosefem",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "xtensor",
+      "eigen",
+      "pybind11",
+      "xtensor-python",
+      "pyxtensor",
+      "python",
+      "numpy",
+      "pip",
+      "setuptools_scm"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "GooseFEM"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
    {
     "name": "goosefem",
     "requirements": {
@@ -948,6 +1015,138 @@
    ]
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "Finite element simulations.",
+   "dev_url": "https://github.com/tdegeus/GooseFEM",
+   "doc_url": "https://goosefem.rtfd.io",
+   "home": "https://github.com/tdegeus/GooseFEM",
+   "license": "GPL-3.0",
+   "license_family": "GPL",
+   "license_file": "LICENSE",
+   "summary": "Finite element simulations."
+  },
+  "build": {
+   "number": "0",
+   "script_env": "SETUPTOOLS_SCM_PRETEND_VERSION=0.12.4"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "tdegeus"
+   ]
+  },
+  "outputs": [
+   {
+    "name": "goosefem",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "setuptools_scm",
+      "xtensor"
+     ],
+     "run": [
+      "xtensor",
+      "eigen"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GooseFEM",
+      "test -f ${PREFIX}/include/GooseFEM/GooseFEM.h",
+      "test -f ${PREFIX}/lib/cmake/GooseFEM/GooseFEMConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-goosefem",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "xtensor",
+      "eigen",
+      "pybind11",
+      "xtensor-python",
+      "pyxtensor",
+      "python",
+      "numpy",
+      "pip",
+      "setuptools_scm"
+     ],
+     "run": [
+      "python"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "GooseFEM"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "goosefem-split",
+   "version": "0.12.4"
+  },
+  "source": {
+   "sha256": "ae52e649b450d408299e4c99f54eb3bba5c858cc5d2ed70b9d9963e691a5a34a",
+   "url": "https://github.com/tdegeus/GooseFEM/archive/v0.12.4.tar.gz"
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cmake",
+    "cxx_compiler_stub",
+    "make",
+    "ninja"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "eigen",
+    "numpy",
+    "pip",
+    "pybind11",
+    "python",
+    "pyxtensor",
+    "setuptools_scm",
+    "xtensor",
+    "xtensor-python"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "eigen",
+    "python",
+    "xtensor"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pip"
+   ]
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -956,7 +1155,7 @@
   ]
  },
  "pinning_version": "2021.07.27.19.47.02",
- "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"GooseFEM\" %}\n{% set version = \"0.12.4\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: ae52e649b450d408299e4c99f54eb3bba5c858cc5d2ed70b9d9963e691a5a34a\n\nbuild:\n  number: 0\n  script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - setuptools_scm\n        - xtensor\n      run:\n        - xtensor\n        - eigen\n\n    test:\n      commands:\n        - test -d ${PREFIX}/include/{{ name }}  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/{{ name }}.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\{{ name }}.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - ninja\n      host:\n        - xtensor\n        - eigen\n        - pybind11\n        - xtensor-python\n        - pyxtensor\n        - python\n        - numpy\n        - pip\n        - setuptools_scm\n      run:\n        - python\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: GPL-3.0\n  license_family: GPL\n  license_file: LICENSE\n  summary: Finite element simulations.\n  description: Finite element simulations.\n  doc_url: https://goosefem.rtfd.io\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
+ "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"GooseFEM\" %}\n{% set version = \"0.12.4\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: ae52e649b450d408299e4c99f54eb3bba5c858cc5d2ed70b9d9963e691a5a34a\n\nbuild:\n  number: 0\n  script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    requirements:\n      build:\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n        - setuptools_scm                      # [build_platform != target_platform]\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - setuptools_scm\n        - xtensor\n      run:\n        - xtensor\n        - eigen\n\n    test:\n      commands:\n        - test -d ${PREFIX}/include/{{ name }}  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/{{ name }}.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\{{ name }}.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - numpy                               # [build_platform != target_platform]\n        - setuptools_scm                      # [build_platform != target_platform]\n        - {{ compiler('cxx') }}\n        - cmake\n        - ninja\n      host:\n        - xtensor\n        - eigen\n        - pybind11\n        - xtensor-python\n        - pyxtensor\n        - python\n        - numpy\n        - pip\n        - setuptools_scm\n      run:\n        - python\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: GPL-3.0\n  license_family: GPL\n  license_file: LICENSE\n  summary: Finite element simulations.\n  description: Finite element simulations.\n  doc_url: https://goosefem.rtfd.io\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
  "req": {
   "__set__": true,
   "elements": [
