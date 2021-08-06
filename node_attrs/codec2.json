@@ -94,19 +94,107 @@
    "summary": "An open source low bit rate speech codec"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "codec2"
-   ]
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "codec2",
    "recipe-maintainers": [
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/codec2/codec2.h",
+      "test -f $PREFIX/include/codec2/version.h",
+      "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.sh",
+    "test": {
+     "commands": [
+      "c2dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2sim || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_ch || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "deframer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_channel || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fm_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "framer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod_ext_vco || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "insert_errors || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_noise || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_deframe_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_frame_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "codec2",
-   "version": "0.9.2"
+   "name": "codec2-split",
+   "version": "1.0.0"
   },
   "requirements": {
    "build": [
@@ -118,28 +206,10 @@
   "source": {
    "patches": [
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
+    "0002-Add-optional-installation-of-command-line-programs.patch"
    ],
-   "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
-   "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "test -f $PREFIX/include/codec2/codec2.h",
-    "test -f $PREFIX/include/codec2/version.h",
-    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
-   ]
+   "sha256": "020f34dfa08cf66126633b3899a2f732995ffd471f512254c601e17cc561985d",
+   "url": "https://github.com/drowe67/codec2/archive/v1.0.0.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -153,11 +223,15 @@
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "test": {
    "__set__": true,
@@ -175,19 +249,107 @@
    "summary": "An open source low bit rate speech codec"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "codec2"
-   ]
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "codec2",
    "recipe-maintainers": [
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/codec2/codec2.h",
+      "test -f $PREFIX/include/codec2/version.h",
+      "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.sh",
+    "test": {
+     "commands": [
+      "c2dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2sim || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_ch || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "deframer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_channel || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fm_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "framer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod_ext_vco || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "insert_errors || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_noise || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_deframe_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_frame_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "codec2",
-   "version": "0.9.2"
+   "name": "codec2-split",
+   "version": "1.0.0"
   },
   "requirements": {
    "build": [
@@ -199,28 +361,10 @@
   "source": {
    "patches": [
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
+    "0002-Add-optional-installation-of-command-line-programs.patch"
    ],
-   "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
-   "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "test -f $PREFIX/include/codec2/codec2.h",
-    "test -f $PREFIX/include/codec2/version.h",
-    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
-   ]
+   "sha256": "020f34dfa08cf66126633b3899a2f732995ffd471f512254c601e17cc561985d",
+   "url": "https://github.com/drowe67/codec2/archive/v1.0.0.tar.gz"
   }
  },
  "linux_aarch64_requirements": {
@@ -234,11 +378,15 @@
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "test": {
    "__set__": true,
@@ -256,19 +404,107 @@
    "summary": "An open source low bit rate speech codec"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "codec2"
-   ]
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "codec2",
    "recipe-maintainers": [
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/codec2/codec2.h",
+      "test -f $PREFIX/include/codec2/version.h",
+      "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.sh",
+    "test": {
+     "commands": [
+      "c2dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2sim || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_ch || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "deframer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_channel || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fm_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "framer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod_ext_vco || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "insert_errors || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_noise || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_deframe_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_frame_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "codec2",
-   "version": "0.9.2"
+   "name": "codec2-split",
+   "version": "1.0.0"
   },
   "requirements": {
    "build": [
@@ -280,28 +516,10 @@
   "source": {
    "patches": [
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
+    "0002-Add-optional-installation-of-command-line-programs.patch"
    ],
-   "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
-   "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "test -f $PREFIX/include/codec2/codec2.h",
-    "test -f $PREFIX/include/codec2/version.h",
-    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
-   ]
+   "sha256": "020f34dfa08cf66126633b3899a2f732995ffd471f512254c601e17cc561985d",
+   "url": "https://github.com/drowe67/codec2/archive/v1.0.0.tar.gz"
   }
  },
  "linux_ppc64le_requirements": {
@@ -315,11 +533,15 @@
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "test": {
    "__set__": true,
@@ -337,17 +559,10 @@
    "summary": "An open source low bit rate speech codec"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "codec2",
-    "codec2",
-    "codec2",
-    "codec2",
-    "codec2",
-    "codec2"
-   ]
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "codec2",
    "recipe-maintainers": [
     "ryanvolz",
     "ryanvolz",
@@ -357,9 +572,541 @@
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/codec2/codec2.h",
+      "test -f $PREFIX/include/codec2/version.h",
+      "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.sh",
+    "test": {
+     "commands": [
+      "c2dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2sim || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_ch || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "deframer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_channel || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fm_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "framer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod_ext_vco || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "insert_errors || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_noise || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_deframe_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_frame_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/codec2/codec2.h",
+      "test -f $PREFIX/include/codec2/version.h",
+      "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.sh",
+    "test": {
+     "commands": [
+      "c2dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2sim || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_ch || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "deframer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_channel || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fm_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "framer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod_ext_vco || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "insert_errors || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_noise || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_deframe_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_frame_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/codec2/codec2.h",
+      "test -f $PREFIX/include/codec2/version.h",
+      "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.sh",
+    "test": {
+     "commands": [
+      "c2dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2sim || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_ch || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "deframer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_channel || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fm_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "framer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod_ext_vco || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "insert_errors || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_noise || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_deframe_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_frame_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/codec2/codec2.h",
+      "test -f $PREFIX/include/codec2/version.h",
+      "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.sh",
+    "test": {
+     "commands": [
+      "c2dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2sim || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_ch || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "deframer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_channel || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fm_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "framer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod_ext_vco || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "insert_errors || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_noise || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_deframe_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_frame_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/codec2/codec2.h",
+      "test -f $PREFIX/include/codec2/version.h",
+      "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.sh",
+    "test": {
+     "commands": [
+      "c2dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2sim || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_ch || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "deframer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_channel || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fm_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "framer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod_ext_vco || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "insert_errors || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_noise || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_deframe_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_frame_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "m2w64_c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.bat",
+    "test": {
+     "commands": [
+      "if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\codec2.h exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\version.h exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\bin\\\\libcodec2.dll exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.dll.a exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.lib exit 1"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "m2w64_c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.bat",
+    "test": {
+     "commands": [
+      "c2dec || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "c2enc || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "c2sim || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "cohpsk_ch || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "cohpsk_demod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "cohpsk_get_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "cohpsk_mod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "cohpsk_put_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "deframer || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fdmdv_channel || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fdmdv_demod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fdmdv_get_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fdmdv_mod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fdmdv_put_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fm_demod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fmfsk_demod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fmfsk_mod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "framer || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_data_raw_rx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_data_raw_tx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_data_rx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_data_tx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_mixed_rx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_mixed_tx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_rx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_tx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fsk_demod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fsk_get_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fsk_mod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fsk_mod_ext_vco || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fsk_put_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "insert_errors || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "ldpc_dec || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "ldpc_enc || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "ldpc_noise || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "ofdm_get_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "ofdm_put_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "vhf_deframe_c2 || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "vhf_frame_c2 || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\""
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "codec2",
-   "version": "0.9.2"
+   "name": "codec2-split",
+   "version": "1.0.0"
   },
   "requirements": {
    "build": [
@@ -386,113 +1133,23 @@
   "source": {
    "patches": [
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch",
+    "0002-Add-optional-installation-of-command-line-programs.patch",
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch",
+    "0002-Add-optional-installation-of-command-line-programs.patch",
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch",
+    "0002-Add-optional-installation-of-command-line-programs.patch",
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch",
+    "0002-Add-optional-installation-of-command-line-programs.patch",
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch",
+    "0002-Add-optional-installation-of-command-line-programs.patch",
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
+    "0002-Add-optional-installation-of-command-line-programs.patch"
    ],
-   "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
-   "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "test -f $PREFIX/include/codec2/codec2.h",
-    "test -f $PREFIX/include/codec2/version.h",
-    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}",
-    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "test -f $PREFIX/include/codec2/codec2.h",
-    "test -f $PREFIX/include/codec2/version.h",
-    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}",
-    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "test -f $PREFIX/include/codec2/codec2.h",
-    "test -f $PREFIX/include/codec2/version.h",
-    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}",
-    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "test -f $PREFIX/include/codec2/codec2.h",
-    "test -f $PREFIX/include/codec2/version.h",
-    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}",
-    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "test -f $PREFIX/include/codec2/codec2.h",
-    "test -f $PREFIX/include/codec2/version.h",
-    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}",
-    "c2dec --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "c2enc --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "drs232 --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "drs232_ldpc --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fdmdv_demod --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fdmdv_get_test_bits --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fdmdv_mod --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fdmdv_put_test_bits --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fm_demod --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fsk_mod --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "insert_errors --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\codec2.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\version.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\libcodec2.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.dll.a exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.lib exit 1"
-   ]
+   "sha256": "020f34dfa08cf66126633b3899a2f732995ffd471f512254c601e17cc561985d",
+   "url": "https://github.com/drowe67/codec2/archive/v1.0.0.tar.gz"
   }
  },
- "name": "codec2",
+ "name": "codec2-split",
  "new_version": "1.0.0",
  "new_version_attempts": {
   "1.0.0": 1
@@ -509,19 +1166,107 @@
    "summary": "An open source low bit rate speech codec"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "codec2"
-   ]
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "codec2",
    "recipe-maintainers": [
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/codec2/codec2.h",
+      "test -f $PREFIX/include/codec2/version.h",
+      "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.sh",
+    "test": {
+     "commands": [
+      "c2dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2sim || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_ch || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "deframer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_channel || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fm_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "framer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod_ext_vco || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "insert_errors || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_noise || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_deframe_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_frame_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "codec2",
-   "version": "0.9.2"
+   "name": "codec2-split",
+   "version": "1.0.0"
   },
   "requirements": {
    "build": [
@@ -533,28 +1278,10 @@
   "source": {
    "patches": [
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
+    "0002-Add-optional-installation-of-command-line-programs.patch"
    ],
-   "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
-   "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "test -f $PREFIX/include/codec2/codec2.h",
-    "test -f $PREFIX/include/codec2/version.h",
-    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
-   ]
+   "sha256": "020f34dfa08cf66126633b3899a2f732995ffd471f512254c601e17cc561985d",
+   "url": "https://github.com/drowe67/codec2/archive/v1.0.0.tar.gz"
   }
  },
  "osx_64_requirements": {
@@ -568,11 +1295,15 @@
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "test": {
    "__set__": true,
@@ -590,19 +1321,107 @@
    "summary": "An open source low bit rate speech codec"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "codec2"
-   ]
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "codec2",
    "recipe-maintainers": [
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/codec2/codec2.h",
+      "test -f $PREFIX/include/codec2/version.h",
+      "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.sh",
+    "test": {
+     "commands": [
+      "c2dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "c2sim || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_ch || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "cohpsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "deframer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_channel || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fdmdv_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fm_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fmfsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "framer || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_raw_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_data_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_mixed_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_rx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "freedv_tx || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_demod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_mod_ext_vco || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "fsk_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "insert_errors || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_dec || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_enc || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ldpc_noise || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_get_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "ofdm_put_test_bits || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_deframe_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "vhf_frame_c2 || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "codec2",
-   "version": "0.9.2"
+   "name": "codec2-split",
+   "version": "1.0.0"
   },
   "requirements": {
    "build": [
@@ -614,28 +1433,10 @@
   "source": {
    "patches": [
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
+    "0002-Add-optional-installation-of-command-line-programs.patch"
    ],
-   "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
-   "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "c2dec --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "c2enc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232 --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "drs232_ldpc --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_get_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fdmdv_put_test_bits --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fm_demod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "fsk_mod --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "insert_errors --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
-    "test -f $PREFIX/include/codec2/codec2.h",
-    "test -f $PREFIX/include/codec2/version.h",
-    "test -f $PREFIX/lib/libcodec2${SHLIB_EXT}"
-   ]
+   "sha256": "020f34dfa08cf66126633b3899a2f732995ffd471f512254c601e17cc561985d",
+   "url": "https://github.com/drowe67/codec2/archive/v1.0.0.tar.gz"
   }
  },
  "osx_arm64_requirements": {
@@ -649,11 +1450,15 @@
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "test": {
    "__set__": true,
@@ -663,16 +1468,18 @@
  "outputs_names": {
   "__set__": true,
   "elements": [
-   "codec2"
+   "codec2",
+   "libcodec2"
   ]
  },
  "pinning_version": "2021.08.05.18.49.42",
- "raw_meta_yaml": "{% set name = \"codec2\" %}\n{% set version = \"0.9.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/drowe67/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c\n  patches:\n    - 0001-Fix-CMake-include-of-GetPrerequisites.patch\n    - 0002-Make-native-build-compatible-with-cmake-within-cmake.patch\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage('codec2', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    # upstream does not support compiling with MSVC\n    - {{ compiler('m2w64_c') }}  # [win]\n    - cmake\n    - ninja\n\ntest:\n  commands:\n    # verify that executables can be run\n    {% set cmds = [\"c2dec\", \"c2enc\", \"drs232\", \"drs232_ldpc\", \"fdmdv_demod\"] %}\n    {% set cmds = cmds + [\"fdmdv_get_test_bits\", \"fdmdv_mod\", \"fdmdv_put_test_bits\"] %}\n    {% set cmds = cmds + [\"fm_demod\", \"fsk_mod\", \"insert_errors\"] %}\n    {% for cmd in cmds %}\n    - {{ cmd }} --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi  # [not win]\n    - {{ cmd }} --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"  # [win]\n    {% endfor %}\n\n    # verify that (some) headers get installed\n    - test -f $PREFIX/include/codec2/codec2.h  # [not win]\n    - test -f $PREFIX/include/codec2/version.h  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\codec2.h exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\version.h exit 1  # [win]\n\n    # verify that libraries get installed\n    - test -f $PREFIX/lib/libcodec2${SHLIB_EXT}  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\libcodec2.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.dll.a exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.lib exit 1  # [win]\n\nabout:\n  home: http://www.rowetel.com/codec2.html\n  license: LGPL-2.1-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: 'An open source low bit rate speech codec'\n  description: |\n    Open source speech codec designed for communications quality speech between 450\n    and 3200 bit/s. The main application is low bandwidth HF/VHF digital radio.\n  dev_url: https://github.com/drowe67/codec2\n\nextra:\n  recipe-maintainers:\n    - ryanvolz\n",
+ "raw_meta_yaml": "{% set name = \"codec2\" %}\n{% set version = \"1.0.0\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/drowe67/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 020f34dfa08cf66126633b3899a2f732995ffd471f512254c601e17cc561985d\n  patches:\n    - 0001-Fix-CMake-include-of-GetPrerequisites.patch\n    - 0002-Add-optional-installation-of-command-line-programs.patch\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    # upstream does not support compiling with MSVC\n    - {{ compiler('m2w64_c') }}  # [win]\n    - cmake\n    - ninja\n\noutputs:\n  - name: libcodec2\n    script: install_libcodec2.bat  # [win]\n    script: install_libcodec2.sh  # [not win]\n    build:\n      run_exports:\n        - {{ pin_subpackage('libcodec2', max_pin='x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}  # [not win]\n        - {{ compiler('m2w64_c') }}  # [win]\n        - cmake\n        - ninja\n    test:\n      commands:\n        # verify that (some) headers get installed\n        - test -f $PREFIX/include/codec2/codec2.h  # [not win]\n        - test -f $PREFIX/include/codec2/version.h  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\codec2.h exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\version.h exit 1  # [win]\n\n        # verify that libraries get installed\n        - test -f $PREFIX/lib/libcodec2${SHLIB_EXT}  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\libcodec2.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.dll.a exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.lib exit 1  # [win]\n\n  - name: codec2\n    script: install_codec2.bat  # [win]\n    script: install_codec2.sh  # [not win]\n    build:\n      run_exports:\n        - {{ pin_subpackage('libcodec2', max_pin='x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}  # [not win]\n        - {{ compiler('m2w64_c') }}  # [win]\n        - cmake\n        - ninja\n      host:\n        - libcodec2\n      run:\n        - {{ pin_subpackage('libcodec2', exact=True) }}\n    test:\n      commands:\n        # verify that executables can be run\n        # don't test ofdm_demod, ofdm_mod, and tollr\n        # because they don't conform to the pattern (print usage, return 1)\n        {% set cmds = [\"c2dec\", \"c2enc\", \"c2sim\", \"cohpsk_ch\", \"cohpsk_demod\"] %}\n        {% set cmds = cmds + [\"cohpsk_get_test_bits\", \"cohpsk_mod\", \"cohpsk_put_test_bits\"] %}\n        {% set cmds = cmds + [\"deframer\", \"fdmdv_channel\", \"fdmdv_demod\"] %}\n        {% set cmds = cmds + [\"fdmdv_get_test_bits\", \"fdmdv_mod\", \"fdmdv_put_test_bits\"] %}\n        {% set cmds = cmds + [\"fm_demod\", \"fmfsk_demod\", \"fmfsk_mod\", \"framer\"] %}\n        {% set cmds = cmds + [\"freedv_data_raw_rx\", \"freedv_data_raw_tx\"] %}\n        {% set cmds = cmds + [\"freedv_data_rx\", \"freedv_data_tx\"] %}\n        {% set cmds = cmds + [\"freedv_mixed_rx\", \"freedv_mixed_tx\"] %}\n        {% set cmds = cmds + [\"freedv_rx\", \"freedv_tx\"] %}\n        {% set cmds = cmds + [\"fsk_demod\", \"fsk_get_test_bits\", \"fsk_mod\"] %}\n        {% set cmds = cmds + [\"fsk_mod_ext_vco\", \"fsk_put_test_bits\", \"insert_errors\"] %}\n        {% set cmds = cmds + [\"ldpc_dec\", \"ldpc_enc\", \"ldpc_noise\"] %}\n        {% set cmds = cmds + [\"ofdm_get_test_bits\", \"ofdm_put_test_bits\"] %}\n        {% set cmds = cmds + [\"vhf_deframe_c2\", \"vhf_frame_c2\"] %}\n        {% for cmd in cmds %}\n        - {{ cmd }} || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi  # [not win]\n        - {{ cmd }} || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"  # [win]\n        {% endfor %}\n\nabout:\n  home: http://www.rowetel.com/codec2.html\n  license: LGPL-2.1-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: An open source low bit rate speech codec\n  description: |\n    Open source speech codec designed for communications quality speech between 450\n    and 3200 bit/s. The main application is low bandwidth HF/VHF digital radio.\n  dev_url: https://github.com/drowe67/codec2\n\nextra:\n  feedstock-name: codec2\n  recipe-maintainers:\n    - ryanvolz\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "cmake",
+   "libcodec2",
    "m2w64_c_compiler_stub",
    "ninja"
   ]
@@ -690,13 +1497,15 @@
   "host": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "libcodec2"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "libcodec2"
    ]
   },
   "test": {
@@ -718,19 +1527,23 @@
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "test": {
    "__set__": true,
    "elements": []
   }
  },
- "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz",
- "version": "0.9.2",
+ "url": "https://github.com/drowe67/codec2/archive/v1.0.0.tar.gz",
+ "version": "1.0.0",
  "win_64_meta_yaml": {
   "about": {
    "description": "Open source speech codec designed for communications quality speech between 450\nand 3200 bit/s. The main application is low bandwidth HF/VHF digital radio.\n",
@@ -742,19 +1555,109 @@
    "summary": "An open source low bit rate speech codec"
   },
   "build": {
-   "number": "1",
-   "run_exports": [
-    "codec2"
-   ]
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "codec2",
    "recipe-maintainers": [
     "ryanvolz"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "libcodec2",
+    "requirements": {
+     "build": [
+      "m2w64_c_compiler_stub",
+      "cmake",
+      "ninja"
+     ]
+    },
+    "script": "install_libcodec2.bat",
+    "test": {
+     "commands": [
+      "if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\codec2.h exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\version.h exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\bin\\\\libcodec2.dll exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.dll.a exit 1",
+      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.lib exit 1"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcodec2"
+     ]
+    },
+    "name": "codec2",
+    "requirements": {
+     "build": [
+      "m2w64_c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libcodec2"
+     ],
+     "run": [
+      "libcodec2"
+     ]
+    },
+    "script": "install_codec2.bat",
+    "test": {
+     "commands": [
+      "c2dec || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "c2enc || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "c2sim || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "cohpsk_ch || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "cohpsk_demod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "cohpsk_get_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "cohpsk_mod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "cohpsk_put_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "deframer || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fdmdv_channel || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fdmdv_demod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fdmdv_get_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fdmdv_mod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fdmdv_put_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fm_demod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fmfsk_demod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fmfsk_mod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "framer || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_data_raw_rx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_data_raw_tx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_data_rx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_data_tx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_mixed_rx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_mixed_tx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_rx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "freedv_tx || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fsk_demod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fsk_get_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fsk_mod || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fsk_mod_ext_vco || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "fsk_put_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "insert_errors || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "ldpc_dec || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "ldpc_enc || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "ldpc_noise || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "ofdm_get_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "ofdm_put_test_bits || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "vhf_deframe_c2 || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
+      "vhf_frame_c2 || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\""
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "codec2",
-   "version": "0.9.2"
+   "name": "codec2-split",
+   "version": "1.0.0"
   },
   "requirements": {
    "build": [
@@ -766,30 +1669,10 @@
   "source": {
    "patches": [
     "0001-Fix-CMake-include-of-GetPrerequisites.patch",
-    "0002-Make-native-build-compatible-with-cmake-within-cmake.patch"
+    "0002-Add-optional-installation-of-command-line-programs.patch"
    ],
-   "sha256": "19181a446f4df3e6d616b50cabdac4485abb9cd3242cf312a0785f892ed4c76c",
-   "url": "https://github.com/drowe67/codec2/archive/v0.9.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "c2dec --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "c2enc --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "drs232 --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "drs232_ldpc --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fdmdv_demod --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fdmdv_get_test_bits --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fdmdv_mod --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fdmdv_put_test_bits --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fm_demod --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "fsk_mod --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "insert_errors --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\codec2.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\include\\\\codec2\\\\version.h exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\bin\\\\libcodec2.dll exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.dll.a exit 1",
-    "if not exist %PREFIX%\\\\Library\\\\lib\\\\libcodec2.lib exit 1"
-   ]
+   "sha256": "020f34dfa08cf66126633b3899a2f732995ffd471f512254c601e17cc561985d",
+   "url": "https://github.com/drowe67/codec2/archive/v1.0.0.tar.gz"
   }
  },
  "win_64_requirements": {
@@ -803,11 +1686,15 @@
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libcodec2"
+   ]
   },
   "test": {
    "__set__": true,
