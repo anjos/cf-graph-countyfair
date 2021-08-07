@@ -18,6 +18,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/705898964.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.23"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -371,13 +388,17 @@
  },
  "name": "gpsd",
  "new_version": "3.23",
+ "new_version_attempts": {
+  "3.23": 1
+ },
+ "new_version_errors": {},
  "outputs_names": {
   "__set__": true,
   "elements": [
    "gpsd"
   ]
  },
- "pinning_version": "2021.08.02.10.03.47",
+ "pinning_version": "2021.08.07.07.31.39",
  "raw_meta_yaml": "{% set name = \"gpsd\" %}\n{% set version = \"3.22\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: http://download.savannah.gnu.org/releases/{{ name }}/{{ name }}-{{ version }}.tar.gz\n    sha256: 783fdf2a5f78a593230c7bfa8b409956545765563224c6c56ad69cc6c2a637a3\n    patches:\n      - fix_build.patch\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n  run_exports:\n    - {{ pin_subpackage('gpsd', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ cdt('libudev') }}\n    - {{ cdt('libudev-devel') }}\n    - scons\n  host:\n    - python\n    - libusb\n    - ncurses\n    - pyserial\n    - matplotlib-base\n  run:\n    - python\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/pkgconfig/libgps.pc  # [unix]\n    - test -f $PREFIX/include/gps.h  # [unix]\n    - test -f $PREFIX/bin/gpsfake  # [unix]\n\n\nabout:\n  home: https://gpsd.io\n  license:  BSD-2-Clause\n  license_file:\n    - COPYING\n  summary: gpsd is a service daemon that monitors one or more GPSes or AIS receivers attached to a host computer through serial or USB ports, making all data on the location/course/velocity of the sensors available to be queried on TCP port 2947 of the host computer.\n\nextra:\n  recipe-maintainers:\n    - Tobias-Fischer\n",
  "req": {
   "__set__": true,
