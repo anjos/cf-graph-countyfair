@@ -164,6 +164,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/709136510.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.0.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -356,10 +373,11 @@
   }
  },
  "name": "omicron",
- "new_version": false,
+ "new_version": "3.0.0",
  "new_version_attempts": {
   "2.4.0": 2,
-  "2.4.1": 1
+  "2.4.1": 1,
+  "3.0.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -470,7 +488,7 @@
    "omicron"
   ]
  },
- "pinning_version": "2021.03.21.09.23.20",
+ "pinning_version": "2021.08.11.13.32.18",
  "raw_meta_yaml": "{% set name = \"Omicron\" %}\n{% set version = \"2.4.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://git.ligo.org/virgo/virgoapp/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 24a4876f6ae7c2ed28aa01f7ac1424349d7d00b5c3b434764a502e1db24c004e\n  patches:\n    # use C++17 standard (required to link against ROOT>=6.14)\n    - c++17.patch\n    # add missing fftw link (only required on macos for some reason)\n    - fft-include.patch   # [osx]\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: 2\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.9.0\n    - make  # [unix]\n    - pkg-config  # [unix]\n  host:\n    - fftw  # [osx]\n    - gwollum {{ version }}\n    - root_base\n    - root-binaries\n  run:\n    - fftw  # [osx]\n    - gwollum\n    - root_base\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    # sanity check\n    - omicron version\n    - test -x ${PREFIX}/bin/omicron-listfile  # [unix]\n    - test -x ${PREFIX}/bin/omicron-plot  # [unix]\n    - test -x ${PREFIX}/bin/omicron-print  # [unix]\n    - test -x ${PREFIX}/bin/omicron-scanfile  # [unix]\n    # check pkg-config\n    - test \"$(pkg-config --print-errors --modversion omicron)\" == \"${PKG_VERSION}\"  # [unix]\n\nabout:\n  home: https://virgo.docs.ligo.org/virgoapp/{{ name }}/\n  doc_url: https://virgo.docs.ligo.org/virgoapp/{{ name }}/\n  dev_url: https://git.ligo.org/virgo/virgoapp/{{ name }}.git\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: An algorithm to detect and characterize transient events in gravitational-wave detectors\n  description: |\n    Omicron has been derived from a well-known 'burst-type' search pipeline\n    called Q-pipeline (a.k.a Omega).  Q-pipeline is able to detect and\n    characterize detector glitches with a very good efficiency and precision.\n    So, the idea was to adapt it for detector characterization purposes,\n    i.e. to run it over many auxiliary channels.  To achieve this, the\n    original matlab code has been replaced by a C++ architecture and many\n    steps have been removed to run faster.  The name Omicron was chosen to\n    recall the Omega inheritance.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n",
  "req": {
   "__set__": true,
@@ -525,7 +543,7 @@
    ]
   }
  },
- "smithy_version": "3.9.0",
+ "smithy_version": "3.12",
  "strong_exports": false,
  "total_requirements": {
   "build": {
