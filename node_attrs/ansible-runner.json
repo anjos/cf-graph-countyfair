@@ -238,12 +238,13 @@
   },
   "package": {
    "name": "ansible-runner",
-   "version": "1.4.7"
+   "version": "2.0.2"
   },
   "requirements": {
    "host": [
     "pip",
-    "python >=3.6"
+    "python >=3.6",
+    "pbr"
    ],
    "run": [
     "pexpect >=4.5",
@@ -257,13 +258,13 @@
   "source": [
    {
     "folder": "dist",
-    "sha256": "1bb56f9061c3238d89ec8871bc842f5b8d0e868f892347e8455c98d5b6fa58a1",
-    "url": "https://pypi.io/packages/source/a/ansible-runner/ansible-runner-1.4.7.tar.gz"
+    "sha256": "c02b690803ec0be4453411c53743cd3fdca1dfc66dfa075794e14e717c5b61b3",
+    "url": "https://pypi.io/packages/source/a/ansible-runner/ansible-runner-2.0.2.tar.gz"
    },
    {
     "folder": "src",
-    "sha256": "2ac4c236d021503b34c3986b0bb35f75a39ac91848ab786946e136dc73b1e938",
-    "url": "https://github.com/ansible/ansible-runner/archive/1.4.7.tar.gz"
+    "sha256": "2f16bc2a16edb38e56e79caebb2fe854b57820b35c3ee7c5bfd1d4fffdc87a42",
+    "url": "https://github.com/ansible/ansible-runner/archive/2.0.2.tar.gz"
    }
   ],
   "test": {
@@ -272,16 +273,18 @@
     "ansible-runner --version",
     "ansible-runner --help",
     "cd src/test/unit",
-    "pytest --cov ansible_runner -vv"
+    "pytest --cov ansible_runner -vv -k \"not (containerization or env_vars or prepare_env_sshkey)\""
    ],
    "imports": [
     "ansible_runner"
    ],
    "requires": [
+    "ansible",
+    "mock",
+    "pip",
     "pytest",
     "pytest-cov",
-    "mock",
-    "pip"
+    "pytest-timeout"
    ],
    "source_files": [
     "src/test/unit"
@@ -296,6 +299,7 @@
   "host": {
    "__set__": true,
    "elements": [
+    "pbr",
     "pip",
     "python"
    ]
@@ -314,10 +318,12 @@
   "test": {
    "__set__": true,
    "elements": [
+    "ansible",
     "mock",
     "pip",
     "pytest",
-    "pytest-cov"
+    "pytest-cov",
+    "pytest-timeout"
    ]
   }
  },
@@ -346,12 +352,13 @@
   },
   "package": {
    "name": "ansible-runner",
-   "version": "1.4.7"
+   "version": "2.0.2"
   },
   "requirements": {
    "host": [
     "pip",
-    "python >=3.6"
+    "python >=3.6",
+    "pbr"
    ],
    "run": [
     "pexpect >=4.5",
@@ -365,13 +372,13 @@
   "source": [
    {
     "folder": "dist",
-    "sha256": "1bb56f9061c3238d89ec8871bc842f5b8d0e868f892347e8455c98d5b6fa58a1",
-    "url": "https://pypi.io/packages/source/a/ansible-runner/ansible-runner-1.4.7.tar.gz"
+    "sha256": "c02b690803ec0be4453411c53743cd3fdca1dfc66dfa075794e14e717c5b61b3",
+    "url": "https://pypi.io/packages/source/a/ansible-runner/ansible-runner-2.0.2.tar.gz"
    },
    {
     "folder": "src",
-    "sha256": "2ac4c236d021503b34c3986b0bb35f75a39ac91848ab786946e136dc73b1e938",
-    "url": "https://github.com/ansible/ansible-runner/archive/1.4.7.tar.gz"
+    "sha256": "2f16bc2a16edb38e56e79caebb2fe854b57820b35c3ee7c5bfd1d4fffdc87a42",
+    "url": "https://github.com/ansible/ansible-runner/archive/2.0.2.tar.gz"
    }
   ],
   "test": {
@@ -380,16 +387,18 @@
     "ansible-runner --version",
     "ansible-runner --help",
     "cd src/test/unit",
-    "pytest --cov ansible_runner -vv"
+    "pytest --cov ansible_runner -vv -k \"not (containerization or env_vars or prepare_env_sshkey)\""
    ],
    "imports": [
     "ansible_runner"
    ],
    "requires": [
+    "ansible",
+    "mock",
+    "pip",
     "pytest",
     "pytest-cov",
-    "mock",
-    "pip"
+    "pytest-timeout"
    ],
    "source_files": [
     "src/test/unit"
@@ -412,10 +421,11 @@
   ]
  },
  "pinning_version": "2021.08.12.05.10.51",
- "raw_meta_yaml": "{% set name = \"ansible-runner\" %}\n{% set version = \"1.4.7\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - folder: dist\n    url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n    sha256: 1bb56f9061c3238d89ec8871bc842f5b8d0e868f892347e8455c98d5b6fa58a1\n  - folder: src\n    url: https://github.com/ansible/{{ name }}/archive/{{ version }}.tar.gz\n    sha256: 2ac4c236d021503b34c3986b0bb35f75a39ac91848ab786946e136dc73b1e938\n\nbuild:\n  number: 0\n  noarch: python\n  script: cd dist && {{ PYTHON }} -m pip install . -vv\n  entry_points:\n    - ansible-runner = ansible_runner.__main__:main\n\nrequirements:\n  host:\n    - pip\n    - python >=3.6\n  run:\n    - pexpect >=4.5\n    - psutil\n    - python >=3.6\n    - python-daemon\n    - pyyaml\n    - six\n\ntest:\n  source_files:\n    - src/test/unit\n  requires:\n    - pytest\n    - pytest-cov\n    - mock\n    - pip\n  imports:\n    - ansible_runner\n  commands:\n    - python -m pip check\n    - ansible-runner --version\n    - ansible-runner --help\n    - cd src/test/unit\n    - pytest --cov ansible_runner -vv -k \"not test_env_vars\"  # [osx]\n    - pytest --cov ansible_runner -vv  # [linux]\n\nabout:\n  home: https://github.com/ansible/ansible-runner\n  license: Apache-2.0\n  license_family: Apache\n  license_file: dist/LICENSE.md\n  doc_url: https://ansible-runner.readthedocs.io\n  doc_source_url: https://github.com/ansible/ansible-runner/tree/master/docs\n  summary: |\n    A tool and python library that helps when interfacing with Ansible directly\n    or as part of another system whether that be through a container image\n    interface, as a standalone tool, or as a Python module that can be\n    imported. The goal is to provide a stable and consistent interface\n    abstraction to Ansible.\n\nextra:\n  recipe-maintainers:\n    - bollwyvl\n",
+ "raw_meta_yaml": "{% set name = \"ansible-runner\" %}\n{% set version = \"2.0.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - folder: dist\n    url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n    sha256: c02b690803ec0be4453411c53743cd3fdca1dfc66dfa075794e14e717c5b61b3\n  - folder: src\n    url: https://github.com/ansible/{{ name }}/archive/{{ version }}.tar.gz\n    sha256: 2f16bc2a16edb38e56e79caebb2fe854b57820b35c3ee7c5bfd1d4fffdc87a42\n\nbuild:\n  number: 0\n  noarch: python\n  script: cd dist && {{ PYTHON }} -m pip install . -vv\n  entry_points:\n    - ansible-runner = ansible_runner.__main__:main\n\nrequirements:\n  host:\n    - pip\n    - python >=3.6\n    - pbr\n  run:\n    - pexpect >=4.5\n    - psutil\n    - python >=3.6\n    - python-daemon\n    - pyyaml\n    - six\n\ntest:\n  source_files:\n    - src/test/unit\n  requires:\n    - ansible\n    - mock\n    - pip\n    - pytest\n    - pytest-cov\n    - pytest-timeout\n  imports:\n    - ansible_runner\n  commands:\n    - python -m pip check\n    - ansible-runner --version\n    - ansible-runner --help\n    - cd src/test/unit\n    - pytest --cov ansible_runner -vv -k \"not (containerization or env_vars or prepare_env_sshkey)\"\n\nabout:\n  home: https://github.com/ansible/ansible-runner\n  license: Apache-2.0\n  license_family: Apache\n  license_file: dist/LICENSE.md\n  doc_url: https://ansible-runner.readthedocs.io\n  doc_source_url: https://github.com/ansible/ansible-runner/tree/master/docs\n  summary: |\n    A tool and python library that helps when interfacing with Ansible directly\n    or as part of another system whether that be through a container image\n    interface, as a standalone tool, or as a Python module that can be\n    imported. The goal is to provide a stable and consistent interface\n    abstraction to Ansible.\n\nextra:\n  recipe-maintainers:\n    - bollwyvl\n",
  "req": {
   "__set__": true,
   "elements": [
+   "pbr",
    "pexpect",
    "pip",
    "psutil",
@@ -433,6 +443,7 @@
   "host": {
    "__set__": true,
    "elements": [
+    "pbr",
     "pip",
     "python"
    ]
@@ -451,10 +462,12 @@
   "test": {
    "__set__": true,
    "elements": [
+    "ansible",
     "mock",
     "pip",
     "pytest",
-    "pytest-cov"
+    "pytest-cov",
+    "pytest-timeout"
    ]
   }
  },
@@ -468,6 +481,7 @@
   "host": {
    "__set__": true,
    "elements": [
+    "pbr",
     "pip",
     "python >=3.6"
    ]
@@ -486,13 +500,15 @@
   "test": {
    "__set__": true,
    "elements": [
+    "ansible",
     "mock",
     "pip",
     "pytest",
-    "pytest-cov"
+    "pytest-cov",
+    "pytest-timeout"
    ]
   }
  },
- "url": "https://pypi.io/packages/source/a/ansible-runner/ansible-runner-1.4.7.tar.gz",
- "version": "1.4.7"
+ "url": "https://pypi.io/packages/source/a/ansible-runner/ansible-runner-2.0.2.tar.gz",
+ "version": "2.0.2"
 }
