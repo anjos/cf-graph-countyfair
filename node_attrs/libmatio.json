@@ -263,6 +263,9 @@
  "conda-forge.yml": {
   "bot": {
    "automerge": true
+  },
+  "build_platform": {
+   "osx_arm64": "osx_64"
   }
  },
  "feedstock_name": "libmatio",
@@ -293,6 +296,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "c_compiler_stub"
    ],
    "host": [
@@ -321,7 +325,8 @@
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "gnuconfig"
    ]
   },
   "host": {
@@ -355,11 +360,15 @@
    "run_exports": [
     "libmatio",
     "libmatio",
+    "libmatio",
     "libmatio"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "183amir",
+    "tbeu",
+    "traversaro",
     "183amir",
     "tbeu",
     "traversaro",
@@ -377,7 +386,11 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "c_compiler_stub",
+    "gnuconfig",
+    "c_compiler_stub",
+    "gnuconfig",
     "c_compiler_stub",
     "c_compiler_stub"
    ],
@@ -387,9 +400,13 @@
     "hdf5",
     "zlib",
     "hdf5",
+    "zlib",
+    "hdf5",
     "zlib"
    ],
    "run": [
+    "hdf5",
+    "zlib",
     "hdf5",
     "zlib",
     "hdf5",
@@ -408,6 +425,9 @@
     "test -e $PREFIX/include/matio.h",
     "test -e $PREFIX/lib/libmatio.a",
     "test -e $PREFIX/lib/libmatio.so",
+    "test -e $PREFIX/include/matio.h",
+    "test -e $PREFIX/lib/libmatio.a",
+    "test -e $PREFIX/lib/libmatio.dylib",
     "test -e $PREFIX/include/matio.h",
     "test -e $PREFIX/lib/libmatio.a",
     "test -e $PREFIX/lib/libmatio.dylib",
@@ -453,6 +473,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "c_compiler_stub"
    ],
    "host": [
@@ -481,7 +502,86 @@
   "build": {
    "__set__": true,
    "elements": [
+    "c_compiler_stub",
+    "gnuconfig"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "hdf5",
+    "zlib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "hdf5",
+    "zlib"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "https://sourceforge.net/projects/matio",
+   "license": "BSD-2-Clause",
+   "license_file": "COPYING",
+   "summary": "A C library for reading and writing MATLAB MAT files."
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "libmatio"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "183amir",
+    "tbeu",
+    "traversaro"
+   ]
+  },
+  "package": {
+   "name": "libmatio",
+   "version": "1.5.21"
+  },
+  "requirements": {
+   "build": [
+    "gnuconfig",
     "c_compiler_stub"
+   ],
+   "host": [
+    "hdf5",
+    "zlib"
+   ],
+   "run": [
+    "hdf5",
+    "zlib"
+   ]
+  },
+  "source": {
+   "fn": "matio-1.5.21.tar.gz",
+   "md5": "afeb5d21b234699fd5b9dc4564afe1ca",
+   "url": "https://github.com/tbeu/matio/releases/download/v1.5.21/matio-1.5.21.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -e $PREFIX/include/matio.h",
+    "test -e $PREFIX/lib/libmatio.a",
+    "test -e $PREFIX/lib/libmatio.dylib"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "gnuconfig"
    ]
   },
   "host": {
@@ -510,11 +610,12 @@
   ]
  },
  "pinning_version": "2021.08.18.12.46.46",
- "raw_meta_yaml": "{% set name = \"libmatio\" %}\n{% set version = \"1.5.21\" %}\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  fn: matio-{{ version }}.tar.gz\n  url: https://github.com/tbeu/matio/releases/download/v{{ version }}/matio-{{ version }}.tar.gz\n  md5: afeb5d21b234699fd5b9dc4564afe1ca\n\nbuild:\n  number: 0\n  skip: true  # [win and (vc<14 or win32)]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n  host:\n    - hdf5\n    - zlib\n  run:\n    - hdf5\n    - zlib\n\ntest:\n  commands:\n    - test -e $PREFIX/include/matio.h      # [unix]\n    - test -e $PREFIX/lib/libmatio.a       # [unix]\n    - test -e $PREFIX/lib/libmatio.so      # [linux]\n    - test -e $PREFIX/lib/libmatio.dylib   # [osx]\n    - if not exist %PREFIX%\\Library\\bin\\libmatio.dll exit 1  # [win]\n    - if not exist %PREFIX%\\Library\\lib\\libmatio.lib exit 1  # [win]\n    - if not exist %PREFIX%\\Library\\include\\matio.h exit 1  # [win]\n\nabout:\n  home: https://sourceforge.net/projects/matio\n  license: BSD-2-Clause\n  license_file: COPYING\n  summary: A C library for reading and writing MATLAB MAT files.\n\nextra:\n  recipe-maintainers:\n    - 183amir\n    - tbeu\n    - traversaro\n",
+ "raw_meta_yaml": "{% set name = \"libmatio\" %}\n{% set version = \"1.5.21\" %}\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  fn: matio-{{ version }}.tar.gz\n  url: https://github.com/tbeu/matio/releases/download/v{{ version }}/matio-{{ version }}.tar.gz\n  md5: afeb5d21b234699fd5b9dc4564afe1ca\n\nbuild:\n  number: 0\n  skip: true  # [win and (vc<14 or win32)]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x.x') }}\n\nrequirements:\n  build:\n    - gnuconfig  # [unix]\n    - {{ compiler('c') }}\n  host:\n    - hdf5\n    - zlib\n  run:\n    - hdf5\n    - zlib\n\ntest:\n  commands:\n    - test -e $PREFIX/include/matio.h      # [unix]\n    - test -e $PREFIX/lib/libmatio.a       # [unix]\n    - test -e $PREFIX/lib/libmatio.so      # [linux]\n    - test -e $PREFIX/lib/libmatio.dylib   # [osx]\n    - if not exist %PREFIX%\\Library\\bin\\libmatio.dll exit 1  # [win]\n    - if not exist %PREFIX%\\Library\\lib\\libmatio.lib exit 1  # [win]\n    - if not exist %PREFIX%\\Library\\include\\matio.h exit 1  # [win]\n\nabout:\n  home: https://sourceforge.net/projects/matio\n  license: BSD-2-Clause\n  license_file: COPYING\n  summary: A C library for reading and writing MATLAB MAT files.\n\nextra:\n  recipe-maintainers:\n    - 183amir\n    - tbeu\n    - traversaro\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
+   "gnuconfig",
    "hdf5",
    "zlib"
   ]
@@ -523,7 +624,8 @@
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "gnuconfig"
    ]
   },
   "host": {
@@ -553,7 +655,8 @@
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "gnuconfig"
    ]
   },
   "host": {
