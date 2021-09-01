@@ -350,6 +350,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/724522534.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "libnetcdf481"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -788,10 +807,9 @@
    "esmf"
   ]
  },
- "pinning_version": "2021.04.22.19.34.35",
+ "pinning_version": "2021.08.31.17.13.10",
  "pre_pr_migrator_status": {
-  "gcc930": "bot error: master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1008, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 220, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 101, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 444, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n",
-  "libnetcdf481": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1189953964\">bot CI job</a>): master: ['linux_64_mpimpich: Encountered problems while solving:\\n  - package netcdf-fortran-4.5.2-mpi_mpich_h3923e1a_5 requires libnetcdf >=4.7.4,<4.7.5.0a0 mpi_mpich_*, but none of the providers can be installed\\n', 'linux_64_mpinompi: Encountered problems while solving:\\n  - package netcdf-fortran-4.5.2-nompi_h705e341_102 requires hdf5 * nompi_*, but none of the providers can be installed\\n', 'linux_64_mpiopenmpi: Encountered problems while solving:\\n  - package libnetcdf-4.7.4-mpi_openmpi_hdd24e8d_1 requires hdf5 >=1.10.5,<1.10.6.0a0 mpi_openmpi_*, but none of the providers can be installed\\n', 'osx_64_mpimpich: Encountered problems while solving:\\n  - package netcdf-fortran-4.5.3-mpi_mpich_hc610113_3 requires hdf5 >=1.10.6,<1.10.7.0a0 mpi_mpich_*, but none of the providers can be installed\\n', 'osx_64_mpinompi: Encountered problems while solving:\\n  - package netcdf-fortran-4.5.2-nompi_h25f5b61_102 requires libgfortran >=4.0.0,<5.0.0.a0, but none of the providers can be installed\\n', 'osx_64_mpiopenmpi: Encountered problems while solving:\\n  - package netcdf-fortran-4.5.3-mpi_openmpi_h6ee14be_2 requires hdf5 >=1.10.6,<1.10.7.0a0 mpi_openmpi_*, but none of the providers can be installed\\n']"
+  "gcc930": "bot error: master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1008, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 220, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 101, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 444, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
  },
  "raw_meta_yaml": "{% set version = \"8.1.1\" %}\n{% set ver = version.replace(\".\", \"_\") %}\n{% set build = 0 %}\n\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n\n{% if mpi == 'mpich' %}\n# prioritize mpich variant, which was previously the only option, via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: esmf\n  version: {{ version }}\n\nsource:\n  url: https://github.com/esmf-org/esmf/archive/ESMF_{{ ver }}/esmf_{{ ver }}_src.tar.gz\n  sha256: 58c2e739356f21a1b32673aa17a713d3c4af9d45d572f4ba9168c357d586dc75\n\nbuild:\n  number: {{ build }}\n  skip: true  # [win]\n\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `esmf * mpi_mpich_*` for mpich\n  # `esmf * mpi_*` for any mpi\n  # `esmf * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\nrequirements:\n  build:\n    - perl\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    # need to list netcdf-fortran, hdf5 and libnetcdf twice to get version\n    # pinning from conda_build_config and build pinning from {{ mpi_prefix }}\n    - netcdf-fortran\n    - netcdf-fortran * {{ mpi_prefix }}_*\n    - hdf5\n    - hdf5 * {{ mpi_prefix }}_*\n    - libnetcdf\n    - libnetcdf * {{ mpi_prefix }}_*\n    - {{ mpi }}  # [mpi != 'nompi']\n  run:\n    - netcdf-fortran * {{ mpi_prefix }}_*\n    - libnetcdf * {{ mpi_prefix }}_*\n    - hdf5 * {{ mpi_prefix }}_*\n    - {{ mpi }}  # [mpi != 'nompi']\n    - openssh  # [mpi == 'openmpi']\n\ntest:\n  commands:\n    - ESMF_PrintInfo\n    - ESMF_RegridWeightGen --help\n\nabout:\n  home: http://earthsystemmodeling.org/\n  license: NCSA\n  license_file: LICENSE\n  summary: |\n    The Earth System Modeling Framework (ESMF) is software for building and\n    coupling weather, climate, and related models.'\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - rokuingh\n    - xylar\n",
  "req": {
@@ -851,7 +869,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.10.1",
+ "smithy_version": "3.12",
  "strong_exports": false,
  "time": 1568135264.605674,
  "total_requirements": {
