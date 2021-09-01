@@ -420,7 +420,7 @@
     "LICENSE",
     "lapack-netlib/LICENSE"
    ],
-   "summary": "An optimized BLAS library based on GotoBLAS2 1.13 BSD version"
+   "summary": "An optimized BLAS library (ILP64 interface) based on GotoBLAS2 1.13 BSD version"
   },
   "build": {
    "number": "1",
@@ -454,60 +454,6 @@
    {
     "build": {
      "run_exports": [
-      "libopenblas-ilp64"
-     ],
-     "string": "pthreads_h1234567_1",
-     "track_features": null
-    },
-    "files": [
-     "lib/libopenblas64_*p*.so",
-     "lib/libopenblas64_.so.*"
-    ],
-    "name": "libopenblas-ilp64",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "fortran_compiler_stub"
-     ],
-     "run_constrained": [
-      "openblas-ilp64"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblas64_p-r0.3.17.so",
-      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblas64_p-r0.3.17.so']\""
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "pthreads_h1234567_1",
-     "track_features": null
-    },
-    "files": [
-     "include/*.h",
-     "lib/libopenblas64_*.a",
-     "lib/libopenblas64_.so",
-     "lib/pkgconfig/openblas.pc",
-     "lib/cmake/openblas/*"
-    ],
-    "name": "openblas-ilp64",
-    "requirements": {
-     "run": [
-      "libopenblas-ilp64"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblas64_.a",
-      "test -f ${PREFIX}/lib/libopenblas64_.so"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
       "libopenblas"
      ],
      "string": "openmp_h1234567_1",
@@ -567,6 +513,60 @@
    {
     "build": {
      "run_exports": [
+      "libopenblas"
+     ],
+     "string": "pthreads_h1234567_1",
+     "track_features": null
+    },
+    "files": [
+     "lib/libopenblas*p*.so",
+     "lib/libopenblas.so.*"
+    ],
+    "name": "libopenblas",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "fortran_compiler_stub"
+     ],
+     "run_constrained": [
+      "openblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
+      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "pthreads_h1234567_1",
+     "track_features": null
+    },
+    "files": [
+     "include/*.h",
+     "lib/libopenblas*.a",
+     "lib/libopenblas.so",
+     "lib/pkgconfig/openblas.pc",
+     "lib/cmake/openblas/*"
+    ],
+    "name": "openblas",
+    "requirements": {
+     "run": [
+      "libopenblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblas.a",
+      "test -f ${PREFIX}/lib/libopenblas.so"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
       "libopenblas-ilp64"
      ],
      "string": "openmp_h1234567_1",
@@ -626,29 +626,29 @@
    {
     "build": {
      "run_exports": [
-      "libopenblas"
+      "libopenblas-ilp64"
      ],
      "string": "pthreads_h1234567_1",
      "track_features": null
     },
     "files": [
-     "lib/libopenblas*p*.so",
-     "lib/libopenblas.so.*"
+     "lib/libopenblas64_*p*.so",
+     "lib/libopenblas64_.so.*"
     ],
-    "name": "libopenblas",
+    "name": "libopenblas-ilp64",
     "requirements": {
      "build": [
       "c_compiler_stub",
       "fortran_compiler_stub"
      ],
      "run_constrained": [
-      "openblas"
+      "openblas-ilp64"
      ]
     },
     "test": {
      "commands": [
-      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
-      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
+      "test -f ${PREFIX}/lib/libopenblas64_p-r0.3.17.so",
+      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblas64_p-r0.3.17.so']\""
      ]
     }
    },
@@ -659,21 +659,21 @@
     },
     "files": [
      "include/*.h",
-     "lib/libopenblas*.a",
-     "lib/libopenblas.so",
+     "lib/libopenblas64_*.a",
+     "lib/libopenblas64_.so",
      "lib/pkgconfig/openblas.pc",
      "lib/cmake/openblas/*"
     ],
-    "name": "openblas",
+    "name": "openblas-ilp64",
     "requirements": {
      "run": [
-      "libopenblas"
+      "libopenblas-ilp64"
      ]
     },
     "test": {
      "commands": [
-      "test -f ${PREFIX}/lib/libopenblas.a",
-      "test -f ${PREFIX}/lib/libopenblas.so"
+      "test -f ${PREFIX}/lib/libopenblas64_.a",
+      "test -f ${PREFIX}/lib/libopenblas64_.so"
      ]
     }
    }
@@ -688,12 +688,12 @@
     "fortran_compiler_stub",
     "perl",
     "make",
+    "llvm-openmp",
+    "_openmp_mutex * *_llvm",
     "c_compiler_stub",
     "fortran_compiler_stub",
     "perl",
     "make",
-    "llvm-openmp",
-    "_openmp_mutex * *_llvm",
     "c_compiler_stub",
     "fortran_compiler_stub",
     "perl",
@@ -755,7 +755,7 @@
   },
   "build": {
    "number": "1",
-   "string": "pthreads_h1234567_1"
+   "string": "openmp_h1234567_1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -772,6 +772,60 @@
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libopenblas"
+     ],
+     "string": "pthreads_h1234567_1",
+     "track_features": null
+    },
+    "files": [
+     "lib/libopenblas*p*.so",
+     "lib/libopenblas.so.*"
+    ],
+    "name": "libopenblas",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "fortran_compiler_stub"
+     ],
+     "run_constrained": [
+      "openblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
+      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "pthreads_h1234567_1",
+     "track_features": null
+    },
+    "files": [
+     "include/*.h",
+     "lib/libopenblas*.a",
+     "lib/libopenblas.so",
+     "lib/pkgconfig/openblas.pc",
+     "lib/cmake/openblas/*"
+    ],
+    "name": "openblas",
+    "requirements": {
+     "run": [
+      "libopenblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblas.a",
+      "test -f ${PREFIX}/lib/libopenblas.so"
+     ]
+    }
+   },
    {
     "build": {
      "run_exports": [
@@ -830,60 +884,6 @@
       "test -f ${PREFIX}/lib/libopenblas.so"
      ]
     }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libopenblas"
-     ],
-     "string": "pthreads_h1234567_1",
-     "track_features": null
-    },
-    "files": [
-     "lib/libopenblas*p*.so",
-     "lib/libopenblas.so.*"
-    ],
-    "name": "libopenblas",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "fortran_compiler_stub"
-     ],
-     "run_constrained": [
-      "openblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
-      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "pthreads_h1234567_1",
-     "track_features": null
-    },
-    "files": [
-     "include/*.h",
-     "lib/libopenblas*.a",
-     "lib/libopenblas.so",
-     "lib/pkgconfig/openblas.pc",
-     "lib/cmake/openblas/*"
-    ],
-    "name": "openblas",
-    "requirements": {
-     "run": [
-      "libopenblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblas.a",
-      "test -f ${PREFIX}/lib/libopenblas.so"
-     ]
-    }
    }
   ],
   "package": {
@@ -896,12 +896,12 @@
     "fortran_compiler_stub",
     "perl",
     "make",
-    "llvm-openmp",
-    "_openmp_mutex * *_llvm",
     "c_compiler_stub",
     "fortran_compiler_stub",
     "perl",
-    "make"
+    "make",
+    "llvm-openmp",
+    "_openmp_mutex * *_llvm"
    ],
    "host": [],
    "run": []
@@ -986,6 +986,65 @@
    {
     "build": {
      "run_exports": [
+      "libopenblas-ilp64"
+     ],
+     "string": "openmp_h1234567_1",
+     "track_features": [
+      "openblas_threading_openmp"
+     ]
+    },
+    "files": [
+     "lib/libopenblas64_*p*.so",
+     "lib/libopenblas64_.so.*"
+    ],
+    "name": "libopenblas-ilp64",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp"
+     ],
+     "run_constrained": [
+      "openblas-ilp64"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblas64_p-r0.3.17.so",
+      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblas64_p-r0.3.17.so']\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "openmp_h1234567_1",
+     "track_features": [
+      "openblas_threading_openmp"
+     ]
+    },
+    "files": [
+     "include/*.h",
+     "lib/libopenblas64_*.a",
+     "lib/libopenblas64_.so",
+     "lib/pkgconfig/openblas.pc",
+     "lib/cmake/openblas/*"
+    ],
+    "name": "openblas-ilp64",
+    "requirements": {
+     "run": [
+      "libopenblas-ilp64"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblas64_.a",
+      "test -f ${PREFIX}/lib/libopenblas64_.so"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
       "libopenblas"
      ],
      "string": "pthreads_h1234567_1",
@@ -1093,65 +1152,6 @@
      "commands": [
       "test -f ${PREFIX}/lib/libopenblas.a",
       "test -f ${PREFIX}/lib/libopenblas.so"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libopenblas-ilp64"
-     ],
-     "string": "openmp_h1234567_1",
-     "track_features": [
-      "openblas_threading_openmp"
-     ]
-    },
-    "files": [
-     "lib/libopenblas64_*p*.so",
-     "lib/libopenblas64_.so.*"
-    ],
-    "name": "libopenblas-ilp64",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "fortran_compiler_stub",
-      "llvm-openmp"
-     ],
-     "run_constrained": [
-      "openblas-ilp64"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblas64_p-r0.3.17.so",
-      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblas64_p-r0.3.17.so']\""
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "openmp_h1234567_1",
-     "track_features": [
-      "openblas_threading_openmp"
-     ]
-    },
-    "files": [
-     "include/*.h",
-     "lib/libopenblas64_*.a",
-     "lib/libopenblas64_.so",
-     "lib/pkgconfig/openblas.pc",
-     "lib/cmake/openblas/*"
-    ],
-    "name": "openblas-ilp64",
-    "requirements": {
-     "run": [
-      "libopenblas-ilp64"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblas64_.a",
-      "test -f ${PREFIX}/lib/libopenblas64_.so"
      ]
     }
    },
@@ -1220,12 +1220,12 @@
     "fortran_compiler_stub",
     "perl",
     "make",
+    "llvm-openmp",
+    "_openmp_mutex * *_llvm",
     "c_compiler_stub",
     "fortran_compiler_stub",
     "perl",
     "make",
-    "llvm-openmp",
-    "_openmp_mutex * *_llvm",
     "c_compiler_stub",
     "fortran_compiler_stub",
     "perl",
@@ -1391,6 +1391,178 @@
    {
     "build": {
      "run_exports": [
+      "libopenblas"
+     ],
+     "string": "openmp_h1234567_1",
+     "track_features": [
+      "openblas_threading_openmp"
+     ]
+    },
+    "files": [
+     "lib/libopenblas*p*.so",
+     "lib/libopenblas.so.*"
+    ],
+    "name": "libopenblas",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp"
+     ],
+     "run_constrained": [
+      "openblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
+      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "openmp_h1234567_1",
+     "track_features": [
+      "openblas_threading_openmp"
+     ]
+    },
+    "files": [
+     "include/*.h",
+     "lib/libopenblas*.a",
+     "lib/libopenblas.so",
+     "lib/pkgconfig/openblas.pc",
+     "lib/cmake/openblas/*"
+    ],
+    "name": "openblas",
+    "requirements": {
+     "run": [
+      "libopenblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblas.a",
+      "test -f ${PREFIX}/lib/libopenblas.so"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libopenblas"
+     ],
+     "string": "pthreads_h1234567_1",
+     "track_features": null
+    },
+    "files": [
+     "lib/libopenblas*p*.so",
+     "lib/libopenblas.so.*"
+    ],
+    "name": "libopenblas",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "fortran_compiler_stub"
+     ],
+     "run_constrained": [
+      "openblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
+      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "pthreads_h1234567_1",
+     "track_features": null
+    },
+    "files": [
+     "include/*.h",
+     "lib/libopenblas*.a",
+     "lib/libopenblas.so",
+     "lib/pkgconfig/openblas.pc",
+     "lib/cmake/openblas/*"
+    ],
+    "name": "openblas",
+    "requirements": {
+     "run": [
+      "libopenblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblas.a",
+      "test -f ${PREFIX}/lib/libopenblas.so"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libopenblas-ilp64"
+     ],
+     "string": "openmp_h1234567_1",
+     "track_features": [
+      "openblas_threading_openmp"
+     ]
+    },
+    "files": [
+     "lib/libopenblas64_*p*.so",
+     "lib/libopenblas64_.so.*"
+    ],
+    "name": "libopenblas-ilp64",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp"
+     ],
+     "run_constrained": [
+      "openblas-ilp64"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblas64_p-r0.3.17.so",
+      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblas64_p-r0.3.17.so']\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "openmp_h1234567_1",
+     "track_features": [
+      "openblas_threading_openmp"
+     ]
+    },
+    "files": [
+     "include/*.h",
+     "lib/libopenblas64_*.a",
+     "lib/libopenblas64_.so",
+     "lib/pkgconfig/openblas.pc",
+     "lib/cmake/openblas/*"
+    ],
+    "name": "openblas-ilp64",
+    "requirements": {
+     "run": [
+      "libopenblas-ilp64"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblas64_.a",
+      "test -f ${PREFIX}/lib/libopenblas64_.so"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
       "libopenblas-ilp64"
      ],
      "string": "pthreads_h1234567_1",
@@ -1439,291 +1611,6 @@
      "commands": [
       "test -f ${PREFIX}/lib/libopenblas64_.a",
       "test -f ${PREFIX}/lib/libopenblas64_.so"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libopenblas"
-     ],
-     "string": "openmp_h1234567_1",
-     "track_features": [
-      "openblas_threading_openmp"
-     ]
-    },
-    "files": [
-     "lib/libopenblas*p*.so",
-     "lib/libopenblas.so.*"
-    ],
-    "name": "libopenblas",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "fortran_compiler_stub",
-      "llvm-openmp"
-     ],
-     "run_constrained": [
-      "openblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
-      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "openmp_h1234567_1",
-     "track_features": [
-      "openblas_threading_openmp"
-     ]
-    },
-    "files": [
-     "include/*.h",
-     "lib/libopenblas*.a",
-     "lib/libopenblas.so",
-     "lib/pkgconfig/openblas.pc",
-     "lib/cmake/openblas/*"
-    ],
-    "name": "openblas",
-    "requirements": {
-     "run": [
-      "libopenblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblas.a",
-      "test -f ${PREFIX}/lib/libopenblas.so"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libopenblas-ilp64"
-     ],
-     "string": "openmp_h1234567_1",
-     "track_features": [
-      "openblas_threading_openmp"
-     ]
-    },
-    "files": [
-     "lib/libopenblas64_*p*.so",
-     "lib/libopenblas64_.so.*"
-    ],
-    "name": "libopenblas-ilp64",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "fortran_compiler_stub",
-      "llvm-openmp"
-     ],
-     "run_constrained": [
-      "openblas-ilp64"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblas64_p-r0.3.17.so",
-      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblas64_p-r0.3.17.so']\""
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "openmp_h1234567_1",
-     "track_features": [
-      "openblas_threading_openmp"
-     ]
-    },
-    "files": [
-     "include/*.h",
-     "lib/libopenblas64_*.a",
-     "lib/libopenblas64_.so",
-     "lib/pkgconfig/openblas.pc",
-     "lib/cmake/openblas/*"
-    ],
-    "name": "openblas-ilp64",
-    "requirements": {
-     "run": [
-      "libopenblas-ilp64"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblas64_.a",
-      "test -f ${PREFIX}/lib/libopenblas64_.so"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libopenblas"
-     ],
-     "string": "pthreads_h1234567_1",
-     "track_features": null
-    },
-    "files": [
-     "lib/libopenblas*p*.so",
-     "lib/libopenblas.so.*"
-    ],
-    "name": "libopenblas",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "fortran_compiler_stub"
-     ],
-     "run_constrained": [
-      "openblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
-      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "pthreads_h1234567_1",
-     "track_features": null
-    },
-    "files": [
-     "include/*.h",
-     "lib/libopenblas*.a",
-     "lib/libopenblas.so",
-     "lib/pkgconfig/openblas.pc",
-     "lib/cmake/openblas/*"
-    ],
-    "name": "openblas",
-    "requirements": {
-     "run": [
-      "libopenblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblas.a",
-      "test -f ${PREFIX}/lib/libopenblas.so"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libopenblas"
-     ],
-     "string": "openmp_h1234567_1",
-     "track_features": [
-      "openblas_threading_openmp"
-     ]
-    },
-    "files": [
-     "lib/libopenblas*p*.so",
-     "lib/libopenblas.so.*"
-    ],
-    "name": "libopenblas",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "fortran_compiler_stub",
-      "llvm-openmp"
-     ],
-     "run_constrained": [
-      "openblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
-      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "openmp_h1234567_1",
-     "track_features": [
-      "openblas_threading_openmp"
-     ]
-    },
-    "files": [
-     "include/*.h",
-     "lib/libopenblas*.a",
-     "lib/libopenblas.so",
-     "lib/pkgconfig/openblas.pc",
-     "lib/cmake/openblas/*"
-    ],
-    "name": "openblas",
-    "requirements": {
-     "run": [
-      "libopenblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblas.a",
-      "test -f ${PREFIX}/lib/libopenblas.so"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libopenblas"
-     ],
-     "string": "pthreads_h1234567_1",
-     "track_features": null
-    },
-    "files": [
-     "lib/libopenblas*p*.so",
-     "lib/libopenblas.so.*"
-    ],
-    "name": "libopenblas",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "fortran_compiler_stub"
-     ],
-     "run_constrained": [
-      "openblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
-      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "pthreads_h1234567_1",
-     "track_features": null
-    },
-    "files": [
-     "include/*.h",
-     "lib/libopenblas*.a",
-     "lib/libopenblas.so",
-     "lib/pkgconfig/openblas.pc",
-     "lib/cmake/openblas/*"
-    ],
-    "name": "openblas",
-    "requirements": {
-     "run": [
-      "libopenblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libopenblas.a",
-      "test -f ${PREFIX}/lib/libopenblas.so"
      ]
     }
    },
@@ -1896,6 +1783,119 @@
      "commands": [
       "test -f ${PREFIX}/lib/libopenblas64_.a",
       "test -f ${PREFIX}/lib/libopenblas64_.so"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libopenblas"
+     ],
+     "string": "pthreads_h1234567_1",
+     "track_features": null
+    },
+    "files": [
+     "lib/libopenblas*p*.so",
+     "lib/libopenblas.so.*"
+    ],
+    "name": "libopenblas",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "fortran_compiler_stub"
+     ],
+     "run_constrained": [
+      "openblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
+      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "pthreads_h1234567_1",
+     "track_features": null
+    },
+    "files": [
+     "include/*.h",
+     "lib/libopenblas*.a",
+     "lib/libopenblas.so",
+     "lib/pkgconfig/openblas.pc",
+     "lib/cmake/openblas/*"
+    ],
+    "name": "openblas",
+    "requirements": {
+     "run": [
+      "libopenblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblas.a",
+      "test -f ${PREFIX}/lib/libopenblas.so"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libopenblas"
+     ],
+     "string": "openmp_h1234567_1",
+     "track_features": [
+      "openblas_threading_openmp"
+     ]
+    },
+    "files": [
+     "lib/libopenblas*p*.so",
+     "lib/libopenblas.so.*"
+    ],
+    "name": "libopenblas",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp"
+     ],
+     "run_constrained": [
+      "openblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblasp-r0.3.17.so",
+      "python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblasp-r0.3.17.so']\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "openmp_h1234567_1",
+     "track_features": [
+      "openblas_threading_openmp"
+     ]
+    },
+    "files": [
+     "include/*.h",
+     "lib/libopenblas*.a",
+     "lib/libopenblas.so",
+     "lib/pkgconfig/openblas.pc",
+     "lib/cmake/openblas/*"
+    ],
+    "name": "openblas",
+    "requirements": {
+     "run": [
+      "libopenblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libopenblas.a",
+      "test -f ${PREFIX}/lib/libopenblas.so"
      ]
     }
    },
@@ -2181,16 +2181,6 @@
     "fortran_compiler_stub",
     "perl",
     "make",
-    "c_compiler_stub",
-    "fortran_compiler_stub",
-    "perl",
-    "make",
-    "llvm-openmp",
-    "_openmp_mutex * *_llvm",
-    "c_compiler_stub",
-    "fortran_compiler_stub",
-    "perl",
-    "make",
     "llvm-openmp",
     "_openmp_mutex * *_llvm",
     "c_compiler_stub",
@@ -2217,6 +2207,16 @@
     "make",
     "llvm-openmp",
     "_openmp_mutex * *_llvm",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "perl",
+    "make",
+    "llvm-openmp",
+    "_openmp_mutex * *_llvm",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "perl",
+    "make",
     "c_compiler_stub",
     "fortran_compiler_stub",
     "perl",
