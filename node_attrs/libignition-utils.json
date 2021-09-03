@@ -53,6 +53,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/727006858.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1_1.1.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -501,7 +518,8 @@
  "name": "libignition-utils1",
  "new_version": "1_1.1.0",
  "new_version_attempts": {
-  "1_1.0.0": 141
+  "1_1.0.0": 141,
+  "1_1.1.0": 1
  },
  "new_version_errors": {
   "1_1.0.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '1_1.0.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/ignitionrobotics/ign-{{ component_name }}/archive/ignition-{{ component_name }}{{ major_version }}_{{ version }}.tar.gz'\n"
@@ -686,7 +704,7 @@
    "libignition-utils1"
   ]
  },
- "pinning_version": "2021.07.21.16.24.32",
+ "pinning_version": "2021.09.03.10.00.36",
  "raw_meta_yaml": "{% set component_name = \"utils\" %}\n{% set base_name = \"libignition-\" + component_name %}\n{% set version = \"1_1.0.0\" %}\n{% set version_clean = version.split('_')[1] %}\n{% set major_version = version_clean.split('.')[0] %}\n{% set name = base_name + major_version %}\n\npackage:\n  name: {{ name }}\n  version: {{ version_clean }}\n\nsource:\n  - url: https://github.com/ignitionrobotics/ign-{{ component_name }}/archive/ignition-{{ component_name }}{{ version }}.tar.gz\n    sha256: bd024164f12f66e125b544602ec481f6760d5a710aeb62d34a015fb598ee5a0a\n    patches:\n      - 19.patch\n\nbuild:\n  number: 2\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x') }}\n\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - make  # [not win]\n    - cmake\n    - pkg-config\n  host:\n    - libignition-cmake2\n    - cli11\n  run:\n    - cli11\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ignition/{{ component_name }}{{ major_version }}/ignition/{{ component_name }}.hh  # [not win]\n    - test -f ${PREFIX}/lib/libignition-{{ component_name }}{{ major_version }}.so  # [linux]\n    - test -f ${PREFIX}/lib/libignition-{{ component_name }}{{ major_version }}.dylib  # [osx]\n    - test -f ${PREFIX}/lib/cmake/ignition-{{ component_name }}{{ major_version }}/ignition-{{ component_name }}{{ major_version }}-config.cmake  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ignition\\\\{{ component_name }}{{ major_version }}\\\\ignition\\\\{{ component_name }}.hh exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\ignition-{{ component_name }}{{ major_version }}.lib exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\ignition-{{ component_name }}{{ major_version }}.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\ignition-{{ component_name }}{{ major_version }}\\\\ignition-{{ component_name }}{{ major_version }}-config.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/ignitionrobotics/ign-{{ component_name }}\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: Classes and functions for robot applications.\n\nextra:\n  feedstock-name: {{ base_name }}\n  recipe-maintainers:\n    - wolfv\n    - traversaro\n    - Tobias-Fischer\n",
  "req": {
   "__set__": true,
@@ -733,7 +751,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.10.3",
+ "smithy_version": "3.12",
  "strong_exports": false,
  "total_requirements": {
   "build": {
