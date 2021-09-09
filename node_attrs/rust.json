@@ -744,6 +744,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/730805512.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.55.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1522,7 +1539,7 @@
   }
  },
  "name": "rust-split",
- "new_version": "1.54.0",
+ "new_version": "1.55.0",
  "new_version_attempts": {
   "1.42.0": 1,
   "1.43.0": 1,
@@ -1541,7 +1558,8 @@
   "1.52.0": 1,
   "1.52.1": 1,
   "1.53.0": 1,
-  "1.54.0": 1
+  "1.54.0": 1,
+  "1.55.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1788,7 +1806,7 @@
    "rust-std-x86_64-unknown-linux-gnu"
   ]
  },
- "pinning_version": "2021.07.29.07.25.26",
+ "pinning_version": "2021.09.09.09.53.54",
  "raw_meta_yaml": "{% set version = \"1.54.0\" %}\n\npackage:\n  name: rust-split\n  version: {{ version }}\n\nsource:\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-unknown-linux-gnu.tar.gz  # [linux and x86_64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-aarch64-unknown-linux-gnu.tar.gz  # [aarch64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-powerpc64le-unknown-linux-gnu.tar.gz  # [ppc64le]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-apple-darwin.tar.gz  # [osx and x86_64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-aarch64-apple-darwin.tar.gz  # [osx and arm64]\n  url: https://static.rust-lang.org/dist/rust-{{ version }}-x86_64-pc-windows-msvc.tar.gz  # [win64]\n  sha256: 350354495b1d4b6dd2ec7cf96aa9bc61d031951cf667a31e8cf401dc508639e6  # [linux and x86_64]\n  sha256: 33a50c5366a57aaab43c1c19e4a49ab7d8ffcd99a72925c315fb1f9389139e6f  # [aarch64]\n  sha256: 67cadf7ac5bd2e3d5fb4baede69846059f17c4e099f771329b266d08b875ed71  # [ppc64le]\n  sha256: 5eb27a4f5f7a4699bc70cf1848e340ddd74e151488bfcb26853fd584958e3d33  # [osx and x86_64]\n  sha256: 801b3b15b992b0321261de8b8ea2728e9a74822c6cb99bf978b34e217c7825ba  # [osx and arm64]\n  sha256: 1c01182f8d9ef1295eacf58e5b7ba2e3183d768b91f7f650a7421808779068a0  # [win64]\n  patches:\n    - 0001-gh-106-install.sh-Perfomance-Use-more-shell-builtins.diff\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - posix  # [win]\n  host:\n\noutputs:\n  - name: rust-std-{{ rust_arch }}\n    build:\n      noarch: generic\n      binary_relocation: false\n      merge_build_host: false\n    requirements:\n      build:\n        - posix  # [win]\n      host:\n      run:\n    script: install-rust-std.sh  # [unix]\n    script: install-rust-std.bat  # [win]\n    test:\n      commands:\n        - test -d $PREFIX/lib/rustlib   # [unix]\n        - if not exist %LIBRARY_PREFIX%/lib/rustlib exit 1  # [win]\n        - echo {{ rust_arch }}\n\n  - name: rust\n    script: install-rust.sh  # [unix]\n    script: install-rust.bat  # [win]\n    build:\n      # the distributed binaries are already relocatable\n      binary_relocation: false\n    run_exports:\n      strong_constrains:\n        - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx and x86_64]\n    requirements:\n      build:\n        - posix  # [win]\n      host:\n        - {{ pin_subpackage(\"rust-std-\" ~ rust_arch, exact=True) }}\n        - {{ compiler('c') }}  # [linux] -- rustc needs a toolchain to link executables\n      run:\n        - {{ pin_subpackage(\"rust-std-\" ~ rust_arch, exact=True) }}\n        - gcc_impl_{{ target_platform }}  # [linux]\n    test:\n      requires:\n        - posix  # [win]\n      commands:\n        - set \"REQUESTS_CA_BUNDLE=\"  # [win]\n        - set \"SSL_CERT_FILE=\"       # [win]\n        - unset REQUESTS_CA_BUNDLE  # [unix]\n        - unset SSL_CERT_FILE       # [unix]\n        - rustc --help\n        - rustdoc --help\n        - cargo --help\n        - cargo install --force xsv\n        - echo {{ rust_arch }}\n\nabout:\n  home: https://www.rust-lang.org\n  license: MIT\n  license_file:\n    - LICENSE-APACHE\n    - LICENSE-MIT\n  summary: |\n    Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.\n    This package provides the compiler (rustc) and the documentation utilities rustdoc.\n  dev_url: https://doc.rust-lang.org/std/\n  doc_url: https://www.rust-lang.org/en-US/documentation.html\n\nextra:\n  recipe-maintainers:\n    - johanneskoester\n    - abhi18av\n    - pkgw\n    - dlaehnemann\n    - isuruf\n",
  "req": {
   "__set__": true,
@@ -1849,7 +1867,7 @@
    ]
   }
  },
- "smithy_version": "3.11.0",
+ "smithy_version": "3.12",
  "strong_exports": false,
  "total_requirements": {
   "build": {
