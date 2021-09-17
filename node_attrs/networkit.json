@@ -134,7 +134,7 @@
     "__lazy_json__": "pr_json/705772021.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1631884061.895586,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -152,7 +152,12 @@
  "archived": false,
  "bad": false,
  "branch": "main",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "build_platform": {
+   "linux_aarch64": "linux_64",
+   "osx_arm64": "osx_64"
+  }
+ },
  "feedstock_name": "networkit",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -167,7 +172,7 @@
    "summary": "NetworKit is a growing open-source toolkit for large-scale network analysis."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
     "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
     "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
@@ -204,35 +209,27 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python"
+    "ninja >=1.9.0"
    ],
    "host": [
     "numpy",
@@ -292,7 +289,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -301,7 +299,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -310,7 +309,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -319,18 +319,59 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
    }
   ],
   "test": {
-   "imports": [
-    "networkit",
-    "networkit",
-    "networkit",
-    "networkit"
+   "commands": [
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\""
+   ],
+   "requires": [
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ],
+   "source_files": [
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input"
    ]
   }
  },
@@ -341,11 +382,9 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "cython",
     "libnetworkit",
     "libtlx",
-    "ninja",
-    "python"
+    "ninja"
    ]
   },
   "host": {
@@ -372,7 +411,269 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ]
+  }
+ },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "description": "NetworKit is a growing open-source toolkit for large-scale network analysis. Its aim is to provide tools for the analysis of large networks in the size range from thousands to billions of edges. For this purpose, it implements efficient graph algorithms, many of them parallel to utilize multicore architectures. These are meant to compute standard measures of network analysis, such as degree sequences, clustering coefficients, and centrality measures. In this respect, NetworKit is comparable to packages such as NetworkX, albeit with a focus on parallelism and scalability. NetworKit is also a testbed for algorithm engineering and contains novel algorithms from recently published research (see list of Publications).\n",
+   "dev_url": "https://github.com/networkit/networkit",
+   "doc_url": "https://networkit.github.io/",
+   "home": "https://github.com/networkit/networkit",
+   "license": "MIT",
+   "license_family": "MIT",
+   "license_file": "License.txt",
+   "summary": "NetworKit is a growing open-source toolkit for large-scale network analysis."
+  },
+  "build": {
+   "number": "1",
+   "script": [
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv ."
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "angriman",
+    "avdgrinten",
+    "fabratu",
+    "lucventurini",
+    "angriman",
+    "avdgrinten",
+    "fabratu",
+    "lucventurini",
+    "angriman",
+    "avdgrinten",
+    "fabratu",
+    "lucventurini",
+    "angriman",
+    "avdgrinten",
+    "fabratu",
+    "lucventurini"
+   ]
+  },
+  "package": {
+   "name": "networkit",
+   "version": "9.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "libnetworkit =9.0",
+    "ninja >=1.9.0",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "libnetworkit =9.0",
+    "ninja >=1.9.0",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "libnetworkit =9.0",
+    "ninja >=1.9.0",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "libnetworkit =9.0",
+    "ninja >=1.9.0"
+   ],
+   "host": [
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0",
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0",
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0",
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0"
+   ],
+   "run": [
+    "numpy",
+    "python",
+    "scipy",
+    "libnetworkit =9.0",
+    "numpy",
+    "python",
+    "scipy",
+    "libnetworkit =9.0",
+    "numpy",
+    "python",
+    "scipy",
+    "libnetworkit =9.0",
+    "numpy",
+    "python",
+    "scipy",
+    "libnetworkit =9.0"
+   ]
+  },
+  "source": [
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   }
+  ],
+  "test": {
+   "commands": [
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\""
+   ],
+   "requires": [
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ],
+   "source_files": [
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input"
+   ]
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "libnetworkit",
+    "libtlx",
+    "ninja"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libnetworkit",
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libnetworkit",
+    "numpy",
+    "python",
+    "scipy"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ]
   }
  },
  "meta_yaml": {
@@ -387,8 +688,14 @@
    "summary": "NetworKit is a growing open-source toolkit for large-scale network analysis."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
     "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
     "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
     "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
@@ -442,6 +749,30 @@
     "angriman",
     "avdgrinten",
     "fabratu",
+    "lucventurini",
+    "angriman",
+    "avdgrinten",
+    "fabratu",
+    "lucventurini",
+    "angriman",
+    "avdgrinten",
+    "fabratu",
+    "lucventurini",
+    "angriman",
+    "avdgrinten",
+    "fabratu",
+    "lucventurini",
+    "angriman",
+    "avdgrinten",
+    "fabratu",
+    "lucventurini",
+    "angriman",
+    "avdgrinten",
+    "fabratu",
+    "lucventurini",
+    "angriman",
+    "avdgrinten",
+    "fabratu",
     "lucventurini"
    ]
   },
@@ -454,83 +785,147 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
-    "python",
+    "libnetworkit =9.0",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
-    "python"
+    "libnetworkit =9.0",
+    "ninja >=1.9.0",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "libnetworkit =9.0",
+    "ninja >=1.9.0",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "libnetworkit =9.0",
+    "ninja >=1.9.0",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "libnetworkit =9.0",
+    "ninja >=1.9.0",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "libnetworkit =9.0",
+    "ninja >=1.9.0",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "ninja >=1.9.0",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "ninja >=1.9.0"
    ],
    "host": [
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0",
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0",
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0",
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0",
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0",
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0",
     "numpy",
     "pip",
     "python",
@@ -646,6 +1041,30 @@
     "numpy",
     "python",
     "scipy",
+    "libnetworkit =9.0",
+    "numpy",
+    "python",
+    "scipy",
+    "libnetworkit =9.0",
+    "numpy",
+    "python",
+    "scipy",
+    "libnetworkit =9.0",
+    "numpy",
+    "python",
+    "scipy",
+    "libnetworkit =9.0",
+    "numpy",
+    "python",
+    "scipy",
+    "libnetworkit =9.0",
+    "numpy",
+    "python",
+    "scipy",
+    "libnetworkit =9.0",
+    "numpy",
+    "python",
+    "scipy",
     "numpy",
     "python",
     "scipy"
@@ -656,7 +1075,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -665,7 +1085,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -674,7 +1095,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -683,7 +1105,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -692,7 +1115,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -701,7 +1125,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -710,7 +1135,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -719,7 +1145,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -728,7 +1155,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -737,24 +1165,239 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
    }
   ],
   "test": {
-   "imports": [
-    "networkit",
-    "networkit",
-    "networkit",
-    "networkit",
-    "networkit",
-    "networkit",
-    "networkit",
-    "networkit",
-    "networkit",
-    "networkit"
+   "commands": [
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\""
+   ],
+   "requires": [
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ],
+   "source_files": [
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input"
    ]
   }
  },
@@ -781,7 +1424,7 @@
    "summary": "NetworKit is a growing open-source toolkit for large-scale network analysis."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
     "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
     "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
@@ -818,35 +1461,27 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
     "libnetworkit =9.0",
-    "python"
+    "ninja >=1.9.0"
    ],
    "host": [
     "numpy",
@@ -906,7 +1541,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -915,7 +1551,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -924,7 +1561,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -933,18 +1571,59 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
    }
   ],
   "test": {
-   "imports": [
-    "networkit",
-    "networkit",
-    "networkit",
-    "networkit"
+   "commands": [
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\""
+   ],
+   "requires": [
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ],
+   "source_files": [
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input"
    ]
   }
  },
@@ -955,11 +1634,9 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "cython",
     "libnetworkit",
     "libtlx",
-    "ninja",
-    "python"
+    "ninja"
    ]
   },
   "host": {
@@ -986,7 +1663,183 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ]
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "NetworKit is a growing open-source toolkit for large-scale network analysis. Its aim is to provide tools for the analysis of large networks in the size range from thousands to billions of edges. For this purpose, it implements efficient graph algorithms, many of them parallel to utilize multicore architectures. These are meant to compute standard measures of network analysis, such as degree sequences, clustering coefficients, and centrality measures. In this respect, NetworKit is comparable to packages such as NetworkX, albeit with a focus on parallelism and scalability. NetworKit is also a testbed for algorithm engineering and contains novel algorithms from recently published research (see list of Publications).\n",
+   "dev_url": "https://github.com/networkit/networkit",
+   "doc_url": "https://networkit.github.io/",
+   "home": "https://github.com/networkit/networkit",
+   "license": "MIT",
+   "license_family": "MIT",
+   "license_file": "License.txt",
+   "summary": "NetworKit is a growing open-source toolkit for large-scale network analysis."
+  },
+  "build": {
+   "number": "1",
+   "script": [
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv .",
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\" --ignore-installed -vv ."
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "angriman",
+    "avdgrinten",
+    "fabratu",
+    "lucventurini",
+    "angriman",
+    "avdgrinten",
+    "fabratu",
+    "lucventurini"
+   ]
+  },
+  "package": {
+   "name": "networkit",
+   "version": "9.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "libnetworkit =9.0",
+    "ninja >=1.9.0",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake >=3.5",
+    "libtlx",
+    "libnetworkit =9.0",
+    "ninja >=1.9.0"
+   ],
+   "host": [
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0",
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel >=0.28",
+    "libnetworkit =9.0"
+   ],
+   "run": [
+    "numpy",
+    "python",
+    "scipy",
+    "libnetworkit =9.0",
+    "numpy",
+    "python",
+    "scipy",
+    "libnetworkit =9.0"
+   ]
+  },
+  "source": [
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   },
+   {
+    "patches": [
+     "0001-Pass-conda-python-version.patch",
+     "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
+    ],
+    "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
+    "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
+   }
+  ],
+  "test": {
+   "commands": [
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\""
+   ],
+   "requires": [
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ],
+   "source_files": [
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "libnetworkit",
+    "libtlx",
+    "ninja"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libnetworkit",
+    "numpy",
+    "pip",
+    "python",
+    "scipy",
+    "setuptools",
+    "setuptools-cythonize",
+    "wheel"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libnetworkit",
+    "numpy",
+    "python",
+    "scipy"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ]
   }
  },
  "outputs_names": {
@@ -996,14 +1849,13 @@
   ]
  },
  "pinning_version": "2021.08.06.19.41.12",
- "raw_meta_yaml": "{% set name = \"networkit\" %}\n{% set version = \"9.0\" %}\n{% set hash_type = \"sha256\" %}\n{% set hash_value = \"c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c\" %}\n\npackage:\n  name: '{{ name|lower }}'\n  version: '{{ version }}'\n\nsource:\n  - url: 'https://github.com/networkit/networkit/archive/{{ version }}.tar.gz'\n    {{ hash_type }}: {{ hash_value }}\n    patches:\n      - 0001-Pass-conda-python-version.patch\n      - 0001-Removed-link-to-python-libraries-for-cython-extension.patch\n      - 0001-Added-python-libraries-for-Windows.patch\n  \nbuild:\n  skip: True  # [py27 or py33  or python_impl == 'pypy']\n  skip: True  # [py<38 and win]\n  number: 0\n  script:\n    - '{{ PYTHON }} -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx={{ BUILD_PREFIX }}\" --ignore-installed -vv .'  # [not win]\n    - '{{ PYTHON }} -m pip install --install-option=\"build_ext\" --install-option=\"--external-tlx={{ BUILD_PREFIX }}\\Library\" --ignore-installed -vv .'  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.5\n    - cython >=0.29\n    - ninja >=1.9.0\n    - libtlx\n    - libnetworkit ={{ version }}  # [not win]\n    - python\n  \n  host:\n    - numpy\n    - pip\n    - python\n    - scipy\n    - setuptools\n    - setuptools-cythonize\n    - wheel >=0.28\n    - libnetworkit ={{ version }}  # [not win]\n\n  run:\n    - numpy\n    - python\n    - scipy\n    - libnetworkit ={{ version }}  # [not win]\n\ntest:\n  imports:\n    - networkit\n\nabout:\n  home: https://github.com/networkit/networkit\n  license: MIT\n  license_family: MIT\n  license_file: License.txt\n  summary: 'NetworKit is a growing open-source toolkit for large-scale network analysis.'\n  description: |\n           NetworKit is a growing open-source toolkit for large-scale network analysis. Its aim is to provide tools for the analysis of large networks in the size range from thousands to billions of edges. For this purpose, it implements efficient graph algorithms, many of them parallel to utilize multicore architectures. These are meant to compute standard measures of network analysis, such as degree sequences, clustering coefficients, and centrality measures. In this respect, NetworKit is comparable to packages such as NetworkX, albeit with a focus on parallelism and scalability. NetworKit is also a testbed for algorithm engineering and contains novel algorithms from recently published research (see list of Publications).\n  doc_url: https://networkit.github.io/\n  dev_url: https://github.com/networkit/networkit\n\nextra:\n  recipe-maintainers:\n    - angriman\n    - avdgrinten\n    - fabratu\n    - lucventurini  # Temporary, I am not involved with the development itself\n",
+ "raw_meta_yaml": "{% set name = \"networkit\" %}\n{% set version = \"9.0\" %}\n{% set hash_type = \"sha256\" %}\n{% set hash_value = \"c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c\" %}\n\npackage:\n  name: '{{ name|lower }}'\n  version: '{{ version }}'\n\nsource:\n  - url: 'https://github.com/networkit/networkit/archive/{{ version }}.tar.gz'\n    {{ hash_type }}: {{ hash_value }}\n    patches:\n      - 0001-Pass-conda-python-version.patch\n      - 0001-Removed-link-to-python-libraries-for-cython-extension.patch\n      - 0001-Added-python-libraries-for-Windows.patch\n      - 0001-Import-submodules-from-scipy.sparse-explicitly.patch\n  \nbuild:\n  skip: True  # [py27 or py33  or python_impl == 'pypy']\n  skip: True  # [py<38 and win]\n  number: 1\n  script:\n    - '{{ PYTHON }} -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx={{ BUILD_PREFIX }}\" --ignore-installed -vv .'  # [not win]\n    - '{{ PYTHON }} -m pip install --install-option=\"build_ext\" --install-option=\"--external-tlx={{ BUILD_PREFIX }}\\Library\" --ignore-installed -vv .'  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.5\n    - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n    - cython >=0.29                       # [build_platform != target_platform]\n    - libtlx\n    - libnetworkit ={{ version }}         # [not win]\n    - ninja >=1.9.0\n    - numpy                               # [build_platform != target_platform]\n    - pybind11                            # [build_platform != target_platform]\n    - python                              # [build_platform != target_platform]\n  \n  host:\n    - numpy\n    - pip\n    - python\n    - scipy\n    - setuptools\n    - setuptools-cythonize\n    - wheel >=0.28\n    - libnetworkit ={{ version }}  # [not win]\n\n  run:\n    - numpy\n    - python\n    - scipy\n    - libnetworkit ={{ version }}  # [not win]\n\ntest:\n  requires:\n    - conda-build\n    - jupyter\n    - tabulate\n  source_files:\n    - networkit/test\n    - notebooks\n    - input\n  commands:\n    # Remove tests, which involve writing graphs (missing permissions)\n    - rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py\n    - rm notebooks/User-Guide.ipynb\n    - python -m unittest discover -v networkit/test/\n    - python notebooks/test_notebooks.py \"notebooks\"\n\nabout:\n  home: https://github.com/networkit/networkit\n  license: MIT\n  license_family: MIT\n  license_file: License.txt\n  summary: 'NetworKit is a growing open-source toolkit for large-scale network analysis.'\n  description: |\n           NetworKit is a growing open-source toolkit for large-scale network analysis. Its aim is to provide tools for the analysis of large networks in the size range from thousands to billions of edges. For this purpose, it implements efficient graph algorithms, many of them parallel to utilize multicore architectures. These are meant to compute standard measures of network analysis, such as degree sequences, clustering coefficients, and centrality measures. In this respect, NetworKit is comparable to packages such as NetworkX, albeit with a focus on parallelism and scalability. NetworKit is also a testbed for algorithm engineering and contains novel algorithms from recently published research (see list of Publications).\n  doc_url: https://networkit.github.io/\n  dev_url: https://github.com/networkit/networkit\n\nextra:\n  recipe-maintainers:\n    - angriman\n    - avdgrinten\n    - fabratu\n    - lucventurini  # Temporary, I am not involved with the development itself\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "cmake",
    "cxx_compiler_stub",
-   "cython",
    "libnetworkit",
    "libtlx",
    "ninja",
@@ -1023,11 +1875,9 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "cython",
     "libnetworkit",
     "libtlx",
-    "ninja",
-    "python"
+    "ninja"
    ]
   },
   "host": {
@@ -1058,7 +1908,11 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ]
   }
  },
  "smithy_version": "3.11.0",
@@ -1070,11 +1924,9 @@
     "c_compiler_stub",
     "cmake >=3.5",
     "cxx_compiler_stub",
-    "cython >=0.29",
     "libnetworkit =9.0",
     "libtlx",
-    "ninja >=1.9.0",
-    "python"
+    "ninja >=1.9.0"
    ]
   },
   "host": {
@@ -1101,7 +1953,11 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ]
   }
  },
  "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz",
@@ -1118,7 +1974,7 @@
    "summary": "NetworKit is a growing open-source toolkit for large-scale network analysis."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
     "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/python.exe -m pip install --install-option=\"build_ext\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\\Library\" --ignore-installed -vv .",
     "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/python.exe -m pip install --install-option=\"build_ext\" --install-option=\"--external-tlx=/usr/share/miniconda3/envs/run_env/conda-bld/_build_env\\Library\" --ignore-installed -vv ."
@@ -1145,17 +2001,13 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
-    "python",
+    "ninja >=1.9.0",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.5",
-    "cython >=0.29",
-    "ninja >=1.9.0",
     "libtlx",
-    "python"
+    "ninja >=1.9.0"
    ],
    "host": [
     "numpy",
@@ -1187,7 +2039,8 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
@@ -1196,16 +2049,39 @@
     "patches": [
      "0001-Pass-conda-python-version.patch",
      "0001-Removed-link-to-python-libraries-for-cython-extension.patch",
-     "0001-Added-python-libraries-for-Windows.patch"
+     "0001-Added-python-libraries-for-Windows.patch",
+     "0001-Import-submodules-from-scipy.sparse-explicitly.patch"
     ],
     "sha256": "c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c",
     "url": "https://github.com/networkit/networkit/archive/9.0.tar.gz"
    }
   ],
   "test": {
-   "imports": [
-    "networkit",
-    "networkit"
+   "commands": [
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\"",
+    "rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py",
+    "rm notebooks/User-Guide.ipynb",
+    "python -m unittest discover -v networkit/test/",
+    "python notebooks/test_notebooks.py \"notebooks\""
+   ],
+   "requires": [
+    "conda-build",
+    "jupyter",
+    "tabulate",
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ],
+   "source_files": [
+    "networkit/test",
+    "notebooks",
+    "input",
+    "networkit/test",
+    "notebooks",
+    "input"
    ]
   }
  },
@@ -1216,10 +2092,8 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "cython",
     "libtlx",
-    "ninja",
-    "python"
+    "ninja"
    ]
   },
   "host": {
@@ -1244,7 +2118,11 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "conda-build",
+    "jupyter",
+    "tabulate"
+   ]
   }
  }
 }
