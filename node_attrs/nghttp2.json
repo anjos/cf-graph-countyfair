@@ -143,7 +143,7 @@
     "__lazy_json__": "pr_json/692036207.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1632691557.5174036,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "1.44.0"
@@ -160,7 +160,7 @@
     "__lazy_json__": "pr_json/737493640.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1632691557.5176194,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "1.45.0"
@@ -177,7 +177,7 @@
     "__lazy_json__": "pr_json/739086549.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1632691557.5177426,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "1.45.1"
@@ -207,6 +207,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/742952070.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.45.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -235,16 +252,87 @@
    "summary": "This is an implementation of Hypertext Transfer Protocol version 2."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "cpaulik",
+    "mariusvniekerk",
+    "wolfv",
     "cpaulik",
     "mariusvniekerk",
     "wolfv"
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libnghttp2"
+     ]
+    },
+    "files": [
+     "include/nghttp2/nghttp2*",
+     "lib/libnghttp2*",
+     "lib/nghttp2*",
+     "lib/pkgconfig/libnghttp2*",
+     "bin/nghttp*"
+    ],
+    "name": "libnghttp2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ],
+     "run": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5",
+      "libstdcxx-ng"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "nghttp -nv https://nghttp2.org",
+      "test ! -f ${PREFIX}/lib/libnghttp2.a",
+      "test -f ${PREFIX}/lib/libnghttp2.so"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libnghttp2-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "libnghttp2"
+     ],
+     "run": [
+      "libnghttp2",
+      "libev-static",
+      "c-ares-static"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
    {
     "build": {
      "run_exports": [
@@ -324,15 +412,29 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "make",
+    "pkg-config",
+    "libtool",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "make",
     "pkg-config"
    ],
    "host": [
     "zlib",
     "openssl",
     "libev >=4.11",
+    "c-ares >=1.7.5",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
     "c-ares >=1.7.5"
    ],
    "run": [
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
+    "libstdcxx-ng",
     "zlib",
     "openssl",
     "libev >=4.11",
@@ -396,16 +498,87 @@
    "summary": "This is an implementation of Hypertext Transfer Protocol version 2."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "cpaulik",
+    "mariusvniekerk",
+    "wolfv",
     "cpaulik",
     "mariusvniekerk",
     "wolfv"
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libnghttp2"
+     ]
+    },
+    "files": [
+     "include/nghttp2/nghttp2*",
+     "lib/libnghttp2*",
+     "lib/nghttp2*",
+     "lib/pkgconfig/libnghttp2*",
+     "bin/nghttp*"
+    ],
+    "name": "libnghttp2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ],
+     "run": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5",
+      "libstdcxx-ng"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "nghttp -nv https://nghttp2.org",
+      "test ! -f ${PREFIX}/lib/libnghttp2.a",
+      "test -f ${PREFIX}/lib/libnghttp2.so"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libnghttp2-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "libnghttp2"
+     ],
+     "run": [
+      "libnghttp2",
+      "libev-static",
+      "c-ares-static"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
    {
     "build": {
      "run_exports": [
@@ -485,15 +658,29 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "make",
+    "pkg-config",
+    "libtool",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "make",
     "pkg-config"
    ],
    "host": [
     "zlib",
     "openssl",
     "libev >=4.11",
+    "c-ares >=1.7.5",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
     "c-ares >=1.7.5"
    ],
    "run": [
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
+    "libstdcxx-ng",
     "zlib",
     "openssl",
     "libev >=4.11",
@@ -557,16 +744,87 @@
    "summary": "This is an implementation of Hypertext Transfer Protocol version 2."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "cpaulik",
+    "mariusvniekerk",
+    "wolfv",
     "cpaulik",
     "mariusvniekerk",
     "wolfv"
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libnghttp2"
+     ]
+    },
+    "files": [
+     "include/nghttp2/nghttp2*",
+     "lib/libnghttp2*",
+     "lib/nghttp2*",
+     "lib/pkgconfig/libnghttp2*",
+     "bin/nghttp*"
+    ],
+    "name": "libnghttp2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ],
+     "run": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5",
+      "libstdcxx-ng"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "nghttp -nv https://nghttp2.org",
+      "test ! -f ${PREFIX}/lib/libnghttp2.a",
+      "test -f ${PREFIX}/lib/libnghttp2.so"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libnghttp2-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "libnghttp2"
+     ],
+     "run": [
+      "libnghttp2",
+      "libev-static",
+      "c-ares-static"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
    {
     "build": {
      "run_exports": [
@@ -646,15 +904,29 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "make",
+    "pkg-config",
+    "libtool",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "make",
     "pkg-config"
    ],
    "host": [
     "zlib",
     "openssl",
     "libev >=4.11",
+    "c-ares >=1.7.5",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
     "c-ares >=1.7.5"
    ],
    "run": [
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
+    "libstdcxx-ng",
     "zlib",
     "openssl",
     "libev >=4.11",
@@ -718,10 +990,25 @@
    "summary": "This is an implementation of Hypertext Transfer Protocol version 2."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "cpaulik",
+    "mariusvniekerk",
+    "wolfv",
+    "cpaulik",
+    "mariusvniekerk",
+    "wolfv",
+    "cpaulik",
+    "mariusvniekerk",
+    "wolfv",
+    "cpaulik",
+    "mariusvniekerk",
+    "wolfv",
+    "cpaulik",
+    "mariusvniekerk",
+    "wolfv",
     "cpaulik",
     "mariusvniekerk",
     "wolfv",
@@ -974,6 +1261,342 @@
       "zlib",
       "openssl",
       "libev >=4.11",
+      "c-ares >=1.7.5",
+      "libstdcxx-ng"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "nghttp -nv https://nghttp2.org",
+      "test ! -f ${PREFIX}/lib/libnghttp2.a",
+      "test -f ${PREFIX}/lib/libnghttp2.so"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libnghttp2-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "libnghttp2"
+     ],
+     "run": [
+      "libnghttp2",
+      "libev-static",
+      "c-ares-static"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libnghttp2"
+     ]
+    },
+    "files": [
+     "include/nghttp2/nghttp2*",
+     "lib/libnghttp2*",
+     "lib/nghttp2*",
+     "lib/pkgconfig/libnghttp2*",
+     "bin/nghttp*"
+    ],
+    "name": "libnghttp2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ],
+     "run": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5",
+      "libstdcxx-ng"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "nghttp -nv https://nghttp2.org",
+      "test ! -f ${PREFIX}/lib/libnghttp2.a",
+      "test -f ${PREFIX}/lib/libnghttp2.so"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libnghttp2-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "libnghttp2"
+     ],
+     "run": [
+      "libnghttp2",
+      "libev-static",
+      "c-ares-static"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libnghttp2"
+     ]
+    },
+    "files": [
+     "include/nghttp2/nghttp2*",
+     "lib/libnghttp2*",
+     "lib/nghttp2*",
+     "lib/pkgconfig/libnghttp2*",
+     "bin/nghttp*"
+    ],
+    "name": "libnghttp2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ],
+     "run": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5",
+      "libstdcxx-ng"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "nghttp -nv https://nghttp2.org",
+      "test ! -f ${PREFIX}/lib/libnghttp2.a",
+      "test -f ${PREFIX}/lib/libnghttp2.so"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libnghttp2-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "libnghttp2"
+     ],
+     "run": [
+      "libnghttp2",
+      "libev-static",
+      "c-ares-static"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libnghttp2"
+     ]
+    },
+    "files": [
+     "include/nghttp2/nghttp2*",
+     "lib/libnghttp2*",
+     "lib/nghttp2*",
+     "lib/pkgconfig/libnghttp2*",
+     "bin/nghttp*"
+    ],
+    "name": "libnghttp2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ],
+     "run": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "nghttp -nv https://nghttp2.org",
+      "test ! -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libnghttp2-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "libnghttp2"
+     ],
+     "run": [
+      "libnghttp2",
+      "libev-static",
+      "c-ares-static"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libnghttp2"
+     ]
+    },
+    "files": [
+     "include/nghttp2/nghttp2*",
+     "lib/libnghttp2*",
+     "lib/nghttp2*",
+     "lib/pkgconfig/libnghttp2*",
+     "bin/nghttp*"
+    ],
+    "name": "libnghttp2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ],
+     "run": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "nghttp -nv https://nghttp2.org",
+      "test ! -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libnghttp2-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "libnghttp2"
+     ],
+     "run": [
+      "libnghttp2",
+      "libev-static",
+      "c-ares-static"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libnghttp2"
+     ]
+    },
+    "files": [
+     "include/nghttp2/nghttp2*",
+     "lib/libnghttp2*",
+     "lib/nghttp2*",
+     "lib/pkgconfig/libnghttp2*",
+     "bin/nghttp*"
+    ],
+    "name": "libnghttp2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ],
+     "run": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
       "c-ares >=1.7.5"
      ]
     },
@@ -1107,9 +1730,54 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "make",
+    "pkg-config",
+    "libtool",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "make",
+    "pkg-config",
+    "libtool",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "make",
+    "pkg-config",
+    "libtool",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "make",
+    "pkg-config",
+    "libtool",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "make",
+    "pkg-config",
+    "libtool",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "make",
     "pkg-config"
    ],
    "host": [
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
     "zlib",
     "openssl",
     "libev >=4.11",
@@ -1147,6 +1815,29 @@
     "libev >=4.11",
     "c-ares >=1.7.5",
     "libstdcxx-ng",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
+    "libstdcxx-ng",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
+    "libstdcxx-ng",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
+    "libstdcxx-ng",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
     "zlib",
     "openssl",
     "libev >=4.11",
@@ -1170,7 +1861,7 @@
   "1.43.0": 1,
   "1.44.0": 1,
   "1.45.0": 1,
-  "1.45.1": 1
+  "1.45.1": 2
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1185,16 +1876,85 @@
    "summary": "This is an implementation of Hypertext Transfer Protocol version 2."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "cpaulik",
+    "mariusvniekerk",
+    "wolfv",
     "cpaulik",
     "mariusvniekerk",
     "wolfv"
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libnghttp2"
+     ]
+    },
+    "files": [
+     "include/nghttp2/nghttp2*",
+     "lib/libnghttp2*",
+     "lib/nghttp2*",
+     "lib/pkgconfig/libnghttp2*",
+     "bin/nghttp*"
+    ],
+    "name": "libnghttp2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ],
+     "run": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "nghttp -nv https://nghttp2.org",
+      "test ! -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libnghttp2-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "libnghttp2"
+     ],
+     "run": [
+      "libnghttp2",
+      "libev-static",
+      "c-ares-static"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
    {
     "build": {
      "run_exports": [
@@ -1272,15 +2032,28 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "make",
+    "pkg-config",
+    "libtool",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "make",
     "pkg-config"
    ],
    "host": [
     "zlib",
     "openssl",
     "libev >=4.11",
+    "c-ares >=1.7.5",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
     "c-ares >=1.7.5"
    ],
    "run": [
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
     "zlib",
     "openssl",
     "libev >=4.11",
@@ -1342,16 +2115,85 @@
    "summary": "This is an implementation of Hypertext Transfer Protocol version 2."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "cpaulik",
+    "mariusvniekerk",
+    "wolfv",
     "cpaulik",
     "mariusvniekerk",
     "wolfv"
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libnghttp2"
+     ]
+    },
+    "files": [
+     "include/nghttp2/nghttp2*",
+     "lib/libnghttp2*",
+     "lib/nghttp2*",
+     "lib/pkgconfig/libnghttp2*",
+     "bin/nghttp*"
+    ],
+    "name": "libnghttp2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ],
+     "run": [
+      "zlib",
+      "openssl",
+      "libev >=4.11",
+      "c-ares >=1.7.5"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "nghttp -nv https://nghttp2.org",
+      "test ! -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libnghttp2-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make"
+     ],
+     "host": [
+      "libnghttp2"
+     ],
+     "run": [
+      "libnghttp2",
+      "libev-static",
+      "c-ares-static"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libnghttp2.a"
+     ]
+    }
+   },
    {
     "build": {
      "run_exports": [
@@ -1429,15 +2271,28 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "make",
+    "pkg-config",
+    "libtool",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "make",
     "pkg-config"
    ],
    "host": [
     "zlib",
     "openssl",
     "libev >=4.11",
+    "c-ares >=1.7.5",
+    "zlib",
+    "openssl",
+    "libev >=4.11",
     "c-ares >=1.7.5"
    ],
    "run": [
+    "zlib",
+    "openssl",
+    "libev >=4.11",
+    "c-ares >=1.7.5",
     "zlib",
     "openssl",
     "libev >=4.11",
@@ -1495,9 +2350,9 @@
    "nghttp2"
   ]
  },
- "pinning_version": "2021.09.23.16.54.17",
+ "pinning_version": "2021.09.26.18.22.49",
  "pre_pr_migrator_status": {},
- "raw_meta_yaml": "{% set name = \"nghttp2\" %}\n{% set version = \"1.43.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/nghttp2/{{ name }}/releases/download/v{{ version }}/nghttp2-{{ version }}.tar.gz\n  sha256: 45cc3ed91966551f92b31958ceca9b3a9f23ce4faf5cbedb78aa3327cd4e5907\n\nbuild:\n  number: 0\n  skip: true  # [not unix]\n\nrequirements:\n  build:\n    - libtool  # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - make\n    - pkg-config  # [unix]\n  host:\n    - zlib\n    - openssl  # [unix]\n    - libev >=4.11\n    - c-ares >=1.7.5\n  run:\n    - zlib\n    - openssl  # [unix]\n    - libev >=4.11\n    - c-ares >=1.7.5\n    - libstdcxx-ng  # [linux]\n\n\noutputs:\n  - name: libnghttp2\n    script: install.sh  # [unix]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - make\n      host:\n        - zlib\n        - openssl  # [unix]\n        - libev >=4.11\n        - c-ares >=1.7.5\n      run:\n        - zlib\n        - openssl  # [unix]\n        - libev >=4.11\n        - c-ares >=1.7.5\n        - libstdcxx-ng  # [linux]\n    build:\n      run_exports:\n        - {{ pin_subpackage('libnghttp2') }}\n    files:\n      - include/nghttp2/nghttp2*  # [unix]\n      - lib/libnghttp2*  # [unix]\n      - lib/nghttp2*  # [unix]\n      - lib/pkgconfig/libnghttp2*  # [unix]\n      - bin/nghttp*  # [unix]\n    test:\n      commands:\n        - nghttp -nv https://nghttp2.org\n        - test ! -f ${PREFIX}/lib/lib{{ name }}.a    # [unix]\n        - test -f ${PREFIX}/lib/lib{{ name }}.so     # [linux]\n\n  - name: libnghttp2-static\n    script: install.sh  # [unix]\n    build:\n      skip: true  # [not unix]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - make\n      host:\n        - {{ pin_subpackage('libnghttp2', exact=True) }}\n      run:\n        - {{ pin_subpackage('libnghttp2', exact=True) }}\n        - libev-static\n        - c-ares-static\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/lib{{ name }}.a    # [unix]\n\nabout:\n  home: http://github.com/nghttp2/nghttp2\n  license: MIT\n  license_family: MIT\n  license_file: COPYING\n  summary: This is an implementation of Hypertext Transfer Protocol version 2.\n\n  description: |\n    This is an implementation of the Hypertext Transfer Protocol version 2 in C.\n\n    The framing layer of HTTP/2 is implemented as a reusable C library. On top\n    of that, we have implemented an HTTP/2 client, server and proxy. We have\n    also developed load test and benchmarking tools for HTTP/2.\n  doc_url: https://nghttp2.org/documentation/\n  dev_url: https://github.com/nghttp2/nghttp2\n\nextra:\n  recipe-maintainers:\n    - cpaulik\n    - mariusvniekerk\n    - wolfv\n",
+ "raw_meta_yaml": "{% set name = \"nghttp2\" %}\n{% set version = \"1.43.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/nghttp2/{{ name }}/releases/download/v{{ version }}/nghttp2-{{ version }}.tar.gz\n  sha256: 45cc3ed91966551f92b31958ceca9b3a9f23ce4faf5cbedb78aa3327cd4e5907\n\nbuild:\n  number: 1\n  skip: true  # [not unix]\n\nrequirements:\n  build:\n    - libtool  # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - make\n    - pkg-config  # [unix]\n  host:\n    - zlib\n    - openssl  # [unix]\n    - libev >=4.11\n    - c-ares >=1.7.5\n  run:\n    - zlib\n    - openssl  # [unix]\n    - libev >=4.11\n    - c-ares >=1.7.5\n    - libstdcxx-ng  # [linux]\n\n\noutputs:\n  - name: libnghttp2\n    script: install.sh  # [unix]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - make\n      host:\n        - zlib\n        - openssl  # [unix]\n        - libev >=4.11\n        - c-ares >=1.7.5\n      run:\n        - zlib\n        - openssl  # [unix]\n        - libev >=4.11\n        - c-ares >=1.7.5\n        - libstdcxx-ng  # [linux]\n    build:\n      run_exports:\n        - {{ pin_subpackage('libnghttp2') }}\n    files:\n      - include/nghttp2/nghttp2*  # [unix]\n      - lib/libnghttp2*  # [unix]\n      - lib/nghttp2*  # [unix]\n      - lib/pkgconfig/libnghttp2*  # [unix]\n      - bin/nghttp*  # [unix]\n    test:\n      commands:\n        - nghttp -nv https://nghttp2.org\n        - test ! -f ${PREFIX}/lib/lib{{ name }}.a    # [unix]\n        - test -f ${PREFIX}/lib/lib{{ name }}.so     # [linux]\n\n  - name: libnghttp2-static\n    script: install.sh  # [unix]\n    build:\n      skip: true  # [not unix]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - make\n      host:\n        - {{ pin_subpackage('libnghttp2', exact=True) }}\n      run:\n        - {{ pin_subpackage('libnghttp2', exact=True) }}\n        - libev-static\n        - c-ares-static\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/lib{{ name }}.a    # [unix]\n\nabout:\n  home: http://github.com/nghttp2/nghttp2\n  license: MIT\n  license_family: MIT\n  license_file: COPYING\n  summary: This is an implementation of Hypertext Transfer Protocol version 2.\n\n  description: |\n    This is an implementation of the Hypertext Transfer Protocol version 2 in C.\n\n    The framing layer of HTTP/2 is implemented as a reusable C library. On top\n    of that, we have implemented an HTTP/2 client, server and proxy. We have\n    also developed load test and benchmarking tools for HTTP/2.\n  doc_url: https://nghttp2.org/documentation/\n  dev_url: https://github.com/nghttp2/nghttp2\n\nextra:\n  recipe-maintainers:\n    - cpaulik\n    - mariusvniekerk\n    - wolfv\n",
  "req": {
   "__set__": true,
   "elements": [
