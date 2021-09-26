@@ -356,6 +356,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/742773487.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.7.20"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1080,7 +1097,7 @@
   }
  },
  "name": "libsolv",
- "new_version": "0.7.19",
+ "new_version": "0.7.20",
  "new_version_attempts": {
   "0.7.12": 1,
   "0.7.13": 1,
@@ -1089,7 +1106,8 @@
   "0.7.16": 2,
   "0.7.17": 1,
   "0.7.18": 1,
-  "0.7.19": 1
+  "0.7.19": 1,
+  "0.7.20": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1335,7 +1353,7 @@
    "libsolv-static"
   ]
  },
- "pinning_version": "2021.04.06.19.11.00",
+ "pinning_version": "2021.09.25.11.56.47",
  "raw_meta_yaml": "{% set name = \"libsolv\" %}\n{% set version = \"0.7.19\" %}\n{% set sha256 = \"67e6a46e9e03410d3d27c963c0382881b064c50d2e7ca25860c515df3ca4dae1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/openSUSE/libsolv/archive/{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    - win_export_and_static_build.patch  # [win]\n    - conda_variant_priorization.patch\n    - add_strict_repo_prio_rule.patch\n    - memcpy_to_memmove.patch\n\nbuild:\n  number: 5\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - make  # [not win]\n    - ninja  # [win]\n    - cmake\n  host:\n    - zlib\n\noutputs:\n  - name: libsolv\n    script: install.sh  # [unix]\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/libsolv${SHLIB_EXT}  # [unix]\n        - test -f ${PREFIX}/lib/libsolvext${SHLIB_EXT}  # [unix]\n        - test -f ${PREFIX}/lib/libsolv.so.1  # [linux]\n        - test -f ${PREFIX}/include/solv/repo.h  # [unix]\n        - if exist %LIBRARY_INC%\\solv\\repo.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_LIB%\\solv.lib (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_LIB%\\solvext.lib (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_BIN%\\solv.dll (exit 0) else (exit 1)  # [win]\n        - dumpsolv.exe -h  # [win]\n        - dumpsolv -h  # [unix]\n  - name: libsolv-static\n    script: install.sh  # [unix]\n    script: install_static.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - make  # [not win]\n        - ninja  # [win]\n        - cmake\n      host:\n        - zlib\n        - {{ pin_subpackage(\"libsolv\", exact=True) }}\n      run:\n        - {{ pin_subpackage(\"libsolv\", exact=True) }}\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/libsolv.a  # [unix]\n        - test -f ${PREFIX}/lib/libsolvext.a  # [unix]\n        - if exist %LIBRARY_LIB%\\solv_static.lib (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_LIB%\\solvext_static.lib (exit 0) else (exit 1)  # [win]\n\nabout:\n  home: https://github.com/openSUSE/libsolv\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE.BSD\n  summary: Library for solving packages and reading repositories\n  description: libsolv, a free package dependency solver using a satisfiability algorithm.\n  dev_url: https://github.com/openSUSE/libsolv\n\nextra:\n  recipe-maintainers:\n    - SylvainCorlay\n    - JohanMabille\n    - wolfv\n    - davidbrochart\n    - adriendelsalle\n",
  "req": {
   "__set__": true,
@@ -1382,7 +1400,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.9.0",
+ "smithy_version": "3.12",
  "strong_exports": false,
  "total_requirements": {
   "build": {
