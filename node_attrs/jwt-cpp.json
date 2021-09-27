@@ -101,6 +101,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/743045262.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "openssl3"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -628,9 +647,8 @@
    "jwt-cpp"
   ]
  },
- "pinning_version": "2021.09.21.16.23.56",
+ "pinning_version": "2021.09.26.18.22.49",
  "pre_pr_migrator_status": {
-  "openssl3": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1265805190\">bot CI job</a>): master: ['linux_ppc64le_openssl3: Encountered problems while solving:\\n  - nothing provides requested openssl 3.*\\n']",
   "rebuild-broken": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1265438560\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1175, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 196, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/broken_rebuild.py\", line 361, in migrate\n    self.set_build_number(os.path.join(recipe_dir, \"meta.yaml\"))\nNameError: name 'os' is not defined\n"
  },
  "raw_meta_yaml": "{% set name = \"jwt-cpp\" %}\n{% set version = \"0.5.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/Thalhammer/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: d8f5ffb361824630b3b6f4aad26c730c915081071040c232ac57947d6177ef4f\n  patches:\n    # don't use find_package for picojson, we know we have it\n    - external-picojson.patch\n    # disable cmake compiler checks on windows\n    - cmake-no-compiler.patch  # [win]\n\nbuild:\n  ignore_run_exports:\n    # we only need the compiler for the test suite\n    - libgcc-ng  # [unix]\n    - libstdcxx-ng  # [unix]\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}  # [unix]\n    - cmake\n    - make  # [unix]\n    - ninja  # [win]\n  host:\n    - gmock  # [unix]\n    - gtest  # [unix]\n    - openssl\n    - picojson\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/jwt-cpp/jwt.h  # [unix]\n    - test -f ${PREFIX}/lib/cmake/jwt-cpp/jwt-cpp-config.cmake  # [unix]\n    - if not exist %LIBRARY_INC%\\jwt-cpp\\jwt.h exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\cmake\\jwt-cpp\\jwt-cpp-config.cmake exit 1  # [win]\n\nabout:\n  home: https://thalhammer.it/projects/jwt_cpp\n  dev_url: https://github.com/Thalhammer/jwt-cpp\n  summary: A header only library for creating and validating json web tokens in c++\n  license: MIT\n  license_file: LICENSE\n  description: |\n    A header only library for creating and validating JSON Web Tokens in C++11.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n",
