@@ -38,10 +38,11 @@
    "summary": "Advanced key-value cache and store"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "SimonBoothroyd",
     "SimonBoothroyd"
    ]
   },
@@ -52,12 +53,16 @@
   "requirements": {
    "build": [
     "c_compiler_stub",
+    "make",
+    "c_compiler_stub",
     "make"
    ],
    "host": [
+    "openssl",
     "openssl"
    ],
    "run": [
+    "openssl",
     "openssl"
    ]
   },
@@ -68,6 +73,8 @@
   },
   "test": {
    "commands": [
+    "redis-cli --version",
+    "redis-server --version",
     "redis-cli --version",
     "redis-server --version"
    ]
@@ -110,7 +117,79 @@
    "summary": "Advanced key-value cache and store"
   },
   "build": {
-   "number": "0"
+   "number": "1"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "SimonBoothroyd",
+    "SimonBoothroyd",
+    "SimonBoothroyd",
+    "SimonBoothroyd"
+   ]
+  },
+  "package": {
+   "name": "redis-server",
+   "version": "6.2.5"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "make",
+    "c_compiler_stub",
+    "make",
+    "c_compiler_stub",
+    "make",
+    "c_compiler_stub",
+    "make"
+   ],
+   "host": [
+    "openssl",
+    "openssl",
+    "openssl",
+    "openssl"
+   ],
+   "run": [
+    "openssl",
+    "openssl",
+    "openssl",
+    "openssl"
+   ]
+  },
+  "source": {
+   "patches": [
+    "patches/force_c11.patch",
+    "patches/force_c11.patch"
+   ],
+   "sha256": "5d823000841e32e401d82f7381b3d7a4da0dda03366307c24ef29a2e3ff8830d",
+   "url": "https://github.com/redis/redis/archive/refs/tags/6.2.5.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "redis-cli --version",
+    "redis-server --version",
+    "redis-cli --version",
+    "redis-server --version",
+    "redis-cli --version",
+    "redis-server --version",
+    "redis-cli --version",
+    "redis-server --version"
+   ]
+  }
+ },
+ "name": "redis-server",
+ "osx_64_meta_yaml": {
+  "about": {
+   "description": "Redis is an in-memory database that persists on disk. The data model\nis key-value, but many different kind of values are supported: Strings,\nLists, Sets, Sorted Sets, Hashes, Streams, HyperLogLogs, Bitmaps.\n",
+   "dev_url": "https://github.com/redis/redis",
+   "doc_url": "https://redis.io/",
+   "home": "https://redis.io/",
+   "license": "BSD-3-Clause",
+   "license_family": "BSD",
+   "license_file": "COPYING",
+   "summary": "Advanced key-value cache and store"
+  },
+  "build": {
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -140,6 +219,7 @@
   },
   "source": {
    "patches": [
+    "patches/force_c11.patch",
     "patches/force_c11.patch"
    ],
    "sha256": "5d823000841e32e401d82f7381b3d7a4da0dda03366307c24ef29a2e3ff8830d",
@@ -149,56 +229,6 @@
    "commands": [
     "redis-cli --version",
     "redis-server --version",
-    "redis-cli --version",
-    "redis-server --version"
-   ]
-  }
- },
- "name": "redis-server",
- "osx_64_meta_yaml": {
-  "about": {
-   "description": "Redis is an in-memory database that persists on disk. The data model\nis key-value, but many different kind of values are supported: Strings,\nLists, Sets, Sorted Sets, Hashes, Streams, HyperLogLogs, Bitmaps.\n",
-   "dev_url": "https://github.com/redis/redis",
-   "doc_url": "https://redis.io/",
-   "home": "https://redis.io/",
-   "license": "BSD-3-Clause",
-   "license_family": "BSD",
-   "license_file": "COPYING",
-   "summary": "Advanced key-value cache and store"
-  },
-  "build": {
-   "number": "0"
-  },
-  "extra": {
-   "recipe-maintainers": [
-    "SimonBoothroyd"
-   ]
-  },
-  "package": {
-   "name": "redis-server",
-   "version": "6.2.5"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "make"
-   ],
-   "host": [
-    "openssl"
-   ],
-   "run": [
-    "openssl"
-   ]
-  },
-  "source": {
-   "patches": [
-    "patches/force_c11.patch"
-   ],
-   "sha256": "5d823000841e32e401d82f7381b3d7a4da0dda03366307c24ef29a2e3ff8830d",
-   "url": "https://github.com/redis/redis/archive/refs/tags/6.2.5.tar.gz"
-  },
-  "test": {
-   "commands": [
     "redis-cli --version",
     "redis-server --version"
    ]
@@ -236,7 +266,7 @@
   ]
  },
  "pinning_version": "2021.09.27.18.34.32",
- "raw_meta_yaml": "{% set name = \"redis-server\" %}\n{% set version = \"6.2.5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/redis/redis/archive/refs/tags/{{ version }}.tar.gz\n  sha256: 5d823000841e32e401d82f7381b3d7a4da0dda03366307c24ef29a2e3ff8830d\n  patches:\n    - patches/force_c11.patch  # [osx]\n\nbuild:\n  skip: True  # [win]\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - make\n  host:\n    - openssl\n  run:\n    - openssl\n\ntest:\n  commands:\n    - redis-cli --version\n    - redis-server --version\n\nabout:\n  home: https://redis.io/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: COPYING\n  summary: 'Advanced key-value cache and store'\n  description: |\n    Redis is an in-memory database that persists on disk. The data model\n    is key-value, but many different kind of values are supported: Strings,\n    Lists, Sets, Sorted Sets, Hashes, Streams, HyperLogLogs, Bitmaps.\n  doc_url: https://redis.io/\n  dev_url: https://github.com/redis/redis\n\nextra:\n  recipe-maintainers:\n    - SimonBoothroyd\n",
+ "raw_meta_yaml": "{% set name = \"redis-server\" %}\n{% set version = \"6.2.5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/redis/redis/archive/refs/tags/{{ version }}.tar.gz\n  sha256: 5d823000841e32e401d82f7381b3d7a4da0dda03366307c24ef29a2e3ff8830d\n  patches:\n    - patches/force_c11.patch  # [osx]\n\nbuild:\n  skip: True  # [win]\n  number: 1\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - make\n  host:\n    - openssl\n  run:\n    - openssl\n\ntest:\n  commands:\n    - redis-cli --version\n    - redis-server --version\n\nabout:\n  home: https://redis.io/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: COPYING\n  summary: 'Advanced key-value cache and store'\n  description: |\n    Redis is an in-memory database that persists on disk. The data model\n    is key-value, but many different kind of values are supported: Strings,\n    Lists, Sets, Sorted Sets, Hashes, Streams, HyperLogLogs, Bitmaps.\n  doc_url: https://redis.io/\n  dev_url: https://github.com/redis/redis\n\nextra:\n  recipe-maintainers:\n    - SimonBoothroyd\n",
  "req": {
   "__set__": true,
   "elements": [
