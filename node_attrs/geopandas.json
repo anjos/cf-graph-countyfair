@@ -207,6 +207,9 @@
  "bad": false,
  "branch": "main",
  "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default"
@@ -239,6 +242,7 @@
     },
     "name": "geopandas-base",
     "requirements": {
+     "build": [],
      "host": [
       "python >=3.6",
       "pip"
@@ -352,6 +356,7 @@
     },
     "name": "geopandas-base",
     "requirements": {
+     "build": [],
      "host": [
       "python >=3.6",
       "pip"
@@ -423,7 +428,7 @@
   ]
  },
  "pinning_version": "2021.09.30.13.35.17",
- "raw_meta_yaml": "{% set version = \"0.9.0\" %}\n\npackage:\n  name: geopandas\n  version: {{ version }}\n\nsource:\n  url: https://github.com/geopandas/geopandas/releases/download/v{{ version }}/geopandas-{{ version }}.tar.gz\n  sha256: 63972ab4dc44c4029f340600dcb83264eb8132dd22b104da0b654bef7f42630a\n\nbuild:\n  number: 1\n  noarch: python\n\noutputs:\n  - name: geopandas-base\n    script: build_base.sh\n    build:\n      noarch: python\n    requirements:\n      host:\n        - python >=3.6\n        - pip\n      run:\n        - python >=3.6\n        - pandas >=0.24\n        - shapely\n        - pyproj >=2.2.0\n\n    test:\n      imports:\n        - geopandas\n        - geopandas.io\n      files:\n        - test_data\n\n  - name: geopandas\n    requirements:\n      host:\n        - python >=3.6\n      run:\n        - python >=3.6\n        - {{ pin_subpackage('geopandas-base', exact=True) }}\n        - fiona\n        - rtree\n        - matplotlib-base\n        - mapclassify >=2.2.0\n\n    test:\n      imports:\n        - geopandas\n        - geopandas.io\n      files:\n        - test_data\n\nabout:\n  home: http://geopandas.org\n  license: BSD-3-Clause\n  license_file: LICENSE.txt\n  summary: Geographic pandas extensions\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - jorisvandenbossche\n    - jdmcbr\n",
+ "raw_meta_yaml": "{% set version = \"0.9.0\" %}\n\npackage:\n  name: geopandas\n  version: {{ version }}\n\nsource:\n  url: https://github.com/geopandas/geopandas/releases/download/v{{ version }}/geopandas-{{ version }}.tar.gz\n  sha256: 63972ab4dc44c4029f340600dcb83264eb8132dd22b104da0b654bef7f42630a\n\nbuild:\n  number: 1\n  noarch: python\n\noutputs:\n  - name: geopandas-base\n    script: build_base.sh\n    build:\n      noarch: python\n    requirements:\n      build:\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n      host:\n        - python >=3.6\n        - pip\n      run:\n        - python >=3.6\n        - pandas >=0.24\n        - shapely\n        - pyproj >=2.2.0\n\n    test:\n      imports:\n        - geopandas\n        - geopandas.io\n      files:\n        - test_data\n\n  - name: geopandas\n    requirements:\n      host:\n        - python >=3.6\n      run:\n        - python >=3.6\n        - {{ pin_subpackage('geopandas-base', exact=True) }}\n        - fiona\n        - rtree\n        - matplotlib-base\n        - mapclassify >=2.2.0\n\n    test:\n      imports:\n        - geopandas\n        - geopandas.io\n      files:\n        - test_data\n\nabout:\n  home: http://geopandas.org\n  license: BSD-3-Clause\n  license_file: LICENSE.txt\n  summary: Geographic pandas extensions\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - jorisvandenbossche\n    - jdmcbr\n",
  "req": {
   "__set__": true,
   "elements": [
