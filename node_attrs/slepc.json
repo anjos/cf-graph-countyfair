@@ -583,6 +583,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/746593167.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.16.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1693,7 +1710,7 @@
   }
  },
  "name": "slepc",
- "new_version": "3.15.2",
+ "new_version": "3.16.0",
  "new_version_attempts": {
   "3.13.0": 1,
   "3.13.1": 1,
@@ -1705,7 +1722,8 @@
   "3.14.2": 2,
   "3.15.0": 1,
   "3.15.1": 1,
-  "3.15.2": 1
+  "3.15.2": 1,
+  "3.16.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1915,7 +1933,7 @@
    "slepc"
   ]
  },
- "pinning_version": "2021.09.20.09.23.12",
+ "pinning_version": "2021.09.29.19.57.52",
  "raw_meta_yaml": "{% set version = \"3.15.2\" %}\n{% set sha256 = \"15fd317c4dd07bb41a994ad4c27271a6675af5f2abe40b82a64a27eaae2e632a\" %}\n{% set build = 0 %}\n\n{% set version_xy = version.rsplit(\".\", 1)[0] %}\n{% set mpi = mpi or 'mpich' %}\n{% if scalar == \"real\" %}\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: slepc\n  version: {{ version }}\n\nsource:\n  url: http://slepc.upv.es/download/distrib/slepc-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  skip: true  # [win]\n  number: {{ build }}\n  string: {{ scalar }}_h{{ PKG_HASH }}_{{ build }}\n  run_exports:\n    - {{ pin_subpackage('slepc', max_pin='x.x') }}\n  track_features:\n    - slepc_complex  # [scalar == \"complex\"]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n    - python\n  host:\n    - libblas\n    - libcblas\n    - liblapack\n    - {{ mpi }}\n    - petsc {{ version_xy }}.* *{{ scalar }}*\n    - suitesparse\n  run:\n    - {{ mpi }}\n    - petsc * *{{ scalar }}*\n    - suitesparse\n\ntest:\n  requires:\n    - pkg-config\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n  files:\n    - tests/test10.c\n    - tests/test14f.F\n    - tests/makefile\n  commands:\n    - PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig pkg-config --cflags SLEPc\n    - PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig pkg-config --libs   SLEPc\n\nabout:\n  home: http://slepc.upv.es/\n  summary: 'SLEPc: Scalable Library for Eigenvalue Problem Computations'\n  license: BSD-2-Clause\n  license_file: LICENSE.md\n  license_family: BSD\n\nextra:\n  recipe-maintainers:\n    - dalcinl\n    - joseeroman\n    - minrk\n",
  "req": {
   "__set__": true,
