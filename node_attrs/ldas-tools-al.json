@@ -247,6 +247,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/747122898.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.6.7"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -424,7 +441,8 @@
  "new_version": "2.6.7",
  "new_version_attempts": {
   "2.6.5": 1,
-  "2.6.6": 1
+  "2.6.6": 1,
+  "2.6.7": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -601,7 +619,7 @@
    "ldas-tools-al"
   ]
  },
- "pinning_version": "2021.09.16.19.35.38",
+ "pinning_version": "2021.09.30.20.35.40",
  "raw_meta_yaml": "{% set name = \"ldas-tools-al\" %}\n{% set version = \"2.6.6\" %}\n{% set sha256 = \"db4761a03066c880c64711d2585cfcc4e5fcb2308560828fb4ab69e457d25518\" %}\n\n# dependencies\n{% set ldas_tools_cmake_version = \"1.2.2\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    - no-openssl.patch\n    # when cross-compiling disable some checks that use try_run\n    # see https://git.ligo.org/ldastools/LDAS_Tools/-/issues/117\n    - no-check-procfs.patch  # [build_platform != target_platform]\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(\"ldas-tools-al\", max_pin=\"x.x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.6\n    - pkg-config  # [unix]\n  host:\n    - boost-cpp\n    - ldas-tools-cmake >={{ ldas_tools_cmake_version }}\n  run_constrained:   # [osx]\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx]\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config --print-errors --exact-version {{ version }} ldastoolsal\n\nabout:\n  home: https://wiki.ligo.org/Computing/LDASTools\n  dev_url: https://git.ligo.org/ldastools/LDAS_Tools\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LDAS tools abstraction toolkit\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - emaros\n",
  "req": {
   "__set__": true,
