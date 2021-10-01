@@ -307,6 +307,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/747617756.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "13.0.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -722,7 +739,8 @@
   "11.0.1": 48,
   "11.1.0": 1,
   "12.0.0": 4,
-  "12.0.1": 1
+  "12.0.1": 1,
+  "13.0.0": 1
  },
  "new_version_errors": {
   "11.0.1": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '11.0.1' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/llvm-project-{{ version.replace(\".rc\", \"rc\") }}.tar.xz'\n",
@@ -1004,7 +1022,7 @@
    "libcxxabi"
   ]
  },
- "pinning_version": "2021.07.08.05.56.39",
+ "pinning_version": "2021.10.01.10.31.28",
  "raw_meta_yaml": "{% set version = \"12.0.1\" %}\n\npackage:\n  name: libcxx_and_libcxxabi\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/llvm-project-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz\n    sha256: 129cb25cd13677aad951ce5c2deb0fe4afc1e9d98950f53b51bdcfb5a73afa0e\n    patches:\n      - patches/0001-libcxxabi-10.9-compatibility.patch  # [osx and x86_64]\n      - patches/0002-libcxx-legacy-standalone-build.patch\n      # See https://lists.llvm.org/pipermail/libcxx-dev/2021-July/001172.html\n      - patches/0003-libcxx-system-compatibility.diff\n\nbuild:\n  number: 0\n  skip: true  # [win and vc<14]\n  skip: true  # [win]\n  skip: true  # [ppc64le or aarch64]\n  ignore_run_exports:\n    - libstdcxx-ng\n  missing_dso_whitelist:\n    - /usr/lib/libc++abi.dylib\n\nrequirements:\n  build:\n    - cmake\n    - make                    # [unix]\n    - {{ compiler('cxx') }}\n    - python >3               # [not osx]\n  host:\n    - clangdev {{ version }}  # [not osx]\n    - llvmdev {{ version }}   # [not osx]\n\noutputs:\n  - name: libcxx\n    files:\n      - include/c++\n      - Library/include/c++\n      - lib/libc++.*\n      - lib/libc++fs.*\n      - lib/libc++experimental.*\n      - Library/bin/c++*.dll\n      - Library/lib/c++*.lib\n      - Library/lib/libc++*.lib\n    requirements:   # [linux]\n      run:   # [linux]\n        - {{ pin_subpackage(\"libcxxabi\", exact=True) }}    # [linux]\n    test:\n      requires:\n        - clang                  # [osx]\n        - clangxx\n        - ld64                   # [osx]\n        - cctools                # [osx]\n        - llvm-tools             # [osx]\n        - {{ compiler('cxx') }}  # [not osx]\n      files:\n        - test_sources\n        - compile_test.sh   # [unix]\n        - compile_test.bat  # [win]\n      commands:\n        # Dummy var for different hashes\n        - echo {{ dummy_var }}   # [osx]\n        - if not exist %LIBRARY_INC%\\\\c++\\\\v1\\\\iterator exit 1     # [win]\n        - test -f $PREFIX/include/c++/v1/iterator      # [unix]\n        - bash compile_test.sh   # [unix]\n        - compile_test.bat       # [win]\n        # !!!!!!!!!!!! README !!!!!!!!!!!!!!!!!!\n        # we do not ship libcxxabi on OSX - this breaks exception passing\n        - if [ -f $PREFIX/lib/libc++abi.dylib ]; then exit 1; fi  # [osx]\n        - test -f $PREFIX/lib/libc++abi.so  # [linux]\n\n      # Following 2 projects had issues with libc++, so check them\n      # before releasing just to be sure.\n      downstreams:   # [osx]\n        - python-symengine  # [osx]\n        - openturns         # [osx]\n        - libcxx-testing    # [osx]\n\n  - name: libcxxabi\n    build:\n      skip: true  # [not linux]\n    files:\n      - lib/libc++abi.*\n    requirements:\n      run_constrained:\n        - libcxx {{ version }}.*\n    test:\n      commands:\n        - test -f $PREFIX/lib/libc++abi.so  # [linux]\n\nabout:\n  home: http://llvm.org/\n  license: Apache-2.0 WITH LLVM-exception\n  license_file: libcxx/LICENSE.TXT\n  license_family: Apache\n  summary: LLVM C++ standard library\n\nextra:\n  recipe-maintainers:\n    - SylvainCorlay\n    - inducer\n    - jakirkham\n    - isuruf\n    - beckermr\n    - timsnyder\n",
  "req": {
   "__set__": true,
@@ -1055,7 +1073,7 @@
    ]
   }
  },
- "smithy_version": "3.10.3",
+ "smithy_version": "3.12",
  "strong_exports": false,
  "total_requirements": {
   "build": {
