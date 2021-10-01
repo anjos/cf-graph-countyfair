@@ -170,6 +170,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/747302247.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "6_6.0.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -575,13 +592,14 @@
   }
  },
  "name": "libignition-gui5",
- "new_version": "5_5.2.0",
+ "new_version": "6_6.0.0",
  "new_version_attempts": {
   "4_4.3.0": 11,
   "5.0.0": 1,
   "5_5.0.0": 110,
   "5_5.1.0": 21,
-  "5_5.2.0": 1
+  "5_5.2.0": 1,
+  "6_6.0.0": 1
  },
  "new_version_errors": {
   "4_4.3.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '4_4.3.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/ignitionrobotics/ign-{{ component_name }}/archive/ignition-{{ component_name }}{{ major_version }}_{{ version }}.tar.gz'\n",
@@ -732,7 +750,7 @@
    "libignition-gui5"
   ]
  },
- "pinning_version": "2021.09.17.05.51.46",
+ "pinning_version": "2021.09.30.20.35.40",
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set component_name = \"gui\" %}\n{% set base_name = \"libignition-\" + component_name %}\n{% set version = \"5_5.2.0\" %}\n{% set version_package = version.split('_')[1] %}\n{% set major_version = version_package.split('.')[0] %}\n{% set name = base_name + major_version %}\n\npackage:\n  name: {{ name }}\n  version: {{ version_package }}\n\nsource:\n  - url: https://github.com/ignitionrobotics/ign-{{ component_name }}/archive/ignition-{{ component_name }}{{ version }}.tar.gz\n    sha256: 2753ed861ffca3c3a522ec2baefa025da85f65f48ea7684e18ad26c417d51fb7\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - make  # [not win]\n    - cmake\n    - pkg-config\n    - {{ cdt('mesa-libgl-devel') }}  # [linux]\n    - {{ cdt('mesa-dri-drivers') }}  # [linux]\n    - {{ cdt('libselinux') }}  # [linux]\n    - {{ cdt('libxdamage') }}  # [linux]\n    - {{ cdt('libxxf86vm') }}  # [linux]\n    - {{ cdt('libxext') }}     # [linux]\n  host:\n    - libignition-cmake2\n    - libprotobuf\n    - tinyxml2\n    - libignition-math6\n    - libignition-common4\n    - libignition-plugin1\n    - libignition-transport10\n    - libignition-rendering5\n    - libignition-msgs7\n    - libignition-tools1\n    - libignition-utils1\n    - qt\n    - xorg-libxfixes  # [linux]\n    - ogre  {{ ogre }}\n  run:\n    - {{ pin_compatible('ogre', max_pin='x.x') }}\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ignition/{{ component_name }}{{ major_version }}/ignition/{{ component_name }}.hh  # [not win]\n    - test -f ${PREFIX}/lib/libignition-{{ component_name }}{{ major_version }}.so  # [linux]\n    - test -f ${PREFIX}/lib/libignition-{{ component_name }}{{ major_version }}.dylib  # [osx]\n    - test -f ${PREFIX}/lib/cmake/ignition-{{ component_name }}{{ major_version }}/ignition-{{ component_name }}{{ major_version }}-config.cmake  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ignition\\\\{{ component_name }}{{ major_version }}\\\\ignition\\\\{{ component_name }}.hh exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\ignition-{{ component_name }}{{ major_version }}.lib exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\ignition-{{ component_name }}{{ major_version }}.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\ignition-{{ component_name }}{{ major_version }}\\\\ignition-{{ component_name }}{{ major_version }}-config.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/ignitionrobotics/ign-{{ component_name }}\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: Ignition Robotics library that builds on top of Qt to provide widgets which are useful when developing robotics applications, such as a 3D view, plots, dashboard.\nextra:\n  feedstock-name: {{ base_name }}\n  recipe-maintainers:\n    - wolfv\n    - traversaro\n    - Tobias-Fischer\n    - j-rivero\n",
  "req": {
