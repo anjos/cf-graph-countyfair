@@ -284,6 +284,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/747404468.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "13.0.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1000,7 +1017,8 @@
   "11.0.1": 1,
   "11.1.0": 1,
   "12.0.0": 4,
-  "12.0.1": 1
+  "12.0.1": 1,
+  "13.0.0": 1
  },
  "new_version_errors": {
   "12.0.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '12.0.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/openmp-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz'\n"
@@ -1229,7 +1247,7 @@
    "llvm-openmp"
   ]
  },
- "pinning_version": "2021.07.08.05.56.39",
+ "pinning_version": "2021.09.30.20.35.40",
  "raw_meta_yaml": "{% set version = \"12.0.1\" %}\n{% set openmp_ver = \"4.5\" %}\n\npackage:\n  name: openmp\n  version: {{ version }}\n\nsource:\n  url: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/openmp-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz\n  sha256: 60fe79440eaa9ebf583a6ea7f81501310388c02754dbe7dc210776014d06b091\n  patches:\n    - f1b9ce2736d826df2ff4cbd67116864f0856334f.patch\n\nbuild:\n  number: 1\n  skip: true  # [win and vc<14]\n\noutputs:\n  - name: llvm-openmp\n    script: build-llvm-openmp.sh  # [not win]\n    script: bld-llvm-openmp.bat  # [win]\n    build:\n      ignore_run_exports:\n        - libgcc-ng\n        - libstdcxx-ng\n        - _openmp_mutex\n      run_exports:\n        strong:\n          - {{ pin_subpackage(\"llvm-openmp\", max_pin=None) }}\n          - _openmp_mutex >={{ openmp_ver }}  # [linux]\n          - _openmp_mutex * *_llvm            # [linux]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - clang  # [win]\n        - cmake\n        - make   # [unix]\n        - perl\n        - ninja  # [win]\n      host:\n        - llvmdev {{ version }}|{{ version }}.*\n      run_constrained:\n        - clangdev {{ version }}|{{ version }}.*\n        - llvmdev {{ version }}|{{ version }}.*\n        - openmp {{ version }}|{{ version }}.*\n    test:\n      requires:\n        - clangxx\n        - {{ compiler('cxx') }}\n      commands:\n        - if not exist %LIBRARY_BIN%\\\\libomp.dll exit 1   # [win]\n        - test -f $PREFIX/lib/libomp.so                   # [linux]\n        - test -f $PREFIX/lib/libomp.dylib                # [osx]\n        - if not exist %LIBRARY_LIB%\\\\libomp.lib exit 1   # [win]\n        - if not exist %LIBRARY_INC%\\\\omp.h exit 1        # [win]\n        - test -f $PREFIX/include/omp.h                   # [unix]\n        - $PREFIX/bin/clang -v -fopenmp -I$PREFIX/include -L$PREFIX/lib -Wl,-rpath,$PREFIX/lib omp_hello.c -o omp_hello  # [not win]\n        - '%LIBRARY_BIN%\\clang -v -fopenmp -I%LIBRARY_INC% -L%LIBRARY_LIB% omp_hello.c -o omp_hello.exe'   # [win]\n        - ./omp_hello            # [unix]\n        - '%cd%\\omp_hello.exe'   # [win]\n      files:\n        - omp_hello.c\n\nabout:\n  home: http://openmp.llvm.org/\n  license: NCSA\n  license_file: LICENSE.txt\n  summary: The OpenMP API supports multi-platform shared-memory parallel programming in C/C++ and Fortran.\n\nextra:\n  recipe-maintainers:\n    - inducer\n    - jakirkham\n    - yesimon\n    - isuruf\n    - beckermr\n    - katietz\n",
  "req": {
   "__set__": true,
@@ -1276,7 +1294,7 @@
    ]
   }
  },
- "smithy_version": "3.10.3",
+ "smithy_version": "3.12",
  "strong_exports": true,
  "total_requirements": {
   "build": {
