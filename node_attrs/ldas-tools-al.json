@@ -264,6 +264,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/748697901.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -619,7 +636,7 @@
    "ldas-tools-al"
   ]
  },
- "pinning_version": "2021.09.30.20.35.40",
+ "pinning_version": "2021.10.04.01.54.40",
  "raw_meta_yaml": "{% set name = \"ldas-tools-al\" %}\n{% set version = \"2.6.7\" %}\n\n# dependencies\n{% set ldas_tools_cmake_version = \"1.2.3\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/{{ name }}-{{ version }}.tar.gz\n  sha256: b0a1b243997320ac6c18083adbf5b711404923b3ff309df2f2fe53489c4b0f6a\n  patches:\n    - no-openssl.patch\n    # when cross-compiling disable some checks that use try_run\n    # see https://git.ligo.org/ldastools/LDAS_Tools/-/issues/117\n    - no-check-procfs.patch  # [build_platform != target_platform]\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(\"ldas-tools-al\", max_pin=\"x.x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.6\n    - pkg-config  # [unix]\n  host:\n    - boost-cpp\n    - ldas-tools-cmake >={{ ldas_tools_cmake_version }}\n  run_constrained:   # [osx]\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx]\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config --print-errors --exact-version {{ version }} ldastoolsal\n\nabout:\n  home: https://wiki.ligo.org/Computing/LDASTools\n  dev_url: https://git.ligo.org/ldastools/LDAS_Tools\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LDAS tools abstraction toolkit\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - emaros\n",
  "req": {
   "__set__": true,
