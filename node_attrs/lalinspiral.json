@@ -250,7 +250,11 @@
  "archived": false,
  "bad": false,
  "branch": "main",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  }
+ },
  "feedstock_name": "lalinspiral",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -425,7 +429,8 @@
      "build": [
       "c_compiler_stub",
       "help2man >=1.37",
-      "make"
+      "make",
+      "sed"
      ],
      "host": [
       "liblal >=7.1.0",
@@ -473,6 +478,7 @@
    ]
   },
   "source": {
+   "patches": null,
    "sha256": "d195a22eac808d37ebd00dcb2a1dd4f7dbcf5a8e7fe6ebca4f4afd50234d9a88",
    "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinspiral-2.0.3.tar.xz"
   }
@@ -485,6 +491,7 @@
     "help2man",
     "make",
     "pkg-config",
+    "sed",
     "swig"
    ]
   },
@@ -552,6 +559,8 @@
   "extra": {
    "feedstock-name": "lalinspiral",
    "recipe-maintainers": [
+    "duncanmmacleod",
+    "skymoo",
     "duncanmmacleod",
     "skymoo",
     "duncanmmacleod",
@@ -707,7 +716,8 @@
      "build": [
       "c_compiler_stub",
       "help2man >=1.37",
-      "make"
+      "make",
+      "sed"
      ],
      "host": [
       "liblal >=7.1.0",
@@ -880,7 +890,182 @@
      "build": [
       "c_compiler_stub",
       "help2man >=1.37",
-      "make"
+      "make",
+      "sed"
+     ],
+     "host": [
+      "liblal >=7.1.0",
+      "liblalburst >=1.5.3",
+      "liblalinspiral",
+      "python"
+     ],
+     "run": [
+      "liblal >=7.1.0",
+      "liblalinspiral",
+      "python",
+      "python-lalinspiral"
+     ]
+    },
+    "script": "install-bin.sh",
+    "test": {
+     "commands": [
+      "lalinspiral_version --verbose"
+     ],
+     "imports": [
+      "lalinspiral"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Inspiral Library for gravitational wave data analysis.\nThis package contains the shared object libraries needed to run\napplications that use the LAL Inspiral library.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Inspiral Library shared object libraries"
+    },
+    "build": {
+     "error_overdepending": true,
+     "error_overlinking": true,
+     "run_exports": [
+      "liblalinspiral"
+     ]
+    },
+    "name": "liblalinspiral",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "gsl",
+      "liblal >=7.1.0",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=3.0.0",
+      "metaio"
+     ],
+     "run": [
+      "gsl",
+      "liblal >=7.1.0",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=3.0.0",
+      "metaio"
+     ],
+     "run_constrained": [
+      "lalinspiral >=2.0.1",
+      "python-lalinspiral >=2.0.1"
+     ]
+    },
+    "script": "install-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/liblalinspiral${SHLIB_EXT}",
+      "test \"${LALINSPIRAL_DATADIR}\" = \"${PREFIX}/share/lalinspiral\"",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalinspiral"
+     ],
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Inspiral Library for gravitational wave data analysis.\nThis package contains the Python bindings of the LALInspiral C libraries\nand additional Python modules.\n\nNote: this package only provides the importable Python libraries.\nAll command-line interfaces, scripts, and executables are\npart of the `lalinspiral` package.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Inspiral Library Python libraries"
+    },
+    "build": {
+     "error_overdepending": true,
+     "error_overlinking": true,
+     "ignore_run_exports": [
+      "liblalburst",
+      "python"
+     ]
+    },
+    "name": "python-lalinspiral",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "help2man >=1.37",
+      "make",
+      "pkg-config >=0.18.0",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "liblalinspiral",
+      "liblalburst >=1.5.3",
+      "numpy",
+      "python"
+     ],
+     "run": [
+      "liblalinspiral",
+      "lscsoft-glue",
+      "numpy",
+      "python",
+      "python-lal >=7.1.0",
+      "python-lalburst >=1.5.3",
+      "python-lalframe >=1.5.0",
+      "python-lalmetaio >=2.0.0",
+      "python-lalsimulation >=3.0.0",
+      "python-ligo-lw"
+     ]
+    },
+    "script": "install-python.sh",
+    "test": {
+     "commands": [
+      "python -m pytest -ra -v test/python"
+     ],
+     "imports": [
+      "lalinspiral",
+      "lalinspiral.inspinjfind",
+      "lalinspiral.sbank",
+      "lalinspiral.thinca"
+     ],
+     "requires": [
+      "pytest >=4.0.0a0"
+     ],
+     "source_files": [
+      "test/python"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Inspiral Library"
+    },
+    "build": {
+     "error_overdepending": true,
+     "error_overlinking": true,
+     "ignore_run_exports": [
+      "liblalburst",
+      "python"
+     ]
+    },
+    "name": "lalinspiral",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "help2man >=1.37",
+      "make",
+      "sed"
      ],
      "host": [
       "liblal >=7.1.0",
@@ -921,9 +1106,20 @@
     "make",
     "help2man >=1.37",
     "pkg-config >=0.18.0",
+    "swig >=3.0.10",
+    "c_compiler_stub",
+    "make",
+    "help2man >=1.37",
+    "pkg-config >=0.18.0",
     "swig >=3.0.10"
    ],
    "host": [
+    "gsl",
+    "liblal >=7.1.0",
+    "liblalframe >=1.5.0",
+    "liblalmetaio >=2.0.0",
+    "liblalsimulation >=3.0.0",
+    "metaio",
     "gsl",
     "liblal >=7.1.0",
     "liblalframe >=1.5.0",
@@ -939,6 +1135,7 @@
    ]
   },
   "source": {
+   "patches": null,
    "sha256": "d195a22eac808d37ebd00dcb2a1dd4f7dbcf5a8e7fe6ebca4f4afd50234d9a88",
    "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinspiral-2.0.3.tar.xz"
   }
@@ -1125,7 +1322,8 @@
      "build": [
       "c_compiler_stub",
       "help2man >=1.37",
-      "make"
+      "make",
+      "sed"
      ],
      "host": [
       "liblal >=7.1.0",
@@ -1173,6 +1371,7 @@
    ]
   },
   "source": {
+   "patches": null,
    "sha256": "d195a22eac808d37ebd00dcb2a1dd4f7dbcf5a8e7fe6ebca4f4afd50234d9a88",
    "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinspiral-2.0.3.tar.xz"
   }
@@ -1185,6 +1384,290 @@
     "help2man",
     "make",
     "pkg-config",
+    "sed",
+    "swig"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "gsl",
+    "liblal",
+    "liblalburst",
+    "liblalframe",
+    "liblalinspiral",
+    "liblalmetaio",
+    "liblalsimulation",
+    "metaio",
+    "numpy",
+    "python"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "gsl",
+    "liblal",
+    "liblalframe",
+    "liblalinspiral",
+    "liblalmetaio",
+    "liblalsimulation",
+    "lscsoft-glue",
+    "metaio",
+    "numpy",
+    "python",
+    "python-lal",
+    "python-lalburst",
+    "python-lalframe",
+    "python-lalinspiral",
+    "python-lalmetaio",
+    "python-lalsimulation",
+    "python-ligo-lw"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config",
+    "pytest"
+   ]
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n",
+   "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+   "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/",
+   "home": "https://wiki.ligo.org/Computing/LALSuite",
+   "license": "GPL-2.0-or-later",
+   "license_family": "GPL",
+   "license_file": "COPYING",
+   "summary": "LSC Algorithm Inspiral Library"
+  },
+  "build": {
+   "error_overdepending": true,
+   "error_overlinking": true,
+   "number": "0"
+  },
+  "extra": {
+   "feedstock-name": "lalinspiral",
+   "recipe-maintainers": [
+    "duncanmmacleod",
+    "skymoo"
+   ]
+  },
+  "outputs": [
+   {
+    "about": {
+     "description": "The LSC Algorithm Inspiral Library for gravitational wave data analysis.\nThis package contains the shared object libraries needed to run\napplications that use the LAL Inspiral library.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Inspiral Library shared object libraries"
+    },
+    "build": {
+     "error_overdepending": true,
+     "error_overlinking": true,
+     "run_exports": [
+      "liblalinspiral"
+     ]
+    },
+    "name": "liblalinspiral",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "gsl",
+      "liblal >=7.1.0",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=3.0.0",
+      "metaio"
+     ],
+     "run": [
+      "gsl",
+      "liblal >=7.1.0",
+      "liblalframe >=1.5.0",
+      "liblalmetaio >=2.0.0",
+      "liblalsimulation >=3.0.0",
+      "metaio"
+     ],
+     "run_constrained": [
+      "lalinspiral >=2.0.1",
+      "python-lalinspiral >=2.0.1"
+     ]
+    },
+    "script": "install-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/liblalinspiral${SHLIB_EXT}",
+      "test \"${LALINSPIRAL_DATADIR}\" = \"${PREFIX}/share/lalinspiral\"",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalinspiral"
+     ],
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Inspiral Library for gravitational wave data analysis.\nThis package contains the Python bindings of the LALInspiral C libraries\nand additional Python modules.\n\nNote: this package only provides the importable Python libraries.\nAll command-line interfaces, scripts, and executables are\npart of the `lalinspiral` package.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Inspiral Library Python libraries"
+    },
+    "build": {
+     "error_overdepending": true,
+     "error_overlinking": true,
+     "ignore_run_exports": [
+      "liblalburst",
+      "python"
+     ]
+    },
+    "name": "python-lalinspiral",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "help2man >=1.37",
+      "make",
+      "pkg-config >=0.18.0",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "liblalinspiral",
+      "liblalburst >=1.5.3",
+      "numpy",
+      "python"
+     ],
+     "run": [
+      "liblalinspiral",
+      "lscsoft-glue",
+      "numpy",
+      "python",
+      "python-lal >=7.1.0",
+      "python-lalburst >=1.5.3",
+      "python-lalframe >=1.5.0",
+      "python-lalmetaio >=2.0.0",
+      "python-lalsimulation >=3.0.0",
+      "python-ligo-lw"
+     ]
+    },
+    "script": "install-python.sh",
+    "test": {
+     "commands": [
+      "python -m pytest -ra -v test/python"
+     ],
+     "imports": [
+      "lalinspiral",
+      "lalinspiral.inspinjfind",
+      "lalinspiral.sbank",
+      "lalinspiral.thinca"
+     ],
+     "requires": [
+      "pytest >=4.0.0a0"
+     ],
+     "source_files": [
+      "test/python"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Inspiral Library"
+    },
+    "build": {
+     "error_overdepending": true,
+     "error_overlinking": true,
+     "ignore_run_exports": [
+      "liblalburst",
+      "python"
+     ]
+    },
+    "name": "lalinspiral",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "help2man >=1.37",
+      "make",
+      "sed"
+     ],
+     "host": [
+      "liblal >=7.1.0",
+      "liblalburst >=1.5.3",
+      "liblalinspiral",
+      "python"
+     ],
+     "run": [
+      "liblal >=7.1.0",
+      "liblalinspiral",
+      "python",
+      "python-lalinspiral"
+     ]
+    },
+    "script": "install-bin.sh",
+    "test": {
+     "commands": [
+      "lalinspiral_version --verbose"
+     ],
+     "imports": [
+      "lalinspiral"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "lalinspiral-split",
+   "version": "2.0.3"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "make",
+    "help2man >=1.37",
+    "pkg-config >=0.18.0",
+    "swig >=3.0.10"
+   ],
+   "host": [
+    "gsl",
+    "liblal >=7.1.0",
+    "liblalframe >=1.5.0",
+    "liblalmetaio >=2.0.0",
+    "liblalsimulation >=3.0.0",
+    "metaio"
+   ]
+  },
+  "source": {
+   "patches": null,
+   "sha256": "d195a22eac808d37ebd00dcb2a1dd4f7dbcf5a8e7fe6ebca4f4afd50234d9a88",
+   "url": "http://software.ligo.org/lscsoft/source/lalsuite/lalinspiral-2.0.3.tar.xz"
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "help2man",
+    "make",
+    "pkg-config",
+    "sed",
     "swig"
    ]
   },
@@ -1242,7 +1725,7 @@
   ]
  },
  "pinning_version": "2021.10.04.19.42.48",
- "raw_meta_yaml": "{% set name = \"lalinspiral\" %}\n{% set version = \"2.0.3\" %}\n{% set sha256 = \"d195a22eac808d37ebd00dcb2a1dd4f7dbcf5a8e7fe6ebca4f4afd50234d9a88\" %}\n\n# dependencies\n{% set lal_version = \"7.1.0\" %}\n{% set lalframe_version = \"1.5.0\" %}\n{% set lalmetaio_version = \"2.0.0\" %}\n{% set lalsimulation_version = \"3.0.0\" %}\n{% set lalburst_version = \"1.5.3\" %}\n{% set swig_version = \"3.0.10\" %}\n\npackage:\n  name: {{ name }}-split\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz\n  sha256: {{ sha256 }}\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: 0\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - make\n    - help2man >=1.37\n    - pkg-config >=0.18.0\n    - swig >={{ swig_version }}\n  host:\n    - gsl\n    - liblal >={{ lal_version }}\n    - liblalframe >={{ lalframe_version }}\n    - liblalmetaio >={{ lalmetaio_version }}\n    - liblalsimulation >={{ lalsimulation_version }}\n    - metaio\n\noutputs:\n  - name: liblalinspiral\n    script: install-lib.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      run_exports:\n        - {{ pin_subpackage(\"liblalinspiral\", max_pin=\"x\") }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - make\n        - swig >={{ swig_version }}\n      host:\n        - gsl\n        - liblal >={{ lal_version }}\n        - liblalframe >={{ lalframe_version }}\n        - liblalmetaio >={{ lalmetaio_version }}\n        - liblalsimulation >={{ lalsimulation_version }}\n        - metaio\n      run:\n        - gsl\n        - liblal >={{ lal_version }}\n        - liblalframe >={{ lalframe_version }}\n        - liblalmetaio >={{ lalmetaio_version }}\n        - liblalsimulation >={{ lalsimulation_version }}\n        - metaio\n      run_constrained:\n        - lalinspiral >=2.0.1\n        - python-lalinspiral >=2.0.1\n    test:\n      requires:\n        - pkg-config\n      commands:\n        # check library\n        - test -f ${PREFIX}/lib/liblalinspiral${SHLIB_EXT}  # [unix]\n        # check activate variables\n        - test \"${LALINSPIRAL_DATADIR}\" = \"${PREFIX}/share/lalinspiral\"  # [unix]\n        # check pkg-config\n        - pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalinspiral\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Inspiral Library shared object libraries\n      description: |\n        The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n        This package contains the shared object libraries needed to run\n        applications that use the LAL Inspiral library.\n\n  - name: python-lalinspiral\n    script: install-python.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        # we don't actually use lalburst, but need it to ./configure\n        - liblalburst\n        # nothing actually links against libpython\n        - python\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - help2man >=1.37\n        - make\n        - pkg-config >=0.18.0\n        - swig >={{ swig_version }}\n      host:\n        - {{ pin_subpackage('liblalinspiral', exact=True) }}\n        - liblalburst >={{ lalburst_version }}\n        - numpy\n        - python\n      run:\n        - {{ pin_subpackage('liblalinspiral', exact=True) }}\n        - lscsoft-glue\n        - {{ pin_compatible('numpy') }}\n        - python\n        - python-lal >={{ lal_version }}\n        - python-lalburst >={{ lalburst_version }}\n        - python-lalframe >={{ lalframe_version }}\n        - python-lalmetaio >={{ lalmetaio_version }}\n        - python-lalsimulation >={{ lalsimulation_version }}\n        - python-ligo-lw\n    test:\n      requires:\n        - pytest >=4.0.0a0\n      source_files:\n        - test/python\n      commands:\n        - python -m pytest -ra -v test/python\n      imports:\n        - lalinspiral\n        - lalinspiral.inspinjfind\n        - lalinspiral.sbank\n        - lalinspiral.thinca\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Inspiral Library Python libraries\n      description: |\n        The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n        This package contains the Python bindings of the LALInspiral C libraries\n        and additional Python modules.\n\n        Note: this package only provides the importable Python libraries.\n        All command-line interfaces, scripts, and executables are\n        part of the `lalinspiral` package.\n\n  - name: lalinspiral\n    script: install-bin.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        - liblalburst\n        - python\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - help2man >=1.37\n        - make\n      host:\n        - liblal >={{ lal_version }}\n        - liblalburst >={{ lalburst_version }}\n        - {{ pin_subpackage('liblalinspiral', exact=True) }}\n        - python\n      run:\n        - liblal >={{ lal_version }}\n        - {{ pin_subpackage('liblalinspiral', exact=True) }}\n        - python\n        - {{ pin_subpackage('python-lalinspiral', exact=True) }}\n    test:\n      commands:\n        - lalinspiral_version --verbose\n      imports:\n        - lalinspiral\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Inspiral Library\n      description: |\n        The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n\nabout:\n  home: https://wiki.ligo.org/Computing/LALSuite\n  doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/\n  dev_url: https://git.ligo.org/lscsoft/lalsuite/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LSC Algorithm Inspiral Library\n  description: |\n    The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n\nextra:\n  feedstock-name: lalinspiral\n  recipe-maintainers:\n    - duncanmmacleod\n    - skymoo\n",
+ "raw_meta_yaml": "{% set name = \"lalinspiral\" %}\n{% set version = \"2.0.3\" %}\n\n# dependencies\n{% set lal_version = \"7.1.0\" %}\n{% set lalframe_version = \"1.5.0\" %}\n{% set lalmetaio_version = \"2.0.0\" %}\n{% set lalsimulation_version = \"3.0.0\" %}\n{% set lalburst_version = \"1.5.3\" %}\n{% set swig_version = \"3.0.10\" %}\n\npackage:\n  name: {{ name }}-split\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz\n  sha256: d195a22eac808d37ebd00dcb2a1dd4f7dbcf5a8e7fe6ebca4f4afd50234d9a88\n  patches:\n    # patch out gsl_version check when cross-compiling\n    - no-gsl_version-check.patch  # [build_platform != target_platform]\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: 0\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - make\n    - help2man >=1.37\n    - pkg-config >=0.18.0\n    - swig >={{ swig_version }}\n  host:\n    - gsl\n    - liblal >={{ lal_version }}\n    - liblalframe >={{ lalframe_version }}\n    - liblalmetaio >={{ lalmetaio_version }}\n    - liblalsimulation >={{ lalsimulation_version }}\n    - metaio\n\noutputs:\n  - name: liblalinspiral\n    script: install-lib.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      run_exports:\n        - {{ pin_subpackage(\"liblalinspiral\", max_pin=\"x\") }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - make\n        - swig >={{ swig_version }}\n      host:\n        - gsl\n        - liblal >={{ lal_version }}\n        - liblalframe >={{ lalframe_version }}\n        - liblalmetaio >={{ lalmetaio_version }}\n        - liblalsimulation >={{ lalsimulation_version }}\n        - metaio\n      run:\n        - gsl\n        - liblal >={{ lal_version }}\n        - liblalframe >={{ lalframe_version }}\n        - liblalmetaio >={{ lalmetaio_version }}\n        - liblalsimulation >={{ lalsimulation_version }}\n        - metaio\n      run_constrained:\n        - lalinspiral >=2.0.1\n        - python-lalinspiral >=2.0.1\n    test:\n      requires:\n        - pkg-config\n      commands:\n        # check library\n        - test -f ${PREFIX}/lib/liblalinspiral${SHLIB_EXT}  # [unix]\n        # check activate variables\n        - test \"${LALINSPIRAL_DATADIR}\" = \"${PREFIX}/share/lalinspiral\"  # [unix]\n        # check pkg-config\n        - pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalinspiral\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Inspiral Library shared object libraries\n      description: |\n        The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n        This package contains the shared object libraries needed to run\n        applications that use the LAL Inspiral library.\n\n  - name: python-lalinspiral\n    script: install-python.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        # we don't actually use lalburst, but need it to ./configure\n        - liblalburst\n        # nothing actually links against libpython\n        - python\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - help2man >=1.37\n        - make\n        - pkg-config >=0.18.0\n        - swig >={{ swig_version }}\n        # extras for cross-compiling\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n        - numpy                                  # [build_platform != target_platform]\n      host:\n        - {{ pin_subpackage('liblalinspiral', exact=True) }}\n        - liblalburst >={{ lalburst_version }}\n        - numpy\n        - python\n      run:\n        - {{ pin_subpackage('liblalinspiral', exact=True) }}\n        - lscsoft-glue\n        - {{ pin_compatible('numpy') }}\n        - python\n        - python-lal >={{ lal_version }}\n        - python-lalburst >={{ lalburst_version }}\n        - python-lalframe >={{ lalframe_version }}\n        - python-lalmetaio >={{ lalmetaio_version }}\n        - python-lalsimulation >={{ lalsimulation_version }}\n        - python-ligo-lw\n    test:\n      requires:\n        - pytest >=4.0.0a0\n      source_files:\n        - test/python\n      commands:\n        - python -m pytest -ra -v test/python\n      imports:\n        - lalinspiral\n        - lalinspiral.inspinjfind\n        - lalinspiral.sbank\n        - lalinspiral.thinca\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Inspiral Library Python libraries\n      description: |\n        The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n        This package contains the Python bindings of the LALInspiral C libraries\n        and additional Python modules.\n\n        Note: this package only provides the importable Python libraries.\n        All command-line interfaces, scripts, and executables are\n        part of the `lalinspiral` package.\n\n  - name: lalinspiral\n    script: install-bin.sh\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        - liblalburst\n        - python\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - help2man >=1.37\n        - make\n        - sed\n      host:\n        - liblal >={{ lal_version }}\n        - liblalburst >={{ lalburst_version }}\n        - {{ pin_subpackage('liblalinspiral', exact=True) }}\n        - python\n      run:\n        - liblal >={{ lal_version }}\n        - {{ pin_subpackage('liblalinspiral', exact=True) }}\n        - python\n        - {{ pin_subpackage('python-lalinspiral', exact=True) }}\n    test:\n      commands:\n        - lalinspiral_version --verbose\n      imports:\n        - lalinspiral\n    about:\n      home: https://wiki.ligo.org/Computing/LALSuite\n      doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/\n      dev_url: https://git.ligo.org/lscsoft/lalsuite/\n      license: GPL-2.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: LSC Algorithm Inspiral Library\n      description: |\n        The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n\nabout:\n  home: https://wiki.ligo.org/Computing/LALSuite\n  doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalinspiral/\n  dev_url: https://git.ligo.org/lscsoft/lalsuite/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LSC Algorithm Inspiral Library\n  description: |\n    The LSC Algorithm Inspiral Library for gravitational wave data analysis.\n\nextra:\n  feedstock-name: lalinspiral\n  recipe-maintainers:\n    - duncanmmacleod\n    - skymoo\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1268,6 +1751,7 @@
    "python-lalmetaio",
    "python-lalsimulation",
    "python-ligo-lw",
+   "sed",
    "swig"
   ]
  },
@@ -1279,6 +1763,7 @@
     "help2man",
     "make",
     "pkg-config",
+    "sed",
     "swig"
    ]
   },
@@ -1339,6 +1824,7 @@
     "help2man >=1.37",
     "make",
     "pkg-config >=0.18.0",
+    "sed",
     "swig >=3.0.10"
    ]
   },
