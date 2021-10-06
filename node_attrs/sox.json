@@ -37,6 +37,9 @@
  "bad": false,
  "branch": "main",
  "conda-forge.yml": {
+  "bot": {
+   "automerge": true
+  },
   "compiler_stack": "comp7",
   "max_py_ver": "37",
   "max_r_ver": "35"
@@ -46,12 +49,16 @@
  "linux_64_meta_yaml": {
   "about": {
    "home": "http://sox.sourceforge.net/",
-   "license": "LGPLv2",
+   "license": "GPL-2.0-only",
+   "license_file": "COPYING",
    "summary": "A cross-platform command line utility that can convert various formats of computer audio files in to other formats."
   },
   "build": {
    "detect_binary_files_with_prefix": true,
-   "number": "1013"
+   "number": "1014",
+   "run_exports": [
+    "sox"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -132,12 +139,17 @@
  "meta_yaml": {
   "about": {
    "home": "http://sox.sourceforge.net/",
-   "license": "LGPLv2",
+   "license": "GPL-2.0-only",
+   "license_file": "COPYING",
    "summary": "A cross-platform command line utility that can convert various formats of computer audio files in to other formats."
   },
   "build": {
    "detect_binary_files_with_prefix": true,
-   "number": "1013"
+   "number": "1014",
+   "run_exports": [
+    "sox",
+    "sox"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -209,12 +221,16 @@
  "osx_64_meta_yaml": {
   "about": {
    "home": "http://sox.sourceforge.net/",
-   "license": "LGPLv2",
+   "license": "GPL-2.0-only",
+   "license_file": "COPYING",
    "summary": "A cross-platform command line utility that can convert various formats of computer audio files in to other formats."
   },
   "build": {
    "detect_binary_files_with_prefix": true,
-   "number": "1013"
+   "number": "1014",
+   "run_exports": [
+    "sox"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -301,7 +317,7 @@
   ]
  },
  "pinning_version": "2018.09.11",
- "raw_meta_yaml": "{% set version = \"14.4.2\" %}\n\npackage:\n  name: sox\n  version: {{ version }}\n\nsource:\n  url: http://sourceforge.net/projects/sox/files/sox/{{ version }}/sox-{{ version }}.tar.gz\n  md5: d04fba2d9245e661f245de0577f48a33\n\nbuild:\n  number: 1013\n  detect_binary_files_with_prefix: true\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n  host:\n    - libpng\n    - zlib\n    - xz\n    - lame  # [not win]\n    - mad  # [not win]    \n\n  run:\n    - libpng\n    - zlib\n    - xz\n    - lame  # [not win]\n    - mad  # [not win]\n\ntest:\n  commands:\n    - test -e $PREFIX/include/sox.h      # [unix]\n    - test -e $PREFIX/lib/libsox.a       # [unix]\n    - test -e $PREFIX/lib/libsox.so      # [linux]\n    - test -e $PREFIX/lib/libsox.dylib   # [osx]\n    - otool -L $PREFIX/lib/libsox.dylib  # [osx]\n    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]\n    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]\n    - sox --help |grep \"FILE FORMATS\" | grep mp3  # [not win]\n\nabout:\n  home: http://sox.sourceforge.net/\n  license: LGPLv2\n  summary: A cross-platform command line utility that can convert various formats of computer audio files in to other formats.\n\nextra:\n  recipe-maintainers:\n    - 183amir\n    - alexbw\n    - sdvillal\n",
+ "raw_meta_yaml": "{% set name = \"sox\" %}\n{% set version = \"14.4.2\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://sourceforge.net/projects/sox/files/sox/{{ version }}/sox-{{ version }}.tar.gz\n  md5: d04fba2d9245e661f245de0577f48a33\n\nbuild:\n  number: 1014\n  detect_binary_files_with_prefix: true\n  skip: true  # [win]\n  run_exports:\n    # https://abi-laboratory.pro/tracker/timeline/sox/\n    - {{ pin_subpackage(name, max_pin='x.x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n  host:\n    - libpng\n    - zlib\n    - xz\n    - lame  # [not win]\n    - mad  # [not win]\n\n  run:\n    - libpng\n    - zlib\n    - xz\n    - lame  # [not win]\n    - mad  # [not win]\n\ntest:\n  commands:\n    - test -e $PREFIX/include/sox.h      # [unix]\n    - test -e $PREFIX/lib/libsox.a       # [unix]\n    - test -e $PREFIX/lib/libsox.so      # [linux]\n    - test -e $PREFIX/lib/libsox.dylib   # [osx]\n    - otool -L $PREFIX/lib/libsox.dylib  # [osx]\n    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]\n    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]\n    - sox --help |grep \"FILE FORMATS\" | grep mp3  # [not win]\n\nabout:\n  home: http://sox.sourceforge.net/\n  license: GPL-2.0-only\n  summary: A cross-platform command line utility that can convert various formats of computer audio files in to other formats.\n  license_file: COPYING\n\nextra:\n  recipe-maintainers:\n    - 183amir\n    - alexbw\n    - sdvillal\n",
  "req": {
   "__set__": true,
   "elements": [
