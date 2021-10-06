@@ -357,6 +357,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/751703945.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.10.5"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1400,12 +1417,13 @@
   }
  },
  "name": "python-blosc",
- "new_version": "1.10.4",
+ "new_version": "1.10.5",
  "new_version_attempts": {
   "1.10.0": 1,
   "1.10.1": 1,
   "1.10.2": 1,
   "1.10.4": 1,
+  "1.10.5": 1,
   "1.9.1": 1,
   "1.9.2": 1
  },
@@ -1704,7 +1722,7 @@
    "python-blosc"
   ]
  },
- "pinning_version": "2021.06.01.05.21.06",
+ "pinning_version": "2021.10.06.08.16.35",
  "raw_meta_yaml": "{% set version = \"1.10.2\" %}\n{% set sha256 = \"eeba922f52becd697dc5cfcee8d01a03ba9597a54ce91fdacd9998492acbed9b\" %}\n\npackage:\n  name: python-blosc\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/b/blosc/blosc-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 1\n  script:\n    # We can't use CMAKE_GENERATOR implicitly via conda_build_config.yaml, yet,\n    # due to https://github.com/AnacondaRecipes/aggregate/pull/182\n    - set \"CMAKE_GENERATOR={{ CMAKE_GENERATOR }}\"  # [win]\n    - export DISABLE_BLOSC_SSE2=1  # [ppc64le]\n    - export DISABLE_BLOSC_AVX2=1  # [ppc64le]\n    - {{ PYTHON }} -m pip install . -vv\n    # When cross-compiling scikit-build will link to libpython.dylib which results\n    # in segfaults. Let's replace that with libc++\n    - ${INSTALL_NAME_TOOL} -change @rpath/libpython${PY_VER}.dylib @rpath/libc++.1.dylib ${PREFIX}/lib/python${PY_VER}/site-packages/blosc/blosc_extension.cpython-{{ py }}-darwin.so   # [build_platform != target_platform and osx]\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make\n  host:\n    - python\n    - pip\n    - blosc\n    - setuptools\n    - wheel\n    - scikit-build\n  run:\n    - python\n    - blosc\n\ntest:\n  requires:\n    - numpy\n    - psutil\n  imports:\n    - blosc\n  commands:\n    - python -c \"import blosc; blosc.print_versions()\"\n    - python -c \"import blosc; blosc.test()\"\n\nabout:\n  home: https://github.com/Blosc/python-blosc\n  license_family: BSD\n  license: BSD-3-Clause\n  license_file:\n    - LICENSES/PYTHON-BLOSC.txt\n    - zstd-licenses.txt\n  dev_url: https://github.com/Blosc/python-blosc\n  doc_url: http://python-blosc.blosc.org/\n  summary: A Python wrapper for the extremely fast Blosc compression library\n\nextra:\n  recipe-maintainers:\n    - FrancescElies\n",
  "req": {
   "__set__": true,
@@ -1761,7 +1779,7 @@
    ]
   }
  },
- "smithy_version": "3.10.1",
+ "smithy_version": "3.12",
  "strong_exports": false,
  "total_requirements": {
   "build": {
