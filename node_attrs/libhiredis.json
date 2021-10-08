@@ -50,6 +50,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/753797326.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.0.2"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -389,7 +406,8 @@
  "name": "libhiredis",
  "new_version": "1.0.2",
  "new_version_attempts": {
-  "1.0.1": 1
+  "1.0.1": 1,
+  "1.0.2": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -544,7 +562,7 @@
    "libhiredis"
   ]
  },
- "pinning_version": "2021.10.04.21.54.47",
+ "pinning_version": "2021.10.07.13.38.58",
  "raw_meta_yaml": "{% set name = \"libhiredis\" %}\n{% set version = \"1.0.0\" %}\n{% set soversion = \"1.0.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/redis/hiredis/archive/v{{ version }}.tar.gz\n  sha256: 2a0b5fe5119ec973a0c1966bfc4bd7ed39dbce1cb6d749064af9121fe971936f\n  patches:\n    - hiredis-1.0.0-disable-network-tests.patch\n\nbuild:\n  number: 0\n  skip: true           # [win and float(vc) < 14]\n  run_exports:\n    - {{ pin_subpackage('libhiredis', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}  # [not win]\n    - cmake\n    - make  # [unix]\n\n  host:\n    - msinttypes  # [win and float(vc) < 14]\n\ntest:\n  commands:\n    - ldd ${PREFIX}/lib/libhiredis.so  # [linux]\n    - test -f ${PREFIX}/include/hiredis/hiredis.h  # [unix]\n    - test -f ${PREFIX}/lib/libhiredis.{{ soversion }}${SHLIB_EXT}  # [osx]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\hiredis\\\\hiredis.h exit 1  # [win]\n    - echo \"TODO - Pkg tests require redis server.\"\n\nabout:\n  home: http://github.com/redis/hiredis\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: COPYING\n  summary: Minimalistic C client for Redis >= 1.2\n\n  dev_url: https://github.com/redis/hiredis\n\nextra:\n  recipe-maintainers:\n    - sarnold\n",
  "req": {
   "__set__": true,
