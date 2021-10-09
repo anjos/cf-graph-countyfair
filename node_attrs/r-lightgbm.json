@@ -289,6 +289,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/754548255.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.3.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1044,14 +1061,15 @@
   }
  },
  "name": "r-lightgbm",
- "new_version": "3.2.1",
+ "new_version": "3.3.0",
  "new_version_attempts": {
   "2.3.1": 1,
   "3.0.0": 1,
   "3.1.0": 1,
   "3.1.1": 4,
   "3.2.0": 1,
-  "3.2.1": 2
+  "3.2.1": 2,
+  "3.3.0": 1
  },
  "new_version_errors": {
   "3.1.1": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '3.1.1' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template '{{ cran_mirror }}/src/contrib/Archive/lightgbm/lightgbm_{{ version }}.tar.gz'\n - could not hash URL template '{{ cran_mirror }}/src/contrib/lightgbm_{{ version }}.tar.gz'\n"
@@ -1316,7 +1334,7 @@
    "r-lightgbm"
   ]
  },
- "pinning_version": "2021.05.25.06.47.12",
+ "pinning_version": "2021.10.08.16.45.02",
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"3.2.1\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-lightgbm\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/lightgbm_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/lightgbm/lightgbm_{{ version }}.tar.gz\n  sha256: 6d5e333f88d0bf6a23caea59438a1a3d63505b1d6ca5b6cf9c49bf314f6c6684\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 0\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - cross-r-base {{ r_base }}  # [build_platform != target_platform]\n    - r-matrix >=1.1_0           # [build_platform != target_platform]\n    - r-r6 >=2.0                 # [build_platform != target_platform]\n    - r-data.table >=1.9.6       # [build_platform != target_platform]\n    - r-jsonlite >=1.0           # [build_platform != target_platform]\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ compiler('cxx') }}            # [not win]\n    - {{ compiler('m2w64_cxx') }}      # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}sed               # [win]\n    - {{ posix }}grep              # [win]\n    - {{ posix }}autoconf\n    - {{ posix }}automake          # [not win]\n    - {{ posix }}automake-wrapper  # [win]\n    - {{ posix }}pkg-config\n    - {{ posix }}make\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n  host:\n    - r-base\n    - r-matrix >=1.1_0\n    - r-r6 >=2.0\n    - r-data.table >=1.9.6\n    - r-jsonlite >=1.0\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - r-matrix >=1.1_0\n    - r-r6 >=2.0\n    - r-data.table >=1.9.6\n    - r-jsonlite >=1.0\n\ntest:\n  commands:\n    - $R -e \"library('lightgbm')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('lightgbm')\\\"\"  # [win]\n\nabout:\n  home: https://github.com/Microsoft/LightGBM\n  license: MIT\n  summary: \"Tree based algorithms can be improved by introducing boosting frameworks. 'LightGBM' is one such framework, based on Ke, Guolin et al. (2017) <https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision>. This package offers an R interface to work with it. It is designed to be distributed\\\n    \\ and efficient with the following advantages: 1. Faster training speed and higher efficiency. 2. Lower memory usage. 3. Better accuracy. 4. Parallel learning supported. 5. Capable of handling large-scale data. In recognition of these advantages, 'LightGBM' has been widely-used in many winning solutions of machine learning\\\n    \\ competitions. Comparison experiments on public datasets suggest that 'LightGBM' can outperform existing boosting frameworks on both efficiency and accuracy, with significantly lower memory consumption. In addition, parallel experiments suggest that in certain circumstances, 'LightGBM' can achieve a linear speed-up\\\n    \\ in training time by using multiple machines.\"\n  license_family: MIT\n  license_file:\n    - {{ environ[\"PREFIX\"] }}/lib/R/share/licenses/MIT\n    - LICENSE\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n    - xhochy\n\n# Package: lightgbm\n# Type: Package\n# Title: Light Gradient Boosting Machine\n# Version: 3.1.0\n# Date: 2020-11-15\n# Authors@R: c( person(\"Guolin\", \"Ke\", email = \"guolin.ke@microsoft.com\", role = c(\"aut\", \"cre\")), person(\"Damien\", \"Soukhavong\", email = \"damien.soukhavong@skema.edu\", role = c(\"aut\")), person(\"James\", \"Lamb\", email=\"jaylamb20@gmail.com\", role = c(\"aut\")), person(\"Qi\", \"Meng\", role = c(\"aut\")), person(\"Thomas\", \"Finley\", role = c(\"aut\")), person(\"Taifeng\", \"Wang\", role = c(\"aut\")), person(\"Wei\", \"Chen\", role = c(\"aut\")), person(\"Weidong\", \"Ma\", role = c(\"aut\")), person(\"Qiwei\", \"Ye\", role = c(\"aut\")), person(\"Tie-Yan\", \"Liu\", role = c(\"aut\")), person(\"Yachen\", \"Yan\", role = c(\"ctb\")), person(\"Microsoft Corporation\", role = c(\"cph\")), person(\"Dropbox, Inc.\", role = c(\"cph\")), person(\"Jay\", \"Loden\", role = c(\"cph\")), person(\"Dave\", \"Daeschler\", role = c(\"cph\")), person(\"Giampaolo\", \"Rodola\", role = c(\"cph\")), person(\"IBM Corporation\", role = c(\"ctb\")) )\n# Description: Tree based algorithms can be improved by introducing boosting frameworks. 'LightGBM' is one such framework, based on Ke, Guolin et al. (2017) <https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision>. This package offers an R interface to work with it. It is designed to be distributed and efficient with the following advantages: 1. Faster training speed and higher efficiency. 2. Lower memory usage. 3. Better accuracy. 4. Parallel learning supported. 5. Capable of handling large-scale data. In recognition of these advantages, 'LightGBM' has been widely-used in many winning solutions of machine learning competitions. Comparison experiments on public datasets suggest that 'LightGBM' can outperform existing boosting frameworks on both efficiency and accuracy, with significantly lower memory consumption. In addition, parallel experiments suggest that in certain circumstances, 'LightGBM' can achieve a linear speed-up in training time by using multiple machines.\n# Encoding: UTF-8\n# License: MIT + file LICENSE\n# URL: https://github.com/Microsoft/LightGBM\n# BugReports: https://github.com/Microsoft/LightGBM/issues\n# NeedsCompilation: yes\n# Biarch: true\n# Suggests: testthat\n# Depends: R (>= 3.5), R6 (>= 2.0)\n# Imports: data.table (>= 1.9.6), graphics, jsonlite (>= 1.0), Matrix (>= 1.1-0), methods, utils\n# SystemRequirements: C++11\n# RoxygenNote: 7.1.1\n# Packaged: 2020-11-16 02:40:16 UTC; jlamb\n# Author: Guolin Ke [aut, cre], Damien Soukhavong [aut], James Lamb [aut], Qi Meng [aut], Thomas Finley [aut], Taifeng Wang [aut], Wei Chen [aut], Weidong Ma [aut], Qiwei Ye [aut], Tie-Yan Liu [aut], Yachen Yan [ctb], Microsoft Corporation [cph], Dropbox, Inc. [cph], Jay Loden [cph], Dave Daeschler [cph], Giampaolo Rodola [cph], IBM Corporation [ctb]\n# Maintainer: Guolin Ke <guolin.ke@microsoft.com>\n# Repository: CRAN\n# Date/Publication: 2020-11-18 23:20:11 UTC\n",
  "req": {
@@ -1394,7 +1412,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.10.1",
+ "smithy_version": "3.12",
  "strong_exports": false,
  "total_requirements": {
   "build": {
