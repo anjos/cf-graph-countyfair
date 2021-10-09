@@ -188,6 +188,26 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "head": {
+     "ref": "<this_is_not_a_branch>"
+    },
+    "state": "closed"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "6_6.0.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -632,7 +652,7 @@
   "5_5.0.0": 101,
   "5_5.1.0": 54,
   "6_6.0.0": 1,
-  "6_6.0.1": 1
+  "6_6.0.1": 2
  },
  "new_version_errors": {
   "4_4.2.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '4_4.2.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/ignitionrobotics/ign-rendering/archive/ignition-rendering{{ version.split('.')[0] }}_{{ version }}.tar.gz'\n",
@@ -908,7 +928,7 @@
    "libignition-rendering6"
   ]
  },
- "pinning_version": "2021.10.01.10.31.28",
+ "pinning_version": "2021.10.08.16.45.02",
  "raw_meta_yaml": "{% set base_name = \"libignition-rendering\" %}\n{% set version = \"6_6.0.1\" %}\n{% set version_package = version.split('_')[1] %}\n{% set major_version = version.split('_')[0] %}\n{% set name = base_name  + major_version %}\n\npackage:\n  name: {{ name }}\n  version: {{ version_package }}\n\nsource:\n  url: https://github.com/ignitionrobotics/ign-rendering/archive/ignition-rendering{{ version }}.tar.gz\n  sha256: 39ca56415a188e6159644c7842f13b01d36e656bb5ee10f3b3e2b9402d29cc4f\n  patches:\n    - ogre-version.patch\n    - 452.patch\n    - remove_problematic_ignogre_logic.patch\n    - 454.patch\n\nbuild:\n  number: 0\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - cmake\n    - make                               # [not win]\n    - pkg-config                         # [not win]\n\n    # x11\n    - {{ cdt('mesa-libgl-devel') }}      # [unix and not (osx and arm64)]\n    - {{ cdt('mesa-dri-drivers') }}      # [unix and not (osx and arm64)]\n    - {{ cdt('libselinux') }}            # [linux]\n    - {{ cdt('libxdamage') }}            # [linux]\n    - {{ cdt('libxxf86vm') }}            # [linux]\n    - {{ cdt('libxfixes') }}             # [linux]\n    - {{ cdt('libxext') }}               # [linux]\n    - {{ cdt('libxau') }}                # [linux]\n  host:\n    - xorg-libx11                        # [unix]\n    - xorg-libxext                       # [unix]\n    - libglu                             # [linux]\n    - libignition-math6 >=6.6\n    - libignition-common4\n    - libignition-plugin1\n    - libignition-utils1\n    - ogre  {{ ogre }}\n  run:\n    - xorg-libx11                        # [unix]\n    - xorg-libxext                       # [unix]\n    - libglu                             # [linux]\n    - {{ pin_compatible('ogre', max_pin='x.x') }}\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx and x86_64]\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ignition/rendering{{ major_version }}/ignition/rendering.hh  # [not win]\n    - test -f ${PREFIX}/lib/libignition-rendering{{ major_version }}.so  # [linux]\n    - test -f ${PREFIX}/lib/libignition-rendering{{ major_version }}.dylib  # [osx]\n    - test -f ${PREFIX}/lib/cmake/ignition-rendering{{ major_version }}/ignition-rendering{{ major_version }}-config.cmake  # [not win]\n    - if exist %PREFIX%\\\\Library\\\\include\\\\ignition\\\\rendering{{ major_version }}\\\\ignition\\\\rendering.hh (exit 0) else (exit 1)  # [win]\n    - if exist $PREFIX$\\\\Library\\\\lib\\\\ignition-rendering{{ major_version }}.lib (exit 0) else (exit 1)  # [win]\n    - if exist $PREFIX$\\\\Library\\\\bin\\\\ignition-rendering{{ major_version }}.dll (exit 0) else (exit 1)  # [win]\n    - if exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\ignition-rendering{{ major_version }}\\\\ignition-rendering{{ version.split('.')[0] }}-config.cmake (exit 0) else (exit 1)  # [win]\n\nabout:\n  home: https://github.com/ignitionrobotics/ign-rendering\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: Ignition Rendering\n\nextra:\n  recipe-maintainers:\n    - JShep1\n    - wolfv\n    - traversaro\n",
  "req": {
   "__set__": true,
