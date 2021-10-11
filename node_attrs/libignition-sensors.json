@@ -240,6 +240,42 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/755160987.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/755161680.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "branch": "v5",
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "branch",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -731,7 +767,7 @@
    "libignition-sensors6"
   ]
  },
- "pinning_version": "2021.10.08.16.45.02",
+ "pinning_version": "2021.10.10.22.03.30",
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set component_name = \"sensors\" %}\n{% set base_name = \"libignition-\" + component_name %}\n{% set version = \"6_6.0.0\" %}\n{% set version_package = version.split('_')[1] %}\n{% set major_version = version.split('_')[0] %}\n{% set name = base_name + major_version %}\n\npackage:\n  name: {{ name }}\n  version: {{ version_package }}\n\nsource:\n  - url: https://github.com/ignitionrobotics/ign-{{ component_name }}/archive/ignition-{{ component_name }}{{ version }}.tar.gz\n    sha256: ad9da18d8d1316bccfe86e943c3f66b806cf3614bcf79479fc86c94a0c3680de\n\nbuild:\n  number: 0\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - make  # [not win]\n    - cmake\n    - pkg-config\n  host:\n    - libignition-cmake2\n    - libprotobuf\n    - libignition-math6\n    - libignition-common4\n    - libignition-transport11\n    - libignition-rendering6\n    - libignition-msgs8\n    - libignition-plugin1\n    - libsdformat12\n    - libarchive  # [osx]\n    - ogre  {{ ogre }}\n  run:\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx and x86_64]\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ignition/{{ component_name }}{{ major_version }}/ignition/{{ component_name }}.hh  # [not win]\n    - test -f ${PREFIX}/lib/libignition-{{ component_name }}{{ major_version }}.so  # [linux]\n    - test -f ${PREFIX}/lib/libignition-{{ component_name }}{{ major_version }}.dylib  # [osx]\n    - test -f ${PREFIX}/lib/cmake/ignition-{{ component_name }}{{ major_version }}/ignition-{{ component_name }}{{ major_version }}-config.cmake  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ignition\\\\{{ component_name }}{{ major_version }}\\\\ignition\\\\{{ component_name }}.hh exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\ignition-{{ component_name }}{{ major_version }}.lib exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\ignition-{{ component_name }}{{ major_version }}.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\ignition-{{ component_name }}{{ major_version }}\\\\ignition-{{ component_name }}{{ major_version }}-config.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/ignitionrobotics/ign-{{ component_name }}\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: Ignition Robotics library that provide numerous sensor models designed to generate realistic data from simulation environments.\n\nextra:\n  feedstock-name: {{ base_name }}\n  recipe-maintainers:\n    - wolfv\n    - traversaro\n    - Tobias-Fischer\n    - j-rivero\n",
  "req": {
