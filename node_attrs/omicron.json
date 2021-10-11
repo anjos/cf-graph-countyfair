@@ -241,7 +241,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -285,7 +285,8 @@
    "commands": [
     "omicron version",
     "for omitest in ${PREFIX}/sbin/omicron-test-*; do ${omitest}; done",
-    "pkg-config --print-errors --exact-version 3.0.0 omicron"
+    "pkg-config --print-errors --exact-version 3.0.0 omicron",
+    "test \"${OMICRON_HTML}\" == \"${PREFIX}/share/omicron/html\""
    ],
    "requires": [
     "pkg-config"
@@ -340,7 +341,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -401,8 +402,10 @@
     "omicron version",
     "for omitest in ${PREFIX}/sbin/omicron-test-*; do ${omitest}; done",
     "pkg-config --print-errors --exact-version 3.0.0 omicron",
+    "test \"${OMICRON_HTML}\" == \"${PREFIX}/share/omicron/html\"",
     "omicron version",
-    "pkg-config --print-errors --exact-version 3.0.0 omicron"
+    "pkg-config --print-errors --exact-version 3.0.0 omicron",
+    "test \"${OMICRON_HTML}\" == \"${PREFIX}/share/omicron/html\""
    ],
    "requires": [
     "pkg-config",
@@ -432,7 +435,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -475,7 +478,8 @@
   "test": {
    "commands": [
     "omicron version",
-    "pkg-config --print-errors --exact-version 3.0.0 omicron"
+    "pkg-config --print-errors --exact-version 3.0.0 omicron",
+    "test \"${OMICRON_HTML}\" == \"${PREFIX}/share/omicron/html\""
    ],
    "requires": [
     "pkg-config"
@@ -523,7 +527,7 @@
   ]
  },
  "pinning_version": "2021.09.05.11.13.08",
- "raw_meta_yaml": "{% set name = \"Omicron\" %}\n{% set version = \"3.0.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://git.ligo.org/virgo/virgoapp/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: d2dda107042eb4f99b8acf91012e6b5031cf725eca714de8890bdaca103d788e\n  patches:\n    # https://git.ligo.org/virgo/virgoapp/Omicron/-/issues/15\n    - omicron-plot-links.patch\n    # https://git.ligo.org/virgo/virgoapp/Omicron/-/issues/16\n    - libOmicronUtils-links.patch\n    # https://git.ligo.org/virgo/virgoapp/Omicron/-/issues/17\n    - libOmicron-links.patch\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: 2\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.9.0\n    - make  # [unix]\n    - pkg-config  # [unix]\n  host:\n    - fftw\n    - gwollum {{ version }}\n    - root_base\n  run:\n    - fftw\n    - gwollum\n    - root_base\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    # sanity check\n    - omicron version\n    # run test commands\n    - for omitest in ${PREFIX}/sbin/omicron-test-*; do ${omitest}; done  # [not osx]\n    # check pkg-config\n    - pkg-config --print-errors --exact-version {{ version }} {{ name|lower }}\n\nabout:\n  home: https://virgo.docs.ligo.org/virgoapp/{{ name }}/\n  doc_url: https://virgo.docs.ligo.org/virgoapp/{{ name }}/\n  dev_url: https://git.ligo.org/virgo/virgoapp/{{ name }}.git\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: An algorithm to detect and characterize transient events in gravitational-wave detectors\n  description: |\n    Omicron has been derived from a well-known 'burst-type' search pipeline\n    called Q-pipeline (a.k.a Omega).  Q-pipeline is able to detect and\n    characterize detector glitches with a very good efficiency and precision.\n    So, the idea was to adapt it for detector characterization purposes,\n    i.e. to run it over many auxiliary channels.  To achieve this, the\n    original matlab code has been replaced by a C++ architecture and many\n    steps have been removed to run faster.  The name Omicron was chosen to\n    recall the Omega inheritance.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - rhyspoulton\n",
+ "raw_meta_yaml": "{% set name = \"Omicron\" %}\n{% set version = \"3.0.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://git.ligo.org/virgo/virgoapp/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: d2dda107042eb4f99b8acf91012e6b5031cf725eca714de8890bdaca103d788e\n  patches:\n    # https://git.ligo.org/virgo/virgoapp/Omicron/-/issues/15\n    - omicron-plot-links.patch\n    # https://git.ligo.org/virgo/virgoapp/Omicron/-/issues/16\n    - libOmicronUtils-links.patch\n    # https://git.ligo.org/virgo/virgoapp/Omicron/-/issues/17\n    - libOmicron-links.patch\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: 3\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.9.0\n    - make  # [unix]\n    - pkg-config  # [unix]\n  host:\n    - fftw\n    - gwollum {{ version }}\n    - root_base\n  run:\n    - fftw\n    - gwollum\n    - root_base\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    # sanity check\n    - omicron version\n    # run test commands\n    - for omitest in ${PREFIX}/sbin/omicron-test-*; do ${omitest}; done  # [not osx]\n    # check pkg-config\n    - pkg-config --print-errors --exact-version {{ version }} {{ name|lower }}\n    # check activate variables\n    - test \"${OMICRON_HTML}\" == \"${PREFIX}/share/omicron/html\"  # [unix]\n\nabout:\n  home: https://virgo.docs.ligo.org/virgoapp/{{ name }}/\n  doc_url: https://virgo.docs.ligo.org/virgoapp/{{ name }}/\n  dev_url: https://git.ligo.org/virgo/virgoapp/{{ name }}.git\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: An algorithm to detect and characterize transient events in gravitational-wave detectors\n  description: |\n    Omicron has been derived from a well-known 'burst-type' search pipeline\n    called Q-pipeline (a.k.a Omega).  Q-pipeline is able to detect and\n    characterize detector glitches with a very good efficiency and precision.\n    So, the idea was to adapt it for detector characterization purposes,\n    i.e. to run it over many auxiliary channels.  To achieve this, the\n    original matlab code has been replaced by a C++ architecture and many\n    steps have been removed to run faster.  The name Omicron was chosen to\n    recall the Omega inheritance.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - rhyspoulton\n",
  "req": {
   "__set__": true,
   "elements": [
