@@ -119,7 +119,7 @@
     "__lazy_json__": "pr_json/695842250.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1634163006.955758,
     "migrator_name": "OSXArm",
     "migrator_version": 1,
     "name": "arm osx addition"
@@ -173,7 +173,7 @@
   },
   "package": {
    "name": "kubernetes-helm",
-   "version": "3.5.2"
+   "version": "3.7.0"
   },
   "requirements": {
    "build": [
@@ -184,8 +184,8 @@
   "source": [
    {
     "folder": "src/k8s.io/helm",
-    "git_rev": "v3.5.2",
-    "git_url": "https://github.com/helm/helm"
+    "sha256": "2d71d0524f358aeec0ff290194680e98b7268ac8fee4d9b69b0315b7dae15900",
+    "url": "https://github.com/helm/helm/archive/v3.7.0.tar.gz"
    }
   ],
   "test": {
@@ -256,7 +256,7 @@
   },
   "package": {
    "name": "kubernetes-helm",
-   "version": "3.5.2"
+   "version": "3.7.0"
   },
   "requirements": {
    "build": [
@@ -272,18 +272,18 @@
   "source": [
    {
     "folder": "src/k8s.io/helm",
-    "git_rev": "v3.5.2",
-    "git_url": "https://github.com/helm/helm"
+    "sha256": "2d71d0524f358aeec0ff290194680e98b7268ac8fee4d9b69b0315b7dae15900",
+    "url": "https://github.com/helm/helm/archive/v3.7.0.tar.gz"
    },
    {
     "folder": "src/k8s.io/helm",
-    "git_rev": "v3.5.2",
-    "git_url": "https://github.com/helm/helm"
+    "sha256": "2d71d0524f358aeec0ff290194680e98b7268ac8fee4d9b69b0315b7dae15900",
+    "url": "https://github.com/helm/helm/archive/v3.7.0.tar.gz"
    },
    {
     "folder": "src/k8s.io/helm",
-    "sha256": "079711eeadd3276da0d946a116f4dc08d58b015ca1874d7b3f3cd633e079589e",
-    "url": "https://get.helm.sh/helm-v3.5.2-windows-amd64.zip"
+    "sha256": "cf6dd076898e2dc1e7f4af593d011f99a9de353b6a2d019731dbc254a1ec880e",
+    "url": "https://get.helm.sh/helm-v3.7.0-windows-amd64.zip"
    }
   ],
   "test": {
@@ -325,7 +325,7 @@
   },
   "package": {
    "name": "kubernetes-helm",
-   "version": "3.5.2"
+   "version": "3.7.0"
   },
   "requirements": {
    "build": [
@@ -336,8 +336,8 @@
   "source": [
    {
     "folder": "src/k8s.io/helm",
-    "git_rev": "v3.5.2",
-    "git_url": "https://github.com/helm/helm"
+    "sha256": "2d71d0524f358aeec0ff290194680e98b7268ac8fee4d9b69b0315b7dae15900",
+    "url": "https://github.com/helm/helm/archive/v3.7.0.tar.gz"
    }
   ],
   "test": {
@@ -374,7 +374,7 @@
   ]
  },
  "pinning_version": "2021.07.22.10.53.36",
- "raw_meta_yaml": "{% set goname = \"k8s.io/helm\" %}\n{% set version = \"3.5.2\" %}\n\n\n{% set name = goname.split('/')[-1] %}\n{% set pkg_src = ('src/'+goname).replace(\"/\", \"\\\\\" if win else \"/\") %}\n\npackage:\n  name: kubernetes-{{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - folder: {{ pkg_src }}\n    git_url: https://github.com/helm/helm  # [unix]\n    git_tag: v{{ version }}                # [unix]\n    url: https://get.helm.sh/{{ name }}-v{{ version }}-windows-amd64.zip  # [win]\n    sha256: 079711eeadd3276da0d946a116f4dc08d58b015ca1874d7b3f3cd633e079589e  # [win]\n\nbuild:\n  number: 0\n  script:\n    - pushd {{ pkg_src }}\n    - export USER=$(id -u -n)  # [osx]\n    - make build test-unit  # [unix]\n    - pushd bin  # [unix]\n\n    - mkdir {{ target_gobin }}\n    - cp helm{{ target_goexe }} {{ target_gobin }}\n\nrequirements:\n  build:\n    - {{ compiler('go') }} >=1.15.7\n    - go-gox\n    - m2-coreutils  # [win]\ntest:\n  commands:\n    - helm --help\n\nabout:\n  home: https://www.helm.sh\n  license: Apache-2.0\n  license_family: Apache\n  license_file: {{ pkg_src }}/LICENSE\n  summary: Helm is a package manager for kubernetes\n  doc_url: https://docs.helm.sh\n  dev_url: https://github.com/helm/helm\n\nextra:\n  recipe-maintainers:\n    - sodre\n    - dhirschfeld\n",
+ "raw_meta_yaml": "{% set name = \"helm\" %}\n{% set goname = \"k8s.io/\" + name %}\n\n{% set version = \"3.7.0\" %}\n{% set pkg_src = ('src/'+goname).replace(\"/\", \"\\\\\" if win else \"/\") %}\n\npackage:\n  name: kubernetes-{{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - folder: {{ pkg_src }}\n    url: https://github.com/helm/helm/archive/v{{ version }}.tar.gz           # [not win]\n    sha256: 2d71d0524f358aeec0ff290194680e98b7268ac8fee4d9b69b0315b7dae15900  # [not win]\n    url: https://get.helm.sh/helm-v{{ version }}-windows-amd64.zip            # [win]\n    sha256: cf6dd076898e2dc1e7f4af593d011f99a9de353b6a2d019731dbc254a1ec880e  # [win]\n\nbuild:\n  number: 0\n  script:\n    - pushd {{ pkg_src }}\n    - export USER=$(id -u -n)  # [osx]\n    - make build test-unit  # [unix]\n    - pushd bin  # [unix]\n\n    - mkdir {{ target_gobin }}\n    - cp helm{{ target_goexe }} {{ target_gobin }}\n\nrequirements:\n  build:\n    - {{ compiler('go') }} >=1.15.7\n    - go-gox\n    - m2-coreutils  # [win]\ntest:\n  commands:\n    - helm --help\n\nabout:\n  home: https://www.helm.sh\n  license: Apache-2.0\n  license_family: Apache\n  license_file: {{ pkg_src }}/LICENSE\n  summary: Helm is a package manager for kubernetes\n  doc_url: https://docs.helm.sh\n  dev_url: https://github.com/helm/helm\n\nextra:\n  recipe-maintainers:\n    - sodre\n    - dhirschfeld\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -429,8 +429,8 @@
    "elements": []
   }
  },
- "url": "https://get.helm.sh/helm-v3.5.2-windows-amd64.zip",
- "version": "3.5.2",
+ "url": "https://github.com/helm/helm/archive/v3.7.0.tar.gz",
+ "version": "3.7.0",
  "win_64_meta_yaml": {
   "about": {
    "dev_url": "https://github.com/helm/helm",
@@ -457,7 +457,7 @@
   },
   "package": {
    "name": "kubernetes-helm",
-   "version": "3.5.2"
+   "version": "3.7.0"
   },
   "requirements": {
    "build": [
@@ -469,8 +469,8 @@
   "source": [
    {
     "folder": "src/k8s.io/helm",
-    "sha256": "079711eeadd3276da0d946a116f4dc08d58b015ca1874d7b3f3cd633e079589e",
-    "url": "https://get.helm.sh/helm-v3.5.2-windows-amd64.zip"
+    "sha256": "cf6dd076898e2dc1e7f4af593d011f99a9de353b6a2d019731dbc254a1ec880e",
+    "url": "https://get.helm.sh/helm-v3.7.0-windows-amd64.zip"
    }
   ],
   "test": {
