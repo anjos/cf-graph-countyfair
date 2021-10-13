@@ -306,6 +306,9 @@
   ]
  },
  "pinning_version": "2021.10.05.15.34.59",
+ "pre_pr_migrator_status": {
+  "openssl3": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1337151529\">bot CI job</a>): master: ['win_64_openssl3: Encountered problems while solving:\\n  - package cyrus-sasl-2.1.26-h5cda8da_3 requires openssl >=1.0.2p,<1.0.3a, but none of the providers can be installed\\n']"
+ },
  "raw_meta_yaml": "{% set name = \"libmongoc\" %}\n{% set version = \"1.19.1\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/mongodb/mongo-c-driver/releases/download/{{ version }}/mongo-c-driver-{{ version }}.tar.gz\n  sha256: 1732251e3f65bc02ce05c04ce34ef2819b154479108df669f0c045486952521d\n  patches:\n    - fix-static-dep.patch\n\nbuild:\n  number: 0\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - cmake\n    - ninja\n  host:\n    - libbson\n    - snappy\n    - zlib\n    - openssl\n    - cyrus-sasl\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/libmongoc-1.0/mongoc/mongoc.h  # [unix]\n    - test -f ${PREFIX}/lib/pkgconfig/libmongoc-1.0.pc         # [unix]\n    - test -f ${PREFIX}/lib/libmongoc-1.0${SHLIB_EXT}          # [unix]\n    - if not exist %LIBRARY_INC%\\libmongoc-1.0\\mongoc\\mongoc.h (exit 1)     # [win]\n    - if not exist %LIBRARY_LIB%\\mongoc-1.0.lib (exit 1)    # [win]\n    - if not exist %LIBRARY_BIN%\\mongoc-1.0.dll (exit 1)    # [win]\n\nabout:\n  home: https://github.com/mongodb/mongo-c-driver\n  license: Apache-2.0\n  license_file: COPYING\n  summary: A high-performance MongoDB driver for C\n\nextra:\n  recipe-maintainers:\n    - Tobias-Fischer\n",
  "req": {
   "__set__": true,
