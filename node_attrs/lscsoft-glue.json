@@ -273,7 +273,7 @@
     "__lazy_json__": "pr_json/735785701.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1634652043.480314,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -303,6 +303,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/761534130.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy37"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -314,6 +333,8 @@
   },
   "provider": {
    "linux": "azure",
+   "linux_aarch64": "default",
+   "linux_ppc64le": "default",
    "osx": "azure",
    "win": "azure"
   }
@@ -323,8 +344,9 @@
  "linux_64_meta_yaml": {
   "about": {
    "description": "Glue is a collection of utilities for running data analysis pipelines\nfor online and offline analysis as well as accessing various grid\nutilities.  It also provides the infrastructure for the segment\ndatabase.\n",
-   "home": "https://git.ligo.org/lscsoft/lscsoft-glue",
-   "license": "GPLv3",
+   "doc_url": "https://lscsoft.docs.ligo.org/glue/",
+   "home": "https://git.ligo.org/lscsoft/glue.git",
+   "license": "GPL-3.0-or-later",
    "license_family": "GPL",
    "license_file": "LICENSE",
    "summary": "Grid LSC User Engine"
@@ -336,12 +358,13 @@
   "extra": {
    "recipe-maintainers": [
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
-    "rpfisher",
-    "duncanmmacleod",
+    "robertbruntz",
     "rpfisher"
    ]
   },
@@ -353,13 +376,9 @@
    "build": [
     "c_compiler_stub",
     "c_compiler_stub",
-    "c_compiler_stub",
     "c_compiler_stub"
    ],
    "host": [
-    "pip",
-    "python",
-    "setuptools",
     "pip",
     "python",
     "setuptools",
@@ -388,22 +407,27 @@
     "pyopenssl",
     "python",
     "python-pegasus-wms 4",
-    "six",
-    "ligo-segments",
-    "numpy",
-    "pyopenssl",
-    "python",
-    "python-pegasus-wms 4",
     "six"
    ]
   },
   "source": {
-   "fn": "lscsoft-glue-2.0.0.tar.gz",
+   "patches": [
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch"
+   ],
    "sha256": "9bdfaebe4c921d83d1e3d1ca24379a644665e9d7530e7070665f387767c66923",
    "url": "https://pypi.io/packages/source/l/lscsoft-glue/lscsoft-glue-2.0.0.tar.gz"
   },
   "test": {
-   "commands": null,
+   "commands": [
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments"
+   ],
    "imports": [
     "glue",
     "glue.gpstime",
@@ -437,18 +461,23 @@
     "glue.pipeline",
     "glue.text_progress_bar",
     "glue.utils",
-    "glue.workflow",
-    "glue",
-    "glue.gpstime",
-    "glue.iterutils",
-    "glue.lal",
-    "glue.ligolw",
-    "glue.ligolw.ilwd",
-    "glue.ligolw.tokenizer",
-    "glue.pipeline",
-    "glue.text_progress_bar",
-    "glue.utils",
     "glue.workflow"
+   ],
+   "requires": [
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip"
+   ],
+   "source_files": [
+    "test/",
+    "test/",
+    "test/"
    ]
   }
  },
@@ -480,21 +509,375 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "make",
+    "matplotlib-base",
+    "pip"
+   ]
+  }
+ },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "description": "Glue is a collection of utilities for running data analysis pipelines\nfor online and offline analysis as well as accessing various grid\nutilities.  It also provides the infrastructure for the segment\ndatabase.\n",
+   "doc_url": "https://lscsoft.docs.ligo.org/glue/",
+   "home": "https://git.ligo.org/lscsoft/glue.git",
+   "license": "GPL-3.0-or-later",
+   "license_family": "GPL",
+   "license_file": "LICENSE",
+   "summary": "Grid LSC User Engine"
+  },
+  "build": {
+   "ignore_run_exports": null,
+   "number": "4"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "duncanmmacleod",
+    "robertbruntz",
+    "rpfisher",
+    "duncanmmacleod",
+    "robertbruntz",
+    "rpfisher",
+    "duncanmmacleod",
+    "robertbruntz",
+    "rpfisher"
+   ]
+  },
+  "package": {
+   "name": "lscsoft-glue",
+   "version": "2.0.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "c_compiler_stub",
+    "c_compiler_stub"
+   ],
+   "host": [
+    "pip",
+    "python",
+    "setuptools",
+    "pip",
+    "python",
+    "setuptools",
+    "pip",
+    "python",
+    "setuptools"
+   ],
+   "run": [
+    "ligo-segments",
+    "numpy",
+    "pyopenssl",
+    "python",
+    "python-pegasus-wms 4",
+    "six",
+    "ligo-segments",
+    "numpy",
+    "pyopenssl",
+    "python",
+    "python-pegasus-wms 4",
+    "six",
+    "ligo-segments",
+    "numpy",
+    "pyopenssl",
+    "python",
+    "python-pegasus-wms 4",
+    "six"
+   ]
+  },
+  "source": {
+   "patches": [
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch"
+   ],
+   "sha256": "9bdfaebe4c921d83d1e3d1ca24379a644665e9d7530e7070665f387767c66923",
+   "url": "https://pypi.io/packages/source/l/lscsoft-glue/lscsoft-glue-2.0.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments"
+   ],
+   "imports": [
+    "glue",
+    "glue.gpstime",
+    "glue.iterutils",
+    "glue.lal",
+    "glue.ligolw",
+    "glue.ligolw.ilwd",
+    "glue.ligolw.tokenizer",
+    "glue.pipeline",
+    "glue.text_progress_bar",
+    "glue.utils",
+    "glue.workflow",
+    "glue",
+    "glue.gpstime",
+    "glue.iterutils",
+    "glue.lal",
+    "glue.ligolw",
+    "glue.ligolw.ilwd",
+    "glue.ligolw.tokenizer",
+    "glue.pipeline",
+    "glue.text_progress_bar",
+    "glue.utils",
+    "glue.workflow",
+    "glue",
+    "glue.gpstime",
+    "glue.iterutils",
+    "glue.lal",
+    "glue.ligolw",
+    "glue.ligolw.ilwd",
+    "glue.ligolw.tokenizer",
+    "glue.pipeline",
+    "glue.text_progress_bar",
+    "glue.utils",
+    "glue.workflow"
+   ],
+   "requires": [
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip"
+   ],
+   "source_files": [
+    "test/",
+    "test/",
+    "test/"
+   ]
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "pip",
+    "python",
+    "setuptools"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "ligo-segments",
+    "numpy",
+    "pyopenssl",
+    "python",
+    "python-pegasus-wms",
+    "six"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "make",
+    "matplotlib-base",
+    "pip"
+   ]
+  }
+ },
+ "linux_ppc64le_meta_yaml": {
+  "about": {
+   "description": "Glue is a collection of utilities for running data analysis pipelines\nfor online and offline analysis as well as accessing various grid\nutilities.  It also provides the infrastructure for the segment\ndatabase.\n",
+   "doc_url": "https://lscsoft.docs.ligo.org/glue/",
+   "home": "https://git.ligo.org/lscsoft/glue.git",
+   "license": "GPL-3.0-or-later",
+   "license_family": "GPL",
+   "license_file": "LICENSE",
+   "summary": "Grid LSC User Engine"
+  },
+  "build": {
+   "ignore_run_exports": null,
+   "number": "4"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "duncanmmacleod",
+    "robertbruntz",
+    "rpfisher",
+    "duncanmmacleod",
+    "robertbruntz",
+    "rpfisher",
+    "duncanmmacleod",
+    "robertbruntz",
+    "rpfisher"
+   ]
+  },
+  "package": {
+   "name": "lscsoft-glue",
+   "version": "2.0.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "c_compiler_stub",
+    "c_compiler_stub"
+   ],
+   "host": [
+    "pip",
+    "python",
+    "setuptools",
+    "pip",
+    "python",
+    "setuptools",
+    "pip",
+    "python",
+    "setuptools"
+   ],
+   "run": [
+    "ligo-segments",
+    "numpy",
+    "pyopenssl",
+    "python",
+    "python-pegasus-wms 4",
+    "six",
+    "ligo-segments",
+    "numpy",
+    "pyopenssl",
+    "python",
+    "python-pegasus-wms 4",
+    "six",
+    "ligo-segments",
+    "numpy",
+    "pyopenssl",
+    "python",
+    "python-pegasus-wms 4",
+    "six"
+   ]
+  },
+  "source": {
+   "patches": [
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch"
+   ],
+   "sha256": "9bdfaebe4c921d83d1e3d1ca24379a644665e9d7530e7070665f387767c66923",
+   "url": "https://pypi.io/packages/source/l/lscsoft-glue/lscsoft-glue-2.0.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments"
+   ],
+   "imports": [
+    "glue",
+    "glue.gpstime",
+    "glue.iterutils",
+    "glue.lal",
+    "glue.ligolw",
+    "glue.ligolw.ilwd",
+    "glue.ligolw.tokenizer",
+    "glue.pipeline",
+    "glue.text_progress_bar",
+    "glue.utils",
+    "glue.workflow",
+    "glue",
+    "glue.gpstime",
+    "glue.iterutils",
+    "glue.lal",
+    "glue.ligolw",
+    "glue.ligolw.ilwd",
+    "glue.ligolw.tokenizer",
+    "glue.pipeline",
+    "glue.text_progress_bar",
+    "glue.utils",
+    "glue.workflow",
+    "glue",
+    "glue.gpstime",
+    "glue.iterutils",
+    "glue.lal",
+    "glue.ligolw",
+    "glue.ligolw.ilwd",
+    "glue.ligolw.tokenizer",
+    "glue.pipeline",
+    "glue.text_progress_bar",
+    "glue.utils",
+    "glue.workflow"
+   ],
+   "requires": [
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip"
+   ],
+   "source_files": [
+    "test/",
+    "test/",
+    "test/"
+   ]
+  }
+ },
+ "linux_ppc64le_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "pip",
+    "python",
+    "setuptools"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "ligo-segments",
+    "numpy",
+    "pyopenssl",
+    "python",
+    "python-pegasus-wms",
+    "six"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "make",
+    "matplotlib-base",
+    "pip"
+   ]
   }
  },
  "meta_yaml": {
   "about": {
    "description": "Glue is a collection of utilities for running data analysis pipelines\nfor online and offline analysis as well as accessing various grid\nutilities.  It also provides the infrastructure for the segment\ndatabase.\n",
-   "home": "https://git.ligo.org/lscsoft/lscsoft-glue",
-   "license": "GPLv3",
+   "doc_url": "https://lscsoft.docs.ligo.org/glue/",
+   "home": "https://git.ligo.org/lscsoft/glue.git",
+   "license": "GPL-3.0-or-later",
    "license_family": "GPL",
    "license_file": "LICENSE",
    "summary": "Grid LSC User Engine"
   },
   "build": {
    "ignore_run_exports": [
-    "m2w64-gcc-libs",
     "m2w64-gcc-libs",
     "m2w64-gcc-libs",
     "m2w64-gcc-libs"
@@ -504,32 +887,55 @@
   "extra": {
    "recipe-maintainers": [
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
+    "rpfisher",
+    "duncanmmacleod",
+    "robertbruntz",
+    "rpfisher",
+    "duncanmmacleod",
+    "robertbruntz",
+    "rpfisher",
+    "duncanmmacleod",
+    "robertbruntz",
     "rpfisher"
    ]
   },
@@ -549,7 +955,10 @@
     "c_compiler_stub",
     "c_compiler_stub",
     "c_compiler_stub",
-    "m2w64_c_compiler_stub",
+    "c_compiler_stub",
+    "c_compiler_stub",
+    "c_compiler_stub",
+    "c_compiler_stub",
     "m2w64_c_compiler_stub",
     "m2w64_c_compiler_stub",
     "m2w64_c_compiler_stub"
@@ -585,7 +994,15 @@
     "pip",
     "python",
     "setuptools",
-    "libpython",
+    "pip",
+    "python",
+    "setuptools",
+    "pip",
+    "python",
+    "setuptools",
+    "pip",
+    "python",
+    "setuptools",
     "pip",
     "python",
     "setuptools",
@@ -686,16 +1103,84 @@
     "pyopenssl",
     "python",
     "python-pegasus-wms 4",
+    "six",
+    "ligo-segments",
+    "numpy",
+    "pyopenssl",
+    "python",
+    "python-pegasus-wms 4",
+    "six",
+    "ligo-segments",
+    "numpy",
+    "pyopenssl",
+    "python",
+    "python-pegasus-wms 4",
+    "six",
+    "ligo-segments",
+    "numpy",
+    "pyopenssl",
+    "python",
+    "python-pegasus-wms 4",
     "six"
    ]
   },
   "source": {
-   "fn": "lscsoft-glue-2.0.0.tar.gz",
+   "patches": [
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch"
+   ],
    "sha256": "9bdfaebe4c921d83d1e3d1ca24379a644665e9d7530e7070665f387767c66923",
    "url": "https://pypi.io/packages/source/l/lscsoft-glue/lscsoft-glue-2.0.0.tar.gz"
   },
   "test": {
-   "commands": null,
+   "commands": [
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "python -m pip check",
+    "python -m pip check"
+   ],
    "imports": [
     "glue",
     "glue.gpstime",
@@ -850,8 +1335,89 @@
     "glue.pipeline",
     "glue.text_progress_bar",
     "glue.utils",
+    "glue.workflow",
+    "glue",
+    "glue.gpstime",
+    "glue.iterutils",
+    "glue.lal",
+    "glue.ligolw",
+    "glue.ligolw.ilwd",
+    "glue.ligolw.tokenizer",
+    "glue.pipeline",
+    "glue.text_progress_bar",
+    "glue.utils",
+    "glue.workflow",
+    "glue",
+    "glue.gpstime",
+    "glue.iterutils",
+    "glue.lal",
+    "glue.ligolw",
+    "glue.ligolw.ilwd",
+    "glue.ligolw.tokenizer",
+    "glue.pipeline",
+    "glue.text_progress_bar",
+    "glue.utils",
+    "glue.workflow",
+    "glue",
+    "glue.gpstime",
+    "glue.iterutils",
+    "glue.lal",
+    "glue.ligolw",
+    "glue.ligolw.ilwd",
+    "glue.ligolw.tokenizer",
+    "glue.pipeline",
+    "glue.text_progress_bar",
+    "glue.utils",
     "glue.workflow"
-   ]
+   ],
+   "requires": [
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "pip",
+    "pip",
+    "pip"
+   ],
+   "source_files": null
   }
  },
  "name": "lscsoft-glue",
@@ -859,8 +1425,9 @@
  "osx_64_meta_yaml": {
   "about": {
    "description": "Glue is a collection of utilities for running data analysis pipelines\nfor online and offline analysis as well as accessing various grid\nutilities.  It also provides the infrastructure for the segment\ndatabase.\n",
-   "home": "https://git.ligo.org/lscsoft/lscsoft-glue",
-   "license": "GPLv3",
+   "doc_url": "https://lscsoft.docs.ligo.org/glue/",
+   "home": "https://git.ligo.org/lscsoft/glue.git",
+   "license": "GPL-3.0-or-later",
    "license_family": "GPL",
    "license_file": "LICENSE",
    "summary": "Grid LSC User Engine"
@@ -872,12 +1439,13 @@
   "extra": {
    "recipe-maintainers": [
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
-    "rpfisher",
-    "duncanmmacleod",
+    "robertbruntz",
     "rpfisher"
    ]
   },
@@ -887,7 +1455,6 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub",
     "c_compiler_stub",
     "c_compiler_stub",
     "c_compiler_stub"
@@ -901,18 +1468,9 @@
     "setuptools",
     "pip",
     "python",
-    "setuptools",
-    "pip",
-    "python",
     "setuptools"
    ],
    "run": [
-    "ligo-segments",
-    "numpy",
-    "pyopenssl",
-    "python",
-    "python-pegasus-wms 4",
-    "six",
     "ligo-segments",
     "numpy",
     "pyopenssl",
@@ -934,12 +1492,23 @@
    ]
   },
   "source": {
-   "fn": "lscsoft-glue-2.0.0.tar.gz",
+   "patches": [
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch"
+   ],
    "sha256": "9bdfaebe4c921d83d1e3d1ca24379a644665e9d7530e7070665f387767c66923",
    "url": "https://pypi.io/packages/source/l/lscsoft-glue/lscsoft-glue-2.0.0.tar.gz"
   },
   "test": {
-   "commands": null,
+   "commands": [
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments"
+   ],
    "imports": [
     "glue",
     "glue.gpstime",
@@ -973,18 +1542,23 @@
     "glue.pipeline",
     "glue.text_progress_bar",
     "glue.utils",
-    "glue.workflow",
-    "glue",
-    "glue.gpstime",
-    "glue.iterutils",
-    "glue.lal",
-    "glue.ligolw",
-    "glue.ligolw.ilwd",
-    "glue.ligolw.tokenizer",
-    "glue.pipeline",
-    "glue.text_progress_bar",
-    "glue.utils",
     "glue.workflow"
+   ],
+   "requires": [
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip"
+   ],
+   "source_files": [
+    "test/",
+    "test/",
+    "test/"
    ]
   }
  },
@@ -1016,14 +1590,19 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "make",
+    "matplotlib-base",
+    "pip"
+   ]
   }
  },
  "osx_arm64_meta_yaml": {
   "about": {
    "description": "Glue is a collection of utilities for running data analysis pipelines\nfor online and offline analysis as well as accessing various grid\nutilities.  It also provides the infrastructure for the segment\ndatabase.\n",
-   "home": "https://git.ligo.org/lscsoft/lscsoft-glue",
-   "license": "GPLv3",
+   "doc_url": "https://lscsoft.docs.ligo.org/glue/",
+   "home": "https://git.ligo.org/lscsoft/glue.git",
+   "license": "GPL-3.0-or-later",
    "license_family": "GPL",
    "license_file": "LICENSE",
    "summary": "Grid LSC User Engine"
@@ -1035,8 +1614,10 @@
   "extra": {
    "recipe-maintainers": [
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher"
    ]
   },
@@ -1073,12 +1654,20 @@
    ]
   },
   "source": {
-   "fn": "lscsoft-glue-2.0.0.tar.gz",
+   "patches": [
+    "no-git_version.patch",
+    "no-git_version.patch"
+   ],
    "sha256": "9bdfaebe4c921d83d1e3d1ca24379a644665e9d7530e7070665f387767c66923",
    "url": "https://pypi.io/packages/source/l/lscsoft-glue/lscsoft-glue-2.0.0.tar.gz"
   },
   "test": {
-   "commands": null,
+   "commands": [
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments",
+    "python -m pip check",
+    "make -C test/ -j2 check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments"
+   ],
    "imports": [
     "glue",
     "glue.gpstime",
@@ -1102,6 +1691,18 @@
     "glue.text_progress_bar",
     "glue.utils",
     "glue.workflow"
+   ],
+   "requires": [
+    "make",
+    "matplotlib-base",
+    "pip",
+    "make",
+    "matplotlib-base",
+    "pip"
+   ],
+   "source_files": [
+    "test/",
+    "test/"
    ]
   }
  },
@@ -1133,7 +1734,11 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "make",
+    "matplotlib-base",
+    "pip"
+   ]
   }
  },
  "outputs_names": {
@@ -1142,8 +1747,8 @@
    "lscsoft-glue"
   ]
  },
- "pinning_version": "2021.10.18.15.47.12",
- "raw_meta_yaml": "{% set name = \"lscsoft-glue\" %}\n{% set version = \"2.0.0\" %}\n{% set sha256 = \"9bdfaebe4c921d83d1e3d1ca24379a644665e9d7530e7070665f387767c66923\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 4\n  ignore_run_exports:\n    - m2w64-gcc-libs  # [win]\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - {{ compiler('c') }}  # [unix]\n    - {{ compiler('m2w64_c') }}  # [win]\n  host:\n    - libpython  # [win]\n    - pip\n    - python\n    - setuptools\n  run:\n    - ligo-segments\n    - numpy\n    - pyopenssl\n    - python\n    - python-pegasus-wms 4\n    - six\n\ntest:\n  imports:\n    - glue\n    - glue.gpstime\n    - glue.iterutils\n    - glue.lal\n    - glue.ligolw\n    - glue.ligolw.ilwd\n    - glue.ligolw.tokenizer\n    - glue.pipeline\n    - glue.text_progress_bar\n    - glue.utils\n    - glue.workflow\n  commands:\n    # check links\n\nabout:\n  home: https://git.ligo.org/lscsoft/{{ name }}\n  license: GPLv3\n  license_family: GPL\n  license_file: LICENSE\n  summary: Grid LSC User Engine\n  description: |\n    Glue is a collection of utilities for running data analysis pipelines\n    for online and offline analysis as well as accessing various grid\n    utilities.  It also provides the infrastructure for the segment\n    database.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - rpfisher\n",
+ "pinning_version": "2021.10.19.00.27.40",
+ "raw_meta_yaml": "{% set name = \"lscsoft-glue\" %}\n{% set version = \"2.0.0\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 9bdfaebe4c921d83d1e3d1ca24379a644665e9d7530e7070665f387767c66923\n  patches:\n    # don't attempt to generate git_version.py, we have one\n    - no-git_version.patch\n\nbuild:\n  number: 4\n  ignore_run_exports:\n    - m2w64-gcc-libs  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [unix]\n    - {{ compiler('m2w64_c') }}  # [win]\n    # extras for cross compilation\n    - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n    - python                              # [build_platform != target_platform]\n  host:\n    - libpython  # [win]\n    - pip\n    - python\n    - setuptools\n  run:\n    - ligo-segments\n    - numpy\n    - pyopenssl\n    - python\n    - python-pegasus-wms 4\n    - six\n\ntest:\n  requires:\n    - make  # [not win]\n    - matplotlib-base  # [not win]\n    - pip\n  source_files:\n    - test/  # [not win]\n  imports:\n    - glue\n    - glue.gpstime\n    - glue.iterutils\n    - glue.lal\n    - glue.ligolw\n    - glue.ligolw.ilwd\n    - glue.ligolw.tokenizer\n    - glue.pipeline\n    - glue.text_progress_bar\n    - glue.utils\n    - glue.workflow\n  commands:\n    # check requirements\n    - python -m pip check\n    # attempt to run some tests\n    - make -C test/ -j{{ CPU_COUNT }} check -o lal_verify -o ligolw_test01 -o test_ligolw_lsctables -o test_ligolw_table -o test_ligolw_utils_segments  # [not win]\n\nabout:\n  home: https://git.ligo.org/lscsoft/glue.git\n  doc_url: https://lscsoft.docs.ligo.org/glue/\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: Grid LSC User Engine\n  description: |\n    Glue is a collection of utilities for running data analysis pipelines\n    for online and offline analysis as well as accessing various grid\n    utilities.  It also provides the infrastructure for the segment\n    database.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - robertbruntz\n    - rpfisher\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1192,7 +1797,11 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "make",
+    "matplotlib-base",
+    "pip"
+   ]
   }
  },
  "smithy_version": "3.12",
@@ -1227,7 +1836,11 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "make",
+    "matplotlib-base",
+    "pip"
+   ]
   }
  },
  "url": "https://pypi.io/packages/source/l/lscsoft-glue/lscsoft-glue-2.0.0.tar.gz",
@@ -1235,15 +1848,15 @@
  "win_64_meta_yaml": {
   "about": {
    "description": "Glue is a collection of utilities for running data analysis pipelines\nfor online and offline analysis as well as accessing various grid\nutilities.  It also provides the infrastructure for the segment\ndatabase.\n",
-   "home": "https://git.ligo.org/lscsoft/lscsoft-glue",
-   "license": "GPLv3",
+   "doc_url": "https://lscsoft.docs.ligo.org/glue/",
+   "home": "https://git.ligo.org/lscsoft/glue.git",
+   "license": "GPL-3.0-or-later",
    "license_family": "GPL",
    "license_file": "LICENSE",
    "summary": "Grid LSC User Engine"
   },
   "build": {
    "ignore_run_exports": [
-    "m2w64-gcc-libs",
     "m2w64-gcc-libs",
     "m2w64-gcc-libs",
     "m2w64-gcc-libs"
@@ -1253,12 +1866,13 @@
   "extra": {
    "recipe-maintainers": [
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
+    "robertbruntz",
     "rpfisher",
     "duncanmmacleod",
-    "rpfisher",
-    "duncanmmacleod",
+    "robertbruntz",
     "rpfisher"
    ]
   },
@@ -1270,14 +1884,9 @@
    "build": [
     "m2w64_c_compiler_stub",
     "m2w64_c_compiler_stub",
-    "m2w64_c_compiler_stub",
     "m2w64_c_compiler_stub"
    ],
    "host": [
-    "libpython",
-    "pip",
-    "python",
-    "setuptools",
     "libpython",
     "pip",
     "python",
@@ -1309,22 +1918,24 @@
     "pyopenssl",
     "python",
     "python-pegasus-wms 4",
-    "six",
-    "ligo-segments",
-    "numpy",
-    "pyopenssl",
-    "python",
-    "python-pegasus-wms 4",
     "six"
    ]
   },
   "source": {
-   "fn": "lscsoft-glue-2.0.0.tar.gz",
+   "patches": [
+    "no-git_version.patch",
+    "no-git_version.patch",
+    "no-git_version.patch"
+   ],
    "sha256": "9bdfaebe4c921d83d1e3d1ca24379a644665e9d7530e7070665f387767c66923",
    "url": "https://pypi.io/packages/source/l/lscsoft-glue/lscsoft-glue-2.0.0.tar.gz"
   },
   "test": {
-   "commands": null,
+   "commands": [
+    "python -m pip check",
+    "python -m pip check",
+    "python -m pip check"
+   ],
    "imports": [
     "glue",
     "glue.gpstime",
@@ -1358,19 +1969,14 @@
     "glue.pipeline",
     "glue.text_progress_bar",
     "glue.utils",
-    "glue.workflow",
-    "glue",
-    "glue.gpstime",
-    "glue.iterutils",
-    "glue.lal",
-    "glue.ligolw",
-    "glue.ligolw.ilwd",
-    "glue.ligolw.tokenizer",
-    "glue.pipeline",
-    "glue.text_progress_bar",
-    "glue.utils",
     "glue.workflow"
-   ]
+   ],
+   "requires": [
+    "pip",
+    "pip",
+    "pip"
+   ],
+   "source_files": null
   }
  },
  "win_64_requirements": {
@@ -1402,7 +2008,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  }
 }
