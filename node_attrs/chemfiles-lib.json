@@ -199,6 +199,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/762559551.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.10.2"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -404,10 +421,11 @@
   }
  },
  "name": "chemfiles-lib",
- "new_version": "0.10.1",
+ "new_version": "0.10.2",
  "new_version_attempts": {
   "0.10.0": 1,
-  "0.10.1": 1
+  "0.10.1": 1,
+  "0.10.2": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -507,7 +525,7 @@
    "chemfiles-lib"
   ]
  },
- "pinning_version": "2021.08.31.17.13.10",
+ "pinning_version": "2021.10.20.11.00.47",
  "raw_meta_yaml": "# Chemfiles version and SHA256\n{% set version = \"0.10.1\" %}\n{% set prerelease = \"\" %}\n{% set sha256 = \"a1bbc26d8e8c33f52a157df4aece0c07e126a986f29231c4fdcb9a55292dc5b0\" %}\n\n# Chemfiles test data git version and SHA256\n{% set data_git = \"2db410d1f7651776e142676d26ec0d2cccd7b3cd\" %}\n{% set data_sha256 = \"8be5dc48c31a193d93ffe9fc7d0a785fc912427739b94dfee658827c497a7d53\" %}\n\npackage:\n  name: chemfiles-lib\n  version: {{ version }}{{ prerelease | list | reject(\"equalto\", \"-\") | join }}\n\nsource:\n  - fn: chemfiles-{{ version }}{{ prerelease }}.tar.gz\n    url: https://github.com/chemfiles/chemfiles/archive/{{ version }}{{ prerelease }}.tar.gz\n    sha256: {{ sha256 }}\n  - url: https://github.com/chemfiles/tests-data/archive/{{ data_git }}.tar.gz\n    sha256: {{ data_sha256 }}\n    folder: tests/data\n\n{% set CMAKE_INSTALL_PREFIX = \"-DCMAKE_INSTALL_PREFIX=$PREFIX\" %}  # [not win]\n{% set CMAKE_INSTALL_PREFIX = \"-DCMAKE_INSTALL_PREFIX=%PREFIX%/Library\" %}  # [win]\n\n{% set CMAKE_COMPILERS = \"\" %}  # [not win]\n{% set CMAKE_COMPILERS = \"-DCMAKE_C_COMPILER=cl.exe -DCMAKE_CXX_COMPILER=cl.exe\" %}  # [win]\n\n{% set EXTRA_FLAGS = \"\" %}  # [not win]\n# Remove -GL from CXXFLAGS as this takes too much time and memory\n{% set EXTRA_FLAGS = \"-DCMAKE_CXX_FLAGS=-MD -DCMAKE_C_FLAGS=-MD\" %}  # [win]\n\n{% set CHFL_CONFIG = \"-DCHFL_SYSTEM_NETCDF=ON -DCHFL_SYSTEM_LZMA=ON -DCHFL_SYSTEM_BZIP2=ON\" %}\n{% set CMAKE_CONFIG = \"-DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON\" %}\n\n{% set TESTS_PATH = \"export DYLD_FALLBACK_LIBRARY_PATH=$(dirname $CLANG)/../lib\" %}  # [osx]\n{% set TESTS_PATH = \"\" %}  # [not osx]\n\nbuild:\n  skip: true  # [win and vc<14]\n  number: 1\n  script: |\n    cmake -G Ninja {{ CMAKE_COMPILERS }} {{ EXTRA_FLAGS }} {{ CMAKE_CONFIG }} {{ CHFL_CONFIG }} {{ CMAKE_INSTALL_PREFIX }} .\n    cmake  .\n    cmake --build . --config Release --target install\n\n    # Build and run the tests\n    cmake -E touch tests/data/{{ data_git }}\n    cmake -DCHFL_BUILD_TESTS=ON -DCHFL_BUILD_DOCTESTS=OFF .\n    cmake --build . --config Release\n\n    {{ TESTS_PATH }}\n    ctest --output-on-failure -C Release\n\nrequirements:\n  build:\n    - cmake\n    - ninja\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - libnetcdf\n    - bzip2\n    - xz\n  run:\n    - libcxx >=8  # [osx]\n    - libnetcdf >=4.7.4\n    - bzip2\n    - xz\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libchemfiles$SHLIB_EXT  # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\chemfiles.dll exit 1  # [win]\n\nabout:\n  home: https://chemfiles.org\n  license: BSD-3-Clause\n  license_file: LICENSE\n  summary: Modern library for chemistry file reading and writing\n  doc_url: https://chemfiles.org/chemfiles/{{ version }}/\n  dev_url: https://github.com/chemfiles/chemfiles\n\nextra:\n  recipe-maintainers:\n    - luthaf\n",
  "req": {
   "__set__": true,
