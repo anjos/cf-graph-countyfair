@@ -153,6 +153,25 @@
     "__lazy_json__": "pr_json/741046819.json"
    },
    "data": {
+    "bot_rerun": 1634889142.6494095,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "openssl3"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/763980405.json"
+   },
+   "data": {
     "bot_rerun": false,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
@@ -980,7 +999,7 @@
    "pypy3.8"
   ]
  },
- "pinning_version": "2021.09.22.17.56.27",
+ "pinning_version": "2021.10.21.11.39.39",
  "raw_meta_yaml": "{% if name_suffix is not defined %}\n{% set name_suffix = \"3.7\" %}\n{% endif %}\n{% set name = \"pypy\" ~ name_suffix %}\n{% set version = \"7.3.6\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://downloads.python.org/pypy/{{ name }}-v{{ version }}-src.tar.bz2\n    sha256: 9252ccaa130094205b3c7f0a2cad5adc0d9dfba31658ff3172f788dec1fdb348  # [name_suffix == \"3.7\"]\n    sha256: f234c56eb0d4ab0afb196232fb38cd1ca8e19b1c65cf7b65eb691695499be259  # [name_suffix == \"3.8\"]\n    folder: pypy3\n    patches:\n      - patches/fficurses.patch\n      - patches/tklib_build.patch\n      - patches/tk_app.patch      # [win]\n      - patches/lzma_build.patch  # [win]\n      - patches/clibffi.patch     # [osx]\n      - patches/darwin.patch      # [osx]\n      - patches/site-and-sysconfig-conda.patch    # [win and name_suffix == \"3.7\"]\n      - patches/distutils-install.patch           # [win and name_suffix == \"3.7\"]\n      - patches/distutils-sysconfig-get_python_lib.patch  # [win and name_suffix == \"3.7\"]\n      - patches/0001-Add-conda-forge-version.patch\n      - patches/0018-Disable-copying-dlls.patch  # [name_suffix == \"3.7\"]\n      - patches/0019-Disable-copying-dlls.patch  # [name_suffix == \"3.8\"]\n      - patches/0021-Adapt-platform-to-patch-0001.patch\n      - patches/0022-Fix-LIBDIR.patch  # [name_suffix == \"3.7\"]\n      - patches/0023-Fix-LIBDIR.patch  # [name_suffix == \"3.8\"]\n      # Patches by @mingwandroid from python-feedstock\n      - patches/0009-runtime_library_dir_option-Use-1st-word-of-CC-as-com.patch\n      - patches/0012-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch\n      - patches/0013-Disable-new-dtags-in-unixccompiler.py.patch\n      - patches/0020-Use-ranlib-from-env-if-env-variable-is-set.patch\n      - patches/0024-Fix-LDSHARED-when-CC-is-overriden-on-Linux-too.patch  # [name_suffix == \"3.8\"]\n      # Patches to be removed for PyPy7.3.7\n      - patches/pre-7.3.7-001-Use-libffi-8.patch\n      - patches/pre-7.3.7-002-Fix-sysconfigdata.patch  # [name_suffix == \"3.8\"]\n\n  - url: https://downloads.python.org/pypy/pypy2.7-v7.3.6-win64.zip           # [win]\n    sha256: fcc8f6b3b472a77eaa754951f288fe234b4953bfba845888dd839b9b862cb891  # [win]\n    folder: pypy2-binary                                                      # [win]\n\nbuild:\n  number: 0\n  skip_compile_pyc:\n    - lib*\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - python >=2.7,<3   # [not win]\n    - pkg-config        # [unix]\n    - pycparser\n  host:\n    - bzip2\n    - expat\n    - gdbm     # [not win]\n    - jom ==1.1.2  # [win]\n    - libffi\n    - ncurses  # [not win]\n    - openssl\n    - sqlite\n    - tk\n    - xorg-libx11  # [linux]\n    - xz\n    - zlib\n  run:\n    - bzip2\n    - expat\n    - gdbm     # [not win]\n    - libffi\n    - ncurses  # [not win]\n    - openssl\n    - sqlite\n    - tk\n    - xz\n    - zlib\n  run_constrained:\n    - pypy3.5 ==99999999999\n    - pypy3.6 ==99999999999\n    - pypy3.7 ==99999999999  # [name_suffix==\"3.8\"]\n    - pypy3.8 ==99999999999  # [name_suffix==\"3.7\"]\n    - python {{ name_suffix }}.* *_{{ \"\".join(version.split(\".\")[:2]) }}_pypy\n\ntest:\n  commands:\n    - pypy3 --help\n    - pypy3 -c \"import platform; print(platform._sys_version())\"\n    - test -f $PREFIX/lib-python/3/lib2to3/Grammar{{ name_suffix }}*.pickle                      # [unix and name_suffix==\"3.7\"]\n    - test -f $PREFIX/lib-python/3/lib2to3/PatternGrammar{{ name_suffix }}*.pickle               # [unix and name_suffix==\"3.7\"]\n    - test -f $PREFIX/lib/pypy3.8/lib2to3/Grammar{{ name_suffix }}*.pickle                       # [unix and name_suffix==\"3.8\"]\n    - test -f $PREFIX/lib/pypy3.8/lib2to3/PatternGrammar{{ name_suffix }}*.pickle                # [unix and name_suffix==\"3.8\"]\n    - if not exist %PREFIX%\\lib-python\\3\\lib2to3\\Grammar{{ name_suffix }}*.pickle exit 1         # [win]\n    - if not exist %PREFIX%\\lib-python\\3\\lib2to3\\PatternGrammar{{ name_suffix }}*.pickle exit 1  # [win]\n\nabout:\n    home: http://pypy.org/\n    license: MIT\n    license_family: MIT\n    license_file: pypy3/LICENSE\n    summary: >\n        PyPy is a Python interpreter and just-in-time compiler. See\n        https://conda-forge.org/blog/posts/2020-03-10-pypy for more information\n        about using PyPy in conda\n\nextra:\n  recipe-maintainers:\n    - omerbenamram\n    - ohadravid\n    - isuruf\n    - ocefpaf\n    - mattip\n",
  "req": {
   "__set__": true,
@@ -1052,7 +1071,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.12",
+ "smithy_version": "3.13.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
