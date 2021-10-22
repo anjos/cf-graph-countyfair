@@ -1,4 +1,23 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/764259174.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "branch": "main",
@@ -243,6 +262,7 @@
    "gds-lsmp"
   ]
  },
+ "pinning_version": "2021.10.22.11.06.24",
  "raw_meta_yaml": "{% set name = \"gds-lsmp\" %}\n{% set version = \"2.19.7\" %}\n\n# dependencies\n{% set gds_base_version = \"2.19.5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://software.igwn.org/sources/source/{{ name }}-{{ version }}.tar.gz\n  sha256: e9475a5c7d710315e503cbf927731b505475d021fb98e317d184ac97fd139ce3\n  patches:\n    # hack the build to make it think we're using macports\n    # see https://git.ligo.org/gds/gds/-/issues/69\n    - macos-building_macports.patch  # [osx]\n\nbuild:\n  number: 0\n  run_exports:\n    - {{ pin_subpackage(\"gds-lsmp\", max_pin=\"x.x\") }}\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - make\n    - pkg-config\n  host:\n    - gds-base >={{ gds_base_version }}\n  run:\n    - gds-base >={{ gds_base_version }}\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config --print-errors --exact-version {{ version }} liblsmp\n    - lsmp_mux --help  # [not osx]\n\nabout:\n  home: http://www.lsc-group.phys.uwm.edu/daswg/projects/dmt.html\n  dev_url: https://git.ligo.org/gds/gds.git\n  license: GPL-2.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: GDS package lsmp libraries\n  description: |\n    LSMP libraries required by the rest of the GDS packages\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - emaros\n",
  "req": {
   "__set__": true,
@@ -283,6 +303,7 @@
    ]
   }
  },
+ "smithy_version": "3.13.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
