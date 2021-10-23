@@ -29,12 +29,12 @@
    "summary": "Eigenvalue Solvers for Petaflop-Applications"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "elpa * mpi_openmpi_*",
     "elpa * mpi_mpich_*"
    ],
-   "string": "mpi_mpich_h1234567_0"
+   "string": "mpi_mpich_h1234567_1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -99,8 +99,11 @@
   "source": {
    "patches": [
     "fdep-perl.patch",
+    "pkgconf.patch",
     "fdep-perl.patch",
-    "fdep-perl.patch"
+    "pkgconf.patch",
+    "fdep-perl.patch",
+    "pkgconf.patch"
    ],
    "sha256": "6fd39006c38a8ffe35069ebe447819187e2cd3625521109a88512d7cd739985f",
    "url": "https://elpa.mpcdf.mpg.de/software/tarball-archive/Releases/2021.05.002/elpa-2021.05.002.tar.gz"
@@ -197,12 +200,12 @@
    "summary": "Eigenvalue Solvers for Petaflop-Applications"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "elpa * mpi_openmpi_*",
     "elpa * mpi_mpich_*"
    ],
-   "string": "mpi_mpich_h1234567_0"
+   "string": "mpi_mpich_h1234567_1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -267,8 +270,11 @@
   "source": {
    "patches": [
     "fdep-perl.patch",
+    "pkgconf.patch",
     "fdep-perl.patch",
-    "fdep-perl.patch"
+    "pkgconf.patch",
+    "fdep-perl.patch",
+    "pkgconf.patch"
    ],
    "sha256": "6fd39006c38a8ffe35069ebe447819187e2cd3625521109a88512d7cd739985f",
    "url": "https://elpa.mpcdf.mpg.de/software/tarball-archive/Releases/2021.05.002/elpa-2021.05.002.tar.gz"
@@ -308,7 +314,7 @@
    "elpa"
   ]
  },
- "raw_meta_yaml": "{% set name = \"elpa\" %}\n{% set version = \"2021.05.002\" %}\n{% set build = 0 %}\n{% set mpi = mpi or \"nompi\" %}\n\n# ELPA uses suffixes to allow parallel installation of several versions in the same prefix\n{% if mpi == \"nompi\" %}\n{% set elpa_suffix = \"_onenode\" %}\n{% else %}\n{% set elpa_suffix = \"\" %}\n{% endif %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://elpa.mpcdf.mpg.de/software/tarball-archive/Releases/{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 6fd39006c38a8ffe35069ebe447819187e2cd3625521109a88512d7cd739985f\n  patches:\n    - fdep-perl.patch\n\n{% if mpi == \"nompi\" %}\n{% set build = build + 100 %}\n{% endif %}\nbuild:\n  number: {{ build }}\n  skip: true  # [win or osx]\n\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\n  {% if mpi != \"nompi\" %}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - autoconf\n    - make\n    - perl\n  host:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  run:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - test -f $PREFIX/lib/libelpa{{ elpa_suffix }}${SHLIB_EXT}\n    - test -f $PREFIX/lib/libelpa{{ elpa_suffix }}_openmp${SHLIB_EXT}\n    - pkg-config {{ name }}{{ elpa_suffix }} --exact-version {{ version }}\n    - pkg-config {{ name }}{{ elpa_suffix }}_openmp --exact-version {{ version }}\n    - {{ name }}2_print_kernels{{ elpa_suffix }}\n    - {{ name }}2_print_kernels{{ elpa_suffix }}_openmp\n\nabout:\n  home: https://elpa.mpcdf.mpg.de/\n  doc_url: https://elpa.mpcdf.mpg.de/html/Documentation/ELPA-{{ version }}/html/\n  dev_url: https://gitlab.mpcdf.mpg.de/elpa/elpa\n  license: LGPL-3.0-only\n  license_file:\n    - LICENSE\n    - COPYING/COPYING\n    - COPYING/gpl.txt\n    - COPYING/lgpl.txt\n  summary: Eigenvalue Solvers for Petaflop-Applications\n  description: |\n    The computation of selected or all eigenvalues and eigenvectors of a symmetric\n    (Hermitian) matrix has high relevance for various scientific disciplines.\n    For the calculation of a significant part of the eigensystem typically direct\n    eigensolvers are used. For large problems, the eigensystem calculations with\n    existing solvers can become the computational bottleneck.\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
+ "raw_meta_yaml": "{% set name = \"elpa\" %}\n{% set version = \"2021.05.002\" %}\n{% set build = 1 %}\n{% set mpi = mpi or \"nompi\" %}\n\n# ELPA uses suffixes to allow parallel installation of several versions in the same prefix\n{% if mpi == \"nompi\" %}\n{% set elpa_suffix = \"_onenode\" %}\n{% else %}\n{% set elpa_suffix = \"\" %}\n{% endif %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://elpa.mpcdf.mpg.de/software/tarball-archive/Releases/{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 6fd39006c38a8ffe35069ebe447819187e2cd3625521109a88512d7cd739985f\n  patches:\n    - fdep-perl.patch\n    - pkgconf.patch\n\n{% if mpi == \"nompi\" %}\n{% set build = build + 100 %}\n{% endif %}\nbuild:\n  number: {{ build }}\n  skip: true  # [win or osx]\n\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\n  {% if mpi != \"nompi\" %}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - autoconf\n    - make\n    - perl\n  host:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  run:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - test -f $PREFIX/lib/libelpa{{ elpa_suffix }}${SHLIB_EXT}\n    - test -f $PREFIX/lib/libelpa{{ elpa_suffix }}_openmp${SHLIB_EXT}\n    - pkg-config {{ name }}{{ elpa_suffix }} --exact-version {{ version }}\n    - pkg-config {{ name }}{{ elpa_suffix }}_openmp --exact-version {{ version }}\n    - {{ name }}2_print_kernels{{ elpa_suffix }}\n    - {{ name }}2_print_kernels{{ elpa_suffix }}_openmp\n\nabout:\n  home: https://elpa.mpcdf.mpg.de/\n  doc_url: https://elpa.mpcdf.mpg.de/html/Documentation/ELPA-{{ version }}/html/\n  dev_url: https://gitlab.mpcdf.mpg.de/elpa/elpa\n  license: LGPL-3.0-only\n  license_file:\n    - LICENSE\n    - COPYING/COPYING\n    - COPYING/gpl.txt\n    - COPYING/lgpl.txt\n  summary: Eigenvalue Solvers for Petaflop-Applications\n  description: |\n    The computation of selected or all eigenvalues and eigenvectors of a symmetric\n    (Hermitian) matrix has high relevance for various scientific disciplines.\n    For the calculation of a significant part of the eigensystem typically direct\n    eigensolvers are used. For large problems, the eigensystem calculations with\n    existing solvers can become the computational bottleneck.\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
  "req": {
   "__set__": true,
   "elements": [
