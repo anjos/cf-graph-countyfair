@@ -41,6 +41,10 @@
  "conda-forge.yml": {
   "build_platform": {
    "osx_arm64": "osx_64"
+  },
+  "provider": {
+   "linux_aarch64": "default",
+   "linux_ppc64le": "default"
   }
  },
  "feedstock_name": "x265",
@@ -56,7 +60,7 @@
    "summary": "Open Source H.265/HEVC video encoder"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -71,7 +75,8 @@
    "build": [
     "cxx_compiler_stub",
     "cmake",
-    "nasm"
+    "nasm",
+    "make"
    ]
   },
   "source": {
@@ -81,8 +86,11 @@
   "test": {
    "commands": [
     "test -f ${PREFIX}/lib/libx265${SHLIB_EXT}",
+    "test -f ${PREFIX}/lib/pkgconfig/x265.pc",
     "test -f ${PREFIX}/include/x265.h",
-    "x265 --version"
+    "x265 --version",
+    "x265 --version 2>&1 | grep \"8bit\"",
+    "x265 --version 2>&1 | grep \"8bit+10bit+12bit\""
    ]
   }
  },
@@ -92,6 +100,141 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
+    "make",
+    "nasm"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "description": "x265 is a H.265 / HEVC video encoder application library, designed to encode\nvideo or images into an H.265 / HEVC encoded bitstream.\n",
+   "dev_url": "https://bitbucket.org/multicoreware/x265_git",
+   "doc_url": "https://x265.readthedocs.io/",
+   "home": "https://www.x265.org/",
+   "license": "GPL-2.0-or-later",
+   "license_file": "COPYING",
+   "summary": "Open Source H.265/HEVC video encoder"
+  },
+  "build": {
+   "number": "1"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "matthiasdiener"
+   ]
+  },
+  "package": {
+   "name": "x265",
+   "version": "3.5"
+  },
+  "requirements": {
+   "build": [
+    "cxx_compiler_stub",
+    "cmake",
+    "nasm",
+    "make"
+   ]
+  },
+  "source": {
+   "sha256": "e70a3335cacacbba0b3a20ec6fecd6783932288ebc8163ad74bcc9606477cae8",
+   "url": "https://bitbucket.org/multicoreware/x265_git/downloads/x265_3.5.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -f ${PREFIX}/lib/libx265${SHLIB_EXT}",
+    "test -f ${PREFIX}/lib/pkgconfig/x265.pc",
+    "test -f ${PREFIX}/include/x265.h",
+    "x265 --version",
+    "x265 --version 2>&1 | grep \"8bit\""
+   ]
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cmake",
+    "cxx_compiler_stub",
+    "make",
+    "nasm"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "linux_ppc64le_meta_yaml": {
+  "about": {
+   "description": "x265 is a H.265 / HEVC video encoder application library, designed to encode\nvideo or images into an H.265 / HEVC encoded bitstream.\n",
+   "dev_url": "https://bitbucket.org/multicoreware/x265_git",
+   "doc_url": "https://x265.readthedocs.io/",
+   "home": "https://www.x265.org/",
+   "license": "GPL-2.0-or-later",
+   "license_file": "COPYING",
+   "summary": "Open Source H.265/HEVC video encoder"
+  },
+  "build": {
+   "number": "1"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "matthiasdiener"
+   ]
+  },
+  "package": {
+   "name": "x265",
+   "version": "3.5"
+  },
+  "requirements": {
+   "build": [
+    "cxx_compiler_stub",
+    "cmake",
+    "nasm",
+    "make"
+   ]
+  },
+  "source": {
+   "sha256": "e70a3335cacacbba0b3a20ec6fecd6783932288ebc8163ad74bcc9606477cae8",
+   "url": "https://bitbucket.org/multicoreware/x265_git/downloads/x265_3.5.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -f ${PREFIX}/lib/libx265${SHLIB_EXT}",
+    "test -f ${PREFIX}/lib/pkgconfig/x265.pc",
+    "test -f ${PREFIX}/include/x265.h",
+    "x265 --version",
+    "x265 --version 2>&1 | grep \"8bit\""
+   ]
+  }
+ },
+ "linux_ppc64le_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cmake",
+    "cxx_compiler_stub",
+    "make",
     "nasm"
    ]
   },
@@ -119,10 +262,12 @@
    "summary": "Open Source H.265/HEVC video encoder"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "matthiasdiener",
+    "matthiasdiener",
     "matthiasdiener",
     "matthiasdiener",
     "matthiasdiener"
@@ -137,12 +282,23 @@
     "cxx_compiler_stub",
     "cmake",
     "nasm",
+    "make",
     "cxx_compiler_stub",
     "cmake",
     "nasm",
+    "make",
     "cxx_compiler_stub",
     "cmake",
-    "nasm"
+    "nasm",
+    "make",
+    "cxx_compiler_stub",
+    "cmake",
+    "nasm",
+    "make",
+    "cxx_compiler_stub",
+    "cmake",
+    "nasm",
+    "make"
    ]
   },
   "source": {
@@ -152,14 +308,33 @@
   "test": {
    "commands": [
     "test -f ${PREFIX}/lib/libx265${SHLIB_EXT}",
+    "test -f ${PREFIX}/lib/pkgconfig/x265.pc",
     "test -f ${PREFIX}/include/x265.h",
     "x265 --version",
+    "x265 --version 2>&1 | grep \"8bit\"",
+    "x265 --version 2>&1 | grep \"8bit+10bit+12bit\"",
     "test -f ${PREFIX}/lib/libx265${SHLIB_EXT}",
+    "test -f ${PREFIX}/lib/pkgconfig/x265.pc",
     "test -f ${PREFIX}/include/x265.h",
     "x265 --version",
+    "x265 --version 2>&1 | grep \"8bit\"",
     "test -f ${PREFIX}/lib/libx265${SHLIB_EXT}",
+    "test -f ${PREFIX}/lib/pkgconfig/x265.pc",
     "test -f ${PREFIX}/include/x265.h",
-    "x265 --version"
+    "x265 --version",
+    "x265 --version 2>&1 | grep \"8bit\"",
+    "test -f ${PREFIX}/lib/libx265${SHLIB_EXT}",
+    "test -f ${PREFIX}/lib/pkgconfig/x265.pc",
+    "test -f ${PREFIX}/include/x265.h",
+    "x265 --version",
+    "x265 --version 2>&1 | grep \"8bit\"",
+    "x265 --version 2>&1 | grep \"8bit+10bit+12bit\"",
+    "test -f ${PREFIX}/lib/libx265${SHLIB_EXT}",
+    "test -f ${PREFIX}/lib/pkgconfig/x265.pc",
+    "test -f ${PREFIX}/include/x265.h",
+    "x265 --version",
+    "x265 --version 2>&1 | grep \"8bit\"",
+    "x265 --version 2>&1 | grep \"8bit+10bit+12bit\""
    ]
   }
  },
@@ -175,7 +350,7 @@
    "summary": "Open Source H.265/HEVC video encoder"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -190,7 +365,8 @@
    "build": [
     "cxx_compiler_stub",
     "cmake",
-    "nasm"
+    "nasm",
+    "make"
    ]
   },
   "source": {
@@ -200,8 +376,11 @@
   "test": {
    "commands": [
     "test -f ${PREFIX}/lib/libx265${SHLIB_EXT}",
+    "test -f ${PREFIX}/lib/pkgconfig/x265.pc",
     "test -f ${PREFIX}/include/x265.h",
-    "x265 --version"
+    "x265 --version",
+    "x265 --version 2>&1 | grep \"8bit\"",
+    "x265 --version 2>&1 | grep \"8bit+10bit+12bit\""
    ]
   }
  },
@@ -211,6 +390,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
+    "make",
     "nasm"
    ]
   },
@@ -238,7 +418,7 @@
    "summary": "Open Source H.265/HEVC video encoder"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -253,7 +433,8 @@
    "build": [
     "cxx_compiler_stub",
     "cmake",
-    "nasm"
+    "nasm",
+    "make"
    ]
   },
   "source": {
@@ -263,8 +444,11 @@
   "test": {
    "commands": [
     "test -f ${PREFIX}/lib/libx265${SHLIB_EXT}",
+    "test -f ${PREFIX}/lib/pkgconfig/x265.pc",
     "test -f ${PREFIX}/include/x265.h",
-    "x265 --version"
+    "x265 --version",
+    "x265 --version 2>&1 | grep \"8bit\"",
+    "x265 --version 2>&1 | grep \"8bit+10bit+12bit\""
    ]
   }
  },
@@ -274,6 +458,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
+    "make",
     "nasm"
    ]
   },
@@ -297,12 +482,13 @@
   ]
  },
  "pinning_version": "2021.10.22.20.56.07",
- "raw_meta_yaml": "{% set name = \"x265\" %}\n{% set version = \"3.5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://bitbucket.org/multicoreware/x265_git/downloads/x265_{{ version }}.tar.gz\n  sha256: e70a3335cacacbba0b3a20ec6fecd6783932288ebc8163ad74bcc9606477cae8\n\nbuild:\n  number: 0\n  skip: True  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - nasm\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libx265${SHLIB_EXT}\n    - test -f ${PREFIX}/include/x265.h\n    - x265 --version  # [build_platform == target_platform]\n\nabout:\n  home: https://www.x265.org/\n  license: GPL-2.0-or-later\n  license_file: COPYING\n  summary: 'Open Source H.265/HEVC video encoder'\n  description: |\n    x265 is a H.265 / HEVC video encoder application library, designed to encode\n    video or images into an H.265 / HEVC encoded bitstream.\n  dev_url: https://bitbucket.org/multicoreware/x265_git\n  doc_url: https://x265.readthedocs.io/\n\nextra:\n  recipe-maintainers:\n    - matthiasdiener\n",
+ "raw_meta_yaml": "{% set name = \"x265\" %}\n{% set version = \"3.5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://bitbucket.org/multicoreware/x265_git/downloads/x265_{{ version }}.tar.gz\n  sha256: e70a3335cacacbba0b3a20ec6fecd6783932288ebc8163ad74bcc9606477cae8\n\nbuild:\n  number: 1\n  skip: True  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - nasm\n    - make\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libx265${SHLIB_EXT}\n    - test -f ${PREFIX}/lib/pkgconfig/x265.pc\n    - test -f ${PREFIX}/include/x265.h\n    - x265 --version  # [build_platform == target_platform]\n    - x265 --version 2>&1 | grep \"8bit\"  # [build_platform == target_platform]\n    - x265 --version 2>&1 | grep \"8bit+10bit+12bit\"  # [build_platform == target_platform and (x86_64 or arm64)]\n\nabout:\n  home: https://www.x265.org/\n  license: GPL-2.0-or-later\n  license_file: COPYING\n  summary: 'Open Source H.265/HEVC video encoder'\n  description: |\n    x265 is a H.265 / HEVC video encoder application library, designed to encode\n    video or images into an H.265 / HEVC encoded bitstream.\n  dev_url: https://bitbucket.org/multicoreware/x265_git\n  doc_url: https://x265.readthedocs.io/\n\nextra:\n  recipe-maintainers:\n    - matthiasdiener\n",
  "req": {
   "__set__": true,
   "elements": [
    "cmake",
    "cxx_compiler_stub",
+   "make",
    "nasm"
   ]
  },
@@ -312,6 +498,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
+    "make",
     "nasm"
    ]
   },
@@ -340,6 +527,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
+    "make",
     "nasm"
    ]
   },
