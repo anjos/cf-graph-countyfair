@@ -134,7 +134,7 @@
     "__lazy_json__": "pr_json/765713293.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1635200109.3425956,
     "migrator_name": "ArchRebuild",
     "migrator_version": 1,
     "name": "aarch64 and ppc64le addition"
@@ -162,12 +162,35 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "head": {
+     "ref": "<this_is_not_a_branch>"
+    },
+    "state": "closed"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
  "bad": false,
  "branch": "main",
  "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default",
@@ -489,11 +512,15 @@
     "ceres-solver",
     "eigen",
     "ceres-solver",
+    "eigen",
+    "ceres-solver",
     "eigen"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "jschueller",
+    "seanyen",
     "jschueller",
     "seanyen",
     "jschueller",
@@ -531,9 +558,21 @@
     "cmake",
     "c_compiler_stub",
     "cxx_compiler_stub",
+    "make",
+    "cmake",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
     "make"
    ],
    "host": [
+    "glog",
+    "gflags",
+    "libblas",
+    "libcblas",
+    "liblapack",
+    "suitesparse",
+    "tbb",
+    "eigen",
     "glog",
     "gflags",
     "libblas",
@@ -600,6 +639,11 @@
     "gflags",
     "suitesparse",
     "tbb",
+    "eigen",
+    "glog",
+    "gflags",
+    "suitesparse",
+    "tbb",
     "eigen"
    ]
   },
@@ -609,6 +653,8 @@
   },
   "test": {
    "commands": [
+    "test -f ${PREFIX}/include/ceres/ceres.h",
+    "test -f ${PREFIX}/lib/libceres${SHLIB_EXT}",
     "test -f ${PREFIX}/include/ceres/ceres.h",
     "test -f ${PREFIX}/lib/libceres${SHLIB_EXT}",
     "test -f ${PREFIX}/include/ceres/ceres.h",
@@ -727,13 +773,111 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "http://ceres-solver.org",
+   "license": "BSD-3-Clause",
+   "license_file": "LICENSE",
+   "summary": "A large scale non-linear optimization library"
+  },
+  "build": {
+   "number": "4",
+   "run_exports": [
+    "ceres-solver",
+    "eigen"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "jschueller",
+    "seanyen"
+   ]
+  },
+  "package": {
+   "name": "ceres-solver",
+   "version": "2.0.0"
+  },
+  "requirements": {
+   "build": [
+    "cmake",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "make"
+   ],
+   "host": [
+    "glog",
+    "gflags",
+    "libblas",
+    "libcblas",
+    "liblapack",
+    "suitesparse",
+    "tbb",
+    "eigen"
+   ],
+   "run": [
+    "glog",
+    "gflags",
+    "suitesparse",
+    "tbb",
+    "eigen"
+   ]
+  },
+  "source": {
+   "sha256": "10298a1d75ca884aa0507d1abb0e0f04800a92871cd400d4c361b56a777a7603",
+   "url": "http://ceres-solver.org/ceres-solver-2.0.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -f ${PREFIX}/include/ceres/ceres.h",
+    "test -f ${PREFIX}/lib/libceres${SHLIB_EXT}"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "eigen",
+    "gflags",
+    "glog",
+    "libblas",
+    "libcblas",
+    "liblapack",
+    "suitesparse",
+    "tbb"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "eigen",
+    "gflags",
+    "glog",
+    "suitesparse",
+    "tbb"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
    "ceres-solver"
   ]
  },
- "pinning_version": "2021.10.22.20.56.07",
+ "pinning_version": "2021.10.25.16.37.45",
  "raw_meta_yaml": "{% set version = \"2.0.0\" %}\n\npackage:\n  name: ceres-solver\n  version: {{ version }}\n\nsource:\n  url: http://ceres-solver.org/ceres-solver-{{ version }}.tar.gz\n  sha256: 10298a1d75ca884aa0507d1abb0e0f04800a92871cd400d4c361b56a777a7603\n\nbuild:\n  number: 4\n  run_exports:\n    - {{ pin_subpackage('ceres-solver', max_pin='x.x') }}\n    - {{ pin_compatible('eigen', max_pin='x.x.x') }}\n\nrequirements:\n  build:\n    - cmake\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - make\n  host:\n    - glog\n    - gflags\n    - libblas\n    - libcblas\n    - liblapack\n    - suitesparse\n    - tbb\n    - eigen\n\n  run:\n    - glog\n    - gflags\n    - suitesparse\n    - tbb\n    - eigen\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ceres/ceres.h  # [unix]\n    - test -f ${PREFIX}/lib/libceres${SHLIB_EXT}  # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ceres\\\\ceres.h exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\ceres.lib exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\ceres.dll exit 1  # [win]\n\nabout:\n  home: http://ceres-solver.org\n  license: BSD-3-Clause\n  license_file: LICENSE\n  summary: A large scale non-linear optimization library\n\nextra:\n  recipe-maintainers:\n    - jschueller\n    - seanyen\n",
  "req": {
   "__set__": true,
