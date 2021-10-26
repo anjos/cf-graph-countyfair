@@ -120,9 +120,9 @@
  "bad": false,
  "branch": "main",
  "conda-forge.yml": {
-  "compiler_stack": "comp7",
-  "max_py_ver": "37",
-  "max_r_ver": "35",
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default"
@@ -415,11 +415,15 @@
     "lua",
     "lua",
     "lua",
+    "lua",
     "lua"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "alexbw",
+    "seanyen",
+    "izahn",
     "alexbw",
     "seanyen",
     "izahn",
@@ -455,6 +459,9 @@
     "c_compiler_stub",
     "sed",
     "make",
+    "c_compiler_stub",
+    "sed",
+    "make",
     "vs2017_win-64",
     "ninja",
     "cmake"
@@ -467,9 +474,13 @@
     "readline",
     "ncurses",
     "readline",
+    "ncurses",
+    "readline",
     "ncurses"
    ],
    "run": [
+    "readline",
+    "ncurses",
     "readline",
     "ncurses",
     "readline",
@@ -540,10 +551,25 @@
    },
    {
     "path": "CMakeLists.txt"
+   },
+   {
+    "patches": [
+     "luaconf.patch",
+     "liblua.so.patch",
+     "Makefile.patch"
+    ],
+    "sha256": "f8612276169e3bfcbcfb8f226195bfc6e466fe13042f1076cbde92b7ec96bbfb",
+    "url": "http://www.lua.org/ftp/lua-5.4.3.tar.gz"
+   },
+   {
+    "path": "CMakeLists.txt"
    }
   ],
   "test": {
    "commands": [
+    "test -f $PREFIX/lib/liblua$SHLIB_EXT",
+    "lua -v",
+    "lua -e \"print(package.path)\"",
     "test -f $PREFIX/lib/liblua$SHLIB_EXT",
     "lua -v",
     "lua -e \"print(package.path)\"",
@@ -642,6 +668,96 @@
   }
  },
  "osx_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "make",
+    "sed"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "ncurses",
+    "readline"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "ncurses",
+    "readline"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "http://www.lua.org/",
+   "license": "MIT",
+   "license_file": "doc/readme.html",
+   "summary": "Lua is a powerful, fast, lightweight, embeddable scripting language"
+  },
+  "build": {
+   "detect_binary_files_with_prefix": true,
+   "number": "1",
+   "run_exports": [
+    "lua"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "alexbw",
+    "seanyen",
+    "izahn"
+   ]
+  },
+  "package": {
+   "name": "lua",
+   "version": "5.4.3"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "sed",
+    "make"
+   ],
+   "host": [
+    "readline",
+    "ncurses"
+   ],
+   "run": [
+    "readline",
+    "ncurses"
+   ]
+  },
+  "source": [
+   {
+    "patches": [
+     "luaconf.patch",
+     "liblua.so.patch",
+     "Makefile.patch"
+    ],
+    "sha256": "f8612276169e3bfcbcfb8f226195bfc6e466fe13042f1076cbde92b7ec96bbfb",
+    "url": "http://www.lua.org/ftp/lua-5.4.3.tar.gz"
+   },
+   {
+    "path": "CMakeLists.txt"
+   }
+  ],
+  "test": {
+   "commands": [
+    "test -f $PREFIX/lib/liblua$SHLIB_EXT",
+    "lua -v",
+    "lua -e \"print(package.path)\""
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
