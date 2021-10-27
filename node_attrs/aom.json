@@ -43,7 +43,7 @@
    "summary": "Alliance for Open Media video codec"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "aom"
    ]
@@ -117,7 +117,7 @@
    "summary": "Alliance for Open Media video codec"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "aom"
    ]
@@ -191,7 +191,7 @@
    "summary": "Alliance for Open Media video codec"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "aom"
    ]
@@ -265,8 +265,9 @@
    "summary": "Alliance for Open Media video codec"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
+    "aom",
     "aom",
     "aom",
     "aom",
@@ -280,6 +281,7 @@
     "matthiasdiener",
     "matthiasdiener",
     "matthiasdiener",
+    "matthiasdiener",
     "matthiasdiener"
    ]
   },
@@ -289,6 +291,12 @@
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "perl",
+    "nasm",
+    "make",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake",
@@ -351,7 +359,11 @@
     "aomdec --help",
     "test -f ${PREFIX}/include/aom/aom.h",
     "test -f ${PREFIX}/lib/libaom${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/pkgconfig/aom.pc"
+    "test -f ${PREFIX}/lib/pkgconfig/aom.pc",
+    "aomenc --help",
+    "aomdec --help",
+    "if not exist %LIBRARY_INC%\\\\aom\\\\aom.h exit 1",
+    "if not exist %LIBRARY_BIN%\\\\aom.dll exit 1"
    ]
   }
  },
@@ -367,7 +379,7 @@
    "summary": "Alliance for Open Media video codec"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "aom"
    ]
@@ -441,7 +453,7 @@
    "summary": "Alliance for Open Media video codec"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "aom"
    ]
@@ -511,7 +523,7 @@
   ]
  },
  "pinning_version": "2021.10.25.23.28.29",
- "raw_meta_yaml": "{% set name = 'aom' %}\n{% set version = '3.2.0' %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://storage.googleapis.com/aom-releases/libaom-{{ version }}.tar.gz\n  sha256: 8fa7418bf4ea12ef6dcf0eeb21cba932b71c6079ffdf7b9d13cf907fa46c0568\n\nbuild:\n  number: 1\n  skip: True  # [win]\n  run_exports:\n    # Just a guess...\n    - {{ pin_subpackage('aom', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - perl\n    - nasm\n    - make\n\ntest:\n  commands:\n    - aomenc --help  # [build_platform == target_platform]\n    - aomdec --help  # [build_platform == target_platform]\n    - test -f ${PREFIX}/include/aom/aom.h\n    - test -f ${PREFIX}/lib/libaom${SHLIB_EXT}\n    - test -f ${PREFIX}/lib/pkgconfig/aom.pc\n\nabout:\n  home: https://aomedia.org/\n  license: BSD-2-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: 'Alliance for Open Media video codec'\n  description: |\n    AOMedia Video 1 (AV1), is an open, royalty-free video coding format designed for\n    video transmissions over the Internet.\n  dev_url: https://aomedia.googlesource.com/aom/\nextra:\n  recipe-maintainers:\n    - matthiasdiener\n",
+ "raw_meta_yaml": "{% set name = 'aom' %}\n{% set version = '3.2.0' %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://storage.googleapis.com/aom-releases/libaom-{{ version }}.tar.gz\n  sha256: 8fa7418bf4ea12ef6dcf0eeb21cba932b71c6079ffdf7b9d13cf907fa46c0568\n\nbuild:\n  number: 2\n  run_exports:\n    # Just a guess...\n    - {{ pin_subpackage('aom', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - perl\n    - nasm\n    - make\n\ntest:\n  commands:\n    - aomenc --help  # [build_platform == target_platform]\n    - aomdec --help  # [build_platform == target_platform]\n    - test -f ${PREFIX}/include/aom/aom.h            # [unix]\n    - test -f ${PREFIX}/lib/libaom${SHLIB_EXT}       # [unix]\n    - test -f ${PREFIX}/lib/pkgconfig/aom.pc         # [unix]\n    - if not exist %LIBRARY_INC%\\\\aom\\\\aom.h exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\aom.dll exit 1     # [win]\n\nabout:\n  home: https://aomedia.org/\n  license: BSD-2-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: 'Alliance for Open Media video codec'\n  description: |\n    AOMedia Video 1 (AV1), is an open, royalty-free video coding format designed for\n    video transmissions over the Internet.\n  dev_url: https://aomedia.googlesource.com/aom/\nextra:\n  recipe-maintainers:\n    - matthiasdiener\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -582,5 +594,78 @@
   }
  },
  "url": "https://storage.googleapis.com/aom-releases/libaom-3.2.0.tar.gz",
- "version": "3.2.0"
+ "version": "3.2.0",
+ "win_64_meta_yaml": {
+  "about": {
+   "description": "AOMedia Video 1 (AV1), is an open, royalty-free video coding format designed for\nvideo transmissions over the Internet.\n",
+   "dev_url": "https://aomedia.googlesource.com/aom/",
+   "home": "https://aomedia.org/",
+   "license": "BSD-2-Clause",
+   "license_family": "BSD",
+   "license_file": "LICENSE",
+   "summary": "Alliance for Open Media video codec"
+  },
+  "build": {
+   "number": "2",
+   "run_exports": [
+    "aom"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "matthiasdiener"
+   ]
+  },
+  "package": {
+   "name": "aom",
+   "version": "3.2.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "perl",
+    "nasm",
+    "make"
+   ]
+  },
+  "source": {
+   "sha256": "8fa7418bf4ea12ef6dcf0eeb21cba932b71c6079ffdf7b9d13cf907fa46c0568",
+   "url": "https://storage.googleapis.com/aom-releases/libaom-3.2.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "aomenc --help",
+    "aomdec --help",
+    "if not exist %LIBRARY_INC%\\\\aom\\\\aom.h exit 1",
+    "if not exist %LIBRARY_BIN%\\\\aom.dll exit 1"
+   ]
+  }
+ },
+ "win_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "make",
+    "nasm",
+    "perl"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ }
 }
