@@ -186,6 +186,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/767248460.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.18.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -833,14 +850,15 @@
   }
  },
  "name": "c-ares",
- "new_version": "1.18.0",
+ "new_version": "1.18.1",
  "new_version_attempts": {
   "1.16.0": 1,
   "1.16.1": 1,
   "1.17.0": 1,
   "1.17.1": 1,
   "1.17.2": 1,
-  "1.18.0": 1
+  "1.18.0": 1,
+  "1.18.1": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1048,7 +1066,7 @@
    "c-ares-static"
   ]
  },
- "pinning_version": "2021.10.25.16.37.45",
+ "pinning_version": "2021.10.25.23.28.29",
  "raw_meta_yaml": "{% set version = \"1.18.0\" %}\n\npackage:\n  name: c-ares\n  version: {{ version }}\n\nsource:\n  url: https://c-ares.haxx.se/download/c-ares-{{ version }}.tar.gz\n  sha256: 71c19708ed52a60ec6f14a4a48527187619d136e6199683e77832c394b0b0af8\n\nbuild:\n  number: 0\n\noutputs:\n  - name: c-ares\n    script: build_output.sh  # [unix]\n    script: bld_output.bat  # [win]\n    build:\n      run_exports:\n        - {{ pin_subpackage(\"c-ares\", max_pin=\"x\") }}\n    requirements:\n      build:\n        - {{ compiler(\"c\") }}\n        - cmake  # [win]\n        # cmake on unix depends on c-ares. This breaks the cycle.\n        - cmake-no-system  # [unix]\n        - ninja  # [unix]\n      run_constraint:\n        - c-ares-static <0a0\n    test:\n      commands:\n        - test -f ${PREFIX}/include/ares.h            # [not win]\n        - test -f ${PREFIX}/lib/libcares${SHLIB_EXT}  # [not win]\n        - test ! -f ${PREFIX}/lib/libcares.a          # [not win]\n        - test ! -f ${PREFIX}/lib/libcares_static.a   # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\ares.h exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\cares.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cares.lib exit 1  # [win]\n        - if exist %PREFIX%\\\\Library\\\\lib\\\\cares_static.lib exit 1  # [win]\n  - name: c-ares-static\n    script: build_output.sh  # [unix]\n    script: bld_output.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler(\"c\") }}\n        - cmake  # [win]\n        # cmake on unix depends on c-ares. This breaks the cycle.\n        - cmake-no-system  # [unix]\n        - ninja  # [unix]\n      run_constraint:\n        - c-ares <0a0\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/libcares.a  # [not win]\n        - test ! -f ${PREFIX}/lib/libcares${SHLIB_EXT}  # [not win]\n        - test -f ${PREFIX}/include/ares.h            # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\ares.h exit 1  # [win]\n        - if exist %PREFIX%\\\\Library\\\\bin\\\\cares.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cares.lib exit 1  # [win]\n\nabout:\n  home: https://c-ares.haxx.se/\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE.md\n  summary: This is c-ares, an asynchronous resolver library\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - wesm\n    - xhochy\n",
  "req": {
   "__set__": true,
