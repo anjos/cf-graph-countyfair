@@ -115,6 +115,9 @@
  "bad": false,
  "branch": "main",
  "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default"
@@ -136,7 +139,7 @@
    "summary": "Semiempirical Extended Tight-Binding Program Package"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "xtb"
    ]
@@ -221,7 +224,7 @@
    "summary": "Semiempirical Extended Tight-Binding Program Package"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "xtb"
    ]
@@ -244,7 +247,8 @@
    ],
    "host": [
     "libblas",
-    "liblapack"
+    "liblapack",
+    "libgomp"
    ],
    "run": [
     "libblas",
@@ -275,6 +279,7 @@
    "__set__": true,
    "elements": [
     "libblas",
+    "libgomp",
     "liblapack"
    ]
   },
@@ -304,7 +309,7 @@
    "summary": "Semiempirical Extended Tight-Binding Program Package"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "xtb"
    ]
@@ -390,13 +395,16 @@
     "COPYING",
     "COPYING.LESSER",
     "COPYING",
+    "COPYING.LESSER",
+    "COPYING",
     "COPYING.LESSER"
    ],
    "summary": "Semiempirical Extended Tight-Binding Program Package"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
+    "xtb",
     "xtb",
     "xtb",
     "xtb",
@@ -405,6 +413,7 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "awvwgk",
     "awvwgk",
     "awvwgk",
     "awvwgk",
@@ -432,6 +441,10 @@
     "c_compiler_stub",
     "fortran_compiler_stub",
     "meson >=0.51",
+    "ninja",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson >=0.51",
     "ninja"
    ],
    "host": [
@@ -440,14 +453,20 @@
     "libgomp",
     "libblas",
     "liblapack",
+    "libgomp",
     "libblas",
     "liblapack",
     "libgomp",
     "libblas",
     "liblapack",
+    "llvm-openmp",
+    "libblas",
+    "liblapack",
     "llvm-openmp"
    ],
    "run": [
+    "libblas",
+    "liblapack",
     "libblas",
     "liblapack",
     "libblas",
@@ -464,6 +483,7 @@
   },
   "test": {
    "commands": [
+    "xtb --version",
     "xtb --version",
     "xtb --version",
     "xtb --version",
@@ -495,7 +515,7 @@
    "summary": "Semiempirical Extended Tight-Binding Program Package"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "xtb"
    ]
@@ -566,6 +586,91 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/grimme-lab/xtb",
+   "doc_url": "https://xtb-docs.readthedocs.io/",
+   "home": "https://www.chemie.uni-bonn.de/pctc/mulliken-center/software/xtb",
+   "license": "LGPL-3.0-or-later",
+   "license_family": "LGPL",
+   "license_file": [
+    "COPYING",
+    "COPYING.LESSER"
+   ],
+   "summary": "Semiempirical Extended Tight-Binding Program Package"
+  },
+  "build": {
+   "number": "1",
+   "run_exports": [
+    "xtb"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk"
+   ]
+  },
+  "package": {
+   "name": "xtb",
+   "version": "6.4.1"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson >=0.51",
+    "ninja"
+   ],
+   "host": [
+    "libblas",
+    "liblapack",
+    "llvm-openmp"
+   ],
+   "run": [
+    "libblas",
+    "liblapack"
+   ]
+  },
+  "source": {
+   "sha256": "cd7b6ec9b7963012ce71220a70773641f0d9e06e0691750a25b83e823510d1d7",
+   "url": "https://github.com/grimme-lab/xtb/archive/v6.4.1.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "xtb --version"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson",
+    "ninja"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libblas",
+    "liblapack",
+    "llvm-openmp"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libblas",
+    "liblapack"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -573,7 +678,7 @@
   ]
  },
  "pinning_version": "2021.06.10.08.18.57",
- "raw_meta_yaml": "{% set name = \"xtb\" %}\n{% set version = \"6.4.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/grimme-lab/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: cd7b6ec9b7963012ce71220a70773641f0d9e06e0691750a25b83e823510d1d7\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage('xtb', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}\n    - meson >=0.51\n    - ninja\n  host:\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux and not aarch64]\n  run:\n    - libblas\n    - liblapack\n\n\ntest:\n  commands:\n    - xtb --version\n\nabout:\n  home: https://www.chemie.uni-bonn.de/pctc/mulliken-center/software/{{ name }}\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file:\n    - COPYING\n    - COPYING.LESSER\n  summary: Semiempirical Extended Tight-Binding Program Package\n  doc_url: https://{{ name }}-docs.readthedocs.io/\n  dev_url: https://github.com/grimme-lab/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
+ "raw_meta_yaml": "{% set name = \"xtb\" %}\n{% set version = \"6.4.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/grimme-lab/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: cd7b6ec9b7963012ce71220a70773641f0d9e06e0691750a25b83e823510d1d7\n\nbuild:\n  number: 1\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage('xtb', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}\n    - meson >=0.51\n    - ninja\n  host:\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  run:\n    - libblas\n    - liblapack\n\n\ntest:\n  commands:\n    - xtb --version\n\nabout:\n  home: https://www.chemie.uni-bonn.de/pctc/mulliken-center/software/{{ name }}\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file:\n    - COPYING\n    - COPYING.LESSER\n  summary: Semiempirical Extended Tight-Binding Program Package\n  doc_url: https://{{ name }}-docs.readthedocs.io/\n  dev_url: https://github.com/grimme-lab/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
  "req": {
   "__set__": true,
   "elements": [
