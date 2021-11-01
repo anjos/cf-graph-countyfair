@@ -281,6 +281,7 @@
      "python 3.8.* *_cpython",
      "python 3.9.* *_cpython",
      "python 3.9.* *_cpython",
+     "python 3.10.* *_cpython",
      "python 3.8.* *_cpython",
      "python 3.9.* *_cpython",
      "python 3.8.* *_cpython",
@@ -295,6 +296,7 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "isuruf",
     "isuruf",
     "isuruf",
     "isuruf",
@@ -430,6 +432,11 @@
     "rsync",
     "sed",
     "clang_osx-arm64",
+    "python 3.10.* *_cpython",
+    "crossenv >=1.0",
+    "rsync",
+    "sed",
+    "clang_osx-arm64",
     "python 3.8.* *_cpython",
     "crossenv >=1.0",
     "rsync",
@@ -491,6 +498,7 @@
    "number": "17",
    "run_exports": {
     "strong": [
+     "python 3.10.* *_cpython",
      "python 3.8.* *_cpython",
      "python 3.9.* *_cpython"
     ]
@@ -499,6 +507,7 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "isuruf",
     "isuruf",
     "isuruf"
    ]
@@ -509,6 +518,11 @@
   },
   "requirements": {
    "run": [
+    "python 3.10.* *_cpython",
+    "crossenv >=1.0",
+    "rsync",
+    "sed",
+    "clang_osx-arm64",
     "python 3.8.* *_cpython",
     "crossenv >=1.0",
     "rsync",
@@ -639,7 +653,7 @@
   ]
  },
  "pinning_version": "2020.12.21.11.21.41",
- "raw_meta_yaml": "{% set build_number = 17 %}\n{% if cross_target_platform is undefined %}\n{% set cross_target_platform = \"linux-64\" %}\n{% endif %}\n\npackage:\n  name: cross-python_{{ cross_target_platform }}\n  version: {{ version }}\n\nbuild:\n  number: {{ build_number }}\n  string: {{ build_number }}_{{ py_impl }}\n  skip: True  # [win]\n{% if (cross_target_platform == \"osx-arm64\" and not (version == \"3.8\" or version == \"3.9\")) or (cross_target_platform == target_platform) %}\n  skip: True\n{% endif %}\n  run_exports:\n    strong:\n      - python {{ version }}.* *_{{ py_impl }}\n\nrequirements:\n  run:\n    - python {{ version }}.* *_{{ py_impl }}\n    - crossenv >=1.0\n    - rsync\n    - sed\n{% if cross_target_platform.startswith(\"osx-\") %}\n    - clang_{{ cross_target_platform }}\n{% endif %}\n{% if cross_target_platform.startswith(\"linux-\") %}\n    - gcc_{{ cross_target_platform }}\n{% endif %}\n\n{% if cross_target_platform.startswith(\"linux-\") and version != \"3.9\" %}\ntest:\n  commands:\n    - test -f $PREFIX/etc/conda/activate.d/activate_z-cross-python_{{ cross_target_platform }}.sh\n{% endif %}\n\nabout:\n  home: https://github.com/conda-forge/cross-python-feedstock\n  license: LicenseRef-OTHER\n  summary: 'A meta-package to set up a cross compiling env for python in conda-build'\n\nextra:\n  recipe-maintainers:\n    - isuruf\n",
+ "raw_meta_yaml": "{% set build_number = 17 %}\n{% if cross_target_platform is undefined %}\n{% set cross_target_platform = \"linux-64\" %}\n{% endif %}\n\npackage:\n  name: cross-python_{{ cross_target_platform }}\n  version: {{ version }}\n\nbuild:\n  number: {{ build_number }}\n  string: {{ build_number }}_{{ py_impl }}\n  skip: True  # [win]\n{% if (cross_target_platform == \"osx-arm64\" and version not in (\"3.8\", \"3.9\", \"3.10\")) or (cross_target_platform == target_platform) %}\n  skip: True\n{% endif %}\n  run_exports:\n    strong:\n      - python {{ version }}.* *_{{ py_impl }}\n\nrequirements:\n  run:\n    - python {{ version }}.* *_{{ py_impl }}\n    - crossenv >=1.0\n    - rsync\n    - sed\n{% if cross_target_platform.startswith(\"osx-\") %}\n    - clang_{{ cross_target_platform }}\n{% endif %}\n{% if cross_target_platform.startswith(\"linux-\") %}\n    - gcc_{{ cross_target_platform }}\n{% endif %}\n\n{% if cross_target_platform.startswith(\"linux-\") and version != \"3.9\" %}\ntest:\n  commands:\n    - test -f $PREFIX/etc/conda/activate.d/activate_z-cross-python_{{ cross_target_platform }}.sh\n{% endif %}\n\nabout:\n  home: https://github.com/conda-forge/cross-python-feedstock\n  license: LicenseRef-OTHER\n  summary: 'A meta-package to set up a cross compiling env for python in conda-build'\n\nextra:\n  recipe-maintainers:\n    - isuruf\n",
  "req": {
   "__set__": true,
   "elements": [
