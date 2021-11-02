@@ -1407,11 +1407,11 @@
     "LICENSE.txt",
     "LICENSE.txt",
     "LICENSE.txt",
+    "blis_license.txt",
+    "LICENSE.txt",
     "openblas_license.txt",
     "LICENSE.txt",
-    "mkl_license.txt",
-    "LICENSE.txt",
-    "blis_license.txt"
+    "mkl_license.txt"
    ],
    "summary": "Metapackage to select the BLAS variant. Use conda's pinning mechanism in your environment to control which variant you want."
   },
@@ -2594,6 +2594,126 @@
      "run_exports": [
       "libblas"
      ],
+     "string": "12_osx64_blis",
+     "track_features": [
+      "blas_blis"
+     ]
+    },
+    "files": [
+     "lib/libblas.dylib",
+     "lib/libblas.3.dylib"
+    ],
+    "name": "libblas",
+    "requirements": {
+     "host": [
+      "blis 0.8.1"
+     ],
+     "run": [
+      "blis"
+     ],
+     "run_constrained": [
+      "libcblas",
+      "blas * blis"
+     ]
+    },
+    "script": "build_pkg.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcblas"
+     ],
+     "string": "12_osx64_blis",
+     "track_features": [
+      "blas_blis"
+     ]
+    },
+    "files": [
+     "lib/libcblas.dylib",
+     "lib/libcblas.3.dylib"
+    ],
+    "name": "libcblas",
+    "requirements": {
+     "host": [
+      "libblas"
+     ],
+     "run": [
+      "libblas"
+     ],
+     "run_constrained": [
+      "blas * blis"
+     ]
+    },
+    "script": "build_pkg.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libcblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "12_osx64_blis"
+    },
+    "name": "blas-devel",
+    "requirements": {
+     "host": [],
+     "run": [
+      "liblapack  3.9.0 *netlib",
+      "liblapacke 3.9.0 *netlib",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script": "install_blas_devel.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/liblapack.dylib"
+     ]
+    }
+   },
+   {
+    "build": {
+     "activate_in_script": true,
+     "string": "blis"
+    },
+    "name": "blas",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "blis 0.8.1"
+     ],
+     "run": [
+      "liblapack  3.9.0 *netlib",
+      "liblapacke 3.9.0 *netlib",
+      "libcblas",
+      "libblas",
+      "blas-devel"
+     ]
+    },
+    "script": "test_blas.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/liblapacke.dylib",
+      "test -f $PREFIX/lib/liblapacke.3.dylib"
+     ]
+    },
+    "version": "2.112"
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libblas"
+     ],
      "string": "12_osx64_mkl",
      "track_features": [
       "blas_mkl"
@@ -2777,126 +2897,6 @@
      "run": [
       "liblapack",
       "liblapacke",
-      "libcblas",
-      "libblas",
-      "blas-devel"
-     ]
-    },
-    "script": "test_blas.sh",
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/liblapacke.dylib",
-      "test -f $PREFIX/lib/liblapacke.3.dylib"
-     ]
-    },
-    "version": "2.112"
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libblas"
-     ],
-     "string": "12_osx64_blis",
-     "track_features": [
-      "blas_blis"
-     ]
-    },
-    "files": [
-     "lib/libblas.dylib",
-     "lib/libblas.3.dylib"
-    ],
-    "name": "libblas",
-    "requirements": {
-     "host": [
-      "blis 0.8.1"
-     ],
-     "run": [
-      "blis"
-     ],
-     "run_constrained": [
-      "libcblas",
-      "blas * blis"
-     ]
-    },
-    "script": "build_pkg.sh",
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libblas.3.dylib"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libcblas"
-     ],
-     "string": "12_osx64_blis",
-     "track_features": [
-      "blas_blis"
-     ]
-    },
-    "files": [
-     "lib/libcblas.dylib",
-     "lib/libcblas.3.dylib"
-    ],
-    "name": "libcblas",
-    "requirements": {
-     "host": [
-      "libblas"
-     ],
-     "run": [
-      "libblas"
-     ],
-     "run_constrained": [
-      "blas * blis"
-     ]
-    },
-    "script": "build_pkg.sh",
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libcblas.3.dylib"
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "12_osx64_blis"
-    },
-    "name": "blas-devel",
-    "requirements": {
-     "host": [],
-     "run": [
-      "liblapack  3.9.0 *netlib",
-      "liblapacke 3.9.0 *netlib",
-      "libcblas",
-      "libblas"
-     ]
-    },
-    "script": "install_blas_devel.sh",
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/liblapack.dylib"
-     ]
-    }
-   },
-   {
-    "build": {
-     "activate_in_script": true,
-     "string": "blis"
-    },
-    "name": "blas",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "fortran_compiler_stub",
-      "cmake"
-     ],
-     "host": [
-      "blis 0.8.1"
-     ],
-     "run": [
-      "liblapack  3.9.0 *netlib",
-      "liblapacke 3.9.0 *netlib",
       "libcblas",
       "libblas",
       "blas-devel"
@@ -3102,6 +3102,124 @@
      "commands": [
       "test -f $PREFIX/lib/liblapacke.dylib",
       "test -f $PREFIX/lib/liblapacke.3.dylib"
+     ]
+    },
+    "version": "2.112"
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libblas"
+     ],
+     "string": "12_win64_blis",
+     "track_features": [
+      "blas_blis"
+     ]
+    },
+    "files": [
+     "Library/bin/libblas.dll"
+    ],
+    "name": "libblas",
+    "requirements": {
+     "host": [
+      "blis 0.8.1"
+     ],
+     "run": [
+      "blis"
+     ],
+     "run_constrained": [
+      "libcblas",
+      "blas * blis"
+     ]
+    },
+    "script": "build_pkg.bat",
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_BIN%/libblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcblas"
+     ],
+     "string": "12_win64_blis",
+     "track_features": [
+      "blas_blis"
+     ]
+    },
+    "files": [
+     "Library/bin/libcblas.dll"
+    ],
+    "name": "libcblas",
+    "requirements": {
+     "host": [
+      "libblas"
+     ],
+     "run": [
+      "libblas"
+     ],
+     "run_constrained": [
+      "blas * blis"
+     ]
+    },
+    "script": "build_pkg.bat",
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_BIN%/libcblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "12_win64_blis"
+    },
+    "name": "blas-devel",
+    "requirements": {
+     "host": [],
+     "run": [
+      "liblapack  3.9.0 *netlib",
+      "liblapacke 3.9.0 *netlib",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_BIN%/liblapack.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build": {
+     "activate_in_script": true,
+     "string": "blis"
+    },
+    "name": "blas",
+    "requirements": {
+     "build": [
+      "m2w64_c_compiler_stub",
+      "m2w64_fortran_compiler_stub",
+      "cmake",
+      "m2-make",
+      "posix"
+     ],
+     "host": [
+      "blis 0.8.1"
+     ],
+     "run": [
+      "liblapack  3.9.0 *netlib",
+      "liblapacke 3.9.0 *netlib",
+      "libcblas",
+      "libblas",
+      "blas-devel"
+     ]
+    },
+    "script": "test_blas.bat",
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_BIN%/liblapacke.dll exit 1"
      ]
     },
     "version": "2.112"
@@ -3493,124 +3611,6 @@
      ]
     },
     "version": "2.112"
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libblas"
-     ],
-     "string": "12_win64_blis",
-     "track_features": [
-      "blas_blis"
-     ]
-    },
-    "files": [
-     "Library/bin/libblas.dll"
-    ],
-    "name": "libblas",
-    "requirements": {
-     "host": [
-      "blis 0.8.1"
-     ],
-     "run": [
-      "blis"
-     ],
-     "run_constrained": [
-      "libcblas",
-      "blas * blis"
-     ]
-    },
-    "script": "build_pkg.bat",
-    "test": {
-     "commands": [
-      "if not exist %LIBRARY_BIN%/libblas.dll exit 1"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libcblas"
-     ],
-     "string": "12_win64_blis",
-     "track_features": [
-      "blas_blis"
-     ]
-    },
-    "files": [
-     "Library/bin/libcblas.dll"
-    ],
-    "name": "libcblas",
-    "requirements": {
-     "host": [
-      "libblas"
-     ],
-     "run": [
-      "libblas"
-     ],
-     "run_constrained": [
-      "blas * blis"
-     ]
-    },
-    "script": "build_pkg.bat",
-    "test": {
-     "commands": [
-      "if not exist %LIBRARY_BIN%/libcblas.dll exit 1"
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "12_win64_blis"
-    },
-    "name": "blas-devel",
-    "requirements": {
-     "host": [],
-     "run": [
-      "liblapack  3.9.0 *netlib",
-      "liblapacke 3.9.0 *netlib",
-      "libcblas",
-      "libblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "if not exist %LIBRARY_BIN%/liblapack.dll exit 1"
-     ]
-    }
-   },
-   {
-    "build": {
-     "activate_in_script": true,
-     "string": "blis"
-    },
-    "name": "blas",
-    "requirements": {
-     "build": [
-      "m2w64_c_compiler_stub",
-      "m2w64_fortran_compiler_stub",
-      "cmake",
-      "m2-make",
-      "posix"
-     ],
-     "host": [
-      "blis 0.8.1"
-     ],
-     "run": [
-      "liblapack  3.9.0 *netlib",
-      "liblapacke 3.9.0 *netlib",
-      "libcblas",
-      "libblas",
-      "blas-devel"
-     ]
-    },
-    "script": "test_blas.bat",
-    "test": {
-     "commands": [
-      "if not exist %LIBRARY_BIN%/liblapacke.dll exit 1"
-     ]
-    },
-    "version": "2.112"
    }
   ],
   "package": {
@@ -3932,6 +3932,126 @@
      "run_exports": [
       "libblas"
      ],
+     "string": "12_osx64_blis",
+     "track_features": [
+      "blas_blis"
+     ]
+    },
+    "files": [
+     "lib/libblas.dylib",
+     "lib/libblas.3.dylib"
+    ],
+    "name": "libblas",
+    "requirements": {
+     "host": [
+      "blis 0.8.1"
+     ],
+     "run": [
+      "blis"
+     ],
+     "run_constrained": [
+      "libcblas",
+      "blas * blis"
+     ]
+    },
+    "script": "build_pkg.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcblas"
+     ],
+     "string": "12_osx64_blis",
+     "track_features": [
+      "blas_blis"
+     ]
+    },
+    "files": [
+     "lib/libcblas.dylib",
+     "lib/libcblas.3.dylib"
+    ],
+    "name": "libcblas",
+    "requirements": {
+     "host": [
+      "libblas"
+     ],
+     "run": [
+      "libblas"
+     ],
+     "run_constrained": [
+      "blas * blis"
+     ]
+    },
+    "script": "build_pkg.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libcblas.3.dylib"
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "12_osx64_blis"
+    },
+    "name": "blas-devel",
+    "requirements": {
+     "host": [],
+     "run": [
+      "liblapack  3.9.0 *netlib",
+      "liblapacke 3.9.0 *netlib",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "script": "install_blas_devel.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/liblapack.dylib"
+     ]
+    }
+   },
+   {
+    "build": {
+     "activate_in_script": true,
+     "string": "blis"
+    },
+    "name": "blas",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "fortran_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "blis 0.8.1"
+     ],
+     "run": [
+      "liblapack  3.9.0 *netlib",
+      "liblapacke 3.9.0 *netlib",
+      "libcblas",
+      "libblas",
+      "blas-devel"
+     ]
+    },
+    "script": "test_blas.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/liblapacke.dylib",
+      "test -f $PREFIX/lib/liblapacke.3.dylib"
+     ]
+    },
+    "version": "2.112"
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libblas"
+     ],
      "string": "12_osx64_mkl",
      "track_features": [
       "blas_mkl"
@@ -4115,126 +4235,6 @@
      "run": [
       "liblapack",
       "liblapacke",
-      "libcblas",
-      "libblas",
-      "blas-devel"
-     ]
-    },
-    "script": "test_blas.sh",
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/liblapacke.dylib",
-      "test -f $PREFIX/lib/liblapacke.3.dylib"
-     ]
-    },
-    "version": "2.112"
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libblas"
-     ],
-     "string": "12_osx64_blis",
-     "track_features": [
-      "blas_blis"
-     ]
-    },
-    "files": [
-     "lib/libblas.dylib",
-     "lib/libblas.3.dylib"
-    ],
-    "name": "libblas",
-    "requirements": {
-     "host": [
-      "blis 0.8.1"
-     ],
-     "run": [
-      "blis"
-     ],
-     "run_constrained": [
-      "libcblas",
-      "blas * blis"
-     ]
-    },
-    "script": "build_pkg.sh",
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libblas.3.dylib"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libcblas"
-     ],
-     "string": "12_osx64_blis",
-     "track_features": [
-      "blas_blis"
-     ]
-    },
-    "files": [
-     "lib/libcblas.dylib",
-     "lib/libcblas.3.dylib"
-    ],
-    "name": "libcblas",
-    "requirements": {
-     "host": [
-      "libblas"
-     ],
-     "run": [
-      "libblas"
-     ],
-     "run_constrained": [
-      "blas * blis"
-     ]
-    },
-    "script": "build_pkg.sh",
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libcblas.3.dylib"
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "12_osx64_blis"
-    },
-    "name": "blas-devel",
-    "requirements": {
-     "host": [],
-     "run": [
-      "liblapack  3.9.0 *netlib",
-      "liblapacke 3.9.0 *netlib",
-      "libcblas",
-      "libblas"
-     ]
-    },
-    "script": "install_blas_devel.sh",
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/liblapack.dylib"
-     ]
-    }
-   },
-   {
-    "build": {
-     "activate_in_script": true,
-     "string": "blis"
-    },
-    "name": "blas",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "fortran_compiler_stub",
-      "cmake"
-     ],
-     "host": [
-      "blis 0.8.1"
-     ],
-     "run": [
-      "liblapack  3.9.0 *netlib",
-      "liblapacke 3.9.0 *netlib",
       "libcblas",
       "libblas",
       "blas-devel"
@@ -4753,11 +4753,11 @@
    "license": "BSD-3-Clause",
    "license_file": [
     "LICENSE.txt",
+    "blis_license.txt",
+    "LICENSE.txt",
     "openblas_license.txt",
     "LICENSE.txt",
-    "mkl_license.txt",
-    "LICENSE.txt",
-    "blis_license.txt"
+    "mkl_license.txt"
    ],
    "summary": "Metapackage to select the BLAS variant. Use conda's pinning mechanism in your environment to control which variant you want."
   },
@@ -4784,6 +4784,124 @@
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libblas"
+     ],
+     "string": "12_win64_blis",
+     "track_features": [
+      "blas_blis"
+     ]
+    },
+    "files": [
+     "Library/bin/libblas.dll"
+    ],
+    "name": "libblas",
+    "requirements": {
+     "host": [
+      "blis 0.8.1"
+     ],
+     "run": [
+      "blis"
+     ],
+     "run_constrained": [
+      "libcblas",
+      "blas * blis"
+     ]
+    },
+    "script": "build_pkg.bat",
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_BIN%/libblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libcblas"
+     ],
+     "string": "12_win64_blis",
+     "track_features": [
+      "blas_blis"
+     ]
+    },
+    "files": [
+     "Library/bin/libcblas.dll"
+    ],
+    "name": "libcblas",
+    "requirements": {
+     "host": [
+      "libblas"
+     ],
+     "run": [
+      "libblas"
+     ],
+     "run_constrained": [
+      "blas * blis"
+     ]
+    },
+    "script": "build_pkg.bat",
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_BIN%/libcblas.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "12_win64_blis"
+    },
+    "name": "blas-devel",
+    "requirements": {
+     "host": [],
+     "run": [
+      "liblapack  3.9.0 *netlib",
+      "liblapacke 3.9.0 *netlib",
+      "libcblas",
+      "libblas"
+     ]
+    },
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_BIN%/liblapack.dll exit 1"
+     ]
+    }
+   },
+   {
+    "build": {
+     "activate_in_script": true,
+     "string": "blis"
+    },
+    "name": "blas",
+    "requirements": {
+     "build": [
+      "m2w64_c_compiler_stub",
+      "m2w64_fortran_compiler_stub",
+      "cmake",
+      "m2-make",
+      "posix"
+     ],
+     "host": [
+      "blis 0.8.1"
+     ],
+     "run": [
+      "liblapack  3.9.0 *netlib",
+      "liblapacke 3.9.0 *netlib",
+      "libcblas",
+      "libblas",
+      "blas-devel"
+     ]
+    },
+    "script": "test_blas.bat",
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_BIN%/liblapacke.dll exit 1"
+     ]
+    },
+    "version": "2.112"
+   },
    {
     "build": {
      "run_exports": [
@@ -5159,124 +5277,6 @@
      "run": [
       "liblapack",
       "liblapacke",
-      "libcblas",
-      "libblas",
-      "blas-devel"
-     ]
-    },
-    "script": "test_blas.bat",
-    "test": {
-     "commands": [
-      "if not exist %LIBRARY_BIN%/liblapacke.dll exit 1"
-     ]
-    },
-    "version": "2.112"
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libblas"
-     ],
-     "string": "12_win64_blis",
-     "track_features": [
-      "blas_blis"
-     ]
-    },
-    "files": [
-     "Library/bin/libblas.dll"
-    ],
-    "name": "libblas",
-    "requirements": {
-     "host": [
-      "blis 0.8.1"
-     ],
-     "run": [
-      "blis"
-     ],
-     "run_constrained": [
-      "libcblas",
-      "blas * blis"
-     ]
-    },
-    "script": "build_pkg.bat",
-    "test": {
-     "commands": [
-      "if not exist %LIBRARY_BIN%/libblas.dll exit 1"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libcblas"
-     ],
-     "string": "12_win64_blis",
-     "track_features": [
-      "blas_blis"
-     ]
-    },
-    "files": [
-     "Library/bin/libcblas.dll"
-    ],
-    "name": "libcblas",
-    "requirements": {
-     "host": [
-      "libblas"
-     ],
-     "run": [
-      "libblas"
-     ],
-     "run_constrained": [
-      "blas * blis"
-     ]
-    },
-    "script": "build_pkg.bat",
-    "test": {
-     "commands": [
-      "if not exist %LIBRARY_BIN%/libcblas.dll exit 1"
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "12_win64_blis"
-    },
-    "name": "blas-devel",
-    "requirements": {
-     "host": [],
-     "run": [
-      "liblapack  3.9.0 *netlib",
-      "liblapacke 3.9.0 *netlib",
-      "libcblas",
-      "libblas"
-     ]
-    },
-    "test": {
-     "commands": [
-      "if not exist %LIBRARY_BIN%/liblapack.dll exit 1"
-     ]
-    }
-   },
-   {
-    "build": {
-     "activate_in_script": true,
-     "string": "blis"
-    },
-    "name": "blas",
-    "requirements": {
-     "build": [
-      "m2w64_c_compiler_stub",
-      "m2w64_fortran_compiler_stub",
-      "cmake",
-      "m2-make",
-      "posix"
-     ],
-     "host": [
-      "blis 0.8.1"
-     ],
-     "run": [
-      "liblapack  3.9.0 *netlib",
-      "liblapacke 3.9.0 *netlib",
       "libcblas",
       "libblas",
       "blas-devel"
