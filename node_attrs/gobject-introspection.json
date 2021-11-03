@@ -335,7 +335,7 @@
     "__lazy_json__": "pr_json/676384779.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1635899427.0754397,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -465,7 +465,7 @@
    "summary": "Middleware for binding GObject-based code to other languages."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "gobject-introspection",
@@ -607,8 +607,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -729,9 +845,6 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
-     ],
      "requires": [
       "pkg-config"
      ]
@@ -850,131 +963,6 @@
     "test": {
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "lib/libgirepository-1.0*"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-scanner --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "libexec/gi-cross-launcher-load.sh",
-     "libexec/gi-cross-launcher-save.sh",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
      ],
      "requires": [
       "pkg-config"
@@ -991,7 +979,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -999,7 +987,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -1007,7 +995,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -1015,7 +1003,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -1110,7 +1098,7 @@
    "summary": "Middleware for binding GObject-based code to other languages."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "gobject-introspection",
@@ -1252,8 +1240,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -1374,9 +1478,6 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
-     ],
      "requires": [
       "pkg-config"
      ]
@@ -1495,131 +1596,6 @@
     "test": {
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "lib/libgirepository-1.0*"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-scanner --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "libexec/gi-cross-launcher-load.sh",
-     "libexec/gi-cross-launcher-save.sh",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
      ],
      "requires": [
       "pkg-config"
@@ -1636,7 +1612,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -1644,7 +1620,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -1652,7 +1628,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -1660,7 +1636,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -1755,7 +1731,7 @@
    "summary": "Middleware for binding GObject-based code to other languages."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "gobject-introspection",
@@ -1897,8 +1873,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -2019,9 +2111,6 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
-     ],
      "requires": [
       "pkg-config"
      ]
@@ -2140,131 +2229,6 @@
     "test": {
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "lib/libgirepository-1.0*"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-scanner --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "libexec/gi-cross-launcher-load.sh",
-     "libexec/gi-cross-launcher-save.sh",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
      ],
      "requires": [
       "pkg-config"
@@ -2281,7 +2245,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -2289,7 +2253,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -2297,7 +2261,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -2305,7 +2269,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -2400,11 +2364,16 @@
    "summary": "Middleware for binding GObject-based code to other languages."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "gobject-introspection",
    "recipe-maintainers": [
+    "pkgw",
+    "ocefpaf",
+    "ryanvolz",
+    "scopatz",
+    "tschoonj",
     "pkgw",
     "ocefpaf",
     "ryanvolz",
@@ -2632,8 +2601,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -2754,8 +2839,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -2876,8 +3077,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -2998,8 +3315,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -3120,8 +3553,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -3242,8 +3791,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -3364,8 +4029,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -3486,8 +4267,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -3608,9 +4505,6 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
-     ],
      "requires": [
       "pkg-config"
      ]
@@ -3730,9 +4624,6 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
-     ],
      "requires": [
       "pkg-config"
      ]
@@ -3851,863 +4742,6 @@
     "test": {
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "lib/libgirepository-1.0*"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-scanner --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "libexec/gi-cross-launcher-load.sh",
-     "libexec/gi-cross-launcher-save.sh",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "lib/libgirepository-1.0*"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-scanner --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "libexec/gi-cross-launcher-load.sh",
-     "libexec/gi-cross-launcher-save.sh",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "lib/libgirepository-1.0*"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-scanner --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "libexec/gi-cross-launcher-load.sh",
-     "libexec/gi-cross-launcher-save.sh",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "lib/libgirepository-1.0*"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-scanner --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "libexec/gi-cross-launcher-load.sh",
-     "libexec/gi-cross-launcher-save.sh",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "lib/libgirepository-1.0*"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-scanner --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "libexec/gi-cross-launcher-load.sh",
-     "libexec/gi-cross-launcher-save.sh",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "lib/libgirepository-1.0*"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-scanner --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "libexec/gi-cross-launcher-load.sh",
-     "libexec/gi-cross-launcher-save.sh",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "lib/libgirepository-1.0*"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-scanner --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "libexec/gi-cross-launcher-load.sh",
-     "libexec/gi-cross-launcher-save.sh",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
      ],
      "requires": [
       "pkg-config"
@@ -4828,8 +4862,124 @@
      "commands": [
       "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "bin/girepository-1.0*.dll",
+     "lib/girepository-1.0.lib"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "if not exist %PREFIX%\\Library\\bin\\girepository-1.0-1.dll exit 1",
+      "if not exist %PREFIX%\\Library\\lib\\girepository-1.0.lib exit 1"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "python \"%PREFIX%\\\\Library\\\\bin\\\\g-ir-scanner\" --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1"
      ],
      "requires": [
       "pkg-config"
@@ -4950,9 +5100,6 @@
      "commands": [
       "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1"
      ],
-     "downstreams": [
-      "pygobject"
-     ],
      "requires": [
       "pkg-config"
      ]
@@ -5071,131 +5218,6 @@
     "test": {
      "commands": [
       "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "bin/girepository-1.0*.dll",
-     "lib/girepository-1.0.lib"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "if not exist %PREFIX%\\Library\\bin\\girepository-1.0-1.dll exit 1",
-      "if not exist %PREFIX%\\Library\\lib\\girepository-1.0.lib exit 1"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "python \"%PREFIX%\\\\Library\\\\bin\\\\g-ir-scanner\" --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1"
-     ],
-     "downstreams": [
-      "pygobject"
      ],
      "requires": [
       "pkg-config"
@@ -5212,7 +5234,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5220,7 +5242,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5228,7 +5250,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5236,7 +5258,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5244,7 +5266,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5252,7 +5274,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5260,7 +5282,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5268,7 +5290,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5276,7 +5298,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5284,7 +5306,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5292,7 +5314,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5300,7 +5322,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5308,7 +5330,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5316,7 +5338,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5324,7 +5346,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5332,7 +5354,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5340,7 +5362,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5348,7 +5370,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5356,7 +5378,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5364,7 +5386,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5372,7 +5394,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -5380,13 +5402,25 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
+    "ninja",
+    "patch",
+    "pkg-config",
+    "c_compiler_stub",
+    "python",
+    "bison",
+    "flex",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
     "c_compiler_stub"
    ],
    "host": [
+    "cairo",
+    "glib",
+    "libffi",
+    "python",
     "cairo",
     "glib",
     "libffi",
@@ -5534,6 +5568,8 @@
     "cross-compile.patch",
     "pkg-config.patch",
     "cross-compile.patch",
+    "pkg-config.patch",
+    "cross-compile.patch",
     "pkg-config.patch"
    ],
    "sha256": "902b4906e3102d17aa2fcb6dad1c19971c70f2a82a159ddc4a94df73a3cafc4a",
@@ -5557,7 +5593,7 @@
    "summary": "Middleware for binding GObject-based code to other languages."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "gobject-introspection",
@@ -5699,8 +5735,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -5821,9 +5973,6 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
-     ],
      "requires": [
       "pkg-config"
      ]
@@ -5942,131 +6091,6 @@
     "test": {
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "lib/libgirepository-1.0*"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-scanner --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "libexec/gi-cross-launcher-load.sh",
-     "libexec/gi-cross-launcher-save.sh",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
-     ],
-     "downstreams": [
-      "pygobject"
      ],
      "requires": [
       "pkg-config"
@@ -6083,7 +6107,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -6091,7 +6115,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -6099,7 +6123,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -6107,7 +6131,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -6198,11 +6222,16 @@
    "summary": "Middleware for binding GObject-based code to other languages."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "gobject-introspection",
    "recipe-maintainers": [
+    "pkgw",
+    "ocefpaf",
+    "ryanvolz",
+    "scopatz",
+    "tschoonj",
     "pkgw",
     "ocefpaf",
     "ryanvolz",
@@ -6330,8 +6359,124 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "lib/libgirepository-1.0*"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-scanner --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "libexec/gi-cross-launcher-load.sh",
+     "libexec/gi-cross-launcher-save.sh",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
      "requires": [
       "pkg-config"
@@ -6452,9 +6597,6 @@
      "commands": [
       "test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`"
      ],
-     "downstreams": [
-      "pygobject"
-     ],
      "requires": [
       "pkg-config"
      ]
@@ -6470,7 +6612,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -6478,7 +6620,15 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
+    "ninja",
+    "patch",
+    "pkg-config",
+    "c_compiler_stub",
+    "python",
+    "bison",
+    "flex",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -6492,11 +6642,17 @@
     "cairo",
     "glib",
     "libffi",
+    "python",
+    "cairo",
+    "glib",
+    "libffi",
     "python"
    ]
   },
   "source": {
    "patches": [
+    "cross-compile.patch",
+    "pkg-config.patch",
     "cross-compile.patch",
     "pkg-config.patch",
     "cross-compile.patch",
@@ -6561,7 +6717,7 @@
  "pre_pr_migrator_status": {
   "libffi33": "not solvable: master: ['linux_64_python3.6.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-he1b5a44_0 requires libglib 2.64.6 h0dae87d_0, but none of the providers can be installed\\n', 'linux_64_python3.7.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-he1b5a44_0 requires libglib 2.64.6 h0dae87d_0, but none of the providers can be installed\\n', 'linux_64_python3.8.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-he1b5a44_0 requires libglib 2.64.6 h0dae87d_0, but none of the providers can be installed\\n', 'linux_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-he1b5a44_0 requires libglib 2.64.6 h0dae87d_0, but none of the providers can be installed\\n', 'linux_aarch64_python3.6.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-he1b5a44_0 requires libglib 2.64.6 h0dae87d_0, but none of the providers can be installed\\n', 'linux_aarch64_python3.7.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-he1b5a44_0 requires libglib 2.64.6 h0dae87d_0, but none of the providers can be installed\\n', 'linux_aarch64_python3.8.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-he1b5a44_0 requires libglib 2.64.6 h0dae87d_0, but none of the providers can be installed\\n', 'linux_aarch64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-he1b5a44_0 requires libglib 2.64.6 h0dae87d_0, but none of the providers can be installed\\n', 'linux_ppc64le_python3.6.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-hb209c28_0 requires libglib 2.64.6 h442057e_0, but none of the providers can be installed\\n', 'linux_ppc64le_python3.7.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-hb209c28_0 requires libglib 2.64.6 h442057e_0, but none of the providers can be installed\\n', 'linux_ppc64le_python3.8.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-hb209c28_0 requires libglib 2.64.6 h442057e_0, but none of the providers can be installed\\n', 'linux_ppc64le_python3.9.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-hb209c28_0 requires libglib 2.64.6 h442057e_0, but none of the providers can be installed\\n', 'osx_64_python3.6.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-hb1e8313_0 requires libglib 2.64.6 hdb5fb44_0, but none of the providers can be installed\\n', 'osx_64_python3.7.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-hb1e8313_0 requires libglib 2.64.6 hdb5fb44_0, but none of the providers can be installed\\n', 'osx_64_python3.8.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-hb1e8313_0 requires libglib 2.64.6 hdb5fb44_0, but none of the providers can be installed\\n', 'osx_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-hb1e8313_0 requires libglib 2.64.6 hdb5fb44_0, but none of the providers can be installed\\n', 'win_64_python3.6.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-ha925a31_0 requires libglib 2.64.6 h31c07e1_0, but none of the providers can be installed\\n', 'win_64_python3.7.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-ha925a31_0 requires libglib 2.64.6 h31c07e1_0, but none of the providers can be installed\\n', 'win_64_python3.8.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-ha925a31_0 requires libglib 2.64.6 h31c07e1_0, but none of the providers can be installed\\n', 'win_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package glib-2.64.6-ha925a31_0 requires libglib 2.64.6 h31c07e1_0, but none of the providers can be installed\\n']"
  },
- "raw_meta_yaml": "{% set name = \"gobject-introspection\" %}\n{% set version = \"1.70.0\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n{% set prefix = 'Library/' if win else '' %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://download.gnome.org/sources/{{ name }}/{{ '.'.join(version.split('.')[:2]) }}/{{ name }}-{{ version }}.tar.xz\n  sha256: 902b4906e3102d17aa2fcb6dad1c19971c70f2a82a159ddc4a94df73a3cafc4a\n  patches:\n    - cross-compile.patch\n    - test-fix.patch  # [linux]\n    # https://gitlab.gnome.org/GNOME/gobject-introspection/-/merge_requests/265\n    - pkg-config.patch\n\nbuild:\n  number: 0\n  skip: true  # [py<35]\n\nrequirements:\n  build:\n    - python {{ python }}\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - {{ posix }}bison\n    - {{ posix }}flex\n    - meson\n    - ninja\n    - {{ posix }}patch\n    - {{ native }}pkg-config\n    - {{ compiler('c') }}\n    - glib     # [build_platform != target_platform]\n    - cairo    # [build_platform != target_platform]\n    - libffi   # [build_platform != target_platform]\n  host:\n    - cairo\n    - glib\n    - libffi\n    - python\n\noutputs:\n  - name: libgirepository\n    files:\n      - {{ prefix }}lib/girepository-1.0\n      - {{ prefix }}lib/libgirepository-1.0*  # [not win]\n      - {{ prefix }}bin/girepository-1.0*.dll  # [win]\n      - {{ prefix }}lib/girepository-1.0.lib  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n      host:\n        - cairo\n        - glib\n        - libffi\n      run:\n        - libffi\n    test:\n      commands:\n        - test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}  # [not win]\n        - if not exist %PREFIX%\\Library\\bin\\girepository-1.0-1.dll exit 1  # [win]\n        - if not exist %PREFIX%\\Library\\lib\\girepository-1.0.lib exit 1  # [win]\n\n  - name: g-ir-build-tools\n    files:\n      - {{ prefix }}bin/g-ir-annotation-tool\n      - {{ prefix }}bin/g-ir-scanner\n      - {{ prefix }}lib/gobject-introspection\n      - {{ prefix }}share/gobject-introspection-1.0/*\n      - {{ prefix }}share/man/man1/g-ir-scanner.1\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        # conda-build needs native python to make .pyc files\n        - python  # [build_platform != target_platform]\n      host:\n        - glib\n        - python\n      run:\n        - pkg-config\n        - python\n    test:\n      commands:\n        - g-ir-scanner --help  # [not win]\n        - python \"%PREFIX%\\\\Library\\\\bin\\\\g-ir-scanner\" --help  # [win]\n\n  - name: g-ir-host-tools\n    files:\n      - {{ prefix }}bin/g-ir-compiler*\n      - {{ prefix }}bin/g-ir-generate*\n      - {{ prefix }}bin/g-ir-inspect*\n      - {{ prefix }}share/man/man1/g-ir-compiler.1\n      - {{ prefix }}share/man/man1/g-ir-generate.1\n    requirements:\n      build:\n        - {{ compiler('c') }}\n      host:\n        - glib\n        - libffi\n        - {{ pin_subpackage('libgirepository', exact=True) }}\n      run:\n        - {{ pin_subpackage('libgirepository', exact=True) }}\n    test:\n      commands:\n        - g-ir-compiler --help\n\n  - name: gobject-introspection\n    files:\n      - {{ prefix }}include/gobject-introspection-1.0\n      - {{ prefix }}lib/pkgconfig/gobject-introspection*.pc\n      - {{ prefix }}libexec/gi-cross-launcher-load.sh  # [not win]\n      - {{ prefix }}libexec/gi-cross-launcher-save.sh  # [not win]\n      - {{ prefix }}share/aclocal/introspection.m4\n      - {{ prefix }}share/gir-1.0\n      - {{ prefix }}share/gobject-introspection-1.0/tests\n    requirements:\n      # include build and host requirements to get proper build string\n      build:\n        - {{ compiler('c') }}\n      host:\n        - cairo\n        - glib\n        - libffi\n        - python\n      run:\n        - {{ pin_subpackage('g-ir-build-tools', exact=True) }}\n        - {{ pin_subpackage('g-ir-host-tools', exact=True) }}\n        - {{ pin_subpackage('libgirepository', exact=True) }}\n        - libffi\n        - python\n    test:\n      requires:\n        - pkg-config\n      commands:\n        # check that g-ir-scanner can be found through pkg-config (used by downstream builds)\n        - test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`  # [unix]\n        - for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1  # [win]\n      downstreams:\n        - pygobject\n\nabout:\n  home: https://wiki.gnome.org/action/show/Projects/GObjectIntrospection\n  license: LGPL-2.0-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: Middleware for binding GObject-based code to other languages.\n\nextra:\n  feedstock-name: {{ name|lower }}\n  recipe-maintainers:\n    - pkgw\n    - ocefpaf\n    - ryanvolz\n    - scopatz\n    - tschoonj\n",
+ "raw_meta_yaml": "{% set name = \"gobject-introspection\" %}\n{% set version = \"1.70.0\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n{% set prefix = 'Library/' if win else '' %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://download.gnome.org/sources/{{ name }}/{{ '.'.join(version.split('.')[:2]) }}/{{ name }}-{{ version }}.tar.xz\n  sha256: 902b4906e3102d17aa2fcb6dad1c19971c70f2a82a159ddc4a94df73a3cafc4a\n  patches:\n    - cross-compile.patch\n    - test-fix.patch  # [linux]\n    # https://gitlab.gnome.org/GNOME/gobject-introspection/-/merge_requests/265\n    - pkg-config.patch\n\nbuild:\n  number: 1\n  skip: true  # [py<35]\n\nrequirements:\n  build:\n    - python {{ python }}\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - {{ posix }}bison\n    - {{ posix }}flex\n    - meson >=0.55.3\n    - ninja\n    - {{ posix }}patch\n    - {{ native }}pkg-config\n    - {{ compiler('c') }}\n    - glib     # [build_platform != target_platform]\n    - cairo    # [build_platform != target_platform]\n    - libffi   # [build_platform != target_platform]\n  host:\n    - cairo\n    - glib\n    - libffi\n    - python\n\noutputs:\n  - name: libgirepository\n    files:\n      - {{ prefix }}lib/girepository-1.0\n      - {{ prefix }}lib/libgirepository-1.0*  # [not win]\n      - {{ prefix }}bin/girepository-1.0*.dll  # [win]\n      - {{ prefix }}lib/girepository-1.0.lib  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n      host:\n        - cairo\n        - glib\n        - libffi\n      run:\n        - libffi\n    test:\n      commands:\n        - test -f $PREFIX/lib/libgirepository-1.0${SHLIB_EXT}  # [not win]\n        - if not exist %PREFIX%\\Library\\bin\\girepository-1.0-1.dll exit 1  # [win]\n        - if not exist %PREFIX%\\Library\\lib\\girepository-1.0.lib exit 1  # [win]\n\n  - name: g-ir-build-tools\n    files:\n      - {{ prefix }}bin/g-ir-annotation-tool\n      - {{ prefix }}bin/g-ir-scanner\n      - {{ prefix }}lib/gobject-introspection\n      - {{ prefix }}share/gobject-introspection-1.0/*\n      - {{ prefix }}share/man/man1/g-ir-scanner.1\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        # conda-build needs native python to make .pyc files\n        - python  # [build_platform != target_platform]\n      host:\n        - glib\n        - python\n      run:\n        - pkg-config\n        - python\n    test:\n      commands:\n        - g-ir-scanner --help  # [not win]\n        - python \"%PREFIX%\\\\Library\\\\bin\\\\g-ir-scanner\" --help  # [win]\n\n  - name: g-ir-host-tools\n    files:\n      - {{ prefix }}bin/g-ir-compiler*\n      - {{ prefix }}bin/g-ir-generate*\n      - {{ prefix }}bin/g-ir-inspect*\n      - {{ prefix }}share/man/man1/g-ir-compiler.1\n      - {{ prefix }}share/man/man1/g-ir-generate.1\n    requirements:\n      build:\n        - {{ compiler('c') }}\n      host:\n        - glib\n        - libffi\n        - {{ pin_subpackage('libgirepository', exact=True) }}\n      run:\n        - {{ pin_subpackage('libgirepository', exact=True) }}\n    test:\n      commands:\n        - g-ir-compiler --help\n\n  - name: gobject-introspection\n    files:\n      - {{ prefix }}include/gobject-introspection-1.0\n      - {{ prefix }}lib/pkgconfig/gobject-introspection*.pc\n      - {{ prefix }}libexec/gi-cross-launcher-load.sh  # [not win]\n      - {{ prefix }}libexec/gi-cross-launcher-save.sh  # [not win]\n      - {{ prefix }}share/aclocal/introspection.m4\n      - {{ prefix }}share/gir-1.0\n      - {{ prefix }}share/gobject-introspection-1.0/tests\n    requirements:\n      # include build and host requirements to get proper build string\n      build:\n        - {{ compiler('c') }}\n      host:\n        - cairo\n        - glib\n        - libffi\n        - python\n      run:\n        - {{ pin_subpackage('g-ir-build-tools', exact=True) }}\n        - {{ pin_subpackage('g-ir-host-tools', exact=True) }}\n        - {{ pin_subpackage('libgirepository', exact=True) }}\n        - libffi\n        - python\n    test:\n      requires:\n        - pkg-config\n      commands:\n        # check that g-ir-scanner can be found through pkg-config (used by downstream builds)\n        - test -f `pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`  # [unix]\n        - for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1  # [win]\n\nabout:\n  home: https://wiki.gnome.org/action/show/Projects/GObjectIntrospection\n  license: LGPL-2.0-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: Middleware for binding GObject-based code to other languages.\n\nextra:\n  feedstock-name: {{ name|lower }}\n  recipe-maintainers:\n    - pkgw\n    - ocefpaf\n    - ryanvolz\n    - scopatz\n    - tschoonj\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -6634,7 +6790,7 @@
     "bison",
     "c_compiler_stub",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -6680,7 +6836,7 @@
    "summary": "Middleware for binding GObject-based code to other languages."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "gobject-introspection",
@@ -6822,8 +6978,124 @@
      "commands": [
       "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1"
      ],
-     "downstreams": [
-      "pygobject"
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "files": [
+     "lib/girepository-1.0",
+     "bin/girepository-1.0*.dll",
+     "lib/girepository-1.0.lib"
+    ],
+    "name": "libgirepository",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi"
+     ],
+     "run": [
+      "libffi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "if not exist %PREFIX%\\Library\\bin\\girepository-1.0-1.dll exit 1",
+      "if not exist %PREFIX%\\Library\\lib\\girepository-1.0.lib exit 1"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-annotation-tool",
+     "bin/g-ir-scanner",
+     "lib/gobject-introspection",
+     "share/gobject-introspection-1.0/*",
+     "share/man/man1/g-ir-scanner.1"
+    ],
+    "name": "g-ir-build-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "python"
+     ],
+     "run": [
+      "pkg-config",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "python \"%PREFIX%\\\\Library\\\\bin\\\\g-ir-scanner\" --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "bin/g-ir-compiler*",
+     "bin/g-ir-generate*",
+     "bin/g-ir-inspect*",
+     "share/man/man1/g-ir-compiler.1",
+     "share/man/man1/g-ir-generate.1"
+    ],
+    "name": "g-ir-host-tools",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "glib",
+      "libffi",
+      "libgirepository"
+     ],
+     "run": [
+      "libgirepository"
+     ]
+    },
+    "test": {
+     "commands": [
+      "g-ir-compiler --help"
+     ]
+    }
+   },
+   {
+    "files": [
+     "include/gobject-introspection-1.0",
+     "lib/pkgconfig/gobject-introspection*.pc",
+     "share/aclocal/introspection.m4",
+     "share/gir-1.0",
+     "share/gobject-introspection-1.0/tests"
+    ],
+    "name": "gobject-introspection",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "cairo",
+      "glib",
+      "libffi",
+      "python"
+     ],
+     "run": [
+      "g-ir-build-tools",
+      "g-ir-host-tools",
+      "libgirepository",
+      "libffi",
+      "python"
+     ]
+    },
+    "test": {
+     "commands": [
+      "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1"
      ],
      "requires": [
       "pkg-config"
@@ -6944,9 +7216,6 @@
      "commands": [
       "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1"
      ],
-     "downstreams": [
-      "pygobject"
-     ],
      "requires": [
       "pkg-config"
      ]
@@ -7065,131 +7334,6 @@
     "test": {
      "commands": [
       "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1"
-     ],
-     "downstreams": [
-      "pygobject"
-     ],
-     "requires": [
-      "pkg-config"
-     ]
-    }
-   },
-   {
-    "files": [
-     "lib/girepository-1.0",
-     "bin/girepository-1.0*.dll",
-     "lib/girepository-1.0.lib"
-    ],
-    "name": "libgirepository",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi"
-     ],
-     "run": [
-      "libffi"
-     ]
-    },
-    "test": {
-     "commands": [
-      "if not exist %PREFIX%\\Library\\bin\\girepository-1.0-1.dll exit 1",
-      "if not exist %PREFIX%\\Library\\lib\\girepository-1.0.lib exit 1"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-annotation-tool",
-     "bin/g-ir-scanner",
-     "lib/gobject-introspection",
-     "share/gobject-introspection-1.0/*",
-     "share/man/man1/g-ir-scanner.1"
-    ],
-    "name": "g-ir-build-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "python"
-     ],
-     "run": [
-      "pkg-config",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "python \"%PREFIX%\\\\Library\\\\bin\\\\g-ir-scanner\" --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "bin/g-ir-compiler*",
-     "bin/g-ir-generate*",
-     "bin/g-ir-inspect*",
-     "share/man/man1/g-ir-compiler.1",
-     "share/man/man1/g-ir-generate.1"
-    ],
-    "name": "g-ir-host-tools",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "glib",
-      "libffi",
-      "libgirepository"
-     ],
-     "run": [
-      "libgirepository"
-     ]
-    },
-    "test": {
-     "commands": [
-      "g-ir-compiler --help"
-     ]
-    }
-   },
-   {
-    "files": [
-     "include/gobject-introspection-1.0",
-     "lib/pkgconfig/gobject-introspection*.pc",
-     "share/aclocal/introspection.m4",
-     "share/gir-1.0",
-     "share/gobject-introspection-1.0/tests"
-    ],
-    "name": "gobject-introspection",
-    "requirements": {
-     "build": [
-      "c_compiler_stub"
-     ],
-     "host": [
-      "cairo",
-      "glib",
-      "libffi",
-      "python"
-     ],
-     "run": [
-      "g-ir-build-tools",
-      "g-ir-host-tools",
-      "libgirepository",
-      "libffi",
-      "python"
-     ]
-    },
-    "test": {
-     "commands": [
-      "for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=g_ir_scanner --dont-define-prefix gobject-introspection-1.0`) do if not exist \"%%a\" exit 1"
-     ],
-     "downstreams": [
-      "pygobject"
      ],
      "requires": [
       "pkg-config"
@@ -7206,7 +7350,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -7214,7 +7358,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -7222,7 +7366,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
@@ -7230,7 +7374,7 @@
     "python",
     "bison",
     "flex",
-    "meson",
+    "meson >=0.55.3",
     "ninja",
     "patch",
     "pkg-config",
