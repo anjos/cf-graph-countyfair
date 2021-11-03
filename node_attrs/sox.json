@@ -72,7 +72,7 @@
   },
   "build": {
    "detect_binary_files_with_prefix": true,
-   "number": "1014",
+   "number": "1015",
    "run_exports": [
     "sox"
    ]
@@ -90,10 +90,8 @@
   },
   "requirements": {
    "build": [
-    "autoconf",
-    "automake",
-    "gnuconfig",
-    "libtool",
+    "cmake",
+    "ninja",
     "make",
     "pkg-config",
     "c_compiler_stub"
@@ -104,6 +102,9 @@
     "xz",
     "libsndfile",
     "libvorbis",
+    "libflac",
+    "libopus",
+    "speex",
     "lame",
     "mad"
    ],
@@ -117,14 +118,18 @@
   },
   "source": {
    "md5": "d04fba2d9245e661f245de0577f48a33",
+   "patches": [
+    "cmake.patch"
+   ],
    "url": "http://sourceforge.net/projects/sox/files/sox/14.4.2/sox-14.4.2.tar.gz"
   },
   "test": {
    "commands": [
     "test -e $PREFIX/include/sox.h",
-    "test -e $PREFIX/lib/libsox.a",
+    "test -e $PREFIX/lib/libsox_static.a",
     "test -e $PREFIX/lib/libsox.so",
-    "sox --help |grep \"FILE FORMATS\" | grep mp3"
+    "sox --help |grep \"FILE FORMATS\" | grep mp3",
+    "soxi --help |grep \"Usage[:] soxi\""
    ]
   }
  },
@@ -132,12 +137,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
-    "gnuconfig",
-    "libtool",
+    "cmake",
     "make",
+    "ninja",
     "pkg-config"
    ]
   },
@@ -145,10 +148,13 @@
    "__set__": true,
    "elements": [
     "lame",
+    "libflac",
+    "libopus",
     "libpng",
     "libsndfile",
     "libvorbis",
     "mad",
+    "speex",
     "xz",
     "zlib"
    ]
@@ -177,8 +183,9 @@
   },
   "build": {
    "detect_binary_files_with_prefix": true,
-   "number": "1014",
+   "number": "1015",
    "run_exports": [
+    "sox",
     "sox",
     "sox",
     "sox"
@@ -186,6 +193,9 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "183amir",
+    "alexbw",
+    "sdvillal",
     "183amir",
     "alexbw",
     "sdvillal",
@@ -203,25 +213,23 @@
   },
   "requirements": {
    "build": [
-    "autoconf",
-    "automake",
-    "gnuconfig",
-    "libtool",
+    "cmake",
+    "ninja",
     "make",
     "pkg-config",
     "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "gnuconfig",
-    "libtool",
+    "cmake",
+    "ninja",
     "make",
     "pkg-config",
     "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "gnuconfig",
-    "libtool",
+    "cmake",
+    "ninja",
     "make",
+    "pkg-config",
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
     "pkg-config",
     "c_compiler_stub"
    ],
@@ -231,6 +239,9 @@
     "xz",
     "libsndfile",
     "libvorbis",
+    "libflac",
+    "libopus",
+    "speex",
     "lame",
     "mad",
     "libpng",
@@ -238,6 +249,8 @@
     "xz",
     "libsndfile",
     "libvorbis",
+    "libflac",
+    "libopus",
     "lame",
     "mad",
     "libpng",
@@ -245,8 +258,17 @@
     "xz",
     "libsndfile",
     "libvorbis",
+    "libflac",
+    "libopus",
     "lame",
-    "mad"
+    "mad",
+    "libpng",
+    "zlib",
+    "xz",
+    "libsndfile",
+    "libvorbis",
+    "libflac",
+    "libopus"
    ],
    "run": [
     "libpng",
@@ -263,29 +285,42 @@
     "zlib",
     "xz",
     "lame",
-    "mad"
+    "mad",
+    "libpng",
+    "zlib",
+    "xz"
    ]
   },
   "source": {
    "md5": "d04fba2d9245e661f245de0577f48a33",
+   "patches": [
+    "cmake.patch",
+    "cmake.patch",
+    "cmake.patch",
+    "cmake.patch"
+   ],
    "url": "http://sourceforge.net/projects/sox/files/sox/14.4.2/sox-14.4.2.tar.gz"
   },
   "test": {
    "commands": [
     "test -e $PREFIX/include/sox.h",
-    "test -e $PREFIX/lib/libsox.a",
+    "test -e $PREFIX/lib/libsox_static.a",
     "test -e $PREFIX/lib/libsox.so",
     "sox --help |grep \"FILE FORMATS\" | grep mp3",
+    "soxi --help |grep \"Usage[:] soxi\"",
     "test -e $PREFIX/include/sox.h",
-    "test -e $PREFIX/lib/libsox.a",
+    "test -e $PREFIX/lib/libsox_static.a",
     "test -e $PREFIX/lib/libsox.dylib",
     "otool -L $PREFIX/lib/libsox.dylib",
     "sox --help |grep \"FILE FORMATS\" | grep mp3",
+    "soxi --help |grep \"Usage[:] soxi\"",
     "test -e $PREFIX/include/sox.h",
-    "test -e $PREFIX/lib/libsox.a",
+    "test -e $PREFIX/lib/libsox_static.a",
     "test -e $PREFIX/lib/libsox.dylib",
     "otool -L $PREFIX/lib/libsox.dylib",
-    "sox --help |grep \"FILE FORMATS\" | grep mp3"
+    "sox --help |grep \"FILE FORMATS\" | grep mp3",
+    "soxi --help |grep \"Usage[:] soxi\"",
+    "sox --help"
    ]
   }
  },
@@ -300,7 +335,7 @@
   },
   "build": {
    "detect_binary_files_with_prefix": true,
-   "number": "1014",
+   "number": "1015",
    "run_exports": [
     "sox"
    ]
@@ -318,10 +353,8 @@
   },
   "requirements": {
    "build": [
-    "autoconf",
-    "automake",
-    "gnuconfig",
-    "libtool",
+    "cmake",
+    "ninja",
     "make",
     "pkg-config",
     "c_compiler_stub"
@@ -332,6 +365,8 @@
     "xz",
     "libsndfile",
     "libvorbis",
+    "libflac",
+    "libopus",
     "lame",
     "mad"
    ],
@@ -345,15 +380,19 @@
   },
   "source": {
    "md5": "d04fba2d9245e661f245de0577f48a33",
+   "patches": [
+    "cmake.patch"
+   ],
    "url": "http://sourceforge.net/projects/sox/files/sox/14.4.2/sox-14.4.2.tar.gz"
   },
   "test": {
    "commands": [
     "test -e $PREFIX/include/sox.h",
-    "test -e $PREFIX/lib/libsox.a",
+    "test -e $PREFIX/lib/libsox_static.a",
     "test -e $PREFIX/lib/libsox.dylib",
     "otool -L $PREFIX/lib/libsox.dylib",
-    "sox --help |grep \"FILE FORMATS\" | grep mp3"
+    "sox --help |grep \"FILE FORMATS\" | grep mp3",
+    "soxi --help |grep \"Usage[:] soxi\""
    ]
   }
  },
@@ -361,12 +400,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
-    "gnuconfig",
-    "libtool",
+    "cmake",
     "make",
+    "ninja",
     "pkg-config"
    ]
   },
@@ -374,6 +411,8 @@
    "__set__": true,
    "elements": [
     "lame",
+    "libflac",
+    "libopus",
     "libpng",
     "libsndfile",
     "libvorbis",
@@ -406,7 +445,7 @@
   },
   "build": {
    "detect_binary_files_with_prefix": true,
-   "number": "1014",
+   "number": "1015",
    "run_exports": [
     "sox"
    ]
@@ -424,10 +463,8 @@
   },
   "requirements": {
    "build": [
-    "autoconf",
-    "automake",
-    "gnuconfig",
-    "libtool",
+    "cmake",
+    "ninja",
     "make",
     "pkg-config",
     "c_compiler_stub"
@@ -438,6 +475,8 @@
     "xz",
     "libsndfile",
     "libvorbis",
+    "libflac",
+    "libopus",
     "lame",
     "mad"
    ],
@@ -451,15 +490,19 @@
   },
   "source": {
    "md5": "d04fba2d9245e661f245de0577f48a33",
+   "patches": [
+    "cmake.patch"
+   ],
    "url": "http://sourceforge.net/projects/sox/files/sox/14.4.2/sox-14.4.2.tar.gz"
   },
   "test": {
    "commands": [
     "test -e $PREFIX/include/sox.h",
-    "test -e $PREFIX/lib/libsox.a",
+    "test -e $PREFIX/lib/libsox_static.a",
     "test -e $PREFIX/lib/libsox.dylib",
     "otool -L $PREFIX/lib/libsox.dylib",
-    "sox --help |grep \"FILE FORMATS\" | grep mp3"
+    "sox --help |grep \"FILE FORMATS\" | grep mp3",
+    "soxi --help |grep \"Usage[:] soxi\""
    ]
   }
  },
@@ -467,12 +510,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
-    "gnuconfig",
-    "libtool",
+    "cmake",
     "make",
+    "ninja",
     "pkg-config"
    ]
   },
@@ -480,6 +521,8 @@
    "__set__": true,
    "elements": [
     "lame",
+    "libflac",
+    "libopus",
     "libpng",
     "libsndfile",
     "libvorbis",
@@ -510,22 +553,23 @@
   ]
  },
  "pinning_version": "2021.10.21.11.39.39",
- "raw_meta_yaml": "{% set name = \"sox\" %}\n{% set version = \"14.4.2\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://sourceforge.net/projects/sox/files/sox/{{ version }}/sox-{{ version }}.tar.gz\n  md5: d04fba2d9245e661f245de0577f48a33\n\nbuild:\n  number: 1014\n  detect_binary_files_with_prefix: true\n  skip: true  # [win]\n  run_exports:\n    # https://abi-laboratory.pro/tracker/timeline/sox/\n    - {{ pin_subpackage(name, max_pin='x.x.x') }}\n\nrequirements:\n  build:\n    - autoconf  # [unix]\n    - automake  # [unix]\n    - gnuconfig  # [unix]\n    - libtool  # [unix]\n    - make\n    - pkg-config\n    - {{ compiler('c') }}\n  host:\n    - libpng\n    - zlib\n    - xz\n    - libsndfile\n    - libvorbis\n    - lame  # [not win]\n    - mad  # [not win]\n\n  run:\n    - libpng\n    - zlib\n    - xz\n    - lame  # [not win]\n    - mad  # [not win]\n\ntest:\n  commands:\n    - test -e $PREFIX/include/sox.h      # [unix]\n    - test -e $PREFIX/lib/libsox.a       # [unix]\n    - test -e $PREFIX/lib/libsox.so      # [linux]\n    - test -e $PREFIX/lib/libsox.dylib   # [osx]\n    - otool -L $PREFIX/lib/libsox.dylib  # [osx]\n    - sox --help |grep \"FILE FORMATS\" | grep mp3  # [not win]\n\nabout:\n  home: http://sox.sourceforge.net/\n  license: GPL-2.0-only\n  summary: A cross-platform command line utility that can convert various formats of computer audio files in to other formats.\n  license_file: COPYING\n\nextra:\n  recipe-maintainers:\n    - 183amir\n    - alexbw\n    - sdvillal\n",
+ "raw_meta_yaml": "{% set name = \"sox\" %}\n{% set version = \"14.4.2\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://sourceforge.net/projects/sox/files/sox/{{ version }}/sox-{{ version }}.tar.gz\n  md5: d04fba2d9245e661f245de0577f48a33\n  patches:\n    # Incorporates changes from https://github.com/dmkrepo/libsox to fix building on VS2015+ on windows\n    - cmake.patch\n\nbuild:\n  number: 1015\n  detect_binary_files_with_prefix: true\n  run_exports:\n    # https://abi-laboratory.pro/tracker/timeline/sox/\n    - {{ pin_subpackage(name, max_pin='x.x.x') }}\n\nrequirements:\n  build:\n    - cmake\n    - ninja\n    - make  # [not win]\n    - pkg-config\n    - {{ compiler('c') }}\n  host:\n    - libpng\n    - zlib\n    - xz\n    - libsndfile\n    - libvorbis\n    - libflac\n    - libopus\n    - speex  # [linux]\n    - lame  # [not win]\n    - mad  # [not win]\n\n  run:\n    - libpng\n    - zlib\n    - xz\n    - lame  # [not win]\n    - mad  # [not win]\n\n\ntest:\n  commands:\n    - test -e $PREFIX/include/sox.h      # [unix]\n    - test -e $PREFIX/lib/libsox_static.a       # [unix]\n    - test -e $PREFIX/lib/libsox.so      # [linux]\n    - test -e $PREFIX/lib/libsox.dylib   # [osx]\n    - otool -L $PREFIX/lib/libsox.dylib  # [osx]\n    - sox --help  # [win]\n    - sox --help |grep \"FILE FORMATS\" | grep mp3  # [not win]\n    - soxi --help |grep \"Usage[:] soxi\"  # [not win]\n\nabout:\n  home: http://sox.sourceforge.net/\n  license: GPL-2.0-only\n  summary: A cross-platform command line utility that can convert various formats of computer audio files in to other formats.\n  license_file: COPYING\n\nextra:\n  recipe-maintainers:\n    - 183amir\n    - alexbw\n    - sdvillal\n",
  "req": {
   "__set__": true,
   "elements": [
-   "autoconf",
-   "automake",
    "c_compiler_stub",
-   "gnuconfig",
+   "cmake",
    "lame",
+   "libflac",
+   "libopus",
    "libpng",
    "libsndfile",
-   "libtool",
    "libvorbis",
    "mad",
    "make",
+   "ninja",
    "pkg-config",
+   "speex",
    "xz",
    "zlib"
   ]
@@ -534,12 +578,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
-    "gnuconfig",
-    "libtool",
+    "cmake",
     "make",
+    "ninja",
     "pkg-config"
    ]
   },
@@ -548,10 +590,13 @@
    "elements": [
     "c_compiler_stub",
     "lame",
+    "libflac",
+    "libopus",
     "libpng",
     "libsndfile",
     "libvorbis",
     "mad",
+    "speex",
     "xz",
     "zlib"
    ]
@@ -578,12 +623,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
-    "gnuconfig",
-    "libtool",
+    "cmake",
     "make",
+    "ninja",
     "pkg-config"
    ]
   },
@@ -591,10 +634,13 @@
    "__set__": true,
    "elements": [
     "lame",
+    "libflac",
+    "libopus",
     "libpng",
     "libsndfile",
     "libvorbis",
     "mad",
+    "speex",
     "xz",
     "zlib"
    ]
@@ -615,5 +661,100 @@
   }
  },
  "url": "http://sourceforge.net/projects/sox/files/sox/14.4.2/sox-14.4.2.tar.gz",
- "version": "14.4.2"
+ "version": "14.4.2",
+ "win_64_meta_yaml": {
+  "about": {
+   "home": "http://sox.sourceforge.net/",
+   "license": "GPL-2.0-only",
+   "license_file": "COPYING",
+   "summary": "A cross-platform command line utility that can convert various formats of computer audio files in to other formats."
+  },
+  "build": {
+   "detect_binary_files_with_prefix": true,
+   "number": "1015",
+   "run_exports": [
+    "sox"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "183amir",
+    "alexbw",
+    "sdvillal"
+   ]
+  },
+  "package": {
+   "name": "sox",
+   "version": "14.4.2"
+  },
+  "requirements": {
+   "build": [
+    "cmake",
+    "ninja",
+    "pkg-config",
+    "c_compiler_stub"
+   ],
+   "host": [
+    "libpng",
+    "zlib",
+    "xz",
+    "libsndfile",
+    "libvorbis",
+    "libflac",
+    "libopus"
+   ],
+   "run": [
+    "libpng",
+    "zlib",
+    "xz"
+   ]
+  },
+  "source": {
+   "md5": "d04fba2d9245e661f245de0577f48a33",
+   "patches": [
+    "cmake.patch"
+   ],
+   "url": "http://sourceforge.net/projects/sox/files/sox/14.4.2/sox-14.4.2.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "sox --help"
+   ]
+  }
+ },
+ "win_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libflac",
+    "libopus",
+    "libpng",
+    "libsndfile",
+    "libvorbis",
+    "xz",
+    "zlib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libpng",
+    "xz",
+    "zlib"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ }
 }
