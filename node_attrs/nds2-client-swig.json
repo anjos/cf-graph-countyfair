@@ -287,7 +287,7 @@
     "__lazy_json__": "pr_json/720666990.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1636131845.1071124,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -306,7 +306,7 @@
     "__lazy_json__": "pr_json/720682911.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1636131845.107417,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -355,6 +355,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/774453716.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy37"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -376,7 +395,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -510,7 +529,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -728,7 +747,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -858,11 +877,11 @@
    "python-nds2-client"
   ]
  },
- "pinning_version": "2021.11.05.06.07.08",
+ "pinning_version": "2021.11.05.14.12.54",
  "pre_pr_migrator_status": {
   "python39": "not solvable: ['Encountered problems while solving.\\nProblem: package numpy-1.16.2-py27hde85f9e_1 requires python >=2.7,<2.8.0a0, but none of the providers can be installed\\n', 'Encountered problems while solving.\\nProblem: package numpy-base-1.16.0-py27ha711998_0 requires python >=2.7,<2.8.0a0, but none of the providers can be installed\\n', 'Encountered problems while solving.\\nProblem: package numpy-base-1.16.0-py27hde5b4d6_0 requires python >=2.7,<2.8.0a0, but none of the providers can be installed\\n']"
  },
- "raw_meta_yaml": "{% set name = \"nds2-client-swig\" %}\n{% set version = \"0.16.10\" %}\n{% set sha256 = \"ebc7f66d7c41f154f4a1ab3b2f4c574256c851d54f4e83031a68665c687b813e\" %}\n{% set nds2_client_version = \"0.16.7\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/{{ name }}-{{ version }}.tar.bz2\n  sha256: {{ sha256 }}\n  patches:\n    - macos-static-python.patch  # [osx]\n    - windows-swig-links.patch  # [win]\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true  # [not win]\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.6\n    - make  # [not win]\n    - pkg-config  # [not win]\n    - swig >=3.0.7\n  host:\n    - nds2-client {{ nds2_client_version }}\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/nds2-client/nds.i  # [unix]\n    - test -f ${PREFIX}/include/nds2-client/nds_swig.hh  # [unix]\n\noutputs:\n  - name: nds2-client-swig\n\n  - name: python-nds2-client\n    script: install-python.sh  # [not win]\n    script: install-python.bat  # [win]\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        - python  # [not win]\n        - vs2015_runtime  # [win]\n      skip: true  # [python_impl != 'cpython']\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake >=3.6\n        - make  # [not win]\n        - pkg-config  # [not win]\n        - swig >=3.0.7\n      host:\n        - libpython  # [win]\n        - nds2-client {{ nds2_client_version }}\n        - {{ pin_subpackage('nds2-client-swig', exact=True) }}\n        - numpy\n        - python\n      run:\n        - nds2-client >={{ nds2_client_version }}\n        - {{ pin_compatible('numpy') }}\n        - python\n    test:\n      imports:\n        - nds2\n    about:\n      home: https://wiki.ligo.org/Computing/NDSClient\n      dev_url: https://git.ligo.org/nds/nds2-client.git\n      license: GPL-3.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: Python extensions for NDS2\n      description: This provides python wrappers for the nds2 client.\n\nabout:\n  home: https://wiki.ligo.org/Computing/NDSClient\n  dev_url: https://git.ligo.org/nds/nds2-client.git\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: NDS2 Client interface SWIG wrappings\n  description: This provides SWIG interface files for the NDS2 client.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n",
+ "raw_meta_yaml": "{% set name = \"nds2-client-swig\" %}\n{% set version = \"0.16.10\" %}\n{% set sha256 = \"ebc7f66d7c41f154f4a1ab3b2f4c574256c851d54f4e83031a68665c687b813e\" %}\n{% set nds2_client_version = \"0.16.7\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/{{ name }}-{{ version }}.tar.bz2\n  sha256: {{ sha256 }}\n  patches:\n    - macos-static-python.patch  # [osx]\n    - windows-swig-links.patch  # [win]\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true  # [not win]\n  number: 1\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.6\n    - make  # [not win]\n    - pkg-config  # [not win]\n    - swig >=3.0.7\n  host:\n    - nds2-client {{ nds2_client_version }}\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/nds2-client/nds.i  # [unix]\n    - test -f ${PREFIX}/include/nds2-client/nds_swig.hh  # [unix]\n\noutputs:\n  - name: nds2-client-swig\n\n  - name: python-nds2-client\n    script: install-python.sh  # [not win]\n    script: install-python.bat  # [win]\n    build:\n      error_overdepending: true\n      error_overlinking: true\n      ignore_run_exports:\n        - python  # [not win]\n        - vs2015_runtime  # [win]\n      skip: true  # [python_impl != 'cpython']\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake >=3.6\n        - make  # [not win]\n        - pkg-config  # [not win]\n        - swig >=3.0.7\n      host:\n        - libpython  # [win]\n        - nds2-client {{ nds2_client_version }}\n        - {{ pin_subpackage('nds2-client-swig', exact=True) }}\n        - numpy\n        - python\n      run:\n        - nds2-client >={{ nds2_client_version }}\n        - {{ pin_compatible('numpy') }}\n        - python\n    test:\n      imports:\n        - nds2\n    about:\n      home: https://wiki.ligo.org/Computing/NDSClient\n      dev_url: https://git.ligo.org/nds/nds2-client.git\n      license: GPL-3.0-or-later\n      license_family: GPL\n      license_file: COPYING\n      summary: Python extensions for NDS2\n      description: This provides python wrappers for the nds2 client.\n\nabout:\n  home: https://wiki.ligo.org/Computing/NDSClient\n  dev_url: https://git.ligo.org/nds/nds2-client.git\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: NDS2 Client interface SWIG wrappings\n  description: This provides SWIG interface files for the NDS2 client.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -969,7 +988,7 @@
   },
   "build": {
    "error_overdepending": true,
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
