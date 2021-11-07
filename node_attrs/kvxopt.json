@@ -73,6 +73,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/774909801.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python310"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1142,7 +1161,7 @@
    "kvxopt"
   ]
  },
- "pinning_version": "2021.11.03.14.42.24",
+ "pinning_version": "2021.11.05.20.51.02",
  "raw_meta_yaml": "{% set version = \"1.2.7.2\" %}\n{% set suitesparse_for_win_version = \"5.7.2\" %}\n\n# This recipe is based on CVXOPT's recipe:\n# https://github.com/conda-forge/cvxopt-feedstock/blob/master/recipe\npackage:\n  name: kvxopt\n  version: {{ version }}\n\n\nsource:\n  - url: https://pypi.io/packages/source/k/kvxopt/kvxopt-{{ version }}.tar.gz\n    sha256: 158143bae53ab15716d328470982d1082ae6b9a04380d90764958b037581ad15\n\n  # on windows, building suitesparse in directly works much better than trying to build it separately and link it in\n  - url: https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v{{ suitesparse_for_win_version }}.tar.gz  # [win]\n    sha256: fe3bc7c3bd1efdfa5cffffb5cebf021ff024c83b5daf0ab445429d3d741bd3ad  # [win]\n    folder: suitesparse  # [win]\n    patches:   # [win]\n      - 0001-remove-BLAS_NO_UNDERSCORE-on-windows.patch                                                        # [win]\n\n\nbuild:\n  skip: true  # [py<35]\n  number: 0\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - {{ compiler('c') }}\n  host:\n    - libblas\n    - liblapack\n    - python\n    - setuptools\n    - gsl\n    - fftw\n    - dsdp\n    - glpk\n    - libosqp\n    # suitesparse is linked against on windows, and compiled-in on windows, because yeah, windows.\n    - suitesparse          # [not win]\n  run:\n    - python\n    - gsl\n    - fftw\n    - dsdp\n    - glpk\n    - libosqp\n    - suitesparse          # [not win]\n  run_constrained:\n    # CVXOPT and KVXOPT can be on the same environment. But include file cvxopt.h not. This can be changed in the future\n    - cvxopt ==999999999\n\ntest:\n  imports:\n    - kvxopt\n    - kvxopt.base\n    - kvxopt.blas\n    - kvxopt.cholmod\n    - kvxopt.lapack\n    - kvxopt.misc_solvers\n    - kvxopt.umfpack\n    - kvxopt.glpk\n    - kvxopt.fftw\n    - kvxopt.klu\n    - kvxopt.osqp\n    - kvxopt.fftw\n    - kvxopt.gsl\n    - kvxopt.glpk\n  source_files:\n    - tests/*\n    - examples/*\n  requires:\n    - pytest\n\nabout:\n  home: https://github.com/sanurielf/kvxopt\n  license: GPL-3.0-or-later\n  license_file: LICENSE\n  summary: Convex optimization package and Suite Sparse interface\n  doc_url: https://github.com/sanurielf/kvxopt\n  dev_url: https://github.com/sanurielf/kvxopt\n\nextra:\n  recipe-maintainers:\n    - sanurielf\n",
  "req": {
   "__set__": true,
@@ -1203,7 +1222,7 @@
    ]
   }
  },
- "smithy_version": "3.14.2",
+ "smithy_version": "3.14.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
