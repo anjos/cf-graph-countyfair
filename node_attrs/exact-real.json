@@ -18,6 +18,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/775590516.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.2.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -325,7 +342,11 @@
   }
  },
  "name": "exact-real",
- "new_version": "2.1.0",
+ "new_version": "2.2.0",
+ "new_version_attempts": {
+  "2.2.0": 1
+ },
+ "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
    "description": "exact-real is a C++/Python library which provides exact lazy computations\nin the Real Numbers. In particular it provides arithmetic and comparisons\nof (random) transcendental numbers.\n",
@@ -472,7 +493,7 @@
    "pyexactreal"
   ]
  },
- "pinning_version": "2021.09.17.05.51.46",
+ "pinning_version": "2021.11.08.01.51.47",
  "raw_meta_yaml": "{% set name = \"exact-real\" %}\n{% set version = \"2.1.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/flatsurf/exact-real/releases/download/{{ version }}/exact-real-{{ version }}.tar.gz\n  sha256: a592761c6d4999919be2354d17608542b9e21572b93e402e4fa96d22fcae76da\n  patches:\n    - macos.patch  # [osx]\n\nbuild:\n  number: 1\n  # dependency libeantic is not available for Windows on conda-forge yet\n  skip: true  # [win]\n\noutputs:\n  - name: libexactreal\n    script: build-libexactreal.sh  # [not win]\n    script: build-libexactreal.bat  # [win]\n    run_exports:\n      - {{ pin_subpackage(\"libexactreal\") }}\n    requirements:\n      build:\n        - libtool   # [unix]\n        - automake  # [unix]\n        - make      # [unix]\n        - autotools_clang_conda  # [win]\n        - gnuconfig  # [unix]\n        - {{ compiler('cxx') }}\n      host:\n        - arb\n        - boost-cpp\n        - libeantic >=1.0.2,<2\n        - gmp  # [unix]\n        - mpir  # [win]\n    test:\n      commands:\n        - test -f $PREFIX/include/exact-real/exact-real.hpp  # [unix]\n        - test -f $PREFIX/lib/libexactreal${SHLIB_EXT}                # [unix]\n  - name: pyexactreal\n    script: build-pyexactreal.sh  # [not win]\n    script: bld-pyexactreal.bat  # [win]\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - libtool   # [unix]\n        - automake  # [unix]\n        - make      # [unix]\n        - autotools_clang_conda  # [win]\n        - gnuconfig  # [unix]\n        - {{ compiler('cxx') }}\n      host:\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        - setuptools\n        - pytest\n        - {{ pin_subpackage(\"libexactreal\") }}\n      run:\n        # cppyy dynamically compiles C++ wrappers at runtime, therefore we need C++ headers of boost.\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        - pyeantic\n        - gmpxxyy\n        # A subpackage does not see the run_exports of another subpackage:\n        # https://github.com/conda/conda-build/issues/3478\n        - {{ pin_subpackage(\"libexactreal\") }}\n    test:\n      imports:\n        - pyexactreal\n\nabout:\n  home: https://github.com/flatsurf/exact-real\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: Lazy computations with real numbers in C++ and Python\n  description: |\n    exact-real is a C++/Python library which provides exact lazy computations\n    in the Real Numbers. In particular it provides arithmetic and comparisons\n    of (random) transcendental numbers.\n  dev_url: https://github.com/flatsurf/exact-real\n\nextra:\n  recipe-maintainers:\n    - saraedum\n",
  "req": {
   "__set__": true,
@@ -541,7 +562,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.12",
+ "smithy_version": "3.14.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
