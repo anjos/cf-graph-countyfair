@@ -342,7 +342,7 @@
     "__lazy_json__": "pr_json/621987086.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1636460816.5364745,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -398,7 +398,7 @@
    "summary": "Toolbox for electronic structure calculations and large scale transport"
   },
   "build": {
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -621,7 +621,7 @@
    "summary": "Toolbox for electronic structure calculations and large scale transport"
   },
   "build": {
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -946,7 +946,7 @@
    "summary": "Toolbox for electronic structure calculations and large scale transport"
   },
   "build": {
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1172,7 +1172,7 @@
   "pypy37": "not solvable: master: ['linux_64_python3.7.____73_pypy: Encountered problems while solving.\\nProblem: nothing provides hdf5 1.8.15* needed by netcdf4-1.2.4-np110py27_1\\n', 'linux_64_python3.8.____cpython: Encountered problems while solving.\\nProblem: package libcblas-3.8.0-4_h6e990d7_netlib requires libgfortran-ng >=7,<8.0a0, but none of the providers can be installed\\n', 'osx_64_python3.6.____cpython: Encountered problems while solving.\\nProblem: package libcblas-3.8.0-4_hd44dcd8_netlib requires libgfortran >=3.0.1,<4.0.0.a0, but none of the providers can be installed\\n', 'osx_64_python3.7.____73_pypy: Encountered problems while solving.\\nProblem: package scipy-1.1.0-py37_nomklh7cd7d8e_0 requires libgfortran >=3.0.1,<4.0.0.a0, but none of the providers can be installed\\n', 'osx_64_python3.7.____cpython: Encountered problems while solving.\\nProblem: package libcblas-3.8.0-4_hd44dcd8_netlib requires libgfortran >=3.0.1,<4.0.0.a0, but none of the providers can be installed\\n', 'osx_64_python3.8.____cpython: Encountered problems while solving.\\nProblem: package libcblas-3.8.0-4_hd44dcd8_netlib requires libgfortran >=3.0.1,<4.0.0.a0, but none of the providers can be installed\\n']",
   "python39": "not solvable: master: ['linux_64_c_compiler_version7fortran_compiler_version7python3.9.____cpython: Encountered problems while solving.\\nProblem: package scipy-1.5.2-py36h3a855aa_0 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'linux_64_c_compiler_version9fortran_compiler_version9python3.8.____cpython: Encountered problems while solving.\\nProblem: nothing provides hdf5 1.8.15* needed by netcdf4-1.2.4-np110py27_1\\n', 'linux_64_c_compiler_version9fortran_compiler_version9python3.9.____cpython: Encountered problems while solving.\\nProblem: nothing provides hdf5 1.8.15* needed by netcdf4-1.2.4-np110py27_1\\n', 'osx_64_fortran_compiler_version7python3.9.____cpython: Encountered problems while solving.\\nProblem: package scipy-1.1.0-py37hf41a071_1 requires numpy >=1.15.1,<2.0a0, but none of the providers can be installed\\n', 'osx_64_fortran_compiler_version9python3.6.____cpython: Encountered problems while solving.\\nProblem: package scipy-1.5.2-py36h04de62b_2 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'osx_64_fortran_compiler_version9python3.7.____cpython: Encountered problems while solving.\\nProblem: package scipy-1.5.2-py36h04de62b_2 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'osx_64_fortran_compiler_version9python3.8.____cpython: Encountered problems while solving.\\nProblem: package scipy-1.5.2-py36h04de62b_2 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'osx_64_fortran_compiler_version9python3.9.____cpython: Encountered problems while solving.\\nProblem: package scipy-1.5.2-py36h04de62b_2 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n']"
  },
- "raw_meta_yaml": "{% set name = \"sisl\" %}\n{% set version = \"0.11.0\" %}\n{% set sha256 = \"23dc2f91143921fb2b2c772e6ff59807163c22f03c00fcf018c8f51aefb02494\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/zerothi/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    - patches/random_failure_seed.patch\n\nbuild:\n  number: 2\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n  host:\n    - setuptools\n    - libblas\n    - libcblas\n    - liblapack\n    - python\n    - cython\n    # this is for the sisl requirement\n    - numpy >=1.13\n    # this is for conda-smithy so that the global\n    # pinning is correctly specified\n    - numpy\n    - scipy >=0.18\n    - netcdf4\n    - pyparsing >=1.5.7\n  run:\n    - python\n    - pyparsing >=1.5.7\n    - {{ pin_compatible('numpy') }}\n    - scipy >=0.18\n    - tqdm\n    - netcdf4\n  run_constrained:\n    - dill >=0.3.2\n    - xarray >=0.10.0\n\ntest:\n  requires:\n    - pytest\n  imports:\n    - sisl\n    - sisl.io\n    - sisl.io.siesta._siesta\n    - sisl.geom\n    - sisl.linalg\n    - sisl.mixing\n    - sisl.physics\n    - sisl.shape\n    - sisl.unit\n    - sisl.utils\n\nabout:\n  home: https://github.com/zerothi/sisl\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file: LICENSE\n  summary: Toolbox for electronic structure calculations and large scale transport\n  description: |\n    sisl is a tool to manipulate density functional\n    theory code input and/or output. It also implements tight-binding\n    tools to create and manipulate multi-orbital (non)-orthogonal basis sets.\n  doc_url: https://zerothi.github.io/sisl\n  dev_url: https://github.com/zerothi/sisl\n\nextra:\n  recipe-maintainers:\n    - zerothi\n",
+ "raw_meta_yaml": "{% set name = \"sisl\" %}\n{% set version = \"0.11.0\" %}\n{% set sha256 = \"23dc2f91143921fb2b2c772e6ff59807163c22f03c00fcf018c8f51aefb02494\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/zerothi/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    - patches/random_failure_seed.patch\n\nbuild:\n  number: 3\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n  host:\n    - setuptools\n    - libblas\n    - libcblas\n    - liblapack\n    - python\n    - cython\n    # this is for the sisl requirement\n    - numpy >=1.13\n    # this is for conda-smithy so that the global\n    # pinning is correctly specified\n    - numpy\n    - scipy >=0.18\n    - netcdf4\n    - pyparsing >=1.5.7\n  run:\n    - python\n    - pyparsing >=1.5.7\n    - {{ pin_compatible('numpy') }}\n    - scipy >=0.18\n    - tqdm\n    - netcdf4\n  run_constrained:\n    - dill >=0.3.2\n    - xarray >=0.10.0\n\ntest:\n  requires:\n    - pytest\n  imports:\n    - sisl\n    - sisl.io\n    - sisl.io.siesta._siesta\n    - sisl.geom\n    - sisl.linalg\n    - sisl.mixing\n    - sisl.physics\n    - sisl.shape\n    - sisl.unit\n    - sisl.utils\n\nabout:\n  home: https://github.com/zerothi/sisl\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file: LICENSE\n  summary: Toolbox for electronic structure calculations and large scale transport\n  description: |\n    sisl is a tool to manipulate density functional\n    theory code input and/or output. It also implements tight-binding\n    tools to create and manipulate multi-orbital (non)-orthogonal basis sets.\n  doc_url: https://zerothi.github.io/sisl\n  dev_url: https://github.com/zerothi/sisl\n\nextra:\n  recipe-maintainers:\n    - zerothi\n",
  "req": {
   "__set__": true,
   "elements": [
