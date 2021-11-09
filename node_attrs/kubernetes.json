@@ -867,7 +867,7 @@
     "__lazy_json__": "pr_json/691116058.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1636413041.8097196,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "1.21.3"
@@ -884,7 +884,7 @@
     "__lazy_json__": "pr_json/704013980.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1636413041.8099334,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "1.22.0"
@@ -901,7 +901,7 @@
     "__lazy_json__": "pr_json/716179689.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1636413041.81004,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "1.22.1"
@@ -918,7 +918,7 @@
     "__lazy_json__": "pr_json/735049354.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1636413041.810132,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "1.22.2"
@@ -1012,7 +1012,7 @@
   ],
   "package": {
    "name": "kubernetes",
-   "version": "1.21.2"
+   "version": "1.22.3"
   },
   "requirements": {
    "run": [
@@ -1025,8 +1025,8 @@
    "patches": [
     "0001-unset-conda-go-compiler.diff"
    ],
-   "sha256": "1173f1ea1b6d291666715f54c7d6dd9c54357c0f80aa453f243fd7b3a7498972",
-   "url": "https://github.com/kubernetes/kubernetes/archive/v1.21.2.tar.gz"
+   "sha256": "c1b20d29a25c7eb4a294e29196cfe78c594f61b60c49b5337715f45b3fa6efd9",
+   "url": "https://github.com/kubernetes/kubernetes/archive/v1.22.3.tar.gz"
   },
   "test": {
    "commands": [
@@ -1217,7 +1217,7 @@
   ],
   "package": {
    "name": "kubernetes",
-   "version": "1.21.2"
+   "version": "1.22.3"
   },
   "requirements": {
    "run": [
@@ -1235,8 +1235,8 @@
    "patches": [
     "0001-unset-conda-go-compiler.diff"
    ],
-   "sha256": "d812583b8da84272bace041404133b8f3fa9c4edab8c33d854f25ef70e991adc",
-   "url": "https://dl.k8s.io/v1.21.2/kubernetes-node-windows-amd64.tar.gz"
+   "sha256": "d3f6460f20534d54d06d28dc952c7fa39c980d185ae6a5c9831030b34323dc3e",
+   "url": "https://dl.k8s.io/v1.22.3/kubernetes-node-windows-amd64.tar.gz"
   },
   "test": {
    "commands": [
@@ -1356,7 +1356,7 @@
   ],
   "package": {
    "name": "kubernetes",
-   "version": "1.21.2"
+   "version": "1.22.3"
   },
   "requirements": {
    "run": [
@@ -1369,8 +1369,8 @@
    "patches": [
     "0001-unset-conda-go-compiler.diff"
    ],
-   "sha256": "1173f1ea1b6d291666715f54c7d6dd9c54357c0f80aa453f243fd7b3a7498972",
-   "url": "https://github.com/kubernetes/kubernetes/archive/v1.21.2.tar.gz"
+   "sha256": "c1b20d29a25c7eb4a294e29196cfe78c594f61b60c49b5337715f45b3fa6efd9",
+   "url": "https://github.com/kubernetes/kubernetes/archive/v1.22.3.tar.gz"
   },
   "test": {
    "commands": [
@@ -1422,7 +1422,7 @@
   ]
  },
  "pinning_version": "2021.09.15.18.54.07",
- "raw_meta_yaml": "{% set name = \"kubernetes\" %}\n{% set version = \"1.21.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/kubernetes/{{ name }}/archive/v{{ version }}.tar.gz  # [not win]\n  sha256: 1173f1ea1b6d291666715f54c7d6dd9c54357c0f80aa453f243fd7b3a7498972  # [not win]\n  patches:   # [not win]\n    - 0001-unset-conda-go-compiler.diff  # [not win]\n\n  url: https://dl.k8s.io/v{{ version }}/{{ name }}-node-windows-amd64.tar.gz  # [win]\n  sha256: d812583b8da84272bace041404133b8f3fa9c4edab8c33d854f25ef70e991adc  # [win]\n\nbuild:\n  number: 0\n\nrequirements:\n  run:\n    - {{ pin_subpackage('kubernetes-client', exact=True) }}\n    - {{ pin_subpackage('kubernetes-node', exact=True) }}\n    - {{ pin_subpackage('kubernetes-server', exact=True) }}  # [unix]\n\n\ntest:\n  commands:\n    - kubectl\n\n    - kubelet --help\n    - kube-proxy --help\n    - kubeadm --help\n\n    - kube-apiserver --help  # [unix]\n    - kube-controller-manager --help  # [unix]\n    - kube-scheduler --help  # [unix]\n\noutputs:\n  - name: {{ name }}-client\n    script: client/build.sh  # [unix]\n    script: client/bld.bat  # [win]\n    test:\n      script: client/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }} >=1.15  # [unix]\n        - {{ compiler('c') }}  # [unix]\n        - bash >=4.2  # [unix]\n        - make  # [unix]\n        - rsync  # [unix]\n        - jq  # [unix]\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      license_file: LICENSES/  # [win]\n      summary: Kubernetes client binaries\n\n  - name: {{ name }}-node\n    script: node/build.sh  # [unix]\n    script: node/bld.bat  # [win]\n    test:\n      script: node/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }} >=1.15  # [unix]\n        - {{ compiler('c') }}  # [unix]\n        - bash >=4.2  # [unix]\n        - make  # [unix]\n        - rsync  # [unix]\n        - jq  # [unix]\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      license_file: LICENSES/  # [win]\n      summary: Kubernetes node binaries\n\n  {% if unix %}\n  - name: {{ name }}-server\n    script: server/build.sh\n    test:\n      script: server/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }} >=1.15\n        - {{ compiler('c') }}\n        - bash >=4.2\n        - make\n        - rsync\n        - jq\n      run:\n        - {{ pin_subpackage('kubernetes-node', exact=True) }}\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      summary: Kubernetes server binaries\n  {% endif %}\n\nabout:\n  home: https://www.kubernetes.io\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE  # [not win]\n  license_file: LICENSES/  # [win]\n  summary: Production-Grade Container Orchestration\n  doc_url: https://docs.kubernetes.io\n  dev_url: https://github.com/kubernetes/kubernetes\n\nextra:\n  recipe-maintainers:\n    - mxr-conda\n    - sodre\n    - dhirschfeld\n",
+ "raw_meta_yaml": "{% set name = \"kubernetes\" %}\n{% set version = \"1.22.3\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/kubernetes/{{ name }}/archive/v{{ version }}.tar.gz  # [not win]\n  sha256: c1b20d29a25c7eb4a294e29196cfe78c594f61b60c49b5337715f45b3fa6efd9  # [not win]\n  patches:   # [not win]\n    - 0001-unset-conda-go-compiler.diff  # [not win]\n\n  url: https://dl.k8s.io/v{{ version }}/{{ name }}-node-windows-amd64.tar.gz  # [win]\n  sha256: d3f6460f20534d54d06d28dc952c7fa39c980d185ae6a5c9831030b34323dc3e  # [win]\n\nbuild:\n  number: 0\n\nrequirements:\n  run:\n    - {{ pin_subpackage('kubernetes-client', exact=True) }}\n    - {{ pin_subpackage('kubernetes-node', exact=True) }}\n    - {{ pin_subpackage('kubernetes-server', exact=True) }}  # [unix]\n\n\ntest:\n  commands:\n    - kubectl\n\n    - kubelet --help\n    - kube-proxy --help\n    - kubeadm --help\n\n    - kube-apiserver --help  # [unix]\n    - kube-controller-manager --help  # [unix]\n    - kube-scheduler --help  # [unix]\n\noutputs:\n  - name: {{ name }}-client\n    script: client/build.sh  # [unix]\n    script: client/bld.bat  # [win]\n    test:\n      script: client/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }} >=1.15  # [unix]\n        - {{ compiler('c') }}  # [unix]\n        - bash >=4.2  # [unix]\n        - make  # [unix]\n        - rsync  # [unix]\n        - jq  # [unix]\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      license_file: LICENSES/  # [win]\n      summary: Kubernetes client binaries\n\n  - name: {{ name }}-node\n    script: node/build.sh  # [unix]\n    script: node/bld.bat  # [win]\n    test:\n      script: node/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }} >=1.15  # [unix]\n        - {{ compiler('c') }}  # [unix]\n        - bash >=4.2  # [unix]\n        - make  # [unix]\n        - rsync  # [unix]\n        - jq  # [unix]\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      license_file: LICENSES/  # [win]\n      summary: Kubernetes node binaries\n\n  {% if unix %}\n  - name: {{ name }}-server\n    script: server/build.sh\n    test:\n      script: server/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }} >=1.15\n        - {{ compiler('c') }}\n        - bash >=4.2\n        - make\n        - rsync\n        - jq\n      run:\n        - {{ pin_subpackage('kubernetes-node', exact=True) }}\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      summary: Kubernetes server binaries\n  {% endif %}\n\nabout:\n  home: https://www.kubernetes.io\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE  # [not win]\n  license_file: LICENSES/  # [win]\n  summary: Production-Grade Container Orchestration\n  doc_url: https://docs.kubernetes.io\n  dev_url: https://github.com/kubernetes/kubernetes\n\nextra:\n  recipe-maintainers:\n    - mxr-conda\n    - sodre\n    - dhirschfeld\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1500,8 +1500,8 @@
    "elements": []
   }
  },
- "url": "https://dl.k8s.io/v1.21.2/kubernetes-node-windows-amd64.tar.gz",
- "version": "1.21.2",
+ "url": "https://dl.k8s.io/v1.22.3/kubernetes-node-windows-amd64.tar.gz",
+ "version": "1.22.3",
  "win_64_meta_yaml": {
   "about": {
    "dev_url": "https://github.com/kubernetes/kubernetes",
@@ -1556,7 +1556,7 @@
   ],
   "package": {
    "name": "kubernetes",
-   "version": "1.21.2"
+   "version": "1.22.3"
   },
   "requirements": {
    "run": [
@@ -1565,8 +1565,8 @@
    ]
   },
   "source": {
-   "sha256": "d812583b8da84272bace041404133b8f3fa9c4edab8c33d854f25ef70e991adc",
-   "url": "https://dl.k8s.io/v1.21.2/kubernetes-node-windows-amd64.tar.gz"
+   "sha256": "d3f6460f20534d54d06d28dc952c7fa39c980d185ae6a5c9831030b34323dc3e",
+   "url": "https://dl.k8s.io/v1.22.3/kubernetes-node-windows-amd64.tar.gz"
   },
   "test": {
    "commands": [
