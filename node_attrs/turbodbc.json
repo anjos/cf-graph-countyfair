@@ -588,6 +588,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/776820817.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python310"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -2225,13 +2244,11 @@
    "turbodbc"
   ]
  },
- "pinning_version": "2021.09.01.19.59.10",
+ "pinning_version": "2021.11.09.13.41.48",
  "pre_pr_migrator_attempts": {
-  "python310": 3,
   "python39": 1
  },
  "pre_pr_migrator_status": {
-  "python310": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1434966402\">bot CI job</a>): master: ['linux_64_arrow_cpp3.0.0numpy1.21python3.10.____cpython: Encountered problems while solving:\\n  - package arrow-cpp-3.0.0-py36h6b21186_4 requires libboost >=1.73.0,<1.73.1.0a0, but none of the providers can be installed\\n', 'osx_64_arrow_cpp3.0.0numpy1.21python3.10.____cpython: Encountered problems while solving:\\n  - package arrow-cpp-3.0.0-py36ha6b1260_4 requires libboost >=1.73.0,<1.73.1.0a0, but none of the providers can be installed\\n', 'osx_arm64_arrow_cpp3.0.0numpy1.21python3.10.____cpython: Encountered problems while solving:\\n  - package pyarrow-3.0.0-py38h4908e6c_0_cpu requires python_abi 3.8.* *_cp38, but none of the providers can be installed\\n']",
   "python39": "not solvable: master: ['linux_64_boost1.72.0boost_cpp1.72.0python3.9.____cpython: Encountered problems while solving.\\nProblem: package pyarrow-0.16.0-py36hca7f665_2 requires arrow-cpp >=0.16.0,<0.16.1.0a0, but none of the providers can be installed\\n', 'linux_64_boost1.74.0boost_cpp1.74.0python3.9.____cpython: Encountered problems while solving.\\nProblem: package boost-1.74.0-py36h6957fcd_0 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'osx_64_boost1.72.0boost_cpp1.72.0python3.9.____cpython: Encountered problems while solving.\\nProblem: package pyarrow-0.16.0-py36he3ac053_2 requires arrow-cpp >=0.16.0,<0.16.1.0a0, but none of the providers can be installed\\n', 'osx_64_boost1.74.0boost_cpp1.74.0python3.9.____cpython: Encountered problems while solving.\\nProblem: package boost-1.74.0-py36h588052b_0 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'win_64_boost1.72.0boost_cpp1.72.0python3.9.____cpython: Encountered problems while solving.\\nProblem: package numpy-base-1.16.0-py27hb1d0314_0 requires vc 9.*, but none of the providers can be installed\\n', 'win_64_boost1.74.0boost_cpp1.74.0python3.9.____cpython: Encountered problems while solving.\\nProblem: nothing provides vc 10.* needed by boost-1.63.0-py34_vc10_0\\n']"
  },
  "raw_meta_yaml": "{% set name = \"turbodbc\" %}\n{% set version = \"4.2.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: de16515f99744a082f62721a214c872888653e685a7aa75993d88e9abc88c352\n\nbuild:\n  number: 1\n  # turbodbc already has set the correct RPATHs, conda relocation breaks it\n  # so skip it.\n  binary_relocation: false\n  # Python 3.8+ fails due to linking errors\n  skip: true  # [(win and py>=38) or py<37]\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - cython                                 # [build_platform != target_platform]\n    - numpy                                  # [build_platform != target_platform]\n    - cmake\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - boost\n    - boost-cpp\n    - numpy\n    - pybind11\n    - python\n    - setuptools\n    - six\n    - unixodbc  # [unix]\n    - arrow-cpp\n    - pyarrow\n  run:\n    - python\n    # pkg_resources is used to determine the package version\n    - setuptools\n    - six\n    - {{ pin_compatible('numpy') }}\n    - unixodbc  # [unix]\n    - pyarrow\n\ntest:\n  requires:\n    - pip\n  imports:\n    - turbodbc\n    - turbodbc_arrow_support\n  commands:\n    # We need to remove pybind11 from the runtime dependencies for this to suceed. \n    # - pip check\n\nabout:\n  home: https://github.com/blue-yonder/turbodbc\n  license: MIT\n  license_file: LICENSE\n  summary: access relational databases via the Open Database Connectivity (ODBC) interface\n  description: |\n    Turbodbc is a Python module to access relational databases via the Open\n    Database Connectivity (ODBC) interface. In addition to complying with the\n    Python Database API Specification 2.0, turbodbc offers built-in NumPy and\n    Apache Arrow support. Don't wait minutes for your results, just blink.\n\nextra:\n  recipe-maintainers:\n    - MathMagique\n    - xhochy\n    - wesm\n    - fjetter\n",
@@ -2299,7 +2316,7 @@
    ]
   }
  },
- "smithy_version": "3.12",
+ "smithy_version": "3.14.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
