@@ -575,6 +575,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/778599310.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "8.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -748,7 +765,7 @@
   }
  },
  "name": "pyobjc-framework-cocoa",
- "new_version": "7.3",
+ "new_version": "8.0",
  "new_version_attempts": {
   "6.2.1": 2,
   "6.2.2": 2,
@@ -756,7 +773,8 @@
   "7.0.1": 1,
   "7.1": 1,
   "7.2": 1,
-  "7.3": 2
+  "7.3": 2,
+  "8.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1027,7 +1045,7 @@
    "pyobjc-framework-cocoa"
   ]
  },
- "pinning_version": "2021.11.08.01.51.47",
+ "pinning_version": "2021.11.11.10.04.21",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"7.3\" %}\n{% set name = \"pyobjc-framework-Cocoa\" %}\n\npackage:\n  name: pyobjc-framework-cocoa\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: b18d05e7a795a3455ad191c3e43d6bfa673c2a4fd480bb1ccf57191051b80b7e\n\nbuild:\n  number: 2\n  script:\n    # force pyobjc to use conda-forge's chosen SDK\n    - export CFLAGS=\"${CFLAGS} -isysroot ${SDKROOT:-$CONDA_BUILD_SYSROOT}\"\n    # force ignoring invalid compiler flag (-Wl,-export-dynamic)\n    - export CFLAGS=\"${CFLAGS} -Wno-unused-command-line-argument\"  # [py == 37 or py == 38]\n    - {{ PYTHON }} -m pip install . -vv\n  skip: true  # [(not osx) or py2k or python_impl == 'pypy' or (arm64 and py < 39)]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n  host:\n    - python\n    - pip\n    - setuptools\n    - libffi\n  run:\n    - python\n    - pyobjc-core {{ version }}\n    - libffi\n\ntest:\n  requires:\n    - pip\n  commands:\n    - pip check\n  imports:\n    - AppKit\n    - Cocoa\n    - CoreFoundation\n    - Foundation\n    - PyObjCTools\n\nabout:\n  home: https://github.com/ronaldoussoren/pyobjc\n  license: MIT\n  license_file: LICENSE.txt\n  summary: Wrappers for the Cocoa frameworks on Mac OS X\n  doc_url: https://pyobjc.readthedocs.io/en/latest/\n\nextra:\n  recipe-maintainers:\n    - leofang\n    - jschueller\n",

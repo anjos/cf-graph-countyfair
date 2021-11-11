@@ -111,6 +111,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/778596255.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "8.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -266,9 +283,10 @@
   }
  },
  "name": "pyobjc-framework-metal",
- "new_version": "7.3",
+ "new_version": "8.0",
  "new_version_attempts": {
-  "7.3": 1
+  "7.3": 1,
+  "8.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -525,7 +543,7 @@
    "pyobjc-framework-metal"
   ]
  },
- "pinning_version": "2021.11.08.01.51.47",
+ "pinning_version": "2021.11.11.10.04.21",
  "raw_meta_yaml": "{% set version = \"7.3\" %}\n{% set name = \"pyobjc-framework-Metal\" %}\n\npackage:\n  name: pyobjc-framework-metal\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 249d996476cee9e8762839b16d6fcfedd4acd3195fe1ef436aa6e3806177db37\n\nbuild:\n  number: 2\n  script:\n    # force pyobjc to use conda-forge's chosen SDK\n    - export CFLAGS=\"${CFLAGS} -isysroot ${SDKROOT:-$CONDA_BUILD_SYSROOT}\"\n    # force ignoring invalid compiler flag (-Wl,-export-dynamic)\n    - export CFLAGS=\"${CFLAGS} -Wno-unused-command-line-argument\"  # [py == 37 or py == 38]\n    - {{ PYTHON }} -m pip install . -vv\n  skip: true  # [(not osx) or py2k or python_impl == 'pypy' or (arm64 and py < 39)]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n  host:\n    - python\n    - pip\n    - setuptools\n    - libffi\n  run:\n    - python\n    - pyobjc-core ={{ version }}\n    - pyobjc-framework-cocoa ={{ version }}\n    - libffi\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.11\") }}  # [osx]\n\ntest:\n  requires:\n    - pip\n  commands:\n    - python -c \"import Metal; print(Metal.MTLCreateSystemDefaultDevice())\"\n  imports:\n    - Metal\n\nabout:\n  home: https://github.com/ronaldoussoren/pyobjc\n  license: MIT\n  license_file: LICENSE.txt\n  summary: Wrappers for the Metal framework on macOS\n  doc_url: https://pyobjc.readthedocs.io/en/latest/\n\nextra:\n  recipe-maintainers:\n    - leofang\n",
  "req": {
   "__set__": true,
