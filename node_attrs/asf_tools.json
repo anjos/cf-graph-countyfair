@@ -15,7 +15,9 @@
   },
   "build": {
    "entry_points": [
-    "make_composite = asf_tools.composite:main"
+    "make_composite = asf_tools.composite:main",
+    "water_map = asf_tools.water_map:main",
+    "calculate_hand = asf_tools.hand.calculate:main"
    ],
    "noarch": "python",
    "number": "0",
@@ -30,7 +32,7 @@
   },
   "package": {
    "name": "asf_tools",
-   "version": "0.2.0"
+   "version": "0.3.0"
   },
   "requirements": {
    "host": [
@@ -42,21 +44,38 @@
    ],
    "run": [
     "python >=3.8",
+    "astropy",
+    "fiona",
+    "gdal >=3.3",
     "numpy",
-    "gdal >=3.2.0"
+    "pysheds",
+    "rasterio",
+    "scikit-fuzzy",
+    "scikit-image",
+    "shapely"
    ]
   },
   "source": {
-   "sha256": "29c9740d3c6e4a671ed171aad16ee62147847b5bf606f3332e1eb93c3791597b",
-   "url": "https://pypi.io/packages/source/a/asf_tools/asf_tools-0.2.0.tar.gz"
+   "sha256": "71c5e66f113b5b1339b42ab3a4916eef5d5ac49ae6aa8238af794817878a694a",
+   "url": "https://pypi.io/packages/source/a/asf_tools/asf_tools-0.3.0.tar.gz"
   },
   "test": {
    "commands": [
-    "make_composite --help"
+    "make_composite --help",
+    "water_map --help",
+    "calculate_hand --help"
    ],
    "imports": [
     "asf_tools",
-    "asf_tools.composite"
+    "asf_tools.composite",
+    "asf_tools.dem",
+    "asf_tools.hand",
+    "asf_tools.raster",
+    "asf_tools.threshold",
+    "asf_tools.tile",
+    "asf_tools.util",
+    "asf_tools.vector",
+    "asf_tools.water_map"
    ]
   }
  },
@@ -78,9 +97,16 @@
   "run": {
    "__set__": true,
    "elements": [
+    "astropy",
+    "fiona",
     "gdal",
     "numpy",
-    "python"
+    "pysheds",
+    "python",
+    "rasterio",
+    "scikit-fuzzy",
+    "scikit-image",
+    "shapely"
    ]
   },
   "test": {
@@ -98,7 +124,9 @@
   },
   "build": {
    "entry_points": [
-    "make_composite = asf_tools.composite:main"
+    "make_composite = asf_tools.composite:main",
+    "water_map = asf_tools.water_map:main",
+    "calculate_hand = asf_tools.hand.calculate:main"
    ],
    "noarch": "python",
    "number": "0",
@@ -113,7 +141,7 @@
   },
   "package": {
    "name": "asf_tools",
-   "version": "0.2.0"
+   "version": "0.3.0"
   },
   "requirements": {
    "host": [
@@ -125,42 +153,66 @@
    ],
    "run": [
     "python >=3.8",
+    "astropy",
+    "fiona",
+    "gdal >=3.3",
     "numpy",
-    "gdal >=3.2.0"
+    "pysheds",
+    "rasterio",
+    "scikit-fuzzy",
+    "scikit-image",
+    "shapely"
    ]
   },
   "source": {
-   "sha256": "29c9740d3c6e4a671ed171aad16ee62147847b5bf606f3332e1eb93c3791597b",
-   "url": "https://pypi.io/packages/source/a/asf_tools/asf_tools-0.2.0.tar.gz"
+   "sha256": "71c5e66f113b5b1339b42ab3a4916eef5d5ac49ae6aa8238af794817878a694a",
+   "url": "https://pypi.io/packages/source/a/asf_tools/asf_tools-0.3.0.tar.gz"
   },
   "test": {
    "commands": [
-    "make_composite --help"
+    "make_composite --help",
+    "water_map --help",
+    "calculate_hand --help"
    ],
    "imports": [
     "asf_tools",
-    "asf_tools.composite"
+    "asf_tools.composite",
+    "asf_tools.dem",
+    "asf_tools.hand",
+    "asf_tools.raster",
+    "asf_tools.threshold",
+    "asf_tools.tile",
+    "asf_tools.util",
+    "asf_tools.vector",
+    "asf_tools.water_map"
    ]
   }
  },
  "name": "asf_tools",
- "new_version": "0.2.0",
+ "new_version": "0.3.0",
  "outputs_names": {
   "__set__": true,
   "elements": [
    "asf_tools"
   ]
  },
- "raw_meta_yaml": "{% set name = \"asf_tools\" %}\n{% set version = \"0.2.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 29c9740d3c6e4a671ed171aad16ee62147847b5bf606f3332e1eb93c3791597b\n\nbuild:\n  noarch: python\n  number: 0\n  script: \"{{ PYTHON }} -m pip install . -vv\"\n  entry_points:\n    - make_composite = asf_tools.composite:main\n\nrequirements:\n  host:\n    - pip\n    - python >=3.8\n    - setuptools >=42\n    - setuptools_scm >=3.4\n    - wheel\n  run:\n    - python >=3.8\n    - numpy\n    - gdal >=3.2.0\n\ntest:\n  imports:\n    - asf_tools\n    - asf_tools.composite\n  commands:\n    - make_composite --help\n\nabout:\n  home: https://github.com/ASFHyP3/asf-tools\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Tools developed by ASF for working with SAR data\n\nextra:\n  recipe-maintainers:\n    - jhkennedy\n    - asjohnston-asf\n    - jlrine2\n",
+ "raw_meta_yaml": "{% set name = \"asf_tools\" %}\n{% set version = \"0.3.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 71c5e66f113b5b1339b42ab3a4916eef5d5ac49ae6aa8238af794817878a694a\n\nbuild:\n  noarch: python\n  number: 0\n  script: \"{{ PYTHON }} -m pip install . -vv\"\n  entry_points:\n    - make_composite = asf_tools.composite:main\n    - water_map = asf_tools.water_map:main\n    - calculate_hand = asf_tools.hand.calculate:main\n\nrequirements:\n  host:\n    - pip\n    - python >=3.8\n    - setuptools >=42\n    - setuptools_scm >=3.4\n    - wheel\n  run:\n    - python >=3.8\n    - astropy\n    - fiona\n    - gdal >=3.3\n    - numpy\n    - pysheds\n    - rasterio\n    - scikit-fuzzy\n    - scikit-image\n    - shapely\n\ntest:\n  imports:\n    - asf_tools\n    - asf_tools.composite\n    - asf_tools.dem\n    - asf_tools.hand\n    - asf_tools.raster\n    - asf_tools.threshold\n    - asf_tools.tile\n    - asf_tools.util\n    - asf_tools.vector\n    - asf_tools.water_map\n  commands:\n    - make_composite --help\n    - water_map --help\n    - calculate_hand --help\n\nabout:\n  home: https://github.com/ASFHyP3/asf-tools\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Tools developed by ASF for working with SAR data\n\nextra:\n  recipe-maintainers:\n    - jhkennedy\n    - asjohnston-asf\n    - jlrine2\n",
  "req": {
   "__set__": true,
   "elements": [
+   "astropy",
+   "fiona",
    "gdal",
    "numpy",
    "pip",
+   "pysheds",
    "python",
+   "rasterio",
+   "scikit-fuzzy",
+   "scikit-image",
    "setuptools",
    "setuptools_scm",
+   "shapely",
    "wheel"
   ]
  },
@@ -182,9 +234,16 @@
   "run": {
    "__set__": true,
    "elements": [
+    "astropy",
+    "fiona",
     "gdal",
     "numpy",
-    "python"
+    "pysheds",
+    "python",
+    "rasterio",
+    "scikit-fuzzy",
+    "scikit-image",
+    "shapely"
    ]
   },
   "test": {
@@ -211,9 +270,16 @@
   "run": {
    "__set__": true,
    "elements": [
-    "gdal >=3.2.0",
+    "astropy",
+    "fiona",
+    "gdal >=3.3",
     "numpy",
-    "python >=3.8"
+    "pysheds",
+    "python >=3.8",
+    "rasterio",
+    "scikit-fuzzy",
+    "scikit-image",
+    "shapely"
    ]
   },
   "test": {
@@ -221,6 +287,6 @@
    "elements": []
   }
  },
- "url": "https://pypi.io/packages/source/a/asf_tools/asf_tools-0.2.0.tar.gz",
- "version": "0.2.0"
+ "url": "https://pypi.io/packages/source/a/asf_tools/asf_tools-0.3.0.tar.gz",
+ "version": "0.3.0"
 }
