@@ -67,6 +67,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/781498849.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python310"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -81,52 +100,100 @@
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
   "about": {
-   "description": "Elasto-plastic material model (C++ header-only library).",
+   "description": "Elasto-plastic material model.",
    "dev_url": "https://github.com/tdegeus/GMatElastoPlastic",
-   "doc_url": "https://github.com/tdegeus/GMatElastoPlastic",
+   "doc_url": "https://tdegeus.github.io/GMatElastoPlastic",
    "home": "https://github.com/tdegeus/GMatElastoPlastic",
    "license": "MIT",
    "license_family": "MIT",
    "license_file": "LICENSE",
-   "summary": "Elasto-plastic material model (C++ header-only library)."
+   "summary": "Elasto-plastic material model."
   },
   "build": {
-   "number": "0"
+   "number": "0",
+   "script_env": "SETUPTOOLS_SCM_PRETEND_VERSION=0.2.1"
   },
   "extra": {
    "recipe-maintainers": [
     "tdegeus"
    ]
   },
+  "outputs": [
+   {
+    "name": "gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ],
+     "run": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GMatElastoPlastic",
+      "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
+      "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "numpy *",
+      "pip",
+      "pybind11",
+      "python",
+      "scikit-build",
+      "setuptools_scm",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python",
+      "numpy *"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check",
+      "python -c \"import GMatElastoPlastic; GMatElastoPlastic.version()\""
+     ],
+     "imports": [
+      "GMatElastoPlastic"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "gmatelastoplastic",
-   "version": "0.2.0"
-  },
-  "requirements": {
-   "build": [
-    "cxx_compiler_stub",
-    "cmake",
-    "make",
-    "xtensor",
-    "gmattensor",
-    "gmatelastic"
-   ],
-   "run": [
-    "xtensor",
-    "gmattensor",
-    "gmatelastic"
-   ]
+   "name": "gmatelastoplastic-split",
+   "version": "0.2.1"
   },
   "source": {
-   "sha256": "dae10130d34b4ecb17dae0eed17cdc96f6f008c0b93a24a086f0793d7372823b",
-   "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.0.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -d ${PREFIX}/include/GMatElastoPlastic",
-    "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
-    "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake"
-   ]
+   "sha256": "c6a2d10c5ebc0a85c49487c474a1f42ccc1301edbdf85ac0cd6b878eba37a844",
+   "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.1.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -135,42 +202,56 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "gmatelastic",
-    "gmattensor",
     "make",
-    "xtensor"
+    "ninja"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "gmatelastic",
+    "gmattensor",
+    "numpy",
+    "pip",
+    "pybind11",
+    "python",
+    "scikit-build",
+    "setuptools_scm",
+    "xtensor",
+    "xtensor-python"
+   ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "gmatelastic",
     "gmattensor",
+    "numpy",
+    "python",
     "xtensor"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "meta_yaml": {
   "about": {
-   "description": "Elasto-plastic material model (C++ header-only library).",
+   "description": "Elasto-plastic material model.",
    "dev_url": "https://github.com/tdegeus/GMatElastoPlastic",
-   "doc_url": "https://github.com/tdegeus/GMatElastoPlastic",
+   "doc_url": "https://tdegeus.github.io/GMatElastoPlastic",
    "home": "https://github.com/tdegeus/GMatElastoPlastic",
    "license": "MIT",
    "license_family": "MIT",
    "license_file": "LICENSE",
-   "summary": "Elasto-plastic material model (C++ header-only library)."
+   "summary": "Elasto-plastic material model."
   },
   "build": {
-   "number": "0"
+   "number": "0",
+   "script_env": "SETUPTOOLS_SCM_PRETEND_VERSION=0.2.1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -180,72 +261,284 @@
     "tdegeus"
    ]
   },
+  "outputs": [
+   {
+    "name": "gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ],
+     "run": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GMatElastoPlastic",
+      "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
+      "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "numpy *",
+      "pip",
+      "pybind11",
+      "python",
+      "scikit-build",
+      "setuptools_scm",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python",
+      "numpy *"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check",
+      "python -c \"import GMatElastoPlastic; GMatElastoPlastic.version()\""
+     ],
+     "imports": [
+      "GMatElastoPlastic"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "name": "gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ],
+     "run": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GMatElastoPlastic",
+      "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
+      "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "numpy *",
+      "pip",
+      "pybind11",
+      "python",
+      "scikit-build",
+      "setuptools_scm",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python",
+      "numpy *"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check",
+      "python -c \"import GMatElastoPlastic; GMatElastoPlastic.version()\""
+     ],
+     "imports": [
+      "GMatElastoPlastic"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "name": "gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ],
+     "run": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GMatElastoPlastic",
+      "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
+      "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "numpy *",
+      "pip",
+      "pybind11",
+      "python",
+      "scikit-build",
+      "setuptools_scm",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python",
+      "numpy *"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check",
+      "python -c \"import GMatElastoPlastic; GMatElastoPlastic.version()\""
+     ],
+     "imports": [
+      "GMatElastoPlastic"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "name": "gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ],
+     "run": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ]
+    },
+    "script": "install.bat",
+    "test": {
+     "commands": [
+      "if exist %LIBRARY_PREFIX%\\include\\GMatElastoPlastic\\Cartesian3d.h (exit 0) else (exit 1)",
+      "if exist %LIBRARY_PREFIX%\\lib\\cmake\\GMatElastoPlasticConfig.cmake (exit 0) else (exit 1)"
+     ]
+    }
+   },
+   {
+    "name": "python-gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "numpy *",
+      "pip",
+      "pybind11",
+      "python",
+      "scikit-build",
+      "setuptools_scm",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python",
+      "numpy *"
+     ]
+    },
+    "script": "install_python.bat",
+    "test": {
+     "commands": [
+      "pip check",
+      "python -c \"import GMatElastoPlastic; GMatElastoPlastic.version()\""
+     ],
+     "imports": [
+      "GMatElastoPlastic"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "gmatelastoplastic",
-   "version": "0.2.0"
-  },
-  "requirements": {
-   "build": [
-    "cxx_compiler_stub",
-    "cmake",
-    "make",
-    "xtensor",
-    "gmattensor",
-    "gmatelastic",
-    "cxx_compiler_stub",
-    "cmake",
-    "make",
-    "xtensor",
-    "gmattensor",
-    "gmatelastic",
-    "cxx_compiler_stub",
-    "cmake",
-    "make",
-    "xtensor",
-    "gmattensor",
-    "gmatelastic",
-    "cxx_compiler_stub",
-    "cmake",
-    "xtensor",
-    "gmattensor",
-    "gmatelastic"
-   ],
-   "run": [
-    "xtensor",
-    "gmattensor",
-    "gmatelastic",
-    "xtensor",
-    "gmattensor",
-    "gmatelastic",
-    "xtensor",
-    "gmattensor",
-    "gmatelastic",
-    "xtensor",
-    "gmattensor",
-    "gmatelastic"
-   ]
+   "name": "gmatelastoplastic-split",
+   "version": "0.2.1"
   },
   "source": {
-   "sha256": "dae10130d34b4ecb17dae0eed17cdc96f6f008c0b93a24a086f0793d7372823b",
-   "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.0.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -d ${PREFIX}/include/GMatElastoPlastic",
-    "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
-    "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake",
-    "test -d ${PREFIX}/include/GMatElastoPlastic",
-    "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
-    "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake",
-    "test -d ${PREFIX}/include/GMatElastoPlastic",
-    "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
-    "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake",
-    "if exist %LIBRARY_PREFIX%\\include\\GMatElastoPlastic\\Cartesian3d.h (exit 0) else (exit 1)",
-    "if exist %LIBRARY_PREFIX%\\lib\\cmake\\GMatElastoPlasticConfig.cmake (exit 0) else (exit 1)"
-   ]
+   "sha256": "c6a2d10c5ebc0a85c49487c474a1f42ccc1301edbdf85ac0cd6b878eba37a844",
+   "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.1.tar.gz"
   }
  },
- "name": "gmatelastoplastic",
+ "name": "gmatelastoplastic-split",
  "new_version": "0.2.1",
  "new_version_attempts": {
   "0.2.0": 1,
@@ -254,52 +547,100 @@
  "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
-   "description": "Elasto-plastic material model (C++ header-only library).",
+   "description": "Elasto-plastic material model.",
    "dev_url": "https://github.com/tdegeus/GMatElastoPlastic",
-   "doc_url": "https://github.com/tdegeus/GMatElastoPlastic",
+   "doc_url": "https://tdegeus.github.io/GMatElastoPlastic",
    "home": "https://github.com/tdegeus/GMatElastoPlastic",
    "license": "MIT",
    "license_family": "MIT",
    "license_file": "LICENSE",
-   "summary": "Elasto-plastic material model (C++ header-only library)."
+   "summary": "Elasto-plastic material model."
   },
   "build": {
-   "number": "0"
+   "number": "0",
+   "script_env": "SETUPTOOLS_SCM_PRETEND_VERSION=0.2.1"
   },
   "extra": {
    "recipe-maintainers": [
     "tdegeus"
    ]
   },
+  "outputs": [
+   {
+    "name": "gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ],
+     "run": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GMatElastoPlastic",
+      "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
+      "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "numpy *",
+      "pip",
+      "pybind11",
+      "python",
+      "scikit-build",
+      "setuptools_scm",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python",
+      "numpy *"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check",
+      "python -c \"import GMatElastoPlastic; GMatElastoPlastic.version()\""
+     ],
+     "imports": [
+      "GMatElastoPlastic"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "gmatelastoplastic",
-   "version": "0.2.0"
-  },
-  "requirements": {
-   "build": [
-    "cxx_compiler_stub",
-    "cmake",
-    "make",
-    "xtensor",
-    "gmattensor",
-    "gmatelastic"
-   ],
-   "run": [
-    "xtensor",
-    "gmattensor",
-    "gmatelastic"
-   ]
+   "name": "gmatelastoplastic-split",
+   "version": "0.2.1"
   },
   "source": {
-   "sha256": "dae10130d34b4ecb17dae0eed17cdc96f6f008c0b93a24a086f0793d7372823b",
-   "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.0.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -d ${PREFIX}/include/GMatElastoPlastic",
-    "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
-    "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake"
-   ]
+   "sha256": "c6a2d10c5ebc0a85c49487c474a1f42ccc1301edbdf85ac0cd6b878eba37a844",
+   "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.1.tar.gz"
   }
  },
  "osx_64_requirements": {
@@ -308,77 +649,138 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "gmatelastic",
-    "gmattensor",
     "make",
-    "xtensor"
+    "ninja"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "gmatelastic",
+    "gmattensor",
+    "numpy",
+    "pip",
+    "pybind11",
+    "python",
+    "scikit-build",
+    "setuptools_scm",
+    "xtensor",
+    "xtensor-python"
+   ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "gmatelastic",
     "gmattensor",
+    "numpy",
+    "python",
     "xtensor"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "osx_arm64_meta_yaml": {
   "about": {
-   "description": "Elasto-plastic material model (C++ header-only library).",
+   "description": "Elasto-plastic material model.",
    "dev_url": "https://github.com/tdegeus/GMatElastoPlastic",
-   "doc_url": "https://github.com/tdegeus/GMatElastoPlastic",
+   "doc_url": "https://tdegeus.github.io/GMatElastoPlastic",
    "home": "https://github.com/tdegeus/GMatElastoPlastic",
    "license": "MIT",
    "license_family": "MIT",
    "license_file": "LICENSE",
-   "summary": "Elasto-plastic material model (C++ header-only library)."
+   "summary": "Elasto-plastic material model."
   },
   "build": {
-   "number": "0"
+   "number": "0",
+   "script_env": "SETUPTOOLS_SCM_PRETEND_VERSION=0.2.1"
   },
   "extra": {
    "recipe-maintainers": [
     "tdegeus"
    ]
   },
+  "outputs": [
+   {
+    "name": "gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ],
+     "run": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -d ${PREFIX}/include/GMatElastoPlastic",
+      "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
+      "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake"
+     ]
+    }
+   },
+   {
+    "name": "python-gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "numpy *",
+      "pip",
+      "pybind11",
+      "python",
+      "scikit-build",
+      "setuptools_scm",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python",
+      "numpy *"
+     ]
+    },
+    "script": "install_python.sh",
+    "test": {
+     "commands": [
+      "pip check",
+      "python -c \"import GMatElastoPlastic; GMatElastoPlastic.version()\""
+     ],
+     "imports": [
+      "GMatElastoPlastic"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "gmatelastoplastic",
-   "version": "0.2.0"
-  },
-  "requirements": {
-   "build": [
-    "cxx_compiler_stub",
-    "cmake",
-    "make",
-    "xtensor",
-    "gmattensor",
-    "gmatelastic"
-   ],
-   "run": [
-    "xtensor",
-    "gmattensor",
-    "gmatelastic"
-   ]
+   "name": "gmatelastoplastic-split",
+   "version": "0.2.1"
   },
   "source": {
-   "sha256": "dae10130d34b4ecb17dae0eed17cdc96f6f008c0b93a24a086f0793d7372823b",
-   "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.0.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -d ${PREFIX}/include/GMatElastoPlastic",
-    "test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h",
-    "test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake"
-   ]
+   "sha256": "c6a2d10c5ebc0a85c49487c474a1f42ccc1301edbdf85ac0cd6b878eba37a844",
+   "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.1.tar.gz"
   }
  },
  "osx_arm64_requirements": {
@@ -387,37 +789,51 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "gmatelastic",
-    "gmattensor",
     "make",
-    "xtensor"
+    "ninja"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "gmatelastic",
+    "gmattensor",
+    "numpy",
+    "pip",
+    "pybind11",
+    "python",
+    "scikit-build",
+    "setuptools_scm",
+    "xtensor",
+    "xtensor-python"
+   ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "gmatelastic",
     "gmattensor",
+    "numpy",
+    "python",
     "xtensor"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "outputs_names": {
   "__set__": true,
   "elements": [
-   "gmatelastoplastic"
+   "gmatelastoplastic",
+   "python-gmatelastoplastic"
   ]
  },
- "pinning_version": "2021.08.30.12.31.33",
- "raw_meta_yaml": "{% set name = \"gmatelastoplastic\" %}\n{% set version = \"0.2.0\" %}\n{% set sha256 = \"dae10130d34b4ecb17dae0eed17cdc96f6f008c0b93a24a086f0793d7372823b\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/tdegeus/GMatElastoPlastic/archive/v{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - make  # [unix]\n    - xtensor\n    - gmattensor\n    - gmatelastic\n  run:\n    - xtensor\n    - gmattensor\n    - gmatelastic\n\ntest:\n  commands:\n    - test -d ${PREFIX}/include/GMatElastoPlastic  # [unix]\n    - test -f ${PREFIX}/include/GMatElastoPlastic/Cartesian3d.h  # [unix]\n    - test -f ${PREFIX}/lib/cmake/GMatElastoPlastic/GMatElastoPlasticConfig.cmake  # [unix]\n    - if exist %LIBRARY_PREFIX%\\include\\GMatElastoPlastic\\Cartesian3d.h (exit 0) else (exit 1)  # [win]\n    - if exist %LIBRARY_PREFIX%\\lib\\cmake\\GMatElastoPlasticConfig.cmake (exit 0) else (exit 1)  # [win]\n\nabout:\n  home: https://github.com/tdegeus/GMatElastoPlastic\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Elasto-plastic material model (C++ header-only library).\n  description: Elasto-plastic material model (C++ header-only library).\n  doc_url: https://github.com/tdegeus/GMatElastoPlastic\n  dev_url: https://github.com/tdegeus/GMatElastoPlastic\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
+ "pinning_version": "2021.11.16.06.51.28",
+ "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"GMatElastoPlastic\" %}\n{% set version = \"0.2.1\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: c6a2d10c5ebc0a85c49487c474a1f42ccc1301edbdf85ac0cd6b878eba37a844\n\nbuild:\n  number: 0\n  script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n  skip: True  # [python_impl == 'pypy']\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - gmatelastic\n        - gmattensor\n        - xtensor\n      run:\n        - gmatelastic\n        - gmattensor\n        - xtensor\n\n    test:\n      commands:\n        - test -d ${PREFIX}/include/{{ name }}  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/Cartesian3d.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\Cartesian3d.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - numpy *                             # [build_platform != target_platform]\n        - setuptools_scm                      # [build_platform != target_platform]\n        - {{ compiler('cxx') }}\n        - cmake\n        - ninja\n      host:\n        - gmatelastic\n        - gmattensor\n        - numpy *\n        - pip\n        - pybind11\n        - python\n        - scikit-build\n        - setuptools_scm\n        - xtensor\n        - xtensor-python\n      run:\n        - python\n        - numpy *\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n        - python -c \"import {{ name }}; {{ name }}.version()\"\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Elasto-plastic material model.\n  description: Elasto-plastic material model.\n  doc_url: https://{{ org }}.github.io/{{ name }}\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -426,7 +842,15 @@
    "gmatelastic",
    "gmattensor",
    "make",
-   "xtensor"
+   "ninja",
+   "numpy",
+   "pip",
+   "pybind11",
+   "python",
+   "scikit-build",
+   "setuptools_scm",
+   "xtensor",
+   "xtensor-python"
   ]
  },
  "requirements": {
@@ -435,16 +859,24 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "gmatelastic",
-    "gmattensor",
     "make",
-    "xtensor"
+    "ninja"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "gmatelastic",
+    "gmattensor",
+    "numpy",
+    "pip",
+    "pybind11",
+    "python",
+    "scikit-build",
+    "setuptools_scm",
+    "xtensor",
+    "xtensor-python"
    ]
   },
   "run": {
@@ -453,15 +885,19 @@
     "cxx_compiler_stub",
     "gmatelastic",
     "gmattensor",
+    "numpy",
+    "python",
     "xtensor"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
- "smithy_version": "3.12",
+ "smithy_version": "3.14.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
@@ -469,77 +905,138 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "gmatelastic",
-    "gmattensor",
     "make",
-    "xtensor"
+    "ninja"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "gmatelastic",
+    "gmattensor",
+    "numpy *",
+    "pip",
+    "pybind11",
+    "python",
+    "scikit-build",
+    "setuptools_scm",
+    "xtensor",
+    "xtensor-python"
+   ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "gmatelastic",
     "gmattensor",
+    "numpy *",
+    "python",
     "xtensor"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
- "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.0.tar.gz",
- "version": "0.2.0",
+ "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.1.tar.gz",
+ "version": "0.2.1",
  "win_64_meta_yaml": {
   "about": {
-   "description": "Elasto-plastic material model (C++ header-only library).",
+   "description": "Elasto-plastic material model.",
    "dev_url": "https://github.com/tdegeus/GMatElastoPlastic",
-   "doc_url": "https://github.com/tdegeus/GMatElastoPlastic",
+   "doc_url": "https://tdegeus.github.io/GMatElastoPlastic",
    "home": "https://github.com/tdegeus/GMatElastoPlastic",
    "license": "MIT",
    "license_family": "MIT",
    "license_file": "LICENSE",
-   "summary": "Elasto-plastic material model (C++ header-only library)."
+   "summary": "Elasto-plastic material model."
   },
   "build": {
-   "number": "0"
+   "number": "0",
+   "script_env": "SETUPTOOLS_SCM_PRETEND_VERSION=0.2.1"
   },
   "extra": {
    "recipe-maintainers": [
     "tdegeus"
    ]
   },
+  "outputs": [
+   {
+    "name": "gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ],
+     "run": [
+      "gmatelastic",
+      "gmattensor",
+      "xtensor"
+     ]
+    },
+    "script": "install.bat",
+    "test": {
+     "commands": [
+      "if exist %LIBRARY_PREFIX%\\include\\GMatElastoPlastic\\Cartesian3d.h (exit 0) else (exit 1)",
+      "if exist %LIBRARY_PREFIX%\\lib\\cmake\\GMatElastoPlasticConfig.cmake (exit 0) else (exit 1)"
+     ]
+    }
+   },
+   {
+    "name": "python-gmatelastoplastic",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "gmatelastic",
+      "gmattensor",
+      "numpy *",
+      "pip",
+      "pybind11",
+      "python",
+      "scikit-build",
+      "setuptools_scm",
+      "xtensor",
+      "xtensor-python"
+     ],
+     "run": [
+      "python",
+      "numpy *"
+     ]
+    },
+    "script": "install_python.bat",
+    "test": {
+     "commands": [
+      "pip check",
+      "python -c \"import GMatElastoPlastic; GMatElastoPlastic.version()\""
+     ],
+     "imports": [
+      "GMatElastoPlastic"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "gmatelastoplastic",
-   "version": "0.2.0"
-  },
-  "requirements": {
-   "build": [
-    "cxx_compiler_stub",
-    "cmake",
-    "xtensor",
-    "gmattensor",
-    "gmatelastic"
-   ],
-   "run": [
-    "xtensor",
-    "gmattensor",
-    "gmatelastic"
-   ]
+   "name": "gmatelastoplastic-split",
+   "version": "0.2.1"
   },
   "source": {
-   "sha256": "dae10130d34b4ecb17dae0eed17cdc96f6f008c0b93a24a086f0793d7372823b",
-   "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.0.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "if exist %LIBRARY_PREFIX%\\include\\GMatElastoPlastic\\Cartesian3d.h (exit 0) else (exit 1)",
-    "if exist %LIBRARY_PREFIX%\\lib\\cmake\\GMatElastoPlasticConfig.cmake (exit 0) else (exit 1)"
-   ]
+   "sha256": "c6a2d10c5ebc0a85c49487c474a1f42ccc1301edbdf85ac0cd6b878eba37a844",
+   "url": "https://github.com/tdegeus/GMatElastoPlastic/archive/v0.2.1.tar.gz"
   }
  },
  "win_64_requirements": {
@@ -548,26 +1045,39 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "gmatelastic",
-    "gmattensor",
-    "xtensor"
+    "ninja"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "gmatelastic",
+    "gmattensor",
+    "numpy",
+    "pip",
+    "pybind11",
+    "python",
+    "scikit-build",
+    "setuptools_scm",
+    "xtensor",
+    "xtensor-python"
+   ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "gmatelastic",
     "gmattensor",
+    "numpy",
+    "python",
     "xtensor"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  }
 }
