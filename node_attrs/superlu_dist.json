@@ -252,7 +252,11 @@
    "summary": "Supernodal LU, solvers for large, sparse, nonsymmetric systems of linear\nequations. SuperLU_DIST is a parallel extension to the serial SuperLU library.\n"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "superlu_dist",
+    "superlu_dist"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -367,7 +371,11 @@
    "summary": "Supernodal LU, solvers for large, sparse, nonsymmetric systems of linear\nequations. SuperLU_DIST is a parallel extension to the serial SuperLU library.\n"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "superlu_dist",
+    "superlu_dist"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -482,7 +490,11 @@
    "summary": "Supernodal LU, solvers for large, sparse, nonsymmetric systems of linear\nequations. SuperLU_DIST is a parallel extension to the serial SuperLU library.\n"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "superlu_dist",
+    "superlu_dist"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -597,7 +609,19 @@
    "summary": "Supernodal LU, solvers for large, sparse, nonsymmetric systems of linear\nequations. SuperLU_DIST is a parallel extension to the serial SuperLU library.\n"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "superlu_dist",
+    "superlu_dist",
+    "superlu_dist",
+    "superlu_dist",
+    "superlu_dist",
+    "superlu_dist",
+    "superlu_dist",
+    "superlu_dist",
+    "superlu_dist",
+    "superlu_dist"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -854,7 +878,11 @@
    "summary": "Supernodal LU, solvers for large, sparse, nonsymmetric systems of linear\nequations. SuperLU_DIST is a parallel extension to the serial SuperLU library.\n"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "superlu_dist",
+    "superlu_dist"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -969,7 +997,11 @@
    "summary": "Supernodal LU, solvers for large, sparse, nonsymmetric systems of linear\nequations. SuperLU_DIST is a parallel extension to the serial SuperLU library.\n"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "superlu_dist",
+    "superlu_dist"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -1087,7 +1119,7 @@
  "pre_pr_migrator_status": {
   "gcc930": "not solvable: ['osx_64_fortran_compiler_version9: Encountered problems while solving.\\nProblem: package gfortran_osx-64-9.3.0-h083d653_6 requires cctools_osx-64, but none of the providers can be installed\\n']"
  },
- "raw_meta_yaml": "{% set version = \"7.1.1\" %}\n\npackage:\n  name: superlu_dist\n  version: {{ version }}\n\nsource:\n  fn: superlu-{{ version }}.tar.gz\n  url: https://github.com/xiaoyeli/superlu_dist/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 558053b3d4a56eb661c4f04d4fcab6604018ce5db97115394c161b56c9c278ff\n\nbuild:\n  number: 0\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - llvm-openmp  # [osx]\n    - libgomp      # [linux]\n    - cmake\n    - ninja\n    - {{ mpi }}  # [build_platform != target_platform and mpi == \"openmpi\"]\n  host:\n    - {{ mpi }}\n    - metis\n    - parmetis\n    - libblas\n    - liblapack\n  run:\n    # metis and parmetis are missing a run_exports section\n    - metis\n    - parmetis\n    - {{ pin_compatible('metis', max_pin='x.x') }}\n    - {{ pin_compatible('parmetis', max_pin='x.x') }}\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libsuperlu_dist.a\n    - test -f ${PREFIX}/lib/libsuperlu_dist${SHLIB_EXT}\n\nabout:\n  home: https://portal.nersc.gov/project/sparse/superlu/\n  license: BSD-3-Clause\n  license_file: License.txt\n  summary: |\n    Supernodal LU, solvers for large, sparse, nonsymmetric systems of linear\n    equations. SuperLU_DIST is a parallel extension to the serial SuperLU library.\n  dev_url: https://github.com/xiaoyeli/superlu_dist/\n  doc_url: https://portal.nersc.gov/project/sparse/superlu/superlu_dist_code_html/index.html\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - minrk\n    - davidbrochart\n    - SylvainCorlay\n",
+ "raw_meta_yaml": "{% set version = \"7.1.1\" %}\n\npackage:\n  name: superlu_dist\n  version: {{ version }}\n\nsource:\n  fn: superlu-{{ version }}.tar.gz\n  url: https://github.com/xiaoyeli/superlu_dist/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 558053b3d4a56eb661c4f04d4fcab6604018ce5db97115394c161b56c9c278ff\n\nbuild:\n  number: 1\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage('superlu_dist', max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - llvm-openmp  # [osx]\n    - libgomp      # [linux]\n    - cmake\n    - ninja\n    - {{ mpi }}  # [build_platform != target_platform and mpi == \"openmpi\"]\n  host:\n    - {{ mpi }}\n    - metis\n    - parmetis\n    - libblas\n    - liblapack\n  run:\n    # metis and parmetis are missing a run_exports section\n    - metis\n    - parmetis\n    - {{ pin_compatible('metis', max_pin='x.x') }}\n    - {{ pin_compatible('parmetis', max_pin='x.x') }}\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libsuperlu_dist.a\n    - test -f ${PREFIX}/lib/libsuperlu_dist${SHLIB_EXT}\n\nabout:\n  home: https://portal.nersc.gov/project/sparse/superlu/\n  license: BSD-3-Clause\n  license_file: License.txt\n  summary: |\n    Supernodal LU, solvers for large, sparse, nonsymmetric systems of linear\n    equations. SuperLU_DIST is a parallel extension to the serial SuperLU library.\n  dev_url: https://github.com/xiaoyeli/superlu_dist/\n  doc_url: https://portal.nersc.gov/project/sparse/superlu/superlu_dist_code_html/index.html\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - minrk\n    - davidbrochart\n    - SylvainCorlay\n",
  "req": {
   "__set__": true,
   "elements": [
