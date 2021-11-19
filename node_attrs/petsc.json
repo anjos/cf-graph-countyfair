@@ -1077,11 +1077,30 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/784178834.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "superlu_dist711"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
  "bad": false,
- "branch": "master",
+ "branch": "main",
  "conda-forge.yml": {
   "provider": {
    "linux_aarch64": "default",
@@ -5279,14 +5298,12 @@
    "petsc"
   ]
  },
- "pinning_version": "2021.11.01.21.58.36",
+ "pinning_version": "2021.11.18.16.59.41",
  "pre_pr_migrator_attempts": {
-  "gcc930": 1,
-  "superlu_dist711": 2
+  "gcc930": 1
  },
  "pre_pr_migrator_status": {
-  "gcc930": "not solvable: ['linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf51.10.6=mpi_mpimpich: Encountered problems while solving.\\nProblem: package superlu_dist-6.2.0-ha2c23be_4 requires libgfortran4 >=7.5.0, but none of the providers can be installed\\n', 'linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf51.10.6mpimpich: Encountered problems while solving.\\nProblem: package superlu_dist-6.2.0-ha2c23be_4 requires libgfortran4 >=7.5.0, but none of the providers can be installed\\n']",
-  "superlu_dist711": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1477834450\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1152, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 270, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 271, in eval_cmd\n    c = subprocess.run(\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 507, in run\n    stdout, stderr = process.communicate(input, timeout=timeout)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 1134, in communicate\n    stdout, stderr = self._communicate(input, endtime, timeout)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 1980, in _communicate\n    self._check_timeout(endtime, orig_timeout, stdout, stderr)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 1178, in _check_timeout\n    raise TimeoutExpired(\nsubprocess.TimeoutExpired: Command 'conda smithy rerender -c auto --no-check-uptodate' timed out after 300 seconds\n"
+  "gcc930": "not solvable: ['linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf51.10.6=mpi_mpimpich: Encountered problems while solving.\\nProblem: package superlu_dist-6.2.0-ha2c23be_4 requires libgfortran4 >=7.5.0, but none of the providers can be installed\\n', 'linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf51.10.6mpimpich: Encountered problems while solving.\\nProblem: package superlu_dist-6.2.0-ha2c23be_4 requires libgfortran4 >=7.5.0, but none of the providers can be installed\\n']"
  },
  "raw_meta_yaml": "{% set version = \"3.16.1\" %}\n{% set sha256 = \"909cf7bce7b6a0ddb2580a1ac9502aa01631ec4105c716594c1804f0ee1ea06a\" %}\n{% set build = 0 %}\n\n{% set mpi = mpi or 'mpich' %}\n{% if scalar == \"real\" %}\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: petsc\n  version: {{ version }}\n\nsource:\n  fn: petsc-{{ version }}.tar.gz\n  url: http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    - ignore-not-invalid.patch\n    - no-cppflags-in-pkgconfig-cflags.patch\n    - no-macos-mkdtemp-fix.patch\n\nbuild:\n  skip: true  # [win]\n  number: {{ build }}\n  string: {{ scalar }}_h{{ PKG_HASH }}_{{ build }}\n  run_exports:\n    - {{ pin_subpackage('petsc', max_pin='x.x') }}\n  track_features:\n    - petsc_complex  # [scalar == \"complex\"]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n    - pkg-config\n    - python\n  host:\n    - libblas\n    - libcblas\n    - liblapack\n    - cmake\n    - {{ mpi }}\n    - yaml\n    - hypre\n    - metis\n    - parmetis\n    - ptscotch\n    - scalapack\n    - superlu\n{% if mpi == \"mpich\" %}\n    - superlu_dist\n{% endif %}\n    - scotch\n    - mumps-mpi\n    - suitesparse\n    - hdf5\n    - fftw * mpi_{{ mpi }}_*\n  run:\n    - {{ mpi }}\n    - yaml\n    - hypre\n    - metis\n    - parmetis\n    - ptscotch\n    - scalapack\n    - superlu\n{% if mpi == \"mpich\" %}\n    - superlu_dist\n{% endif %}\n    - scotch\n    - mumps-mpi\n    - suitesparse\n    - hdf5\n    - fftw * mpi_{{ mpi }}_*\n\ntest:\n  requires:\n    - pkg-config\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n  files:\n    - tests/ex1.c\n    - tests/ex1f.F90\n    - tests/makefile\n  commands:\n    - pkg-config --validate PETSc\n    - pkg-config --cflags PETSc\n    - pkg-config --libs PETSc\n\nabout:\n  home: http://www.mcs.anl.gov/petsc/\n  summary: 'PETSc: Portable, Extensible Toolkit for Scientific Computation'\n  license: BSD-2-Clause\n  license_file: LICENSE\n  license_family: BSD\n\nextra:\n  recipe-maintainers:\n    - dalcinl\n    - minrk\n    - davidbrochart\n    - SylvainCorlay\n    - martinRenou\n",
  "req": {
@@ -5392,7 +5409,7 @@
    ]
   }
  },
- "smithy_version": "3.14.2",
+ "smithy_version": "3.14.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
