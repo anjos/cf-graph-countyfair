@@ -292,6 +292,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/788251576.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2021.11.24"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1164,7 +1181,7 @@
   }
  },
  "name": "micromamba",
- "new_version": "2021.11.19",
+ "new_version": "2021.11.24",
  "new_version_attempts": {
   "0.10.0": 9,
   "0.11.0": 1,
@@ -1209,7 +1226,8 @@
   "0.9.0": 3,
   "0.9.2": 1,
   "2021.11.17": 2,
-  "2021.11.19": 2
+  "2021.11.19": 2,
+  "2021.11.24": 1
  },
  "new_version_errors": {
   "0.10.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '0.10.0' to make sure they exist!\n\nWe also found the following errors:\n\n - no URLs in the source section\n",
@@ -1551,7 +1569,7 @@
    "micromamba"
   ]
  },
- "pinning_version": "2021.11.19.19.47.13",
+ "pinning_version": "2021.11.23.20.00.37",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"0.18.1\" %}\n{% set build_num = 0 %}\n\npackage:\n  name: micromamba\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/mamba-org/mamba/archive/{{ version }}.tar.gz\n    sha256: e659f097b8fd34185a64d91f0e46c9179d81e0ade29eb8975ba163214c9a8228\n    patches:\n      - libmamba.patch\n\nbuild:\n  number: {{ build_num }}\n  string: {{ build_num }}\n  ignore_run_exports_from:\n    - libcurl                  # [unix]\n    - libarchive               # [unix]\n    - reproc-cpp               # [unix]\n    - openssl                  # [unix]\n    - spdlog\n    - {{ compiler('c') }}      # [linux]\n    - {{ compiler('cxx') }}    # [linux]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake  # [unix]\n    - make   # [unix]\n    - ninja  # [win]\n    - vcpkg 2020.11  # [win]\n    # we need an older cmake for vcpkg right now...\n    - cmake 3.20.*  # [win]\n    # force a recent curl version for windows\n    - curl >=7.75  # [win]\n  host:\n    - cli11 >=2.0,<3\n    - cpp-filesystem >=1.5.8\n    - nlohmann_json\n    - spdlog\n    - termcolor-cpp\n    - yaml-cpp-static              # [unix]\n    - libcurl 7.76.1 *_0           # [unix]\n    - libcurl-static  7.76.1 *_0   # [unix]\n    - xz-static          # [unix]\n    - libssh2-static     # [unix]\n    - libarchive         # [unix]\n    - krb5-static        # [unix]\n    - libsolv-static     # [unix]\n    - openssl 1.1.1*     # [unix]\n    - libopenssl-static 1.1.1*  # [unix]\n    - zstd-static        # [unix]\n    - libnghttp2-static  # [unix]\n    - lz4-c-static       # [unix]\n    - reproc-static      # [unix]\n    - reproc-cpp         # [unix]\n    - reproc-cpp-static  # [unix]\n\ntest:\n  commands:\n    - test -f $PREFIX/bin/micromamba                                          # [unix]\n    - micromamba --help\n    - export TMPDIR=\"${TMPDIR:-/tmp}\"                                         # [unix and not (ppc64le or aarch64)]\n    - if [ ! -d \"${TMPDIR}\" ]; then mkdir -p \"${TMPDIR}\"; fi                  # [unix and not (ppc64le or aarch64)]\n    - stat $TMPDIR                                                            # [unix and not (ppc64le or aarch64)]\n    - export MAMBA_ROOT_PREFIX=$TMPDIR/mamba                                  # [unix and not (ppc64le or aarch64)]\n    - micromamba create -p $TMPDIR/testenv --override-channels -c conda-forge --yes python=3.9    # [unix and not (ppc64le or aarch64)]\n    - $TMPDIR/testenv/bin/python --version                                    # [unix and not (ppc64le or aarch64)]\n    - $TMPDIR/testenv/bin/python -c 'import ssl'                              # [unix and not (ppc64le or aarch64)]\n\nabout:\n  home: https://github.com/mamba-org/mamba\n  license_file:\n    - LICENSE\n    - CURL_LICENSE.txt\n    - LIBARCHIVE_LICENSE.txt\n    - KRB5_LICENSE.txt\n    - LIBSOLV_LICENSE.txt\n    - LIBOPENSSL_LICENSE.txt\n    - CLI11_LICENSE.txt\n    - NLOHMANN_JSON_LICENSE.txt\n    - ZSTD_LICENSE.txt\n    - LIBLZ4_LICENSE.txt\n    - C_ARES_LICENSE.txt\n    - LIBEV_LICENSE.txt\n    - CPP_FILESYSTEM_LICENSE.txt\n    - LIBNGHTTP2_LICENSE.txt\n    - REPROC_LICENSE.txt\n    - TERMCOLOR_CPP_LICENSE.txt\n    - SPDLOG_LICENSE.txt\n  license: BSD-3-Clause AND MIT AND OpenSSL\n  license_family: BSD\n  summary: Micromamba is a tiny version of mamba, the fast conda package installer.\n  dev_url: https://github.com/mamba-org/mamba\n\nextra:\n  recipe-maintainers:\n    - wolfv\n    - SylvainCorlay\n    - JohanMabille\n    - mariusvniekerk\n    - adriendelsalle\n",
