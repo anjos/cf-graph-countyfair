@@ -157,6 +157,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/789129601.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.12.2"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -754,7 +771,7 @@
   }
  },
  "name": "libmbd",
- "new_version": "0.12.1",
+ "new_version": "0.12.2",
  "new_version_attempts": {
   "0.10.0": 1,
   "0.10.1": 1,
@@ -763,6 +780,7 @@
   "0.10.4": 1,
   "0.11.0": 1,
   "0.12.1": 1,
+  "0.12.2": 1,
   "0.9.3": 1
  },
  "new_version_errors": {},
@@ -897,7 +915,7 @@
    "libmbd"
   ]
  },
- "pinning_version": "2021.03.01.13.11.42",
+ "pinning_version": "2021.11.25.20.09.27",
  "raw_meta_yaml": "{% set name = \"libmbd\" %}\n{% set version = \"0.12.1\" %}\n{% set build = 1 %}\n{% set mpi = mpi or \"nompi\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/libmbd/{{ name }}/archive/{{ version }}.tar.gz\n  sha256: e2826bf836aca39ce1ff14b36236a36d72fad108c15bda3d64b014299a8ac18f\n\n{% if mpi == \"nompi\" %}\n{% set build = build + 100 %}\n{% endif %}\nbuild:\n  number: {{ build }}\n  skip: true  # [win]\n\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\n  {% if mpi != \"nompi\" %}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [osx]\n    - {{ compiler('fortran') }}\n    - cmake\n    - ninja\n  host:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux and not aarch64]\n  run:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libmbd${SHLIB_EXT}\n\nabout:\n  home: https://github.com/libmbd/{{ name }}\n  license: MPL-2.0\n  license_file:\n    - LICENSE\n  summary: Many-body dispersion library\n  doc_url: https://libmbd.github.io\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - jhrmnn\n",
  "req": {
   "__set__": true,
@@ -960,7 +978,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.9.0",
+ "smithy_version": "3.14.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
