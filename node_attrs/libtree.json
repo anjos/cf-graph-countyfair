@@ -3,6 +3,9 @@
  "bad": false,
  "branch": "main",
  "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default"
@@ -19,7 +22,7 @@
    "summary": "ldd as a tree with an option to bundle dependencies into a single folder"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
     "set -ex",
     "cmake ${CMAKE_ARGS} -G Ninja -B _build",
@@ -48,6 +51,9 @@
    ]
   },
   "source": {
+   "patches": [
+    "sstream.patch"
+   ],
    "sha256": "099e85d8ba3c3d849ce05b8ba2791dd25cd042a813be947fb321b0676ef71883",
    "url": "https://github.com/haampie/libtree/archive/refs/tags/v2.0.0.tar.gz"
   },
@@ -91,7 +97,7 @@
    "summary": "ldd as a tree with an option to bundle dependencies into a single folder"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
     "set -ex",
     "cmake ${CMAKE_ARGS} -G Ninja -B _build",
@@ -120,6 +126,9 @@
    ]
   },
   "source": {
+   "patches": [
+    "sstream.patch"
+   ],
    "sha256": "099e85d8ba3c3d849ce05b8ba2791dd25cd042a813be947fb321b0676ef71883",
    "url": "https://github.com/haampie/libtree/archive/refs/tags/v2.0.0.tar.gz"
   },
@@ -163,7 +172,7 @@
    "summary": "ldd as a tree with an option to bundle dependencies into a single folder"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
     "set -ex",
     "cmake ${CMAKE_ARGS} -G Ninja -B _build",
@@ -192,6 +201,9 @@
    ]
   },
   "source": {
+   "patches": [
+    "sstream.patch"
+   ],
    "sha256": "099e85d8ba3c3d849ce05b8ba2791dd25cd042a813be947fb321b0676ef71883",
    "url": "https://github.com/haampie/libtree/archive/refs/tags/v2.0.0.tar.gz"
   },
@@ -235,7 +247,7 @@
    "summary": "ldd as a tree with an option to bundle dependencies into a single folder"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
     "set -ex",
     "cmake ${CMAKE_ARGS} -G Ninja -B _build",
@@ -248,11 +260,25 @@
     "set -ex",
     "cmake ${CMAKE_ARGS} -G Ninja -B _build",
     "cmake --build _build",
+    "cmake --install _build",
+    "set -ex",
+    "CXXFLAGS=\"${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY\"",
+    "cmake ${CMAKE_ARGS} -G Ninja -B _build",
+    "cmake --build _build",
+    "cmake --install _build",
+    "set -ex",
+    "CXXFLAGS=\"${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY\"",
+    "cmake ${CMAKE_ARGS} -G Ninja -B _build",
+    "cmake --build _build",
     "cmake --install _build"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "awvwgk",
+    "matthiasdiener",
+    "awvwgk",
+    "matthiasdiener",
     "awvwgk",
     "matthiasdiener",
     "awvwgk",
@@ -284,10 +310,29 @@
     "ninja",
     "elfio",
     "cxxopts",
+    "termcolor-cpp",
+    "cxx_compiler_stub",
+    "cmake",
+    "ninja",
+    "elfio",
+    "cxxopts",
+    "termcolor-cpp",
+    "cxx_compiler_stub",
+    "cmake",
+    "ninja",
+    "elfio",
+    "cxxopts",
     "termcolor-cpp"
    ]
   },
   "source": {
+   "patches": [
+    "sstream.patch",
+    "sstream.patch",
+    "sstream.patch",
+    "sstream.patch",
+    "sstream.patch"
+   ],
    "sha256": "099e85d8ba3c3d849ce05b8ba2791dd25cd042a813be947fb321b0676ef71883",
    "url": "https://github.com/haampie/libtree/archive/refs/tags/v2.0.0.tar.gz"
   },
@@ -295,18 +340,172 @@
    "commands": [
     "libtree --version",
     "libtree --version",
+    "libtree --version",
+    "libtree --version",
     "libtree --version"
    ]
   }
  },
  "name": "libtree",
+ "osx_64_meta_yaml": {
+  "about": {
+   "home": "https://github.com/haampie/libtree",
+   "license": "MIT",
+   "license_family": "MIT",
+   "license_file": "LICENSE",
+   "summary": "ldd as a tree with an option to bundle dependencies into a single folder"
+  },
+  "build": {
+   "number": "1",
+   "script": [
+    "set -ex",
+    "CXXFLAGS=\"${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY\"",
+    "cmake ${CMAKE_ARGS} -G Ninja -B _build",
+    "cmake --build _build",
+    "cmake --install _build"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk",
+    "matthiasdiener"
+   ]
+  },
+  "package": {
+   "name": "libtree",
+   "version": "2.0.0"
+  },
+  "requirements": {
+   "build": [
+    "cxx_compiler_stub",
+    "cmake",
+    "ninja",
+    "elfio",
+    "cxxopts",
+    "termcolor-cpp"
+   ]
+  },
+  "source": {
+   "patches": [
+    "sstream.patch"
+   ],
+   "sha256": "099e85d8ba3c3d849ce05b8ba2791dd25cd042a813be947fb321b0676ef71883",
+   "url": "https://github.com/haampie/libtree/archive/refs/tags/v2.0.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "libtree --version"
+   ]
+  }
+ },
+ "osx_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cmake",
+    "cxx_compiler_stub",
+    "cxxopts",
+    "elfio",
+    "ninja",
+    "termcolor-cpp"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "https://github.com/haampie/libtree",
+   "license": "MIT",
+   "license_family": "MIT",
+   "license_file": "LICENSE",
+   "summary": "ldd as a tree with an option to bundle dependencies into a single folder"
+  },
+  "build": {
+   "number": "1",
+   "script": [
+    "set -ex",
+    "CXXFLAGS=\"${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY\"",
+    "cmake ${CMAKE_ARGS} -G Ninja -B _build",
+    "cmake --build _build",
+    "cmake --install _build"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk",
+    "matthiasdiener"
+   ]
+  },
+  "package": {
+   "name": "libtree",
+   "version": "2.0.0"
+  },
+  "requirements": {
+   "build": [
+    "cxx_compiler_stub",
+    "cmake",
+    "ninja",
+    "elfio",
+    "cxxopts",
+    "termcolor-cpp"
+   ]
+  },
+  "source": {
+   "patches": [
+    "sstream.patch"
+   ],
+   "sha256": "099e85d8ba3c3d849ce05b8ba2791dd25cd042a813be947fb321b0676ef71883",
+   "url": "https://github.com/haampie/libtree/archive/refs/tags/v2.0.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "libtree --version"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cmake",
+    "cxx_compiler_stub",
+    "cxxopts",
+    "elfio",
+    "ninja",
+    "termcolor-cpp"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
    "libtree"
   ]
  },
- "raw_meta_yaml": "{% set name = \"libtree\" %}\n{% set version = \"2.0.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/haampie/libtree/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 099e85d8ba3c3d849ce05b8ba2791dd25cd042a813be947fb321b0676ef71883\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n  script:\n    - set -ex  # [unix]\n    - CXXFLAGS=\"${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY\"  # [osx]\n    - cmake ${CMAKE_ARGS} -G Ninja -B _build  # [unix]\n    - cmake -DCMAKE_INSTALL_PREFIX=%PREFIX% -G Ninja -B _build  # [win]\n    - cmake --build _build\n    - ctest --test-dir _build --output-on-failure  # [build_platform != target_platform]\n    - cmake --install _build\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n    - elfio\n    - cxxopts\n    - termcolor-cpp\n\ntest:\n  commands:\n    - {{ name }} --version\n\nabout:\n  home: https://github.com/haampie/libtree\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: ldd as a tree with an option to bundle dependencies into a single folder\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - matthiasdiener\n",
+ "raw_meta_yaml": "{% set name = \"libtree\" %}\n{% set version = \"2.0.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/haampie/libtree/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 099e85d8ba3c3d849ce05b8ba2791dd25cd042a813be947fb321b0676ef71883\n  patches:\n    - sstream.patch\n\nbuild:\n  number: 1\n  skip: true  # [win]\n  script:\n    - set -ex  # [unix]\n    - CXXFLAGS=\"${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY\"  # [osx]\n    - cmake ${CMAKE_ARGS} -G Ninja -B _build  # [unix]\n    - cmake -DCMAKE_INSTALL_PREFIX=%PREFIX% -G Ninja -B _build  # [win]\n    - cmake --build _build\n    - ctest --test-dir _build --output-on-failure  # [build_platform != target_platform]\n    - cmake --install _build\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n    - elfio\n    - cxxopts\n    - termcolor-cpp\n\ntest:\n  commands:\n    - {{ name }} --version  # [build_platform == target_platform]\n\nabout:\n  home: https://github.com/haampie/libtree\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: ldd as a tree with an option to bundle dependencies into a single folder\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - matthiasdiener\n",
  "req": {
   "__set__": true,
   "elements": [
