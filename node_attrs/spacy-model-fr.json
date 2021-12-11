@@ -120,6 +120,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/800336704.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.2.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -2671,7 +2688,7 @@
   "2.3.1": 1618,
   "3.0.0": 1,
   "3.1.0": 1,
-  "3.2.0": 3
+  "3.2.0": 4
  },
  "new_version_errors": {
   "2.3.1": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '2.3.1' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/explosion/spacy-models/releases/download/{{ name }}_sm-{{ version }}/{{ name }}_sm-{{ version }}.tar.gz'\n - could not hash URL template 'https://github.com/explosion/spacy-models/releases/download/{{ name }}_md-{{ version }}/{{ name }}_md-{{ version }}.tar.gz'\n"
@@ -3356,7 +3373,7 @@
    "spacy-model-fr_dep_news_trf"
   ]
  },
- "pinning_version": "2021.12.01.23.52.30",
+ "pinning_version": "2021.12.10.18.18.24",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set prefix = \"spacy-model-\" %}\n{% set lang = \"fr\" %}\n\n{% if size == \"trf\" %}\n{% set name = lang + \"_dep_news\" %}\n{% else %}\n{% set name = lang + \"_core_news\" %}\n{% endif %}\n\n{% set version = \"3.1.0\" %}\n\npackage:\n  name: {{ prefix }}{{ lang|lower }}\n  version: {{ version }}\n\nsource:\n  - folder: sm\n    url: https://github.com/explosion/spacy-models/releases/download/fr_core_news_sm-{{ version }}/fr_core_news_sm-{{ version }}.tar.gz\n    sha256: 9d3ee828c02bea4a29c83e8e95d8320cc0a8e543cf7fbcb47ae3e0dadcada824\n  - folder: md\n    url: https://github.com/explosion/spacy-models/releases/download/fr_core_news_md-{{ version }}/fr_core_news_md-{{ version }}.tar.gz\n    sha256: 8b63c2d27ef5ad02969b880fedad260e0df55e470d093075fc11edf5d33916af\n  - folder: lg\n    url: https://github.com/explosion/spacy-models/releases/download/fr_core_news_lg-{{ version }}/fr_core_news_lg-{{ version }}.tar.gz\n    sha256: a8da60e80fa8831cc9203908b6c2ec77953aa4543cb504ed4d5dc431bc85ffee\n  - folder: trf\n    url: https://github.com/explosion/spacy-models/releases/download/fr_dep_news_trf-{{ version }}/fr_dep_news_trf-{{ version }}.tar.gz\n    sha256: 1bf746c691262755a0f61fbb294a1528152e78fa9d124891700beb628c02d629\n\nbuild:\n  number: 0\n\ntest:\n  commands:\n    - echo \"make lint happy\"\n\noutputs:\n  - name: {{ prefix }}{{ name }}_{{ size }}\n    script: build.sh  # [unix]\n    script: build.bat  # [win]\n    requirements:\n      host:\n        - python\n        - pip\n      run:\n        - python\n        - setuptools\n        {% if size == \"trf\" %}\n        - spacy-transformers  # [unix]\n        {% endif %}\n\n    test:\n      imports:\n        - {{ name }}_{{ size }}\n      requires:\n        - spacy {{ version.split('.')[0] }}.*\n        {% if size == \"trf\" %}\n        - spacy-transformers  # [unix]\n        {% endif %}\n      commands:\n        {% if size == \"trf\" %}\n        - python -c \"import {{ name }}_{{ size }} as m; m.load()\"  # [unix]\n        {% else %}\n        - python -c \"import {{ name }}_{{ size }} as m; m.load()\"\n        - python -c \"import spacy; spacy.load('{{ name }}_{{ size }}')\"\n        {% endif %}\n\nabout:\n  home: https://spacy.io\n  license: CC-BY-SA-3.0\n  summary: 'French multi-task CNN trained on the French Sequoia (Universal Dependencies) and WikiNER corpus.'\n  license_file: LICENSE\n  doc_url: https://spacy.io/models/fr\n\nextra:\n  recipe-maintainers:\n    - FernandezMathieu\n    - sodre\n    - mxr-conda\n    - JennaLipscomb\n",
@@ -3397,7 +3414,7 @@
    ]
   }
  },
- "smithy_version": "3.15.0",
+ "smithy_version": "3.15.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
