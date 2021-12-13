@@ -35,6 +35,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/801176825.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "21.2"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1052,10 +1069,11 @@
   }
  },
  "name": "dftbplus",
- "new_version": "21.1",
+ "new_version": "21.2",
  "new_version_attempts": {
   "20.2": 9,
-  "20.2.1": 1
+  "20.2.1": 1,
+  "21.2": 1
  },
  "new_version_errors": {
   "20.2": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '20.2' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/{{ name }}/scalapackfx/archive/{{ name }}-{{ version }}.tar.gz'\n - could not hash URL template 'https://github.com/{{ name }}/mpifx/archive/{{ name }}-{{ version }}.tar.gz'\n"
@@ -1256,7 +1274,7 @@
    "dftbplus"
   ]
  },
- "pinning_version": "2020.12.07.18.58.57",
+ "pinning_version": "2021.12.11.20.48.53",
  "raw_meta_yaml": "{% set name = \"dftbplus\" %}\n{% set version = \"21.1\" %}\n{% set build = 0 %}\n{% set mpi = mpi or \"nompi\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name }}/{{ name }}/archive/refs/tags/{{ version }}.tar.gz\n  sha256: 31d5a488843a05d8589a375307a2832c1fc938f9f7d830c45a062726659e7b0a\n\n{% if mpi == \"nompi\" %}\n{% set build = build + 100 %}\n{% endif %}\nbuild:\n  number: {{ build }}\n  skip: True  # [win]\n\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: \"{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\"\n\n  {% if mpi != \"nompi\" %}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}\n    - cmake\n    - ninja\n    - fypp\n  host:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - mpifx * mpi_{{ mpi }}_*  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - scalapackfx * mpi_{{ mpi }}_*  # [mpi != \"nompi\"]\n    - libnegf * {{ mpi_prefix }}_*\n    - libmbd * {{ mpi_prefix }}_*\n    - libblas\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux and not aarch64]\n  run:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - {{ pin_compatible('mpifx', max_pin='x.x') }} mpi_{{ mpi }}_*  # [mpi != \"nompi\"]\n    - scalapack  # [mpi != \"nompi\"]\n    - {{ pin_compatible('scalapackfx', max_pin='x.x') }} mpi_{{ mpi }}_*  # [mpi != \"nompi\"]\n    - {{ pin_compatible('libnegf', max_pin='x.x') }} {{ mpi_prefix }}_*\n    - {{ pin_compatible('libmbd', max_pin='x.x') }} {{ mpi_prefix }}_*\n    - libblas\n    - liblapack\n\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config {{ name }} --exact-version {{ version }}\n    - test -f $PREFIX/bin/dftb+\n    - test -f $PREFIX/lib/libdftbplus.dylib  # [osx]\n    - test -f $PREFIX/lib/libdftbplus.so  # [linux]\n\nabout:\n  home: https://{{ name }}.org\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file:\n    - \"LICENSE\"\n    - \"COPYING\"\n    - \"COPYING.LESSER\"\n    - \"external/fsockets/LICENSE\"\n    - \"external/mudpack/LICENSE\"\n    - \"external/xmlf90/LICENSE\"\n  summary: \"DFTB+ general package for performing fast atomistic simulations\"\n  doc_url: https://{{ name }}-recipes.readthedocs.io\n  dev_url: https://github.com/{{ name }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - aradi\n    - awvwgk\n    - bhourahine\n",
  "req": {
   "__set__": true,
@@ -1335,7 +1353,7 @@
    ]
   }
  },
- "smithy_version": "3.8.5",
+ "smithy_version": "3.15.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
