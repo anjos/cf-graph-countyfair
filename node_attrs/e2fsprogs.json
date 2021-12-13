@@ -121,6 +121,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/801290182.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -383,7 +400,7 @@
    "e2fsprogs-split"
   ]
  },
- "pinning_version": "2021.08.19.19.17.07",
+ "pinning_version": "2021.12.13.11.03.33",
  "raw_meta_yaml": "{% set version = \"1.46.2\" %}\n\npackage:\n  name: e2fsprogs-split\n  version: {{ version }}\n\nsource:\n  - url: https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v{{ version }}/e2fsprogs-{{ version }}.tar.xz\n    sha256: 23aa093295c94e71ef1be490c4004871c5b01d216a8cb4d111fa6c0aac354168\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - autoconf >=2.54\n    - autoconf-archive\n    - automake\n    - make\n    - pkg-config\n  host:\n    - gettext\n    # Only need the libs, but util-linux doesn't offer a subpackage for it.\n    # - util-linux-libs\n    - util-linux\n  run:\n\noutputs:\n  - name: e2fsprogs-libs\n    script: install-e2fsprogs-libs.sh\n    build:\n      run_exports:\n        - {{ pin_subpackage('e2fsprogs-libs', max_pin='x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - make\n      host:\n      run:\n    test:\n      commands:\n        - test -f \"${PREFIX}/include/com_err.h\"\n        - test -f \"${PREFIX}/include/e2p/e2p.h\"\n        - test -f \"${PREFIX}/include/ext2fs/ext2fs.h\"\n        - test -f \"${PREFIX}/include/ss/ss.h\"\n        - test -f \"${PREFIX}/lib/libcom_err${SHLIB_EXT}\"\n        - test -f \"${PREFIX}/lib/libe2p${SHLIB_EXT}\"\n        - test -f \"${PREFIX}/lib/libext2fs${SHLIB_EXT}\"\n        - test -f \"${PREFIX}/lib/libss${SHLIB_EXT}\"\n        - test -f \"${PREFIX}/lib/pkgconfig/com_err.pc\"\n        - test -f \"${PREFIX}/lib/pkgconfig/e2p.pc\"\n        - test -f \"${PREFIX}/lib/pkgconfig/ext2fs.pc\"\n        - test -f \"${PREFIX}/lib/pkgconfig/ss.pc\"\n\n  - name: e2fsprogs\n    script: install-e2fsprogs.sh\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - make\n      host:\n        - {{ pin_subpackage('e2fsprogs-libs', exact=True) }}\n        # Only need the libs, but util-linux doesn't offer a subpackage for it.\n        # - util-linux-libs\n        - util-linux\n      run:\n        - {{ pin_subpackage('e2fsprogs-libs', exact=True) }}\n    test:\n      commands:\n        - '\"${PREFIX}/bin/lsattr\"'\n\nabout:\n  home: http://e2fsprogs.sourceforge.net\n  dev_url: https://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git\n  doc_url: http://e2fsprogs.sourceforge.net\n  license: GPL-2.0-only AND LGPL-2.0-or-later AND MIT\n  license_file: NOTICE\n  summary: Ext2 Filesystems Utilities\n  description: >\n    The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard utilities for creating, fixing, configuring , and debugging ext2 filesystems.\n\nextra:\n  feedstock-name: e2fsprogs\n  recipe-maintainers:\n    - mbargull\n",
  "req": {
   "__set__": true,
@@ -432,7 +449,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.12",
+ "smithy_version": "3.15.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
