@@ -166,6 +166,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/802062987.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "9.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1504,11 +1521,12 @@
   }
  },
  "name": "networkit",
- "new_version": "9.0",
+ "new_version": "9.1",
  "new_version_attempts": {
   "7.0": 47,
   "7.1": 147,
-  "9.0": 1
+  "9.0": 1,
+  "9.1": 1
  },
  "new_version_errors": {
   "7.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '7.0' to make sure they exist!\n\nWe also found the following errors:\n\n - migrations do not work on `git_url`s\n",
@@ -1993,7 +2011,7 @@
    "networkit"
   ]
  },
- "pinning_version": "2021.11.22.15.24.15",
+ "pinning_version": "2021.12.14.06.33.15",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"networkit\" %}\n{% set version = \"9.0\" %}\n\npackage:\n  name: '{{ name|lower }}'\n  version: '{{ version }}'\n\nsource:\n  - url: 'https://github.com/networkit/networkit/archive/{{ version }}.tar.gz'\n    sha256: c574473bc7d86934f0f4b3049c0eeb9c4444cfa873e5fecda194ee5b1930f82c\n    patches:\n      - 0001-Pass-conda-python-version.patch\n      - 0001-Removed-link-to-python-libraries-for-cython-extension.patch\n      - 0001-Added-python-libraries-for-Windows.patch\n      - 0001-Import-submodules-from-scipy.sparse-explicitly.patch\n  \nbuild:\n  skip: True  # [py27 or py33  or python_impl == 'pypy']\n  skip: True  # [py<38 and win]\n  number: 2\n  script:\n    - '{{ PYTHON }} -m pip install --install-option=\"build_ext\" --install-option=\"--networkit-external-core\" --install-option=\"--external-tlx={{ BUILD_PREFIX }}\" --ignore-installed -vv .'  # [not win]\n    - '{{ PYTHON }} -m pip install --install-option=\"build_ext\" --install-option=\"--external-tlx={{ BUILD_PREFIX }}\\Library\" --ignore-installed -vv .'  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.5\n    - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n    - cython >=0.29                       # [build_platform != target_platform]\n    - libtlx\n    - libnetworkit ={{ version }}         # [not win]\n    - ninja >=1.9.0\n    - numpy                               # [build_platform != target_platform]\n    - pybind11                            # [build_platform != target_platform]\n    - python                              # [build_platform != target_platform]\n  \n  host:\n    - numpy\n    - pip\n    - python\n    - scipy\n    - setuptools\n    - setuptools-cythonize\n    - wheel >=0.28\n    - libnetworkit ={{ version }}  # [not win]\n\n  run:\n    - numpy\n    - python\n    - scipy\n    - libnetworkit ={{ version }}  # [not win]\n\ntest:\n  requires:\n    - conda-build\n    - jupyter\n    - tabulate\n  source_files:\n    - networkit/test\n    - notebooks\n    - input\n  commands:\n    # Remove tests, which involve writing graphs (missing permissions)\n    - rm networkit/test/test_graphio.py && rm networkit/test/extension/test.py\n    - rm notebooks/User-Guide.ipynb\n    - python -m unittest discover -v networkit/test/\n    - python notebooks/test_notebooks.py \"notebooks\"\n\nabout:\n  home: https://github.com/networkit/networkit\n  license: MIT\n  license_family: MIT\n  license_file: License.txt\n  summary: 'NetworKit is a growing open-source toolkit for large-scale network analysis.'\n  description: |\n           NetworKit is a growing open-source toolkit for large-scale network analysis. Its aim is to provide tools for the analysis of large networks in the size range from thousands to billions of edges. For this purpose, it implements efficient graph algorithms, many of them parallel to utilize multicore architectures. These are meant to compute standard measures of network analysis, such as degree sequences, clustering coefficients, and centrality measures. In this respect, NetworKit is comparable to packages such as NetworkX, albeit with a focus on parallelism and scalability. NetworKit is also a testbed for algorithm engineering and contains novel algorithms from recently published research (see list of Publications).\n  doc_url: https://networkit.github.io/\n  dev_url: https://github.com/networkit/networkit\n\nextra:\n  recipe-maintainers:\n    - angriman\n    - avdgrinten\n    - fabratu\n    - lucventurini  # Temporary, I am not involved with the development itself\n",
@@ -2062,7 +2080,7 @@
    ]
   }
  },
- "smithy_version": "3.14.3",
+ "smithy_version": "3.15.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
