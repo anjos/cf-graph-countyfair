@@ -1338,7 +1338,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git diff --name-only b10a4df939ea46803e71af96d7aca89814682bc2...HEAD' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1133, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 300, in run",
+   "    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 280, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode",
+   "    raise CalledProcessError(self.returncode, self.args, self.stdout,",
+   "subprocess.CalledProcessError: Command 'git diff --name-only b10a4df939ea46803e71af96d7aca89814682bc2...HEAD' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
@@ -2116,7 +2131,8 @@
   "2.4.3": 2,
   "2.5.0": 1,
   "2.5.1": 1,
-  "2.5.2": 1
+  "2.5.2": 1,
+  "2.5.3": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -2383,10 +2399,12 @@
  },
  "pinning_version": "2021.11.23.20.00.37",
  "pre_pr_migrator_attempts": {
-  "rebuild-broken": 1
+  "rebuild-broken": 1,
+  "version": 1
  },
  "pre_pr_migrator_status": {
-  "rebuild-broken": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1265438560\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1175, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 196, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/broken_rebuild.py\", line 361, in migrate\n    self.set_build_number(os.path.join(recipe_dir, \"meta.yaml\"))\nNameError: name 'os' is not defined\n"
+  "rebuild-broken": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1265438560\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1175, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 196, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/broken_rebuild.py\", line 361, in migrate\n    self.set_build_number(os.path.join(recipe_dir, \"meta.yaml\"))\nNameError: name 'os' is not defined\n",
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1593911077\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1133, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 300, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 280, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only b10a4df939ea46803e71af96d7aca89814682bc2...HEAD' returned non-zero exit status 128.\n"
  },
  "raw_meta_yaml": "{% set name = \"TileDB\" %}\n{% set version = \"2.5.2\" %}\n\npackage:\n  name: tiledb\n  version: {{ version }}\n\nsource:\n  url: https://github.com/TileDB-Inc/{{ name }}/archive/{{ version }}.tar.gz\n  sha256: 68edda5ae348c2ed623a3bdbc8bfb66e76a4960f88501771e471ca7d9d622f93\n\nbuild:\n  number: 0\n  run_exports:\n    # https://abi-laboratory.pro/?view=timeline&l=tiledb\n    - {{ pin_subpackage('tiledb', 'x.x') }}\n  skip: true  # [win and vc<14]\n\nrequirements:\n  build:\n    - make  # [unix]\n    - cmake\n    - pkg-config  # [not win]\n    - {{ compiler('cxx') }}\n  host:\n    - zlib\n    - bzip2\n    - zstd\n    - lz4-c\n    - openssl\n    - curl\n  run:\n    - zlib\n    - bzip2\n    - zstd\n    - lz4-c\n    - openssl\n    - curl\n\n\ntest:\n  #  downstreams:\n  #  - tiledb-py\n  commands:\n    - test -e $PREFIX/include/tiledb/tiledb.h  # [not win]\n    - test -e $PREFIX/include/tiledb/tiledb  # [not win]\n    - test -e $PREFIX/lib/libtiledb$SHLIB_EXT  # [not win]\n\n    - if exist %LIBRARY_INC%\\\\tiledb\\\\tiledb (exit 0) else (exit 1)  # [win]\n    - if exist %LIBRARY_INC%\\\\tiledb\\\\tiledb.h (exit 0) else (exit 1)  # [win]\n    - if exist %LIBRARY_LIB%\\\\tiledb.lib (exit 0) else (exit 1)  # [win]\n    - if exist %LIBRARY_LIB%\\\\cmake\\\\TileDB\\\\TileDBConfig.cmake (exit 0) else (exit 1)  # [win]\n    - if exist %PREFIX%\\\\Library\\\\bin\\\\tiledb.dll (exit 0) else (exit 1)  # [win]\n\nabout:\n  home: http://tiledb.io\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: TileDB sparse and dense multi-dimensional array data management\n  description: |\n    TileDB is an efficient multi-dimensional array management system which introduces\n    a novel on-disk format that can effectively store dense and sparse array data with\n    support for fast updates and reads. It features excellent compression, and an efficient\n    parallel I/O system with high scalability.\n  doc_url: http://docs.tiledb.io\n  dev_url: https://github.com/TileDB-Inc/TileDB\n\nextra:\n  recipe-maintainers:\n    - akrherz\n    - stavrospapadopoulos\n    - shelnutt2\n    - ihnorton\n    - nguyenv\n",
  "req": {
