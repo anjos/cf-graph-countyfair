@@ -1,4 +1,23 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/805609229.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "branch": "main",
@@ -645,6 +664,7 @@
    "tblite"
   ]
  },
+ "pinning_version": "2021.12.17.10.55.22",
  "raw_meta_yaml": "{% set name = \"tblite\" %}\n{% set version = \"0.1.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/awvwgk/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 6e0107ddf9ebb57768a455909722bea9dae3b3027290303500b233d47e0fa68b\n\nbuild:\n  number: 1\n  skip: true  # [win]\n  script:\n    - set -ex\n    - meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release\n    - meson compile -C _build\n    - meson test -C _build --no-rebuild --print-errorlogs --suite unit  # [build_platform == target_platform]\n    - meson install -C _build --no-rebuild\n\n  run_exports:\n    - {{ pin_subpackage('tblite', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}\n    - meson\n    - ninja\n    - asciidoctor\n    - pkg-config\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  host:\n    - libblas\n    - liblapack\n    - mctc-lib\n    - dftd4\n    - simple-dftd3\n    - toml-f\n  run:\n    - {{ pin_compatible('mctc-lib', max_pin='x.x') }}\n    - {{ pin_compatible('dftd4') }}\n    - {{ pin_compatible('simple-dftd3', max_pin='x.x') }}\n    - {{ pin_compatible('toml-f', max_pin='x.x') }}\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - {{ name }} --version\n    - pkg-config {{ name }} --modversion\n    - test -f $PREFIX/include/{{ name }}.h\n    - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT\n\nabout:\n  home: https://github.com/grimme-lab/tblite\n  license: LGPL-3.0-or-later\n  license_file:\n    - COPYING\n    - COPYING.LESSER\n  summary: Light-weight tight-binding framework\n  doc_url: https://tblite.readthedocs.io\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
  "req": {
   "__set__": true,
@@ -714,6 +734,7 @@
    ]
   }
  },
+ "smithy_version": "3.16.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
