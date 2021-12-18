@@ -498,6 +498,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/805860530.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "4.9.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1522,7 +1539,7 @@
   }
  },
  "name": "gmsh-packages",
- "new_version": "4.9.0",
+ "new_version": "4.9.1",
  "new_version_attempts": {
   "4.5.6": 1,
   "4.6.0": 19,
@@ -1533,7 +1550,8 @@
   "4.8.2": 18,
   "4.8.3": 38,
   "4.8.4": 14,
-  "4.9.0": 1
+  "4.9.0": 1,
+  "4.9.1": 1
  },
  "new_version_errors": {
   "4.6.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '4.6.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'http://gmsh.info/src/{{ name }}-{{ version }}-source.tgz'\n",
@@ -1831,7 +1849,7 @@
    "python-gmsh"
   ]
  },
- "pinning_version": "2021.12.03.08.21.30",
+ "pinning_version": "2021.12.18.06.45.12",
  "raw_meta_yaml": "{% set name = \"gmsh\" %}\n{% set version = \"4.8.4\" %}\n{% set sha256 = \"760dbdc072eaa3c82d066c5ba3b06eacdd3304eb2a97373fe4ada9509f0b6ace\" %}\n\npackage:\n  name: gmsh-packages\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}-source.tgz\n  url: https://gmsh.info/src/{{ name }}-{{ version }}-source.tgz\n  sha256: {{ sha256 }}\n  patches:\n    - patches/occ_convert_signal.patch\n    - patches/fltk_nominmax.patch\n    - patches/disable_wmain.patch\n    - patches/fix_and.patch\n\nbuild:\n  number: 0\n\noutputs:\n  - name: gmsh\n    build:\n      skip: true  # [win and vc<14]\n      ignore_run_exports:\n        - fltk\n    script: build_gmsh.sh  # [not win]\n    script: bld_gmsh.bat  # [win]\n    requirements:\n      build:\n        - cmake\n        - make  # [unix]\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - {{ cdt('libselinux') }}        # [linux]\n        - {{ cdt('libxcb') }}            # [linux]\n        - {{ cdt('libxau') }}            # [linux]\n        - {{ cdt('libxdamage') }}        # [linux]\n        - {{ cdt('libxxf86vm') }}        # [linux]\n        - {{ cdt('mesa-libgl-devel') }}  # [linux]\n        - {{ cdt('mesa-dri-drivers') }}  # [linux]\n        - python *\n\n      host:\n        - libblas\n        - liblapack\n        - gmp  # [not win]\n        - occt\n        - fltk\n        - libpng\n        - jpeg\n        - libglu  # [linux]\n        - zlib\n        - xorg-libxfixes     # [linux]\n        - xorg-libxext       # [linux]\n        - xorg-libxrender    # [linux]\n        - xorg-libx11        # [linux]\n        - xorg-libxmu        # [linux]\n\n      run:\n        - gmp  # [not win]\n        - occt\n        - libpng\n        - jpeg\n        - zlib\n        - libglu  # [linux]\n        - xorg-libxfixes     # [linux]\n        - xorg-libxext       # [linux]\n        - xorg-libxrender    # [linux]\n        - xorg-libx11        # [linux]\n        - xorg-libxmu        # [linux]\n\n    test:\n      commands:\n        - gmsh -help\n        - test \"$(gmsh --version 2>&1)\" == \"{{ version }}\"   # [unix]\n\n  - name: python-gmsh\n    build:\n      noarch: python\n    script: install_python.sh  # [not win]\n    script: install_python.bat  # [win]\n    requirements:\n      run:\n        - {{ pin_subpackage(\"gmsh\", max_pin=\"x.x.x\") }}\n        - numpy\n        - python\n    test:\n      imports:\n        - gmsh\n\nabout:\n  home: http://geuz.org/gmsh/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: {{ environ[\"RECIPE_DIR\"] }}/LICENSE.txt\n  summary: A three-dimensional finite element mesh generator with built-in pre- and post-processing facilities\n  description: |\n    Gmsh is a free 3D finite element grid generator with a build-in CAD\n    engine and post-processor. Its design goal is to provide a fast, light\n    and user-friendly meshing tool with parametric input and advanced\n    visualization capabilities. Gmsh is built around four modules:\n    geometry, mesh, solver and post-processing. The specification of any\n    input to these modules is done either interactively using the graphical\n    user interface or in ASCII text files using Gmsh's own scripting\n    language.\n\nextra:\n  recipe-maintainers:\n    - guyer\n    - isuruf\n    - xywei\n    - looooo\n",
  "req": {
   "__set__": true,
@@ -1919,7 +1937,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.15.0",
+ "smithy_version": "3.16.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
