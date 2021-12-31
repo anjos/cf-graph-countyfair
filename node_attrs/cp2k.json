@@ -120,6 +120,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/812389628.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "9.1.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -363,7 +380,7 @@
  "new_version_attempts": {
   "8.1.0": 3,
   "8.2.0": 1,
-  "9.1.0": 1
+  "9.1.0": 2
  },
  "new_version_errors": {
   "9.1.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '9.1.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/{{ name }}/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version[:-2] }}.tar.bz2'\n"
@@ -374,7 +391,7 @@
    "cp2k"
   ]
  },
- "pinning_version": "2021.05.27.19.14.28",
+ "pinning_version": "2021.12.31.11.59.58",
  "raw_meta_yaml": "{% set name = \"cp2k\" %}\n{% set version = \"8.2.0\" %}\n\n# Define build matrix for MPI vs. non-mpi\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n{% set build = 1 %}\n{% if mpi == 'nompi' %}\n# prioritize 'nompi' variant via build number\n{% set build = build + 1000 %}\n{% endif %}\n\n{% set build_string = \"py{}_{}_{}\".format(environ.get('CONDA_PY', ''), mpi, build) %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name }}/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version[:-2] }}.tar.bz2\n  sha256: 2e24768720efed1a5a4a58e83e2aca502cd8b95544c21695eb0de71ed652f20a\n  patches:\n    - macosxtest.patch  # [osx]\n    # remove in release following cp2k 8.2\n    - sirius.patch\n\nbuild:\n  number: {{ build }}\n  # osx build skipped until futher notice:\n  # - nompi: osx issue introduced in 8.1, fixed in future 8.2\n  # - openmpi: runtime failures during test suite\n  skip: true  # [not linux]\n  string: {{ build_string }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n    - autoconf\n    - automake\n    - cmake\n    - libtool\n    - python\n  host:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - scalapack  # [mpi != 'nompi']\n    - libblas  # [osx]\n    - openblas * *openmp*  # [linux]\n    - liblapack\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n    - libxsmm\n    - fftw\n    - spglib\n    - libxc >=5.1\n    - sirius  # [mpi != 'nompi']\n  run:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - scalapack  # [mpi != 'nompi']\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx and x86_64]\n    - libblas * *openblas  # [linux]\n    - openblas * *openmp*  # [linux]\n\ntest:\n  commands:\n    # note: regtests are running at the \"build\" stage; this is just a smoke test\n    - cp2k.ssmp --help  # [mpi == 'nompi']\n    - mpiexec --bind-to none -mca plm isolated cp2k.psmp --help   # [mpi != 'nompi']\n\n\nabout:\n  home: https://www.cp2k.org\n  license: GPL-2.0-only\n  license_family: GPL\n  license_file: LICENSE\n  summary: Quantum chemistry and solid state physics software package\n\n  description: |\n    CP2K is a quantum chemistry and solid state physics software package \n    that can perform atomistic simulations of solid state, liquid, \n    molecular, periodic, material, crystal, and biological systems. \n  doc_url: https://manual.cp2k.org\n  dev_url: https://github.com/cp2k/cp2k\n\nextra:\n  recipe-maintainers:\n    - jan-janssen\n    - oschuett\n    - ltalirz\n",
  "req": {
   "__set__": true,
@@ -453,7 +470,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.10.1",
+ "smithy_version": "3.16.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
