@@ -30,13 +30,13 @@
    "dev_url": "https://github.com/MesserLab/SLiM",
    "doc_url": "https://messerlab.org/slim/",
    "home": "http://messerlab.org/slim/",
-   "license": "GPL-3.0",
+   "license": "GPL-3.0-or-later",
    "license_family": "GPL",
    "license_file": "LICENSE",
    "summary": "Forward-time population genetics simulator"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -58,13 +58,15 @@
    ]
   },
   "source": {
+   "patches": null,
    "sha256": "2fae88f22a467e1fd3b7bc1d7965e844ed7ad9fea9b677e12148a99be8f63268",
    "url": "https://github.com/MesserLab/SLiM/archive/v3.7.tar.gz"
   },
   "test": {
    "commands": [
-    "slim -v",
-    "eidos -v"
+    "slim -testSLiM",
+    "slim -testEidos",
+    "eidos -testEidos"
    ]
   }
  },
@@ -97,16 +99,19 @@
    "dev_url": "https://github.com/MesserLab/SLiM",
    "doc_url": "https://messerlab.org/slim/",
    "home": "http://messerlab.org/slim/",
-   "license": "GPL-3.0",
+   "license": "GPL-3.0-or-later",
    "license_family": "GPL",
    "license_file": "LICENSE",
    "summary": "Forward-time population genetics simulator"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
+    "jeromekelleher",
+    "bhaller",
+    "petrelharp",
     "jeromekelleher",
     "bhaller",
     "petrelharp",
@@ -128,19 +133,32 @@
     "make",
     "cmake",
     "c_compiler_stub",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "m2-make",
+    "cmake",
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub",
+    "m2-base"
    ]
   },
   "source": {
+   "patches": [
+    "windows_printf_exponent_digits.patch"
+   ],
    "sha256": "2fae88f22a467e1fd3b7bc1d7965e844ed7ad9fea9b677e12148a99be8f63268",
    "url": "https://github.com/MesserLab/SLiM/archive/v3.7.tar.gz"
   },
   "test": {
    "commands": [
-    "slim -v",
-    "eidos -v",
-    "slim -v",
-    "eidos -v"
+    "slim -testSLiM",
+    "slim -testEidos",
+    "eidos -testEidos",
+    "slim -testSLiM",
+    "slim -testEidos",
+    "eidos -testEidos",
+    "slim -testSLiM",
+    "slim -testEidos",
+    "eidos -testEidos"
    ]
   }
  },
@@ -156,13 +174,13 @@
    "dev_url": "https://github.com/MesserLab/SLiM",
    "doc_url": "https://messerlab.org/slim/",
    "home": "http://messerlab.org/slim/",
-   "license": "GPL-3.0",
+   "license": "GPL-3.0-or-later",
    "license_family": "GPL",
    "license_file": "LICENSE",
    "summary": "Forward-time population genetics simulator"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -184,13 +202,15 @@
    ]
   },
   "source": {
+   "patches": null,
    "sha256": "2fae88f22a467e1fd3b7bc1d7965e844ed7ad9fea9b677e12148a99be8f63268",
    "url": "https://github.com/MesserLab/SLiM/archive/v3.7.tar.gz"
   },
   "test": {
    "commands": [
-    "slim -v",
-    "eidos -v"
+    "slim -testSLiM",
+    "slim -testEidos",
+    "eidos -testEidos"
    ]
   }
  },
@@ -224,13 +244,17 @@
   ]
  },
  "pinning_version": "2020.12.06.16.40.53",
- "raw_meta_yaml": "{% set name = \"SLiM\" %}\n{% set version = \"3.7\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/MesserLab/SLiM/archive/v{{ version }}.tar.gz\n  sha256: 2fae88f22a467e1fd3b7bc1d7965e844ed7ad9fea9b677e12148a99be8f63268\n\nbuild:\n  number: 1\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - make\n    - cmake\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n\ntest:\n  commands:\n    - slim -v\n    - eidos -v\n\nabout:\n  home: http://messerlab.org/slim/\n  license: GPL-3.0\n  license_family: GPL\n  license_file: LICENSE\n  summary: Forward-time population genetics simulator\n\n  description: |\n    SLiM is an evolutionary simulation framework that combines a powerful engine\n    for population genetic simulations with the capability of modeling\n    arbitrarily complex evolutionary scenarios.\n  doc_url: https://messerlab.org/slim/\n  dev_url: https://github.com/MesserLab/SLiM\n\nextra:\n  recipe-maintainers:\n    - jeromekelleher\n    - bhaller\n    - petrelharp\n",
+ "raw_meta_yaml": "{% set name = \"SLiM\" %}\n{% set version = \"3.7\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/MesserLab/SLiM/archive/v{{ version }}.tar.gz\n  sha256: 2fae88f22a467e1fd3b7bc1d7965e844ed7ad9fea9b677e12148a99be8f63268\n  patches:\n    - windows_printf_exponent_digits.patch  # [win]\n\nbuild:\n  number: 2\n\nrequirements:\n  build:\n    - make  # [not win]\n    - m2-make  # [win]\n    - cmake\n    - {{ compiler('c') }}  # [not win]\n    - {{ compiler('cxx') }}  # [not win]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - {{ compiler('m2w64_cxx') }}  # [win]\n    # Full posix environment.\n    - m2-base  # [win]\n\ntest:\n  commands:\n    - slim -testSLiM\n    - slim -testEidos\n    - eidos -testEidos\n\nabout:\n  home: http://messerlab.org/slim/\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: Forward-time population genetics simulator\n\n  description: |\n    SLiM is an evolutionary simulation framework that combines a powerful engine\n    for population genetic simulations with the capability of modeling\n    arbitrarily complex evolutionary scenarios.\n  doc_url: https://messerlab.org/slim/\n  dev_url: https://github.com/MesserLab/SLiM\n\nextra:\n  recipe-maintainers:\n    - jeromekelleher\n    - bhaller\n    - petrelharp\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "cmake",
    "cxx_compiler_stub",
+   "m2-base",
+   "m2-make",
+   "m2w64_c_compiler_stub",
+   "m2w64_cxx_compiler_stub",
    "make"
   ]
  },
@@ -241,6 +265,10 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "m2-base",
+    "m2-make",
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub",
     "make"
    ]
   },
@@ -272,6 +300,10 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
+    "m2-base",
+    "m2-make",
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub",
     "make"
    ]
   },
@@ -289,5 +321,78 @@
   }
  },
  "url": "https://github.com/MesserLab/SLiM/archive/v3.7.tar.gz",
- "version": "3.7"
+ "version": "3.7",
+ "win_64_meta_yaml": {
+  "about": {
+   "description": "SLiM is an evolutionary simulation framework that combines a powerful engine\nfor population genetic simulations with the capability of modeling\narbitrarily complex evolutionary scenarios.\n",
+   "dev_url": "https://github.com/MesserLab/SLiM",
+   "doc_url": "https://messerlab.org/slim/",
+   "home": "http://messerlab.org/slim/",
+   "license": "GPL-3.0-or-later",
+   "license_family": "GPL",
+   "license_file": "LICENSE",
+   "summary": "Forward-time population genetics simulator"
+  },
+  "build": {
+   "number": "2"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "jeromekelleher",
+    "bhaller",
+    "petrelharp"
+   ]
+  },
+  "package": {
+   "name": "slim",
+   "version": "3.7"
+  },
+  "requirements": {
+   "build": [
+    "m2-make",
+    "cmake",
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub",
+    "m2-base"
+   ]
+  },
+  "source": {
+   "patches": [
+    "windows_printf_exponent_digits.patch"
+   ],
+   "sha256": "2fae88f22a467e1fd3b7bc1d7965e844ed7ad9fea9b677e12148a99be8f63268",
+   "url": "https://github.com/MesserLab/SLiM/archive/v3.7.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "slim -testSLiM",
+    "slim -testEidos",
+    "eidos -testEidos"
+   ]
+  }
+ },
+ "win_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cmake",
+    "m2-base",
+    "m2-make",
+    "m2w64_c_compiler_stub",
+    "m2w64_cxx_compiler_stub"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ }
 }
