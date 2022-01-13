@@ -173,6 +173,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/820336531.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.1.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -3566,11 +3583,12 @@
   }
  },
  "name": "ibis-framework-ext",
- "new_version": "2.1.0",
+ "new_version": "2.1.1",
  "new_version_attempts": {
   "1.4.0": 1,
   "2.0.0": 1,
-  "2.1.0": 0.19999999999999996
+  "2.1.0": 0.19999999999999996,
+  "2.1.1": 1
  },
  "new_version_errors": {
   "2.1.0": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1690185987\">bot CI job</a>): master: ['MemoryError()']"
@@ -4983,13 +5001,9 @@
    "ibis-sqlite"
   ]
  },
- "pinning_version": "2021.12.01.20.09.37",
- "pre_pr_migrator_attempts": {
-  "version": 1
- },
- "pre_pr_migrator_status": {
-  "version": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1690185987\">bot CI job</a>): master: ['MemoryError()']"
- },
+ "pinning_version": "2022.01.12.20.51.50",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"ibis-framework\" %}\n{% set version = \"2.0.0\" %}\n\npackage:\n  name: {{ name }}-ext\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 1c2266429123c9730307d75e1c2a778e4b9193c8c6d183a12b74c556a8ef9e3f\n\nbuild:\n  number: 5\n\noutputs:\n  - name: {{ name }}-core\n    version: {{ version }}\n\n    build:\n      script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n      noarch: python\n\n    requirements:\n      host:\n        - pip\n        - python >=3.7\n        - setuptools\n\n      run:\n        - multipledispatch >=0.6\n        - numpy >=1.15\n        - pandas >=0.25.3\n        - python >=3.7\n        - pytz\n        - regex\n        - toolz\n        - cached_property\n        - setuptools\n        - parsy\n        - python-graphviz\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.pandas\n\n  - name: {{ name }}\n    version: {{ version }}\n\n    build:\n      script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n      skip: true  # [py<37]\n\n    requirements:\n      host:\n        - pip\n        - python\n        - setuptools\n\n      run:\n        - clickhouse-driver >=0.1.3\n        - clickhouse-cityhash  # [not win]\n        - clickhouse-sqlalchemy\n        - geoalchemy2\n        - geopandas\n        - impyla >=0.17\n        - lz4\n        - psycopg2 >=2.7\n        - pyarrow >=1.0\n        - pymysql\n        - pyspark >=2.4.3\n        - pytables >=3.0.0\n        - python\n        - python-graphviz\n        - python-hdfs >=2.0.16\n        - requests\n        - shapely\n        - sqlalchemy >=1.3\n        - thrift >=0.11\n        - thriftpy2\n        - {{ pin_subpackage(name + '-core', max_pin=\"x.x.x.x\") }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.clickhouse\n        - ibis.backends.csv\n        - ibis.backends.parquet\n        - ibis.backends.hdf5\n        - ibis.backends.impala\n        - ibis.backends.mysql\n        - ibis.backends.pandas\n        - ibis.backends.postgres\n        - ibis.backends.pyspark\n        - ibis.backends.sqlite\n\n\n  - name: ibis-clickhouse\n    version: {{ version }}\n\n    build:\n      script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n      skip: true  # [py<37]\n\n    requirements:\n      host:\n        - pip\n        - python\n        - setuptools\n\n      run:\n        - clickhouse-driver >=0.1.3\n        - clickhouse-cityhash  # [not win]\n        - clickhouse-sqlalchemy >=0.1.4\n        - sqlalchemy >=1.3\n        - python\n        - {{ pin_subpackage(name + '-core', max_pin=\"x.x.x.x\") }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.clickhouse\n\n  - name: ibis-dask\n    version: {{ version }}\n\n    build:\n      script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n      skip: true  # [py<37]\n\n    requirements:\n      host:\n        - pip\n        - python\n        - setuptools\n\n      run:\n        - lz4\n        - pyarrow >=1\n        - dask >=2021.2.0\n        - python\n        - {{ pin_subpackage(name + '-core', max_pin=\"x.x.x.x\") }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.dask\n\n  - name: ibis-hdf5\n    version: {{ version }}\n\n    build:\n      script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n      skip: true  # [py<37]\n\n    requirements:\n      host:\n        - pip\n        - python\n        - setuptools\n\n      run:\n        - pytables >=3.0.0\n        - python\n        - {{ pin_subpackage(name + '-core', max_pin=\"x.x.x.x\") }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.hdf5\n\n  - name: ibis-impala\n    version: {{ version }}\n\n    build:\n      script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n      skip: true  # [py<37]\n\n    requirements:\n      host:\n        - pip\n        - python\n        - setuptools\n\n      run:\n        - impyla >=0.15.0\n        - python-hdfs >=2.0.16\n        - requests\n        - sqlalchemy >=1.3\n        - python\n        - {{ pin_subpackage(name + '-core', max_pin=\"x.x.x.x\") }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.impala\n\n  - name: ibis-mysql\n    version: {{ version }}\n\n    build:\n      script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n      skip: true  # [py<37]\n\n    requirements:\n      host:\n        - pip\n        - python\n        - setuptools\n\n      run:\n        - pymysql\n        - sqlalchemy >=1.3\n        - python\n        - {{ pin_subpackage(name + '-core', max_pin=\"x.x.x.x\") }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.mysql\n\n  - name: ibis-parquet\n    version: {{ version }}\n\n    build:\n      script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n      skip: true  # [py<37]\n\n    requirements:\n      host:\n        - pip\n        - python\n        - setuptools\n\n      run:\n        - pyarrow >=1.0\n        - python\n        - {{ pin_subpackage(name + '-core', max_pin=\"x.x.x.x\") }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.parquet\n\n  - name: ibis-postgres\n    version: {{ version }}\n\n    build:\n      script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n      skip: true  # [py<37]\n\n    requirements:\n      host:\n        - pip\n        - python\n        - setuptools\n\n      run:\n        - sqlalchemy >=1.3\n        - psycopg2 >=2.7\n        - python\n        - {{ pin_subpackage(name + '-core', max_pin=\"x.x.x.x\") }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.postgres\n\n  - name: ibis-pyspark\n    version: {{ version }}\n\n    build:\n      script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n      skip: true  # [py<37]\n\n    requirements:\n      host:\n        - pip\n        - python\n        - setuptools\n\n      run:\n        - lz4\n        - pyarrow >=1.0\n        - pyspark >=2.4.3\n        - python\n        - {{ pin_subpackage(name + '-core', max_pin=\"x.x.x.x\") }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.pyspark\n\n  - name: ibis-sqlite\n    version: {{ version }}\n\n    build:\n      script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n      skip: true  # [py<37]\n\n    requirements:\n      host:\n        - pip\n        - python\n        - setuptools\n\n      run:\n        - sqlalchemy >=1.3\n        - python\n        - {{ pin_subpackage(name + '-core', max_pin=\"x.x.x.x\") }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.sqlite\n\nabout:\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE.txt\n  home: http://www.ibis-project.org\n  summary: Productivity-centric Python Big Data Framework\n\nextra:\n  recipe-maintainers:\n    - jreback\n    - xmnlab\n    - datapythonista\n    - cpcloud\n    - gforsyth\n",
  "req": {
   "__set__": true,
@@ -5082,7 +5096,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.15.0",
+ "smithy_version": "3.16.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
