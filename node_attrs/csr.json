@@ -105,6 +105,42 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/823207038.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.4.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/823231426.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python310"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -931,11 +967,12 @@
   }
  },
  "name": "csr",
- "new_version": "0.4.0",
+ "new_version": "0.4.1",
  "new_version_attempts": {
   "0.2.0": 1,
   "0.3.1": 2,
-  "0.4.0": 1
+  "0.4.0": 1,
+  "0.4.1": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1234,13 +1271,9 @@
    "csr"
   ]
  },
- "pinning_version": "2021.06.30.16.50.47",
- "pre_pr_migrator_attempts": {
-  "python310": 2
- },
- "pre_pr_migrator_status": {
-  "python310": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1699841854\">bot CI job</a>): master: ['linux_aarch64_python3.10.____cpython: Encountered problems while solving:\\n  - nothing provides openssl >=1.0.2p,<1.0.3a needed by python-3.7.1-hd75c258_1001\\n', 'win_64_python3.10.____cpython: Encountered problems while solving:\\n  - package numba-0.54.1-py37hf11a4ad_0 requires python >=3.7,<3.8.0a0, but none of the providers can be installed\\n']"
- },
+ "pinning_version": "2022.01.14.19.19.28",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"csr\" %}\n{% set version = \"0.4.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 683cf39d02554f2c39a5202ac39e538b01febcbbf793a1cc89a64604d1d0b015\n\nbuild:\n  number: 0\n  skip: true  # [py<37 or python_impl == 'pypy' or (py>38 and arm64)]\n  script: |\n    # On MKL-supported platforms, we want to make the MKL kernel available\n    {{ PYTHON }} build_mkl.py  # [x86_64]\n    {{ PYTHON }} -m pip install --no-deps -vv .\n  ignore_run_exports:\n    - mkl\n\nrequirements:\n  build:\n    # X86-64 needs the dependencies to build the MKL extension\n    - {{ compiler('c') }}  # [x86_64]\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - cython                                 # [build_platform != target_platform]\n    - numpy                                  # [build_platform != target_platform]\n    - pybind11                               # [build_platform != target_platform]\n  host:\n    - python\n    - pip\n    - flit-core >=2\n    - cffi >=1.12.2    # [x86_64]\n    - mkl-devel =2020  # [x86_64]\n  run:\n    - python\n    - numba >=0.51\n    - numpy >=1.17\n    - scipy\n    - cffi >=1.12.2    # [x86_64]\n\ntest:\n  requires:\n    - pytest\n    - hypothesis\n    - pytest-benchmark\n    - psutil\n    - libblas=*=*mkl   # [x86_64]\n  source_files:\n    - pytest.ini\n    - conftest.py\n    - tests\n    - tests/*.py\n  imports:\n    - csr\n    - csr.kernel\n    # make sure the MKL kernel works on x86-64\n    - csr.kernels.mkl  # [x86_64]\n  commands:\n    # run the tests, but with the lower-overhead Hypothesis profile\n    - python -m pytest tests --hypothesis-profile=nojit\n\nabout:\n  home: https://csr.lenskit.org\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Compressed sparse matrices for Python and Numba\n  # The remaining entries in this section are optional, but recommended.\n  description: |\n    CSR is a compressed sparse row sparse matrix package for Python,\n    with Numba-accessible APIs and optional MKL acceleration.\n  doc_url: https://csr.lenskit.org\n  dev_url: https://github.com/lenskit/csr\n\nextra:\n  recipe-maintainers:\n    - mdekstrand\n",
  "req": {
   "__set__": true,
@@ -1296,7 +1329,7 @@
    ]
   }
  },
- "smithy_version": "3.10.3",
+ "smithy_version": "3.16.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
