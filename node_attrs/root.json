@@ -662,8 +662,8 @@
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
-   "linux_aarch64": "linux_aarch64",
-   "linux_ppc64le": "linux_ppc64le",
+   "linux_aarch64": "linux_64",
+   "linux_ppc64le": "linux_64",
    "osx_arm64": "osx_64"
   },
   "provider": {
@@ -688,18 +688,15 @@
    "ignore_prefix_files": [
     "lib/*.pcm",
     "lib/*.pcm",
-    "lib/*.pcm",
     "lib/*.pcm"
    ],
    "ignore_run_exports_from": [
     "clangdev",
     "clangdev",
-    "clangdev",
     "clangdev"
    ],
-   "number": "0",
+   "number": "1",
    "script_env": [
-    "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1"
@@ -707,9 +704,6 @@
   },
   "extra": {
    "recipe-maintainers": [
-    "chrisburr",
-    "henryiii",
-    "eguiraud",
     "chrisburr",
     "henryiii",
     "eguiraud",
@@ -727,7 +721,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -752,13 +746,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -796,7 +791,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -821,13 +816,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -865,7 +861,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -890,82 +886,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
-      "root_base",
-      "python"
-     ],
-     "run": [
       "root_base",
       "python",
-      "compilers",
-      "metakernel",
-      "ipython",
-      "notebook",
-      "numba"
-     ]
-    },
-    "test": {
-     "commands": [
-      "ipython -c \"import JsMVA\"",
-      "python test_pyroot.py",
-      "root -l -b -q -x test.cpp",
-      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-      "root -l -b -q -x test.cpp++",
-      "jupyter-kernelspec list | grep ' root '"
-     ],
-     "files": [
-      "test.cpp",
-      "test_pyroot.py"
-     ],
-     "imports": [
-      "ROOT",
-      "JupyROOT"
-     ]
-    }
-   },
-   {
-    "build": {
-     "ignore_prefix_files": [
-      "lib/*.pcm"
-     ],
-     "number": "0",
-     "run_exports": [
-      "root_base"
-     ],
-     "script": [
-      "cd build-dir",
-      "make install",
-      "rm \"${PREFIX}\"/bin/thisroot.*",
-      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
-      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
-      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
-      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
-      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
-      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
-      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
-      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
-      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
-      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
-      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
-     ]
-    },
-    "name": "root_base"
-   },
-   {
-    "build": {
-     "number": "0"
-    },
-    "name": "root",
-    "requirements": {
-     "host": [
-      "root_base",
-      "python"
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -1005,18 +933,6 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake",
-    "git",
-    "pkg-config",
-    "sed",
-    "make",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake",
@@ -1101,7 +1017,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -1151,7 +1067,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -1201,57 +1117,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
-    "clangdev 9.0.1 root_62400*",
-    "python",
-    "numpy",
-    "libblas",
-    "libcblas",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "afterimage",
-    "cfitsio",
-    "davix",
-    "fftw",
-    "freetype",
-    "ftgl",
-    "gdk-pixbuf",
-    "giflib",
-    "glew",
-    "glib",
-    "gl2ps",
-    "graphviz",
-    "gsl",
-    "libglu",
-    "libpng",
-    "librsvg",
-    "libtiff",
-    "libxml2",
-    "lz4-c",
-    "nlohmann_json",
-    "openssl",
-    "pcre",
-    "pythia8",
-    "sqlite",
-    "tbb",
-    "tbb-devel",
-    "vector-classes",
-    "vdt",
-    "xorg-libx11",
-    "xorg-libxau",
-    "xorg-libxcursor",
-    "xorg-libxext",
-    "xorg-libxfixes",
-    "xorg-libxft",
-    "xorg-libxpm",
-    "xrootd",
-    "xz",
-    "libcxx",
-    "xxhash",
-    "zlib",
-    "zstd",
-    "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy"
@@ -1263,11 +1129,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -1279,11 +1145,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -1295,27 +1161,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxpm",
-    "xorg-libxft",
-    "libglu",
-    "python",
-    "numpy",
-    "libcxx",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "xxhash",
-    "nlohmann_json",
-    "cffi",
-    "graphviz",
-    "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -1331,9 +1181,6 @@
     "root5 9999",
     "numba >=0.52",
     "cling 9999",
-    "root5 9999",
-    "numba >=0.52",
-    "cling 9999",
     "root5 9999"
    ]
   },
@@ -1341,25 +1188,35 @@
    "folder": "root-source",
    "patches": [
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch"
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch"
    ],
    "sha256": "d163947d6aadf4df137194cf9ca64a089882b86f4633136d13c68c2b5208c0b1",
    "url": "https://github.com/root-project/root/archive/refs/tags/v6-24-06.tar.gz"
@@ -1404,23 +1261,9 @@
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
     "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
     "root -l -b -q -x test.cpp++",
-    "echo '.q' | root -e 'sddsa0'",
-    "root -l -b -q -x",
-    "root -l -b -q -x test.cpp",
-    "root -b -l -q -x -e '2+3; 0'",
-    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-    "thisroot.sh",
-    "thisroot.csh",
-    "thisroot.fish",
-    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
-    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
-    "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'"
    ],
    "files": [
-    "test.cpp",
     "test.cpp",
     "test.cpp",
     "test.cpp"
@@ -1543,18 +1386,15 @@
    "ignore_prefix_files": [
     "etc/allDict.cxx.pch",
     "etc/allDict.cxx.pch",
-    "etc/allDict.cxx.pch",
     "etc/allDict.cxx.pch"
    ],
    "ignore_run_exports_from": [
     "clangdev",
     "clangdev",
-    "clangdev",
     "clangdev"
    ],
-   "number": "0",
+   "number": "1",
    "script_env": [
-    "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1"
@@ -1562,9 +1402,6 @@
   },
   "extra": {
    "recipe-maintainers": [
-    "chrisburr",
-    "henryiii",
-    "eguiraud",
     "chrisburr",
     "henryiii",
     "eguiraud",
@@ -1582,7 +1419,7 @@
      "ignore_prefix_files": [
       "etc/allDict.cxx.pch"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -1607,13 +1444,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -1651,7 +1489,7 @@
      "ignore_prefix_files": [
       "etc/allDict.cxx.pch"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -1676,13 +1514,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -1720,7 +1559,7 @@
      "ignore_prefix_files": [
       "etc/allDict.cxx.pch"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -1745,82 +1584,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
-      "root_base",
-      "python"
-     ],
-     "run": [
       "root_base",
       "python",
-      "compilers",
-      "metakernel",
-      "ipython",
-      "notebook",
-      "numba"
-     ]
-    },
-    "test": {
-     "commands": [
-      "ipython -c \"import JsMVA\"",
-      "python test_pyroot.py",
-      "root -l -b -q -x test.cpp",
-      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-      "root -l -b -q -x test.cpp++",
-      "jupyter-kernelspec list | grep ' root '"
-     ],
-     "files": [
-      "test.cpp",
-      "test_pyroot.py"
-     ],
-     "imports": [
-      "ROOT",
-      "JupyROOT"
-     ]
-    }
-   },
-   {
-    "build": {
-     "ignore_prefix_files": [
-      "etc/allDict.cxx.pch"
-     ],
-     "number": "0",
-     "run_exports": [
-      "root_base"
-     ],
-     "script": [
-      "cd build-dir",
-      "make install",
-      "rm \"${PREFIX}\"/bin/thisroot.*",
-      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
-      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
-      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
-      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
-      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
-      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
-      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
-      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
-      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
-      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
-      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
-     ]
-    },
-    "name": "root_base"
-   },
-   {
-    "build": {
-     "number": "0"
-    },
-    "name": "root",
-    "requirements": {
-     "host": [
-      "root_base",
-      "python"
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -1860,18 +1631,6 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake",
-    "git",
-    "pkg-config",
-    "sed",
-    "make",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake",
@@ -1956,7 +1715,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -2006,7 +1765,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -2056,57 +1815,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
-    "clangdev 9.0.1 root_62400*",
-    "python",
-    "numpy",
-    "libblas",
-    "libcblas",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "afterimage",
-    "cfitsio",
-    "davix",
-    "fftw",
-    "freetype",
-    "ftgl",
-    "gdk-pixbuf",
-    "giflib",
-    "glew",
-    "glib",
-    "gl2ps",
-    "graphviz",
-    "gsl",
-    "libglu",
-    "libpng",
-    "librsvg",
-    "libtiff",
-    "libxml2",
-    "lz4-c",
-    "nlohmann_json",
-    "openssl",
-    "pcre",
-    "pythia8",
-    "sqlite",
-    "tbb",
-    "tbb-devel",
-    "vector-classes",
-    "vdt",
-    "xorg-libx11",
-    "xorg-libxau",
-    "xorg-libxcursor",
-    "xorg-libxext",
-    "xorg-libxfixes",
-    "xorg-libxft",
-    "xorg-libxpm",
-    "xrootd",
-    "xz",
-    "libcxx",
-    "xxhash",
-    "zlib",
-    "zstd",
-    "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy"
@@ -2118,11 +1827,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -2134,11 +1843,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -2150,27 +1859,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxpm",
-    "xorg-libxft",
-    "libglu",
-    "python",
-    "numpy",
-    "libcxx",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "xxhash",
-    "nlohmann_json",
-    "cffi",
-    "graphviz",
-    "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -2186,9 +1879,6 @@
     "root5 9999",
     "numba >=0.52",
     "cling 9999",
-    "root5 9999",
-    "numba >=0.52",
-    "cling 9999",
     "root5 9999"
    ]
   },
@@ -2196,25 +1886,35 @@
    "folder": "root-source",
    "patches": [
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch"
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch"
    ],
    "sha256": "d163947d6aadf4df137194cf9ca64a089882b86f4633136d13c68c2b5208c0b1",
    "url": "https://github.com/root-project/root/archive/refs/tags/v6-24-06.tar.gz"
@@ -2259,23 +1959,9 @@
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
     "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
     "root -l -b -q -x test.cpp++",
-    "echo '.q' | root -e 'sddsa0'",
-    "root -l -b -q -x",
-    "root -l -b -q -x test.cpp",
-    "root -b -l -q -x -e '2+3; 0'",
-    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-    "thisroot.sh",
-    "thisroot.csh",
-    "thisroot.fish",
-    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
-    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
-    "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'"
    ],
    "files": [
-    "test.cpp",
     "test.cpp",
     "test.cpp",
     "test.cpp"
@@ -2398,18 +2084,15 @@
    "ignore_prefix_files": [
     "lib/*.pcm",
     "lib/*.pcm",
-    "lib/*.pcm",
     "lib/*.pcm"
    ],
    "ignore_run_exports_from": [
     "clangdev",
     "clangdev",
-    "clangdev",
     "clangdev"
    ],
-   "number": "0",
+   "number": "1",
    "script_env": [
-    "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1"
@@ -2417,9 +2100,6 @@
   },
   "extra": {
    "recipe-maintainers": [
-    "chrisburr",
-    "henryiii",
-    "eguiraud",
     "chrisburr",
     "henryiii",
     "eguiraud",
@@ -2437,7 +2117,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -2462,13 +2142,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -2506,7 +2187,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -2531,13 +2212,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -2575,7 +2257,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -2600,82 +2282,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
-      "root_base",
-      "python"
-     ],
-     "run": [
       "root_base",
       "python",
-      "compilers",
-      "metakernel",
-      "ipython",
-      "notebook",
-      "numba"
-     ]
-    },
-    "test": {
-     "commands": [
-      "ipython -c \"import JsMVA\"",
-      "python test_pyroot.py",
-      "root -l -b -q -x test.cpp",
-      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-      "root -l -b -q -x test.cpp++",
-      "jupyter-kernelspec list | grep ' root '"
-     ],
-     "files": [
-      "test.cpp",
-      "test_pyroot.py"
-     ],
-     "imports": [
-      "ROOT",
-      "JupyROOT"
-     ]
-    }
-   },
-   {
-    "build": {
-     "ignore_prefix_files": [
-      "lib/*.pcm"
-     ],
-     "number": "0",
-     "run_exports": [
-      "root_base"
-     ],
-     "script": [
-      "cd build-dir",
-      "make install",
-      "rm \"${PREFIX}\"/bin/thisroot.*",
-      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
-      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
-      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
-      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
-      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
-      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
-      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
-      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
-      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
-      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
-      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
-     ]
-    },
-    "name": "root_base"
-   },
-   {
-    "build": {
-     "number": "0"
-    },
-    "name": "root",
-    "requirements": {
-     "host": [
-      "root_base",
-      "python"
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -2715,18 +2329,6 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake",
-    "git",
-    "pkg-config",
-    "sed",
-    "make",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake",
@@ -2811,7 +2413,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -2861,7 +2463,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -2911,57 +2513,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
-    "clangdev 9.0.1 root_62400*",
-    "python",
-    "numpy",
-    "libblas",
-    "libcblas",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "afterimage",
-    "cfitsio",
-    "davix",
-    "fftw",
-    "freetype",
-    "ftgl",
-    "gdk-pixbuf",
-    "giflib",
-    "glew",
-    "glib",
-    "gl2ps",
-    "graphviz",
-    "gsl",
-    "libglu",
-    "libpng",
-    "librsvg",
-    "libtiff",
-    "libxml2",
-    "lz4-c",
-    "nlohmann_json",
-    "openssl",
-    "pcre",
-    "pythia8",
-    "sqlite",
-    "tbb",
-    "tbb-devel",
-    "vector-classes",
-    "vdt",
-    "xorg-libx11",
-    "xorg-libxau",
-    "xorg-libxcursor",
-    "xorg-libxext",
-    "xorg-libxfixes",
-    "xorg-libxft",
-    "xorg-libxpm",
-    "xrootd",
-    "xz",
-    "libcxx",
-    "xxhash",
-    "zlib",
-    "zstd",
-    "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy"
@@ -2973,11 +2525,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -2989,11 +2541,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -3005,27 +2557,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxpm",
-    "xorg-libxft",
-    "libglu",
-    "python",
-    "numpy",
-    "libcxx",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "xxhash",
-    "nlohmann_json",
-    "cffi",
-    "graphviz",
-    "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -3041,9 +2577,6 @@
     "root5 9999",
     "numba >=0.52",
     "cling 9999",
-    "root5 9999",
-    "numba >=0.52",
-    "cling 9999",
     "root5 9999"
    ]
   },
@@ -3051,25 +2584,35 @@
    "folder": "root-source",
    "patches": [
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch"
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch"
    ],
    "sha256": "d163947d6aadf4df137194cf9ca64a089882b86f4633136d13c68c2b5208c0b1",
    "url": "https://github.com/root-project/root/archive/refs/tags/v6-24-06.tar.gz"
@@ -3111,22 +2654,9 @@
     "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
     "root -l -b -q -x test.cpp++",
-    "echo '.q' | root -e 'sddsa0'",
-    "root -l -b -q -x",
-    "root -l -b -q -x test.cpp",
-    "root -b -l -q -x -e '2+3; 0'",
-    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-    "thisroot.sh",
-    "thisroot.csh",
-    "thisroot.fish",
-    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
-    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-    "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'"
    ],
    "files": [
-    "test.cpp",
     "test.cpp",
     "test.cpp",
     "test.cpp"
@@ -3250,13 +2780,9 @@
     "lib/*.pcm",
     "lib/*.pcm",
     "lib/*.pcm",
-    "lib/*.pcm",
     "etc/allDict.cxx.pch",
     "etc/allDict.cxx.pch",
     "etc/allDict.cxx.pch",
-    "etc/allDict.cxx.pch",
-    "lib/*.pcm",
-    "lib/*.pcm",
     "lib/*.pcm",
     "lib/*.pcm",
     "lib/*.pcm",
@@ -3280,18 +2806,10 @@
     "clangdev",
     "clangdev",
     "clangdev",
-    "clangdev",
-    "clangdev",
-    "clangdev",
-    "clangdev",
     "clangdev"
    ],
-   "number": "0",
+   "number": "1",
    "script_env": [
-    "ROOT_CONDA_BUILTIN_PYROOT=1",
-    "ROOT_CONDA_BUILTIN_PYROOT=1",
-    "ROOT_CONDA_BUILTIN_PYROOT=1",
-    "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
@@ -3351,18 +2869,6 @@
     "eguiraud",
     "chrisburr",
     "henryiii",
-    "eguiraud",
-    "chrisburr",
-    "henryiii",
-    "eguiraud",
-    "chrisburr",
-    "henryiii",
-    "eguiraud",
-    "chrisburr",
-    "henryiii",
-    "eguiraud",
-    "chrisburr",
-    "henryiii",
     "eguiraud"
    ]
   },
@@ -3372,7 +2878,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -3397,13 +2903,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -3441,7 +2948,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -3466,13 +2973,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -3510,7 +3018,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -3535,82 +3043,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
-      "root_base",
-      "python"
-     ],
-     "run": [
       "root_base",
       "python",
-      "compilers",
-      "metakernel",
-      "ipython",
-      "notebook",
-      "numba"
-     ]
-    },
-    "test": {
-     "commands": [
-      "ipython -c \"import JsMVA\"",
-      "python test_pyroot.py",
-      "root -l -b -q -x test.cpp",
-      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-      "root -l -b -q -x test.cpp++",
-      "jupyter-kernelspec list | grep ' root '"
-     ],
-     "files": [
-      "test.cpp",
-      "test_pyroot.py"
-     ],
-     "imports": [
-      "ROOT",
-      "JupyROOT"
-     ]
-    }
-   },
-   {
-    "build": {
-     "ignore_prefix_files": [
-      "lib/*.pcm"
-     ],
-     "number": "0",
-     "run_exports": [
-      "root_base"
-     ],
-     "script": [
-      "cd build-dir",
-      "make install",
-      "rm \"${PREFIX}\"/bin/thisroot.*",
-      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
-      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
-      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
-      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
-      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
-      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
-      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
-      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
-      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
-      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
-      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
-     ]
-    },
-    "name": "root_base"
-   },
-   {
-    "build": {
-     "number": "0"
-    },
-    "name": "root",
-    "requirements": {
-     "host": [
-      "root_base",
-      "python"
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -3648,7 +3088,7 @@
      "ignore_prefix_files": [
       "etc/allDict.cxx.pch"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -3673,13 +3113,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -3717,7 +3158,7 @@
      "ignore_prefix_files": [
       "etc/allDict.cxx.pch"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -3742,13 +3183,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -3786,7 +3228,7 @@
      "ignore_prefix_files": [
       "etc/allDict.cxx.pch"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -3811,82 +3253,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
-      "root_base",
-      "python"
-     ],
-     "run": [
       "root_base",
       "python",
-      "compilers",
-      "metakernel",
-      "ipython",
-      "notebook",
-      "numba"
-     ]
-    },
-    "test": {
-     "commands": [
-      "ipython -c \"import JsMVA\"",
-      "python test_pyroot.py",
-      "root -l -b -q -x test.cpp",
-      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-      "root -l -b -q -x test.cpp++",
-      "jupyter-kernelspec list | grep ' root '"
-     ],
-     "files": [
-      "test.cpp",
-      "test_pyroot.py"
-     ],
-     "imports": [
-      "ROOT",
-      "JupyROOT"
-     ]
-    }
-   },
-   {
-    "build": {
-     "ignore_prefix_files": [
-      "etc/allDict.cxx.pch"
-     ],
-     "number": "0",
-     "run_exports": [
-      "root_base"
-     ],
-     "script": [
-      "cd build-dir",
-      "make install",
-      "rm \"${PREFIX}\"/bin/thisroot.*",
-      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
-      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
-      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
-      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
-      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
-      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
-      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
-      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
-      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
-      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
-      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
-     ]
-    },
-    "name": "root_base"
-   },
-   {
-    "build": {
-     "number": "0"
-    },
-    "name": "root",
-    "requirements": {
-     "host": [
-      "root_base",
-      "python"
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -3924,7 +3298,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -3949,13 +3323,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -3993,7 +3368,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -4018,13 +3393,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -4062,7 +3438,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -4087,13 +3463,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -4131,7 +3508,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -4156,13 +3533,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -4200,7 +3578,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -4225,13 +3603,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -4269,7 +3648,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -4294,13 +3673,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -4338,7 +3718,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -4363,13 +3743,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -4407,7 +3788,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -4432,151 +3813,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
-      "root_base",
-      "python"
-     ],
-     "run": [
       "root_base",
       "python",
-      "compilers",
-      "metakernel",
-      "ipython",
-      "notebook",
-      "numba"
-     ]
-    },
-    "test": {
-     "commands": [
-      "ipython -c \"import JsMVA\"",
-      "python test_pyroot.py",
-      "root -l -b -q -x test.cpp",
-      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-      "root -l -b -q -x test.cpp++",
-      "jupyter-kernelspec list | grep ' root '"
-     ],
-     "files": [
-      "test.cpp",
-      "test_pyroot.py"
-     ],
-     "imports": [
-      "ROOT",
-      "JupyROOT"
-     ]
-    }
-   },
-   {
-    "build": {
-     "ignore_prefix_files": [
-      "lib/*.pcm"
-     ],
-     "number": "0",
-     "run_exports": [
-      "root_base"
-     ],
-     "script": [
-      "cd build-dir",
-      "make install",
-      "rm \"${PREFIX}\"/bin/thisroot.*",
-      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
-      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
-      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
-      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
-      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
-      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
-      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
-      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
-      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
-      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
-      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
-     ]
-    },
-    "name": "root_base"
-   },
-   {
-    "build": {
-     "number": "0"
-    },
-    "name": "root",
-    "requirements": {
-     "host": [
-      "root_base",
-      "python"
-     ],
-     "run": [
-      "root_base",
-      "python",
-      "compilers",
-      "metakernel",
-      "ipython",
-      "notebook",
-      "numba"
-     ]
-    },
-    "test": {
-     "commands": [
-      "ipython -c \"import JsMVA\"",
-      "python test_pyroot.py",
-      "root -l -b -q -x test.cpp",
-      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-      "root -l -b -q -x test.cpp++",
-      "jupyter-kernelspec list | grep ' root '"
-     ],
-     "files": [
-      "test.cpp",
-      "test_pyroot.py"
-     ],
-     "imports": [
-      "ROOT",
-      "JupyROOT"
-     ]
-    }
-   },
-   {
-    "build": {
-     "ignore_prefix_files": [
-      "lib/*.pcm"
-     ],
-     "number": "0",
-     "run_exports": [
-      "root_base"
-     ],
-     "script": [
-      "cd build-dir",
-      "make install",
-      "rm \"${PREFIX}\"/bin/thisroot.*",
-      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
-      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
-      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
-      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
-      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
-      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
-      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
-      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
-      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
-      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
-      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
-     ]
-    },
-    "name": "root_base"
-   },
-   {
-    "build": {
-     "number": "0"
-    },
-    "name": "root",
-    "requirements": {
-     "host": [
-      "root_base",
-      "python"
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -4731,49 +3975,6 @@
     "pkg-config",
     "sed",
     "make",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake",
-    "git",
-    "pkg-config",
-    "sed",
-    "make",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake",
-    "git",
-    "pkg-config",
-    "sed",
-    "make",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "cdt_stub",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake",
-    "git",
-    "pkg-config",
-    "sed",
-    "make",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake",
-    "git",
-    "pkg-config",
-    "sed",
-    "make",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake",
@@ -4850,7 +4051,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -4900,7 +4101,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -4950,7 +4151,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -5000,7 +4201,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -5050,7 +4251,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -5100,7 +4301,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -5150,7 +4351,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -5200,7 +4401,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -5250,157 +4451,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
-    "clangdev 9.0.1 root_62400*",
-    "python",
-    "numpy",
-    "libblas",
-    "libcblas",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "afterimage",
-    "cfitsio",
-    "davix",
-    "fftw",
-    "freetype",
-    "ftgl",
-    "gdk-pixbuf",
-    "giflib",
-    "glew",
-    "glib",
-    "gl2ps",
-    "graphviz",
-    "gsl",
-    "libglu",
-    "libpng",
-    "librsvg",
-    "libtiff",
-    "libxml2",
-    "lz4-c",
-    "nlohmann_json",
-    "openssl",
-    "pcre",
-    "pythia8",
-    "sqlite",
-    "tbb",
-    "tbb-devel",
-    "vector-classes",
-    "vdt",
-    "xorg-libx11",
-    "xorg-libxau",
-    "xorg-libxcursor",
-    "xorg-libxext",
-    "xorg-libxfixes",
-    "xorg-libxft",
-    "xorg-libxpm",
-    "xrootd",
-    "xz",
-    "libcxx",
-    "xxhash",
-    "zlib",
-    "zstd",
-    "llvm 9.0.1",
-    "llvmdev 9.0.1",
-    "clangdev 9.0.1 root_62400*",
-    "python",
-    "numpy",
-    "libblas",
-    "libcblas",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "afterimage",
-    "cfitsio",
-    "davix",
-    "fftw",
-    "freetype",
-    "ftgl",
-    "gdk-pixbuf",
-    "giflib",
-    "glew",
-    "glib",
-    "gl2ps",
-    "graphviz",
-    "gsl",
-    "libglu",
-    "libpng",
-    "librsvg",
-    "libtiff",
-    "libxml2",
-    "lz4-c",
-    "nlohmann_json",
-    "openssl",
-    "pcre",
-    "pythia8",
-    "sqlite",
-    "tbb",
-    "tbb-devel",
-    "vector-classes",
-    "vdt",
-    "xorg-libx11",
-    "xorg-libxau",
-    "xorg-libxcursor",
-    "xorg-libxext",
-    "xorg-libxfixes",
-    "xorg-libxft",
-    "xorg-libxpm",
-    "xrootd",
-    "xz",
-    "libcxx",
-    "xxhash",
-    "zlib",
-    "zstd",
-    "llvm 9.0.1",
-    "llvmdev 9.0.1",
-    "clangdev 9.0.1 root_62400*",
-    "python",
-    "numpy",
-    "libblas",
-    "libcblas",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "afterimage",
-    "cfitsio",
-    "davix",
-    "fftw",
-    "freetype",
-    "ftgl",
-    "gdk-pixbuf",
-    "giflib",
-    "glew",
-    "glib",
-    "gl2ps",
-    "graphviz",
-    "gsl",
-    "libglu",
-    "libpng",
-    "librsvg",
-    "libtiff",
-    "libxml2",
-    "lz4-c",
-    "nlohmann_json",
-    "openssl",
-    "pcre",
-    "pythia8",
-    "sqlite",
-    "tbb",
-    "tbb-devel",
-    "vector-classes",
-    "vdt",
-    "xorg-libx11",
-    "xorg-libxau",
-    "xorg-libxcursor",
-    "xorg-libxext",
-    "xorg-libxfixes",
-    "xorg-libxft",
-    "xorg-libxpm",
-    "xrootd",
-    "xz",
-    "libcxx",
-    "xxhash",
-    "zlib",
-    "zstd",
-    "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -5440,7 +4491,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -5480,7 +4531,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -5520,47 +4571,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
-    "clangdev 9.0.1 root_62400*",
-    "python",
-    "numpy",
-    "libblas",
-    "libcblas",
-    "afterimage",
-    "cfitsio",
-    "davix",
-    "fftw",
-    "freetype",
-    "ftgl",
-    "gdk-pixbuf",
-    "giflib",
-    "glew",
-    "glib",
-    "gl2ps",
-    "graphviz",
-    "gsl",
-    "libpng",
-    "librsvg",
-    "libtiff",
-    "libxml2",
-    "lz4-c",
-    "nlohmann_json",
-    "openssl",
-    "pcre",
-    "pythia8",
-    "sqlite",
-    "tbb",
-    "tbb-devel",
-    "vector-classes",
-    "vdt",
-    "xrootd",
-    "xz",
-    "libcxx",
-    "xxhash",
-    "zlib",
-    "zstd",
-    "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -5646,11 +4657,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -5662,11 +4673,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -5678,11 +4689,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -5694,11 +4705,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -5710,11 +4721,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -5726,11 +4737,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -5742,11 +4753,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -5758,11 +4769,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -5774,11 +4785,11 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "xorg-libx11",
     "xorg-libxext",
     "xorg-libxpm",
@@ -5790,55 +4801,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
-    "cffi",
-    "graphviz",
-    "vector-classes",
-    "sysroot_linux-64",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxpm",
-    "xorg-libxft",
-    "libglu",
-    "python",
-    "numpy",
-    "libcxx",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "xxhash",
-    "nlohmann_json",
-    "cffi",
-    "graphviz",
-    "vector-classes",
-    "sysroot_linux-64",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxpm",
-    "xorg-libxft",
-    "libglu",
-    "python",
-    "numpy",
-    "libcxx",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "xxhash",
-    "nlohmann_json",
-    "cffi",
-    "graphviz",
-    "vector-classes",
-    "sysroot_linux-64",
-    "xorg-libx11",
-    "xorg-libxext",
-    "xorg-libxpm",
-    "xorg-libxft",
-    "libglu",
-    "python",
-    "numpy",
-    "libcxx",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
@@ -5848,7 +4811,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
@@ -5858,7 +4821,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
@@ -5868,7 +4831,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
@@ -5878,17 +4841,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
-    "cffi",
-    "graphviz",
-    "vector-classes",
-    "python",
-    "numpy",
-    "libcxx",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes"
@@ -5921,19 +4874,6 @@
     "numba >=0.52",
     "cling 9999",
     "root5 9999",
-    "numba >=0.52",
-    "cling 9999",
-    "root5 9999",
-    "numba >=0.52",
-    "cling 9999",
-    "root5 9999",
-    "numba >=0.52",
-    "cling 9999",
-    "root5 9999",
-    "__osx >=10.14",
-    "numba >=0.52",
-    "cling 9999",
-    "root5 9999",
     "__osx >=10.14",
     "numba >=0.52",
     "cling 9999",
@@ -5960,107 +4900,155 @@
    "folder": "root-source",
    "patches": [
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/root-x.xx.xx-copy-abspath-headers.patch",
-    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/root-x.xx.xx-copy-abspath-headers.patch",
-    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/root-x.xx.xx-copy-abspath-headers.patch",
-    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/root-x.xx.xx-copy-abspath-headers.patch",
-    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/root-x.xx.xx-copy-abspath-headers.patch",
-    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
     "patches/root-x.xx.xx-copy-abspath-headers.patch",
     "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch"
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-copy-abspath-headers.patch",
+    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-copy-abspath-headers.patch",
+    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-copy-abspath-headers.patch",
+    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-copy-abspath-headers.patch",
+    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch"
    ],
    "sha256": "d163947d6aadf4df137194cf9ca64a089882b86f4633136d13c68c2b5208c0b1",
    "url": "https://github.com/root-project/root/archive/refs/tags/v6-24-06.tar.gz"
@@ -6155,20 +5143,6 @@
     "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
     "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
-    "root -l -b -q -x test.cpp++",
-    "echo '.q' | root -e 'sddsa0'",
-    "root -l -b -q -x",
-    "root -l -b -q -x test.cpp",
-    "root -b -l -q -x -e '2+3; 0'",
-    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-    "thisroot.sh",
-    "thisroot.csh",
-    "thisroot.fish",
-    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
-    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
     "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'",
     "root -l -b -q -x",
@@ -6193,43 +5167,6 @@
     "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
     "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-    "root -l -b -q -x test.cpp++",
-    "echo '.q' | root -e 'sddsa0'",
-    "root -l -b -q -x",
-    "root -l -b -q -x test.cpp",
-    "root -b -l -q -x -e '2+3; 0'",
-    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-    "thisroot.sh",
-    "thisroot.csh",
-    "thisroot.fish",
-    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
-    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-    "root -l -b -q -x test.cpp++",
-    "echo '.q' | root -e 'sddsa0'",
-    "root -l -b -q -x",
-    "root -l -b -q -x test.cpp",
-    "root -b -l -q -x -e '2+3; 0'",
-    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-    "thisroot.sh",
-    "thisroot.csh",
-    "thisroot.fish",
-    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
-    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-    "root -l -b -q -x test.cpp++",
-    "echo '.q' | root -e 'sddsa0'",
-    "root -l -b -q -x",
-    "root -l -b -q -x test.cpp",
-    "root -b -l -q -x -e '2+3; 0'",
-    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-    "thisroot.sh",
-    "thisroot.csh",
-    "thisroot.fish",
-    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
-    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
     "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'",
     "root -l -b -q -x",
@@ -6310,10 +5247,6 @@
     "test.cpp",
     "test.cpp",
     "test.cpp",
-    "test.cpp",
-    "test.cpp",
-    "test.cpp",
-    "test.cpp",
     "test.cpp"
    ]
   }
@@ -6344,18 +5277,15 @@
    "ignore_prefix_files": [
     "lib/*.pcm",
     "lib/*.pcm",
-    "lib/*.pcm",
     "lib/*.pcm"
    ],
    "ignore_run_exports_from": [
     "clangdev",
     "clangdev",
-    "clangdev",
     "clangdev"
    ],
-   "number": "0",
+   "number": "1",
    "script_env": [
-    "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1"
@@ -6363,9 +5293,6 @@
   },
   "extra": {
    "recipe-maintainers": [
-    "chrisburr",
-    "henryiii",
-    "eguiraud",
     "chrisburr",
     "henryiii",
     "eguiraud",
@@ -6383,7 +5310,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -6408,13 +5335,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -6452,7 +5380,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -6477,13 +5405,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -6521,7 +5450,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -6546,82 +5475,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
-      "root_base",
-      "python"
-     ],
-     "run": [
       "root_base",
       "python",
-      "compilers",
-      "metakernel",
-      "ipython",
-      "notebook",
-      "numba"
-     ]
-    },
-    "test": {
-     "commands": [
-      "ipython -c \"import JsMVA\"",
-      "python test_pyroot.py",
-      "root -l -b -q -x test.cpp",
-      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-      "root -l -b -q -x test.cpp++",
-      "jupyter-kernelspec list | grep ' root '"
-     ],
-     "files": [
-      "test.cpp",
-      "test_pyroot.py"
-     ],
-     "imports": [
-      "ROOT",
-      "JupyROOT"
-     ]
-    }
-   },
-   {
-    "build": {
-     "ignore_prefix_files": [
-      "lib/*.pcm"
-     ],
-     "number": "0",
-     "run_exports": [
-      "root_base"
-     ],
-     "script": [
-      "cd build-dir",
-      "make install",
-      "rm \"${PREFIX}\"/bin/thisroot.*",
-      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
-      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
-      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
-      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
-      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
-      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
-      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
-      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
-      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
-      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
-      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
-     ]
-    },
-    "name": "root_base"
-   },
-   {
-    "build": {
-     "number": "0"
-    },
-    "name": "root",
-    "requirements": {
-     "host": [
-      "root_base",
-      "python"
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -6681,13 +5542,6 @@
     "git",
     "pkg-config",
     "sed",
-    "make",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "cmake",
-    "git",
-    "pkg-config",
-    "sed",
     "make"
    ],
    "host": [
@@ -6727,7 +5581,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -6767,7 +5621,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy",
@@ -6807,47 +5661,7 @@
     "zlib",
     "zstd",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
-    "clangdev 9.0.1 root_62400*",
-    "python",
-    "numpy",
-    "libblas",
-    "libcblas",
-    "afterimage",
-    "cfitsio",
-    "davix",
-    "fftw",
-    "freetype",
-    "ftgl",
-    "gdk-pixbuf",
-    "giflib",
-    "glew",
-    "glib",
-    "gl2ps",
-    "graphviz",
-    "gsl",
-    "libpng",
-    "librsvg",
-    "libtiff",
-    "libxml2",
-    "lz4-c",
-    "nlohmann_json",
-    "openssl",
-    "pcre",
-    "pythia8",
-    "sqlite",
-    "tbb",
-    "tbb-devel",
-    "vector-classes",
-    "vdt",
-    "xrootd",
-    "xz",
-    "libcxx",
-    "xxhash",
-    "zlib",
-    "zstd",
-    "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
     "python",
     "numpy"
@@ -6859,7 +5673,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
@@ -6869,7 +5683,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
@@ -6879,26 +5693,12 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
-    "cffi",
-    "graphviz",
-    "vector-classes",
-    "python",
-    "numpy",
-    "libcxx",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes"
    ],
    "run_constrained": [
-    "__osx >=10.14",
-    "numba >=0.52",
-    "cling 9999",
-    "root5 9999",
     "__osx >=10.14",
     "numba >=0.52",
     "cling 9999",
@@ -6919,31 +5719,39 @@
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
     "patches/root-x.xx.xx-copy-abspath-headers.patch",
     "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
     "patches/root-x.xx.xx-copy-abspath-headers.patch",
     "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
     "patches/root-x.xx.xx-copy-abspath-headers.patch",
     "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
-    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
-    "patches/root-x.xx.xx-copy-abspath-headers.patch",
-    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
-    "patches/0001-Hacks.patch",
-    "patches/0001-Patch-for-apple-silicon.patch",
-    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch"
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch"
    ],
    "sha256": "d163947d6aadf4df137194cf9ca64a089882b86f4633136d13c68c2b5208c0b1",
    "url": "https://github.com/root-project/root/archive/refs/tags/v6-24-06.tar.gz"
@@ -6988,23 +5796,9 @@
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
     "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
     "root -l -b -q -x test.cpp++",
-    "echo '.q' | root -e 'sddsa0'",
-    "root -l -b -q -x",
-    "root -l -b -q -x test.cpp",
-    "root -b -l -q -x -e '2+3; 0'",
-    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
-    "thisroot.sh",
-    "thisroot.csh",
-    "thisroot.fish",
-    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
-    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
-    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
-    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
-    "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'"
    ],
    "files": [
-    "test.cpp",
     "test.cpp",
     "test.cpp",
     "test.cpp"
@@ -7115,7 +5909,7 @@
     "clangdev",
     "clangdev"
    ],
-   "number": "0",
+   "number": "1",
    "script_env": [
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1"
@@ -7137,7 +5931,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -7162,13 +5956,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -7206,7 +6001,7 @@
      "ignore_prefix_files": [
       "lib/*.pcm"
      ],
-     "number": "0",
+     "number": "1",
      "run_exports": [
       "root_base"
      ],
@@ -7231,13 +6026,14 @@
    },
    {
     "build": {
-     "number": "0"
+     "number": "1"
     },
     "name": "root",
     "requirements": {
      "host": [
       "root_base",
-      "python"
+      "python",
+      "openssl"
      ],
      "run": [
       "root_base",
@@ -7375,7 +6171,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes",
@@ -7385,7 +6181,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "xxhash",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
     "vector-classes"
@@ -7407,17 +6203,27 @@
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
     "patches/root-x.xx.xx-copy-abspath-headers.patch",
     "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
     "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
     "patches/root-x.xx.xx-copy-abspath-headers.patch",
     "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
     "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
-    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch"
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch"
    ],
    "sha256": "d163947d6aadf4df137194cf9ca64a089882b86f4633136d13c68c2b5208c0b1",
    "url": "https://github.com/root-project/root/archive/refs/tags/v6-24-06.tar.gz"
@@ -7555,7 +6361,7 @@
   "gsl27": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1171042751\">bot CI job</a>): master: ['linux_64_numpy1.18python3.6.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 2\\n', 'linux_64_numpy1.18python3.7.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 2\\n', 'linux_64_numpy1.18python3.8.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 2\\n', 'linux_64_numpy1.19python3.9.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 2\\n', 'linux_aarch64_numpy1.18python3.6.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'linux_aarch64_numpy1.18python3.7.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'linux_aarch64_numpy1.18python3.8.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'linux_aarch64_numpy1.19python3.9.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'linux_ppc64le_numpy1.18python3.6.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 0\\n', 'linux_ppc64le_numpy1.18python3.7.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 0\\n', 'linux_ppc64le_numpy1.18python3.8.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 0\\n', 'linux_ppc64le_numpy1.19python3.9.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 0\\n', 'osx_64_numpy1.18python3.6.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'osx_64_numpy1.18python3.7.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'osx_64_numpy1.18python3.8.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'osx_64_numpy1.19python3.9.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n']",
   "zstd15": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/854120452\">bot CI job</a>): master: ['linux_64_numpy1.17python3.6.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 2\\n', 'linux_64_numpy1.17python3.7.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 2\\n', 'linux_64_numpy1.17python3.8.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 2\\n', 'linux_64_numpy1.19python3.9.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 2\\n', 'linux_aarch64_numpy1.17python3.6.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'linux_aarch64_numpy1.17python3.7.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'linux_aarch64_numpy1.17python3.8.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'linux_aarch64_numpy1.19python3.9.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'linux_ppc64le_numpy1.17python3.6.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 0\\n', 'linux_ppc64le_numpy1.17python3.7.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 0\\n', 'linux_ppc64le_numpy1.17python3.8.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 0\\n', 'linux_ppc64le_numpy1.19python3.9.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 0\\n', 'osx_64_numpy1.17python3.6.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'osx_64_numpy1.17python3.7.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'osx_64_numpy1.17python3.8.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n', 'osx_64_numpy1.19python3.9.____cpython: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n']"
  },
- "raw_meta_yaml": "{% set name = \"root\" %}\n{% set tag_name = \"6-24-06\" %}\n{% set version = \".\".join(tag_name.split(\"-\")|map(\"int\")|map(\"string\")) %}\n{% set build_number = 0 %}\n{% set clang_version = \"9.0.1\" %}\n{% set clang_patches_version = \"root_62400\" %}\n\n{% set builtin_pyroot = True %}\n{% set builtin_clang = False %}\n{% set run_gtests = False %}\n\n{%- if \"ROOT_CONDA_IS_CI\" in os.environ %}\n  {%- set version = os.environ[\"ROOT_CONDA_VERSION\"] %}\n  {% set clang_patches_version = \"root_\" + os.environ[\"ROOT_CONDA_GIT_REV\"] %}\n  {% set build_number = os.environ[\"ROOT_CONDA_BUILD_NUMBER\"] %}\n  {% set run_gtests = True %}\n{%- endif %}\n\npackage:\n  name: root_base\n  version: {{ version }}\n\nsource:\n{%- if \"ROOT_CONDA_GIT_REV\" in os.environ %}\n  git_url: {{ os.environ.get(\"ROOT_CONDA_GIT_URL\", \"https://github.com/root-project/root.git\") }}\n  git_rev: {{ os.environ[\"ROOT_CONDA_GIT_REV\"] }}\n{%- else %}\n  url: https://github.com/root-project/root/archive/refs/tags/v{{ tag_name }}.tar.gz\n  sha256: d163947d6aadf4df137194cf9ca64a089882b86f4633136d13c68c2b5208c0b1\n{%- endif %}\n  folder: root-source\n  patches:\n    - patches/root-x.xx.xx_cling-runtime-sysroot.patch\n    - patches/root-x.xx.xx-copy-abspath-headers.patch  # [osx]\n    - patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch  # [osx]\n    - patches/0001-Hacks.patch\n    - patches/0001-Patch-for-apple-silicon.patch\n    - patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch\n    - patches/0001-Workaround-https-github.com-root-project-root-issues.patch\n{% if not builtin_pyroot %}\n    - 0001-Support-standalone-pyroot.patch\n{% endif %}\n\nbuild:\n  number: {{ build_number }}\n  skip: True  # [win]\n  ignore_prefix_files:\n    - lib/*.pcm            # [not aarch64]\n    # https://github.com/root-project/root/blob/975be1e7647098ee8db5333f0769fb12287d0f75/cmake/modules/RootBuildOptions.cmake#L328-L332\n    - etc/allDict.cxx.pch  # [aarch64]\n  ignore_run_exports_from:\n    - clangdev\n  script_env:\n    {% if builtin_pyroot %}- ROOT_CONDA_BUILTIN_PYROOT=1 {%- endif %}\n    {% if builtin_clang %}- ROOT_CONDA_BUILTIN_CLANG=1 {%- endif %}\n    {% if run_gtests %}- ROOT_CONDA_RUN_GTESTS=1 {%- endif %}\n    {% if \"ROOT_CONDA_BUILD_TYPE\" in os.environ %}- ROOT_CONDA_BUILD_TYPE {%- endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - git\n    - pkg-config\n    - sed\n    - make\n    # Required for OpenGL support\n    # See https://conda-forge.org/docs/maintainer/knowledge_base.html?highlight=cdt#libgl\n    - {{ cdt('mesa-libgl-devel') }}  # [linux]\n    - {{ cdt('mesa-dri-drivers') }}  # [linux]\n    - {{ cdt('libselinux') }}  # [linux]\n    - {{ cdt('libxdamage') }}  # [linux]\n    - {{ cdt('libxxf86vm') }}  # [linux]\n  host:\n    - libblas\n    - libcblas\n    - {{ compiler('c') }}  # [linux]\n    - {{ compiler('cxx') }}  # [linux]\n    - afterimage\n    - cfitsio\n    - davix\n    - fftw\n    - freetype\n    - ftgl\n    - gdk-pixbuf\n    - giflib\n    - glew\n    - glib\n    - gl2ps\n    - graphviz\n    - gsl\n    - libglu  # [linux]\n    - libpng\n    - librsvg\n    - libtiff\n    - libxml2\n    - lz4-c\n    # - mysql\n    - nlohmann_json\n    - openssl\n    - pcre\n    # - postgresql\n    - pythia8\n    - sqlite\n    - tbb\n    - tbb-devel\n    - vector-classes\n    - vdt\n    - xorg-libx11  # [linux]\n    - xorg-libxau  # [linux]\n    - xorg-libxcursor  # [linux]\n    - xorg-libxext  # [linux]\n    - xorg-libxfixes  # [linux]\n    - xorg-libxft  # [linux]\n    - xorg-libxpm  # [linux]\n    - xrootd\n    - xz\n    # FIXME: The generated allDict.cxx.pch is dependent on version of the C++ headers used\n    - {{ pin_compatible('libcxx', min_pin='x', max_pin='x') }}\n    - xxhash\n    - zlib\n    - zstd\n{% if not builtin_clang %}\n    - llvm {{ clang_version }}  # [not (osx and arm64)]\n    - llvmdev {{ clang_version }}  # [not (osx and arm64)]\n    - clangdev {{ clang_version }} {{ clang_patches_version }}*  # [not (osx and arm64)]\n{% endif %}\n{% if builtin_pyroot %}\n    - python\n    - numpy\n{% endif %}\n  run:\n{% if builtin_pyroot %}\n    - python\n    - {{ pin_compatible('numpy') }}\n{% endif %}\n    # FIXME: Required to ensure a consistent etc/allDict.cxx.pch\n    - {{ pin_compatible('libcxx', min_pin='x', max_pin='x') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ pin_compatible('xxhash', max_pin='x.x.x') }}\n    - nlohmann_json\n    - cffi\n    - graphviz\n    - {{ pin_compatible('vector-classes', max_pin='x.x') }}\n    - sysroot_linux-64  # [linux]\n    - xorg-libx11  # [linux]\n    - xorg-libxext  # [linux]\n    - xorg-libxpm  # [linux]\n    - xorg-libxft  # [linux]\n    - libglu  # [linux]\n  run_constrained:\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx]\n    # Older numba versions have trouble with how LLVM is linked\n    - numba >=0.52  # [py>=37]\n    # Items listed here conflict with ROOT\n    - cling 9999\n    - root5 9999\n\ntest:\n  files:\n    - test.cpp\n  commands:\n    - root -l -b -q -x\n    - root -l -b -q -x test.cpp\n    # When testing with -e, explicitly set the return code to zero\n    - root -b -l -q -x -e '2+3; 0'\n    - root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'\n    # Check the thisroot scripts work\n    - thisroot.sh\n    - thisroot.csh\n    - thisroot.fish\n    # Test if OpenGL is working\n    - root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'\n    # This test will fail due to lack of graphics support but try it anyway\n    # It should exit with \"TEveException: TEveManager::Create ROOT is running in batch mode.\"\n    - root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true\n    # This tutorial uses davix to access a ROOT file over HTTP\n    - root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"\n    # FIXME: This test fails on ppc64le for some reason...\n    - XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"  # [not ppc64le]\n    # This command only works if the compilers are available\n    - root -l -b -q -x test.cpp++\n    # Ensure exceptions don't cause the interpreter to exit\n    # Expected to fail on apple silicon: https://github.com/root-project/root/issues/7541\n    - echo '.q' | root -e 'sddsa0'  # [not (osx and arm64)]\n\noutputs:\n  - name: root_base\n    build:\n      number: {{ build_number }}\n      run_exports:\n        # https://abi-laboratory.pro/?view=timeline&l=root\n        - {{ pin_subpackage('root_base', max_pin='x.x.x') }}\n      ignore_prefix_files:\n        - lib/*.pcm            # [not aarch64]\n        # https://github.com/root-project/root/blob/975be1e7647098ee8db5333f0769fb12287d0f75/cmake/modules/RootBuildOptions.cmake#L328-L332\n        - etc/allDict.cxx.pch  # [aarch64]\n      script:\n        - cd build-dir\n        - make install\n        # Remove thisroot.*\n        - rm \"${PREFIX}\"/bin/thisroot.*\n        - |\n          for suffix in sh csh fish; do\n            cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n            chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\n          done\n        # Install the jupyter kernel\n        - mkdir -p \"$PREFIX/share/jupyter/kernels\"\n        - cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"\n        # Add the post activate/deactivate scripts\n        - mkdir -p \"${PREFIX}/etc/conda/activate.d\"\n        - cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"\n        - cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"\n        - cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"\n        - mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"\n        - cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"\n        - cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"\n        - cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\"\n{% if not builtin_pyroot %}\n  - name: pyroot\n    build:\n      number: {{ build_number }}\n      script:\n        - mkdir \"pyroot-$PY_VER-build-dir\"\n        - cd \"pyroot-$PY_VER-build-dir\"\n        - |\n          cmake \\\n            ../root-source/bindings \\\n            -DPython_EXECUTABLE=${PYTHON} \\\n            -DCMAKE_INSTALL_PREFIX=${PREFIX} \\\n            -Ddataframe=ON \\\n            -Dstandalone_pyroot=ON\n        - make -j${CPU_COUNT}\n        - make install\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake\n        - make\n      host:\n        - {{ pin_subpackage('root_base', exact=True) }}\n        - python\n        - numpy\n        - nlohmann_json\n      run:\n        - {{ pin_subpackage('root_base', exact=True) }}\n        - python\n        - {{ pin_compatible('numpy') }}\n    test:\n      files:\n        - test_pyroot.py\n      imports:\n        - ROOT\n      commands:\n        - python test_pyroot.py\n        - jupyter-kernelspec list | grep ' root '\n{% endif %}\n  - name: root\n    build:\n      number: {{ build_number }}\n    requirements:\n      host:\n        - {{ pin_subpackage('root_base', exact=True) }}\n{% if not builtin_pyroot %}\n        - {{ pin_subpackage('pyroot', exact=True) }}\n{% endif %}\n        - python\n      run:\n        - {{ pin_subpackage('root_base', exact=True) }}\n{% if not builtin_pyroot %}\n        - {{ pin_subpackage('pyroot', exact=True) }}\n{% endif %}\n        - python\n        - compilers  # This package is hostile to how conda-build manages compilers\n        - metakernel\n        - ipython\n        - notebook\n        - numba  # [py>=37]\n    test:\n      files:\n        - test.cpp\n        - test_pyroot.py\n      imports:\n        - ROOT\n        - JupyROOT\n      commands:\n        - ipython -c \"import JsMVA\"\n        - python test_pyroot.py\n        - root -l -b -q -x test.cpp\n        - root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'\n        - root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true\n        - root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"\n        - root -l -b -q -x test.cpp++\n        - jupyter-kernelspec list | grep ' root '\n{%- if \"ROOT_CONDA_IS_CI\" in os.environ %}\n  - name: root-nightly\n    build:\n      number: {{ build_number }}\n    requirements:\n      host:\n        - {{ pin_subpackage('root', exact=True) }}\n        - python\n      run:\n        - {{ pin_subpackage('root', exact=True) }}\n        - python\n{%- endif %}\n\nabout:\n  home: https://root.cern/\n  license: LGPL-2.1-only\n  license_file: root-source/LICENSE\n  doc_url: https://root.cern/documentation\n  dev_url: https://github.com/root-project/root/\n  summary: |\n      ROOT is a modular scientific software toolkit. It provides all the functionalities needed to deal with big data\n      processing, statistical analysis, visualisation and storage. It is mainly written in C++ but integrated with other\n      languages such as Python and R.\n  description: |\n      Almost everything in ROOT should be supported in this Conda package; ROOT was built with lots of options turned\n      on. Here are a few things to try:\n\n      * `root`: you can start up a session and see the splash screen; Control-D to exit.\n      * `python` followed by `import ROOT` will load PyROOT.\n      * `root --notebook` will start a notebook server with a ROOT kernel choice.\n      * `rootbrowse` will open a TBrowser session so you can look through files.\n      * `root -l -q $ROOTSYS/tutorials/dataframe/df013_InspectAnalysis.C` will run a DataFrame example with an animated plot.\n      * `root -b -q -l -n -e \"std::cout << TROOT::GetTutorialDir() << std::endl;\"` will print the tutorial dir.\n      * `root -b -l -q -e 'std::cout << (float) TPython::Eval(\"1+1\") << endl;'` will run Python from C++ ROOT.\n\n      See the post [here](https://iscinumpy.gitlab.io/post/root-conda/) for more information about using this Conda package.\n\n      The ROOT package will prepare the required compilers. Everything in Conda is symlinked into\n      `$CONDA_PREFIX` if you build things by hand; tools like CMake should find it automatically. The `thisroot.*`\n      scripts should not be used and are not provided. Graphics, `rootbrowse`, etc. all should work. OpenGL is enabled.\n\n      There is also a `root_base` package, with minimal dependecies, that libraries should depend on this to avoid\n      having a runtime dependency on the `compilers` package. `root-dependencies` and `root-binaries` are also available.\n      In most cases users should use the `root` package directly, since it adds both of these, along with compilers,\n      Jupyter, and a few other things to facilitate using ROOT or PyROOT.\n\n      ROOT was built with and will report `-std=c++17` from `root-config`.\n\nextra:\n  recipe-maintainers:\n    - chrisburr\n    - henryiii\n    - eguiraud\n",
+ "raw_meta_yaml": "{% set name = \"root\" %}\n{% set tag_name = \"6-24-06\" %}\n{% set version = \".\".join(tag_name.split(\"-\")|map(\"int\")|map(\"string\")) %}\n{% set build_number = 1 %}\n{% set clang_version = \"9.0.1\" %}\n{% set clang_patches_version = \"root_62400\" %}\n\n{% set builtin_pyroot = True %}\n{% set builtin_clang = False %}\n{% set run_gtests = False %}\n\n{%- if \"ROOT_CONDA_IS_CI\" in os.environ %}\n  {%- set version = os.environ[\"ROOT_CONDA_VERSION\"] %}\n  {% set clang_patches_version = \"root_\" + os.environ[\"ROOT_CONDA_GIT_REV\"] %}\n  {% set build_number = os.environ[\"ROOT_CONDA_BUILD_NUMBER\"] %}\n  {% set run_gtests = True %}\n{%- endif %}\n\npackage:\n  name: root_base\n  version: {{ version }}\n\nsource:\n{%- if \"ROOT_CONDA_GIT_REV\" in os.environ %}\n  git_url: {{ os.environ.get(\"ROOT_CONDA_GIT_URL\", \"https://github.com/root-project/root.git\") }}\n  git_rev: {{ os.environ[\"ROOT_CONDA_GIT_REV\"] }}\n{%- else %}\n  url: https://github.com/root-project/root/archive/refs/tags/v{{ tag_name }}.tar.gz\n  sha256: d163947d6aadf4df137194cf9ca64a089882b86f4633136d13c68c2b5208c0b1\n{%- endif %}\n  folder: root-source\n  patches:\n    - patches/root-x.xx.xx_cling-runtime-sysroot.patch\n    - patches/root-x.xx.xx-copy-abspath-headers.patch  # [osx]\n    - patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch  # [osx]\n    - patches/root-x.xx.xx-fix-text-edit.patch\n    - patches/0001-Hacks.patch\n    - patches/0001-Patch-for-apple-silicon.patch\n    - patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch\n    - patches/0001-Workaround-https-github.com-root-project-root-issues.patch\n    - patches/0003-fix-codecvt-header-map.patch\n    # hack to remove libpython links on macOS\n    - no-link-libpython.patch\n    - patches/root-6.26.0-ppc64le-use-large-code-model.patch\n    - patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch\n{% if not builtin_pyroot %}\n    - 0001-Support-standalone-pyroot.patch\n{% endif %}\n\nbuild:\n  number: {{ build_number }}\n  skip: True  # [win]\n  ignore_prefix_files:\n    - lib/*.pcm            # [not aarch64]\n    # https://github.com/root-project/root/blob/975be1e7647098ee8db5333f0769fb12287d0f75/cmake/modules/RootBuildOptions.cmake#L328-L332\n    - etc/allDict.cxx.pch  # [aarch64]\n  ignore_run_exports_from:\n    - clangdev\n  script_env:\n    {% if builtin_pyroot %}- ROOT_CONDA_BUILTIN_PYROOT=1 {%- endif %}\n    {% if builtin_clang %}- ROOT_CONDA_BUILTIN_CLANG=1 {%- endif %}\n    {% if run_gtests %}- ROOT_CONDA_RUN_GTESTS=1 {%- endif %}\n    {% if \"ROOT_CONDA_BUILD_TYPE\" in os.environ %}- ROOT_CONDA_BUILD_TYPE {%- endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - git\n    - pkg-config\n    - sed\n    - make\n    # Required for OpenGL support\n    # See https://conda-forge.org/docs/maintainer/knowledge_base.html?highlight=cdt#libgl\n    - {{ cdt('mesa-libgl-devel') }}  # [linux]\n    - {{ cdt('mesa-dri-drivers') }}  # [linux]\n    - {{ cdt('libselinux') }}  # [linux]\n    - {{ cdt('libxdamage') }}  # [linux]\n    - {{ cdt('libxxf86vm') }}  # [linux]\n  host:\n    - libblas\n    - libcblas\n    - {{ compiler('c') }}  # [linux]\n    - {{ compiler('cxx') }}  # [linux]\n    - afterimage\n    - cfitsio\n    - davix\n    - fftw\n    - freetype\n    - ftgl\n    - gdk-pixbuf\n    - giflib\n    - glew\n    - glib\n    - gl2ps\n    - graphviz\n    - gsl\n    - libglu  # [linux]\n    - libpng\n    - librsvg\n    - libtiff\n    - libxml2\n    - lz4-c\n    # - mysql\n    - nlohmann_json\n    - openssl\n    - pcre\n    # - postgresql\n    - pythia8\n    - sqlite\n    - tbb\n    - tbb-devel\n    - vector-classes\n    - vdt\n    - xorg-libx11  # [linux]\n    - xorg-libxau  # [linux]\n    - xorg-libxcursor  # [linux]\n    - xorg-libxext  # [linux]\n    - xorg-libxfixes  # [linux]\n    - xorg-libxft  # [linux]\n    - xorg-libxpm  # [linux]\n    - xrootd\n    - xz\n    # FIXME: The generated allDict.cxx.pch is dependent on version of the C++ headers used\n    - {{ pin_compatible('libcxx', min_pin='x', max_pin='x') }}\n    - xxhash\n    - zlib\n    - zstd\n{% if not builtin_clang %}\n    - llvm {{ clang_version }}  # [not (osx and arm64)]\n    - llvmdev {{ clang_version }} cling*  # [not (osx and arm64)]\n    - clangdev {{ clang_version }} {{ clang_patches_version }}*  # [not (osx and arm64)]\n{% endif %}\n{% if builtin_pyroot %}\n    - python\n    - numpy\n{% endif %}\n  run:\n{% if builtin_pyroot %}\n    - python\n    - {{ pin_compatible('numpy') }}\n{% endif %}\n    # FIXME: Required to ensure a consistent etc/allDict.cxx.pch\n    - {{ pin_compatible('libcxx', min_pin='x', max_pin='x') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ pin_compatible('xxhash', max_pin='x.x.x') }}\n    - nlohmann_json <3.10.4\n    - cffi\n    - graphviz\n    - {{ pin_compatible('vector-classes', max_pin='x.x') }}\n    - sysroot_linux-64 =2.17  # [linux]\n    - xorg-libx11  # [linux]\n    - xorg-libxext  # [linux]\n    - xorg-libxpm  # [linux]\n    - xorg-libxft  # [linux]\n    - libglu  # [linux]\n  run_constrained:\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx]\n    # Older numba versions have trouble with how LLVM is linked\n    - numba >=0.52  # [py>=37]\n    # Items listed here conflict with ROOT\n    - cling 9999\n    - root5 9999\n\ntest:\n  files:\n    - test.cpp\n  commands:\n    - root -l -b -q -x\n    - root -l -b -q -x test.cpp\n    # When testing with -e, explicitly set the return code to zero\n    - root -b -l -q -x -e '2+3; 0'\n    - root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'\n    # Check the thisroot scripts work\n    - thisroot.sh\n    - thisroot.csh\n    - thisroot.fish\n    # Test if OpenGL is working\n    - root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'\n    # This test will fail due to lack of graphics support but try it anyway\n    # It should exit with \"TEveException: TEveManager::Create ROOT is running in batch mode.\"\n    - root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true\n    # This tutorial uses davix to access a ROOT file over HTTP\n    - root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"\n    # FIXME: This test fails on ppc64le for some reason...\n    - XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"  # [not ppc64le]\n    # This command only works if the compilers are available\n    - root -l -b -q -x test.cpp++\n    # Ensure exceptions don't cause the interpreter to exit\n    # Expected to fail on apple silicon: https://github.com/root-project/root/issues/7541\n    - echo '.q' | root -e 'sddsa0'  # [not (osx and arm64) and build_platform == target_platform]\n\noutputs:\n  - name: root_base\n    build:\n      number: {{ build_number }}\n      run_exports:\n        # https://abi-laboratory.pro/?view=timeline&l=root\n        - {{ pin_subpackage('root_base', max_pin='x.x.x') }}\n      ignore_prefix_files:\n        - lib/*.pcm            # [not aarch64]\n        # https://github.com/root-project/root/blob/975be1e7647098ee8db5333f0769fb12287d0f75/cmake/modules/RootBuildOptions.cmake#L328-L332\n        - etc/allDict.cxx.pch  # [aarch64]\n      script:\n        - cd build-dir\n        - make install\n        # Remove thisroot.*\n        - rm \"${PREFIX}\"/bin/thisroot.*\n        - |\n          for suffix in sh csh fish; do\n            cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n            chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\n          done\n        # Install the jupyter kernel\n        - mkdir -p \"$PREFIX/share/jupyter/kernels\"\n        - cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"\n        # Add the post activate/deactivate scripts\n        - mkdir -p \"${PREFIX}/etc/conda/activate.d\"\n        - cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"\n        - cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"\n        - cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"\n        - mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"\n        - cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"\n        - cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"\n        - cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\"\n{% if not builtin_pyroot %}\n  - name: pyroot\n    build:\n      number: {{ build_number }}\n      script:\n        - mkdir \"pyroot-$PY_VER-build-dir\"\n        - cd \"pyroot-$PY_VER-build-dir\"\n        - |\n          cmake \\\n            ../root-source/bindings \\\n            -DPython_EXECUTABLE=${PYTHON} \\\n            -DCMAKE_INSTALL_PREFIX=${PREFIX} \\\n            -Ddataframe=ON \\\n            -Dstandalone_pyroot=ON\n        - make -j${CPU_COUNT}\n        - make install\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake\n        - make\n      host:\n        - {{ pin_subpackage('root_base', exact=True) }}\n        - python\n        - numpy\n        - nlohmann_json <3.10.4\n      run:\n        - {{ pin_subpackage('root_base', exact=True) }}\n        - python\n        - {{ pin_compatible('numpy') }}\n    test:\n      files:\n        - test_pyroot.py\n      imports:\n        - ROOT\n      commands:\n        - python test_pyroot.py\n        - jupyter-kernelspec list | grep ' root '\n{% endif %}\n  - name: root\n    build:\n      number: {{ build_number }}\n    requirements:\n      host:\n        - {{ pin_subpackage('root_base', exact=True) }}\n{% if not builtin_pyroot %}\n        - {{ pin_subpackage('pyroot', exact=True) }}\n{% endif %}\n        - python\n        - openssl\n      run:\n        - {{ pin_subpackage('root_base', exact=True) }}\n{% if not builtin_pyroot %}\n        - {{ pin_subpackage('pyroot', exact=True) }}\n{% endif %}\n        - python\n        - compilers  # This package is hostile to how conda-build manages compilers\n        - metakernel\n        - ipython\n        - notebook\n        - numba  # [py>=37]\n    test:\n      files:\n        - test.cpp\n        - test_pyroot.py\n      imports:\n        - ROOT\n        - JupyROOT\n      commands:\n        - ipython -c \"import JsMVA\"\n        - python test_pyroot.py\n        - root -l -b -q -x test.cpp\n        - root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'\n        - root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true\n        - root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"\n        - root -l -b -q -x test.cpp++\n        - jupyter-kernelspec list | grep ' root '\n{%- if \"ROOT_CONDA_IS_CI\" in os.environ %}\n  - name: root-nightly\n    build:\n      number: {{ build_number }}\n    requirements:\n      host:\n        - {{ pin_subpackage('root', exact=True) }}\n        - python\n      run:\n        - {{ pin_subpackage('root', exact=True) }}\n        - python\n{%- endif %}\n\nabout:\n  home: https://root.cern/\n  license: LGPL-2.1-only\n  license_file: root-source/LICENSE\n  doc_url: https://root.cern/documentation\n  dev_url: https://github.com/root-project/root/\n  summary: |\n      ROOT is a modular scientific software toolkit. It provides all the functionalities needed to deal with big data\n      processing, statistical analysis, visualisation and storage. It is mainly written in C++ but integrated with other\n      languages such as Python and R.\n  description: |\n      Almost everything in ROOT should be supported in this Conda package; ROOT was built with lots of options turned\n      on. Here are a few things to try:\n\n      * `root`: you can start up a session and see the splash screen; Control-D to exit.\n      * `python` followed by `import ROOT` will load PyROOT.\n      * `root --notebook` will start a notebook server with a ROOT kernel choice.\n      * `rootbrowse` will open a TBrowser session so you can look through files.\n      * `root -l -q $ROOTSYS/tutorials/dataframe/df013_InspectAnalysis.C` will run a DataFrame example with an animated plot.\n      * `root -b -q -l -n -e \"std::cout << TROOT::GetTutorialDir() << std::endl;\"` will print the tutorial dir.\n      * `root -b -l -q -e 'std::cout << (float) TPython::Eval(\"1+1\") << endl;'` will run Python from C++ ROOT.\n\n      See the post [here](https://iscinumpy.gitlab.io/post/root-conda/) for more information about using this Conda package.\n\n      The ROOT package will prepare the required compilers. Everything in Conda is symlinked into\n      `$CONDA_PREFIX` if you build things by hand; tools like CMake should find it automatically. The `thisroot.*`\n      scripts should not be used and are not provided. Graphics, `rootbrowse`, etc. all should work. OpenGL is enabled.\n\n      There is also a `root_base` package, with minimal dependecies, that libraries should depend on this to avoid\n      having a runtime dependency on the `compilers` package. `root-dependencies` and `root-binaries` are also available.\n      In most cases users should use the `root` package directly, since it adds both of these, along with compilers,\n      Jupyter, and a few other things to facilitate using ROOT or PyROOT.\n\n      ROOT was built with and will report `-std=c++17` from `root-config`.\n\nextra:\n  recipe-maintainers:\n    - chrisburr\n    - henryiii\n    - eguiraud\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -7773,7 +6579,7 @@
     "libtiff",
     "libxml2",
     "llvm 9.0.1",
-    "llvmdev 9.0.1",
+    "llvmdev 9.0.1 cling*",
     "lz4-c",
     "nlohmann_json",
     "numpy",
@@ -7813,13 +6619,13 @@
     "libcxx",
     "libglu",
     "metakernel",
-    "nlohmann_json",
+    "nlohmann_json <3.10.4",
     "notebook",
     "numba",
     "numpy",
     "python",
     "root_base",
-    "sysroot_linux-64",
+    "sysroot_linux-64 =2.17",
     "vector-classes",
     "xorg-libx11",
     "xorg-libxext",
