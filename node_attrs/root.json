@@ -707,15 +707,18 @@
    "ignore_prefix_files": [
     "lib/*.pcm",
     "lib/*.pcm",
+    "lib/*.pcm",
     "lib/*.pcm"
    ],
    "ignore_run_exports_from": [
+    "clangdev",
     "clangdev",
     "clangdev",
     "clangdev"
    ],
    "number": "1",
    "script_env": [
+    "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1"
@@ -731,10 +734,83 @@
     "eguiraud",
     "chrisburr",
     "henryiii",
+    "eguiraud",
+    "chrisburr",
+    "henryiii",
     "eguiraud"
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "ignore_prefix_files": [
+      "lib/*.pcm"
+     ],
+     "number": "1",
+     "run_exports": [
+      "root_base"
+     ],
+     "script": [
+      "cd build-dir",
+      "make install",
+      "rm \"${PREFIX}\"/bin/thisroot.*",
+      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
+      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
+      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
+      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
+      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
+      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
+      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
+      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
+      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
+      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
+      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
+     ]
+    },
+    "name": "root_base"
+   },
+   {
+    "build": {
+     "number": "1"
+    },
+    "name": "root",
+    "requirements": {
+     "host": [
+      "root_base",
+      "python",
+      "openssl"
+     ],
+     "run": [
+      "root_base",
+      "python",
+      "compilers",
+      "metakernel",
+      "ipython",
+      "notebook",
+      "numba"
+     ]
+    },
+    "test": {
+     "commands": [
+      "ipython -c \"import JsMVA\"",
+      "python test_pyroot.py",
+      "root -l -b -q -x test.cpp",
+      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+      "root -l -b -q -x test.cpp++",
+      "jupyter-kernelspec list | grep ' root '"
+     ],
+     "files": [
+      "test.cpp",
+      "test_pyroot.py"
+     ],
+     "imports": [
+      "ROOT",
+      "JupyROOT"
+     ]
+    }
+   },
    {
     "build": {
      "ignore_prefix_files": [
@@ -987,9 +1063,71 @@
     "cdt_stub",
     "cdt_stub",
     "cdt_stub",
+    "cdt_stub",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "git",
+    "pkg-config",
+    "sed",
+    "make",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
     "cdt_stub"
    ],
    "host": [
+    "libblas",
+    "libcblas",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "afterimage",
+    "cfitsio",
+    "davix",
+    "fftw",
+    "freetype",
+    "ftgl",
+    "gdk-pixbuf",
+    "giflib",
+    "glew",
+    "glib",
+    "gl2ps",
+    "graphviz",
+    "gsl",
+    "libglu",
+    "libpng",
+    "librsvg",
+    "libtiff",
+    "libxml2",
+    "lz4-c",
+    "nlohmann_json",
+    "openssl",
+    "pcre",
+    "pythia8",
+    "sqlite",
+    "tbb",
+    "tbb-devel",
+    "vector-classes",
+    "vdt",
+    "xorg-libx11",
+    "xorg-libxau",
+    "xorg-libxcursor",
+    "xorg-libxext",
+    "xorg-libxfixes",
+    "xorg-libxft",
+    "xorg-libxpm",
+    "xrootd",
+    "xz",
+    "libcxx",
+    "xxhash",
+    "zlib",
+    "zstd",
+    "llvm 9.0.1",
+    "llvmdev 9.0.1 cling*",
+    "clangdev 9.0.1 root_62400*",
+    "python",
+    "numpy",
     "libblas",
     "libcblas",
     "c_compiler_stub",
@@ -1189,9 +1327,28 @@
     "xorg-libxext",
     "xorg-libxpm",
     "xorg-libxft",
+    "libglu",
+    "python",
+    "numpy",
+    "libcxx",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "xxhash",
+    "nlohmann_json <3.10.4",
+    "cffi",
+    "graphviz",
+    "vector-classes",
+    "sysroot_linux-64 =2.17",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxpm",
+    "xorg-libxft",
     "libglu"
    ],
    "run_constrained": [
+    "numba >=0.52",
+    "cling 9999",
+    "root5 9999",
     "numba >=0.52",
     "cling 9999",
     "root5 9999",
@@ -1206,6 +1363,16 @@
   "source": {
    "folder": "root-source",
    "patches": [
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
     "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
@@ -1280,9 +1447,23 @@
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
     "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
     "root -l -b -q -x test.cpp++",
+    "echo '.q' | root -e 'sddsa0'",
+    "root -l -b -q -x",
+    "root -l -b -q -x test.cpp",
+    "root -b -l -q -x -e '2+3; 0'",
+    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+    "thisroot.sh",
+    "thisroot.csh",
+    "thisroot.fish",
+    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
+    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
+    "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'"
    ],
    "files": [
+    "test.cpp",
     "test.cpp",
     "test.cpp",
     "test.cpp"
@@ -1405,15 +1586,18 @@
    "ignore_prefix_files": [
     "etc/allDict.cxx.pch",
     "etc/allDict.cxx.pch",
+    "etc/allDict.cxx.pch",
     "etc/allDict.cxx.pch"
    ],
    "ignore_run_exports_from": [
+    "clangdev",
     "clangdev",
     "clangdev",
     "clangdev"
    ],
    "number": "1",
    "script_env": [
+    "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1"
@@ -1429,10 +1613,83 @@
     "eguiraud",
     "chrisburr",
     "henryiii",
+    "eguiraud",
+    "chrisburr",
+    "henryiii",
     "eguiraud"
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "ignore_prefix_files": [
+      "etc/allDict.cxx.pch"
+     ],
+     "number": "1",
+     "run_exports": [
+      "root_base"
+     ],
+     "script": [
+      "cd build-dir",
+      "make install",
+      "rm \"${PREFIX}\"/bin/thisroot.*",
+      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
+      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
+      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
+      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
+      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
+      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
+      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
+      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
+      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
+      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
+      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
+     ]
+    },
+    "name": "root_base"
+   },
+   {
+    "build": {
+     "number": "1"
+    },
+    "name": "root",
+    "requirements": {
+     "host": [
+      "root_base",
+      "python",
+      "openssl"
+     ],
+     "run": [
+      "root_base",
+      "python",
+      "compilers",
+      "metakernel",
+      "ipython",
+      "notebook",
+      "numba"
+     ]
+    },
+    "test": {
+     "commands": [
+      "ipython -c \"import JsMVA\"",
+      "python test_pyroot.py",
+      "root -l -b -q -x test.cpp",
+      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+      "root -l -b -q -x test.cpp++",
+      "jupyter-kernelspec list | grep ' root '"
+     ],
+     "files": [
+      "test.cpp",
+      "test_pyroot.py"
+     ],
+     "imports": [
+      "ROOT",
+      "JupyROOT"
+     ]
+    }
+   },
    {
     "build": {
      "ignore_prefix_files": [
@@ -1685,9 +1942,71 @@
     "cdt_stub",
     "cdt_stub",
     "cdt_stub",
+    "cdt_stub",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "git",
+    "pkg-config",
+    "sed",
+    "make",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
     "cdt_stub"
    ],
    "host": [
+    "libblas",
+    "libcblas",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "afterimage",
+    "cfitsio",
+    "davix",
+    "fftw",
+    "freetype",
+    "ftgl",
+    "gdk-pixbuf",
+    "giflib",
+    "glew",
+    "glib",
+    "gl2ps",
+    "graphviz",
+    "gsl",
+    "libglu",
+    "libpng",
+    "librsvg",
+    "libtiff",
+    "libxml2",
+    "lz4-c",
+    "nlohmann_json",
+    "openssl",
+    "pcre",
+    "pythia8",
+    "sqlite",
+    "tbb",
+    "tbb-devel",
+    "vector-classes",
+    "vdt",
+    "xorg-libx11",
+    "xorg-libxau",
+    "xorg-libxcursor",
+    "xorg-libxext",
+    "xorg-libxfixes",
+    "xorg-libxft",
+    "xorg-libxpm",
+    "xrootd",
+    "xz",
+    "libcxx",
+    "xxhash",
+    "zlib",
+    "zstd",
+    "llvm 9.0.1",
+    "llvmdev 9.0.1 cling*",
+    "clangdev 9.0.1 root_62400*",
+    "python",
+    "numpy",
     "libblas",
     "libcblas",
     "c_compiler_stub",
@@ -1887,9 +2206,28 @@
     "xorg-libxext",
     "xorg-libxpm",
     "xorg-libxft",
+    "libglu",
+    "python",
+    "numpy",
+    "libcxx",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "xxhash",
+    "nlohmann_json <3.10.4",
+    "cffi",
+    "graphviz",
+    "vector-classes",
+    "sysroot_linux-64 =2.17",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxpm",
+    "xorg-libxft",
     "libglu"
    ],
    "run_constrained": [
+    "numba >=0.52",
+    "cling 9999",
+    "root5 9999",
     "numba >=0.52",
     "cling 9999",
     "root5 9999",
@@ -1904,6 +2242,16 @@
   "source": {
    "folder": "root-source",
    "patches": [
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
     "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
@@ -1978,9 +2326,23 @@
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
     "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
     "root -l -b -q -x test.cpp++",
+    "echo '.q' | root -e 'sddsa0'",
+    "root -l -b -q -x",
+    "root -l -b -q -x test.cpp",
+    "root -b -l -q -x -e '2+3; 0'",
+    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+    "thisroot.sh",
+    "thisroot.csh",
+    "thisroot.fish",
+    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
+    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
+    "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'"
    ],
    "files": [
+    "test.cpp",
     "test.cpp",
     "test.cpp",
     "test.cpp"
@@ -2103,15 +2465,18 @@
    "ignore_prefix_files": [
     "lib/*.pcm",
     "lib/*.pcm",
+    "lib/*.pcm",
     "lib/*.pcm"
    ],
    "ignore_run_exports_from": [
+    "clangdev",
     "clangdev",
     "clangdev",
     "clangdev"
    ],
    "number": "1",
    "script_env": [
+    "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1"
@@ -2127,10 +2492,83 @@
     "eguiraud",
     "chrisburr",
     "henryiii",
+    "eguiraud",
+    "chrisburr",
+    "henryiii",
     "eguiraud"
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "ignore_prefix_files": [
+      "lib/*.pcm"
+     ],
+     "number": "1",
+     "run_exports": [
+      "root_base"
+     ],
+     "script": [
+      "cd build-dir",
+      "make install",
+      "rm \"${PREFIX}\"/bin/thisroot.*",
+      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
+      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
+      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
+      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
+      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
+      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
+      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
+      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
+      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
+      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
+      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
+     ]
+    },
+    "name": "root_base"
+   },
+   {
+    "build": {
+     "number": "1"
+    },
+    "name": "root",
+    "requirements": {
+     "host": [
+      "root_base",
+      "python",
+      "openssl"
+     ],
+     "run": [
+      "root_base",
+      "python",
+      "compilers",
+      "metakernel",
+      "ipython",
+      "notebook",
+      "numba"
+     ]
+    },
+    "test": {
+     "commands": [
+      "ipython -c \"import JsMVA\"",
+      "python test_pyroot.py",
+      "root -l -b -q -x test.cpp",
+      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+      "root -l -b -q -x test.cpp++",
+      "jupyter-kernelspec list | grep ' root '"
+     ],
+     "files": [
+      "test.cpp",
+      "test_pyroot.py"
+     ],
+     "imports": [
+      "ROOT",
+      "JupyROOT"
+     ]
+    }
+   },
    {
     "build": {
      "ignore_prefix_files": [
@@ -2383,9 +2821,71 @@
     "cdt_stub",
     "cdt_stub",
     "cdt_stub",
+    "cdt_stub",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "git",
+    "pkg-config",
+    "sed",
+    "make",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
     "cdt_stub"
    ],
    "host": [
+    "libblas",
+    "libcblas",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "afterimage",
+    "cfitsio",
+    "davix",
+    "fftw",
+    "freetype",
+    "ftgl",
+    "gdk-pixbuf",
+    "giflib",
+    "glew",
+    "glib",
+    "gl2ps",
+    "graphviz",
+    "gsl",
+    "libglu",
+    "libpng",
+    "librsvg",
+    "libtiff",
+    "libxml2",
+    "lz4-c",
+    "nlohmann_json",
+    "openssl",
+    "pcre",
+    "pythia8",
+    "sqlite",
+    "tbb",
+    "tbb-devel",
+    "vector-classes",
+    "vdt",
+    "xorg-libx11",
+    "xorg-libxau",
+    "xorg-libxcursor",
+    "xorg-libxext",
+    "xorg-libxfixes",
+    "xorg-libxft",
+    "xorg-libxpm",
+    "xrootd",
+    "xz",
+    "libcxx",
+    "xxhash",
+    "zlib",
+    "zstd",
+    "llvm 9.0.1",
+    "llvmdev 9.0.1 cling*",
+    "clangdev 9.0.1 root_62400*",
+    "python",
+    "numpy",
     "libblas",
     "libcblas",
     "c_compiler_stub",
@@ -2585,9 +3085,28 @@
     "xorg-libxext",
     "xorg-libxpm",
     "xorg-libxft",
+    "libglu",
+    "python",
+    "numpy",
+    "libcxx",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "xxhash",
+    "nlohmann_json <3.10.4",
+    "cffi",
+    "graphviz",
+    "vector-classes",
+    "sysroot_linux-64 =2.17",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxpm",
+    "xorg-libxft",
     "libglu"
    ],
    "run_constrained": [
+    "numba >=0.52",
+    "cling 9999",
+    "root5 9999",
     "numba >=0.52",
     "cling 9999",
     "root5 9999",
@@ -2602,6 +3121,16 @@
   "source": {
    "folder": "root-source",
    "patches": [
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
     "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
@@ -2673,9 +3202,22 @@
     "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
     "root -l -b -q -x test.cpp++",
+    "echo '.q' | root -e 'sddsa0'",
+    "root -l -b -q -x",
+    "root -l -b -q -x test.cpp",
+    "root -b -l -q -x -e '2+3; 0'",
+    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+    "thisroot.sh",
+    "thisroot.csh",
+    "thisroot.fish",
+    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
+    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+    "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'"
    ],
    "files": [
+    "test.cpp",
     "test.cpp",
     "test.cpp",
     "test.cpp"
@@ -2799,9 +3341,14 @@
     "lib/*.pcm",
     "lib/*.pcm",
     "lib/*.pcm",
+    "lib/*.pcm",
     "etc/allDict.cxx.pch",
     "etc/allDict.cxx.pch",
     "etc/allDict.cxx.pch",
+    "etc/allDict.cxx.pch",
+    "lib/*.pcm",
+    "lib/*.pcm",
+    "lib/*.pcm",
     "lib/*.pcm",
     "lib/*.pcm",
     "lib/*.pcm",
@@ -2812,6 +3359,11 @@
     "lib/*.pcm"
    ],
    "ignore_run_exports_from": [
+    "clangdev",
+    "clangdev",
+    "clangdev",
+    "clangdev",
+    "clangdev",
     "clangdev",
     "clangdev",
     "clangdev",
@@ -2842,11 +3394,31 @@
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
+    "ROOT_CONDA_BUILTIN_PYROOT=1",
+    "ROOT_CONDA_BUILTIN_PYROOT=1",
+    "ROOT_CONDA_BUILTIN_PYROOT=1",
+    "ROOT_CONDA_BUILTIN_PYROOT=1",
+    "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "chrisburr",
+    "henryiii",
+    "eguiraud",
+    "chrisburr",
+    "henryiii",
+    "eguiraud",
+    "chrisburr",
+    "henryiii",
+    "eguiraud",
+    "chrisburr",
+    "henryiii",
+    "eguiraud",
+    "chrisburr",
+    "henryiii",
+    "eguiraud",
     "chrisburr",
     "henryiii",
     "eguiraud",
@@ -3105,6 +3677,146 @@
    {
     "build": {
      "ignore_prefix_files": [
+      "lib/*.pcm"
+     ],
+     "number": "1",
+     "run_exports": [
+      "root_base"
+     ],
+     "script": [
+      "cd build-dir",
+      "make install",
+      "rm \"${PREFIX}\"/bin/thisroot.*",
+      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
+      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
+      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
+      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
+      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
+      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
+      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
+      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
+      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
+      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
+      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
+     ]
+    },
+    "name": "root_base"
+   },
+   {
+    "build": {
+     "number": "1"
+    },
+    "name": "root",
+    "requirements": {
+     "host": [
+      "root_base",
+      "python",
+      "openssl"
+     ],
+     "run": [
+      "root_base",
+      "python",
+      "compilers",
+      "metakernel",
+      "ipython",
+      "notebook",
+      "numba"
+     ]
+    },
+    "test": {
+     "commands": [
+      "ipython -c \"import JsMVA\"",
+      "python test_pyroot.py",
+      "root -l -b -q -x test.cpp",
+      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+      "root -l -b -q -x test.cpp++",
+      "jupyter-kernelspec list | grep ' root '"
+     ],
+     "files": [
+      "test.cpp",
+      "test_pyroot.py"
+     ],
+     "imports": [
+      "ROOT",
+      "JupyROOT"
+     ]
+    }
+   },
+   {
+    "build": {
+     "ignore_prefix_files": [
+      "etc/allDict.cxx.pch"
+     ],
+     "number": "1",
+     "run_exports": [
+      "root_base"
+     ],
+     "script": [
+      "cd build-dir",
+      "make install",
+      "rm \"${PREFIX}\"/bin/thisroot.*",
+      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
+      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
+      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
+      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
+      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
+      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
+      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
+      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
+      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
+      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
+      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
+     ]
+    },
+    "name": "root_base"
+   },
+   {
+    "build": {
+     "number": "1"
+    },
+    "name": "root",
+    "requirements": {
+     "host": [
+      "root_base",
+      "python",
+      "openssl"
+     ],
+     "run": [
+      "root_base",
+      "python",
+      "compilers",
+      "metakernel",
+      "ipython",
+      "notebook",
+      "numba"
+     ]
+    },
+    "test": {
+     "commands": [
+      "ipython -c \"import JsMVA\"",
+      "python test_pyroot.py",
+      "root -l -b -q -x test.cpp",
+      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+      "root -l -b -q -x test.cpp++",
+      "jupyter-kernelspec list | grep ' root '"
+     ],
+     "files": [
+      "test.cpp",
+      "test_pyroot.py"
+     ],
+     "imports": [
+      "ROOT",
+      "JupyROOT"
+     ]
+    }
+   },
+   {
+    "build": {
+     "ignore_prefix_files": [
       "etc/allDict.cxx.pch"
      ],
      "number": "1",
@@ -3246,6 +3958,216 @@
     "build": {
      "ignore_prefix_files": [
       "etc/allDict.cxx.pch"
+     ],
+     "number": "1",
+     "run_exports": [
+      "root_base"
+     ],
+     "script": [
+      "cd build-dir",
+      "make install",
+      "rm \"${PREFIX}\"/bin/thisroot.*",
+      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
+      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
+      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
+      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
+      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
+      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
+      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
+      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
+      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
+      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
+      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
+     ]
+    },
+    "name": "root_base"
+   },
+   {
+    "build": {
+     "number": "1"
+    },
+    "name": "root",
+    "requirements": {
+     "host": [
+      "root_base",
+      "python",
+      "openssl"
+     ],
+     "run": [
+      "root_base",
+      "python",
+      "compilers",
+      "metakernel",
+      "ipython",
+      "notebook",
+      "numba"
+     ]
+    },
+    "test": {
+     "commands": [
+      "ipython -c \"import JsMVA\"",
+      "python test_pyroot.py",
+      "root -l -b -q -x test.cpp",
+      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+      "root -l -b -q -x test.cpp++",
+      "jupyter-kernelspec list | grep ' root '"
+     ],
+     "files": [
+      "test.cpp",
+      "test_pyroot.py"
+     ],
+     "imports": [
+      "ROOT",
+      "JupyROOT"
+     ]
+    }
+   },
+   {
+    "build": {
+     "ignore_prefix_files": [
+      "lib/*.pcm"
+     ],
+     "number": "1",
+     "run_exports": [
+      "root_base"
+     ],
+     "script": [
+      "cd build-dir",
+      "make install",
+      "rm \"${PREFIX}\"/bin/thisroot.*",
+      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
+      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
+      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
+      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
+      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
+      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
+      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
+      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
+      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
+      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
+      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
+     ]
+    },
+    "name": "root_base"
+   },
+   {
+    "build": {
+     "number": "1"
+    },
+    "name": "root",
+    "requirements": {
+     "host": [
+      "root_base",
+      "python",
+      "openssl"
+     ],
+     "run": [
+      "root_base",
+      "python",
+      "compilers",
+      "metakernel",
+      "ipython",
+      "notebook",
+      "numba"
+     ]
+    },
+    "test": {
+     "commands": [
+      "ipython -c \"import JsMVA\"",
+      "python test_pyroot.py",
+      "root -l -b -q -x test.cpp",
+      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+      "root -l -b -q -x test.cpp++",
+      "jupyter-kernelspec list | grep ' root '"
+     ],
+     "files": [
+      "test.cpp",
+      "test_pyroot.py"
+     ],
+     "imports": [
+      "ROOT",
+      "JupyROOT"
+     ]
+    }
+   },
+   {
+    "build": {
+     "ignore_prefix_files": [
+      "lib/*.pcm"
+     ],
+     "number": "1",
+     "run_exports": [
+      "root_base"
+     ],
+     "script": [
+      "cd build-dir",
+      "make install",
+      "rm \"${PREFIX}\"/bin/thisroot.*",
+      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
+      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
+      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
+      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
+      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
+      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
+      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
+      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
+      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
+      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
+      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
+     ]
+    },
+    "name": "root_base"
+   },
+   {
+    "build": {
+     "number": "1"
+    },
+    "name": "root",
+    "requirements": {
+     "host": [
+      "root_base",
+      "python",
+      "openssl"
+     ],
+     "run": [
+      "root_base",
+      "python",
+      "compilers",
+      "metakernel",
+      "ipython",
+      "notebook",
+      "numba"
+     ]
+    },
+    "test": {
+     "commands": [
+      "ipython -c \"import JsMVA\"",
+      "python test_pyroot.py",
+      "root -l -b -q -x test.cpp",
+      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+      "root -l -b -q -x test.cpp++",
+      "jupyter-kernelspec list | grep ' root '"
+     ],
+     "files": [
+      "test.cpp",
+      "test_pyroot.py"
+     ],
+     "imports": [
+      "ROOT",
+      "JupyROOT"
+     ]
+    }
+   },
+   {
+    "build": {
+     "ignore_prefix_files": [
+      "lib/*.pcm"
      ],
      "number": "1",
      "run_exports": [
@@ -3994,6 +4916,56 @@
     "pkg-config",
     "sed",
     "make",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "git",
+    "pkg-config",
+    "sed",
+    "make",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "git",
+    "pkg-config",
+    "sed",
+    "make",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "git",
+    "pkg-config",
+    "sed",
+    "make",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "git",
+    "pkg-config",
+    "sed",
+    "make",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "git",
+    "pkg-config",
+    "sed",
+    "make",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake",
@@ -4476,6 +5448,196 @@
     "numpy",
     "libblas",
     "libcblas",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "afterimage",
+    "cfitsio",
+    "davix",
+    "fftw",
+    "freetype",
+    "ftgl",
+    "gdk-pixbuf",
+    "giflib",
+    "glew",
+    "glib",
+    "gl2ps",
+    "graphviz",
+    "gsl",
+    "libglu",
+    "libpng",
+    "librsvg",
+    "libtiff",
+    "libxml2",
+    "lz4-c",
+    "nlohmann_json",
+    "openssl",
+    "pcre",
+    "pythia8",
+    "sqlite",
+    "tbb",
+    "tbb-devel",
+    "vector-classes",
+    "vdt",
+    "xorg-libx11",
+    "xorg-libxau",
+    "xorg-libxcursor",
+    "xorg-libxext",
+    "xorg-libxfixes",
+    "xorg-libxft",
+    "xorg-libxpm",
+    "xrootd",
+    "xz",
+    "libcxx",
+    "xxhash",
+    "zlib",
+    "zstd",
+    "llvm 9.0.1",
+    "llvmdev 9.0.1 cling*",
+    "clangdev 9.0.1 root_62400*",
+    "python",
+    "numpy",
+    "libblas",
+    "libcblas",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "afterimage",
+    "cfitsio",
+    "davix",
+    "fftw",
+    "freetype",
+    "ftgl",
+    "gdk-pixbuf",
+    "giflib",
+    "glew",
+    "glib",
+    "gl2ps",
+    "graphviz",
+    "gsl",
+    "libglu",
+    "libpng",
+    "librsvg",
+    "libtiff",
+    "libxml2",
+    "lz4-c",
+    "nlohmann_json",
+    "openssl",
+    "pcre",
+    "pythia8",
+    "sqlite",
+    "tbb",
+    "tbb-devel",
+    "vector-classes",
+    "vdt",
+    "xorg-libx11",
+    "xorg-libxau",
+    "xorg-libxcursor",
+    "xorg-libxext",
+    "xorg-libxfixes",
+    "xorg-libxft",
+    "xorg-libxpm",
+    "xrootd",
+    "xz",
+    "libcxx",
+    "xxhash",
+    "zlib",
+    "zstd",
+    "llvm 9.0.1",
+    "llvmdev 9.0.1 cling*",
+    "clangdev 9.0.1 root_62400*",
+    "python",
+    "numpy",
+    "libblas",
+    "libcblas",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "afterimage",
+    "cfitsio",
+    "davix",
+    "fftw",
+    "freetype",
+    "ftgl",
+    "gdk-pixbuf",
+    "giflib",
+    "glew",
+    "glib",
+    "gl2ps",
+    "graphviz",
+    "gsl",
+    "libglu",
+    "libpng",
+    "librsvg",
+    "libtiff",
+    "libxml2",
+    "lz4-c",
+    "nlohmann_json",
+    "openssl",
+    "pcre",
+    "pythia8",
+    "sqlite",
+    "tbb",
+    "tbb-devel",
+    "vector-classes",
+    "vdt",
+    "xorg-libx11",
+    "xorg-libxau",
+    "xorg-libxcursor",
+    "xorg-libxext",
+    "xorg-libxfixes",
+    "xorg-libxft",
+    "xorg-libxpm",
+    "xrootd",
+    "xz",
+    "libcxx",
+    "xxhash",
+    "zlib",
+    "zstd",
+    "llvm 9.0.1",
+    "llvmdev 9.0.1 cling*",
+    "clangdev 9.0.1 root_62400*",
+    "python",
+    "numpy",
+    "libblas",
+    "libcblas",
+    "afterimage",
+    "cfitsio",
+    "davix",
+    "fftw",
+    "freetype",
+    "ftgl",
+    "gdk-pixbuf",
+    "giflib",
+    "glew",
+    "glib",
+    "gl2ps",
+    "graphviz",
+    "gsl",
+    "libpng",
+    "librsvg",
+    "libtiff",
+    "libxml2",
+    "lz4-c",
+    "nlohmann_json",
+    "openssl",
+    "pcre",
+    "pythia8",
+    "sqlite",
+    "tbb",
+    "tbb-devel",
+    "vector-classes",
+    "vdt",
+    "xrootd",
+    "xz",
+    "libcxx",
+    "xxhash",
+    "zlib",
+    "zstd",
+    "llvm 9.0.1",
+    "llvmdev 9.0.1 cling*",
+    "clangdev 9.0.1 root_62400*",
+    "python",
+    "numpy",
+    "libblas",
+    "libcblas",
     "afterimage",
     "cfitsio",
     "davix",
@@ -4592,6 +5754,43 @@
     "llvm 9.0.1",
     "llvmdev 9.0.1 cling*",
     "clangdev 9.0.1 root_62400*",
+    "python",
+    "numpy",
+    "libblas",
+    "libcblas",
+    "afterimage",
+    "cfitsio",
+    "davix",
+    "fftw",
+    "freetype",
+    "ftgl",
+    "gdk-pixbuf",
+    "giflib",
+    "glew",
+    "glib",
+    "gl2ps",
+    "graphviz",
+    "gsl",
+    "libpng",
+    "librsvg",
+    "libtiff",
+    "libxml2",
+    "lz4-c",
+    "nlohmann_json",
+    "openssl",
+    "pcre",
+    "pythia8",
+    "sqlite",
+    "tbb",
+    "tbb-devel",
+    "vector-classes",
+    "vdt",
+    "xrootd",
+    "xz",
+    "libcxx",
+    "xxhash",
+    "zlib",
+    "zstd",
     "python",
     "numpy",
     "libblas",
@@ -4824,6 +6023,74 @@
     "cffi",
     "graphviz",
     "vector-classes",
+    "sysroot_linux-64 =2.17",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxpm",
+    "xorg-libxft",
+    "libglu",
+    "python",
+    "numpy",
+    "libcxx",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "xxhash",
+    "nlohmann_json <3.10.4",
+    "cffi",
+    "graphviz",
+    "vector-classes",
+    "sysroot_linux-64 =2.17",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxpm",
+    "xorg-libxft",
+    "libglu",
+    "python",
+    "numpy",
+    "libcxx",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "xxhash",
+    "nlohmann_json <3.10.4",
+    "cffi",
+    "graphviz",
+    "vector-classes",
+    "sysroot_linux-64 =2.17",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxpm",
+    "xorg-libxft",
+    "libglu",
+    "python",
+    "numpy",
+    "libcxx",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "xxhash",
+    "nlohmann_json <3.10.4",
+    "cffi",
+    "graphviz",
+    "vector-classes",
+    "python",
+    "numpy",
+    "libcxx",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "xxhash",
+    "nlohmann_json <3.10.4",
+    "cffi",
+    "graphviz",
+    "vector-classes",
+    "python",
+    "numpy",
+    "libcxx",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "xxhash",
+    "nlohmann_json <3.10.4",
+    "cffi",
+    "graphviz",
+    "vector-classes",
     "python",
     "numpy",
     "libcxx",
@@ -4893,6 +6160,19 @@
     "numba >=0.52",
     "cling 9999",
     "root5 9999",
+    "numba >=0.52",
+    "cling 9999",
+    "root5 9999",
+    "numba >=0.52",
+    "cling 9999",
+    "root5 9999",
+    "numba >=0.52",
+    "cling 9999",
+    "root5 9999",
+    "__osx >=10.14",
+    "numba >=0.52",
+    "cling 9999",
+    "root5 9999",
     "__osx >=10.14",
     "numba >=0.52",
     "cling 9999",
@@ -4902,6 +6182,10 @@
     "cling 9999",
     "root5 9999",
     "__osx >=10.14",
+    "numba >=0.52",
+    "cling 9999",
+    "root5 9999",
+    "__osx >=11.0",
     "numba >=0.52",
     "cling 9999",
     "root5 9999",
@@ -4999,6 +6283,60 @@
     "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
     "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-copy-abspath-headers.patch",
+    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-copy-abspath-headers.patch",
+    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
     "patches/root-x.xx.xx-fix-text-edit.patch",
     "patches/0001-Hacks.patch",
     "patches/0001-Patch-for-apple-silicon.patch",
@@ -5162,6 +6500,44 @@
     "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
     "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
+    "root -l -b -q -x test.cpp++",
+    "echo '.q' | root -e 'sddsa0'",
+    "root -l -b -q -x",
+    "root -l -b -q -x test.cpp",
+    "root -b -l -q -x -e '2+3; 0'",
+    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+    "thisroot.sh",
+    "thisroot.csh",
+    "thisroot.fish",
+    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
+    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
+    "root -l -b -q -x test.cpp++",
+    "echo '.q' | root -e 'sddsa0'",
+    "root -l -b -q -x",
+    "root -l -b -q -x test.cpp",
+    "root -b -l -q -x -e '2+3; 0'",
+    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+    "thisroot.sh",
+    "thisroot.csh",
+    "thisroot.fish",
+    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
+    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+    "root -l -b -q -x test.cpp++",
+    "echo '.q' | root -e 'sddsa0'",
+    "root -l -b -q -x",
+    "root -l -b -q -x test.cpp",
+    "root -b -l -q -x -e '2+3; 0'",
+    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+    "thisroot.sh",
+    "thisroot.csh",
+    "thisroot.fish",
+    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
+    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
     "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'",
     "root -l -b -q -x",
@@ -5227,6 +6603,31 @@
     "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
     "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'",
+    "root -l -b -q -x",
+    "root -l -b -q -x test.cpp",
+    "root -b -l -q -x -e '2+3; 0'",
+    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+    "thisroot.sh",
+    "thisroot.csh",
+    "thisroot.fish",
+    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
+    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
+    "root -l -b -q -x test.cpp++",
+    "echo '.q' | root -e 'sddsa0'",
+    "root -l -b -q -x",
+    "root -l -b -q -x test.cpp",
+    "root -b -l -q -x -e '2+3; 0'",
+    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+    "thisroot.sh",
+    "thisroot.csh",
+    "thisroot.fish",
+    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
+    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
+    "root -l -b -q -x test.cpp++",
     "root -l -b -q -x",
     "root -l -b -q -x test.cpp",
     "root -b -l -q -x -e '2+3; 0'",
@@ -5253,6 +6654,11 @@
     "root -l -b -q -x test.cpp++"
    ],
    "files": [
+    "test.cpp",
+    "test.cpp",
+    "test.cpp",
+    "test.cpp",
+    "test.cpp",
     "test.cpp",
     "test.cpp",
     "test.cpp",
@@ -5296,15 +6702,18 @@
    "ignore_prefix_files": [
     "lib/*.pcm",
     "lib/*.pcm",
+    "lib/*.pcm",
     "lib/*.pcm"
    ],
    "ignore_run_exports_from": [
+    "clangdev",
     "clangdev",
     "clangdev",
     "clangdev"
    ],
    "number": "1",
    "script_env": [
+    "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1"
@@ -5320,10 +6729,83 @@
     "eguiraud",
     "chrisburr",
     "henryiii",
+    "eguiraud",
+    "chrisburr",
+    "henryiii",
     "eguiraud"
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "ignore_prefix_files": [
+      "lib/*.pcm"
+     ],
+     "number": "1",
+     "run_exports": [
+      "root_base"
+     ],
+     "script": [
+      "cd build-dir",
+      "make install",
+      "rm \"${PREFIX}\"/bin/thisroot.*",
+      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
+      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
+      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
+      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
+      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
+      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
+      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
+      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
+      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
+      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
+      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
+     ]
+    },
+    "name": "root_base"
+   },
+   {
+    "build": {
+     "number": "1"
+    },
+    "name": "root",
+    "requirements": {
+     "host": [
+      "root_base",
+      "python",
+      "openssl"
+     ],
+     "run": [
+      "root_base",
+      "python",
+      "compilers",
+      "metakernel",
+      "ipython",
+      "notebook",
+      "numba"
+     ]
+    },
+    "test": {
+     "commands": [
+      "ipython -c \"import JsMVA\"",
+      "python test_pyroot.py",
+      "root -l -b -q -x test.cpp",
+      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+      "root -l -b -q -x test.cpp++",
+      "jupyter-kernelspec list | grep ' root '"
+     ],
+     "files": [
+      "test.cpp",
+      "test_pyroot.py"
+     ],
+     "imports": [
+      "ROOT",
+      "JupyROOT"
+     ]
+    }
+   },
    {
     "build": {
      "ignore_prefix_files": [
@@ -5561,9 +7043,56 @@
     "git",
     "pkg-config",
     "sed",
+    "make",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "git",
+    "pkg-config",
+    "sed",
     "make"
    ],
    "host": [
+    "libblas",
+    "libcblas",
+    "afterimage",
+    "cfitsio",
+    "davix",
+    "fftw",
+    "freetype",
+    "ftgl",
+    "gdk-pixbuf",
+    "giflib",
+    "glew",
+    "glib",
+    "gl2ps",
+    "graphviz",
+    "gsl",
+    "libpng",
+    "librsvg",
+    "libtiff",
+    "libxml2",
+    "lz4-c",
+    "nlohmann_json",
+    "openssl",
+    "pcre",
+    "pythia8",
+    "sqlite",
+    "tbb",
+    "tbb-devel",
+    "vector-classes",
+    "vdt",
+    "xrootd",
+    "xz",
+    "libcxx",
+    "xxhash",
+    "zlib",
+    "zstd",
+    "llvm 9.0.1",
+    "llvmdev 9.0.1 cling*",
+    "clangdev 9.0.1 root_62400*",
+    "python",
+    "numpy",
     "libblas",
     "libcblas",
     "afterimage",
@@ -5715,9 +7244,23 @@
     "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
+    "vector-classes",
+    "python",
+    "numpy",
+    "libcxx",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "xxhash",
+    "nlohmann_json <3.10.4",
+    "cffi",
+    "graphviz",
     "vector-classes"
    ],
    "run_constrained": [
+    "__osx >=10.14",
+    "numba >=0.52",
+    "cling 9999",
+    "root5 9999",
     "__osx >=10.14",
     "numba >=0.52",
     "cling 9999",
@@ -5735,6 +7278,18 @@
   "source": {
    "folder": "root-source",
    "patches": [
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-copy-abspath-headers.patch",
+    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
     "patches/root-x.xx.xx-copy-abspath-headers.patch",
     "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
@@ -5815,9 +7370,23 @@
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
     "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
     "root -l -b -q -x test.cpp++",
+    "echo '.q' | root -e 'sddsa0'",
+    "root -l -b -q -x",
+    "root -l -b -q -x test.cpp",
+    "root -b -l -q -x -e '2+3; 0'",
+    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+    "thisroot.sh",
+    "thisroot.csh",
+    "thisroot.fish",
+    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
+    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
+    "root -l -b -q -x test.cpp++",
     "echo '.q' | root -e 'sddsa0'"
    ],
    "files": [
+    "test.cpp",
     "test.cpp",
     "test.cpp",
     "test.cpp"
@@ -5922,14 +7491,17 @@
   "build": {
    "ignore_prefix_files": [
     "lib/*.pcm",
+    "lib/*.pcm",
     "lib/*.pcm"
    ],
    "ignore_run_exports_from": [
+    "clangdev",
     "clangdev",
     "clangdev"
    ],
    "number": "1",
    "script_env": [
+    "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1",
     "ROOT_CONDA_BUILTIN_PYROOT=1"
    ]
@@ -5941,10 +7513,83 @@
     "eguiraud",
     "chrisburr",
     "henryiii",
+    "eguiraud",
+    "chrisburr",
+    "henryiii",
     "eguiraud"
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "ignore_prefix_files": [
+      "lib/*.pcm"
+     ],
+     "number": "1",
+     "run_exports": [
+      "root_base"
+     ],
+     "script": [
+      "cd build-dir",
+      "make install",
+      "rm \"${PREFIX}\"/bin/thisroot.*",
+      "for suffix in sh csh fish; do\n  cp \"${RECIPE_DIR}/thisroot\" \"${PREFIX}/bin/thisroot.${suffix}\"\n  chmod +x \"${PREFIX}/bin/thisroot.${suffix}\"\ndone\n",
+      "mkdir -p \"$PREFIX/share/jupyter/kernels\"",
+      "cp -r \"$PREFIX/etc/notebook/kernels/root\" \"$PREFIX/share/jupyter/kernels\"",
+      "mkdir -p \"${PREFIX}/etc/conda/activate.d\"",
+      "cp \"${RECIPE_DIR}/activate.sh\" \"${PREFIX}/etc/conda/activate.d/activate-root.sh\"",
+      "cp \"${RECIPE_DIR}/activate.csh\" \"${PREFIX}/etc/conda/activate.d/activate-root.csh\"",
+      "cp \"${RECIPE_DIR}/activate.fish\" \"${PREFIX}/etc/conda/activate.d/activate-root.fish\"",
+      "mkdir -p \"${PREFIX}/etc/conda/deactivate.d\"",
+      "cp \"${RECIPE_DIR}/deactivate.sh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.sh\"",
+      "cp \"${RECIPE_DIR}/deactivate.csh\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.csh\"",
+      "cp \"${RECIPE_DIR}/deactivate.fish\" \"${PREFIX}/etc/conda/deactivate.d/deactivate-root.fish\""
+     ]
+    },
+    "name": "root_base"
+   },
+   {
+    "build": {
+     "number": "1"
+    },
+    "name": "root",
+    "requirements": {
+     "host": [
+      "root_base",
+      "python",
+      "openssl"
+     ],
+     "run": [
+      "root_base",
+      "python",
+      "compilers",
+      "metakernel",
+      "ipython",
+      "notebook",
+      "numba"
+     ]
+    },
+    "test": {
+     "commands": [
+      "ipython -c \"import JsMVA\"",
+      "python test_pyroot.py",
+      "root -l -b -q -x test.cpp",
+      "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+      "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+      "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+      "root -l -b -q -x test.cpp++",
+      "jupyter-kernelspec list | grep ' root '"
+     ],
+     "files": [
+      "test.cpp",
+      "test_pyroot.py"
+     ],
+     "imports": [
+      "ROOT",
+      "JupyROOT"
+     ]
+    }
+   },
    {
     "build": {
      "ignore_prefix_files": [
@@ -6105,9 +7750,53 @@
     "git",
     "pkg-config",
     "sed",
+    "make",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "git",
+    "pkg-config",
+    "sed",
     "make"
    ],
    "host": [
+    "libblas",
+    "libcblas",
+    "afterimage",
+    "cfitsio",
+    "davix",
+    "fftw",
+    "freetype",
+    "ftgl",
+    "gdk-pixbuf",
+    "giflib",
+    "glew",
+    "glib",
+    "gl2ps",
+    "graphviz",
+    "gsl",
+    "libpng",
+    "librsvg",
+    "libtiff",
+    "libxml2",
+    "lz4-c",
+    "nlohmann_json",
+    "openssl",
+    "pcre",
+    "pythia8",
+    "sqlite",
+    "tbb",
+    "tbb-devel",
+    "vector-classes",
+    "vdt",
+    "xrootd",
+    "xz",
+    "libcxx",
+    "xxhash",
+    "zlib",
+    "zstd",
+    "python",
+    "numpy",
     "libblas",
     "libcblas",
     "afterimage",
@@ -6203,9 +7892,23 @@
     "nlohmann_json <3.10.4",
     "cffi",
     "graphviz",
+    "vector-classes",
+    "python",
+    "numpy",
+    "libcxx",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "xxhash",
+    "nlohmann_json <3.10.4",
+    "cffi",
+    "graphviz",
     "vector-classes"
    ],
    "run_constrained": [
+    "__osx >=11.0",
+    "numba >=0.52",
+    "cling 9999",
+    "root5 9999",
     "__osx >=11.0",
     "numba >=0.52",
     "cling 9999",
@@ -6219,6 +7922,18 @@
   "source": {
    "folder": "root-source",
    "patches": [
+    "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
+    "patches/root-x.xx.xx-copy-abspath-headers.patch",
+    "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
+    "patches/root-x.xx.xx-fix-text-edit.patch",
+    "patches/0001-Hacks.patch",
+    "patches/0001-Patch-for-apple-silicon.patch",
+    "patches/0001-Set-LLVM_REQUIRES_EH-for-Cling.patch",
+    "patches/0001-Workaround-https-github.com-root-project-root-issues.patch",
+    "patches/0003-fix-codecvt-header-map.patch",
+    "no-link-libpython.patch",
+    "patches/root-6.26.0-ppc64le-use-large-code-model.patch",
+    "patches/root-6.26.0-Do-not-link-libCoreEntitlements.patch",
     "patches/root-x.xx.xx_cling-runtime-sysroot.patch",
     "patches/root-x.xx.xx-copy-abspath-headers.patch",
     "patches/root-x.xx.xx-osx-remove-hardcoded-sysroot.patch",
@@ -6272,9 +7987,22 @@
     "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
     "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
     "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
+    "root -l -b -q -x test.cpp++",
+    "root -l -b -q -x",
+    "root -l -b -q -x test.cpp",
+    "root -b -l -q -x -e '2+3; 0'",
+    "root -b -l -q -x -e 'gSystem->LoadAllLibraries(); 0'",
+    "thisroot.sh",
+    "thisroot.csh",
+    "thisroot.fish",
+    "root -b -l -q -x -e 'gStyle->SetCanvasPreferGL(kTRUE); c = new TCanvas(); if (!c->UseGL()) { throw std::runtime_error(\"OpenGL does not appear to be working\"); }'",
+    "root -b -l -q -x \"${PREFIX}/tutorials/eve/geom_lhcb.C\" || true",
+    "root -b -l -q -x \"${PREFIX}/tutorials/tree/run_h1analysis.C\"",
+    "XrdSecPROTOCOL=unix python -c \"import ROOT; ROOT.ROOT.EnableImplicitMT(); rdf = ROOT.RDataFrame('DecayTree', 'root://eospublic.cern.ch//eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root'); print(rdf.Cache('H1_PX').AsNumpy())\"",
     "root -l -b -q -x test.cpp++"
    ],
    "files": [
+    "test.cpp",
     "test.cpp",
     "test.cpp"
    ]
