@@ -2043,6 +2043,12 @@
   ]
  },
  "pinning_version": "2020.10.14.13.15.42",
+ "pre_pr_migrator_attempts": {
+  "python310": 1
+ },
+ "pre_pr_migrator_status": {
+  "python310": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1720134261\">bot CI job</a>): master: ['linux_64_mpimpichpython3.10.____cpython: Encountered problems while solving:\\n  - package triqs-3.0.0-py36h507050d_2 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'linux_64_mpiopenmpipython3.10.____cpython: Encountered problems while solving:\\n  - package triqs-3.0.0-py36h507050d_2 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n']"
+ },
  "raw_meta_yaml": "{% set version = \"3.0.0\" %}\n\npackage:\n  name: triqs_tprf\n  version: {{ version }}\n\nsource:\n  url: https://github.com/TRIQS/tprf/releases/download/{{ version }}/tprf-{{ version }}.tar.gz\n  sha256: 8e20620145bb8cbcc187f4637884457c0cacaed79ba6e1709a951046ee5ffc4b\n\nbuild:\n  number: 2\n  skip: True  # [win or py<30]\n\nrequirements:\n  build:\n    - cmake\n    - make\n    - llvm-openmp  # [osx]\n    - libgomp      # [linux]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - triqs {{ '.'.join(version.split('.')[:2]) }}\n    - boost-cpp\n    - fftw\n    - {{ mpi }}\n    - libblas\n    - liblapack\n    - python\n  run:\n    - {{ pin_compatible(\"triqs\", max_pin=\"x.x\") }}\n    - fftw\n    - {{ mpi }}\n    - libblas\n    - liblapack\n    - python\n\ntest:\n  commands:\n    - export OMPI_MCA_btl=self,tcp\n    - export OMPI_MCA_plm=isolated\n    - export OMPI_MCA_rmaps_base_oversubscribe=yes\n    - export OMPI_MCA_btl_vader_single_copy_mechanism=none\n    - export mpiexec=\"mpiexec --allow-run-as-root\"\n    - python -c \"import triqs_tprf\"\n\nabout:\n  home: https://triqs.github.io/tprf\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE.txt\n  summary: 'The Two-Particle Response Function tool box for TRIQS'\n\nextra:\n  recipe-maintainers:\n    - wentzell\n    - pgunn\n",
  "req": {
   "__set__": true,
