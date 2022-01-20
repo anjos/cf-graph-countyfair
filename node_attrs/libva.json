@@ -323,13 +323,14 @@
    "summary": "Libva is an implementation for VA-API (Video Acceleration API)"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "libva"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "gabm",
     "hmaarrfk"
    ]
   },
@@ -347,7 +348,15 @@
     "make"
    ],
    "host": [
-    "libdrm"
+    "libdrm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxfixes"
+   ],
+   "run": [
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxfixes"
    ]
   },
   "source": {
@@ -363,7 +372,9 @@
     "test -f $PREFIX/lib/pkgconfig/libva.pc",
     "test -f $PREFIX/lib/pkgconfig/libva-drm.pc",
     "test -f $PREFIX/lib/libva-drm.so",
-    "test -f $PREFIX/lib/libva-drm.so.2"
+    "test -f $PREFIX/lib/libva-drm.so.2",
+    "test -f $PREFIX/lib/libva-x11.so",
+    "test -f $PREFIX/lib/libva-x11.so.2"
    ]
   }
  },
@@ -382,12 +393,19 @@
   "host": {
    "__set__": true,
    "elements": [
-    "libdrm"
+    "libdrm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxfixes"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxfixes"
+   ]
   },
   "test": {
    "__set__": true,
@@ -404,13 +422,14 @@
    "summary": "Libva is an implementation for VA-API (Video Acceleration API)"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "libva"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "gabm",
     "hmaarrfk"
    ]
   },
@@ -428,7 +447,15 @@
     "make"
    ],
    "host": [
-    "libdrm"
+    "libdrm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxfixes"
+   ],
+   "run": [
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxfixes"
    ]
   },
   "source": {
@@ -444,7 +471,9 @@
     "test -f $PREFIX/lib/pkgconfig/libva.pc",
     "test -f $PREFIX/lib/pkgconfig/libva-drm.pc",
     "test -f $PREFIX/lib/libva-drm.so",
-    "test -f $PREFIX/lib/libva-drm.so.2"
+    "test -f $PREFIX/lib/libva-drm.so.2",
+    "test -f $PREFIX/lib/libva-x11.so",
+    "test -f $PREFIX/lib/libva-x11.so.2"
    ]
   }
  },
@@ -468,7 +497,7 @@
   ]
  },
  "pinning_version": "2021.09.17.05.51.46",
- "raw_meta_yaml": "{% set name = \"libva\" %}\n{% set version = \"2.13.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/intel/{{ name }}/archive/{{ version }}.tar.gz\n  fn: libva-{{ version }}.tar.gz\n  sha256: 6b7ec7d4fa204dad3f266450981f1f0892400c03afd3e00ac11f8ccade5aaaa1\n\nbuild:\n  skip: true  # [not linux]\n  number: 1\n  # Pretty good forward compatibility\n  # https://abi-laboratory.pro/index.php?view=timeline&l=libva\n  run_exports:\n    - {{ pin_subpackage('libva', max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - autoconf\n    - automake\n    - libtool\n    - pkg-config\n    - make\n  host:\n    - libdrm\n\ntest:\n  commands:\n    - test -f $PREFIX/include/va/va.h\n    - test -f $PREFIX/lib/libva.so\n    - test -f $PREFIX/lib/libva.so.2\n    - test -f $PREFIX/lib/pkgconfig/libva.pc\n    - test -f $PREFIX/lib/pkgconfig/libva-drm.pc\n    - test -f $PREFIX/lib/libva-drm.so\n    - test -f $PREFIX/lib/libva-drm.so.2\n\nabout:\n  home: https://github.com/intel/libva\n  license: MIT\n  license_family: MIT\n  license_file: COPYING\n  summary: Libva is an implementation for VA-API (Video Acceleration API)\n\n  # The remaining entries in this section are optional, but recommended\n  description: |\n    VA-API is an open-source library and API specification, which provides\n    access to graphics hardware acceleration capabilities for video processing.\n    It consists of a main library and driver-specific acceleration backends\n    for each supported hardware vendor.\n\nextra:\n  recipe-maintainers:\n    - hmaarrfk\n",
+ "raw_meta_yaml": "{% set name = \"libva\" %}\n{% set version = \"2.13.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/intel/{{ name }}/archive/{{ version }}.tar.gz\n  fn: libva-{{ version }}.tar.gz\n  sha256: 6b7ec7d4fa204dad3f266450981f1f0892400c03afd3e00ac11f8ccade5aaaa1\n\nbuild:\n  skip: true  # [not linux]\n  number: 2\n  # Pretty good forward compatibility\n  # https://abi-laboratory.pro/index.php?view=timeline&l=libva\n  run_exports:\n    - {{ pin_subpackage('libva', max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - autoconf\n    - automake\n    - libtool\n    - pkg-config\n    - make\n  host:\n    - libdrm\n    - xorg-libx11\n    - xorg-libxext\n    - xorg-libxfixes\n  run:\n    - xorg-libx11\n    - xorg-libxext\n    - xorg-libxfixes\ntest:\n  commands:\n    - test -f $PREFIX/include/va/va.h\n    - test -f $PREFIX/lib/libva.so\n    - test -f $PREFIX/lib/libva.so.2\n    - test -f $PREFIX/lib/pkgconfig/libva.pc\n    - test -f $PREFIX/lib/pkgconfig/libva-drm.pc\n    - test -f $PREFIX/lib/libva-drm.so\n    - test -f $PREFIX/lib/libva-drm.so.2\n    - test -f $PREFIX/lib/libva-x11.so\n    - test -f $PREFIX/lib/libva-x11.so.2\n\nabout:\n  home: https://github.com/intel/libva\n  license: MIT\n  license_family: MIT\n  license_file: COPYING\n  summary: Libva is an implementation for VA-API (Video Acceleration API)\n\n  # The remaining entries in this section are optional, but recommended\n  description: |\n    VA-API is an open-source library and API specification, which provides\n    access to graphics hardware acceleration capabilities for video processing.\n    It consists of a main library and driver-specific acceleration backends\n    for each supported hardware vendor.\n\nextra:\n  recipe-maintainers:\n    - gabm\n    - hmaarrfk\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -478,7 +507,10 @@
    "libdrm",
    "libtool",
    "make",
-   "pkg-config"
+   "pkg-config",
+   "xorg-libx11",
+   "xorg-libxext",
+   "xorg-libxfixes"
   ]
  },
  "requirements": {
@@ -497,13 +529,19 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
-    "libdrm"
+    "libdrm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxfixes"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxfixes"
    ]
   },
   "test": {
@@ -528,12 +566,19 @@
   "host": {
    "__set__": true,
    "elements": [
-    "libdrm"
+    "libdrm",
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxfixes"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "xorg-libx11",
+    "xorg-libxext",
+    "xorg-libxfixes"
+   ]
   },
   "test": {
    "__set__": true,
