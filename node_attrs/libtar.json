@@ -22,6 +22,9 @@
  "bad": false,
  "branch": "main",
  "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "compiler_stack": "comp7",
   "max_py_ver": "37",
   "max_r_ver": "35",
@@ -42,7 +45,7 @@
    "summary": "C library for manipulating tar files"
   },
   "build": {
-   "number": "1003",
+   "number": "1004",
    "run_exports": [
     "libtar"
    ]
@@ -114,7 +117,7 @@
    "summary": "C library for manipulating tar files"
   },
   "build": {
-   "number": "1003",
+   "number": "1004",
    "run_exports": [
     "libtar"
    ]
@@ -186,7 +189,7 @@
    "summary": "C library for manipulating tar files"
   },
   "build": {
-   "number": "1003",
+   "number": "1004",
    "run_exports": [
     "libtar"
    ]
@@ -258,8 +261,9 @@
    "summary": "C library for manipulating tar files"
   },
   "build": {
-   "number": "1003",
+   "number": "1004",
    "run_exports": [
+    "libtar",
     "libtar",
     "libtar",
     "libtar",
@@ -268,6 +272,7 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "egpbos",
     "egpbos",
     "egpbos",
     "egpbos",
@@ -280,6 +285,11 @@
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
+    "autoconf",
+    "automake",
+    "libtool",
+    "make",
     "c_compiler_stub",
     "autoconf",
     "automake",
@@ -325,6 +335,10 @@
     "test -f ${PREFIX}/include/libtar.h",
     "test -f ${PREFIX}/include/libtar_listhash.h",
     "test -f ${PREFIX}/lib/libtar.a",
+    "test -f ${PREFIX}/bin/libtar",
+    "test -f ${PREFIX}/include/libtar.h",
+    "test -f ${PREFIX}/include/libtar_listhash.h",
+    "test -f ${PREFIX}/lib/libtar.a",
     "test -f ${PREFIX}/bin/libtar"
    ]
   }
@@ -341,7 +355,7 @@
    "summary": "C library for manipulating tar files"
   },
   "build": {
-   "number": "1003",
+   "number": "1004",
    "run_exports": [
     "libtar"
    ]
@@ -403,6 +417,78 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "libtar is a library for manipulating tar files from within C programs.\nHere are some of its features:\n  * Handles both POSIX tar file format and the GNU extensions.\n  * API provides functions for easy use, such as tar_extract_all().\n  * Also provides functions for more granular use, such as\n    tar_append_regfile().\n",
+   "home": "https://repo.or.cz/libtar.git",
+   "license": "NCSA",
+   "license_family": "OTHER",
+   "license_file": "COPYRIGHT",
+   "summary": "C library for manipulating tar files"
+  },
+  "build": {
+   "number": "1004",
+   "run_exports": [
+    "libtar"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "egpbos"
+   ]
+  },
+  "package": {
+   "name": "libtar",
+   "version": "1.2.20"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "autoconf",
+    "automake",
+    "libtool",
+    "make"
+   ],
+   "host": [],
+   "run": []
+  },
+  "source": {
+   "sha256": "f48c2d7b3e9780beaca14c9cd39582458c43b202c46cf2067bfc67bb152e140b",
+   "url": "https://repo.or.cz/libtar.git/snapshot/6d0ab4c78e7a8305c36a0c3d63fd25cd1493de65.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -f ${PREFIX}/include/libtar.h",
+    "test -f ${PREFIX}/include/libtar_listhash.h",
+    "test -f ${PREFIX}/lib/libtar.a",
+    "test -f ${PREFIX}/bin/libtar"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "autoconf",
+    "automake",
+    "c_compiler_stub",
+    "libtool",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -410,7 +496,7 @@
   ]
  },
  "pinning_version": "2018.12.12",
- "raw_meta_yaml": "{% set name = \"libtar\" %}\n{% set version = \"1.2.20\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://repo.or.cz/libtar.git/snapshot/6d0ab4c78e7a8305c36a0c3d63fd25cd1493de65.tar.gz\n  sha256: f48c2d7b3e9780beaca14c9cd39582458c43b202c46cf2067bfc67bb152e140b\n\nbuild:\n  number: 1003\n  skip: True  # [win]\n  run_exports:\n    # no idea, going with minor pin\n    - {{ pin_subpackage('libtar', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - autoconf\n    - automake\n    - libtool\n    - make\n  host:\n  run:\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/libtar.h  # [unix]\n    - test -f ${PREFIX}/include/libtar_listhash.h  # [unix]\n    - test -f ${PREFIX}/lib/libtar.a  # [unix]\n    - test -f ${PREFIX}/bin/libtar  # [unix]\n\nabout:\n  home: https://repo.or.cz/libtar.git\n  license: NCSA\n  license_family: OTHER\n  license_file: COPYRIGHT\n  summary: 'C library for manipulating tar files'\n  description: |\n    libtar is a library for manipulating tar files from within C programs.\n    Here are some of its features:\n      * Handles both POSIX tar file format and the GNU extensions.\n      * API provides functions for easy use, such as tar_extract_all().\n      * Also provides functions for more granular use, such as \n        tar_append_regfile().\n\nextra:\n  recipe-maintainers:\n    - egpbos\n",
+ "raw_meta_yaml": "{% set name = \"libtar\" %}\n{% set version = \"1.2.20\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://repo.or.cz/libtar.git/snapshot/6d0ab4c78e7a8305c36a0c3d63fd25cd1493de65.tar.gz\n  sha256: f48c2d7b3e9780beaca14c9cd39582458c43b202c46cf2067bfc67bb152e140b\n\nbuild:\n  number: 1004\n  skip: True  # [win]\n  run_exports:\n    # no idea, going with minor pin\n    - {{ pin_subpackage('libtar', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - autoconf\n    - automake\n    - libtool\n    - make\n  host:\n  run:\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/libtar.h  # [unix]\n    - test -f ${PREFIX}/include/libtar_listhash.h  # [unix]\n    - test -f ${PREFIX}/lib/libtar.a  # [unix]\n    - test -f ${PREFIX}/bin/libtar  # [unix]\n\nabout:\n  home: https://repo.or.cz/libtar.git\n  license: NCSA\n  license_family: OTHER\n  license_file: COPYRIGHT\n  summary: 'C library for manipulating tar files'\n  description: |\n    libtar is a library for manipulating tar files from within C programs.\n    Here are some of its features:\n      * Handles both POSIX tar file format and the GNU extensions.\n      * API provides functions for easy use, such as tar_extract_all().\n      * Also provides functions for more granular use, such as \n        tar_append_regfile().\n\nextra:\n  recipe-maintainers:\n    - egpbos\n",
  "req": {
   "__set__": true,
   "elements": [
