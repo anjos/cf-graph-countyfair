@@ -84,16 +84,18 @@
    "summary": "A generally applicable London dispersion correction"
   },
   "build": {
-   "number": "2",
+   "number": "3",
    "run_exports": [
     "dftd4"
    ],
    "script": [
     "set -ex",
-    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=netlib",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas",
     "meson compile -C _build",
     "meson test -C _build --no-rebuild --print-errorlogs",
-    "meson install -C _build --no-rebuild"
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig"
    ]
   },
   "extra": {
@@ -134,7 +136,11 @@
   "test": {
    "commands": [
     "dftd4 --version",
-    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT"
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.3.0"
+   ],
+   "requires": [
+    "pkg-config"
    ]
   }
  },
@@ -167,7 +173,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pkg-config"
+   ]
   }
  },
  "linux_aarch64_meta_yaml": {
@@ -184,16 +192,18 @@
    "summary": "A generally applicable London dispersion correction"
   },
   "build": {
-   "number": "2",
+   "number": "3",
    "run_exports": [
     "dftd4"
    ],
    "script": [
     "set -ex",
-    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=netlib",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas",
     "meson compile -C _build",
     "meson test -C _build --no-rebuild --print-errorlogs",
-    "meson install -C _build --no-rebuild"
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig"
    ]
   },
   "extra": {
@@ -234,7 +244,11 @@
   "test": {
    "commands": [
     "dftd4 --version",
-    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT"
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.3.0"
+   ],
+   "requires": [
+    "pkg-config"
    ]
   }
  },
@@ -267,7 +281,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pkg-config"
+   ]
   }
  },
  "linux_ppc64le_meta_yaml": {
@@ -284,16 +300,18 @@
    "summary": "A generally applicable London dispersion correction"
   },
   "build": {
-   "number": "2",
+   "number": "3",
    "run_exports": [
     "dftd4"
    ],
    "script": [
     "set -ex",
-    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=netlib",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas",
     "meson compile -C _build",
     "meson test -C _build --no-rebuild --print-errorlogs",
-    "meson install -C _build --no-rebuild"
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig"
    ]
   },
   "extra": {
@@ -334,7 +352,11 @@
   "test": {
    "commands": [
     "dftd4 --version",
-    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT"
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.3.0"
+   ],
+   "requires": [
+    "pkg-config"
    ]
   }
  },
@@ -367,7 +389,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pkg-config"
+   ]
   }
  },
  "meta_yaml": {
@@ -394,7 +418,7 @@
    "summary": "A generally applicable London dispersion correction"
   },
   "build": {
-   "number": "2",
+   "number": "3",
    "run_exports": [
     "dftd4",
     "dftd4",
@@ -405,30 +429,40 @@
    ],
    "script": [
     "set -ex",
-    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=netlib",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas",
     "meson compile -C _build",
     "meson test -C _build --no-rebuild --print-errorlogs",
     "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig",
     "set -ex",
-    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=netlib",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas",
     "meson compile -C _build",
     "meson test -C _build --no-rebuild --print-errorlogs",
     "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig",
     "set -ex",
-    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=netlib",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas",
     "meson compile -C _build",
     "meson test -C _build --no-rebuild --print-errorlogs",
     "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig",
     "set -ex",
-    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=netlib",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas",
     "meson compile -C _build",
     "meson test -C _build --no-rebuild --print-errorlogs",
     "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig",
     "set -ex",
-    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=netlib",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas",
     "meson compile -C _build",
     "meson test -C _build --no-rebuild --print-errorlogs",
     "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig",
     "meson setup _build --prefix=%PREFIX% --buildtype=release --pkg-config-path=%PREFIX%\\lib\\pkgconfig -Dlapack=custom \"-Dfortran_link_args=%LIBRARY_PREFIX%\\lib\\liblapack.dll.a %LIBRARY_PREFIX%\\lib\\libblas.dll.a\"",
     "meson compile -C _build",
     "meson test -C _build --no-rebuild --print-errorlogs",
@@ -539,15 +573,30 @@
    "commands": [
     "dftd4 --version",
     "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.3.0",
     "dftd4 --version",
     "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.3.0",
     "dftd4 --version",
     "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.3.0",
     "dftd4 --version",
     "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.3.0",
     "dftd4 --version",
     "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
-    "dftd4 --version"
+    "pkg-config dftd4 --exact-version 3.3.0",
+    "dftd4 --version",
+    "set PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig",
+    "pkg-config dftd4 --exact-version 3.3.0"
+   ],
+   "requires": [
+    "pkg-config",
+    "pkg-config",
+    "pkg-config",
+    "pkg-config",
+    "pkg-config",
+    "pkg-config"
    ]
   }
  },
@@ -571,16 +620,18 @@
    "summary": "A generally applicable London dispersion correction"
   },
   "build": {
-   "number": "2",
+   "number": "3",
    "run_exports": [
     "dftd4"
    ],
    "script": [
     "set -ex",
-    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=netlib",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas",
     "meson compile -C _build",
     "meson test -C _build --no-rebuild --print-errorlogs",
-    "meson install -C _build --no-rebuild"
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig"
    ]
   },
   "extra": {
@@ -621,7 +672,11 @@
   "test": {
    "commands": [
     "dftd4 --version",
-    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT"
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.3.0"
+   ],
+   "requires": [
+    "pkg-config"
    ]
   }
  },
@@ -654,7 +709,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pkg-config"
+   ]
   }
  },
  "osx_arm64_meta_yaml": {
@@ -671,16 +728,18 @@
    "summary": "A generally applicable London dispersion correction"
   },
   "build": {
-   "number": "2",
+   "number": "3",
    "run_exports": [
     "dftd4"
    ],
    "script": [
     "set -ex",
-    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=netlib",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas",
     "meson compile -C _build",
     "meson test -C _build --no-rebuild --print-errorlogs",
-    "meson install -C _build --no-rebuild"
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig"
    ]
   },
   "extra": {
@@ -721,7 +780,11 @@
   "test": {
    "commands": [
     "dftd4 --version",
-    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT"
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.3.0"
+   ],
+   "requires": [
+    "pkg-config"
    ]
   }
  },
@@ -754,7 +817,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pkg-config"
+   ]
   }
  },
  "outputs_names": {
@@ -764,7 +829,7 @@
   ]
  },
  "pinning_version": "2021.12.16.23.38.36",
- "raw_meta_yaml": "{% set name = \"dftd4\" %}\n{% set version = \"3.3.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 60d4f30d97cae95a7b48a99e10848ef600b605f9da98c4893a6034bded1a7f24\n  patches:\n    - wrap.patch\n    - gcc5.patch  # [win]\n\nbuild:\n  number: 2\n  script:\n    - set -ex  # [unix]\n    - meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=netlib  # [unix]\n    - meson setup _build --prefix=%PREFIX% --buildtype=release --pkg-config-path=%PREFIX%\\lib\\pkgconfig -Dlapack=custom \"-Dfortran_link_args=%LIBRARY_PREFIX%\\lib\\liblapack.dll.a %LIBRARY_PREFIX%\\lib\\libblas.dll.a\"  # [win]\n    - meson compile -C _build\n    - meson test -C _build --no-rebuild --print-errorlogs  # [build_platform == target_platform]\n    - meson install -C _build --no-rebuild\n\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [unix]\n    - {{ compiler('fortran') }}  # [unix]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - {{ compiler('m2w64_fortran') }}  # [win]\n    - meson\n    - ninja\n    - cmake  # [win]\n    - asciidoctor  # [unix]\n    - pkg-config\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  host:\n    - libblas\n    - liblapack\n    - mctc-lib\n  run:\n    - mctc-lib\n\ntest:\n  commands:\n    - {{ name }} --version  # [build_platform == target_platform]\n    - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT  # [unix]\n\nabout:\n  home: https://github.com/dftd4/dftd4\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file:\n    - COPYING\n    - COPYING.LESSER\n  summary: A generally applicable London dispersion correction\n  description: |\n    This program implements the D4 London dispersion correction\n    for molecular and 3D periodic systems.\n  doc_url: https://dftd4.github.io/dftd4\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
+ "raw_meta_yaml": "{% set name = \"dftd4\" %}\n{% set version = \"3.3.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 60d4f30d97cae95a7b48a99e10848ef600b605f9da98c4893a6034bded1a7f24\n  patches:\n    - wrap.patch\n    - gcc5.patch  # [win]\n\nbuild:\n  number: 3\n  script:\n    - set -ex  # [unix]\n    - mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR  # [unix]\n    - meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas  # [unix]\n    - meson setup _build --prefix=%PREFIX% --buildtype=release --pkg-config-path=%PREFIX%\\lib\\pkgconfig -Dlapack=custom \"-Dfortran_link_args=%LIBRARY_PREFIX%\\lib\\liblapack.dll.a %LIBRARY_PREFIX%\\lib\\libblas.dll.a\"  # [win]\n    - meson compile -C _build\n    - meson test -C _build --no-rebuild --print-errorlogs  # [build_platform == target_platform]\n    - meson install -C _build --no-rebuild\n    - mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig  # [unix]\n\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [unix]\n    - {{ compiler('fortran') }}  # [unix]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - {{ compiler('m2w64_fortran') }}  # [win]\n    - meson\n    - ninja\n    - cmake  # [win]\n    - asciidoctor  # [unix]\n    - pkg-config\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  host:\n    - libblas\n    - liblapack\n    - mctc-lib\n  run:\n    - mctc-lib\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - {{ name }} --version  # [build_platform == target_platform]\n    - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT  # [unix]\n    - set PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig  # [win]\n    - pkg-config {{ name }} --exact-version {{ version }}\n\nabout:\n  home: https://github.com/dftd4/dftd4\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file:\n    - COPYING\n    - COPYING.LESSER\n  summary: A generally applicable London dispersion correction\n  description: |\n    This program implements the D4 London dispersion correction\n    for molecular and 3D periodic systems.\n  doc_url: https://dftd4.github.io/dftd4\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -825,7 +890,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pkg-config"
+   ]
   }
  },
  "smithy_version": "3.16.0",
@@ -863,7 +930,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pkg-config"
+   ]
   }
  },
  "url": "https://github.com/dftd4/dftd4/archive/v3.3.0.tar.gz",
@@ -882,7 +951,7 @@
    "summary": "A generally applicable London dispersion correction"
   },
   "build": {
-   "number": "2",
+   "number": "3",
    "run_exports": [
     "dftd4"
    ],
@@ -930,7 +999,12 @@
   },
   "test": {
    "commands": [
-    "dftd4 --version"
+    "dftd4 --version",
+    "set PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig",
+    "pkg-config dftd4 --exact-version 3.3.0"
+   ],
+   "requires": [
+    "pkg-config"
    ]
   }
  },
@@ -962,7 +1036,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pkg-config"
+   ]
   }
  }
 }
