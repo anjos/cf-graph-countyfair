@@ -44,7 +44,7 @@
    "summary": "TOML parser implementation for data serialization and deserialization in Fortran"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "toml-f"
    ],
@@ -123,7 +123,7 @@
    "summary": "TOML parser implementation for data serialization and deserialization in Fortran"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "toml-f"
    ],
@@ -202,7 +202,7 @@
    "summary": "TOML parser implementation for data serialization and deserialization in Fortran"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "toml-f"
    ],
@@ -284,13 +284,16 @@
     "LICENSE-Apache",
     "LICENSE-MIT",
     "LICENSE-Apache",
+    "LICENSE-MIT",
+    "LICENSE-Apache",
     "LICENSE-MIT"
    ],
    "summary": "TOML parser implementation for data serialization and deserialization in Fortran"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
+    "toml-f",
     "toml-f",
     "toml-f",
     "toml-f",
@@ -317,11 +320,15 @@
     "set -ex",
     "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib}",
     "meson compile -C _build",
+    "meson install -C _build --no-rebuild",
+    "meson setup _build --prefix=%PREFIX% --libdir=lib",
+    "meson compile -C _build",
     "meson install -C _build --no-rebuild"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "awvwgk",
     "awvwgk",
     "awvwgk",
     "awvwgk",
@@ -354,6 +361,10 @@
     "c_compiler_stub",
     "fortran_compiler_stub",
     "meson",
+    "ninja",
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "meson",
     "ninja"
    ]
   },
@@ -372,9 +383,12 @@
     "pkg-config toml-f --exact-version 0.2.2",
     "test -f $PREFIX/lib/libtoml-f$SHLIB_EXT",
     "pkg-config toml-f --exact-version 0.2.2",
-    "test -f $PREFIX/lib/libtoml-f$SHLIB_EXT"
+    "test -f $PREFIX/lib/libtoml-f$SHLIB_EXT",
+    "set PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig",
+    "pkg-config toml-f --exact-version 0.2.2"
    ],
    "requires": [
+    "pkg-config",
     "pkg-config",
     "pkg-config",
     "pkg-config",
@@ -397,7 +411,7 @@
    "summary": "TOML parser implementation for data serialization and deserialization in Fortran"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "toml-f"
    ],
@@ -476,7 +490,7 @@
    "summary": "TOML parser implementation for data serialization and deserialization in Fortran"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "toml-f"
    ],
@@ -550,12 +564,14 @@
   ]
  },
  "pinning_version": "2021.12.16.23.38.36",
- "raw_meta_yaml": "{% set name = \"toml-f\" %}\n{% set version = \"0.2.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name }}/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: c3e5e1f57de00977b5e41d3a857ddb7e6b41f0b9116ed608cf89f295d9ef24c6\n\nbuild:\n  number: 1\n  skip: true  # [win]\n  script:\n    - set -ex\n    - meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib}\n    - meson compile -C _build\n    - meson test -C _build --no-rebuild --print-errorlogs  # [build_platform != target_platform]\n    - meson install -C _build --no-rebuild\n  run_exports:\n    - {{ pin_subpackage('toml-f', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}\n    - meson\n    - ninja\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config {{ name }} --exact-version {{ version }}\n    - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT\n\nabout:\n  home: https://github.com/toml-f/toml-f\n  license: Apache-2.0 OR MIT\n  license_file:\n    - LICENSE-Apache\n    - LICENSE-MIT\n  summary: >-\n    TOML parser implementation for data serialization and deserialization in Fortran \n  doc_url: https://toml-f.github.io/toml-f\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
+ "raw_meta_yaml": "{% set name = \"toml-f\" %}\n{% set version = \"0.2.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name }}/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: c3e5e1f57de00977b5e41d3a857ddb7e6b41f0b9116ed608cf89f295d9ef24c6\n\nbuild:\n  number: 2\n  script:\n    - set -ex  # [unix]\n    - meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib}  # [unix]\n    - meson setup _build --prefix=%PREFIX% --libdir=lib  # [win]\n    - meson compile -C _build\n    - meson install -C _build --no-rebuild\n  run_exports:\n    - {{ pin_subpackage('toml-f', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [unix]\n    - {{ compiler('fortran') }}  # [unix]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - {{ compiler('m2w64_fortran') }}  # [win]\n    - meson\n    - ninja\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - set PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig  # [win]\n    - pkg-config {{ name }} --exact-version {{ version }}\n    - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT  # [unix]\n\nabout:\n  home: https://github.com/toml-f/toml-f\n  license: Apache-2.0 OR MIT\n  license_file:\n    - LICENSE-Apache\n    - LICENSE-MIT\n  summary: >-\n    TOML parser implementation for data serialization and deserialization in Fortran \n  doc_url: https://toml-f.github.io/toml-f\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "fortran_compiler_stub",
+   "m2w64_c_compiler_stub",
+   "m2w64_fortran_compiler_stub",
    "meson",
    "ninja"
   ]
@@ -566,6 +582,8 @@
    "elements": [
     "c_compiler_stub",
     "fortran_compiler_stub",
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
     "meson",
     "ninja"
    ]
@@ -599,6 +617,8 @@
    "elements": [
     "c_compiler_stub",
     "fortran_compiler_stub",
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
     "meson",
     "ninja"
    ]
@@ -619,5 +639,83 @@
   }
  },
  "url": "https://github.com/toml-f/toml-f/archive/refs/tags/v0.2.2.tar.gz",
- "version": "0.2.2"
+ "version": "0.2.2",
+ "win_64_meta_yaml": {
+  "about": {
+   "doc_url": "https://toml-f.github.io/toml-f",
+   "home": "https://github.com/toml-f/toml-f",
+   "license": "Apache-2.0 OR MIT",
+   "license_file": [
+    "LICENSE-Apache",
+    "LICENSE-MIT"
+   ],
+   "summary": "TOML parser implementation for data serialization and deserialization in Fortran"
+  },
+  "build": {
+   "number": "2",
+   "run_exports": [
+    "toml-f"
+   ],
+   "script": [
+    "meson setup _build --prefix=%PREFIX% --libdir=lib",
+    "meson compile -C _build",
+    "meson install -C _build --no-rebuild"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk"
+   ]
+  },
+  "package": {
+   "name": "toml-f",
+   "version": "0.2.2"
+  },
+  "requirements": {
+   "build": [
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "meson",
+    "ninja"
+   ]
+  },
+  "source": {
+   "sha256": "c3e5e1f57de00977b5e41d3a857ddb7e6b41f0b9116ed608cf89f295d9ef24c6",
+   "url": "https://github.com/toml-f/toml-f/archive/refs/tags/v0.2.2.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "set PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig",
+    "pkg-config toml-f --exact-version 0.2.2"
+   ],
+   "requires": [
+    "pkg-config"
+   ]
+  }
+ },
+ "win_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "meson",
+    "ninja"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ }
 }
