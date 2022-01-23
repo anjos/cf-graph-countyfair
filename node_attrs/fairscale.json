@@ -105,6 +105,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/2981a467-9c7b-468d-b016-2fb6974ee731.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pytorch110"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1162,7 +1181,7 @@
    "fairscale"
   ]
  },
- "pinning_version": "2022.01.14.19.19.28",
+ "pinning_version": "2022.01.22.21.08.53",
  "raw_meta_yaml": "{% set version = \"0.4.5\" %}\n{% set torch_version = \"1.10\" %}\n\npackage:\n  name: fairscale\n  version: {{ version }}\n\nsource:\n  url: https://github.com/facebookresearch/fairscale/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 0b251abb1b0d954ee4c85dc4b86f3430df1a673e63997aaa29d10da510e3d65d\n\nbuild:\n  number: 0\n  # no pytorch on windows in conda-forge, see\n  # https://github.com/conda-forge/pytorch-cpu-feedstock/issues/32\n  skip: true  # [win]\n  string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != \"None\"]\n  string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == \"None\"]\n\nrequirements:\n  build:\n    - sysroot_linux-64 2.17           # [linux]\n    # compilers only needed for CUDA extensions\n    - {{ compiler('cxx') }}           # [cuda_compiler_version != \"None\"]\n    - {{ compiler('cuda') }}          # [cuda_compiler_version != \"None\"]\n  host:\n    - python\n    - pip\n    # host-dependency only needed for compiling CUDA extensions\n    - pytorch {{ torch_version }}.*\n    - pytorch-gpu                     # [cuda_compiler_version != \"None\"]\n  run:\n    - python\n    # due to lack of ABI, we need to fix build-time and runtime to the same version\n    # (waiting for conda-forge/conda-forge-pinning-feedstock#1890)\n    - pytorch {{ torch_version }}.*\n    - pytorch-gpu                     # [cuda_compiler_version != \"None\"]\n    - pytorch-cpu                     # [cuda_compiler_version == \"None\"]\n\ntest:\n  requires:\n    - pytest\n    - parameterized\n    - scikit-learn\n    - torchvision\n  source_files:\n    - tests\n  commands:\n    # TODO: re-enable tests for unix\n    - pytest tests  # [linux]\n  imports:\n    - fairscale\n    - fairscale.nn\n    - fairscale.nn.data_parallel\n    - fairscale.nn.model_parallel\n    - fairscale.nn.pipe\n    - fairscale.nn.pipe.balance\n    - fairscale.nn.pipe.skip\n    - fairscale.optim\n\nabout:\n  home: https://github.com/facebookresearch/fairscale\n  license: BSD-3-Clause\n  license_file: LICENSE\n  summary: PyTorch extensions for high performance and large scale training.\n  dev_url: https://github.com/facebookresearch/fairscale\n  doc_url: https://fairscale.readthedocs.io/\n\nextra:\n  recipe-maintainers:\n    - h-vetinari\n",
  "req": {
   "__set__": true,
