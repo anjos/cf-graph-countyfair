@@ -114,6 +114,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/832482266.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "5.4.4"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -592,12 +609,13 @@
   }
  },
  "name": "lua",
- "new_version": "5.4.3",
+ "new_version": "5.4.4",
  "new_version_attempts": {
   "5.4.0": 233,
   "5.4.1": 265,
   "5.4.2": 478,
-  "5.4.3": 126
+  "5.4.3": 126,
+  "5.4.4": 1
  },
  "new_version_errors": {
   "5.4.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '5.4.0' to make sure they exist!\n\nWe also found the following errors:\n\n - no URLs in the source section\n",
@@ -791,13 +809,9 @@
    "lua"
   ]
  },
- "pinning_version": "2021.10.25.16.37.45",
- "pre_pr_migrator_attempts": {
-  "version": 1
- },
- "pre_pr_migrator_status": {
-  "version": "bot error: master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 135, in fetch_repo\n    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1018, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 163, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 220, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 137, in fetch_repo\n    _run_git_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.\n"
- },
+ "pinning_version": "2022.01.26.09.22.36",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"5.4.3\" %}\n\npackage:\n  name: lua\n  version: {{ version }}\nsource:\n  - url: http://www.lua.org/ftp/lua-{{ version }}.tar.gz\n    sha256: f8612276169e3bfcbcfb8f226195bfc6e466fe13042f1076cbde92b7ec96bbfb\n    patches:\n      # Enables Lua to look for packages on a relative path\n      - luaconf.patch\n      # Build as a shared library\n      - liblua.so.patch\n      # Enables readline on linux\n      - Makefile.patch\n  - path: CMakeLists.txt\n\nbuild:\n  number: 2\n  detect_binary_files_with_prefix: true\n  run_exports:\n    # http://www.lua.org/versions.html#numbering\n    - {{ pin_subpackage('lua', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [not win]\n    - vs2017_win-64  # [win64]\n    - vs2017_win-32  # [win32]\n    - ninja          # [win]\n    - cmake          # [win]\n    - sed            # [unix]\n    - make           # [unix]\n  host:\n    - readline  # [not win]\n    - ncurses   # [not win]\n  run:\n    - readline  # [not win]\n    - ncurses   # [not win]\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/liblua$SHLIB_EXT  # [unix]\n    - if not exist %LIBRARY_INC%\\\\lua.h exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\lua.dll exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\lua.exe exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\lua.exe exit 1  # [win]\n    - lua -v\n    - lua -e \"print(package.path)\"\n\nabout:\n  home: http://www.lua.org/\n  summary: Lua is a powerful, fast, lightweight, embeddable scripting language\n  license: MIT\n  license_file: doc/readme.html\n\nextra:\n  recipe-maintainers:\n    - alexbw\n    - seanyen\n    - izahn\n",
  "req": {
   "__set__": true,
@@ -847,7 +861,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.14.1",
+ "smithy_version": "3.16.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
