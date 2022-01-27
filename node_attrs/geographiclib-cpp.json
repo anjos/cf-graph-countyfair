@@ -22,6 +22,9 @@
  "bad": false,
  "branch": "main",
  "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default"
@@ -40,7 +43,7 @@
    "summary": "A small C++ library for geographic conversions"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "geographiclib-cpp"
    ]
@@ -108,7 +111,7 @@
    "summary": "A small C++ library for geographic conversions"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "geographiclib-cpp"
    ]
@@ -176,7 +179,7 @@
    "summary": "A small C++ library for geographic conversions"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "geographiclib-cpp"
    ]
@@ -244,8 +247,9 @@
    "summary": "A small C++ library for geographic conversions"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
+    "geographiclib-cpp",
     "geographiclib-cpp",
     "geographiclib-cpp",
     "geographiclib-cpp",
@@ -255,6 +259,7 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "cffk",
     "cffk",
     "cffk",
     "cffk",
@@ -281,11 +286,15 @@
     "cmake",
     "make",
     "cxx_compiler_stub",
+    "cmake",
+    "make",
+    "cxx_compiler_stub",
     "cmake"
    ]
   },
   "source": {
    "patches": [
+    "cxx-components-only.patch",
     "cxx-components-only.patch",
     "cxx-components-only.patch",
     "cxx-components-only.patch",
@@ -297,6 +306,8 @@
   },
   "test": {
    "commands": [
+    "GeoConvert --version",
+    "GeodSolve -i --input-string \"20.001 0 20.001 0\" -f -p 12",
     "GeoConvert --version",
     "GeodSolve -i --input-string \"20.001 0 20.001 0\" -f -p 12",
     "GeoConvert --version",
@@ -327,7 +338,7 @@
    "summary": "A small C++ library for geographic conversions"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "geographiclib-cpp"
    ]
@@ -384,6 +395,74 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "GeographicLib is a small set of C++ classes for performing\nconversions between geographic, UTM, UPS, MGRS, geocentric, and\nlocal cartesian coordinates, for gravity (e.g., EGM2008), geoid\nheight, and geomagnetic field (e.g., WMM2020) calculations, and\nfor solving geodesic problems.\n",
+   "doc_url": "https://geographiclib.sourceforge.io/1.52",
+   "home": "https://geographiclib.sourceforge.io",
+   "license": "MIT",
+   "license_family": "MIT",
+   "license_file": "LICENSE.txt",
+   "summary": "A small C++ library for geographic conversions"
+  },
+  "build": {
+   "number": "1",
+   "run_exports": [
+    "geographiclib-cpp"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "cffk"
+   ]
+  },
+  "package": {
+   "name": "geographiclib-cpp",
+   "version": "1.52"
+  },
+  "requirements": {
+   "build": [
+    "cxx_compiler_stub",
+    "cmake",
+    "make"
+   ]
+  },
+  "source": {
+   "patches": [
+    "cxx-components-only.patch"
+   ],
+   "sha256": "5d4145cd16ebf51a2ff97c9244330a340787d131165cfd150e4b2840c0e8ac2b",
+   "url": "https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.52.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "GeoConvert --version",
+    "GeodSolve -i --input-string \"20.001 0 20.001 0\" -f -p 12"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cmake",
+    "cxx_compiler_stub",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -391,7 +470,7 @@
   ]
  },
  "pinning_version": "2021.06.22.04.56.18",
- "raw_meta_yaml": "{% set name = \"GeographicLib\" %}\n{% set version = \"1.52\" %}\n\npackage:\n  name: {{ name|lower }}-cpp\n  version: {{ version }}\n\nsource:\n  url: https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-{{ version }}.tar.gz\n  sha256: 5d4145cd16ebf51a2ff97c9244330a340787d131165cfd150e4b2840c0e8ac2b\n  patches:\n    - cxx-components-only.patch\n\nbuild:\n  number: 0\n  run_exports:\n    - {{ pin_subpackage('geographiclib-cpp', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - make  # [unix]\n\ntest:\n  commands:\n    - GeoConvert --version\n    - GeodSolve -i --input-string \"20.001 0 20.001 0\" -f -p 12\n\nabout:\n  home: https://geographiclib.sourceforge.io\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE.txt\n  summary: A small C++ library for geographic conversions\n  description: |\n    GeographicLib is a small set of C++ classes for performing\n    conversions between geographic, UTM, UPS, MGRS, geocentric, and\n    local cartesian coordinates, for gravity (e.g., EGM2008), geoid\n    height, and geomagnetic field (e.g., WMM2020) calculations, and\n    for solving geodesic problems.\n  doc_url: https://geographiclib.sourceforge.io/{{ version }}\n\nextra:\n  recipe-maintainers:\n    - cffk\n",
+ "raw_meta_yaml": "{% set name = \"GeographicLib\" %}\n{% set version = \"1.52\" %}\n\npackage:\n  name: {{ name|lower }}-cpp\n  version: {{ version }}\n\nsource:\n  url: https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-{{ version }}.tar.gz\n  sha256: 5d4145cd16ebf51a2ff97c9244330a340787d131165cfd150e4b2840c0e8ac2b\n  patches:\n    - cxx-components-only.patch\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage('geographiclib-cpp', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - make  # [unix]\n\ntest:\n  commands:\n    - GeoConvert --version\n    - GeodSolve -i --input-string \"20.001 0 20.001 0\" -f -p 12\n\nabout:\n  home: https://geographiclib.sourceforge.io\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE.txt\n  summary: A small C++ library for geographic conversions\n  description: |\n    GeographicLib is a small set of C++ classes for performing\n    conversions between geographic, UTM, UPS, MGRS, geocentric, and\n    local cartesian coordinates, for gravity (e.g., EGM2008), geoid\n    height, and geomagnetic field (e.g., WMM2020) calculations, and\n    for solving geodesic problems.\n  doc_url: https://geographiclib.sourceforge.io/{{ version }}\n\nextra:\n  recipe-maintainers:\n    - cffk\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -463,7 +542,7 @@
    "summary": "A small C++ library for geographic conversions"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "geographiclib-cpp"
    ]
