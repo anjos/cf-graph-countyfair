@@ -117,20 +117,12 @@
    "summary": "Tensor Linear Algebra on NVIDIA GPUs"
   },
   "build": {
-   "ignore_run_exports_from": [
-    "c_compiler_stub",
-    "cuda_compiler_stub",
-    "c_compiler_stub",
-    "cuda_compiler_stub",
-    "c_compiler_stub",
-    "cuda_compiler_stub"
+   "ignore_run_exports": [
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit"
    ],
-   "missing_dso_whitelist": [
-    "*/libgomp.*",
-    "*/libgomp.*",
-    "*/libgomp.*"
-   ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "cutensor",
     "cutensor",
@@ -169,17 +161,17 @@
   "requirements": {
    "build": [
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17",
-    "libgomp",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17",
-    "libgomp",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
-    "sysroot_linux-64 2.17",
-    "libgomp"
+    "sysroot_linux-64 2.17"
    ],
    "host": [
     "patchelf >=0.12",
@@ -187,14 +179,8 @@
     "patchelf >=0.12"
    ],
    "run": [
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
     "cudatoolkit 10.2",
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
     "cudatoolkit 11.0",
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
     "cudatoolkit >=11.1,<12"
    ],
    "run_constrained": [
@@ -241,7 +227,7 @@
    "elements": [
     "c_compiler_stub",
     "cuda_compiler_stub",
-    "libgomp",
+    "cxx_compiler_stub",
     "sysroot_linux-64"
    ]
   },
@@ -254,9 +240,7 @@
   "run": {
    "__set__": true,
    "elements": [
-    "cudatoolkit",
-    "libgcc-ng",
-    "libstdcxx-ng"
+    "cudatoolkit"
    ]
   },
   "test": {
@@ -283,17 +267,11 @@
    "summary": "Tensor Linear Algebra on NVIDIA GPUs"
   },
   "build": {
-   "ignore_run_exports_from": [
-    "c_compiler_stub",
-    "cuda_compiler_stub",
-    "c_compiler_stub",
-    "cuda_compiler_stub"
+   "ignore_run_exports": [
+    "cudatoolkit",
+    "cudatoolkit"
    ],
-   "missing_dso_whitelist": [
-    "*/libgomp.*",
-    "*/libgomp.*"
-   ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "cutensor",
     "cutensor"
@@ -328,24 +306,20 @@
   "requirements": {
    "build": [
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17",
-    "libgomp",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
-    "sysroot_linux-64 2.17",
-    "libgomp"
+    "sysroot_linux-64 2.17"
    ],
    "host": [
     "patchelf >=0.12",
     "patchelf >=0.12"
    ],
    "run": [
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
     "cudatoolkit 11.0",
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
     "cudatoolkit >=11.1,<12"
    ],
    "run_constrained": [
@@ -384,7 +358,7 @@
    "elements": [
     "c_compiler_stub",
     "cuda_compiler_stub",
-    "libgomp",
+    "cxx_compiler_stub",
     "sysroot_linux-64"
    ]
   },
@@ -397,9 +371,7 @@
   "run": {
    "__set__": true,
    "elements": [
-    "cudatoolkit",
-    "libgcc-ng",
-    "libstdcxx-ng"
+    "cudatoolkit"
    ]
   },
   "test": {
@@ -426,15 +398,15 @@
    "summary": "Tensor Linear Algebra on NVIDIA GPUs"
   },
   "build": {
-   "ignore_run_exports_from": [
-    "c_compiler_stub",
-    "cuda_compiler_stub"
+   "ignore_run_exports": [
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit"
    ],
-   "missing_dso_whitelist": [
-    "*/libgomp.*"
-   ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
+    "cutensor",
+    "cutensor",
     "cutensor"
    ],
    "script": [
@@ -442,14 +414,30 @@
     "mv include/* $PREFIX/include/",
     "mkdir -p $PREFIX/lib",
     "mv lib/10.2/*.so* $PREFIX/lib/",
+    "patchelf --add-needed libcudart.so $PREFIX/lib/libcutensor.so",
+    "mkdir -p $PREFIX/include",
+    "mv include/* $PREFIX/include/",
+    "mkdir -p $PREFIX/lib",
+    "mv lib/11/*.so* $PREFIX/lib/",
+    "patchelf --add-needed libcudart.so $PREFIX/lib/libcutensor.so",
+    "mkdir -p $PREFIX/include",
+    "mv include/* $PREFIX/include/",
+    "mkdir -p $PREFIX/lib",
+    "mv lib/11.0/*.so* $PREFIX/lib/",
     "patchelf --add-needed libcudart.so $PREFIX/lib/libcutensor.so"
    ],
    "script_env": [
+    "CUDA_HOME",
+    "CUDA_HOME",
     "CUDA_HOME"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "leofang",
+    "jakirkham",
+    "leofang",
+    "jakirkham",
     "leofang",
     "jakirkham"
    ]
@@ -461,19 +449,31 @@
   "requirements": {
    "build": [
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17",
-    "libgomp"
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cuda_compiler_stub",
+    "sysroot_linux-64 2.17",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cuda_compiler_stub",
+    "sysroot_linux-64 2.17"
    ],
    "host": [
+    "patchelf >=0.12",
+    "patchelf >=0.12",
     "patchelf >=0.12"
    ],
    "run": [
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
-    "cudatoolkit 10.2"
+    "cudatoolkit 10.2",
+    "cudatoolkit >=11.1,<12",
+    "cudatoolkit 11.0"
    ],
    "run_constrained": [
+    "__glibc >=2.17",
+    "__glibc >=2.17",
     "__glibc >=2.17"
    ]
   },
@@ -483,6 +483,8 @@
   },
   "test": {
    "files": [
+    "test_load_elf.c",
+    "test_load_elf.c",
     "test_load_elf.c"
    ],
    "requires": [
@@ -491,7 +493,19 @@
     "cxx_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17",
-    "cudatoolkit 10.2"
+    "cudatoolkit 10.2",
+    "git",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cuda_compiler_stub",
+    "sysroot_linux-64 2.17",
+    "cudatoolkit 11.1",
+    "git",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cuda_compiler_stub",
+    "sysroot_linux-64 2.17",
+    "cudatoolkit 11.0"
    ]
   }
  },
@@ -501,7 +515,7 @@
    "elements": [
     "c_compiler_stub",
     "cuda_compiler_stub",
-    "libgomp",
+    "cxx_compiler_stub",
     "sysroot_linux-64"
    ]
   },
@@ -514,9 +528,7 @@
   "run": {
    "__set__": true,
    "elements": [
-    "cudatoolkit",
-    "libgcc-ng",
-    "libstdcxx-ng"
+    "cudatoolkit"
    ]
   },
   "test": {
@@ -543,26 +555,23 @@
    "summary": "Tensor Linear Algebra on NVIDIA GPUs"
   },
   "build": {
-   "ignore_run_exports_from": [
-    "c_compiler_stub",
-    "cuda_compiler_stub",
-    "c_compiler_stub",
-    "cuda_compiler_stub",
-    "c_compiler_stub",
-    "cuda_compiler_stub",
-    "c_compiler_stub",
-    "cuda_compiler_stub",
-    "c_compiler_stub",
-    "cuda_compiler_stub",
-    "c_compiler_stub",
-    "cuda_compiler_stub",
-    "cuda_compiler_stub",
-    "cuda_compiler_stub",
-    "cuda_compiler_stub"
+   "ignore_run_exports": [
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit"
    ],
-   "missing_dso_whitelist": null,
-   "number": "1",
+   "number": "2",
    "run_exports": [
+    "cutensor",
+    "cutensor",
     "cutensor",
     "cutensor",
     "cutensor",
@@ -598,6 +607,16 @@
     "mv include/* $PREFIX/include/",
     "mkdir -p $PREFIX/lib",
     "mv lib/10.2/*.so* $PREFIX/lib/",
+    "patchelf --add-needed libcudart.so $PREFIX/lib/libcutensor.so",
+    "mkdir -p $PREFIX/include",
+    "mv include/* $PREFIX/include/",
+    "mkdir -p $PREFIX/lib",
+    "mv lib/11/*.so* $PREFIX/lib/",
+    "patchelf --add-needed libcudart.so $PREFIX/lib/libcutensor.so",
+    "mkdir -p $PREFIX/include",
+    "mv include/* $PREFIX/include/",
+    "mkdir -p $PREFIX/lib",
+    "mv lib/11.0/*.so* $PREFIX/lib/",
     "patchelf --add-needed libcudart.so $PREFIX/lib/libcutensor.so",
     "copy include\\\\cutensor.h %LIBRARY_INC%\\\\",
     "copy include\\\\cutensorMg.h %LIBRARY_INC%\\\\",
@@ -642,6 +661,10 @@
     "leofang",
     "jakirkham",
     "leofang",
+    "jakirkham",
+    "leofang",
+    "jakirkham",
+    "leofang",
     "jakirkham"
    ]
   },
@@ -652,34 +675,45 @@
   "requirements": {
    "build": [
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17",
-    "libgomp",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17",
-    "libgomp",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17",
-    "libgomp",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17",
-    "libgomp",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17",
-    "libgomp",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "sysroot_linux-64 2.17",
-    "libgomp",
     "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cuda_compiler_stub",
+    "sysroot_linux-64 2.17",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cuda_compiler_stub",
+    "sysroot_linux-64 2.17",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub"
    ],
    "host": [
@@ -688,27 +722,19 @@
     "patchelf >=0.12",
     "patchelf >=0.12",
     "patchelf >=0.12",
+    "patchelf >=0.12",
+    "patchelf >=0.12",
     "patchelf >=0.12"
    ],
    "run": [
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
     "cudatoolkit 10.2",
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
     "cudatoolkit 11.0",
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
     "cudatoolkit >=11.1,<12",
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
     "cudatoolkit 11.0",
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
     "cudatoolkit >=11.1,<12",
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4",
     "cudatoolkit 10.2",
+    "cudatoolkit >=11.1,<12",
+    "cudatoolkit 11.0",
     "cudatoolkit 10.2",
     "cudatoolkit 11.0",
     "cudatoolkit >=11.1,<12"
@@ -762,6 +788,18 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cuda_compiler_stub",
+    "sysroot_linux-64 2.17",
+    "cudatoolkit 11.1",
+    "git",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cuda_compiler_stub",
+    "sysroot_linux-64 2.17",
+    "cudatoolkit 11.0",
+    "git",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cuda_compiler_stub",
     "cudatoolkit 10.2",
     "git",
     "c_compiler_stub",
@@ -790,16 +828,14 @@
  "pre_pr_migrator_status": {
   "cuda111_112": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/586903599\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1082, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 225, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 224, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 448, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
  },
- "raw_meta_yaml": "{% set version = \"1.4.0\" %}\n{% set patch_version = \"6\" %}\n\npackage:\n  name: cutensor\n  version: {{ version }}.{{ patch_version }}\n\nsource:\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-x86_64/libcutensor-linux-x86_64-{{ version }}.{{ patch_version }}-archive.tar.xz     # [linux64]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-ppc64le/libcutensor-linux-ppc64le-{{ version }}.{{ patch_version }}-archive.tar.xz   # [ppc64le]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-sbsa/libcutensor-linux-sbsa-{{ version }}.{{ patch_version }}-archive.tar.xz         # [aarch64]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/windows-x86_64/libcutensor-windows-x86_64-{{ version }}.{{ patch_version }}-archive.zip    # [win64]\n\n  sha256: 467ba189195fcc4b868334fc16a0ae1e51574139605975cc8004cedebf595964  # [linux64]\n  sha256: 5da44ff2562ab7b9286122653e54f28d2222c8aab4bb02e9bdd4cf7e4b7809be  # [ppc64le]\n  sha256: 6b06d63a5bc49c1660be8c307795f8a901c93dcde7b064455a6c81333c7327f4  # [aarch64]\n  sha256: 4f01a8aac2c25177e928c63381a80e3342f214ec86ad66965dcbfe81fc5c901d  # [win64]\n\nbuild:\n  number: 1\n  # cuTENSOR v1.3.1 supports CUDA 10.2, 11.0, and 11.1+\n  skip: True  # [win32 or cuda_compiler_version not in (\"10.2\", \"11.0\", \"11.1\")]\n  script_env:\n    # for some reason /usr/local/cuda is not added to $PATH in ppc64le's docker image\n    - CUDA_HOME  # [ppc64le or aarch64]\n  script:\n    - mkdir -p $PREFIX/include                                             # [linux]\n    - mv include/* $PREFIX/include/                                        # [linux]\n    - mkdir -p $PREFIX/lib                                                 # [linux]\n    - mv lib/{{ cuda_compiler_version }}/*.so* $PREFIX/lib/                # [linux and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - mv lib/11/*.so* $PREFIX/lib/                                         # [linux and cuda_compiler_version == \"11.1\"]\n    - patchelf --add-needed libcudart.so $PREFIX/lib/libcutensor.so        # [ppc64le]\n\n    - copy include\\\\cutensor.h %LIBRARY_INC%\\\\                             # [win64]\n    - copy include\\\\cutensorMg.h %LIBRARY_INC%\\\\                           # [win64]\n    - mkdir %LIBRARY_INC%\\\\cutensor                                        # [win64]\n    - copy include\\\\cutensor\\\\types.h %LIBRARY_INC%\\\\cutensor              # [win64]\n    - del lib\\\\{{ cuda_compiler_version }}\\\\*static*                       # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - copy lib\\\\{{ cuda_compiler_version }}\\\\*.dll %LIBRARY_BIN%\\\\         # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - copy lib\\\\{{ cuda_compiler_version }}\\\\*.lib %LIBRARY_LIB%\\\\         # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - del lib\\\\11\\\\*static*                                                # [win64 and cuda_compiler_version in (\"11.1\", )]\n    - copy lib\\\\11\\\\*.dll %LIBRARY_BIN%\\\\                                  # [win64 and cuda_compiler_version in (\"11.1\", )]\n    - copy lib\\\\11\\\\*.lib %LIBRARY_LIB%\\\\                                  # [win64 and cuda_compiler_version in (\"11.1\", )]\n  ignore_run_exports_from:\n    - {{ compiler('c') }}    # [linux]\n    - {{ compiler('cuda') }}\n  run_exports:\n    - {{ pin_subpackage('cutensor') }}\n  missing_dso_whitelist:\n    - '*/libgomp.*'  # [linux]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux]\n    - libgomp  # [linux]\n  host:\n    - patchelf >=0.12  # [linux]\n  run:\n    # Only GCC_3.0 or older symbols present\n    - libgcc-ng >=3.0     # [linux]\n    # Only GLIBCXX_3.4 or older symbols present\n    - libstdcxx-ng >=3.4  # [linux]\n    - cudatoolkit {{ cuda_compiler_version }}  # [cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - cudatoolkit >=11.1,<12                   # [cuda_compiler_version == \"11.1\"]\n  run_constrained:\n    # Only GLIBC_2.17 or older symbols present\n    - __glibc >=2.17      # [linux]\n\ntest:\n  requires:\n    - git\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux]\n    # make sure we pick up the version matching the docker,\n    # or the linker would complain \n    - cudatoolkit {{ cuda_compiler_version }}\n  files:\n    - test_load_elf.c        # [linux]\n\nabout:\n  home: https://developer.nvidia.com/cutensor\n  license: LicenseRef-cuTENSOR-Software-License-Agreement\n  license_url: https://docs.nvidia.com/cuda/cutensor/license.html\n  license_file: LICENSE\n  summary: \"Tensor Linear Algebra on NVIDIA GPUs\"\n  description: |\n    The cuTENSOR Library is a first-of-its-kind GPU-accelerated tensor linear\n    algebra library providing tensor contraction, reduction and elementwise\n    operations. cuTENSOR is used to accelerate applications in the areas of\n    deep learning training and inference, computer vision, quantum chemistry\n    and computational physics.\n\n    License Agreements:- The packages are governed by the NVIDIA cuTENSOR\n    Software License Agreement (EULA). By downloading and using the packages,\n    you accept the terms and conditions of the NVIDIA cuTENSOR EULA -\n    https://docs.nvidia.com/cuda/cutensor/license.html\n  doc_url: https://docs.nvidia.com/cuda/cutensor/index.html\n  dev_url: https://developer.nvidia.com/cutensor/downloads\n\nextra:\n  recipe-maintainers:\n    - leofang\n    - jakirkham\n",
+ "raw_meta_yaml": "{% set version = \"1.4.0\" %}\n{% set patch_version = \"6\" %}\n\npackage:\n  name: cutensor\n  version: {{ version }}.{{ patch_version }}\n\nsource:\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-x86_64/libcutensor-linux-x86_64-{{ version }}.{{ patch_version }}-archive.tar.xz     # [linux64]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-ppc64le/libcutensor-linux-ppc64le-{{ version }}.{{ patch_version }}-archive.tar.xz   # [ppc64le]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-sbsa/libcutensor-linux-sbsa-{{ version }}.{{ patch_version }}-archive.tar.xz         # [aarch64]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/windows-x86_64/libcutensor-windows-x86_64-{{ version }}.{{ patch_version }}-archive.zip    # [win64]\n\n  sha256: 467ba189195fcc4b868334fc16a0ae1e51574139605975cc8004cedebf595964  # [linux64]\n  sha256: 5da44ff2562ab7b9286122653e54f28d2222c8aab4bb02e9bdd4cf7e4b7809be  # [ppc64le]\n  sha256: 6b06d63a5bc49c1660be8c307795f8a901c93dcde7b064455a6c81333c7327f4  # [aarch64]\n  sha256: 4f01a8aac2c25177e928c63381a80e3342f214ec86ad66965dcbfe81fc5c901d  # [win64]\n\nbuild:\n  number: 2\n  # cuTENSOR v1.3.1 supports CUDA 10.2, 11.0, and 11.1+\n  skip: True  # [win32 or cuda_compiler_version not in (\"10.2\", \"11.0\", \"11.1\")]\n  script_env:\n    # for some reason /usr/local/cuda is not added to $PATH in ppc64le's docker image\n    - CUDA_HOME  # [ppc64le or aarch64]\n  script:\n    - mkdir -p $PREFIX/include                                             # [linux]\n    - mv include/* $PREFIX/include/                                        # [linux]\n    - mkdir -p $PREFIX/lib                                                 # [linux]\n    - mv lib/{{ cuda_compiler_version }}/*.so* $PREFIX/lib/                # [linux and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - mv lib/11/*.so* $PREFIX/lib/                                         # [linux and cuda_compiler_version == \"11.1\"]\n    - patchelf --add-needed libcudart.so $PREFIX/lib/libcutensor.so        # [ppc64le]\n\n    - copy include\\\\cutensor.h %LIBRARY_INC%\\\\                             # [win64]\n    - copy include\\\\cutensorMg.h %LIBRARY_INC%\\\\                           # [win64]\n    - mkdir %LIBRARY_INC%\\\\cutensor                                        # [win64]\n    - copy include\\\\cutensor\\\\types.h %LIBRARY_INC%\\\\cutensor              # [win64]\n    - del lib\\\\{{ cuda_compiler_version }}\\\\*static*                       # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - copy lib\\\\{{ cuda_compiler_version }}\\\\*.dll %LIBRARY_BIN%\\\\         # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - copy lib\\\\{{ cuda_compiler_version }}\\\\*.lib %LIBRARY_LIB%\\\\         # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - del lib\\\\11\\\\*static*                                                # [win64 and cuda_compiler_version in (\"11.1\", )]\n    - copy lib\\\\11\\\\*.dll %LIBRARY_BIN%\\\\                                  # [win64 and cuda_compiler_version in (\"11.1\", )]\n    - copy lib\\\\11\\\\*.lib %LIBRARY_LIB%\\\\                                  # [win64 and cuda_compiler_version in (\"11.1\", )]\n  ignore_run_exports:\n    - cudatoolkit\n  run_exports:\n    - {{ pin_subpackage('cutensor') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux]\n  host:\n    - patchelf >=0.12  # [linux]\n  run:\n    - cudatoolkit {{ cuda_compiler_version }}  # [cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - cudatoolkit >=11.1,<12                   # [cuda_compiler_version == \"11.1\"]\n  run_constrained:\n    # Only GLIBC_2.17 or older symbols present\n    - __glibc >=2.17      # [linux]\n\ntest:\n  requires:\n    - git\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux]\n    # make sure we pick up the version matching the docker,\n    # or the linker would complain \n    - cudatoolkit {{ cuda_compiler_version }}\n  files:\n    - test_load_elf.c        # [linux]\n\nabout:\n  home: https://developer.nvidia.com/cutensor\n  license: LicenseRef-cuTENSOR-Software-License-Agreement\n  license_url: https://docs.nvidia.com/cuda/cutensor/license.html\n  license_file: LICENSE\n  summary: \"Tensor Linear Algebra on NVIDIA GPUs\"\n  description: |\n    The cuTENSOR Library is a first-of-its-kind GPU-accelerated tensor linear\n    algebra library providing tensor contraction, reduction and elementwise\n    operations. cuTENSOR is used to accelerate applications in the areas of\n    deep learning training and inference, computer vision, quantum chemistry\n    and computational physics.\n\n    License Agreements:- The packages are governed by the NVIDIA cuTENSOR\n    Software License Agreement (EULA). By downloading and using the packages,\n    you accept the terms and conditions of the NVIDIA cuTENSOR EULA -\n    https://docs.nvidia.com/cuda/cutensor/license.html\n  doc_url: https://docs.nvidia.com/cuda/cutensor/index.html\n  dev_url: https://developer.nvidia.com/cutensor/downloads\n\nextra:\n  recipe-maintainers:\n    - leofang\n    - jakirkham\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "cuda_compiler_stub",
    "cudatoolkit",
-   "libgcc-ng",
-   "libgomp",
-   "libstdcxx-ng",
+   "cxx_compiler_stub",
    "patchelf",
    "sysroot_linux-64"
   ]
@@ -810,7 +846,7 @@
    "elements": [
     "c_compiler_stub",
     "cuda_compiler_stub",
-    "libgomp",
+    "cxx_compiler_stub",
     "sysroot_linux-64"
    ]
   },
@@ -818,7 +854,6 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
-    "ctng-compilers",
     "cuda_compiler_stub",
     "cxx_compiler_stub",
     "linux-sysroot",
@@ -829,12 +864,9 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
-    "ctng-compilers",
     "cuda_compiler_stub",
     "cudatoolkit",
     "cxx_compiler_stub",
-    "libgcc-ng",
-    "libstdcxx-ng",
     "linux-sysroot"
    ]
   },
@@ -858,7 +890,7 @@
    "elements": [
     "c_compiler_stub",
     "cuda_compiler_stub",
-    "libgomp",
+    "cxx_compiler_stub",
     "sysroot_linux-64 2.17"
    ]
   },
@@ -873,9 +905,7 @@
    "elements": [
     "cudatoolkit 10.2",
     "cudatoolkit 11.0",
-    "cudatoolkit >=11.1,<12",
-    "libgcc-ng >=3.0",
-    "libstdcxx-ng >=3.4"
+    "cudatoolkit >=11.1,<12"
    ]
   },
   "test": {
@@ -906,13 +936,12 @@
    "summary": "Tensor Linear Algebra on NVIDIA GPUs"
   },
   "build": {
-   "ignore_run_exports_from": [
-    "cuda_compiler_stub",
-    "cuda_compiler_stub",
-    "cuda_compiler_stub"
+   "ignore_run_exports": [
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit"
    ],
-   "missing_dso_whitelist": null,
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "cutensor",
     "cutensor",
@@ -960,10 +989,13 @@
   "requirements": {
    "build": [
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub",
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "cuda_compiler_stub"
    ],
    "host": [],
@@ -1004,7 +1036,8 @@
    "__set__": true,
    "elements": [
     "c_compiler_stub",
-    "cuda_compiler_stub"
+    "cuda_compiler_stub",
+    "cxx_compiler_stub"
    ]
   },
   "host": {
