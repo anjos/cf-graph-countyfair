@@ -1,4 +1,23 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/834816607.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.2.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "branch": "main",
@@ -293,13 +312,18 @@
   }
  },
  "name": "bml",
- "new_version": "2.1.2",
+ "new_version": "2.2.0",
+ "new_version_attempts": {
+  "2.2.0": 1
+ },
+ "new_version_errors": {},
  "outputs_names": {
   "__set__": true,
   "elements": [
    "bml"
   ]
  },
+ "pinning_version": "2022.01.28.17.06.23",
  "raw_meta_yaml": "{% set name = \"bml\" %}\n{% set version = \"2.1.2\" %}\n{% set build = 1 %}\n{% set mpi = mpi or \"nompi\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/lanl/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: d5bb4726759eb35ec66fae7b6ce8b4978cee33fa879aed314bf7aa1fa7eece91\n\n{% if mpi == \"nompi\" %}\n{% set build = build + 100 %}\n{% endif %}\nbuild:\n  number: {{ build }}\n  skip: true  # [win or osx]\n\n  script: \"bash ${RECIPE_DIR}/build-cf.sh\"\n  script_env:\n    - CMAKE_BUILD_TYPE=Release\n    - BUILD_SHARED_LIBS=yes\n    - BML_OPENMP=yes\n    - BML_MPI=yes  # [mpi != \"nompi\"]\n    - BML_COMPLEX=yes\n    - BML_TESTING=yes\n    - BLAS_VENDOR=GNU\n    - EXTRA_FFLAGS=-ffree-line-length-none\n\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\n  {% if mpi != \"nompi\" %}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - cmake\n    - make\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  host:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n    - libblas\n    - liblapack\n  run:\n    - {{ mpi }}  # [mpi != \"nompi\"]\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config {{ name }} --exact-version {{ version }}\n    - test -f $PREFIX/include/bml.h\n    - test -f $PREFIX/include/bml.mod\n    - test -f $PREFIX/lib/libbml${SHLIB_EXT}\n    - test -f $PREFIX/lib/libbml_fortran${SHLIB_EXT}\n\nabout:\n  home: https://lanl.github.io/bml\n  license: BSD-3-Clause\n  license_file:\n    - LICENSE.md\n  summary: The Basic Matrix Library (bml)\n  description: |\n    The basic matrix library (bml) is a collection of various matrix data formats\n    (for dense and sparse) and their associated algorithms for basic matrix operations.\n    Application programming interfaces (API) are available for both C and Fortran.\n    The current status of this library allows us to use two different formats\n    for representing matrix data. Currently these formats are dense, ELLPACK-R,\n    ELLBLOCK, ELLSORT, and CSR.\n  dev_url: https://github.com/lanl/bml\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - nicolasbock\n",
  "req": {
   "__set__": true,
@@ -359,6 +383,7 @@
    ]
   }
  },
+ "smithy_version": "3.16.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
