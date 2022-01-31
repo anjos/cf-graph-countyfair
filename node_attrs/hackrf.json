@@ -2,7 +2,18 @@
  "archived": false,
  "bad": false,
  "branch": "main",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "bot": {
+   "automerge": true
+  },
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
+  "provider": {
+   "linux_aarch64": "default",
+   "linux_ppc64le": "default"
+  }
+ },
  "feedstock_name": "hackrf",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -165,6 +176,316 @@
    "elements": []
   }
  },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "description": "HackRF One from Great Scott Gadgets is a Software Defined Radio peripheral capable of transmission or reception of radio signals from 1 MHz to 6 GHz. Designed to enable test and development of modern and next generation radio technologies, HackRF One is an open source hardware platform that can be used as a USB peripheral or programmed for stand-alone operation.\nThe `libhackrf0` package contains the library for HackRF devices, the `libhackrf` contains the development files for compiling against the HackRF library, and the `hackrf` package contains command line tools for using the devices.\nFor Linux users of `hackrf`, you will likely want to link the provided udev rule into your system installation in order for the hardware to have the correct permissions:\n\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/53-hackrf.rules /etc/udev/rules.d/\n    sudo udevadm control --reload\n    sudo udevadm trigger\n\nThen, make sure your user account belongs to the plugdev group in order to be able to access your device:\n\n    sudo usermod -a -G plugdev <user>\n\nYou may have to restart for this change to take effect.\n",
+   "dev_url": "https://github.com/greatscottgadgets/hackrf",
+   "doc_url": "https://hackrf.readthedocs.io/en/latest/",
+   "home": "https://greatscottgadgets.com/hackrf",
+   "license": "GPL-2.0-or-later",
+   "license_family": "GPL",
+   "license_file": "COPYING",
+   "summary": "Host software for HackRF, a low cost, open source software radio platform."
+  },
+  "build": {
+   "number": "0"
+  },
+  "extra": {
+   "feedstock-name": "hackrf",
+   "recipe-maintainers": [
+    "ryanvolz"
+   ]
+  },
+  "outputs": [
+   {
+    "name": "libhackrf0",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libhackrf${SHLIB_EXT}.0"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libhackrf0"
+     ]
+    },
+    "name": "libhackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/libhackrf/hackrf.h",
+      "test -f $PREFIX/lib/libhackrf${SHLIB_EXT}.0",
+      "test -f $PREFIX/lib/pkgconfig/libhackrf.pc"
+     ]
+    }
+   },
+   {
+    "name": "hackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "fftw",
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "hackrf_clock -h",
+      "hackrf_cpldjtag -h",
+      "hackrf_debug -h",
+      "hackrf_operacake -h",
+      "hackrf_spiflash -h",
+      "hackrf_sweep -h",
+      "hackrf_transfer -h",
+      "hackrf_info || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "test -f $PREFIX/lib/udev/rules.d/53-hackrf.rules"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "hackrf-split",
+   "version": "2021.03.1"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config"
+   ],
+   "host": [
+    "fftw",
+    "libusb"
+   ]
+  },
+  "source": {
+   "patches": [
+    "0001-Rename-hackrf.dll-to-hackrf-0.dll-on-Windows.patch"
+   ],
+   "sha256": "a43e5080c11efdfe69ddebcc35a02b018e30e820de0e0ebdc7948cf7b0cd93a3",
+   "url": "https://github.com/greatscottgadgets/hackrf/releases/download/v2021.03.1/hackrf-2021.03.1.tar.xz"
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "fftw",
+    "libhackrf0",
+    "libusb"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libhackrf0"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "linux_ppc64le_meta_yaml": {
+  "about": {
+   "description": "HackRF One from Great Scott Gadgets is a Software Defined Radio peripheral capable of transmission or reception of radio signals from 1 MHz to 6 GHz. Designed to enable test and development of modern and next generation radio technologies, HackRF One is an open source hardware platform that can be used as a USB peripheral or programmed for stand-alone operation.\nThe `libhackrf0` package contains the library for HackRF devices, the `libhackrf` contains the development files for compiling against the HackRF library, and the `hackrf` package contains command line tools for using the devices.\nFor Linux users of `hackrf`, you will likely want to link the provided udev rule into your system installation in order for the hardware to have the correct permissions:\n\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/53-hackrf.rules /etc/udev/rules.d/\n    sudo udevadm control --reload\n    sudo udevadm trigger\n\nThen, make sure your user account belongs to the plugdev group in order to be able to access your device:\n\n    sudo usermod -a -G plugdev <user>\n\nYou may have to restart for this change to take effect.\n",
+   "dev_url": "https://github.com/greatscottgadgets/hackrf",
+   "doc_url": "https://hackrf.readthedocs.io/en/latest/",
+   "home": "https://greatscottgadgets.com/hackrf",
+   "license": "GPL-2.0-or-later",
+   "license_family": "GPL",
+   "license_file": "COPYING",
+   "summary": "Host software for HackRF, a low cost, open source software radio platform."
+  },
+  "build": {
+   "number": "0"
+  },
+  "extra": {
+   "feedstock-name": "hackrf",
+   "recipe-maintainers": [
+    "ryanvolz"
+   ]
+  },
+  "outputs": [
+   {
+    "name": "libhackrf0",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libhackrf${SHLIB_EXT}.0"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libhackrf0"
+     ]
+    },
+    "name": "libhackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/libhackrf/hackrf.h",
+      "test -f $PREFIX/lib/libhackrf${SHLIB_EXT}.0",
+      "test -f $PREFIX/lib/pkgconfig/libhackrf.pc"
+     ]
+    }
+   },
+   {
+    "name": "hackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "fftw",
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "hackrf_clock -h",
+      "hackrf_cpldjtag -h",
+      "hackrf_debug -h",
+      "hackrf_operacake -h",
+      "hackrf_spiflash -h",
+      "hackrf_sweep -h",
+      "hackrf_transfer -h",
+      "hackrf_info || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "test -f $PREFIX/lib/udev/rules.d/53-hackrf.rules"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "hackrf-split",
+   "version": "2021.03.1"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config"
+   ],
+   "host": [
+    "fftw",
+    "libusb"
+   ]
+  },
+  "source": {
+   "patches": [
+    "0001-Rename-hackrf.dll-to-hackrf-0.dll-on-Windows.patch"
+   ],
+   "sha256": "a43e5080c11efdfe69ddebcc35a02b018e30e820de0e0ebdc7948cf7b0cd93a3",
+   "url": "https://github.com/greatscottgadgets/hackrf/releases/download/v2021.03.1/hackrf-2021.03.1.tar.xz"
+  }
+ },
+ "linux_ppc64le_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "fftw",
+    "libhackrf0",
+    "libusb"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libhackrf0"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "meta_yaml": {
   "about": {
    "description": "HackRF One from Great Scott Gadgets is a Software Defined Radio peripheral capable of transmission or reception of radio signals from 1 MHz to 6 GHz. Designed to enable test and development of modern and next generation radio technologies, HackRF One is an open source hardware platform that can be used as a USB peripheral or programmed for stand-alone operation.\nThe `libhackrf0` package contains the library for HackRF devices, the `libhackrf` contains the development files for compiling against the HackRF library, and the `hackrf` package contains command line tools for using the devices.\nFor Linux users of `hackrf`, you will likely want to link the provided udev rule into your system installation in order for the hardware to have the correct permissions:\n\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/53-hackrf.rules /etc/udev/rules.d/\n    sudo udevadm control --reload\n    sudo udevadm trigger\n\nThen, make sure your user account belongs to the plugdev group in order to be able to access your device:\n\n    sudo usermod -a -G plugdev <user>\n\nYou may have to restart for this change to take effect.\n",
@@ -182,6 +503,9 @@
   "extra": {
    "feedstock-name": "hackrf",
    "recipe-maintainers": [
+    "ryanvolz",
+    "ryanvolz",
+    "ryanvolz",
     "ryanvolz",
     "ryanvolz",
     "ryanvolz"
@@ -266,6 +590,245 @@
       "hackrf_transfer -h",
       "hackrf_info || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
       "test -f $PREFIX/lib/udev/rules.d/53-hackrf.rules"
+     ]
+    }
+   },
+   {
+    "name": "libhackrf0",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libhackrf${SHLIB_EXT}.0"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libhackrf0"
+     ]
+    },
+    "name": "libhackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/libhackrf/hackrf.h",
+      "test -f $PREFIX/lib/libhackrf${SHLIB_EXT}.0",
+      "test -f $PREFIX/lib/pkgconfig/libhackrf.pc"
+     ]
+    }
+   },
+   {
+    "name": "hackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "fftw",
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "hackrf_clock -h",
+      "hackrf_cpldjtag -h",
+      "hackrf_debug -h",
+      "hackrf_operacake -h",
+      "hackrf_spiflash -h",
+      "hackrf_sweep -h",
+      "hackrf_transfer -h",
+      "hackrf_info || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "test -f $PREFIX/lib/udev/rules.d/53-hackrf.rules"
+     ]
+    }
+   },
+   {
+    "name": "libhackrf0",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libhackrf${SHLIB_EXT}.0"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libhackrf0"
+     ]
+    },
+    "name": "libhackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/libhackrf/hackrf.h",
+      "test -f $PREFIX/lib/libhackrf${SHLIB_EXT}.0",
+      "test -f $PREFIX/lib/pkgconfig/libhackrf.pc"
+     ]
+    }
+   },
+   {
+    "name": "hackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "fftw",
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "hackrf_clock -h",
+      "hackrf_cpldjtag -h",
+      "hackrf_debug -h",
+      "hackrf_operacake -h",
+      "hackrf_spiflash -h",
+      "hackrf_sweep -h",
+      "hackrf_transfer -h",
+      "hackrf_info || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi",
+      "test -f $PREFIX/lib/udev/rules.d/53-hackrf.rules"
+     ]
+    }
+   },
+   {
+    "name": "libhackrf0",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libhackrf.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libhackrf0"
+     ]
+    },
+    "name": "libhackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/libhackrf/hackrf.h",
+      "test -f $PREFIX/lib/libhackrf.0${SHLIB_EXT}",
+      "test -f $PREFIX/lib/pkgconfig/libhackrf.pc"
+     ]
+    }
+   },
+   {
+    "name": "hackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "fftw",
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "hackrf_clock -h",
+      "hackrf_cpldjtag -h",
+      "hackrf_debug -h",
+      "hackrf_operacake -h",
+      "hackrf_spiflash -h",
+      "hackrf_sweep -h",
+      "hackrf_transfer -h",
+      "hackrf_info || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
      ]
     }
    },
@@ -450,6 +1013,18 @@
     "c_compiler_stub",
     "cmake",
     "ninja",
+    "pkg-config",
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config",
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config",
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
     "pkg-config"
    ],
    "host": [
@@ -460,11 +1035,20 @@
     "libusb",
     "fftw",
     "libusb",
+    "fftw",
+    "libusb",
+    "fftw",
+    "libusb",
+    "fftw",
+    "libusb",
     "pthreads-win32"
    ]
   },
   "source": {
    "patches": [
+    "0001-Rename-hackrf.dll-to-hackrf-0.dll-on-Windows.patch",
+    "0001-Rename-hackrf.dll-to-hackrf-0.dll-on-Windows.patch",
+    "0001-Rename-hackrf.dll-to-hackrf-0.dll-on-Windows.patch",
     "0001-Rename-hackrf.dll-to-hackrf-0.dll-on-Windows.patch",
     "0001-Rename-hackrf.dll-to-hackrf-0.dll-on-Windows.patch",
     "0001-Rename-hackrf.dll-to-hackrf-0.dll-on-Windows.patch"
@@ -601,6 +1185,160 @@
   }
  },
  "osx_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "fftw",
+    "libhackrf0",
+    "libusb"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libhackrf0"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "HackRF One from Great Scott Gadgets is a Software Defined Radio peripheral capable of transmission or reception of radio signals from 1 MHz to 6 GHz. Designed to enable test and development of modern and next generation radio technologies, HackRF One is an open source hardware platform that can be used as a USB peripheral or programmed for stand-alone operation.\nThe `libhackrf0` package contains the library for HackRF devices, the `libhackrf` contains the development files for compiling against the HackRF library, and the `hackrf` package contains command line tools for using the devices.\nFor Linux users of `hackrf`, you will likely want to link the provided udev rule into your system installation in order for the hardware to have the correct permissions:\n\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/53-hackrf.rules /etc/udev/rules.d/\n    sudo udevadm control --reload\n    sudo udevadm trigger\n\nThen, make sure your user account belongs to the plugdev group in order to be able to access your device:\n\n    sudo usermod -a -G plugdev <user>\n\nYou may have to restart for this change to take effect.\n",
+   "dev_url": "https://github.com/greatscottgadgets/hackrf",
+   "doc_url": "https://hackrf.readthedocs.io/en/latest/",
+   "home": "https://greatscottgadgets.com/hackrf",
+   "license": "GPL-2.0-or-later",
+   "license_family": "GPL",
+   "license_file": "COPYING",
+   "summary": "Host software for HackRF, a low cost, open source software radio platform."
+  },
+  "build": {
+   "number": "0"
+  },
+  "extra": {
+   "feedstock-name": "hackrf",
+   "recipe-maintainers": [
+    "ryanvolz"
+   ]
+  },
+  "outputs": [
+   {
+    "name": "libhackrf0",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libhackrf.0${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libhackrf0"
+     ]
+    },
+    "name": "libhackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/libhackrf/hackrf.h",
+      "test -f $PREFIX/lib/libhackrf.0${SHLIB_EXT}",
+      "test -f $PREFIX/lib/pkgconfig/libhackrf.pc"
+     ]
+    }
+   },
+   {
+    "name": "hackrf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "fftw",
+      "libhackrf0"
+     ],
+     "run": [
+      "libhackrf0"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "hackrf_clock -h",
+      "hackrf_cpldjtag -h",
+      "hackrf_debug -h",
+      "hackrf_operacake -h",
+      "hackrf_spiflash -h",
+      "hackrf_sweep -h",
+      "hackrf_transfer -h",
+      "hackrf_info || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "hackrf-split",
+   "version": "2021.03.1"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config"
+   ],
+   "host": [
+    "fftw",
+    "libusb"
+   ]
+  },
+  "source": {
+   "patches": [
+    "0001-Rename-hackrf.dll-to-hackrf-0.dll-on-Windows.patch"
+   ],
+   "sha256": "a43e5080c11efdfe69ddebcc35a02b018e30e820de0e0ebdc7948cf7b0cd93a3",
+   "url": "https://github.com/greatscottgadgets/hackrf/releases/download/v2021.03.1/hackrf-2021.03.1.tar.xz"
+  }
+ },
+ "osx_arm64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
