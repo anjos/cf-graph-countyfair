@@ -142,34 +142,31 @@
    "summary": "Cylc UI Server"
   },
   "build": {
-   "number": "0"
+   "noarch": "python",
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
     "hjoliver",
-    "kinow",
-    "oliver-sanders",
-    "hjoliver",
-    "kinow",
-    "oliver-sanders",
-    "hjoliver",
-    "kinow",
     "oliver-sanders"
    ]
   },
   "outputs": [
    {
     "build": {
+     "noarch": "python",
      "script": "python -m pip install . --no-deps --ignore-installed -vv"
     },
     "name": "cylc-uiserver-base",
     "requirements": {
      "host": [
-      "pip",
-      "python"
+      "__unix",
+      "python >=3.7",
+      "pip"
      ],
      "run": [
-      "python",
+      "__unix",
+      "python >=3.7",
       "cylc-flow-base ==8.0b3",
       "tornado >=6.1,<7.0",
       "graphene-tornado >=2.6.0,<2.7",
@@ -183,7 +180,8 @@
     "test": {
      "commands": [
       "cylc version --long",
-      "cylc gui --help"
+      "cylc gui --help",
+      "command -v jupyter-cylc"
      ],
      "imports": [
       "cylc.flow",
@@ -193,13 +191,15 @@
    },
    {
     "build": {
+     "noarch": "python",
      "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
     },
     "name": "cylc-uiserver-hub-base",
     "requirements": {
      "host": [
-      "pip",
-      "python"
+      "__unix",
+      "python >=3.7",
+      "pip"
      ],
      "run": [
       "cylc-uiserver-base",
@@ -210,7 +210,9 @@
      "commands": [
       "cylc version --long",
       "cylc gui --help",
-      "cylc hubapp --help"
+      "cylc hubapp --help",
+      "command -v jupyter-cylc",
+      "command -v jupyter-cylchubapp"
      ],
      "imports": [
       "cylc.flow",
@@ -220,13 +222,15 @@
    },
    {
     "build": {
+     "noarch": "python",
      "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
     },
     "name": "cylc-uiserver",
     "requirements": {
      "host": [
-      "pip",
-      "python"
+      "__unix",
+      "python >=3.7",
+      "pip"
      ],
      "run": [
       "cylc-uiserver-base",
@@ -238,183 +242,9 @@
       "cylc version --long",
       "cylc gui --help",
       "cylc hubapp --help",
-      "configurable-http-proxy --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install . --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "python",
-      "cylc-flow-base ==8.0b3",
-      "tornado >=6.1,<7.0",
-      "graphene-tornado >=2.6.0,<2.7",
-      "graphql-ws ==0.4.4",
-      "jupyter_server >=1.10.2,<2.0",
-      "traitlets >=5.0",
-      "graphene",
-      "rx >=1.6,<2"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-hub-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub-base >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help",
-      "configurable-http-proxy --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install . --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "python",
-      "cylc-flow-base ==8.0b3",
-      "tornado >=6.1,<7.0",
-      "graphene-tornado >=2.6.0,<2.7",
-      "graphql-ws ==0.4.4",
-      "jupyter_server >=1.10.2,<2.0",
-      "traitlets >=5.0",
-      "graphene",
-      "rx >=1.6,<2"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-hub-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub-base >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help",
-      "configurable-http-proxy --help"
+      "configurable-http-proxy --help",
+      "command -v jupyter-cylc",
+      "command -v jupyter-cylchubapp"
      ],
      "imports": [
       "cylc.flow",
@@ -429,17 +259,13 @@
   },
   "requirements": {
    "host": [
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
+    "__unix",
+    "python >=3.7",
     "pip"
    ],
    "run": [
-    "python",
-    "python",
-    "python"
+    "__unix",
+    "python >=3.7"
    ]
   },
   "source": {
@@ -455,6 +281,7 @@
   "host": {
    "__set__": true,
    "elements": [
+    "__unix",
     "pip",
     "python"
    ]
@@ -462,6 +289,7 @@
   "run": {
    "__set__": true,
    "elements": [
+    "__unix",
     "cylc-flow-base",
     "cylc-uiserver-base",
     "graphene",
@@ -493,43 +321,31 @@
    "summary": "Cylc UI Server"
   },
   "build": {
-   "number": "0"
+   "noarch": "python",
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
     "hjoliver",
-    "kinow",
-    "oliver-sanders",
-    "hjoliver",
-    "kinow",
-    "oliver-sanders",
-    "hjoliver",
-    "kinow",
-    "oliver-sanders",
-    "hjoliver",
-    "kinow",
-    "oliver-sanders",
-    "hjoliver",
-    "kinow",
-    "oliver-sanders",
-    "hjoliver",
-    "kinow",
     "oliver-sanders"
    ]
   },
   "outputs": [
    {
     "build": {
+     "noarch": "python",
      "script": "python -m pip install . --no-deps --ignore-installed -vv"
     },
     "name": "cylc-uiserver-base",
     "requirements": {
      "host": [
-      "pip",
-      "python"
+      "__unix",
+      "python >=3.7",
+      "pip"
      ],
      "run": [
-      "python",
+      "__unix",
+      "python >=3.7",
       "cylc-flow-base ==8.0b3",
       "tornado >=6.1,<7.0",
       "graphene-tornado >=2.6.0,<2.7",
@@ -543,7 +359,8 @@
     "test": {
      "commands": [
       "cylc version --long",
-      "cylc gui --help"
+      "cylc gui --help",
+      "command -v jupyter-cylc"
      ],
      "imports": [
       "cylc.flow",
@@ -553,13 +370,15 @@
    },
    {
     "build": {
+     "noarch": "python",
      "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
     },
     "name": "cylc-uiserver-hub-base",
     "requirements": {
      "host": [
-      "pip",
-      "python"
+      "__unix",
+      "python >=3.7",
+      "pip"
      ],
      "run": [
       "cylc-uiserver-base",
@@ -570,7 +389,9 @@
      "commands": [
       "cylc version --long",
       "cylc gui --help",
-      "cylc hubapp --help"
+      "cylc hubapp --help",
+      "command -v jupyter-cylc",
+      "command -v jupyter-cylchubapp"
      ],
      "imports": [
       "cylc.flow",
@@ -580,13 +401,15 @@
    },
    {
     "build": {
+     "noarch": "python",
      "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
     },
     "name": "cylc-uiserver",
     "requirements": {
      "host": [
-      "pip",
-      "python"
+      "__unix",
+      "python >=3.7",
+      "pip"
      ],
      "run": [
       "cylc-uiserver-base",
@@ -598,447 +421,9 @@
       "cylc version --long",
       "cylc gui --help",
       "cylc hubapp --help",
-      "configurable-http-proxy --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install . --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "python",
-      "cylc-flow-base ==8.0b3",
-      "tornado >=6.1,<7.0",
-      "graphene-tornado >=2.6.0,<2.7",
-      "graphql-ws ==0.4.4",
-      "jupyter_server >=1.10.2,<2.0",
-      "traitlets >=5.0",
-      "graphene",
-      "rx >=1.6,<2"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-hub-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub-base >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help",
-      "configurable-http-proxy --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install . --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "python",
-      "cylc-flow-base ==8.0b3",
-      "tornado >=6.1,<7.0",
-      "graphene-tornado >=2.6.0,<2.7",
-      "graphql-ws ==0.4.4",
-      "jupyter_server >=1.10.2,<2.0",
-      "traitlets >=5.0",
-      "graphene",
-      "rx >=1.6,<2"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-hub-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub-base >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help",
-      "configurable-http-proxy --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install . --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "python",
-      "cylc-flow-base ==8.0b3",
-      "tornado >=6.1,<7.0",
-      "graphene-tornado >=2.6.0,<2.7",
-      "graphql-ws ==0.4.4",
-      "jupyter_server >=1.10.2,<2.0",
-      "traitlets >=5.0",
-      "graphene",
-      "rx >=1.6,<2"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-hub-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub-base >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help",
-      "configurable-http-proxy --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install . --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "python",
-      "cylc-flow-base ==8.0b3",
-      "tornado >=6.1,<7.0",
-      "graphene-tornado >=2.6.0,<2.7",
-      "graphql-ws ==0.4.4",
-      "jupyter_server >=1.10.2,<2.0",
-      "traitlets >=5.0",
-      "graphene",
-      "rx >=1.6,<2"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-hub-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub-base >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help",
-      "configurable-http-proxy --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install . --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "python",
-      "cylc-flow-base ==8.0b3",
-      "tornado >=6.1,<7.0",
-      "graphene-tornado >=2.6.0,<2.7",
-      "graphql-ws ==0.4.4",
-      "jupyter_server >=1.10.2,<2.0",
-      "traitlets >=5.0",
-      "graphene",
-      "rx >=1.6,<2"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-hub-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub-base >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help",
-      "configurable-http-proxy --help"
+      "configurable-http-proxy --help",
+      "command -v jupyter-cylc",
+      "command -v jupyter-cylchubapp"
      ],
      "imports": [
       "cylc.flow",
@@ -1053,26 +438,13 @@
   },
   "requirements": {
    "host": [
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
+    "__unix",
+    "python >=3.7",
     "pip"
    ],
    "run": [
-    "python",
-    "python",
-    "python",
-    "python",
-    "python",
-    "python"
+    "__unix",
+    "python >=3.7"
    ]
   },
   "source": {
@@ -1090,357 +462,6 @@
   "0.6.0": 1
  },
  "new_version_errors": {},
- "osx_64_meta_yaml": {
-  "about": {
-   "description": "This project contains the Cylc UI Server.\nA JupyterHub-compatible application, used to display\nthe Cylc UI (or simply UI) to users, and to communicate\nwith Workflow Services (WFS).\n",
-   "dev_url": "https://github.com/cylc/cylc-uiserver",
-   "doc_url": "https://github.com/cylc/cylc-uiserver",
-   "home": "https://github.com/cylc/cylc-uiserver",
-   "license": "GPL-3.0-only",
-   "license_family": "GPL",
-   "license_file": "COPYING",
-   "summary": "Cylc UI Server"
-  },
-  "build": {
-   "number": "0"
-  },
-  "extra": {
-   "recipe-maintainers": [
-    "hjoliver",
-    "kinow",
-    "oliver-sanders",
-    "hjoliver",
-    "kinow",
-    "oliver-sanders",
-    "hjoliver",
-    "kinow",
-    "oliver-sanders"
-   ]
-  },
-  "outputs": [
-   {
-    "build": {
-     "script": "python -m pip install . --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "python",
-      "cylc-flow-base ==8.0b3",
-      "tornado >=6.1,<7.0",
-      "graphene-tornado >=2.6.0,<2.7",
-      "graphql-ws ==0.4.4",
-      "jupyter_server >=1.10.2,<2.0",
-      "traitlets >=5.0",
-      "graphene",
-      "rx >=1.6,<2"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-hub-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub-base >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help",
-      "configurable-http-proxy --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install . --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "python",
-      "cylc-flow-base ==8.0b3",
-      "tornado >=6.1,<7.0",
-      "graphene-tornado >=2.6.0,<2.7",
-      "graphql-ws ==0.4.4",
-      "jupyter_server >=1.10.2,<2.0",
-      "traitlets >=5.0",
-      "graphene",
-      "rx >=1.6,<2"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-hub-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub-base >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help",
-      "configurable-http-proxy --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install . --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "python",
-      "cylc-flow-base ==8.0b3",
-      "tornado >=6.1,<7.0",
-      "graphene-tornado >=2.6.0,<2.7",
-      "graphql-ws ==0.4.4",
-      "jupyter_server >=1.10.2,<2.0",
-      "traitlets >=5.0",
-      "graphene",
-      "rx >=1.6,<2"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver-hub-base",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub-base >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install .[hub] --no-deps --ignore-installed -vv"
-    },
-    "name": "cylc-uiserver",
-    "requirements": {
-     "host": [
-      "pip",
-      "python"
-     ],
-     "run": [
-      "cylc-uiserver-base",
-      "jupyterhub >=1.4.0,<1.5"
-     ]
-    },
-    "test": {
-     "commands": [
-      "cylc version --long",
-      "cylc gui --help",
-      "cylc hubapp --help",
-      "configurable-http-proxy --help"
-     ],
-     "imports": [
-      "cylc.flow",
-      "cylc.uiserver"
-     ]
-    }
-   }
-  ],
-  "package": {
-   "name": "cylc-uiserver",
-   "version": "0.6.0"
-  },
-  "requirements": {
-   "host": [
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip"
-   ],
-   "run": [
-    "python",
-    "python",
-    "python"
-   ]
-  },
-  "source": {
-   "sha256": "1abe919ba129bd421d7f8d64ac2290b0f011619efe5bfb423a5e1b9b9a797322",
-   "url": "https://pypi.io/packages/source/c/cylc-uiserver/cylc-uiserver-0.6.0.tar.gz"
-  }
- },
- "osx_64_requirements": {
-  "build": {
-   "__set__": true,
-   "elements": []
-  },
-  "host": {
-   "__set__": true,
-   "elements": [
-    "pip",
-    "python"
-   ]
-  },
-  "run": {
-   "__set__": true,
-   "elements": [
-    "cylc-flow-base",
-    "cylc-uiserver-base",
-    "graphene",
-    "graphene-tornado",
-    "graphql-ws",
-    "jupyter_server",
-    "jupyterhub",
-    "jupyterhub-base",
-    "python",
-    "rx",
-    "tornado",
-    "traitlets"
-   ]
-  },
-  "test": {
-   "__set__": true,
-   "elements": []
-  }
- },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -1450,10 +471,11 @@
   ]
  },
  "pinning_version": "2021.11.11.16.34.59",
- "raw_meta_yaml": "{% set name = \"cylc-uiserver\" %}\n{% set version = \"0.6.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 1abe919ba129bd421d7f8d64ac2290b0f011619efe5bfb423a5e1b9b9a797322\n\nbuild:\n  number: 0\n  skip: true  # [py<37 or not unix]\n\nrequirements:\n  host:\n    - python\n    - pip\n  run:\n    - python\n\noutputs:\n  # base package with only required dependencies\n  # (e.g. for single-user setups)\n  - name: {{ name }}-base\n    build:\n      script: python -m pip install . --no-deps --ignore-installed -vv\n    requirements:\n      host:\n        - pip\n        - python\n      run:\n        - python\n        - cylc-flow-base ==8.0b3\n        - tornado >=6.1,<7.0\n        - graphene-tornado >=2.6.0,<2.7\n        - graphql-ws ==0.4.4\n        - jupyter_server >=1.10.2,<2.0\n        - traitlets >=5.0\n        - graphene\n        # TODO: https://github.com/conda-forge/cylc-feedstock/pull/3#issuecomment-660716268\n        - rx >=1.6,<2\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n\n  # UIS with the JupyterHub \"base\" package\n  # (e.g. for sites that provide their own configurable HTTP proxy)\n  - name: {{ name }}-hub-base\n    build:\n      script: python -m pip install .[hub] --no-deps --ignore-installed -vv\n    requirements:\n      host:\n        - pip\n        - python\n      run:\n        - {{ pin_subpackage(name + \"-base\", exact=True) }}\n        - jupyterhub-base >=1.4.0,<1.5\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n        - cylc hubapp --help\n\n  # UIS with the full JupyterHub package\n  # (recommended)\n  - name: {{ name }}\n    build:\n      script: python -m pip install .[hub] --no-deps --ignore-installed -vv\n    requirements:\n      host:\n        - pip\n        - python\n      run:\n        - {{ pin_subpackage(name + \"-base\", exact=True) }}\n        - jupyterhub >=1.4.0,<1.5\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n        - cylc hubapp --help\n        - configurable-http-proxy --help\n\nabout:\n  home: https://github.com/cylc/cylc-uiserver\n  license: GPL-3.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: Cylc UI Server\n  description: |\n    This project contains the Cylc UI Server.\n    A JupyterHub-compatible application, used to display\n    the Cylc UI (or simply UI) to users, and to communicate\n    with Workflow Services (WFS).\n  doc_url: https://github.com/cylc/cylc-uiserver\n  dev_url: https://github.com/cylc/cylc-uiserver\n\nextra:\n  recipe-maintainers:\n    - hjoliver\n    - kinow\n    - oliver-sanders\n",
+ "raw_meta_yaml": "{% set name = \"cylc-uiserver\" %}\n{% set version = \"0.6.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 1abe919ba129bd421d7f8d64ac2290b0f011619efe5bfb423a5e1b9b9a797322\n\nbuild:\n  number: 1\n  noarch: python\n\nrequirements:\n  host:\n    - __unix\n    - python >=3.7\n    - pip\n  run:\n    - __unix\n    - python >=3.7\n\noutputs:\n  # base package with only required dependencies\n  # (e.g. for single-user setups)\n  - name: {{ name }}-base\n    build:\n      script: python -m pip install . --no-deps --ignore-installed -vv\n      noarch: python\n    requirements:\n      host:\n        - __unix\n        - python >=3.7\n        - pip\n      run:\n        - __unix\n        - python >=3.7\n        - cylc-flow-base ==8.0b3\n        - tornado >=6.1,<7.0\n        - graphene-tornado >=2.6.0,<2.7\n        - graphql-ws ==0.4.4\n        - jupyter_server >=1.10.2,<2.0\n        - traitlets >=5.0\n        - graphene\n        # TODO: https://github.com/conda-forge/cylc-feedstock/pull/3#issuecomment-660716268\n        - rx >=1.6,<2\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n        - command -v jupyter-cylc\n\n  # UIS with the JupyterHub \"base\" package\n  # (e.g. for sites that provide their own configurable HTTP proxy)\n  - name: {{ name }}-hub-base\n    build:\n      script: python -m pip install .[hub] --no-deps --ignore-installed -vv\n      noarch: python\n    requirements:\n      host:\n        - __unix\n        - python >=3.7\n        - pip\n      run:\n        - {{ pin_subpackage(name + \"-base\", exact=True) }}\n        - jupyterhub-base >=1.4.0,<1.5\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n        - cylc hubapp --help\n        - command -v jupyter-cylc\n        - command -v jupyter-cylchubapp\n\n  # UIS with the full JupyterHub package\n  # (recommended)\n  - name: {{ name }}\n    build:\n      script: python -m pip install .[hub] --no-deps --ignore-installed -vv\n      noarch: python\n    requirements:\n      host:\n        - __unix\n        - python >=3.7\n        - pip\n      run:\n        - {{ pin_subpackage(name + \"-base\", exact=True) }}\n        - jupyterhub >=1.4.0,<1.5\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n        - cylc hubapp --help\n        - configurable-http-proxy --help\n        - command -v jupyter-cylc\n        - command -v jupyter-cylchubapp\n\nabout:\n  home: https://github.com/cylc/cylc-uiserver\n  license: GPL-3.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: Cylc UI Server\n  description: |\n    This project contains the Cylc UI Server.\n    A JupyterHub-compatible application, used to display\n    the Cylc UI (or simply UI) to users, and to communicate\n    with Workflow Services (WFS).\n  doc_url: https://github.com/cylc/cylc-uiserver\n  dev_url: https://github.com/cylc/cylc-uiserver\n\nextra:\n  recipe-maintainers:\n    - hjoliver\n    - oliver-sanders\n",
  "req": {
   "__set__": true,
   "elements": [
+   "__unix",
    "cylc-flow-base",
    "cylc-uiserver-base",
    "graphene",
@@ -1477,6 +499,7 @@
   "host": {
    "__set__": true,
    "elements": [
+    "__unix",
     "pip",
     "python"
    ]
@@ -1484,6 +507,7 @@
   "run": {
    "__set__": true,
    "elements": [
+    "__unix",
     "cylc-flow-base",
     "cylc-uiserver-base",
     "graphene",
@@ -1513,13 +537,15 @@
   "host": {
    "__set__": true,
    "elements": [
+    "__unix",
     "pip",
-    "python"
+    "python >=3.7"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
+    "__unix",
     "cylc-flow-base ==8.0b3",
     "cylc-uiserver-base",
     "graphene",
@@ -1528,7 +554,7 @@
     "jupyter_server >=1.10.2,<2.0",
     "jupyterhub >=1.4.0,<1.5",
     "jupyterhub-base >=1.4.0,<1.5",
-    "python",
+    "python >=3.7",
     "rx >=1.6,<2",
     "tornado >=6.1,<7.0",
     "traitlets >=5.0"
