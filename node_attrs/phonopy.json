@@ -1373,11 +1373,12 @@
   }
  },
  "name": "phonopy",
- "new_version": "2.12.0",
+ "new_version": "2.13.0",
  "new_version_attempts": {
   "2.10.0": 1,
   "2.11.0": 1,
   "2.12.0": 1,
+  "2.13.0": 1,
   "2.6.0": 1,
   "2.6.1": 408,
   "2.7.0": 1,
@@ -1720,8 +1721,12 @@
   ]
  },
  "pinning_version": "2021.11.17.15.51.01",
- "pre_pr_migrator_attempts": {},
- "pre_pr_migrator_status": {},
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1833764620\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1133, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 269, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 280, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
+ },
  "raw_meta_yaml": "{% set name = \"phonopy\" %}\n{% set version = \"2.12.0\" %}\n{% set sha256 = \"ff65065f418ccbff9fbc1186b9a65581e83b42789aa4a656f45badfff9bd3f61\" %}\n\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 1\n  skip: true  # [python_impl == 'pypy']\n  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - numpy                                  # [build_platform != target_platform]\n    - {{ compiler('c') }}\n  host:\n    - python\n    - numpy\n    - spglib\n    - setuptools\n    - pip\n  run:\n    - python\n    - pip\n    - {{ pin_compatible('numpy') }}\n    - spglib\n    - matplotlib-base\n    - h5py\n    - scipy\n    - pyyaml\n\ntest:\n  imports:\n    - phonopy\n  source_files:\n    - test\n  commands:\n    - pip check\n    - cd test\n    #- sed s/use_expat=True/use_expat=False/ interface/test_vasp.py > interface/test_vasp_etree.py\n    #- rm interface/test_vasp.py\n    #- rm phonon/test_random_displacements.py\n    - python -m unittest discover -b\n\nabout:\n  home: https://atztogo.github.io/phonopy/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Phonopy is an open source package for phonon calculations at harmonic and quasi-harmonic levels.\n\n  description: |\n    Phonopy is an open source package for phonon calculations at harmonic and quasi-harmonic levels.\n    It works with multiple DFT programs (VASP, VASP DFPT, Abinit, Pwscf, Siesta, Elk, FHI-aims, Wien2k)\n    as sources of inter-atomic forces and uses finite displacement method and symmetry relations\n    for calculating elements of dynamical matrix. It works for all crystal symmetries and provides\n    (among others)  phonon band structure, phonon DOS and partial-DOS, phonon thermal properties\n    (free energy, heat capacity, and entropy), phonon group velocity, mean square displacements,\n    irreducible representations of normal modes, quasi-harmonic approximation (thermal expansion,\n    heat capacity at constant pressure), mode Gr\u00FCneisen parameters, non-analytical-term correction\n    (LO-TO splitting). It also provides Python API for use as a library.\n\n  doc_url: https://atztogo.github.io/phonopy/\n  dev_url: https://github.com/atztogo/phonopy/\n\nextra:\n  recipe-maintainers:\n    - jan-janssen\n    - jochym\n    - atztogo\n    - bocklund\n",
  "req": {
   "__set__": true,
