@@ -537,7 +537,7 @@
    "summary": "CLI tools to manipulate and analyse Climate and NWP model Data"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -566,7 +566,8 @@
     "udunits2",
     "libxml2",
     "fftw",
-    "ossuuid"
+    "ossuuid",
+    "magics"
    ],
    "run": [
     "jasper",
@@ -577,7 +578,8 @@
     "udunits2",
     "libxml2",
     "fftw",
-    "ossuuid"
+    "ossuuid",
+    "magics"
    ]
   },
   "source": {
@@ -587,7 +589,8 @@
   "test": {
    "commands": [
     "cdo -h",
-    "cdo sinfo dummy.nc"
+    "cdo sinfo dummy.nc",
+    "cdo -graph,device=png,linewidth=1 -settaxis,2000-01-01,12:00:00,1days -expr,'t=sin(seq*3.141529/180.0)' -for,1,6000 t"
    ],
    "files": [
     "dummy.nc"
@@ -613,6 +616,7 @@
     "jasper",
     "libnetcdf",
     "libxml2",
+    "magics",
     "ossuuid",
     "proj",
     "udunits2"
@@ -627,6 +631,7 @@
     "jasper",
     "libnetcdf",
     "libxml2",
+    "magics",
     "ossuuid",
     "proj",
     "udunits2"
@@ -645,7 +650,7 @@
    "summary": "CLI tools to manipulate and analyse Climate and NWP model Data"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -683,6 +688,7 @@
     "libxml2",
     "fftw",
     "ossuuid",
+    "magics",
     "llvm-openmp",
     "jasper",
     "libnetcdf",
@@ -692,7 +698,8 @@
     "udunits2",
     "libxml2",
     "fftw",
-    "ossuuid"
+    "ossuuid",
+    "magics"
    ],
    "run": [
     "jasper",
@@ -704,6 +711,7 @@
     "libxml2",
     "fftw",
     "ossuuid",
+    "magics",
     "llvm-openmp",
     "jasper",
     "libnetcdf",
@@ -713,7 +721,8 @@
     "udunits2",
     "libxml2",
     "fftw",
-    "ossuuid"
+    "ossuuid",
+    "magics"
    ]
   },
   "source": {
@@ -724,8 +733,10 @@
    "commands": [
     "cdo -h",
     "cdo sinfo dummy.nc",
+    "cdo -graph,device=png,linewidth=1 -settaxis,2000-01-01,12:00:00,1days -expr,'t=sin(seq*3.141529/180.0)' -for,1,6000 t",
     "cdo -h",
-    "cdo sinfo dummy.nc"
+    "cdo sinfo dummy.nc",
+    "cdo -graph,device=png,linewidth=1 -settaxis,2000-01-01,12:00:00,1days -expr,'t=sin(seq*3.141529/180.0)' -for,1,6000 t"
    ],
    "files": [
     "dummy.nc",
@@ -743,7 +754,7 @@
    "summary": "CLI tools to manipulate and analyse Climate and NWP model Data"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -774,7 +785,8 @@
     "udunits2",
     "libxml2",
     "fftw",
-    "ossuuid"
+    "ossuuid",
+    "magics"
    ],
    "run": [
     "llvm-openmp",
@@ -786,7 +798,8 @@
     "udunits2",
     "libxml2",
     "fftw",
-    "ossuuid"
+    "ossuuid",
+    "magics"
    ]
   },
   "source": {
@@ -796,7 +809,8 @@
   "test": {
    "commands": [
     "cdo -h",
-    "cdo sinfo dummy.nc"
+    "cdo sinfo dummy.nc",
+    "cdo -graph,device=png,linewidth=1 -settaxis,2000-01-01,12:00:00,1days -expr,'t=sin(seq*3.141529/180.0)' -for,1,6000 t"
    ],
    "files": [
     "dummy.nc"
@@ -824,6 +838,7 @@
     "libnetcdf",
     "libxml2",
     "llvm-openmp",
+    "magics",
     "ossuuid",
     "proj",
     "udunits2"
@@ -839,6 +854,7 @@
     "libnetcdf",
     "libxml2",
     "llvm-openmp",
+    "magics",
     "ossuuid",
     "proj",
     "udunits2"
@@ -858,7 +874,7 @@
  "pinning_version": "2022.01.02.17.59.50",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
- "raw_meta_yaml": "{% set version = \"2.0.3\" %}\n\npackage:\n  name: cdo\n  version: {{ version }}\n\nsource:\n  url: https://code.mpimet.mpg.de/attachments/download/26676/cdo-{{ version }}.tar.gz\n  sha256: 25520260ccb4e5324c27fa2160dfafc8152b180dd7f0133bd80425df3ef7c65a\n\nbuild:\n  number: 1\n  skip: True  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - llvm-openmp  # [osx]\n    - make  # [unix]\n  host:\n    - llvm-openmp  # [osx]\n    - jasper\n    - libnetcdf\n    - hdf5\n    - proj\n    - eccodes\n    - udunits2\n    - libxml2\n    - fftw\n    - ossuuid\n  run:\n    - llvm-openmp  # [osx]\n    - jasper\n    - libnetcdf\n    - hdf5\n    - proj\n    - eccodes\n    - udunits2\n    - libxml2\n    - fftw\n    - ossuuid\n\ntest:\n  files:\n    - dummy.nc\n  commands:\n    - cdo -h\n    - cdo sinfo dummy.nc\n\nabout:\n  home: https://code.zmaw.de/projects/cdo\n  license: GPL-2.0\n  license_file: COPYING\n  summary: 'CLI tools to manipulate and analyse Climate and NWP model Data'\n\nextra:\n  recipe-maintainers:\n    - akrherz\n    - Try2Code\n    - ocefpaf\n",
+ "raw_meta_yaml": "{% set version = \"2.0.3\" %}\n\npackage:\n  name: cdo\n  version: {{ version }}\n\nsource:\n  url: https://code.mpimet.mpg.de/attachments/download/26676/cdo-{{ version }}.tar.gz\n  sha256: 25520260ccb4e5324c27fa2160dfafc8152b180dd7f0133bd80425df3ef7c65a\n\nbuild:\n  number: 2\n  skip: True  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - llvm-openmp  # [osx]\n    - make  # [unix]\n  host:\n    - llvm-openmp  # [osx]\n    - jasper\n    - libnetcdf\n    - hdf5\n    - proj\n    - eccodes\n    - udunits2\n    - libxml2\n    - fftw\n    - ossuuid\n    - magics\n  run:\n    - llvm-openmp  # [osx]\n    - jasper\n    - libnetcdf\n    - hdf5\n    - proj\n    - eccodes\n    - udunits2\n    - libxml2\n    - fftw\n    - ossuuid\n    - magics\n\ntest:\n  files:\n    - dummy.nc\n  commands:\n    - cdo -h\n    - cdo sinfo dummy.nc\n    - cdo -graph,device=png,linewidth=1 -settaxis,2000-01-01,12:00:00,1days -expr,'t=sin(seq*3.141529/180.0)' -for,1,6000 t\n\nabout:\n  home: https://code.zmaw.de/projects/cdo\n  license: GPL-2.0\n  license_file: COPYING\n  summary: 'CLI tools to manipulate and analyse Climate and NWP model Data'\n\nextra:\n  recipe-maintainers:\n    - akrherz\n    - Try2Code\n    - ocefpaf\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -872,6 +888,7 @@
    "libnetcdf",
    "libxml2",
    "llvm-openmp",
+   "magics",
    "make",
    "ossuuid",
    "proj",
@@ -902,6 +919,7 @@
     "libnetcdf",
     "libxml2",
     "llvm-openmp",
+    "magics",
     "openmp",
     "ossuuid",
     "proj",
@@ -921,6 +939,7 @@
     "libnetcdf",
     "libxml2",
     "llvm-openmp",
+    "magics",
     "openmp",
     "ossuuid",
     "proj",
@@ -955,6 +974,7 @@
     "libnetcdf",
     "libxml2",
     "llvm-openmp",
+    "magics",
     "ossuuid",
     "proj",
     "udunits2"
@@ -970,6 +990,7 @@
     "libnetcdf",
     "libxml2",
     "llvm-openmp",
+    "magics",
     "ossuuid",
     "proj",
     "udunits2"
