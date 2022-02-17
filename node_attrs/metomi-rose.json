@@ -130,6 +130,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/855647674.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.0rc1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -850,9 +867,10 @@
   }
  },
  "name": "metomi-rose",
- "new_version": "2.0b3",
+ "new_version": "2.0rc1",
  "new_version_attempts": {
-  "2.0b3": 1
+  "2.0b3": 1,
+  "2.0rc1": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1133,7 +1151,7 @@
    "metomi-rose-base"
   ]
  },
- "pinning_version": "2021.11.10.21.33.30",
+ "pinning_version": "2022.02.17.06.22.45",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"metomi-rose\" %}\n{% set version = \"2.0b3\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 40b4f4c49a5cfe03e3ffe95abaa41d33645bc396d83e9d5875aa29c27fde48d2\n\nbuild:\n  number: 1\n  skip: true  # [py<37 or not unix]\n\nrequirements:\n  host:\n    - pip\n    - python\n  run:\n    - python\n\ntest:\n  imports:\n    - metomi.rose\n    - metomi.rose.macro\n  commands:\n    - rose --version\n    - PAGER=cat rose macro --help\n    - rose resource syntax/rose-conf.vim  # test packaging of non-python files\n\noutputs:\n  # base package with only required dependencies\n  - name: {{ name }}-base\n    build:\n      script: python -m pip install . --no-deps --ignore-installed -vv\n    requirements:\n      host:\n        - pip\n        - python\n      run:\n        - aiofiles\n        - jinja2 >=2.10.1\n        - ldap3\n        - metomi-isodatetime\n        - psutil >=5.6.0\n        - python\n        - requests\n        - sqlalchemy\n        # - tornado (rosie disco is temporally disabled)\n\n  # \"recommended\" package\n  # NOTE: currently the same as base\n  # For the next release we should spin `rosa` and `rosie disco` out of this\n  - name: {{ name }}\n    build:\n      script: python -m pip install . --no-deps --ignore-installed -vv\n    requirements:\n      host:\n        - pip\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(name + \"-base\", exact=True) }}\n\nabout:\n  home: https://github.com/metomi/rose\n  license: GPL-3.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: A toolkit for writing, editing and running application configurations.\n  doc_url: http://metomi.github.io/rose\n  dev_url: https://github.com/metomi/rose\n\nextra:\n  recipe-maintainers:\n    - oliver-sanders\n    - wxtim\n    - datamel\n    - metronnie\n",
@@ -1183,7 +1201,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.14.3",
+ "smithy_version": "3.16.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
