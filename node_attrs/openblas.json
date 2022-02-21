@@ -423,6 +423,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/858956164.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.3.20"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -2295,7 +2312,7 @@
   }
  },
  "name": "openblas",
- "new_version": "0.3.19",
+ "new_version": "0.3.20",
  "new_version_attempts": {
   "0.3.10": 1,
   "0.3.11": 1,
@@ -2306,7 +2323,8 @@
   "0.3.16": 1,
   "0.3.17": 1,
   "0.3.18": 1,
-  "0.3.19": 1
+  "0.3.19": 1,
+  "0.3.20": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -2645,7 +2663,7 @@
    "openblas-ilp64"
   ]
  },
- "pinning_version": "2021.12.18.06.45.12",
+ "pinning_version": "2022.02.19.23.26.53",
  "raw_meta_yaml": "{% set version = \"0.3.18\" %}\n{% set build_number = 0 %}\n\npackage:\n  name: openblas\n  version: {{ version }}\n\nsource:\n  url: https://github.com/xianyi/OpenBLAS/archive/v{{ version }}.tar.gz\n  sha256: 1632c1e8cca62d8bed064b37747e331a1796fc46f688626337362bf0d16aeadb\n\nbuild:\n  number: {{ build_number }}\n  skip: true  # [win and vc<14]\n  string: openmp_h{{ PKG_HASH }}_{{ build_number }}  # [USE_OPENMP == 1]\n  string: pthreads_h{{ PKG_HASH }}_{{ build_number }}  # [USE_OPENMP == 0]\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n    - {{ compiler(\"fortran\") }}\n    - perl\n    - make  # [not win]\n    - cmake  # [win]\n    - curl  # [win]\n    - jom  # [win]\n    - objconv  # [osx]\n    - llvm-openmp  # [(osx or linux) and USE_OPENMP == 1]\n    # Following is needed because the Fortran compiler add an rpath to the BUILD_PREFIX\n    - _openmp_mutex * *_llvm  # [linux and USE_OPENMP == 1]\n  host:\n  run:\n\noutputs:\n  - name: libopenblas{{ name_suffix }}\n    build:\n      skip: true  # [win and vc<14]\n      string: openmp_h{{ PKG_HASH }}_{{ build_number }}  # [USE_OPENMP == 1]\n      string: pthreads_h{{ PKG_HASH }}_{{ build_number }}  # [USE_OPENMP == 0]\n      track_features:\n        - openblas_threading_openmp  # [linux and USE_OPENMP == 1]\n      run_exports:\n        - {{ pin_subpackage(\"libopenblas\" ~ name_suffix) }}\n    requirements:\n      build:\n        - {{ compiler(\"c\") }}\n        - {{ compiler(\"fortran\") }}\n        - llvm-openmp  # [(osx or linux) and USE_OPENMP == 1]\n      run_constrained:\n        - {{ pin_subpackage(\"openblas\" ~ name_suffix, max_pin=\"x.x.x\") }}\n    files:\n      # Include files like\n      #   - libopenblasp-r0.3.5.so\n      #   - libopenblas_vortexp-r0.3.5.so\n      #   - libopenblas.so.0\n      # Avoid files\n      #   - libopenblas.so\n      - lib/libopenblas{{ SYMBOLSUFFIX }}*p*{{ SHLIB_EXT }}   # [not win]\n      - lib/libopenblas{{ SYMBOLSUFFIX }}.so.*               # [linux]\n      - lib/libopenblas{{ SYMBOLSUFFIX }}.*.dylib            # [osx]\n      - Library/bin/openblas{{ SYMBOLSUFFIX }}.dll           # [win]\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/libopenblas{{ SYMBOLSUFFIX }}p-r{{ version }}{{ SHLIB_EXT }}  # [not win]\n        - nm -g ${PREFIX}/lib/libopenblas{{ SYMBOLSUFFIX }}p-r{{ version }}{{ SHLIB_EXT }} | grep dsecnd  # [osx and build_platform==\"osx-64\"]\n        - python -c \"import ctypes; ctypes.cdll['${PREFIX}/lib/libopenblas{{ SYMBOLSUFFIX }}p-r{{ version }}{{ SHLIB_EXT }}']\"  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\openblas{{ SYMBOLSUFFIX }}.dll exit 1  # [win]\n\n  - name: openblas{{ name_suffix }}\n    build:\n      skip: true  # [win and vc<14]\n      string: openmp_h{{ PKG_HASH }}_{{ build_number }}  # [USE_OPENMP == 1]\n      string: pthreads_h{{ PKG_HASH }}_{{ build_number }}  # [USE_OPENMP == 0]\n      track_features:\n        - openblas_threading_openmp  # [linux and USE_OPENMP == 1]\n    files:\n      - include/*.h  # [not win]\n      - lib/libopenblas{{ SYMBOLSUFFIX }}*.a  # [not win]\n      - lib/libopenblas{{ SYMBOLSUFFIX }}{{ SHLIB_EXT }}  # [not win]\n      - lib/pkgconfig/openblas.pc  # [not win]\n      - lib/cmake/openblas/*  # [not win]\n      - Library/include/openblas  # [win]\n      - Library/lib/openblas{{ SYMBOLSUFFIX }}.lib  # [win]\n      - Library/lib/pkgconfig/openblas.pc  # [win]\n      - Library/share/cmake/OpenBLAS  # [win]\n    requirements:\n      run:\n        - {{ pin_subpackage(\"libopenblas\" ~ name_suffix, exact=True) }}\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/libopenblas{{ SYMBOLSUFFIX }}.a  # [not win]\n        - test -f ${PREFIX}/lib/libopenblas{{ SYMBOLSUFFIX }}{{ SHLIB_EXT }}  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\openblas{{ SYMBOLSUFFIX }}.lib exit 1  # [win]\n\nabout:\n  home: http://www.openblas.net/\n  license: BSD-3-Clause\n  license_file:\n    - LICENSE\n    - lapack-netlib/LICENSE\n  summary: An optimized BLAS library based on GotoBLAS2 1.13 BSD version  # [SYMBOLSUFFIX != \"64_\"]\n  summary: An optimized BLAS library (ILP64 interface) based on GotoBLAS2 1.13 BSD version  # [SYMBOLSUFFIX == \"64_\"]\n\nextra:\n  recipe-maintainers:\n    - gillins\n    - groutr\n    - jakirkham\n    - isuruf\n    - h-vetinari\n",
  "req": {
   "__set__": true,
@@ -2705,7 +2723,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.16.0",
+ "smithy_version": "3.17.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
