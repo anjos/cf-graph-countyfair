@@ -143,6 +143,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/860845001.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.1.28"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -830,7 +847,11 @@
   }
  },
  "name": "cyrus-sasl",
- "new_version": false,
+ "new_version": "2.1.28",
+ "new_version_attempts": {
+  "2.1.28": 1
+ },
+ "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
    "description": "Simple Authentication and Security Layer (SASL) is a specification that describes how\nauthentication mechanisms can be plugged into an application protocol on the wire. Cyrus\nSASL is an implementation of SASL that makes it easy for application developers to integrate\nauthentication mechanisms into their application in a generic way.\n",
@@ -1093,7 +1114,7 @@
    "cyrus-sasl"
   ]
  },
- "pinning_version": "2021.10.06.08.16.35",
+ "pinning_version": "2022.02.22.17.02.26",
  "raw_meta_yaml": "{% set name = \"cyrus-sasl\" %}\n{% set version = \"2.1.27\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  # The source releases are strange.  Lets use the tagged source tarball instead\n  # - url: https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-{{ version }}/cyrus-sasl-{{ version }}.tar.gz\n  #   sha256: 26866b1549b00ffd020f188a43c258017fa1c382b3ddadd8201536f72efb05d5\n  # - url: ftp://ftp.cyrusimap.org/cyrus-sasl/{{ name }}-{{ version }}.tar.gz\n  \n  url: https://github.com/cyrusimap/cyrus-sasl/archive/cyrus-sasl-{{ version }}.tar.gz\n  sha256: b564d773803dc4cff42d2bdc04c80f2b105897a724c247817d4e4a99dd6b9976\n  \n  patches:\n    # - 0001-Include-stddef-in-sasl-h-for-size_t.patch\n    # Patches for disabling framework things\n    #- makefile.patch  # [osx]\n    #- include_makefile.patch  # [osx]\n    #- lib_makefile.patch  # [osx]\n    - osx_arm.patch  # [osx]\n    - patches/0001-Include-stddef-in-sasl.h-for-size_t.patch  # [win]\n    - patches/0002-adjust-Makefile.am-files-for-osx.patch  # [win]\n    - patches/0003-windows-fixes.patch  # [win]\n    - patches/0004-openssl-1.1.1-support-on-windows.patch  # [win]\n    - patches/0005-win32-Disable-staticopen-stuff.patch  # [win]\n    - patches/0006-win32-Define-GCC_FALLTHROUGH.patch  # [win]\n    - patches/0007-win32-Skip-building-documentation-doc-folder-has-no-.patch  # [win]\n    \nbuild:\n  number: 5\n  missing_dso_whitelist:          # [osx]\n    - /usr/lib/libresolv.9.dylib  # [osx]\n    - /usr/lib/libpam.2.dylib     # [osx]\n  run_exports:\n    # https://abi-laboratory.pro/tracker/timeline/cyrus-sasl/\n    # SONAME was changed once in a patch release but it was 6 years ago so\n    # giving them the benefit of the doubt that it was a one-off mistake.\n    - {{ pin_subpackage('cyrus-sasl') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - libtool  # [unix]\n    - pkg-config  # [unix]\n    - automake  # [unix]\n    - autoconf  # [unix]\n    - make  # [unix]\n    - groff  # [unix]\n    - m2-bash  # [win]\n    - m2-patch  # [win]\n    - m2-gcc-libs  # [win]\n  host:\n    - krb5  # [unix]\n    - openssl\n    - libdb ==6.2.*  # [win]\n    - libntlm  # [unix]\n    - sqlite  # [win]\n    - ldap3  # [win]\n  run:\n    - krb5\n    - openssl\n    - libntlm  # [unix]\n    - libdb  # [win]\n    \ntest:\n  commands:\n    - echo \"DONE\"\n    - if not exist %LIBRARY_LIB%\\\\libsasl.lib exit 1  # [win]\n\nabout:\n  home: https://www.cyrusimap.org/sasl/\n  license: BSD-3-Clause-Attribution\n  license_family: BSD\n  license_file: COPYING\n  summary: |\n    This is the Cyrus SASL API implementation. It can be used on the client or server side to provide\n    authentication and authorization services. See RFC 4422 for more information.\n  description: |\n    Simple Authentication and Security Layer (SASL) is a specification that describes how\n    authentication mechanisms can be plugged into an application protocol on the wire. Cyrus\n    SASL is an implementation of SASL that makes it easy for application developers to integrate\n    authentication mechanisms into their application in a generic way.\n  dev_url: https://github.com/cyrusimap/cyrus-sasl\n  doc_url: https://www.cyrusimap.org/sasl/\n\nextra:\n  recipe-maintainers:\n    - mariusvniekerk\n    - martindurant\n    - mingwandroid\n    - wesm\n    - StephenSmith25\n",
  "req": {
   "__set__": true,
@@ -1163,7 +1184,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.12",
+ "smithy_version": "3.17.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
