@@ -16,6 +16,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/861757772.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -283,7 +300,7 @@
    "libavif"
   ]
  },
- "pinning_version": "2021.12.05.10.31.58",
+ "pinning_version": "2022.02.23.13.44.17",
  "raw_meta_yaml": "{% set name = \"libavif\" %}\n# NOTE: Humans must also update the library version in the tests section of this recipe\n{% set version = \"0.9.3\" %}\n# Look in the libavif top level CMakeLists.txt for the updated library\n# version (not the same as the project version) to update parameters for existence checks\n{% set so_version = \"13.0.0\" %}\n{% set so_major_version = so_version.split('.')[0] %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/AOMediaCodec/libavif/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: bcd9a1f57f982a9615eb7e2faf87236dc88eb1d0c886f3471c7440ead605060d\n\nbuild:\n  run_exports:\n    # TODO: Relax constraint when libavif >=1.0.0\n    # The SO name changes every version\n    # https://github.com/AOMediaCodec/libavif/issues/799\n    - {{ pin_subpackage('libavif', min_pin='x.x.x', max_pin='x.x.x') }}\n  number: 0\n\nrequirements:\n  build:\n    - cmake\n    - {{ compiler('c') }}\n    - nasm\n    - ninja\n    - meson\n  host:\n    - aom\n    # - svt-av1  # TODO: linking error with this optional library\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/avif/avif.h                         # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\avif\\\\avif.h exit 1  # [win]\n    - test -f ${PREFIX}/lib/libavif${SHLIB_EXT}                   # [unix]\n    - test -f ${PREFIX}/lib/libavif.so.{{ so_major_version }}     # [linux]\n    - test -f ${PREFIX}/lib/libavif.so.{{ so_version }}           # [linux]\n    - test -f ${PREFIX}/lib/libavif.{{ so_major_version }}.dylib  # [osx]\n    - test -f ${PREFIX}/lib/libavif.{{ so_version }}.dylib        # [osx]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\avif.dll exit 1        # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\avif.lib exit 1        # [win]\n    - test -f ${PREFIX}/lib/pkgconfig/libavif.pc                         # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\libavif.pc exit 1  # [win]\n    - test -f ${PREFIX}/lib/cmake/libavif/libavif-config.cmake           # [unix]\n    - test -f ${PREFIX}/lib/cmake/libavif/libavif-config-release.cmake   # [unix]\n    - test -f ${PREFIX}/lib/cmake/libavif/libavif-config-version.cmake   # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\libavif\\\\libavif-config.cmake exit 1          # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\libavif\\\\libavif-config-release.cmake exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\libavif\\\\libavif-config-version.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/AOMediaCodec/libavif\n  license: BSD-2-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: A friendly, portable C implementation of the AV1 Image File Format\n  description: |\n    This library aims to be a friendly, portable C implementation of the AV1\n    Image File Format, as described here\n    <https://aomediacodec.github.io/av1-avif/>.\n\nextra:\n  recipe-maintainers:\n    - carterbox\n    - hmaarrfk\n",
  "req": {
   "__set__": true,
@@ -325,7 +342,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.15.0",
+ "smithy_version": "3.17.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
