@@ -400,7 +400,7 @@
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
   "about": {
-   "description": "Pandas data structures hide a lot of information, and explicitly\nvalidating them in production-critical or reproducible research\nsettings is a good idea.\n",
+   "description": "A dataframe validation library for scientists, engineers, and analysts\nseeking correctness. Define schemas so you can be confident in the quality\nof your data.\n",
    "dev_url": "https://github.com/pandera-dev/pandera",
    "doc_url": "https://pandera.readthedocs.io/en/latest/",
    "home": "https://github.com/pandera-dev/pandera",
@@ -410,56 +410,353 @@
    "summary": "Light-weight and flexible validation for pandas data structures"
   },
   "build": {
-   "noarch": "python",
-   "number": "0",
-   "script": "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install .[all] -vv"
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "pandera",
    "recipe-maintainers": [
     "cosmicBboy"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "noarch": "python",
+     "script": [
+      "python -m pip install . --no-deps -vv"
+     ]
+    },
+    "name": "pandera-base",
+    "requirements": {
+     "host": [
+      "python >=3.7",
+      "pip"
+     ],
+     "run": [
+      "python >=3.7",
+      "numpy >=1.9.0",
+      "pandas >=1.0",
+      "pandas-stubs",
+      "typing_extensions",
+      "typing_inspect >=0.6.0",
+      "wrapt",
+      "packaging >=20.0",
+      "pyarrow",
+      "pydantic"
+     ]
+    },
+    "test": {
+     "imports": [
+      "pandera"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera",
+    "requirements": {
+     "run": [
+      "pandera-base"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-strategies",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "hypothesis >=5.41.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.strategies"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-hypotheses",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "scipy"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.hypotheses"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-io",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "pyyaml >=5.1",
+      "black",
+      "frictionless",
+      "click <7.2.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.io"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-koalas",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "koalas",
+      "pyspark"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.koalas_accessor",
+      "pandera.typing.koalas"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-modin",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "modin"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.modin_accessor",
+      "pandera.typing.modin"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-modin-ray",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "modin-ray"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.modin_accessor",
+      "pandera.typing.modin"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-modin-dask",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "modin-dask"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.modin_accessor",
+      "pandera.typing.modin"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-dask",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "dask",
+      "distributed"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.dask_accessor",
+      "pandera.typing.dask"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-mypy",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "mypy",
+      "pandas-stubs"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.mypy"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-fastapi",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "fastapi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.typing.fastapi"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-geopandas",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "geopandas",
+      "shapely"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.typing.geopandas"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "pandera",
+   "name": "pandera-suite",
    "version": "0.9.0"
-  },
-  "requirements": {
-   "host": [
-    "python >=3.7",
-    "pip"
-   ],
-   "run": [
-    "python >=3.7",
-    "numpy",
-    "pandas",
-    "pandas-stubs",
-    "typing_extensions",
-    "typing_inspect >=0.6.0",
-    "wrapt",
-    "packaging",
-    "pyarrow",
-    "pydantic",
-    "scipy",
-    "pyyaml >=5.1",
-    "black",
-    "frictionless",
-    "click <7.2.0",
-    "hypothesis >=5.41.1",
-    "fastapi",
-    "pandas-stubs"
-   ]
   },
   "source": {
    "sha256": "3badeea42f1cdb94b0f4b9a370bbeeb64bc669a7642f30b7abd931be3c6aec79",
    "url": "https://pypi.io/packages/source/p/pandera/pandera-0.9.0.tar.gz"
-  },
-  "test": {
-   "imports": [
-    "pandera",
-    "pandera.hypotheses",
-    "pandera.io",
-    "pandera.strategies"
-   ]
   }
  },
  "linux_64_requirements": {
@@ -479,18 +776,29 @@
    "elements": [
     "black",
     "click",
+    "dask",
+    "distributed",
     "fastapi",
     "frictionless",
+    "geopandas",
     "hypothesis",
+    "koalas",
+    "modin",
+    "modin-dask",
+    "modin-ray",
+    "mypy",
     "numpy",
     "packaging",
     "pandas",
     "pandas-stubs",
+    "pandera-base",
     "pyarrow",
     "pydantic",
+    "pyspark",
     "python",
     "pyyaml",
     "scipy",
+    "shapely",
     "typing_extensions",
     "typing_inspect",
     "wrapt"
@@ -498,12 +806,14 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "meta_yaml": {
   "about": {
-   "description": "Pandas data structures hide a lot of information, and explicitly\nvalidating them in production-critical or reproducible research\nsettings is a good idea.\n",
+   "description": "A dataframe validation library for scientists, engineers, and analysts\nseeking correctness. Define schemas so you can be confident in the quality\nof your data.\n",
    "dev_url": "https://github.com/pandera-dev/pandera",
    "doc_url": "https://pandera.readthedocs.io/en/latest/",
    "home": "https://github.com/pandera-dev/pandera",
@@ -513,59 +823,356 @@
    "summary": "Light-weight and flexible validation for pandas data structures"
   },
   "build": {
-   "noarch": "python",
-   "number": "0",
-   "script": "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install .[all] -vv"
+   "number": "0"
   },
   "extra": {
+   "feedstock-name": "pandera",
    "recipe-maintainers": [
     "cosmicBboy"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "noarch": "python",
+     "script": [
+      "python -m pip install . --no-deps -vv"
+     ]
+    },
+    "name": "pandera-base",
+    "requirements": {
+     "host": [
+      "python >=3.7",
+      "pip"
+     ],
+     "run": [
+      "python >=3.7",
+      "numpy >=1.9.0",
+      "pandas >=1.0",
+      "pandas-stubs",
+      "typing_extensions",
+      "typing_inspect >=0.6.0",
+      "wrapt",
+      "packaging >=20.0",
+      "pyarrow",
+      "pydantic"
+     ]
+    },
+    "test": {
+     "imports": [
+      "pandera"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera",
+    "requirements": {
+     "run": [
+      "pandera-base"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-strategies",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "hypothesis >=5.41.1"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.strategies"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-hypotheses",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "scipy"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.hypotheses"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-io",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "pyyaml >=5.1",
+      "black",
+      "frictionless",
+      "click <7.2.0"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.io"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-koalas",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "koalas",
+      "pyspark"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.koalas_accessor",
+      "pandera.typing.koalas"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-modin",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "modin"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.modin_accessor",
+      "pandera.typing.modin"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-modin-ray",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "modin-ray"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.modin_accessor",
+      "pandera.typing.modin"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-modin-dask",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "modin-dask"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.modin_accessor",
+      "pandera.typing.modin"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-dask",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "dask",
+      "distributed"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.dask_accessor",
+      "pandera.typing.dask"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-mypy",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "mypy",
+      "pandas-stubs"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.mypy"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-fastapi",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "fastapi"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.typing.fastapi"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python"
+    },
+    "name": "pandera-geopandas",
+    "requirements": {
+     "run": [
+      "pandera-base",
+      "geopandas",
+      "shapely"
+     ]
+    },
+    "test": {
+     "commands": [
+      "pip check"
+     ],
+     "imports": [
+      "pandera",
+      "pandera.typing.geopandas"
+     ],
+     "requires": [
+      "pip"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "pandera",
+   "name": "pandera-suite",
    "version": "0.9.0"
-  },
-  "requirements": {
-   "host": [
-    "python >=3.7",
-    "pip"
-   ],
-   "run": [
-    "python >=3.7",
-    "numpy",
-    "pandas",
-    "pandas-stubs",
-    "typing_extensions",
-    "typing_inspect >=0.6.0",
-    "wrapt",
-    "packaging",
-    "pyarrow",
-    "pydantic",
-    "scipy",
-    "pyyaml >=5.1",
-    "black",
-    "frictionless",
-    "click <7.2.0",
-    "hypothesis >=5.41.1",
-    "fastapi",
-    "pandas-stubs"
-   ]
   },
   "source": {
    "sha256": "3badeea42f1cdb94b0f4b9a370bbeeb64bc669a7642f30b7abd931be3c6aec79",
    "url": "https://pypi.io/packages/source/p/pandera/pandera-0.9.0.tar.gz"
-  },
-  "test": {
-   "imports": [
-    "pandera",
-    "pandera.hypotheses",
-    "pandera.io",
-    "pandera.strategies"
-   ]
   }
  },
- "name": "pandera",
+ "name": "pandera-suite",
  "new_version": "0.9.0",
  "new_version_attempts": {
   "0.4.0": 1,
@@ -593,29 +1200,52 @@
  "outputs_names": {
   "__set__": true,
   "elements": [
-   "pandera"
+   "pandera",
+   "pandera-base",
+   "pandera-dask",
+   "pandera-fastapi",
+   "pandera-geopandas",
+   "pandera-hypotheses",
+   "pandera-io",
+   "pandera-koalas",
+   "pandera-modin",
+   "pandera-modin-dask",
+   "pandera-modin-ray",
+   "pandera-mypy",
+   "pandera-strategies"
   ]
  },
  "pinning_version": "2022.02.08.09.38.24",
- "raw_meta_yaml": "{% set name = \"pandera\" %}\n{% set version = \"0.9.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 3badeea42f1cdb94b0f4b9a370bbeeb64bc669a7642f30b7abd931be3c6aec79\n\nbuild:\n  noarch: python\n  number: 0\n  script: {{ PYTHON }} -m pip install .[all] -vv\n\nrequirements:\n  host:\n    - python >=3.7\n    - pip\n  run:\n    - python >=3.7\n    - numpy\n    - pandas\n    - pandas-stubs\n    - typing_extensions\n    - typing_inspect >=0.6.0\n    - wrapt\n    - packaging\n    - pyarrow\n    - pydantic\n\n    # hypotheses packages\n    - scipy\n\n    # io packages\n    - pyyaml >=5.1\n    - black\n    - frictionless\n    - click <7.2.0  # frictionless dependency, not a pandera dependency\n\n    # strategies packages\n    - hypothesis >=5.41.1\n    \n    # fastapi extra\n    - fastapi\n    \n    # mypy extra\n    - pandas-stubs\n\ntest:\n  imports:\n    - pandera\n    - pandera.hypotheses\n    - pandera.io\n    - pandera.strategies\n\nabout:\n  home: https://github.com/pandera-dev/pandera\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE.txt\n  summary: Light-weight and flexible validation for pandas data structures\n  description: |\n    Pandas data structures hide a lot of information, and explicitly\n    validating them in production-critical or reproducible research\n    settings is a good idea.\n  doc_url: https://pandera.readthedocs.io/en/latest/\n  dev_url: https://github.com/pandera-dev/pandera\n\nextra:\n  recipe-maintainers:\n    - cosmicBboy\n",
+ "raw_meta_yaml": "{% set name = \"pandera\" %}\n{% set version = \"0.9.0\" %}\n\npackage:\n  name: pandera-suite\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 3badeea42f1cdb94b0f4b9a370bbeeb64bc669a7642f30b7abd931be3c6aec79\n\nbuild:\n  number: 0\n\noutputs:\n  - name: pandera-base\n    build:\n      noarch: python\n      script:\n        - python -m pip install . --no-deps -vv\n\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n      commands:\n        - pip check\n\n    requirements:\n      host:\n        - python >=3.7\n        - pip\n      run:\n        - python >=3.7\n        - numpy >=1.9.0\n        - pandas >=1.0\n        - pandas-stubs\n        - typing_extensions\n        - typing_inspect >=0.6.0\n        - wrapt\n        - packaging >=20.0\n        - pyarrow\n        - pydantic\n    test:\n      imports:\n        - pandera\n\n  - name: pandera\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n\n  - name: pandera-strategies\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n        - pandera.strategies\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n        - hypothesis >=5.41.1\n\n  - name: pandera-hypotheses\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n        - pandera.hypotheses\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n        - scipy\n\n  - name: pandera-io\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n        - pandera.io\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n        - pyyaml >=5.1\n        - black\n        - frictionless\n        - click <7.2.0  # frictionless dependency, not a pandera dependency\n\n  - name: pandera-koalas\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n        - pandera.koalas_accessor\n        - pandera.typing.koalas\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n        - koalas\n        - pyspark\n\n  - name: pandera-modin\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n        - pandera.modin_accessor\n        - pandera.typing.modin\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n        - modin\n\n  - name: pandera-modin-ray\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n        - pandera.modin_accessor\n        - pandera.typing.modin\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n        - modin-ray\n\n  - name: pandera-modin-dask\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n        - pandera.modin_accessor\n        - pandera.typing.modin\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n        - modin-dask\n\n  - name: pandera-dask\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n        - pandera.dask_accessor\n        - pandera.typing.dask\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n        - dask\n        - distributed\n\n  - name: pandera-mypy\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n        - pandera.mypy\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n        - mypy\n        - pandas-stubs\n\n  - name: pandera-fastapi\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n        - pandera.typing.fastapi\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n        - fastapi\n\n  - name: pandera-geopandas\n    build:\n      noarch: python\n    test:\n      requires:\n        - pip\n      imports:\n        - pandera\n        - pandera.typing.geopandas\n      commands:\n        - pip check\n    requirements:\n      run:\n        - {{ pin_subpackage('pandera-base', max_pin=\"x.x.x\") }}\n        - geopandas\n        - shapely\n\nabout:\n  home: https://github.com/pandera-dev/pandera\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE.txt\n  summary: Light-weight and flexible validation for pandas data structures\n  description: |\n    A dataframe validation library for scientists, engineers, and analysts\n    seeking correctness. Define schemas so you can be confident in the quality\n    of your data.\n  doc_url: https://pandera.readthedocs.io/en/latest/\n  dev_url: https://github.com/pandera-dev/pandera\n\nextra:\n  feedstock-name: pandera\n  recipe-maintainers:\n    - cosmicBboy\n",
  "req": {
   "__set__": true,
   "elements": [
    "black",
    "click",
+   "dask",
+   "distributed",
    "fastapi",
    "frictionless",
+   "geopandas",
    "hypothesis",
+   "koalas",
+   "modin",
+   "modin-dask",
+   "modin-ray",
+   "mypy",
    "numpy",
    "packaging",
    "pandas",
    "pandas-stubs",
+   "pandera-base",
    "pip",
    "pyarrow",
    "pydantic",
+   "pyspark",
    "python",
    "pyyaml",
    "scipy",
+   "shapely",
    "typing_extensions",
    "typing_inspect",
    "wrapt"
@@ -638,18 +1268,29 @@
    "elements": [
     "black",
     "click",
+    "dask",
+    "distributed",
     "fastapi",
     "frictionless",
+    "geopandas",
     "hypothesis",
+    "koalas",
+    "modin",
+    "modin-dask",
+    "modin-ray",
+    "mypy",
     "numpy",
     "packaging",
     "pandas",
     "pandas-stubs",
+    "pandera-base",
     "pyarrow",
     "pydantic",
+    "pyspark",
     "python",
     "pyyaml",
     "scipy",
+    "shapely",
     "typing_extensions",
     "typing_inspect",
     "wrapt"
@@ -657,7 +1298,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "smithy_version": "3.16.2",
@@ -679,18 +1322,29 @@
    "elements": [
     "black",
     "click <7.2.0",
+    "dask",
+    "distributed",
     "fastapi",
     "frictionless",
+    "geopandas",
     "hypothesis >=5.41.1",
-    "numpy",
-    "packaging",
-    "pandas",
+    "koalas",
+    "modin",
+    "modin-dask",
+    "modin-ray",
+    "mypy",
+    "numpy >=1.9.0",
+    "packaging >=20.0",
+    "pandas >=1.0",
     "pandas-stubs",
+    "pandera-base",
     "pyarrow",
     "pydantic",
+    "pyspark",
     "python >=3.7",
     "pyyaml >=5.1",
     "scipy",
+    "shapely",
     "typing_extensions",
     "typing_inspect >=0.6.0",
     "wrapt"
@@ -698,7 +1352,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "url": "https://pypi.io/packages/source/p/pandera/pandera-0.9.0.tar.gz",
