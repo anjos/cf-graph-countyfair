@@ -255,7 +255,8 @@
    "recipe-maintainers": [
     "njzjz",
     "bluescarni",
-    "xhochy"
+    "xhochy",
+    "h-vetinari"
    ]
   },
   "package": {
@@ -404,7 +405,8 @@
    "recipe-maintainers": [
     "njzjz",
     "bluescarni",
-    "xhochy"
+    "xhochy",
+    "h-vetinari"
    ]
   },
   "package": {
@@ -553,7 +555,8 @@
    "recipe-maintainers": [
     "njzjz",
     "bluescarni",
-    "xhochy"
+    "xhochy",
+    "h-vetinari"
    ]
   },
   "package": {
@@ -708,21 +711,27 @@
     "njzjz",
     "bluescarni",
     "xhochy",
+    "h-vetinari",
     "njzjz",
     "bluescarni",
     "xhochy",
+    "h-vetinari",
     "njzjz",
     "bluescarni",
     "xhochy",
+    "h-vetinari",
     "njzjz",
     "bluescarni",
     "xhochy",
+    "h-vetinari",
     "njzjz",
     "bluescarni",
     "xhochy",
+    "h-vetinari",
     "njzjz",
     "bluescarni",
-    "xhochy"
+    "xhochy",
+    "h-vetinari"
    ]
   },
   "package": {
@@ -1206,7 +1215,8 @@
    "recipe-maintainers": [
     "njzjz",
     "bluescarni",
-    "xhochy"
+    "xhochy",
+    "h-vetinari"
    ]
   },
   "package": {
@@ -1358,7 +1368,8 @@
    "recipe-maintainers": [
     "njzjz",
     "bluescarni",
-    "xhochy"
+    "xhochy",
+    "h-vetinari"
    ]
   },
   "package": {
@@ -1496,7 +1507,7 @@
   ]
  },
  "pinning_version": "2021.11.10.17.41.07",
- "raw_meta_yaml": "{% set name = \"abseil-cpp\" %}\n{% set version = \"20211102.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/abseil/{{ name }}/archive/{{ version }}.tar.gz\n  sha256: dcf71b9cba8dc0ca9940c4b316a0c796be8fab42b070bb6b7cab62b48f0e66c4\n  patches:\n    #- linux-librt.patch  # [linux]\n    - clang4_osx_fix.diff  # [osx]\n    - osx_framework_fix.diff  # [osx]\n    - remove-4221.patch  # [win]\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage(\"abseil-cpp\", max_pin=\"x.x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n\n{% set absl_libs = [\n    \"base\", \"civil_time\", \"cord\", \"cordz_functions\", \"cordz_handle\", \"cordz_info\",\n    \"cordz_sample_token\", \"examine_stack\", \"exponential_biased\", \"failure_signal_handler\",\n    \"flags\", \"flags_commandlineflag\", \"flags_config\", \"flags_marshalling\", \"flags_parse\",\n    \"flags_private_handle_accessor\", \"flags_program_name\", \"flags_reflection\", \"flags_usage\",\n    \"hash\", \"hashtablez_sampler\", \"int128\", \"log_severity\", \"low_level_hash\", \"periodic_sampler\",\n    \"random_distributions\", \"random_seed_gen_exception\", \"random_seed_sequences\", \"raw_hash_set\",\n    \"scoped_set_env\", \"spinlock_wait\", \"stacktrace\", \"status\", \"statusor\", \"strerror\", \"strings\",\n    \"symbolize\", \"synchronization\", \"time\", \"time_zone\"\n] %}\ntest:\n  commands:\n    # windows (DLL + import library)\n    - if not exist %LIBRARY_BIN%\\\\abseil_dll.dll exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\abseil_dll.lib exit 1  # [win]\n\n    # absl_libs\n    {% for each_lib in absl_libs %}\n    # presence of shared libs\n    - test -f $PREFIX/lib/libabsl_{{ each_lib }}${SHLIB_EXT}      # [unix]\n    # absence of static libs\n    - test ! -f $PREFIX/lib/libabsl_{{ each_lib }}.a              # [unix]\n    # TODO: do we want to get rid of the static windows libs?\n    # - if exist %LIBRARY_LIB%\\\\absl_{{ each_lib }}.lib exit 1      # [win]\n    {% endfor %}\n\nabout:\n  home: https://github.com/abseil/abseil-cpp\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: Abseil Common Libraries (C++)\n  description: |\n    Abseil is an open-source collection of C++ code (compliant to C++11)\n    designed to augment the C++ standard library.\n  doc_url: https://github.com/abseil/abseil-cpp\n  dev_url: https://github.com/abseil/abseil-cpp\n\nextra:\n  recipe-maintainers:\n    - njzjz\n    - bluescarni\n    - xhochy\n",
+ "raw_meta_yaml": "{% set name = \"abseil-cpp\" %}\n{% set version = \"20211102.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/abseil/{{ name }}/archive/{{ version }}.tar.gz\n  sha256: dcf71b9cba8dc0ca9940c4b316a0c796be8fab42b070bb6b7cab62b48f0e66c4\n  patches:\n    #- linux-librt.patch  # [linux]\n    - clang4_osx_fix.diff  # [osx]\n    - osx_framework_fix.diff  # [osx]\n    - remove-4221.patch  # [win]\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage(\"abseil-cpp\", max_pin=\"x.x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n\n{% set absl_libs = [\n    \"base\", \"civil_time\", \"cord\", \"cordz_functions\", \"cordz_handle\", \"cordz_info\",\n    \"cordz_sample_token\", \"examine_stack\", \"exponential_biased\", \"failure_signal_handler\",\n    \"flags\", \"flags_commandlineflag\", \"flags_config\", \"flags_marshalling\", \"flags_parse\",\n    \"flags_private_handle_accessor\", \"flags_program_name\", \"flags_reflection\", \"flags_usage\",\n    \"hash\", \"hashtablez_sampler\", \"int128\", \"log_severity\", \"low_level_hash\", \"periodic_sampler\",\n    \"random_distributions\", \"random_seed_gen_exception\", \"random_seed_sequences\", \"raw_hash_set\",\n    \"scoped_set_env\", \"spinlock_wait\", \"stacktrace\", \"status\", \"statusor\", \"strerror\", \"strings\",\n    \"symbolize\", \"synchronization\", \"time\", \"time_zone\"\n] %}\ntest:\n  commands:\n    # windows (DLL + import library)\n    - if not exist %LIBRARY_BIN%\\\\abseil_dll.dll exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\abseil_dll.lib exit 1  # [win]\n\n    # absl_libs\n    {% for each_lib in absl_libs %}\n    # presence of shared libs\n    - test -f $PREFIX/lib/libabsl_{{ each_lib }}${SHLIB_EXT}      # [unix]\n    # absence of static libs\n    - test ! -f $PREFIX/lib/libabsl_{{ each_lib }}.a              # [unix]\n    # TODO: do we want to get rid of the static windows libs?\n    # - if exist %LIBRARY_LIB%\\\\absl_{{ each_lib }}.lib exit 1      # [win]\n    {% endfor %}\n\nabout:\n  home: https://github.com/abseil/abseil-cpp\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: Abseil Common Libraries (C++)\n  description: |\n    Abseil is an open-source collection of C++ code (compliant to C++11)\n    designed to augment the C++ standard library.\n  doc_url: https://github.com/abseil/abseil-cpp\n  dev_url: https://github.com/abseil/abseil-cpp\n\nextra:\n  recipe-maintainers:\n    - njzjz\n    - bluescarni\n    - xhochy\n    - h-vetinari\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1583,7 +1594,8 @@
    "recipe-maintainers": [
     "njzjz",
     "bluescarni",
-    "xhochy"
+    "xhochy",
+    "h-vetinari"
    ]
   },
   "package": {
