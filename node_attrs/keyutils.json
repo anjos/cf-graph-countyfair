@@ -1,4 +1,26 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "head": {
+     "ref": "<this_is_not_a_branch>"
+    },
+    "state": "closed"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "branch": "main",
@@ -281,6 +303,7 @@
    "keyutils"
   ]
  },
+ "pinning_version": "2022.03.01.23.33.50",
  "raw_meta_yaml": "{% set version = \"1.6.1\" %}\n\npackage:\n  name: keyutils\n  version: {{ version }}\n\nsource:\n  url: https://people.redhat.com/~dhowells/keyutils/keyutils-{{ version }}.tar.bz2\n  sha256: c8b15722ae51d95b9ad76cc6d49a4c2cc19b0c60f72f61fb9bf43eea7cbd64ce\n  patches:\n    - 0001-Make-endian-detection-in-work-on-non-RHEL-distributi.patch\n    - 0002-Fix-installing-shared-library-symlinks-with-DESTDIR.patch\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n  run_exports:\n    # https://abi-laboratory.pro/tracker/timeline/keyutils/\n    - {{ pin_subpackage('keyutils', max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - make\n    - file\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libkeyutils.so\n    - keyctl --version | grep '{{ version }}'\n    # These tests can't work inside docker without additional security flags\n    # - keyctl add user cf-keyctl-key cf-keyctl-value @s\n    # - keyctl print $(keyctl search @s user cf-keyctl-key) | grep cf-keyctl-value\n    # - keyctl unlink $(keyctl search @s user cf-keyctl-key) @s\n\nabout:\n  home: https://people.redhat.com/~dhowells/keyutils/\n  license: LGPL-2.1-or-later\n  license_file: LICENCE.LGPL\n  summary: Linux Key Management Utilities\n  description: |\n    Keyutils is a set of utilities for managing the key retention facility in\n    the kernel, which can be used by filesystems, block devices and more to\n    gain and retain the authorization and encryption keys required to perform\n    secure operations.\n\nextra:\n  recipe-maintainers:\n    - chrisburr\n",
  "req": {
   "__set__": true,
@@ -316,6 +339,7 @@
    "elements": []
   }
  },
+ "smithy_version": "3.17.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
