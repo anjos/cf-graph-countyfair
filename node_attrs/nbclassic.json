@@ -272,28 +272,33 @@
   },
   "package": {
    "name": "nbclassic",
-   "version": "0.3.5"
+   "version": "0.3.6"
   },
   "requirements": {
    "host": [
     "jupyter-packaging >=0.10,<1",
-    "python >=3.6",
+    "python >=3.7",
     "pip"
    ],
    "run": [
-    "python >=3.6",
+    "python >=3.7",
     "jupyter_server >=1.8.0,<2.0.0",
-    "notebook <7"
+    "notebook <7",
+    "notebook-shim >=0.1.0"
    ]
   },
   "source": {
-   "sha256": "99444dd63103af23c788d9b5172992f12caf8c3098dd5a35c787f0df31490c29",
-   "url": "https://pypi.io/packages/source/n/nbclassic/nbclassic-0.3.5.tar.gz"
+   "sha256": "7dbac0a6cb71bbe3afa1fe89369e6e3174d89f42aa08216a327046de45aa9a4f",
+   "url": "https://pypi.io/packages/source/n/nbclassic/nbclassic-0.3.6.tar.gz"
   },
   "test": {
    "commands": [
     "pip check",
-    "jupyter nbclassic --help"
+    "jupyter nbclassic --help",
+    "jupyter server extension list",
+    "jupyter server extension list 1>server_extensions 2>&1",
+    "cat server_extensions | grep -iE \"nbclassic.*enabled\"",
+    "cat server_extensions | grep -iE \"nbclassic.*OK\""
    ],
    "imports": [
     "nbclassic"
@@ -321,6 +326,7 @@
    "elements": [
     "jupyter_server",
     "notebook",
+    "notebook-shim",
     "python"
    ]
   },
@@ -358,28 +364,33 @@
   },
   "package": {
    "name": "nbclassic",
-   "version": "0.3.5"
+   "version": "0.3.6"
   },
   "requirements": {
    "host": [
     "jupyter-packaging >=0.10,<1",
-    "python >=3.6",
+    "python >=3.7",
     "pip"
    ],
    "run": [
-    "python >=3.6",
+    "python >=3.7",
     "jupyter_server >=1.8.0,<2.0.0",
-    "notebook <7"
+    "notebook <7",
+    "notebook-shim >=0.1.0"
    ]
   },
   "source": {
-   "sha256": "99444dd63103af23c788d9b5172992f12caf8c3098dd5a35c787f0df31490c29",
-   "url": "https://pypi.io/packages/source/n/nbclassic/nbclassic-0.3.5.tar.gz"
+   "sha256": "7dbac0a6cb71bbe3afa1fe89369e6e3174d89f42aa08216a327046de45aa9a4f",
+   "url": "https://pypi.io/packages/source/n/nbclassic/nbclassic-0.3.6.tar.gz"
   },
   "test": {
    "commands": [
     "pip check",
-    "jupyter nbclassic --help"
+    "jupyter nbclassic --help",
+    "jupyter server extension list",
+    "jupyter server extension list 1>server_extensions 2>&1",
+    "cat server_extensions | grep -iE \"nbclassic.*enabled\"",
+    "cat server_extensions | grep -iE \"nbclassic.*OK\""
    ],
    "imports": [
     "nbclassic"
@@ -415,13 +426,14 @@
   ]
  },
  "pinning_version": "2022.03.02.18.03.40",
- "raw_meta_yaml": "{% set name = \"nbclassic\" %}\n{% set version = \"0.3.5\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 99444dd63103af23c788d9b5172992f12caf8c3098dd5a35c787f0df31490c29\n\nbuild:\n  number: 0\n  noarch: python\n  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n  entry_points:\n    - jupyter-nbclassic = nbclassic.notebookapp:main\n\nrequirements:\n  host:\n    - jupyter-packaging >=0.10,<1\n    - python >=3.6\n    - pip\n  run:\n    - python >=3.6\n    - jupyter_server >=1.8.0,<2.0.0\n    - notebook <7\n\ntest:\n  imports:\n    - nbclassic\n  commands:\n    - pip check\n    - jupyter nbclassic --help\n  requires:\n    - pip\n\nabout:\n  home: http://github.com/jupyterlab/nbclassic\n  license: BSD-3-Clause\n  license_file: LICENSE\n  summary: Jupyter Notebook as a Jupyter Server Extension.\n\n  description: |\n    This project prepares for a future where JupyterLab and other frontends\n    switch to Jupyter Server for their Python Web application backend. Using\n    this package, users can launch Jupyter Notebook, JupyterLab and other\n    frontends side-by-side on top of the new Python server backend.\n  dev_url: https://github.com/jupyterlab/nbclassic\n\nextra:\n  recipe-maintainers:\n    - jasongrout\n    - afshin\n    - jtpio\n    - bollwyvl\n",
+ "raw_meta_yaml": "{% set version = \"0.3.6\" %}\n\npackage:\n  name: nbclassic\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/n/nbclassic/nbclassic-{{ version }}.tar.gz\n  sha256: 7dbac0a6cb71bbe3afa1fe89369e6e3174d89f42aa08216a327046de45aa9a4f\n\nbuild:\n  number: 0\n  noarch: python\n  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv\n  entry_points:\n    - jupyter-nbclassic = nbclassic.notebookapp:main\n\nrequirements:\n  host:\n    - jupyter-packaging >=0.10,<1\n    - python >=3.7\n    - pip\n  run:\n    - python >=3.7\n    - jupyter_server >=1.8.0,<2.0.0\n    - notebook <7\n    - notebook-shim >=0.1.0\n\ntest:\n  imports:\n    - nbclassic\n    - m2-grep  # [win]\n  commands:\n    - pip check\n    - jupyter nbclassic --help\n    - jupyter server extension list\n    - jupyter server extension list 1>server_extensions 2>&1\n    - cat server_extensions | grep -iE \"nbclassic.*enabled\"\n    - cat server_extensions | grep -iE \"nbclassic.*OK\"\n  requires:\n    - pip\n\nabout:\n  home: http://github.com/jupyterlab/nbclassic\n  license: BSD-3-Clause\n  license_file: LICENSE\n  summary: Jupyter Notebook as a Jupyter Server Extension.\n\n  description: |\n    This project prepares for a future where JupyterLab and other frontends\n    switch to Jupyter Server for their Python Web application backend. Using\n    this package, users can launch Jupyter Notebook, JupyterLab and other\n    frontends side-by-side on top of the new Python server backend.\n  dev_url: https://github.com/jupyterlab/nbclassic\n\nextra:\n  recipe-maintainers:\n    - jasongrout\n    - afshin\n    - jtpio\n    - bollwyvl\n",
  "req": {
   "__set__": true,
   "elements": [
    "jupyter-packaging",
    "jupyter_server",
    "notebook",
+   "notebook-shim",
    "pip",
    "python"
   ]
@@ -444,6 +456,7 @@
    "elements": [
     "jupyter_server",
     "notebook",
+    "notebook-shim",
     "python"
    ]
   },
@@ -466,7 +479,7 @@
    "elements": [
     "jupyter-packaging >=0.10,<1",
     "pip",
-    "python >=3.6"
+    "python >=3.7"
    ]
   },
   "run": {
@@ -474,7 +487,8 @@
    "elements": [
     "jupyter_server >=1.8.0,<2.0.0",
     "notebook <7",
-    "python >=3.6"
+    "notebook-shim >=0.1.0",
+    "python >=3.7"
    ]
   },
   "test": {
@@ -484,6 +498,6 @@
    ]
   }
  },
- "url": "https://pypi.io/packages/source/n/nbclassic/nbclassic-0.3.5.tar.gz",
- "version": "0.3.5"
+ "url": "https://pypi.io/packages/source/n/nbclassic/nbclassic-0.3.6.tar.gz",
+ "version": "0.3.6"
 }
