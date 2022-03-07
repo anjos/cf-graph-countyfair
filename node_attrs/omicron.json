@@ -277,7 +277,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -295,7 +295,8 @@
     "cxx_compiler_stub",
     "cmake >=3.9.0",
     "make",
-    "pkg-config"
+    "pkg-config",
+    "sysroot_linux-64 2.17"
    ],
    "host": [
     "fftw",
@@ -333,7 +334,8 @@
     "cmake",
     "cxx_compiler_stub",
     "make",
-    "pkg-config"
+    "pkg-config",
+    "sysroot_linux-64"
    ]
   },
   "host": {
@@ -374,7 +376,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -395,6 +397,7 @@
     "cmake >=3.9.0",
     "make",
     "pkg-config",
+    "sysroot_linux-64 2.17",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake >=3.9.0",
@@ -463,7 +466,7 @@
   "build": {
    "error_overdepending": true,
    "error_overlinking": true,
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -554,7 +557,7 @@
  "pinning_version": "2022.03.05.13.20.38",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
- "raw_meta_yaml": "{% set name = \"Omicron\" %}\n{% set version = \"3.1.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://git.ligo.org/virgo/virgoapp/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 02a3085079f16b47ca1b8473d5cb352575a14d957ef950b9534ec387072ceadb\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: 0\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.9.0\n    - make  # [unix]\n    - pkg-config  # [unix]\n  host:\n    - fftw\n    - gwollum {{ version }}\n    - root_base\n    # https://github.com/conda-forge/root-feedstock/issues/158\n    - nlohmann_json >=3.10.5\n  run:\n    - fftw\n    - gwollum\n    - root_base\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    # sanity check\n    - omicron version\n    # run test commands\n    - for omitest in ${PREFIX}/sbin/omicron-test-*; do ${omitest}; done  # [not osx]\n    # check pkg-config\n    - pkg-config --print-errors --exact-version {{ version }} {{ name|lower }}\n    # check activate variables\n    - test \"${OMICRON_HTML}\" == \"${PREFIX}/share/omicron/html\"  # [unix]\n\nabout:\n  home: https://virgo.docs.ligo.org/virgoapp/{{ name }}/\n  doc_url: https://virgo.docs.ligo.org/virgoapp/{{ name }}/\n  dev_url: https://git.ligo.org/virgo/virgoapp/{{ name }}.git\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: An algorithm to detect and characterize transient events in gravitational-wave detectors\n  description: |\n    Omicron has been derived from a well-known 'burst-type' search pipeline\n    called Q-pipeline (a.k.a Omega).  Q-pipeline is able to detect and\n    characterize detector glitches with a very good efficiency and precision.\n    So, the idea was to adapt it for detector characterization purposes,\n    i.e. to run it over many auxiliary channels.  To achieve this, the\n    original matlab code has been replaced by a C++ architecture and many\n    steps have been removed to run faster.  The name Omicron was chosen to\n    recall the Omega inheritance.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - rhyspoulton\n",
+ "raw_meta_yaml": "{% set name = \"Omicron\" %}\n{% set version = \"3.1.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://git.ligo.org/virgo/virgoapp/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 02a3085079f16b47ca1b8473d5cb352575a14d957ef950b9534ec387072ceadb\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true\n  number: 1\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.9.0\n    - make  # [unix]\n    - pkg-config  # [unix]\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n    - fftw\n    - gwollum {{ version }}\n    - root_base\n    # https://github.com/conda-forge/root-feedstock/issues/158\n    - nlohmann_json >=3.10.5\n  run:\n    - fftw\n    - gwollum\n    - root_base\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    # sanity check\n    - omicron version\n    # run test commands\n    - for omitest in ${PREFIX}/sbin/omicron-test-*; do ${omitest}; done  # [not osx]\n    # check pkg-config\n    - pkg-config --print-errors --exact-version {{ version }} {{ name|lower }}\n    # check activate variables\n    - test \"${OMICRON_HTML}\" == \"${PREFIX}/share/omicron/html\"  # [unix]\n\nabout:\n  home: https://virgo.docs.ligo.org/virgoapp/{{ name }}/\n  doc_url: https://virgo.docs.ligo.org/virgoapp/{{ name }}/\n  dev_url: https://git.ligo.org/virgo/virgoapp/{{ name }}.git\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: An algorithm to detect and characterize transient events in gravitational-wave detectors\n  description: |\n    Omicron has been derived from a well-known 'burst-type' search pipeline\n    called Q-pipeline (a.k.a Omega).  Q-pipeline is able to detect and\n    characterize detector glitches with a very good efficiency and precision.\n    So, the idea was to adapt it for detector characterization purposes,\n    i.e. to run it over many auxiliary channels.  To achieve this, the\n    original matlab code has been replaced by a C++ architecture and many\n    steps have been removed to run faster.  The name Omicron was chosen to\n    recall the Omega inheritance.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - rhyspoulton\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -566,7 +569,8 @@
    "make",
    "nlohmann_json",
    "pkg-config",
-   "root_base"
+   "root_base",
+   "sysroot_linux-64"
   ]
  },
  "requirements": {
@@ -577,7 +581,8 @@
     "cmake",
     "cxx_compiler_stub",
     "make",
-    "pkg-config"
+    "pkg-config",
+    "sysroot_linux-64"
    ]
   },
   "host": {
@@ -587,6 +592,7 @@
     "cxx_compiler_stub",
     "fftw",
     "gwollum",
+    "linux-sysroot",
     "nlohmann_json",
     "root_base"
    ]
@@ -598,6 +604,7 @@
     "cxx_compiler_stub",
     "fftw",
     "gwollum",
+    "linux-sysroot",
     "root_base"
    ]
   },
@@ -618,7 +625,8 @@
     "cmake >=3.9.0",
     "cxx_compiler_stub",
     "make",
-    "pkg-config"
+    "pkg-config",
+    "sysroot_linux-64 2.17"
    ]
   },
   "host": {
