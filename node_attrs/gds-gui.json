@@ -128,7 +128,7 @@
    "summary": "GDS GUI libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -160,7 +160,8 @@
      "build": [
       "cxx_compiler_stub",
       "make",
-      "pkg-config"
+      "pkg-config",
+      "sysroot_linux-64 2.17"
      ],
      "host": [
       "gds-base >=2.19.8",
@@ -205,7 +206,8 @@
    "elements": [
     "cxx_compiler_stub",
     "make",
-    "pkg-config"
+    "pkg-config",
+    "sysroot_linux-64"
    ]
   },
   "host": {
@@ -242,7 +244,7 @@
    "summary": "GDS GUI libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -276,7 +278,8 @@
      "build": [
       "cxx_compiler_stub",
       "make",
-      "pkg-config"
+      "pkg-config",
+      "sysroot_linux-64 2.17"
      ],
      "host": [
       "gds-base >=2.19.8",
@@ -382,7 +385,7 @@
    "summary": "GDS GUI libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -497,7 +500,7 @@
   "root_base6244": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1185294857\">bot CI job</a>): master: ['linux_64_: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 2\\n', 'osx_64_: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n']",
   "root_base6246": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1200695784\">bot CI job</a>): master: ['linux_64_: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 2\\n', 'osx_64_: Encountered problems while solving:\\n  - nothing provides requested libllvm9 9.0.1.* 3\\n']"
  },
- "raw_meta_yaml": "{% set name = \"gds-gui\" %}\n{% set version = \"2.19.7\" %}\n\n# dependencies\n{% set gds_base_version = \"2.19.8\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://software.igwn.org/sources/source/{{ name }}-{{ version }}.tar.gz\n  sha256: 779b5e7ad20595b50cd07aa908722d68ed388434b6cb64a71787cce98688f83b\n\nbuild:\n  number: 0\n  skip: true  # [win]\n\noutputs:\n  - name: gds-gui-crtools\n    script: build-crtools.sh\n    build:\n      ignore_run_exports:\n        # header needed only\n        - gds-base-gdstrig\n      run_exports:\n        - {{ pin_subpackage(\"gds-gui-crtools\", max_pin=\"x.x\") }}\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - make\n        - pkg-config\n      host:\n        - gds-base >={{ gds_base_version }}\n        - gds-base-crtools >={{ gds_base_version }}\n        - root_base\n      run:\n        - gds-base >={{ gds_base_version }}\n        - gds-base-crtools >={{ gds_base_version }}\n        - root_base\n    test:\n      requires:\n        - pkg-config\n      commands:\n        # basic file existence\n        - test -f ${PREFIX}/include/gds/dttview/TLGMath.hh  # [unix]\n        - test -f ${PREFIX}/lib/libRdttview${SHLIB_EXT}  # [unix]\n        # check root extensions\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRdttview\\\");\"  # [linux]\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRgdsplot\\\");\"  # [linux]\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRligogui\\\");\"  # [linux]\n        # check pkg-config files\n        - pkg-config --print-errors --exact-version {{ version }} gdsdttview  # [unix]\n        - pkg-config --print-errors --exact-version {{ version }} gdsligogui  # [unix]\n    about:\n      home: https://wiki.ligo.org/Computing/DASWG/DMT\n      dev_url: https://git.ligo.org/gds/gds.git\n      license: GPL-2.0-only\n      license_family: GPL\n      license_file: COPYING\n      summary: GDS control room tools\n      description: |\n        GDS control room tools and GUI libraries\n\nabout:\n  home: https://wiki.ligo.org/Computing/DASWG/DMT\n  dev_url: https://git.ligo.org/gds/gds.git\n  license: GPL-2.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: GDS GUI libraries\n  description: |\n    GDS control room tools and GUI libraries\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - emaros\n",
+ "raw_meta_yaml": "{% set name = \"gds-gui\" %}\n{% set version = \"2.19.7\" %}\n\n# dependencies\n{% set gds_base_version = \"2.19.8\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://software.igwn.org/sources/source/{{ name }}-{{ version }}.tar.gz\n  sha256: 779b5e7ad20595b50cd07aa908722d68ed388434b6cb64a71787cce98688f83b\n\nbuild:\n  number: 1\n  skip: true  # [win]\n\noutputs:\n  - name: gds-gui-crtools\n    script: build-crtools.sh\n    build:\n      ignore_run_exports:\n        # header needed only\n        - gds-base-gdstrig\n      run_exports:\n        - {{ pin_subpackage(\"gds-gui-crtools\", max_pin=\"x.x\") }}\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - make\n        - pkg-config\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - gds-base >={{ gds_base_version }}\n        - gds-base-crtools >={{ gds_base_version }}\n        - root_base\n      run:\n        - gds-base >={{ gds_base_version }}\n        - gds-base-crtools >={{ gds_base_version }}\n        - root_base\n    test:\n      requires:\n        - pkg-config\n      commands:\n        # basic file existence\n        - test -f ${PREFIX}/include/gds/dttview/TLGMath.hh  # [unix]\n        - test -f ${PREFIX}/lib/libRdttview${SHLIB_EXT}  # [unix]\n        # check root extensions\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRdttview\\\");\"  # [linux]\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRgdsplot\\\");\"  # [linux]\n        - root -b -l -x -q -e \"gInterpreter->AddIncludePath(\\\"${PREFIX}/include/gds\\\"); gSystem->Load(\\\"libRligogui\\\");\"  # [linux]\n        # check pkg-config files\n        - pkg-config --print-errors --exact-version {{ version }} gdsdttview  # [unix]\n        - pkg-config --print-errors --exact-version {{ version }} gdsligogui  # [unix]\n    about:\n      home: https://wiki.ligo.org/Computing/DASWG/DMT\n      dev_url: https://git.ligo.org/gds/gds.git\n      license: GPL-2.0-only\n      license_family: GPL\n      license_file: COPYING\n      summary: GDS control room tools\n      description: |\n        GDS control room tools and GUI libraries\n\nabout:\n  home: https://wiki.ligo.org/Computing/DASWG/DMT\n  dev_url: https://git.ligo.org/gds/gds.git\n  license: GPL-2.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: GDS GUI libraries\n  description: |\n    GDS control room tools and GUI libraries\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - emaros\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -506,7 +509,8 @@
    "gds-base-crtools",
    "make",
    "pkg-config",
-   "root_base"
+   "root_base",
+   "sysroot_linux-64"
   ]
  },
  "requirements": {
@@ -515,7 +519,8 @@
    "elements": [
     "cxx_compiler_stub",
     "make",
-    "pkg-config"
+    "pkg-config",
+    "sysroot_linux-64"
    ]
   },
   "host": {
@@ -524,6 +529,7 @@
     "cxx_compiler_stub",
     "gds-base",
     "gds-base-crtools",
+    "linux-sysroot",
     "root_base"
    ]
   },
@@ -533,6 +539,7 @@
     "cxx_compiler_stub",
     "gds-base",
     "gds-base-crtools",
+    "linux-sysroot",
     "root_base"
    ]
   },
@@ -551,7 +558,8 @@
    "elements": [
     "cxx_compiler_stub",
     "make",
-    "pkg-config"
+    "pkg-config",
+    "sysroot_linux-64 2.17"
    ]
   },
   "host": {
