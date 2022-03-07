@@ -419,6 +419,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/872847546.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.1.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -3473,7 +3490,7 @@
   }
  },
  "name": "deepmd-kit",
- "new_version": "2.0.3",
+ "new_version": "2.1.0",
  "new_version_attempts": {
   "1.1.5": 1,
   "1.2.0": 1,
@@ -3483,7 +3500,8 @@
   "2.0.0": 1,
   "2.0.1": 2,
   "2.0.2": 1,
-  "2.0.3": 1
+  "2.0.3": 1,
+  "2.1.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -3727,13 +3745,9 @@
    "deepmd-kit"
   ]
  },
- "pinning_version": "2022.02.07.00.17.20",
- "pre_pr_migrator_attempts": {
-  "version": 1
- },
- "pre_pr_migrator_status": {
-  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1221890040\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1134, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 193, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/version.py\", line 613, in migrate\n    with indir(recipe_dir):\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/contextlib.py\", line 119, in __enter__\n    return next(self.gen)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/xonsh/lib/os.xsh\", line 10, in indir\n    ![pushd @(d)]\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/xonsh/__amalgam__.py\", line 23342, in subproc_captured_hiddenobject\n    return run_subproc(cmds, captured=\"hiddenobject\", envs=envs)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/xonsh/__amalgam__.py\", line 23301, in run_subproc\n    command.end()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/xonsh/__amalgam__.py\", line 14772, in end\n    self._end(tee_output=tee_output)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/xonsh/__amalgam__.py\", line 14791, in _end\n    self._raise_subproc_error()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/xonsh/__amalgam__.py\", line 14917, in _raise_subproc_error\n    raise subprocess.CalledProcessError(rtn, spec.args, output=self.output)\nsubprocess.CalledProcessError: Command '['pushd', './feedstocks/deepmd-kit-feedstock/recipe']' returned non-zero exit status 1.\n"
- },
+ "pinning_version": "2022.03.05.13.20.38",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"deepmd-kit\" %}\n{% set version = \"2.0.3\" %}\n{% set lammpsversion = \"stable_29Sep2021\" %}\n{% set tf_version = \"2.6\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/deepmodeling/{{ name }}/archive/v{{ version }}.tar.gz\n    sha256: 181dbf67b6c6beaf2748bda8d82c219ce6080f852b9a941387f8bbdd7552efae\n    patches:\n      - win.patch  # [win]\n  - url: https://github.com/lammps/lammps/archive/{{ lammpsversion }}.tar.gz\n    sha256: 2dff656cb21fd9a6d46c818741c99d400cfb1b12102604844663b655fb2f893d\n    folder: lammps\n\nbuild:\n  number: 2\n  string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != \"None\"]\n  string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == \"None\"]\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}  # [cuda_compiler_version != \"None\"]\n    - cmake >=3.7\n    - make  # [unix]\n    - ninja\n\n  host:\n    - python\n    - pip\n    - scikit-build\n    - m2r\n    - tensorflow {{ tf_version }}.*  # [not linux]\n    - tensorflow {{ tf_version }}.* cuda{{ cuda_compiler_version | replace('.', '') }}*  # [linux and cuda_compiler_version != \"None\"]\n    - tensorflow {{ tf_version }}.* cpu_*  # [linux and cuda_compiler_version == \"None\"]\n    - libtensorflow_cc {{ tf_version }}.* cuda{{ cuda_compiler_version | replace('.', '') }}*  # [linux and cuda_compiler_version != \"None\"]\n    - libtensorflow_cc {{ tf_version }}.* cpu_*  # [linux and cuda_compiler_version == \"None\"]\n    - setuptools_scm\n    - numpy 1.19.*\n    - scipy\n    - dargs >=0.2.6\n    - pyyaml\n    - {{ mpi }}  # [linux]\n    - python-hostlist >=1.21\n    - h5py\n    - wcmatch\n    - cub  # [cuda_compiler_version == '10.2']\n\n  run:\n    - python\n    - tensorflow {{ tf_version }}.*  # [not linux]\n    - tensorflow {{ tf_version }}.* cuda{{ cuda_compiler_version | replace('.', '') }}*  # [linux and cuda_compiler_version != \"None\"]\n    - tensorflow {{ tf_version }}.* cpu_*  # [linux and cuda_compiler_version == \"None\"]\n    - libtensorflow_cc {{ tf_version }}.* cuda{{ cuda_compiler_version | replace('.', '') }}*  # [linux and cuda_compiler_version != \"None\"]\n    - libtensorflow_cc {{ tf_version }}.* cpu_*  # [linux and cuda_compiler_version == \"None\"]\n    - numpy 1.19.*\n    - scipy\n    - dargs >=0.2.6\n    - pyyaml\n    - {{ mpi }}  # [linux]\n    - python-hostlist >=1.21\n    - h5py\n    - wcmatch\n    #- lammps 2021.09.29  # [linux]\n\ntest:\n  files:\n    - water_se_a.json\n  source_files:\n    - examples/water/data\n  imports:\n    # dlopen: cannot load any more object with static TLS\n    # because tensorflow link too many libraries\n    # but it can successfully run on my machine\n    - deepmd  # [not linux]\n  #requires:\n  #  - pip\n  commands:\n    #- pip check\n    - dp -h  # [not linux]\n    - dp train -h  # [not linux]\n    - dp freeze -h  # [not linux]\n    - dp test -h  # [not linux]\n    - mv examples/water/data/data_0 ./data\n    - dp train water_se_a.json  # [not linux]\n    - dp freeze  # [not linux]\n\nabout:\n  home: https://github.com/deepmodeling/deepmd-kit\n  license: LGPL-3.0-only\n  license_family: LGPL\n  license_file: LICENSE\n  summary: A deep learning package for many-body potential energy representation and molecular dynamics\n  doc_url: https://github.com/deepmodeling/deepmd-kit\n  dev_url: https://github.com/deepmodeling/deepmd-kit\n\nextra:\n  recipe-maintainers:\n    - njzjz\n",
  "req": {
   "__set__": true,
@@ -3825,7 +3839,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.16.2",
+ "smithy_version": "3.17.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
