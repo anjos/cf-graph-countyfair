@@ -55,7 +55,11 @@
  "archived": false,
  "bad": false,
  "branch": "main",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  }
+ },
  "feedstock_name": "liblsl",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -69,7 +73,7 @@
    "summary": "Multi-modal time-synched data transmission over local network"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "liblsl"
    ]
@@ -86,6 +90,7 @@
   "requirements": {
    "build": [
     "cmake >=3.12",
+    "make",
     "cxx_compiler_stub"
    ],
    "host": [
@@ -110,7 +115,8 @@
    "__set__": true,
    "elements": [
     "cmake",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make"
    ]
   },
   "host": {
@@ -139,8 +145,9 @@
    "summary": "Multi-modal time-synched data transmission over local network"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
+    "liblsl",
     "liblsl",
     "liblsl",
     "liblsl"
@@ -148,6 +155,7 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "tstenner",
     "tstenner",
     "tstenner",
     "tstenner"
@@ -160,13 +168,20 @@
   "requirements": {
    "build": [
     "cmake >=3.12",
+    "make",
     "cxx_compiler_stub",
     "cmake >=3.12",
+    "make",
     "cxx_compiler_stub",
     "cmake >=3.12",
+    "make",
+    "cxx_compiler_stub",
+    "cmake >=3.12",
+    "make",
     "cxx_compiler_stub"
    ],
    "host": [
+    "pugixml",
     "pugixml",
     "pugixml",
     "pugixml"
@@ -178,6 +193,10 @@
   },
   "test": {
    "commands": [
+    "lslver",
+    "test -f $PREFIX/include/lsl_c.h",
+    "test -f $PREFIX/include/lsl_cpp.h",
+    "test -f $PREFIX/lib/liblsl${SHLIB_EXT}",
     "lslver",
     "test -f $PREFIX/include/lsl_c.h",
     "test -f $PREFIX/include/lsl_cpp.h",
@@ -211,7 +230,7 @@
    "summary": "Multi-modal time-synched data transmission over local network"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "liblsl"
    ]
@@ -228,6 +247,7 @@
   "requirements": {
    "build": [
     "cmake >=3.12",
+    "make",
     "cxx_compiler_stub"
    ],
    "host": [
@@ -252,7 +272,80 @@
    "__set__": true,
    "elements": [
     "cmake",
+    "cxx_compiler_stub",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "pugixml"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/sccn/liblsl",
+   "doc_url": "https://labstreaminglayer.readthedocs.io/",
+   "home": "https://github.com/sccn/liblsl",
+   "license": "MIT",
+   "license_family": "MIT",
+   "license_file": "LICENSE",
+   "summary": "Multi-modal time-synched data transmission over local network"
+  },
+  "build": {
+   "number": "1",
+   "run_exports": [
+    "liblsl"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "tstenner"
+   ]
+  },
+  "package": {
+   "name": "liblsl",
+   "version": "1.15.2"
+  },
+  "requirements": {
+   "build": [
+    "cmake >=3.12",
+    "make",
     "cxx_compiler_stub"
+   ],
+   "host": [
+    "pugixml"
+   ]
+  },
+  "source": {
+   "sha256": "308ae1fb36e17fc5fd4d6dee6a7967ff041488f41e6b4c4cdfe0ebe00f755a4c",
+   "url": "https://github.com/sccn/liblsl/archive/refs/tags/v1.15.2.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "lslver",
+    "test -f $PREFIX/include/lsl_c.h",
+    "test -f $PREFIX/include/lsl_cpp.h",
+    "test -f $PREFIX/lib/liblsl${SHLIB_EXT}"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cmake",
+    "cxx_compiler_stub",
+    "make"
    ]
   },
   "host": {
@@ -277,12 +370,13 @@
   ]
  },
  "pinning_version": "2022.03.04.19.31.39",
- "raw_meta_yaml": "{% set name = \"liblsl\" %}\n{% set version = \"1.15.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/sccn/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 308ae1fb36e17fc5fd4d6dee6a7967ff041488f41e6b4c4cdfe0ebe00f755a4c\n\nbuild:\n  number: 0\n  run_exports:\n    - {{ pin_subpackage('liblsl', max_pin='x') }}\n\nrequirements:\n  build:\n    - cmake >=3.12\n    - {{ compiler('cxx') }}\n  host:\n    - pugixml\n\ntest:\n  commands:\n    - lslver\n    - test -f $PREFIX/include/lsl_c.h  # [unix]\n    - test -f $PREFIX/include/lsl_cpp.h  # [unix]\n    - if not exist %LIBRARY_INC%\\\\lsl_c.h exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\\\lsl_cpp.h exit 1  # [win]\n    - test -f $PREFIX/lib/liblsl${SHLIB_EXT}  # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\lsl.dll exit 1  # [win]\n\nabout:\n  home: https://github.com/sccn/liblsl\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Multi-modal time-synched data transmission over local network\n  doc_url: https://labstreaminglayer.readthedocs.io/\n  dev_url: https://github.com/sccn/{{ name }}\nextra:\n  recipe-maintainers:\n    - tstenner\n",
+ "raw_meta_yaml": "{% set name = \"liblsl\" %}\n{% set version = \"1.15.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/sccn/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 308ae1fb36e17fc5fd4d6dee6a7967ff041488f41e6b4c4cdfe0ebe00f755a4c\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage('liblsl', max_pin='x') }}\n\nrequirements:\n  build:\n    - cmake >=3.12\n    - make\n    - {{ compiler('cxx') }}\n  host:\n    - pugixml\n\ntest:\n  commands:\n    - lslver\n    - test -f $PREFIX/include/lsl_c.h  # [unix]\n    - test -f $PREFIX/include/lsl_cpp.h  # [unix]\n    - if not exist %LIBRARY_INC%\\\\lsl_c.h exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\\\lsl_cpp.h exit 1  # [win]\n    - test -f $PREFIX/lib/liblsl${SHLIB_EXT}  # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\lsl.dll exit 1  # [win]\n\nabout:\n  home: https://github.com/sccn/liblsl\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Multi-modal time-synched data transmission over local network\n  doc_url: https://labstreaminglayer.readthedocs.io/\n  dev_url: https://github.com/sccn/{{ name }}\nextra:\n  recipe-maintainers:\n    - tstenner\n",
  "req": {
   "__set__": true,
   "elements": [
    "cmake",
    "cxx_compiler_stub",
+   "make",
    "pugixml"
   ]
  },
@@ -291,7 +385,8 @@
    "__set__": true,
    "elements": [
     "cmake",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make"
    ]
   },
   "host": {
@@ -319,7 +414,8 @@
    "__set__": true,
    "elements": [
     "cmake >=3.12",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make"
    ]
   },
   "host": {
@@ -350,7 +446,7 @@
    "summary": "Multi-modal time-synched data transmission over local network"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "liblsl"
    ]
@@ -367,6 +463,7 @@
   "requirements": {
    "build": [
     "cmake >=3.12",
+    "make",
     "cxx_compiler_stub"
    ],
    "host": [
@@ -391,7 +488,8 @@
    "__set__": true,
    "elements": [
     "cmake",
-    "cxx_compiler_stub"
+    "cxx_compiler_stub",
+    "make"
    ]
   },
   "host": {
