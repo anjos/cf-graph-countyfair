@@ -530,8 +530,9 @@
   }
  },
  "name": "r-pki",
- "new_version": "0.1_9",
+ "new_version": "0.1_10",
  "new_version_attempts": {
+  "0.1_10": 1,
   "0.1_7": 1,
   "0.1_8": 1,
   "0.1_9": 1
@@ -656,6 +657,12 @@
   ]
  },
  "pinning_version": "2021.11.02.20.53.42",
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1957973518\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 270, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 285, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
+ },
  "raw_meta_yaml": "{% set version = \"0.1-9\" %}\n\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-pki\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  - url:\n      - {{ cran_mirror }}/src/contrib/PKI_{{ version }}.tar.gz\n      - {{ cran_mirror }}/src/contrib/Archive/PKI/PKI_{{ version }}.tar.gz\n    sha256: c69f0e05f39aa7ff574383e8808778d22941841543b4c88c0b75af54aee41fc9\n  - url: https://www.openssl.org/source/openssl-1.0.2u.tar.gz  # [win]\n    sha256: ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16  # [win]\n    folder: src/win32  # [win]\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 0\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}        # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}sed               # [win]\n    - {{ posix }}grep              # [win]\n    - {{ posix }}autoconf\n    - {{ posix }}automake          # [not win]\n    - {{ posix }}automake-wrapper  # [win]\n    - {{ posix }}pkg-config\n    - {{ posix }}make\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n\n  host:\n    - r-base\n    - r-base64enc\n    - {{ native }}openssl\n\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - r-base64enc\n    - {{ native }}openssl          # [win]\n\ntest:\n  commands:\n    - $R -e \"library('PKI')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('PKI')\\\"\"  # [win]\n\nabout:\n  home: http://www.rforge.net/PKI\n  license: GPL-2.0-or-later\n  summary: PKI functions such as verifying certificates, RSA encription and signing which can be used to build PKI infrastructure and perform cryptographic tasks.\n  license_family: GPL3\n  license_file:\n    - {{ environ[\"PREFIX\"] }}/lib/R/share/licenses/GPL-3\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n",
  "req": {
   "__set__": true,
