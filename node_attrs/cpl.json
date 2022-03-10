@@ -1,0 +1,228 @@
+{
+ "archived": false,
+ "bad": false,
+ "branch": "main",
+ "conda-forge.yml": {},
+ "feedstock_name": "cpl",
+ "hash_type": "sha256",
+ "linux_64_meta_yaml": {
+  "about": {
+   "description": "The Common Pipeline Library (CPL) comprises a set of ISO-C libraries\nthat provide a comprehensive, efficient and robust software toolkit\nto develop astronomical data-reduction tasks (known as \"recipes\").\nThese data-reduction tasks can then be executed manually by a user,\nor can be triggered in an automated data-reduction framework (known\nas \"pipelines\") which are used at ESO to monitor the health status\nof VLT instruments, for quick-look data processing at the observatory,\nand the creation of data products available from the ESO archive facility.\n",
+   "doc_url": "https://www.eso.org/sci/software/cpl/documentation.html",
+   "home": "https://www.eso.org/sci/software/cpl/",
+   "license": "GPL-2.0-or-later",
+   "license_family": "GPL",
+   "license_file": "COPYING",
+   "summary": "A software toolkit to develop astronomical data-reduction tasks"
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "cpl"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "teake",
+    "hugobuddel"
+   ]
+  },
+  "package": {
+   "name": "cpl",
+   "version": "7.1.4"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "make",
+    "libgomp"
+   ],
+   "host": [
+    "cfitsio",
+    "fftw",
+    "wcslib"
+   ],
+   "run": [
+    "wcslib",
+    "libcurl"
+   ]
+  },
+  "source": {
+   "sha256": "cb43adba7ab15e315fbfcba4e2d8b88fa56d29a5a16036a7f082621b8416bd6c",
+   "url": "https://ftp.eso.org/pub/dfs/pipelines/libraries//cpl/cpl-7.1.4.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -f ${PREFIX}/lib/libcplcore.so",
+    "test -f ${PREFIX}/lib/libcplui.so"
+   ]
+  }
+ },
+ "linux_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "libgomp",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "cfitsio",
+    "fftw",
+    "wcslib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libcurl",
+    "wcslib"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "meta_yaml": {
+  "about": {
+   "description": "The Common Pipeline Library (CPL) comprises a set of ISO-C libraries\nthat provide a comprehensive, efficient and robust software toolkit\nto develop astronomical data-reduction tasks (known as \"recipes\").\nThese data-reduction tasks can then be executed manually by a user,\nor can be triggered in an automated data-reduction framework (known\nas \"pipelines\") which are used at ESO to monitor the health status\nof VLT instruments, for quick-look data processing at the observatory,\nand the creation of data products available from the ESO archive facility.\n",
+   "doc_url": "https://www.eso.org/sci/software/cpl/documentation.html",
+   "home": "https://www.eso.org/sci/software/cpl/",
+   "license": "GPL-2.0-or-later",
+   "license_family": "GPL",
+   "license_file": "COPYING",
+   "summary": "A software toolkit to develop astronomical data-reduction tasks"
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "cpl"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "teake",
+    "hugobuddel"
+   ]
+  },
+  "package": {
+   "name": "cpl",
+   "version": "7.1.4"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "make",
+    "libgomp"
+   ],
+   "host": [
+    "cfitsio",
+    "fftw",
+    "wcslib"
+   ],
+   "run": [
+    "wcslib",
+    "libcurl"
+   ]
+  },
+  "source": {
+   "sha256": "cb43adba7ab15e315fbfcba4e2d8b88fa56d29a5a16036a7f082621b8416bd6c",
+   "url": "https://ftp.eso.org/pub/dfs/pipelines/libraries//cpl/cpl-7.1.4.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -f ${PREFIX}/lib/libcplcore.so",
+    "test -f ${PREFIX}/lib/libcplui.so"
+   ]
+  }
+ },
+ "name": "cpl",
+ "outputs_names": {
+  "__set__": true,
+  "elements": [
+   "cpl"
+  ]
+ },
+ "raw_meta_yaml": "{% set name = \"cpl\" %}\n{% set version = \"7.1.4\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://ftp.eso.org/pub/dfs/pipelines/libraries//{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: cb43adba7ab15e315fbfcba4e2d8b88fa56d29a5a16036a7f082621b8416bd6c\n\nbuild:\n  number: 0\n  skip: True  # [win or osx]\n  run_exports:\n    # The ABI doesn't seem to change for minor or patch release,\n    # https://abi-laboratory.pro/?view=timeline&l=cpl.\n    # So we pin only major releases.\n    - {{ pin_compatible('cpl', max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - make\n    - llvm-openmp  # [osx]\n    - libgomp      # [linux]\n  host:\n    - cfitsio\n    - fftw\n    - wcslib\n  run:\n    # wcslib has no run_exports\n    - wcslib\n    # libcurl is not a direct dependency of CPL, but libtool links CPL to it because\n    # pkg-config detects libcurl, probably due to this cfitsio recipe patch:\n    # https://github.com/conda-forge/cfitsio-feedstock/blob/master/recipe/lcurl-pkg-config.patch\n    # If we were to manually tell libtool not to do so, libtool links to libnsl.\n    # So we either need to include libnsl here and do some funky replacements\n    # in all the Makefiles, or just include libcurl here.\n    - libcurl\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libcplcore{{ SHLIB_EXT }}\n    - test -f ${PREFIX}/lib/libcplui{{ SHLIB_EXT }}\n\nabout:\n  home: https://www.eso.org/sci/software/cpl/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: 'A software toolkit to develop astronomical data-reduction tasks'\n  description: |\n    The Common Pipeline Library (CPL) comprises a set of ISO-C libraries \n    that provide a comprehensive, efficient and robust software toolkit \n    to develop astronomical data-reduction tasks (known as \"recipes\"). \n    These data-reduction tasks can then be executed manually by a user, \n    or can be triggered in an automated data-reduction framework (known\n    as \"pipelines\") which are used at ESO to monitor the health status\n    of VLT instruments, for quick-look data processing at the observatory, \n    and the creation of data products available from the ESO archive facility.\n  doc_url: https://www.eso.org/sci/software/cpl/documentation.html\n\nextra:\n  recipe-maintainers:\n    - teake\n    - hugobuddel\n",
+ "req": {
+  "__set__": true,
+  "elements": [
+   "c_compiler_stub",
+   "cfitsio",
+   "fftw",
+   "libcurl",
+   "libgomp",
+   "make",
+   "wcslib"
+  ]
+ },
+ "requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "libgomp",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cfitsio",
+    "ctng-compilers",
+    "fftw",
+    "wcslib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "ctng-compilers",
+    "libcurl",
+    "wcslib"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "strong_exports": false,
+ "total_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "libgomp",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "cfitsio",
+    "fftw",
+    "wcslib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libcurl",
+    "wcslib"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "url": "https://ftp.eso.org/pub/dfs/pipelines/libraries//cpl/cpl-7.1.4.tar.gz",
+ "version": "7.1.4"
+}
