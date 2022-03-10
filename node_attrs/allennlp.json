@@ -375,6 +375,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/875856083.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.9.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1458,7 +1475,7 @@
   }
  },
  "name": "allennlp",
- "new_version": "2.9.0",
+ "new_version": "2.9.1",
  "new_version_attempts": {
   "1.4.0": 1,
   "2.0.0": 1,
@@ -1472,7 +1489,8 @@
   "2.6.0": 1,
   "2.7.0": 1,
   "2.8.0": 1,
-  "2.9.0": 1
+  "2.9.0": 1,
+  "2.9.1": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -2104,7 +2122,7 @@
    "allennlp"
   ]
  },
- "pinning_version": "2022.02.06.08.21.47",
+ "pinning_version": "2022.03.09.08.54.39",
  "raw_meta_yaml": "{% set version = \"2.9.0\" %}\n\n{% set spacy_model = \"en_core_web_sm\" %}\n\npackage:\n  name: allennlp\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/allenai/allennlp/archive/v{{ version }}.tar.gz\n    sha256: 3e902fe381ebd915dda615476b84b68949ae9607193a915a5dbdc5d86c156b0c\n    patches:\n      # upstream expectes the folders /tests & /test_fixtures to be relative\n      # to the finished package, even though those folders are not packaged;\n      # effectively, the upstream test suite can currently only be run in (their)\n      # development mode, so patch it that we can properly test the package here.\n      - patches/0001-patch-AllenNlpTestCase-so-that-test-suite-can-be-run.patch\n      - patches/0002-look-for-README-in-packaging-compatible-location.patch\n\nbuild:\n  entry_points:\n    - allennlp=allennlp.__main__:run\n  number: 0\n  script: {{ PYTHON }} -m pip install . --no-deps -vv\n  skip: true  # [win or py<37]\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - {{ compiler('c') }}\n    - sysroot_linux-64 ==2.17   # [linux64]\n  host:\n    - python\n    - pip\n  run:\n    - python\n    # see https://github.com/allenai/allennlp/blame/v{{ version }}/setup.py\n    # (as of 2.9.0, removed dataclasses (obsolete) & pytest compared to upstream)\n    - base58\n    - cached_path >=1.0.2,<2\n    - checklist =0.0.11\n    - dill\n    - fairscale ==0.4.5\n    - filelock >=3.3,<3.5\n    - h5py\n    - huggingface_hub >=0.0.16\n    - jsonnet >=0.10.0          # [not win]\n    - python-lmdb\n    - more-itertools\n    - nltk <3.6.6\n    - numpy\n    - pytorch >=1.6.0,<1.11.0\n    - requests >=2.18\n    - scikit-learn\n    - scipy\n    - sentencepiece\n    - spacy >=2.1.0,<3.3\n    - tensorboardx >=1.2\n    - termcolor =1.1.*\n    - torchvision >=0.8.1,<0.12.0\n    - tqdm >=4.62\n    - transformers >=4.1,<4.16\n    - wandb >=0.10,<0.13\n\n{% set tests_to_skip = \"_not_a_real_test\" %}\n# some issue with too much forking (but is flaky, doesn't always appear):\n# `The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...`\n{% set tests_to_skip = tests_to_skip + \" or test_multiprocess_data_loader\" %}    # [osx]\n{% set tests_to_skip = tests_to_skip + \" or test_with_multi_process_loading\" %}  # [osx]\n# fails on osx with `process 0 terminated with signal SIGSEGV` in torch.multiprocess\n{% set tests_to_skip = tests_to_skip + \" or test_train_model_distributed_without_sharded_reader\" %}  # [osx]\n\ntest:\n  requires:\n    - flaky\n    - git\n    - git-lfs\n    - matplotlib\n    - pytest\n    - responses >=0.12.1\n    - spacy-model-{{ spacy_model }}\n  source_files:\n    - tests/\n    - test_fixtures/\n    # needed by one of the tests\n    - README.md\n  commands:\n    - python -m spacy link {{ spacy_model }} {{ spacy_model }}\n    - allennlp test-install\n    - pytest tests/ -v -k \"not ({{ tests_to_skip }})\"\n  imports:\n    - allennlp\n    - allennlp.commands\n    - allennlp.common\n    - allennlp.common.testing\n    - allennlp.data\n    - allennlp.data.dataset_readers\n    - allennlp.data.dataset_readers.dataset_utils\n    - allennlp.data.fields\n    - allennlp.data.samplers\n    - allennlp.data.token_indexers\n    - allennlp.data.tokenizers\n    - allennlp.models\n    - allennlp.modules\n    - allennlp.modules.attention\n    - allennlp.modules.matrix_attention\n    - allennlp.modules.seq2seq_encoders\n    - allennlp.modules.seq2vec_encoders\n    - allennlp.modules.span_extractors\n    - allennlp.modules.text_field_embedders\n    - allennlp.modules.token_embedders\n    - allennlp.nn\n    - allennlp.nn.regularizers\n    - allennlp.predictors\n    - allennlp.tools\n    - allennlp.training\n    - allennlp.training.learning_rate_schedulers\n    - allennlp.training.metrics\n    - allennlp.training.momentum_schedulers\n\nabout:\n  home: https://allennlp.org/\n  license: Apache-2.0\n  license_family: APACHE\n  license_file: LICENSE\n  summary: An open-source NLP research library, built on PyTorch.\n  description: |\n    An Apache 2.0 NLP research library, built on PyTorch, for developing state-of-the-art \n    deep learning models on a wide variety of linguistic tasks.\n  doc_url: https://allenai.github.io/allennlp-docs/\n  dev_url: https://github.com/allenai/allennlp\n\nextra:\n  recipe-maintainers:\n    - CurtLH\n    - sodre\n    - h-vetinari\n    - dirkgr\n",
  "req": {
   "__set__": true,
@@ -2203,7 +2221,7 @@
    ]
   }
  },
- "smithy_version": "3.16.2",
+ "smithy_version": "3.18.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
