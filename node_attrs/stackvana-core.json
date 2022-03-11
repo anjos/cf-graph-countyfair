@@ -1031,7 +1031,7 @@
   },
   "build": {
    "merge_build_host": true,
-   "number": "0",
+   "number": "1",
    "skip": true
   },
   "extra": {
@@ -1070,7 +1070,7 @@
       "python",
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "rubin-env-nosysroot"
+      "rubin-env-nosysroot >=3"
      ],
      "run": [
       "python",
@@ -1081,7 +1081,7 @@
     "test": {
      "requires": [
       "python",
-      "rubin-env-nosysroot",
+      "rubin-env-nosysroot >=3",
       "c_compiler_stub",
       "cxx_compiler_stub"
      ],
@@ -1154,7 +1154,7 @@
   },
   "build": {
    "merge_build_host": true,
-   "number": "0",
+   "number": "1",
    "skip": true
   },
   "extra": {
@@ -1194,7 +1194,7 @@
       "python",
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "rubin-env-nosysroot"
+      "rubin-env-nosysroot >=3"
      ],
      "run": [
       "python",
@@ -1205,7 +1205,7 @@
     "test": {
      "requires": [
       "python",
-      "rubin-env-nosysroot",
+      "rubin-env-nosysroot >=3",
       "c_compiler_stub",
       "cxx_compiler_stub"
      ],
@@ -1243,7 +1243,7 @@
       "python",
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "rubin-env-nosysroot"
+      "rubin-env-nosysroot >=3"
      ],
      "run": [
       "python",
@@ -1254,7 +1254,7 @@
     "test": {
      "requires": [
       "python",
-      "rubin-env-nosysroot",
+      "rubin-env-nosysroot >=3",
       "c_compiler_stub",
       "cxx_compiler_stub"
      ],
@@ -1357,7 +1357,7 @@
   },
   "build": {
    "merge_build_host": true,
-   "number": "0",
+   "number": "1",
    "skip": true
   },
   "extra": {
@@ -1396,7 +1396,7 @@
       "python",
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "rubin-env-nosysroot"
+      "rubin-env-nosysroot >=3"
      ],
      "run": [
       "python",
@@ -1407,7 +1407,7 @@
     "test": {
      "requires": [
       "python",
-      "rubin-env-nosysroot",
+      "rubin-env-nosysroot >=3",
       "c_compiler_stub",
       "cxx_compiler_stub"
      ],
@@ -1473,7 +1473,7 @@
   ]
  },
  "pinning_version": "2022.03.10.08.54.06",
- "raw_meta_yaml": "{% set name = \"stackvana-core\" %}\n# LSST DM versions are prefixed with letters\n#\n#  - a weekly build is 'w_2018_50'\n#  - a major release is 'v18_1'\n#\n# In order to play nice with conda, we take the following conventions\n#\n#  - for a weekly build 'w_2018_50', the conda version is '0.2018.50'\n#  - for a major version 'v18_1', the conda version is '18.1.0'\n#\n{% set version = \"0.2022.11\" %}\n{% set patch_version = version.split(\".\")[-1] if version.split(\".\")[-1].__len__() == 2 else \"0\" + version.split(\".\")[-1] %}\n{% set dm_tag = \"w_\" + version.split(\".\")[1] + \"_\" + patch_version if version.startswith(\"0.\") else \"v\" + version.replace(\".\", \"_\") %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://eups.lsst.codes/stack/src/tags/{{ dm_tag }}.list\n  sha256: c31e1cf534c72ff87db2fc02994396a6bddef0594c4b086da8346ca1fe59ab66\n\nbuild:\n  skip: true  # [win or py != 38]\n  number: 0\n  merge_build_host: true\n\nrequirements:\n  host:\n    - python\n  run:\n    - python\n\noutputs:\n  - name: stackvana-core\n    version: {{ version }}\n    run_exports:\n      - {{ pin_subpackage('stackvana-core-impl', exact=True) }}\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('stackvana-core-impl', exact=True) }}\n    test:\n      commands:\n        - eups -h\n        - eups list\n        - if [[ ! ${STACKVANA_ACTIVATED} ]]; then exit 1; fi\n\n  - name: stackvana-core-impl\n    version: {{ version }}\n    script: build_impl.sh\n    requirements:\n      host:\n        - python\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - rubin-env-nosysroot\n      run:\n        - python\n        - {{ pin_compatible('rubin-env-nosysroot', max_pin='x.x.x') }}\n    test:\n      script: run_test_impl.sh\n      requires:\n        - python\n        - rubin-env-nosysroot\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n\nabout:\n  home: https://github.com/beckermr/stackvana-core\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file:\n    - LICENSE\n    - COPYRIGHT\n  summary: core build tooling for stackvana\n\nextra:\n  recipe-maintainers:\n    - beckermr\n",
+ "raw_meta_yaml": "{% set name = \"stackvana-core\" %}\n# LSST DM versions are prefixed with letters\n#\n#  - a weekly build is 'w_2018_50'\n#  - a major release is 'v18_1'\n#\n# In order to play nice with conda, we take the following conventions\n#\n#  - for a weekly build 'w_2018_50', the conda version is '0.2018.50'\n#  - for a major version 'v18_1', the conda version is '18.1.0'\n#\n{% set version = \"0.2022.11\" %}\n{% set patch_version = version.split(\".\")[-1] if version.split(\".\")[-1].__len__() == 2 else \"0\" + version.split(\".\")[-1] %}\n{% set dm_tag = \"w_\" + version.split(\".\")[1] + \"_\" + patch_version if version.startswith(\"0.\") else \"v\" + version.replace(\".\", \"_\") %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://eups.lsst.codes/stack/src/tags/{{ dm_tag }}.list\n  sha256: c31e1cf534c72ff87db2fc02994396a6bddef0594c4b086da8346ca1fe59ab66\n\nbuild:\n  skip: true  # [win or py != 38]\n  number: 1\n  merge_build_host: true\n\nrequirements:\n  host:\n    - python\n  run:\n    - python\n\noutputs:\n  - name: stackvana-core\n    version: {{ version }}\n    run_exports:\n      - {{ pin_subpackage('stackvana-core-impl', exact=True) }}\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('stackvana-core-impl', exact=True) }}\n    test:\n      commands:\n        - eups -h\n        - eups list\n        - if [[ ! ${STACKVANA_ACTIVATED} ]]; then exit 1; fi\n\n  - name: stackvana-core-impl\n    version: {{ version }}\n    script: build_impl.sh\n    requirements:\n      host:\n        - python\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - rubin-env-nosysroot >=3\n      run:\n        - python\n        - {{ pin_compatible('rubin-env-nosysroot', max_pin='x.x.x') }}\n    test:\n      script: run_test_impl.sh\n      requires:\n        - python\n        - rubin-env-nosysroot >=3\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n\nabout:\n  home: https://github.com/beckermr/stackvana-core\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file:\n    - LICENSE\n    - COPYRIGHT\n  summary: core build tooling for stackvana\n\nextra:\n  recipe-maintainers:\n    - beckermr\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1531,7 +1531,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "python",
-    "rubin-env-nosysroot"
+    "rubin-env-nosysroot >=3"
    ]
   },
   "run": {
@@ -1548,7 +1548,7 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "python",
-    "rubin-env-nosysroot"
+    "rubin-env-nosysroot >=3"
    ]
   }
  },
