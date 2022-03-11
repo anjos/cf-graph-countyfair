@@ -201,7 +201,7 @@
    "binary_has_prefix_files": [
     "lib/libfontconfig.so.1.*"
    ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "fontconfig",
     "fonts-conda-ecosystem"
@@ -237,7 +237,7 @@
   },
   "source": {
    "patches": [
-    "fcf.patch"
+    "linux-custom-paths.patch"
    ],
    "sha256": "dbabc038d41cfc3f14da1b173ae103ba7cc678efb17e091b9e801c6286b3f684",
    "url": "http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.96.tar.gz"
@@ -300,7 +300,7 @@
    "binary_has_prefix_files": [
     "lib/libfontconfig.so.1.*"
    ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "fontconfig",
     "fonts-conda-ecosystem"
@@ -336,7 +336,7 @@
   },
   "source": {
    "patches": [
-    "fcf.patch"
+    "linux-custom-paths.patch"
    ],
    "sha256": "dbabc038d41cfc3f14da1b173ae103ba7cc678efb17e091b9e801c6286b3f684",
    "url": "http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.96.tar.gz"
@@ -399,7 +399,7 @@
    "binary_has_prefix_files": [
     "lib/libfontconfig.so.1.*"
    ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "fontconfig",
     "fonts-conda-ecosystem"
@@ -435,7 +435,7 @@
   },
   "source": {
    "patches": [
-    "fcf.patch"
+    "linux-custom-paths.patch"
    ],
    "sha256": "dbabc038d41cfc3f14da1b173ae103ba7cc678efb17e091b9e801c6286b3f684",
    "url": "http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.96.tar.gz"
@@ -498,7 +498,7 @@
    "binary_has_prefix_files": [
     "lib/libfontconfig.*.dylib*"
    ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "fontconfig",
     "fonts-conda-ecosystem",
@@ -696,7 +696,7 @@
    "binary_has_prefix_files": [
     "lib/libfontconfig.*.dylib*"
    ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "fontconfig",
     "fonts-conda-ecosystem"
@@ -791,7 +791,7 @@
    "binary_has_prefix_files": [
     "lib/libfontconfig.*.dylib*"
    ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "fontconfig",
     "fonts-conda-ecosystem"
@@ -879,7 +879,7 @@
   ]
  },
  "pinning_version": "2022.02.03.19.17.39",
- "raw_meta_yaml": "{% set version = \"2.13.96\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: fontconfig\n  version: {{ version }}\n\nsource:\n  url: http://www.freedesktop.org/software/fontconfig/release/fontconfig-{{ version }}.tar.gz\n  sha256: dbabc038d41cfc3f14da1b173ae103ba7cc678efb17e091b9e801c6286b3f684\n  patches:\n    # This patch won't be submitted upstream. It sets us up to always find the right `fonts.conf` file:\n    - fcf.patch             # [linux]\n    - windows-compat.patch  # [win]\n\nbuild:\n  number: 1\n  binary_has_prefix_files:   # [unix]\n    - lib/libfontconfig.so.1.*    # [linux]\n    - lib/libfontconfig.*.dylib*  # [osx]\n  run_exports:\n    # remove symbols basically never (once, in 2006).\n    #    https://abi-laboratory.pro/tracker/timeline/fontconfig/\n    - {{ pin_subpackage('fontconfig') }}\n    - fonts-conda-ecosystem\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ posix }}gperf\n    - meson\n    - ninja\n    - {{ native }}pkg-config\n    - python\n  host:\n    - expat\n    - freetype\n    - libiconv  # [win]\n    - libuuid   # [linux]\n\ntest:\n  commands:\n    # Test CLI.\n    - fc-cache --help  # [not win]\n    - fc-cat --help  # [not win]\n    - fc-list\n    - fc-match --help  # [not win]\n    - fc-pattern --help  # [not win]\n    - fc-query --help  # [not win]\n    - fc-scan --help  # [not win]\n    - fc-validate --help  # [not win]\n\n    # Test for libraries.\n    {% set lib_idents = [ \"fontconfig\" ] %}\n    {% for lib_ident in lib_idents %}\n    - test -f $PREFIX/lib/lib{{ lib_ident }}.a  # [not win]\n    - test -f $PREFIX/lib/lib{{ lib_ident }}${SHLIB_EXT}  # [not win]\n    - if not exist %PREFIX%/Library/lib/{{ lib_ident }}.lib exit /b 1    # [win]\n    - if not exist %PREFIX%/Library/bin/{{ lib_ident }}-1.dll exit /b 1  # [win]\n    {% endfor %}\n\nabout:\n  home: http://www.freedesktop.org/wiki/Software/fontconfig/\n  license: MIT\n  license_file: COPYING\n  summary: A library for configuring and customizing font access\n  description: |\n    Fontconfig is a library designed to provide system-wide font configuration,\n    customization and application access.\n  doc_url: https://www.freedesktop.org/software/fontconfig/fontconfig-user.html\n  dev_url: https://cgit.freedesktop.org/fontconfig/\n\nextra:\n  recipe-maintainers:\n    - ccordoba12\n    - jakirkham\n    - mingwandroid\n    - ocefpaf\n    - pkgw\n",
+ "raw_meta_yaml": "{% set version = \"2.13.96\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: fontconfig\n  version: {{ version }}\n\nsource:\n  url: http://www.freedesktop.org/software/fontconfig/release/fontconfig-{{ version }}.tar.gz\n  sha256: dbabc038d41cfc3f14da1b173ae103ba7cc678efb17e091b9e801c6286b3f684\n  patches:\n    # This patch won't be submitted upstream. It sets us up to always find the right Conda files:\n    - linux-custom-paths.patch  # [linux]\n    - windows-compat.patch      # [win]\n\nbuild:\n  number: 2\n  binary_has_prefix_files:   # [unix]\n    - lib/libfontconfig.so.1.*    # [linux]\n    - lib/libfontconfig.*.dylib*  # [osx]\n  run_exports:\n    # remove symbols basically never (once, in 2006).\n    #    https://abi-laboratory.pro/tracker/timeline/fontconfig/\n    - {{ pin_subpackage('fontconfig') }}\n    - fonts-conda-ecosystem\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ posix }}gperf\n    - meson\n    - ninja\n    - {{ native }}pkg-config\n    - python\n  host:\n    - expat\n    - freetype\n    - libiconv  # [win]\n    - libuuid   # [linux]\n\ntest:\n  commands:\n    # Test CLI.\n    - fc-cache --help  # [not win]\n    - fc-cat --help  # [not win]\n    - fc-list\n    - fc-match --help  # [not win]\n    - fc-pattern --help  # [not win]\n    - fc-query --help  # [not win]\n    - fc-scan --help  # [not win]\n    - fc-validate --help  # [not win]\n\n    # Test for libraries.\n    {% set lib_idents = [ \"fontconfig\" ] %}\n    {% for lib_ident in lib_idents %}\n    - test -f $PREFIX/lib/lib{{ lib_ident }}.a  # [not win]\n    - test -f $PREFIX/lib/lib{{ lib_ident }}${SHLIB_EXT}  # [not win]\n    - if not exist %PREFIX%/Library/lib/{{ lib_ident }}.lib exit /b 1    # [win]\n    - if not exist %PREFIX%/Library/bin/{{ lib_ident }}-1.dll exit /b 1  # [win]\n    {% endfor %}\n\nabout:\n  home: http://www.freedesktop.org/wiki/Software/fontconfig/\n  license: MIT\n  license_file: COPYING\n  summary: A library for configuring and customizing font access\n  description: |\n    Fontconfig is a library designed to provide system-wide font configuration,\n    customization and application access.\n  doc_url: https://www.freedesktop.org/software/fontconfig/fontconfig-user.html\n  dev_url: https://cgit.freedesktop.org/fontconfig/\n\nextra:\n  recipe-maintainers:\n    - ccordoba12\n    - jakirkham\n    - mingwandroid\n    - ocefpaf\n    - pkgw\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -973,7 +973,7 @@
    "summary": "A library for configuring and customizing font access"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "fontconfig",
     "fonts-conda-ecosystem"
