@@ -77,7 +77,37 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 223, in fetch_repo",
+   "    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.",
+   "",
+   "During handling of the above exception, another exception occurred:",
+   "",
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 202, in run",
+   "    feedstock_dir, repo = get_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 313, in get_repo",
+   "    if fetch_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 225, in fetch_repo",
+   "    _run_git_cmd(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {},
  "feedstock_name": "cloog",
@@ -271,10 +301,10 @@
  },
  "pinning_version": "2020.07.17.17.28.25",
  "pre_pr_migrator_attempts": {
-  "isl024": 236
+  "isl024": 237
  },
  "pre_pr_migrator_status": {
-  "isl024": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1968421885\">bot CI job</a>): master: ['linux_64_: Encountered problems while solving:\\n  - nothing provides requested gmp 5.1.2.*\\n']"
+  "isl024": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1968956361\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 223, in fetch_repo\n    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 202, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 313, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 225, in fetch_repo\n    _run_git_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.\n"
  },
  "raw_meta_yaml": "{% set version = \"0.18.0\" %}\n\npackage:\n  name: cloog\n  version: {{ version }}\n\nsource:\n  fn: cloog-{{ version }}.tar.gz\n  url: http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-{{ version }}.tar.gz\n  sha256: 1c4aa8dde7886be9cbe0f9069c334843b21028f61d344a2d685f88cb1dcf2228\n\nbuild:\n  number: 1\n  skip: true    # [win]\n\nrequirements:\n  build:\n    - gmp 5.1.2\n    - isl 0.12.2\n\n  run:\n    - gmp 5.1.2\n    - isl 0.12.2\n\ntest:\n  commands:\n    - test -f \"$PREFIX/lib/libcloog-isl.a\"        # [unix]\n    - test -f \"$PREFIX/lib/libcloog-isl.so\"       # [linux]\n    - test -f \"$PREFIX/lib/libcloog-isl.dylib\"    # [osx]\n\nabout:\n  home: http://www.cloog.org/\n  license: LGPL 2.1\n  license_file: LICENSE\n  summary: A free software and library to generate code for scanning Z-polyhedra.\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n",
  "req": {

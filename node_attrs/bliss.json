@@ -36,7 +36,37 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 223, in fetch_repo",
+   "    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.",
+   "",
+   "During handling of the above exception, another exception occurred:",
+   "",
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 202, in run",
+   "    feedstock_dir, repo = get_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 313, in get_repo",
+   "    if fetch_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 225, in fetch_repo",
+   "    _run_git_cmd(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
@@ -462,6 +492,12 @@
   ]
  },
  "pinning_version": "2020.11.12.21.52.18",
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1968956361\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 223, in fetch_repo\n    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 202, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 313, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 225, in fetch_repo\n    _run_git_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.\n"
+ },
  "raw_meta_yaml": "{% set name = \"bliss\" %}\n{% set version = \"0.73\" %}\n{% set version_patch = \".debian-1.sage-2016-08-02\" %}\n{% set full_version = version + version_patch %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}.0{{ version_patch.replace(\"-\", \"_\") }}\n\nsource:\n  url: https://github.com/mkoeppe/bliss/releases/download/sage_package%2F{{ version }}{{ version_patch.replace(\".\", \"%2B\") }}/bliss-{{ full_version }}.tar.gz\n# url: http://www.tcs.hut.fi/Software/bliss/bliss-{{ version }}.zip\n  sha256: 77ae36f3fe4c071031b438b23d9019152dc2dc42afb4b6acfe4cb73209d2d979\n\nbuild:\n  number: 0\n  skip: True  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - libtool\n    - autoconf\n    - automake\n    - make\n\ntest:\n  commands:\n    - test -f \"$PREFIX/include/bliss/graph.hh\"\n    - test -f \"$PREFIX/lib/libbliss${SHLIB_EXT}\"\n\nabout:\n  home: http://www.tcs.hut.fi/Software/bliss/\n  license: LGPL3\n  license_family: LGPL\n  license_file: COPYING.LESSER\n  summary: 'A Tool for Computing Automorphism Groups and Canonical Labelings of Graphs'\n  doc_url: http://www.tcs.hut.fi/Software/bliss/doxy/index.html\n\nextra:\n  recipe-maintainers:\n    - isuruf\n",
  "req": {
   "__set__": true,
