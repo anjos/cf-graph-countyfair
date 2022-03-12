@@ -182,7 +182,37 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 223, in fetch_repo",
+   "    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.",
+   "",
+   "During handling of the above exception, another exception occurred:",
+   "",
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 202, in run",
+   "    feedstock_dir, repo = get_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 313, in get_repo",
+   "    if fetch_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 225, in fetch_repo",
+   "    _run_git_cmd(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {},
  "feedstock_name": "hnswlib",
@@ -448,10 +478,10 @@
  },
  "pinning_version": "2022.02.14.13.20.49",
  "pre_pr_migrator_attempts": {
-  "python310": 269
+  "python310": 270
  },
  "pre_pr_migrator_status": {
-  "python310": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1973680739\">bot CI job</a>): master: ['No `.ci_support/*.yaml` files found! This can happen when a rerender results in no builds for a recipe (e.g., a recipe is python 2.7 only). This attempted migration is being reported as not solvable.']"
+  "python310": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1973978904\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 223, in fetch_repo\n    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 202, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 313, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 225, in fetch_repo\n    _run_git_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.\n"
  },
  "raw_meta_yaml": "{% set name = \"hnswlib\" %}\n{% set version = \"0.6.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: b696d13f3678aa6795d054a0e8c33b3a2c8e14908432aaf4ced7ebef8290a10c\n\nbuild:\n  number: 1\n  skip: true  # [py>=37]\n  script:\n    # HNSWLIB_NO_NATIVE is set to build without \"--march=native\"\n    - export HNSWLIB_NO_NATIVE=1 && {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv  # [unix]\n    - set HNSWLIB_NO_NATIVE=1 && {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n  host:\n    - python\n    - pip\n    - setuptools >=42\n    - pybind11 >=2.0\n    - numpy >=1.10.0\n  run:\n    - python\n    - numpy\n\ntest:\n  imports:\n    - hnswlib\n\nabout:\n  home: https://github.com/nmslib/hnswlib\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: Python bindings for Hnswlib, a fast approximate nearest neighbor search package.\n  dev_url: https://github.com/nmslib/hnswlib\n\nextra:\n  recipe-maintainers:\n    - yihming\n    - bli25\n    - yurymalkov\n",
  "req": {

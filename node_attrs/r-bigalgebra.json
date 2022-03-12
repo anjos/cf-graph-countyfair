@@ -38,7 +38,37 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 223, in fetch_repo",
+   "    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.",
+   "",
+   "During handling of the above exception, another exception occurred:",
+   "",
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 202, in run",
+   "    feedstock_dir, repo = get_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 313, in get_repo",
+   "    if fetch_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 225, in fetch_repo",
+   "    _run_git_cmd(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {
   "bot": {
@@ -414,6 +444,12 @@
   ]
  },
  "pinning_version": "2021.05.25.06.47.12",
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1973978904\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 223, in fetch_repo\n    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 202, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 313, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 225, in fetch_repo\n    _run_git_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 198, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.\n"
+ },
  "raw_meta_yaml": "{% set version = \"1.0.0\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-bigalgebra\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url: {{ cran_mirror }}/src/contrib/Archive/bigalgebra/bigalgebra_{{ version }}.tar.gz\n  sha256: f186b603bd660be0cc5b7a52c943e23e92fef264f0bc96a8858e38df6cfc4085\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 0\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ compiler('cxx') }}            # [not win]\n    - {{ compiler('m2w64_cxx') }}      # [win]\n    - {{ compiler('fortran') }}        # [not win]\n    - {{ compiler('m2w64_fortran') }}  # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n  host:\n    - r-base\n    - r-bh\n    - r-bigmemory >=4.0.0\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - r-bh\n    - r-bigmemory >=4.0.0\n\ntest:\n  commands:\n    - $R -e \"library('bigalgebra')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('bigalgebra')\\\"\"  # [win]\n\nabout:\n  home: http://www.bigmemory.org\n  license: LGPL-3.0-only\n  summary: Provides arithmetic functions for R matrix and 'big.matrix' objects.\n  license_family: LGPL\n  license_file:\n    - {{ environ[\"PREFIX\"] }}/lib/R/share/licenses/LGPL-3\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n    - FernandezMathieu\n\n# Package: bigalgebra\n# Version: 0.8.4.2\n# Date: 2014-04-15\n# Title: BLAS Routines for Native R Matrices and 'big.matrix' Objects\n# Author: Michael J. Kane, Bryan Lewis, and John W. Emerson\n# Maintainer: ORPHANED\n# Imports: methods\n# Depends: bigmemory (>= 4.0.0)\n# LinkingTo: bigmemory, BH\n# Description: Provides arithmetic functions for R matrix and 'big.matrix' objects.\n# License: LGPL-3 | Apache License 2.0\n# Copyright: (C) 2014 Michael J. Kane, Bryan Lewis, and John W. Emerson\n# URL: http://www.bigmemory.org\n# LazyLoad: yes\n# Packaged: 2019-12-06 11:41:25 UTC; hornik\n# NeedsCompilation: yes\n# Repository: CRAN\n# Date/Publication: 2019-12-06 11:48:07 UTC\n# X-CRAN-Original-Maintainer: <ripley@stats.ox.ac.uk>\n# X-CRAN-Comment: Orphaned and corrected on 2018-12-21 as no response to request for corrections.\n",
  "req": {
   "__set__": true,
