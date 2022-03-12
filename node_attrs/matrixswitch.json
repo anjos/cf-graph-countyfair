@@ -33,6 +33,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/878113701.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1089,7 +1106,7 @@
    "matrixswitch"
   ]
  },
- "pinning_version": "2022.03.09.08.54.39",
+ "pinning_version": "2022.03.10.18.35.59",
  "raw_meta_yaml": "{% set name = \"MatrixSwitch\" %}\n{% set version = \"1.0.0\" %}\n{% set build = 2 %}\n{% set mpi = mpi or \"nompi\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://gitlab.com/ElectronicStructureLibrary/omm-bundle/-/archive/v{{ version }}/omm-bundle-v{{ version }}.tar.gz\n  sha256: 815f849d4a603383e6553db4e97fe695882b40e4bbc6f33577bc2556166949af\n  patches:\n    - perl.patch\n\n{% if mpi == \"nompi\" %}\n{% set build = build + 100 %}\n{% endif %}\nbuild:\n  number: {{ build }}\n  skip: True  # [win]\n  script:\n    - set -ex\n    - export CC=\"$PREFIX/bin/mpicc\" FC=\"$PREFIX/bin/mpifort\"  # [mpi != 'nompi']\n    - pushd {{ name }} && bash autogen.sh && popd\n    - LINALG_LIBS=\"-llapack -lblas\"\n    - LINALG_LIBS=\"-lscalapack ${LINALG_LIBS}\"  # [mpi != 'nompi']\n    - {{ name }}/configure --prefix=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"\n    - make -j ${CPU_COUNT:-1}\n    - make install\n\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: \"{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\"\n\n  {% if mpi != \"nompi\" %}\n  run_exports:\n    - {{ name }} * {{ mpi_prefix }}_*\n  {% endif %}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}\n    - libtool\n    - automake\n    - autoconf\n    - make\n    - perl\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  host:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - scalapack  # [mpi != 'nompi']\n    - libblas\n    - liblapack\n  run:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - scalapack  # [mpi != 'nompi']\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - test -f $PREFIX/lib/lib{{ name }}${SHLIB_EXT}\n    - pkg-config {{ name }} --exact-version {{ version }}\n\nabout:\n  home: https://gitlab.com/ElectronicStructureLibrary/omm-bundle\n  license: BSD-2-Clause\n  license_family: BSD\n  license_file:\n    - {{ name }}/COPYING\n  summary: Intermediary interface layer between high-level routines for physics-related algorithms and low-level routines dealing with matrix storage and manipulation\n  doc_url: https://esl.cecam.org/software/matrixswitch/\n  dev_url: https://gitlab.com/ElectronicStructureLibrary/omm-bundle/-/tree/master/MatrixSwitch\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
  "req": {
   "__set__": true,
