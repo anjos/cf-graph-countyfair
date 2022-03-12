@@ -39,6 +39,23 @@
     "__lazy_json__": "pr_json/798452972.json"
    },
    "data": {
+    "bot_rerun": 1647077682.7170694,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/878136213.json"
+   },
+   "data": {
     "bot_rerun": false,
     "migrator_name": "OSXArm",
     "migrator_version": 1,
@@ -891,7 +908,7 @@
    "pexsi"
   ]
  },
- "pinning_version": "2021.12.08.18.31.22",
+ "pinning_version": "2022.03.10.18.35.59",
  "raw_meta_yaml": "{% set name = \"pexsi\" %}\n{% set version = \"1.2.0\" %}\n{% set build = 1 %}\n{% set mpi = mpi or \"mpich\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://bitbucket.org/berkeleylab/{{ name }}/downloads/{{ name }}_v{{ version }}.tar.gz\n  sha256: 8bfad6ec6866c6a29e1cc87fb1c17a39809795e79ede98373c8ba9a3aaf820dd\n  patches:\n    - superlu_dist-cname.patch\n    - cmake-shared-lib.patch\n    - mpi-deprecated-api.patch  # [mpi == \"openmpi\"]\n\nbuild:\n  number: {{ build }}\n  skip: True  # [win]\n  script:\n    - export OMPI_MCA_plm=isolated OMPI_MCA_btl_vader_single_copy_mechanism=none OMPI_MCA_rmaps_base_oversubscribe=yes  # [mpi == \"openmpi\"]\n    - export CXX=\"$PREFIX/bin/mpicxx\" CC=\"$PREFIX/bin/mpicc\" FC=\"$PREFIX/bin/mpifort\"\n    - cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -DPEXSI_ENABLE_OPENMP=ON -G Ninja -B _build\n    - cmake --build _build\n    - ctest --test-dir _build --output-on-failure  # [build_platform != target_platform]\n    - cmake --install _build\n\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  string: \"{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\"\n\n  run_exports:\n    - {{ name|lower }} * {{ mpi_prefix }}_*\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - cmake\n    - ninja\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  host:\n    - {{ mpi }}\n    - parmetis\n    - superlu_dist 6.2.0\n    - libblas\n    - liblapack\n  run:\n    - {{ mpi }}\n    - parmetis\n    - superlu_dist 6.2.0\n\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/lib{{ name }}${SHLIB_EXT}\n    - test -f $PREFIX/include/p{{ name }}.hpp\n    - test -f $PREFIX/include/c_{{ name }}_interface.h\n    - test -f $PREFIX/include/f_p{{ name }}_interface.mod\n\nabout:\n  home: https://pexsi.readthedocs.io/en/latest/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file:\n    - LICENSE\n  summary: Pole expansion and selected inversion\n  dev_url: https://bitbucket.org/berkeleylab/pexsi\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
  "req": {
   "__set__": true,
@@ -959,7 +976,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.15.0",
+ "smithy_version": "3.18.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
