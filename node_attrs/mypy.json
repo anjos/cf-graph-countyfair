@@ -650,7 +650,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git diff --name-only 31f5fe45a94758f9e672629c2255acd043a75752...HEAD' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 301, in run",
+   "    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 285, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode",
+   "    raise CalledProcessError(self.returncode, self.args, self.stdout,",
+   "subprocess.CalledProcessError: Command 'git diff --name-only 31f5fe45a94758f9e672629c2255acd043a75752...HEAD' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
@@ -2107,7 +2122,7 @@
   }
  },
  "name": "mypy",
- "new_version": "0.940",
+ "new_version": "0.941",
  "new_version_attempts": {
   "0.780": 1,
   "0.781": 1,
@@ -2123,7 +2138,8 @@
   "0.921": 1,
   "0.930": 1,
   "0.931": 1,
-  "0.940": 1
+  "0.940": 1,
+  "0.941": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -2521,6 +2537,12 @@
   ]
  },
  "pinning_version": "2022.03.10.18.35.59",
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1982882958\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 301, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 285, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only 31f5fe45a94758f9e672629c2255acd043a75752...HEAD' returned non-zero exit status 128.\n"
+ },
  "raw_meta_yaml": "{% set version = \"0.940\" %}\n\npackage:\n  name: mypy\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/m/mypy/mypy-{{ version }}.tar.gz\n  sha256: 71bec3d2782d0b1fecef7b1c436253544d81c1c0e9ca58190aed9befd8f081c5\n  patches:\n    - patches/0001-Reduce-amount-of-debug-info-injected-in-extension-mo.patch\n\nbuild:\n  number: 0\n  script:\n    - export MYPY_USE_MYPYC=1  # [not win]\n    - export SETUPTOOLS_USE_DISTUTILS=stdlib  # [not win]\n    - set MYPY_USE_MYPYC=1     # [win]\n    - set SETUPTOOLS_USE_DISTUTILS=stdlib  # [win]\n    # mypy searches for <>-stubs in site.getsitepackages()\n    # which points to $SP_DIR, even in cross-python\n    - cp -rv $BUILD_PREFIX/lib/python$PY_VER/site-packages/*-stubs $SP_DIR  # [build_platform != target_platform]\n    - cp -rv $BUILD_PREFIX/lib/python$PY_VER/site-packages/tomli* $SP_DIR  # [build_platform != target_platform]\n    - {{ PYTHON }} -m pip install . --no-deps -vv\n  entry_points:\n    - mypy = mypy.__main__:console_entry\n    - stubgen = mypy.stubgen:main\n    - dmypy = mypy.dmypy.client:console_entry\n    - stubtest = mypy.stubtest:main\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - {{ compiler('c') }}\n    # mypy's build imports this module, which has a C extension,\n    # so it has to be native to the build platform\n    - typed-ast >=1.4.0,<1.5.0               # [build_platform != target_platform and py<38]\n    - tomli >=1.1.0\n  host:\n    - python\n    - pip\n    - mypy_extensions >=0.4.3\n    - typed-ast >=1.4.0,<2  # [py<38]\n    - typing_extensions >=3.10\n    - types_toml >=0.0\n    - types_typed_ast >=1.4.0,<1.5.0\n    - tomli >=1.1.0\n  run:\n    - python\n    - mypy_extensions >=0.4.3\n    - typed-ast >=1.4.0,<2  # [py<38]\n    - typing_extensions >=3.10\n    - tomli >=1.1.0\n    # extra: dmypy\n    - psutil >=4.0\n\ntest:\n  imports:\n    - mypy\n    - mypy.plugins\n    - mypy.server\n    - mypy.dmypy\n  commands:\n    - mypy --help\n    - stubgen --help\n    - dmypy --help\n    - stubtest --help\n    - dir %SP_DIR%\\mypy\\*.pyd /s /b  # [win]\n    - ls $SP_DIR/mypy/*.so  # [linux and not (aarch64 and py==310)]\n\nabout:\n  home: http://www.mypy-lang.org/\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Optional static typing for Python\n  description: |\n    Add type annotations to your Python programs, and use mypy to type check\n    them. Mypy is essentially a Python linter on steroids, and it can catch\n    many programming errors by analyzing your program, withoutactually having\n    to run it.  Mypy has a powerful type system with features such as type\n    inference, gradual typing, generics and union types.\n  doc_url: http://mypy.readthedocs.io\n  dev_url: https://github.com/python/mypy\n\nextra:\n  recipe-maintainers:\n    - nehaljwani\n    - ocefpaf\n",
  "req": {
   "__set__": true,
