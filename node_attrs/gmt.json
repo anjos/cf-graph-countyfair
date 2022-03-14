@@ -1277,6 +1277,9 @@
     "v5.x"
    ]
   },
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "win": "azure"
   }
@@ -1292,7 +1295,7 @@
    "summary": "The Generic Mapping Tools."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1345,6 +1348,9 @@
    ]
   },
   "source": {
+   "patches": [
+    "crosscompiling.patch"
+   ],
    "sha256": "2cd073d8b1f11b87a59b38aa7aaf8e39c7940d2b55a46a3267e23802ec8a08d1",
    "url": "https://github.com/GenericMappingTools/gmt/releases/download/6.3.0/gmt-6.3.0-src.tar.gz"
   },
@@ -1420,10 +1426,13 @@
    "summary": "The Generic Mapping Tools."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
+    "ocefpaf",
+    "leouieda",
+    "seisman",
     "ocefpaf",
     "leouieda",
     "seisman",
@@ -1448,9 +1457,26 @@
     "c_compiler_stub",
     "make",
     "cmake",
+    "c_compiler_stub",
+    "make",
+    "cmake",
     "c_compiler_stub"
    ],
    "host": [
+    "libblas",
+    "libcblas",
+    "liblapack",
+    "fftw",
+    "gdal",
+    "geos",
+    "ghostscript",
+    "libnetcdf",
+    "hdf5",
+    "zlib",
+    "curl",
+    "pcre",
+    "gshhg-gmt",
+    "dcw-gmt",
     "libblas",
     "libcblas",
     "liblapack",
@@ -1534,15 +1560,41 @@
     "hdf5",
     "zlib",
     "curl",
+    "pcre",
+    "gshhg-gmt",
+    "dcw-gmt",
+    "libblas",
+    "libcblas",
+    "liblapack",
+    "fftw",
+    "gdal",
+    "geos",
+    "ghostscript",
+    "libnetcdf",
+    "hdf5",
+    "zlib",
+    "curl",
     "pcre"
    ]
   },
   "source": {
+   "patches": [
+    "crosscompiling.patch",
+    "crosscompiling.patch",
+    "crosscompiling.patch",
+    "crosscompiling.patch"
+   ],
    "sha256": "2cd073d8b1f11b87a59b38aa7aaf8e39c7940d2b55a46a3267e23802ec8a08d1",
    "url": "https://github.com/GenericMappingTools/gmt/releases/download/6.3.0/gmt-6.3.0-src.tar.gz"
   },
   "test": {
    "commands": [
+    "gmt defaults -Vd",
+    "gmt psbasemap -R10/70/-3/8 -JX4i/3i -Ba -B+glightred+t\"TEST\" -P -Vd > test0.ps",
+    "gmt pscoast -R0/10/0/10 -JM6i -Ba -Ggray -ENG+p1p,blue -P -Vd > test1.ps",
+    "gmt begin -Vd",
+    "gmt coast -R0/10/0/10 -JM6i -Ba -Ggray -ENG+p1p,blue -Vd",
+    "gmt end",
     "gmt defaults -Vd",
     "gmt psbasemap -R10/70/-3/8 -JX4i/3i -Ba -B+glightred+t\"TEST\" -P -Vd > test0.ps",
     "gmt pscoast -R0/10/0/10 -JM6i -Ba -Ggray -ENG+p1p,blue -P -Vd > test1.ps",
@@ -1579,7 +1631,7 @@
    "summary": "The Generic Mapping Tools."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1632,6 +1684,9 @@
    ]
   },
   "source": {
+   "patches": [
+    "crosscompiling.patch"
+   ],
    "sha256": "2cd073d8b1f11b87a59b38aa7aaf8e39c7940d2b55a46a3267e23802ec8a08d1",
    "url": "https://github.com/GenericMappingTools/gmt/releases/download/6.3.0/gmt-6.3.0-src.tar.gz"
   },
@@ -1647,6 +1702,137 @@
   }
  },
  "osx_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "curl",
+    "dcw-gmt",
+    "fftw",
+    "gdal",
+    "geos",
+    "ghostscript",
+    "gshhg-gmt",
+    "hdf5",
+    "libblas",
+    "libcblas",
+    "liblapack",
+    "libnetcdf",
+    "pcre",
+    "zlib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "curl",
+    "dcw-gmt",
+    "fftw",
+    "gdal",
+    "geos",
+    "ghostscript",
+    "gshhg-gmt",
+    "hdf5",
+    "libblas",
+    "libcblas",
+    "liblapack",
+    "libnetcdf",
+    "pcre",
+    "zlib"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "GMT is an open source collection of about 80 command-line tools for\nmanipulating geographic and Cartesian data sets (including filtering,\ntrend fitting, gridding, projecting, etc.) and producing PostScript\nillustrations ranging from simple x\u2013y plots via contour maps to\nartificially illuminated surfaces and 3D perspective views; the GMT\nsupplements add another 40 more specialized and discipline-specific\ntools. GMT supports over 30 map projections and transformations\n",
+   "home": "https://www.generic-mapping-tools.org",
+   "license": "LGPL-3.0-or-later",
+   "license_file": "LICENSE.TXT",
+   "summary": "The Generic Mapping Tools."
+  },
+  "build": {
+   "number": "4"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "ocefpaf",
+    "leouieda",
+    "seisman"
+   ]
+  },
+  "package": {
+   "name": "gmt",
+   "version": "6.3.0"
+  },
+  "requirements": {
+   "build": [
+    "cmake",
+    "c_compiler_stub",
+    "make"
+   ],
+   "host": [
+    "libblas",
+    "libcblas",
+    "liblapack",
+    "fftw",
+    "gdal",
+    "geos",
+    "ghostscript",
+    "libnetcdf",
+    "hdf5",
+    "zlib",
+    "curl",
+    "pcre",
+    "gshhg-gmt",
+    "dcw-gmt"
+   ],
+   "run": [
+    "libblas",
+    "libcblas",
+    "liblapack",
+    "fftw",
+    "gdal",
+    "geos",
+    "ghostscript",
+    "libnetcdf",
+    "hdf5",
+    "zlib",
+    "curl",
+    "pcre",
+    "gshhg-gmt",
+    "dcw-gmt"
+   ]
+  },
+  "source": {
+   "patches": [
+    "crosscompiling.patch"
+   ],
+   "sha256": "2cd073d8b1f11b87a59b38aa7aaf8e39c7940d2b55a46a3267e23802ec8a08d1",
+   "url": "https://github.com/GenericMappingTools/gmt/releases/download/6.3.0/gmt-6.3.0-src.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "gmt defaults -Vd",
+    "gmt psbasemap -R10/70/-3/8 -JX4i/3i -Ba -B+glightred+t\"TEST\" -P -Vd > test0.ps",
+    "gmt pscoast -R0/10/0/10 -JM6i -Ba -Ggray -ENG+p1p,blue -P -Vd > test1.ps",
+    "gmt begin -Vd",
+    "gmt coast -R0/10/0/10 -JM6i -Ba -Ggray -ENG+p1p,blue -Vd",
+    "gmt end"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
@@ -1715,7 +1901,7 @@
   "hdf51106": "bot error: v5.x: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 137, in fetch_repo\n    _run_git_cmd(f\"git checkout {base_branch} --quiet\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout v5.x --quiet' returned non-zero exit status 1.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1018, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 163, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 222, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 139, in fetch_repo\n    _run_git_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout -b v5.x upstream/v5.x --quiet' returned non-zero exit status 128.\n",
   "libnetcdf480": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/765755095\">bot CI job</a>): master: ['win_64_: Encountered problems while solving:\\n  - package gdal-3.2.0-py36hcf5a363_0 requires libgdal 3.2.0 h0d43894_0, but none of the providers can be installed\\n']"
  },
- "raw_meta_yaml": "{% set version = \"6.3.0\" %}\n\npackage:\n  name: gmt\n  version: {{ version }}\n\nsource:\n  url: https://github.com/GenericMappingTools/gmt/releases/download/{{ version }}/gmt-{{ version }}-src.tar.gz\n  sha256: 2cd073d8b1f11b87a59b38aa7aaf8e39c7940d2b55a46a3267e23802ec8a08d1\n\nbuild:\n  number: 3\n  skip: true  # [win and vc<14]\n\nrequirements:\n  build:\n    - cmake\n    - {{ compiler('c') }}\n    - make  # [not win]\n  host:\n    - libblas\n    - libcblas\n    - liblapack\n    - fftw\n    - gdal\n    - geos\n    - ghostscript\n    - libnetcdf\n    - hdf5\n    - zlib\n    - curl\n    - pcre\n    - gshhg-gmt\n    - dcw-gmt\n  run:\n    - libblas\n    - libcblas\n    - liblapack\n    - fftw\n    - gdal\n    - geos\n    - ghostscript\n    - libnetcdf\n    - hdf5\n    - zlib\n    - curl\n    - pcre\n    - gshhg-gmt  # [not win]\n    - dcw-gmt  # [not win]\n\ntest:\n  commands:\n    - gmt defaults -Vd\n    - gmt psbasemap -R10/70/-3/8 -JX4i/3i -Ba -B+glightred+t\"TEST\" -P -Vd > test0.ps\n    - gmt pscoast -R0/10/0/10 -JM6i -Ba -Ggray -ENG+p1p,blue -P -Vd > test1.ps\n    - gmt begin -Vd\n    - gmt coast -R0/10/0/10 -JM6i -Ba -Ggray -ENG+p1p,blue -Vd\n    - gmt end\n\nabout:\n  home: https://www.generic-mapping-tools.org\n  license: LGPL-3.0-or-later\n  license_file: LICENSE.TXT\n  summary: The Generic Mapping Tools.\n  description: |\n    GMT is an open source collection of about 80 command-line tools for\n    manipulating geographic and Cartesian data sets (including filtering,\n    trend fitting, gridding, projecting, etc.) and producing PostScript\n    illustrations ranging from simple x\u2013y plots via contour maps to\n    artificially illuminated surfaces and 3D perspective views; the GMT\n    supplements add another 40 more specialized and discipline-specific\n    tools. GMT supports over 30 map projections and transformations\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - leouieda\n    - seisman\n",
+ "raw_meta_yaml": "{% set version = \"6.3.0\" %}\n\npackage:\n  name: gmt\n  version: {{ version }}\n\nsource:\n  url: https://github.com/GenericMappingTools/gmt/releases/download/{{ version }}/gmt-{{ version }}-src.tar.gz\n  sha256: 2cd073d8b1f11b87a59b38aa7aaf8e39c7940d2b55a46a3267e23802ec8a08d1\n  patches:\n    - crosscompiling.patch\n\nbuild:\n  number: 4\n  skip: true  # [win and vc<14]\n\nrequirements:\n  build:\n    - cmake\n    - {{ compiler('c') }}\n    - make  # [not win]\n  host:\n    - libblas\n    - libcblas\n    - liblapack\n    - fftw\n    - gdal\n    - geos\n    - ghostscript\n    - libnetcdf\n    - hdf5\n    - zlib\n    - curl\n    - pcre\n    - gshhg-gmt\n    - dcw-gmt\n  run:\n    - libblas\n    - libcblas\n    - liblapack\n    - fftw\n    - gdal\n    - geos\n    - ghostscript\n    - libnetcdf\n    - hdf5\n    - zlib\n    - curl\n    - pcre\n    - gshhg-gmt  # [not win]\n    - dcw-gmt  # [not win]\n\ntest:\n  commands:\n    - gmt defaults -Vd\n    - gmt psbasemap -R10/70/-3/8 -JX4i/3i -Ba -B+glightred+t\"TEST\" -P -Vd > test0.ps\n    - gmt pscoast -R0/10/0/10 -JM6i -Ba -Ggray -ENG+p1p,blue -P -Vd > test1.ps\n    - gmt begin -Vd\n    - gmt coast -R0/10/0/10 -JM6i -Ba -Ggray -ENG+p1p,blue -Vd\n    - gmt end\n\nabout:\n  home: https://www.generic-mapping-tools.org\n  license: LGPL-3.0-or-later\n  license_file: LICENSE.TXT\n  summary: The Generic Mapping Tools.\n  description: |\n    GMT is an open source collection of about 80 command-line tools for\n    manipulating geographic and Cartesian data sets (including filtering,\n    trend fitting, gridding, projecting, etc.) and producing PostScript\n    illustrations ranging from simple x\u2013y plots via contour maps to\n    artificially illuminated surfaces and 3D perspective views; the GMT\n    supplements add another 40 more specialized and discipline-specific\n    tools. GMT supports over 30 map projections and transformations\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - leouieda\n    - seisman\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1857,7 +2043,7 @@
    "summary": "The Generic Mapping Tools."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1907,6 +2093,9 @@
    ]
   },
   "source": {
+   "patches": [
+    "crosscompiling.patch"
+   ],
    "sha256": "2cd073d8b1f11b87a59b38aa7aaf8e39c7940d2b55a46a3267e23802ec8a08d1",
    "url": "https://github.com/GenericMappingTools/gmt/releases/download/6.3.0/gmt-6.3.0-src.tar.gz"
   },
