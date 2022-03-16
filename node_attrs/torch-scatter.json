@@ -71,6 +71,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/d53e8bf9-30ee-4542-9028-1cf357839a99.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pytorch110"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1266,13 +1285,9 @@
    "torch-scatter"
   ]
  },
- "pinning_version": "2021.10.22.11.06.24",
- "pre_pr_migrator_attempts": {
-  "pytorch110": 293
- },
- "pre_pr_migrator_status": {
-  "pytorch110": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1992215668\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 270, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 276, in eval_cmd\n    c = subprocess.run(\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 507, in run\n    stdout, stderr = process.communicate(input, timeout=timeout)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 1134, in communicate\n    stdout, stderr = self._communicate(input, endtime, timeout)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 1980, in _communicate\n    self._check_timeout(endtime, orig_timeout, stdout, stderr)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 1178, in _check_timeout\n    raise TimeoutExpired(\nsubprocess.TimeoutExpired: Command 'conda smithy rerender -c auto --no-check-uptodate' timed out after 300 seconds\n"
- },
+ "pinning_version": "2022.03.16.15.21.47",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"torch-scatter\" %}\n{% set version = \"2.0.9\" %}\n# see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion\n{% set torch_proc_type = \"cuda\" if cuda_compiler_version != \"None\" else \"cpu\" %}\n\n\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/torch_scatter-{{ version }}.tar.gz\n  sha256: 08f5511d64473badf0a71d156b36dc2b09b9c2f00a7cd373b935b490c477a7f1\n\nbuild:\n  number: 1\n  rpaths:\n    - lib/\n    - {{ SP_DIR }}/torch/lib\n  missing_dso_whitelist:\n    - '*/libcuda.*'  # [linux64 or ppc64le]\n  skip: true  # [win]\n  skip: true  # [cuda_compiler_version == \"10.2\"]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}  # [cuda_compiler_version != \"None\"]\n    # https://conda-forge.org/docs/maintainer/knowledge_base.html?highlight=cuda#using-centos-7\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n    - cudnn                           # [cuda_compiler_version != \"None\"]\n    - nccl                            # [cuda_compiler_version != \"None\"]\n    - pip\n    - pytest-runner\n    - python\n    - pytorch\n    - pytorch =*={{ torch_proc_type }}*\n    - numpy\n    - tqdm\n    - scipy\n    - networkx\n    - scikit-learn\n    - requests\n    - pandas\n    - rdflib\n    - googledrivedownloader\n    - jinja2\n    - pyparsing\n  run:\n    - python\n    - {{ pin_compatible('cudnn') }}  # [cuda_compiler_version != \"None\"]\n    - {{ pin_compatible('numpy') }}\n  run_constrained:\n    # 2022/02/05 hmaarrfk\n    # While conda packaging seems to allow us to specify\n    # constraints on the same package in different lines\n    # the resulting package doesn't have the ability to\n    # be specified in multiples lines\n    # This makes it tricky to use run_exports\n    # we add the GPU constraint in the run_constrained\n    # to allow us to have \"two\" constraints on the\n    # running package\n    - pytorch =*={{ torch_proc_type }}*\n\ntest:\n  imports:\n    - torch_scatter\n    - torch_scatter.composite\n  commands:\n    - pip check\n  requires:\n    - pip\n\nabout:\n  home: https://github.com/rusty1s/pytorch_scatter\n  summary: PyTorch Extension Library of Optimized Scatter Operations\n  license: MIT\n  license_file: LICENSE\n\nextra:\n  recipe-maintainers:\n    - sarthakpati\n",
  "req": {
   "__set__": true,
@@ -1355,7 +1370,7 @@
    ]
   }
  },
- "smithy_version": "3.13.0",
+ "smithy_version": "3.18.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
