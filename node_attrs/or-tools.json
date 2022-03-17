@@ -117,7 +117,7 @@
     "__lazy_json__": "pr_json/853416799.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1647539815.1963983,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -146,6 +146,25 @@
     "migrator_name",
     "migrator_version",
     "version"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/882737071.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "abseil_cpp20211102"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
    ]
   }
  ],
@@ -993,7 +1012,7 @@
    "ortools-python"
   ]
  },
- "pinning_version": "2022.03.16.23.15.25",
+ "pinning_version": "2022.03.17.11.17.55",
  "raw_meta_yaml": "{% set name = \"or-tools\" %}\n{% set package_name = \"ortools\" %}\n{% set version = \"9.2\" %}\n{% set home = \"https://developers.google.com/optimization\" %}\n{% set license = \"Apache-2.0\" %}\n{% set license_family = \"Apache\" %}\n{% set license_file = \"LICENSE-2.0.txt\" %}\n{% set dev_url = \"https://github.com/google/or-tools\" %}\n\n\npackage:\n  name: {{ name|lower }}-package\n  version: {{ version }}\n\nsource:\n  url: https://github.com/google/or-tools/archive/v{{ version }}.tar.gz\n  sha256: 5337935ea1fa010bb62cf0fc8bedd6de07dda77bff3db7a0f6a36c84c7bd58db\n\n# The meta package\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n\noutputs:\n  # The core package\n  - name: {{ package_name }}-cpp\n    script: build-cpp.sh\n\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake >=3.18\n        # Source: https://github.com/google/or-tools/blob/stable/cmake/python.cmake#L6\n        - git\n        - make\n        - pkg-config\n      host:\n        - abseil-cpp\n        - libprotobuf\n        - zlib 1.2.11\n        # coin or deps\n        - coin-or-utils\n        - coin-or-osi\n        - coin-or-clp =1.17.4\n        - coin-or-cgl\n        - coin-or-cbc\n        # Source: https://github.com/google/or-tools/blob/stable/cmake/dependencies/CMakeLists.txt\n        - python\n      run_constrained:\n        - scip =7.0.1\n\n    test:\n      commands:\n        - test -f $PREFIX/lib/libortools${SHLIB_EXT}\n        - test -f $PREFIX/lib/cmake/ortools/ortoolsTargets.cmake\n        - test -f $PREFIX/lib/cmake/ortools/ortoolsConfig.cmake\n        - test -f $PREFIX/include/ortools_export.h\n        - test -f $PREFIX/include/ortools/algorithms/dense_doubly_linked_list.h\n\n    about:\n      home: {{ home }}\n      license: {{ license }}\n      license_family: {{ license_family }}\n      license_file: {{ license_file }}\n      summary: Google Operations Research Tools (or-tools)\n      description: |\n        OR-Tools is an open source software suite for optimization, tuned for tackling\n        the world's toughest problems in vehicle routing, flows, integer and linear\n        programming, and constraint programming.\n\n        After modeling your problem in the programming language of your choice, you\n        can use any of a half dozen solvers to solve it: commercial solvers such as\n        Gurobi or CPLEX, or open-source solvers such as SCIP, GLPK, or Google's GLOP\n        and award-winning CP-SAT.\n      dev_url: {{ dev_url }}\n\n      # The python package.\n  - name: {{ package_name }}-python\n    script: build-python.sh\n\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake >=3.18\n        - git\n        - make\n        - mypy-protobuf\n        - pkg-config\n        - setuptools\n        - swig >=4.0\n      host:\n        - abseil-cpp\n        - absl-py >=0.13\n        - libprotobuf\n        - numpy\n        - mypy-protobuf\n        - pip >=9.0.1\n        - python >=3.6\n        - virtualenv\n        - wheel\n        - zlib 1.2.11\n        # coin or deps\n        - coin-or-utils\n        - coin-or-osi\n        - coin-or-clp =1.17.4\n        - coin-or-cgl\n        - coin-or-cbc\n      run:\n        - absl-py >=0.13\n        - mypy-protobuf\n        - {{ pin_compatible('numpy') }}\n        - protobuf\n        - python >=3.6\n        # Source: https://github.com/google/or-tools/blob/stable/ortools/python/setup.py.in#L44\n      run_constrained:\n        - scip =7.0.1\n\n    test:\n      imports:\n        - ortools\n        - ortools.linear_solver.pywraplp\n      commands:\n        - pip check\n        - ${PYTHON} cmake/samples/python/sample.py\n        - ${PYTHON} ortools/sat/samples/assignment_sat.py\n      requires:\n        - pip\n      source_files:\n        - cmake/samples/python/sample.py\n        - ortools/sat/samples/assignment_sat.py\n\n    about:\n      home: {{ home }}\n      license: {{ license }}\n      license_family: {{ license_family }}\n      license_file: {{ license_file }}\n      summary: Google Operations Research Tools (or-tools) python package\n      description: |\n        OR-Tools is an open source software suite for optimization, tuned for tackling\n        the world's toughest problems in vehicle routing, flows, integer and linear\n        programming, and constraint programming.\n\n        After modeling your problem in the programming language of your choice, you\n        can use any of a half dozen solvers to solve it: commercial solvers such as\n        Gurobi or CPLEX, or open-source solvers such as SCIP, GLPK, or Google's GLOP\n        and award-winning CP-SAT.\n      dev_url: {{ dev_url }}\n\nabout:\n  home: {{ home }}\n  license: {{ license }}\n  license_family: {{ license_family }}\n  license_file: {{ license_file }}\n  summary: Google Operations Research Tools (or-tools) python package\n  description: |\n    OR-Tools is an open source software suite for optimization, tuned for tackling\n    the world's toughest problems in vehicle routing, flows, integer and linear\n    programming, and constraint programming.\n\n    After modeling your problem in the programming language of your choice, you\n    can use any of a half dozen solvers to solve it: commercial solvers such as\n    Gurobi or CPLEX, or open-source solvers such as SCIP, GLPK, or Google's GLOP\n    and award-winning CP-SAT.\n  dev_url: {{ dev_url }}\n\nextra:\n  recipe-maintainers:\n    - wolfv\n    - BastianZim\n  feedstock-name: or-tools\n",
  "req": {
   "__set__": true,
