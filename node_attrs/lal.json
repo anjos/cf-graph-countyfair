@@ -581,6 +581,10 @@
  "conda-forge.yml": {
   "build_platform": {
    "osx_arm64": "osx_64"
+  },
+  "provider": {
+   "linux_aarch64": "default",
+   "linux_ppc64le": "travis"
   }
  },
  "feedstock_name": "lal",
@@ -1021,6 +1025,530 @@
    ]
   }
  },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "description": "The LSC Algorithm Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL library.  If you want to install\nthe Python bindings, please install the associated python-lal\npackage.\n",
+   "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+   "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+   "home": "https://wiki.ligo.org/Computing/LALSuite",
+   "license": "GPL-2.0-or-later",
+   "license_family": "GPL",
+   "license_file": "COPYING",
+   "summary": "LSC Algorithm Library"
+  },
+  "build": {
+   "ignore_run_exports": [
+    "blas",
+    "fftw"
+   ],
+   "number": "100"
+  },
+  "extra": {
+   "feedstock-name": "lal",
+   "recipe-maintainers": [
+    "duncanmmacleod",
+    "skymoo"
+   ]
+  },
+  "outputs": [
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL library.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library shared object libraries"
+    },
+    "build": {
+     "run_exports": [
+      "liblal"
+     ],
+     "string": "fftw_h1234567_100"
+    },
+    "name": "liblal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "fftw * nompi*",
+      "gsl",
+      "hdf5",
+      "zlib"
+     ],
+     "run": [
+      "fftw",
+      "gsl",
+      "hdf5",
+      "libzlib"
+     ],
+     "run_constrained": [
+      "lal >=7.1.1",
+      "python-lal >=7.1.1"
+     ]
+    },
+    "script": "install-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/liblal${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/liblalsupport${SHLIB_EXT}",
+      "test \"${LAL_DATADIR}\" = \"${PREFIX}/share/lal\"",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lal",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalsupport"
+     ],
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\nThis package contains the Python bindings of the LAL C libraries\nand additional Python modules.\n\nNote: this package only provides the importable Python libraries.\nAll command-line interfaces, scripts, and executables are\npart of the `lal` package.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library Python bindings"
+    },
+    "build": {
+     "ignore_run_exports": [
+      "mkl",
+      "python"
+     ],
+     "string": "fftw_pyh1234567_100"
+    },
+    "name": "python-lal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "pkg-config >=0.18.0",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "liblal",
+      "numpy",
+      "python"
+     ],
+     "run": [
+      "liblal",
+      "ligo-segments",
+      "numpy",
+      "python",
+      "python-dateutil",
+      "scipy",
+      "six"
+     ]
+    },
+    "script": "install-python.sh",
+    "test": {
+     "commands": [
+      "python -m pytest -ra -v test/python --ignore test/python/test_rate.py -k 'not lal.rate and not lal.series'"
+     ],
+     "requires": [
+      "freezegun",
+      "lscsoft-glue",
+      "pytest >=4.0"
+     ],
+     "source_files": [
+      "test/python"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library"
+    },
+    "build": {
+     "ignore_run_exports": [
+      "mkl",
+      "python"
+     ],
+     "string": "fftw_pyh1234567_100"
+    },
+    "name": "lal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "help2man >=1.37",
+      "make",
+      "sed"
+     ],
+     "host": [
+      "liblal",
+      "python"
+     ],
+     "run": [
+      "liblal",
+      "python",
+      "python-lal"
+     ]
+    },
+    "script": "install-bin.sh",
+    "test": {
+     "commands": [
+      "lal_version --verbose",
+      "lal_simd_detect"
+     ],
+     "imports": [
+      "lal"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "lal-split",
+   "version": "7.1.7"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "pkg-config >=0.18.0",
+    "make",
+    "bc",
+    "swig >=3.0.10"
+   ],
+   "host": [
+    "fftw * nompi*",
+    "gsl",
+    "hdf5",
+    "libzlib"
+   ]
+  },
+  "source": {
+   "sha256": "e1ad867e525e7f870d1a1fd62aa0dee1918905af36d2a9b9191ed5bee045235c",
+   "url": "https://software.ligo.org/lscsoft/source/lalsuite/lal-7.1.7.tar.xz"
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "bc",
+    "c_compiler_stub",
+    "help2man",
+    "make",
+    "pkg-config",
+    "sed",
+    "swig"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "fftw",
+    "gsl",
+    "hdf5",
+    "liblal",
+    "libzlib",
+    "numpy",
+    "python",
+    "zlib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "fftw",
+    "gsl",
+    "hdf5",
+    "liblal",
+    "libzlib",
+    "ligo-segments",
+    "numpy",
+    "python",
+    "python-dateutil",
+    "python-lal",
+    "scipy",
+    "six"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "freezegun",
+    "lscsoft-glue",
+    "pkg-config",
+    "pytest"
+   ]
+  }
+ },
+ "linux_ppc64le_meta_yaml": {
+  "about": {
+   "description": "The LSC Algorithm Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL library.  If you want to install\nthe Python bindings, please install the associated python-lal\npackage.\n",
+   "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+   "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+   "home": "https://wiki.ligo.org/Computing/LALSuite",
+   "license": "GPL-2.0-or-later",
+   "license_family": "GPL",
+   "license_file": "COPYING",
+   "summary": "LSC Algorithm Library"
+  },
+  "build": {
+   "ignore_run_exports": [
+    "blas",
+    "fftw"
+   ],
+   "number": "100"
+  },
+  "extra": {
+   "feedstock-name": "lal",
+   "recipe-maintainers": [
+    "duncanmmacleod",
+    "skymoo"
+   ]
+  },
+  "outputs": [
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL library.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library shared object libraries"
+    },
+    "build": {
+     "run_exports": [
+      "liblal"
+     ],
+     "string": "fftw_h1234567_100"
+    },
+    "name": "liblal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "fftw * nompi*",
+      "gsl",
+      "hdf5",
+      "zlib"
+     ],
+     "run": [
+      "fftw",
+      "gsl",
+      "hdf5",
+      "libzlib"
+     ],
+     "run_constrained": [
+      "lal >=7.1.1",
+      "python-lal >=7.1.1"
+     ]
+    },
+    "script": "install-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/liblal${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/liblalsupport${SHLIB_EXT}",
+      "test \"${LAL_DATADIR}\" = \"${PREFIX}/share/lal\"",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lal",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalsupport"
+     ],
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\nThis package contains the Python bindings of the LAL C libraries\nand additional Python modules.\n\nNote: this package only provides the importable Python libraries.\nAll command-line interfaces, scripts, and executables are\npart of the `lal` package.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library Python bindings"
+    },
+    "build": {
+     "ignore_run_exports": [
+      "mkl",
+      "python"
+     ],
+     "string": "fftw_pyh1234567_100"
+    },
+    "name": "python-lal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "pkg-config >=0.18.0",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "liblal",
+      "numpy",
+      "python"
+     ],
+     "run": [
+      "liblal",
+      "ligo-segments",
+      "numpy",
+      "python",
+      "python-dateutil",
+      "scipy",
+      "six"
+     ]
+    },
+    "script": "install-python.sh",
+    "test": {
+     "commands": [
+      "python -m pytest -ra -v test/python --ignore test/python/test_rate.py -k 'not lal.rate and not lal.series'"
+     ],
+     "requires": [
+      "freezegun",
+      "lscsoft-glue",
+      "pytest >=4.0"
+     ],
+     "source_files": [
+      "test/python"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library"
+    },
+    "build": {
+     "ignore_run_exports": [
+      "mkl",
+      "python"
+     ],
+     "string": "fftw_pyh1234567_100"
+    },
+    "name": "lal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "help2man >=1.37",
+      "make",
+      "sed"
+     ],
+     "host": [
+      "liblal",
+      "python"
+     ],
+     "run": [
+      "liblal",
+      "python",
+      "python-lal"
+     ]
+    },
+    "script": "install-bin.sh",
+    "test": {
+     "commands": [
+      "lal_version --verbose",
+      "lal_simd_detect"
+     ],
+     "imports": [
+      "lal"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "lal-split",
+   "version": "7.1.7"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "pkg-config >=0.18.0",
+    "make",
+    "bc",
+    "swig >=3.0.10"
+   ],
+   "host": [
+    "fftw * nompi*",
+    "gsl",
+    "hdf5",
+    "libzlib"
+   ]
+  },
+  "source": {
+   "sha256": "e1ad867e525e7f870d1a1fd62aa0dee1918905af36d2a9b9191ed5bee045235c",
+   "url": "https://software.ligo.org/lscsoft/source/lalsuite/lal-7.1.7.tar.xz"
+  }
+ },
+ "linux_ppc64le_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "bc",
+    "c_compiler_stub",
+    "help2man",
+    "make",
+    "pkg-config",
+    "sed",
+    "swig"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "fftw",
+    "gsl",
+    "hdf5",
+    "liblal",
+    "libzlib",
+    "numpy",
+    "python",
+    "zlib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "fftw",
+    "gsl",
+    "hdf5",
+    "liblal",
+    "libzlib",
+    "ligo-segments",
+    "numpy",
+    "python",
+    "python-dateutil",
+    "python-lal",
+    "scipy",
+    "six"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "freezegun",
+    "lscsoft-glue",
+    "pkg-config",
+    "pytest"
+   ]
+  }
+ },
  "meta_yaml": {
   "about": {
    "description": "The LSC Algorithm Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL library.  If you want to install\nthe Python bindings, please install the associated python-lal\npackage.\n",
@@ -1043,6 +1571,10 @@
     "blas",
     "fftw",
     "blas",
+    "fftw",
+    "blas",
+    "fftw",
+    "blas",
     "fftw"
    ],
    "number": "100"
@@ -1050,6 +1582,10 @@
   "extra": {
    "feedstock-name": "lal",
    "recipe-maintainers": [
+    "duncanmmacleod",
+    "skymoo",
+    "duncanmmacleod",
+    "skymoo",
     "duncanmmacleod",
     "skymoo",
     "duncanmmacleod",
@@ -1204,6 +1740,322 @@
       "liblal",
       "python",
       "mkl 2022"
+     ],
+     "run": [
+      "liblal",
+      "python",
+      "python-lal"
+     ]
+    },
+    "script": "install-bin.sh",
+    "test": {
+     "commands": [
+      "lal_version --verbose",
+      "lal_simd_detect"
+     ],
+     "imports": [
+      "lal"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL library.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library shared object libraries"
+    },
+    "build": {
+     "run_exports": [
+      "liblal"
+     ],
+     "string": "fftw_h1234567_100"
+    },
+    "name": "liblal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "fftw * nompi*",
+      "gsl",
+      "hdf5",
+      "zlib"
+     ],
+     "run": [
+      "fftw",
+      "gsl",
+      "hdf5",
+      "libzlib"
+     ],
+     "run_constrained": [
+      "lal >=7.1.1",
+      "python-lal >=7.1.1"
+     ]
+    },
+    "script": "install-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/liblal${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/liblalsupport${SHLIB_EXT}",
+      "test \"${LAL_DATADIR}\" = \"${PREFIX}/share/lal\"",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lal",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalsupport"
+     ],
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\nThis package contains the Python bindings of the LAL C libraries\nand additional Python modules.\n\nNote: this package only provides the importable Python libraries.\nAll command-line interfaces, scripts, and executables are\npart of the `lal` package.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library Python bindings"
+    },
+    "build": {
+     "ignore_run_exports": [
+      "mkl",
+      "python"
+     ],
+     "string": "fftw_pyh1234567_100"
+    },
+    "name": "python-lal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "pkg-config >=0.18.0",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "liblal",
+      "numpy",
+      "python"
+     ],
+     "run": [
+      "liblal",
+      "ligo-segments",
+      "numpy",
+      "python",
+      "python-dateutil",
+      "scipy",
+      "six"
+     ]
+    },
+    "script": "install-python.sh",
+    "test": {
+     "commands": [
+      "python -m pytest -ra -v test/python --ignore test/python/test_rate.py -k 'not lal.rate and not lal.series'"
+     ],
+     "requires": [
+      "freezegun",
+      "lscsoft-glue",
+      "pytest >=4.0"
+     ],
+     "source_files": [
+      "test/python"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library"
+    },
+    "build": {
+     "ignore_run_exports": [
+      "mkl",
+      "python"
+     ],
+     "string": "fftw_pyh1234567_100"
+    },
+    "name": "lal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "help2man >=1.37",
+      "make",
+      "sed"
+     ],
+     "host": [
+      "liblal",
+      "python"
+     ],
+     "run": [
+      "liblal",
+      "python",
+      "python-lal"
+     ]
+    },
+    "script": "install-bin.sh",
+    "test": {
+     "commands": [
+      "lal_version --verbose",
+      "lal_simd_detect"
+     ],
+     "imports": [
+      "lal"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\nThis package contains the shared-object libraries needed to run\napplications that use the LAL library.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite.git",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library shared object libraries"
+    },
+    "build": {
+     "run_exports": [
+      "liblal"
+     ],
+     "string": "fftw_h1234567_100"
+    },
+    "name": "liblal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "fftw * nompi*",
+      "gsl",
+      "hdf5",
+      "zlib"
+     ],
+     "run": [
+      "fftw",
+      "gsl",
+      "hdf5",
+      "libzlib"
+     ],
+     "run_constrained": [
+      "lal >=7.1.1",
+      "python-lal >=7.1.1"
+     ]
+    },
+    "script": "install-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/liblal${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/liblalsupport${SHLIB_EXT}",
+      "test \"${LAL_DATADIR}\" = \"${PREFIX}/share/lal\"",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lal",
+      "pkg-config --print-errors --exact-version \"${PKG_VERSION}\" lalsupport"
+     ],
+     "requires": [
+      "pkg-config"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\nThis package contains the Python bindings of the LAL C libraries\nand additional Python modules.\n\nNote: this package only provides the importable Python libraries.\nAll command-line interfaces, scripts, and executables are\npart of the `lal` package.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library Python bindings"
+    },
+    "build": {
+     "ignore_run_exports": [
+      "mkl",
+      "python"
+     ],
+     "string": "fftw_pyh1234567_100"
+    },
+    "name": "python-lal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "make",
+      "pkg-config >=0.18.0",
+      "swig >=3.0.10"
+     ],
+     "host": [
+      "liblal",
+      "numpy",
+      "python"
+     ],
+     "run": [
+      "liblal",
+      "ligo-segments",
+      "numpy",
+      "python",
+      "python-dateutil",
+      "scipy",
+      "six"
+     ]
+    },
+    "script": "install-python.sh",
+    "test": {
+     "commands": [
+      "python -m pytest -ra -v test/python --ignore test/python/test_rate.py -k 'not lal.rate and not lal.series'"
+     ],
+     "requires": [
+      "freezegun",
+      "lscsoft-glue",
+      "pytest >=4.0"
+     ],
+     "source_files": [
+      "test/python"
+     ]
+    }
+   },
+   {
+    "about": {
+     "description": "The LSC Algorithm Library for gravitational wave data analysis.\n",
+     "dev_url": "https://git.ligo.org/lscsoft/lalsuite/",
+     "doc_url": "https://lscsoft.docs.ligo.org/lalsuite/lal/",
+     "home": "https://wiki.ligo.org/Computing/LALSuite",
+     "license": "GPL-2.0-or-later",
+     "license_family": "GPL",
+     "license_file": "COPYING",
+     "summary": "LSC Algorithm Library"
+    },
+    "build": {
+     "ignore_run_exports": [
+      "mkl",
+      "python"
+     ],
+     "string": "fftw_pyh1234567_100"
+    },
+    "name": "lal",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "help2man >=1.37",
+      "make",
+      "sed"
+     ],
+     "host": [
+      "liblal",
+      "python"
      ],
      "run": [
       "liblal",
@@ -1886,12 +2738,30 @@
     "pkg-config >=0.18.0",
     "make",
     "bc",
+    "swig >=3.0.10",
+    "c_compiler_stub",
+    "pkg-config >=0.18.0",
+    "make",
+    "bc",
+    "swig >=3.0.10",
+    "c_compiler_stub",
+    "pkg-config >=0.18.0",
+    "make",
+    "bc",
     "swig >=3.0.10"
    ],
    "host": [
     "gsl",
     "hdf5",
     "mkl-devel 2022",
+    "libzlib",
+    "fftw * nompi*",
+    "gsl",
+    "hdf5",
+    "libzlib",
+    "fftw * nompi*",
+    "gsl",
+    "hdf5",
     "libzlib",
     "fftw * nompi*",
     "gsl",
