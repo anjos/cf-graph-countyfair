@@ -92,6 +92,23 @@
     "__lazy_json__": "pr_json/878294591.json"
    },
    "data": {
+    "bot_rerun": 1647823908.9312546,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/884313062.json"
+   },
+   "data": {
     "bot_rerun": false,
     "migrator_name": "ArchRebuild",
     "migrator_version": 1,
@@ -119,13 +136,12 @@
    "license": "GPL-2.0-only AND LGPL-3.0-or-later",
    "license_file": [
     "COPYING",
-    "libbtrfsutil/COPYING",
-    "libbtrfsutil/COPYING.LESSER"
+    "libbtrfsutil/COPYING"
    ],
    "summary": "Userspace utilities to manage btrfs filesystems."
   },
   "build": {
-   "number": "1"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -134,7 +150,7 @@
   },
   "package": {
    "name": "btrfs-progs",
-   "version": "5.10.1"
+   "version": "5.16.2"
   },
   "requirements": {
    "build": [
@@ -152,7 +168,8 @@
     "util-linux",
     "zstd >=1.0.0",
     "zstd",
-    "zlib"
+    "zlib",
+    "libudev"
    ],
    "run": []
   },
@@ -161,8 +178,8 @@
     "patches": [
      "0001-Install-udev-rules-inside-prefix.patch"
     ],
-    "sha256": "1379cc731feae7f473ad9e37c845bbfb873381ef67b340f1a22fbca9a4da0344",
-    "url": "https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v5.10.1.tar.xz"
+    "sha256": "9e9b303a1d0fd9ceaaf204ee74c1c8fa1fd55794e223d9fe2bc62875ecbd53d2",
+    "url": "https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v5.16.2.tar.xz"
    }
   ],
   "test": {
@@ -193,6 +210,7 @@
    "elements": [
     "e2fsprogs-libs",
     "libgcrypt",
+    "libudev",
     "lzo",
     "util-linux",
     "zlib",
@@ -216,13 +234,12 @@
    "license": "GPL-2.0-only AND LGPL-3.0-or-later",
    "license_file": [
     "COPYING",
-    "libbtrfsutil/COPYING",
-    "libbtrfsutil/COPYING.LESSER"
+    "libbtrfsutil/COPYING"
    ],
    "summary": "Userspace utilities to manage btrfs filesystems."
   },
   "build": {
-   "number": "1"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -231,7 +248,7 @@
   },
   "package": {
    "name": "btrfs-progs",
-   "version": "5.10.1"
+   "version": "5.16.2"
   },
   "requirements": {
    "build": [
@@ -249,7 +266,8 @@
     "util-linux",
     "zstd >=1.0.0",
     "zstd",
-    "zlib"
+    "zlib",
+    "libudev"
    ],
    "run": []
   },
@@ -258,8 +276,8 @@
     "patches": [
      "0001-Install-udev-rules-inside-prefix.patch"
     ],
-    "sha256": "1379cc731feae7f473ad9e37c845bbfb873381ef67b340f1a22fbca9a4da0344",
-    "url": "https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v5.10.1.tar.xz"
+    "sha256": "9e9b303a1d0fd9ceaaf204ee74c1c8fa1fd55794e223d9fe2bc62875ecbd53d2",
+    "url": "https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v5.16.2.tar.xz"
    }
   ],
   "test": {
@@ -289,8 +307,8 @@
    "btrfs-progs"
   ]
  },
- "pinning_version": "2022.03.12.18.19.48",
- "raw_meta_yaml": "{% set version = \"5.10.1\" %}\n\npackage:\n  name: btrfs-progs\n  version: {{ version }}\n\nsource:\n  - url: https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v{{ version }}.tar.xz\n    sha256: 1379cc731feae7f473ad9e37c845bbfb873381ef67b340f1a22fbca9a4da0344\n    patches:\n      - 0001-Install-udev-rules-inside-prefix.patch\n\nbuild:\n  number: 1\n  skip: true  # [not linux]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - autoconf >=2.60\n    - automake\n    - make\n    - pkg-config\n    # We override UDEVDIR in 0001-Install-udev-rules-inside-prefix.patch anyway\n    # hence we can omit the libudev dependency and and compile for CentOS 6.\n    # # Needs libudev >=190 which is not available on Centos 6.\n    # # On Centos 7 it is provided by systemd-devel.\n    # # - {{ cdt('libudev-devel') }}\n    # # - sysroot_linux-64 >=2.17\n    # # - {{ cdt('systemd-devel') }}\n  host:\n    - e2fsprogs-libs\n    # Upstream requires libgcrypt >=1.8.0, but only >=1.8.5 has the pkgconfig files we want.\n    - libgcrypt >=1.8.5\n    - libgcrypt\n    - lzo\n    # Only need the libs, but util-linux doesn't offer a subpackage for it.\n    # - util-linux-libs\n    - util-linux\n    - zstd >=1.0.0\n    - zstd\n    - zlib\n  run:\n\ntest:\n  commands:\n    - test -f \"${PREFIX}/include/btrfs/version.h\"\n    - test -f \"${PREFIX}/include/btrfsutil.h\"\n    - test -f \"${PREFIX}/lib/libbtrfs${SHLIB_EXT}\"\n    - test -f \"${PREFIX}/lib/libbtrfsutil${SHLIB_EXT}\"\n    - test -f \"${PREFIX}/lib/pkgconfig/libbtrfsutil.pc\"\n    - btrfs --help\n    - btrfs --version\n\nabout:\n  home: https://btrfs.wiki.kernel.org\n  dev_url: https://github.com/kdave/btrfs-progs\n  doc_url: https://btrfs.wiki.kernel.org/index.php/Category:Manpage\n  license: GPL-2.0-only AND LGPL-3.0-or-later\n  license_file:\n    - COPYING\n    - libbtrfsutil/COPYING\n    - libbtrfsutil/COPYING.LESSER\n  summary: Userspace utilities to manage btrfs filesystems.\n\nextra:\n  recipe-maintainers:\n    - mbargull\n",
+ "pinning_version": "2022.03.20.19.31.27",
+ "raw_meta_yaml": "{% set version = \"5.16.2\" %}\n\npackage:\n  name: btrfs-progs\n  version: {{ version }}\n\nsource:\n  - url: https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v{{ version }}.tar.xz\n    sha256: 9e9b303a1d0fd9ceaaf204ee74c1c8fa1fd55794e223d9fe2bc62875ecbd53d2\n    patches:\n      - 0001-Install-udev-rules-inside-prefix.patch\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - autoconf >=2.60\n    - automake\n    - make\n    - pkg-config\n    # We override UDEVDIR in 0001-Install-udev-rules-inside-prefix.patch anyway\n    # hence we can omit the libudev dependency and and compile for CentOS 6.\n    # # Needs libudev >=190 which is not available on Centos 6.\n    # # On Centos 7 it is provided by systemd-devel.\n    # # - {{ cdt('libudev-devel') }}\n    # # - sysroot_linux-64 >=2.17\n    # # - {{ cdt('systemd-devel') }}\n  host:\n    - e2fsprogs-libs\n    # Upstream requires libgcrypt >=1.8.0, but only >=1.8.5 has the pkgconfig files we want.\n    - libgcrypt >=1.8.5\n    - libgcrypt\n    - lzo\n    # Only need the libs, but util-linux doesn't offer a subpackage for it.\n    # - util-linux-libs\n    - util-linux\n    - zstd >=1.0.0\n    - zstd\n    - zlib\n    - libudev\n  run:\n\ntest:\n  commands:\n    - test -f \"${PREFIX}/include/btrfs/version.h\"\n    - test -f \"${PREFIX}/include/btrfsutil.h\"\n    - test -f \"${PREFIX}/lib/libbtrfs${SHLIB_EXT}\"\n    - test -f \"${PREFIX}/lib/libbtrfsutil${SHLIB_EXT}\"\n    - test -f \"${PREFIX}/lib/pkgconfig/libbtrfsutil.pc\"\n    - btrfs --help\n    - btrfs --version\n\nabout:\n  home: https://btrfs.wiki.kernel.org\n  dev_url: https://github.com/kdave/btrfs-progs\n  doc_url: https://btrfs.wiki.kernel.org/index.php/Category:Manpage\n  license: GPL-2.0-only AND LGPL-3.0-or-later\n  license_file:\n    - COPYING\n    - libbtrfsutil/COPYING\n  summary: Userspace utilities to manage btrfs filesystems.\n\nextra:\n  recipe-maintainers:\n    - mbargull\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -299,6 +317,7 @@
    "c_compiler_stub",
    "e2fsprogs-libs",
    "libgcrypt",
+   "libudev",
    "lzo",
    "make",
    "pkg-config",
@@ -324,6 +343,7 @@
     "c_compiler_stub",
     "e2fsprogs-libs",
     "libgcrypt",
+    "libudev",
     "lzo",
     "util-linux",
     "zlib",
@@ -360,6 +380,7 @@
     "e2fsprogs-libs",
     "libgcrypt",
     "libgcrypt >=1.8.5",
+    "libudev",
     "lzo",
     "util-linux",
     "zlib",
@@ -376,6 +397,6 @@
    "elements": []
   }
  },
- "url": "https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v5.10.1.tar.xz",
- "version": "5.10.1"
+ "url": "https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v5.16.2.tar.xz",
+ "version": "5.16.2"
 }
