@@ -200,6 +200,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/884277122.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -848,7 +865,7 @@
    "pyvips"
   ]
  },
- "pinning_version": "2021.11.20.19.20.32",
+ "pinning_version": "2022.03.20.19.31.27",
  "raw_meta_yaml": "# pyvips supports cffi ABI and API mode\n#\n# During setup.py, it will attempt to compile a generated wrapper against the\n# libvips headers -- this is why it needs pkgconfig and libvips in host.\n#\n# At runtime, it will first try to load the compiled wrapper, and if that\n# fails, will fall back to ABI mode, ie. directly opening the libvips shared\n# library and calling into it with cffi.\n\n# Skip win since libvips is not packaged for conda there. It is blocked on\n# at least gdk-pixbuf.\n\n{% set name = \"pyvips\" %}\n{% set version = \"2.1.16\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/libvips/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 24f71106de2000153ca3654f5815c620c239bc6e980b72484ae5e121ecbe4f5a\n\nbuild:\n  number: 3\n  script: '{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    # 2021/12/30 hmaarrfk\n    # I'm really not sure how to ensure that things get cross compiled correctly\n    # Therefore, we rely on ABI mode for cross compiled architectures\n    # - cffi                                   # [build_platform != target_platform]\n    # - pkgconfig                              # [build_platform != target_platform]\n    # - libvips                                # [build_platform != target_platform]\n  host:\n    - cffi >=1.0\n    - libvips\n    - pip\n    - pkgconfig         # [not win]\n    - pytest\n    - pytest-runner\n    - python\n  run:\n    - cffi >=1.0\n    - python\n    # 2021/12/30 Not sure why pkgconfig is a runtime dependency\n    # https://github.com/libvips/pyvips/issues/295\n    - pkgconfig         # [not win]\n\ntest:\n  requires:\n    - pip\n  imports:\n    - pyvips\n  commands:\n    - pip check\n\nabout:\n  home: https://github.com/libvips/pyvips\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE.txt\n  summary: Binding for libvips\n  doc_url: https://libvips.github.io/pyvips/\n\nextra:\n  recipe-maintainers:\n    - jcupitt\n    - hmaarrfk\n",
  "req": {
   "__set__": true,
@@ -899,7 +916,7 @@
    ]
   }
  },
- "smithy_version": "3.14.3",
+ "smithy_version": "3.18.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
