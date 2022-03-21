@@ -572,6 +572,7 @@
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
   "about": {
+   "description": "`mne-base` contains the basic functionality for data analysis and 2D\nvisualization. For full functionality, including 3D visualization,\nuse the `mne` package instead. `mne-installer-menus` is only used by the\nstandalone installers and should not be installed manually.\n",
    "dev_url": "https://github.com/mne-tools/mne-python",
    "doc_url": "http://mne.tools",
    "home": "http://mne.tools",
@@ -581,7 +582,7 @@
    "summary": "MNE-Python is a software for MEG and EEG data analysis."
   },
   "build": {
-   "number": "1"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -609,10 +610,13 @@
       "python >=3.7",
       "setuptools",
       "matplotlib-base >=3.1.0",
-      "numpy >=1.16.0",
-      "scipy >=1.2.0",
+      "numpy >=1.18.1",
+      "scipy >=1.4.1",
       "pooch >=1.5",
-      "tqdm"
+      "tqdm",
+      "decorator",
+      "packaging",
+      "jinja2"
      ]
     },
     "test": {
@@ -637,20 +641,22 @@
      "run": [
       "mne-base",
       "matplotlib >=3.1.0",
+      "seaborn",
+      "jupyter",
+      "h5io",
+      "pymatreader",
+      "h5py",
       "dipy",
       "nibabel",
       "nilearn",
       "pandas >=0.23.4",
       "xlrd",
       "scikit-learn >=0.20.2",
-      "mayavi",
-      "pysurfer",
       "python-picard",
       "numba",
       "vtk >=9.0.1",
-      "pyvista >=0.24",
-      "pyvistaqt >=0.2.0",
-      "h5py",
+      "pyvista >=0.32",
+      "pyvistaqt >=0.4",
       "statsmodels",
       "numexpr",
       "pyqt",
@@ -658,13 +664,12 @@
       "joblib",
       "psutil",
       "mffpy >=0.5.7",
-      "imageio",
+      "imageio >=2.6.1",
       "imageio-ffmpeg >=0.4.1",
-      "traits",
       "traitlets",
-      "traitsui",
-      "pyface",
-      "mne-qt-browser"
+      "mne-qt-browser",
+      "ipywidgets",
+      "ipyvtklink"
      ]
     },
     "test": {
@@ -679,22 +684,80 @@
       "pip"
      ]
     }
+   },
+   {
+    "build": {
+     "noarch": "python",
+     "script": [
+      "mkdir -p \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu\"",
+      "sed \"s/__PKG_VERSION__/1.0.0/\" \"/tmp/tmpmpdk9jdr/menu/menu.json\" > \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne.json\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/spyder.icns\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_spyder.icns\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/spyder.ico\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_spyder.ico\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/spyder.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_spyder.png\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/console.icns\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_console.icns\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/console.ico\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_console.ico\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/console.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_console.png\"",
+      "sed \"s#__PREFIX__#/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla#\" \"/tmp/tmpmpdk9jdr/menu/open_prompt.applescript\" > \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_open_prompt.applescript\"",
+      "sed \"s#__PREFIX__#/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla#\" \"/tmp/tmpmpdk9jdr/menu/open_prompt.sh\" > \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_open_prompt.sh\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/info.icns\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_info.icns\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/info.ico\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_info.ico\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/info.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_info.png\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/mne_sys_info.py\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_sys_info.py\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/web.icns\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_web.icns\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/web.ico\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_web.ico\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/web.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_web.png\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/forum.icns\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_forum.icns\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/forum.ico\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_forum.ico\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/forum.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_forum.png\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/mne.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne.png\""
+     ]
+    },
+    "name": "mne-installer-menus",
+    "requirements": {
+     "build": [
+      "sed"
+     ],
+     "host": [
+      "python >=3.7"
+     ],
+     "run": [
+      "python >=3.7",
+      "mne-base",
+      "spyder"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${CONDA_PREFIX}/Menu/mne.json",
+      "test -f ${CONDA_PREFIX}/Menu/mne_sys_info.py",
+      "test -f ${CONDA_PREFIX}/Menu/mne_open_prompt.applescript",
+      "test -f ${CONDA_PREFIX}/Menu/mne_open_prompt.sh",
+      "test `ls ${CONDA_PREFIX}/Menu/mne_spyder.*  | wc -l` -eq 3",
+      "test `ls ${CONDA_PREFIX}/Menu/mne_console.* | wc -l` -eq 3",
+      "test `ls ${CONDA_PREFIX}/Menu/mne_info.*    | wc -l` -eq 3",
+      "test `ls ${CONDA_PREFIX}/Menu/mne_web.*     | wc -l` -eq 3",
+      "test `ls ${CONDA_PREFIX}/Menu/mne_forum.*   | wc -l` -eq 3",
+      "test -f ${CONDA_PREFIX}/Menu/mne.png"
+     ]
+    }
    }
   ],
   "package": {
    "name": "mne-python",
-   "version": "0.24.1"
+   "version": "1.0.0"
   },
   "source": {
-   "fn": "mne-python-0.24.1.tar.gz",
-   "sha256": "38cbffd03a6ad0e83ef4a964ac9910a37d164c37fcc84894e39ed0cdf805300d",
-   "url": "https://pypi.io/packages/source/m/mne/mne-0.24.1.tar.gz"
+   "fn": "mne-python-1.0.0.tar.gz",
+   "sha256": "1302a735368abf200f42fb43e7f786bd0fa35da2a91b1659c30ae6241edea498",
+   "url": "https://pypi.io/packages/source/m/mne/mne-1.0.0.tar.gz"
   }
  },
  "linux_64_requirements": {
   "build": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "sed"
+   ]
   },
   "host": {
    "__set__": true,
@@ -706,14 +769,19 @@
   "run": {
    "__set__": true,
    "elements": [
+    "decorator",
     "dipy",
+    "h5io",
     "h5py",
     "imageio",
     "imageio-ffmpeg",
+    "ipyvtklink",
+    "ipywidgets",
+    "jinja2",
     "joblib",
+    "jupyter",
     "matplotlib",
     "matplotlib-base",
-    "mayavi",
     "mffpy",
     "mne-base",
     "mne-qt-browser",
@@ -722,25 +790,25 @@
     "numba",
     "numexpr",
     "numpy",
+    "packaging",
     "pandas",
     "pillow",
     "pooch",
     "psutil",
-    "pyface",
+    "pymatreader",
     "pyqt",
-    "pysurfer",
     "python",
     "python-picard",
     "pyvista",
     "pyvistaqt",
     "scikit-learn",
     "scipy",
+    "seaborn",
     "setuptools",
+    "spyder",
     "statsmodels",
     "tqdm",
     "traitlets",
-    "traits",
-    "traitsui",
     "vtk",
     "xlrd"
    ]
@@ -754,6 +822,7 @@
  },
  "meta_yaml": {
   "about": {
+   "description": "`mne-base` contains the basic functionality for data analysis and 2D\nvisualization. For full functionality, including 3D visualization,\nuse the `mne` package instead. `mne-installer-menus` is only used by the\nstandalone installers and should not be installed manually.\n",
    "dev_url": "https://github.com/mne-tools/mne-python",
    "doc_url": "http://mne.tools",
    "home": "http://mne.tools",
@@ -763,7 +832,7 @@
    "summary": "MNE-Python is a software for MEG and EEG data analysis."
   },
   "build": {
-   "number": "1"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -791,10 +860,13 @@
       "python >=3.7",
       "setuptools",
       "matplotlib-base >=3.1.0",
-      "numpy >=1.16.0",
-      "scipy >=1.2.0",
+      "numpy >=1.18.1",
+      "scipy >=1.4.1",
       "pooch >=1.5",
-      "tqdm"
+      "tqdm",
+      "decorator",
+      "packaging",
+      "jinja2"
      ]
     },
     "test": {
@@ -819,20 +891,22 @@
      "run": [
       "mne-base",
       "matplotlib >=3.1.0",
+      "seaborn",
+      "jupyter",
+      "h5io",
+      "pymatreader",
+      "h5py",
       "dipy",
       "nibabel",
       "nilearn",
       "pandas >=0.23.4",
       "xlrd",
       "scikit-learn >=0.20.2",
-      "mayavi",
-      "pysurfer",
       "python-picard",
       "numba",
       "vtk >=9.0.1",
-      "pyvista >=0.24",
-      "pyvistaqt >=0.2.0",
-      "h5py",
+      "pyvista >=0.32",
+      "pyvistaqt >=0.4",
       "statsmodels",
       "numexpr",
       "pyqt",
@@ -840,13 +914,12 @@
       "joblib",
       "psutil",
       "mffpy >=0.5.7",
-      "imageio",
+      "imageio >=2.6.1",
       "imageio-ffmpeg >=0.4.1",
-      "traits",
       "traitlets",
-      "traitsui",
-      "pyface",
-      "mne-qt-browser"
+      "mne-qt-browser",
+      "ipywidgets",
+      "ipyvtklink"
      ]
     },
     "test": {
@@ -861,20 +934,76 @@
       "pip"
      ]
     }
+   },
+   {
+    "build": {
+     "noarch": "python",
+     "script": [
+      "mkdir -p \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu\"",
+      "sed \"s/__PKG_VERSION__/1.0.0/\" \"/tmp/tmpmpdk9jdr/menu/menu.json\" > \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne.json\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/spyder.icns\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_spyder.icns\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/spyder.ico\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_spyder.ico\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/spyder.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_spyder.png\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/console.icns\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_console.icns\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/console.ico\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_console.ico\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/console.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_console.png\"",
+      "sed \"s#__PREFIX__#/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla#\" \"/tmp/tmpmpdk9jdr/menu/open_prompt.applescript\" > \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_open_prompt.applescript\"",
+      "sed \"s#__PREFIX__#/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla#\" \"/tmp/tmpmpdk9jdr/menu/open_prompt.sh\" > \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_open_prompt.sh\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/info.icns\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_info.icns\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/info.ico\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_info.ico\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/info.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_info.png\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/mne_sys_info.py\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_sys_info.py\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/web.icns\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_web.icns\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/web.ico\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_web.ico\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/web.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_web.png\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/forum.icns\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_forum.icns\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/forum.ico\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_forum.ico\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/forum.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne_forum.png\"",
+      "cp \"/tmp/tmpmpdk9jdr/menu/mne.png\" \"/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Menu/mne.png\""
+     ]
+    },
+    "name": "mne-installer-menus",
+    "requirements": {
+     "build": [
+      "sed"
+     ],
+     "host": [
+      "python >=3.7"
+     ],
+     "run": [
+      "python >=3.7",
+      "mne-base",
+      "spyder"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${CONDA_PREFIX}/Menu/mne.json",
+      "test -f ${CONDA_PREFIX}/Menu/mne_sys_info.py",
+      "test -f ${CONDA_PREFIX}/Menu/mne_open_prompt.applescript",
+      "test -f ${CONDA_PREFIX}/Menu/mne_open_prompt.sh",
+      "test `ls ${CONDA_PREFIX}/Menu/mne_spyder.*  | wc -l` -eq 3",
+      "test `ls ${CONDA_PREFIX}/Menu/mne_console.* | wc -l` -eq 3",
+      "test `ls ${CONDA_PREFIX}/Menu/mne_info.*    | wc -l` -eq 3",
+      "test `ls ${CONDA_PREFIX}/Menu/mne_web.*     | wc -l` -eq 3",
+      "test `ls ${CONDA_PREFIX}/Menu/mne_forum.*   | wc -l` -eq 3",
+      "test -f ${CONDA_PREFIX}/Menu/mne.png"
+     ]
+    }
    }
   ],
   "package": {
    "name": "mne-python",
-   "version": "0.24.1"
+   "version": "1.0.0"
   },
   "source": {
-   "fn": "mne-python-0.24.1.tar.gz",
-   "sha256": "38cbffd03a6ad0e83ef4a964ac9910a37d164c37fcc84894e39ed0cdf805300d",
-   "url": "https://pypi.io/packages/source/m/mne/mne-0.24.1.tar.gz"
+   "fn": "mne-python-1.0.0.tar.gz",
+   "sha256": "1302a735368abf200f42fb43e7f786bd0fa35da2a91b1659c30ae6241edea498",
+   "url": "https://pypi.io/packages/source/m/mne/mne-1.0.0.tar.gz"
   }
  },
  "name": "mne-python",
- "new_version": "0.24.1",
+ "new_version": "1.0.0",
  "new_version_attempts": {
   "0.20.1": 1,
   "0.20.2": 1,
@@ -900,7 +1029,8 @@
   "__set__": true,
   "elements": [
    "mne",
-   "mne-base"
+   "mne-base",
+   "mne-installer-menus"
   ]
  },
  "pinning_version": "2021.12.01.21.50.36",
@@ -910,18 +1040,23 @@
  "pre_pr_migrator_status": {
   "python39": "not solvable: master: ['linux_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package numba-0.35.0-np113py27_10 requires python 2.7*, but none of the providers can be installed\\n', 'osx_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package numba-0.35.0-np113py27_6 requires python 2.7*, but none of the providers can be installed\\n', 'win_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: nothing provides numpy >=1.10,<1.11.0a0 needed by numba-0.36.1-np110py27h67d0f83_0\\n']"
  },
- "raw_meta_yaml": "{% set name = \"mne-python\" %}\n{% set version = \"0.24.1\" %}\n{% set sha256 = \"38cbffd03a6ad0e83ef4a964ac9910a37d164c37fcc84894e39ed0cdf805300d\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://pypi.io/packages/source/m/mne/mne-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 1\n\noutputs:\n  - name: mne-base\n    build:\n      noarch: python\n      script: python -m pip install --no-deps . -vv\n      entry_points:\n        - mne = mne.commands.utils:main\n\n    requirements:\n      host:\n        - python >=3.7\n        - pip\n      run:\n        - python >=3.7\n        - setuptools\n        - matplotlib-base >=3.1.0\n        - numpy >=1.16.0\n        - scipy >=1.2.0\n        - pooch >=1.5\n        - tqdm\n\n    test:\n      requires:\n        - pip\n      imports:\n        - mne\n      commands:\n        - pip check\n        - mne --version\n\n  - name: mne\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - {{ pin_subpackage('mne-base', max_pin=\"x.x.x.x\") }}\n        - matplotlib >=3.1.0\n        - dipy\n        - nibabel\n        - nilearn\n        - pandas >=0.23.4\n        - xlrd\n        - scikit-learn >=0.20.2\n        - mayavi\n        - pysurfer\n        - python-picard\n        - numba\n        - vtk >=9.0.1\n        - pyvista >=0.24\n        - pyvistaqt >=0.2.0\n        - h5py\n        - statsmodels\n        - numexpr\n        - pyqt\n        - pillow\n        - joblib\n        - psutil\n        - mffpy >=0.5.7\n        - imageio\n        - imageio-ffmpeg >=0.4.1\n        - traits\n        - traitlets\n        - traitsui\n        - pyface\n        - mne-qt-browser\n\n    test:\n      requires:\n        - pip\n      imports:\n        - mne\n      commands:\n        - pip check\n        - mne --version\n\nabout:\n  home: http://mne.tools\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE.txt\n  summary: MNE-Python is a software for MEG and EEG data analysis.\n  doc_url: http://mne.tools\n  dev_url: https://github.com/mne-tools/mne-python\n\nextra:\n  recipe-maintainers:\n    - larsoner\n    - christianbrodbeck\n    - hoechenberger\n",
+ "raw_meta_yaml": "{% set name = \"mne-python\" %}\n{% set version = \"1.0.0\" %}\n{% set sha256 = \"1302a735368abf200f42fb43e7f786bd0fa35da2a91b1659c30ae6241edea498\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://pypi.io/packages/source/m/mne/mne-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 0\n\noutputs:\n  - name: mne-base\n    build:\n      noarch: python\n      script: python -m pip install --no-deps . -vv\n      entry_points:\n        - mne = mne.commands.utils:main\n\n    requirements:\n      host:\n        - python >=3.7\n        - pip\n      run:\n        - python >=3.7\n        - setuptools\n        - matplotlib-base >=3.1.0\n        - numpy >=1.18.1\n        - scipy >=1.4.1\n        - pooch >=1.5\n        - tqdm\n        - decorator\n        - packaging\n        - jinja2\n\n    test:\n      requires:\n        - pip\n      imports:\n        - mne\n      commands:\n        - pip check\n        - mne --version\n\n  - name: mne\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - {{ pin_subpackage('mne-base', max_pin=\"x.x.x.x\") }}\n        - matplotlib >=3.1.0\n        - seaborn\n        - jupyter\n        - h5io\n        - pymatreader\n        - h5py\n        - dipy\n        - nibabel\n        - nilearn\n        - pandas >=0.23.4\n        - xlrd\n        - scikit-learn >=0.20.2\n        - python-picard\n        - numba\n        - vtk >=9.0.1\n        - pyvista >=0.32\n        - pyvistaqt >=0.4\n        - statsmodels\n        - numexpr\n        - pyqt\n        - pillow\n        - joblib\n        - psutil\n        - mffpy >=0.5.7\n        - imageio >=2.6.1\n        - imageio-ffmpeg >=0.4.1\n        - traitlets\n        - mne-qt-browser\n        - ipywidgets\n        - ipyvtklink\n\n    test:\n      requires:\n        - pip\n      imports:\n        - mne\n      commands:\n        - pip check\n        - mne --version\n\n  - name: mne-installer-menus\n    requirements:\n      build:\n        - sed\n      host:\n        - python >=3.7\n      run:\n        - python >=3.7\n        - mne-base\n        - spyder\n\n    build:\n      noarch: python\n      script:\n        - mkdir -p \"{{ PREFIX }}/Menu\"\n\n        # Common\n        - sed \"s/__PKG_VERSION__/{{ PKG_VERSION }}/\" \"{{ RECIPE_DIR }}/menu/menu.json\" > \"{{ PREFIX }}/Menu/mne.json\"\n\n        # Spyder\n        - cp \"{{ RECIPE_DIR }}/menu/spyder.icns\" \"{{ PREFIX }}/Menu/mne_spyder.icns\"\n        - cp \"{{ RECIPE_DIR }}/menu/spyder.ico\" \"{{ PREFIX }}/Menu/mne_spyder.ico\"\n        - cp \"{{ RECIPE_DIR }}/menu/spyder.png\" \"{{ PREFIX }}/Menu/mne_spyder.png\"\n\n        # Console\n        - cp \"{{ RECIPE_DIR }}/menu/console.icns\" \"{{ PREFIX }}/Menu/mne_console.icns\"\n        - cp \"{{ RECIPE_DIR }}/menu/console.ico\" \"{{ PREFIX }}/Menu/mne_console.ico\"\n        - cp \"{{ RECIPE_DIR }}/menu/console.png\" \"{{ PREFIX }}/Menu/mne_console.png\"\n        # Use hash as separator, as PREFIX contains forward slashes!\n        - sed \"s#__PREFIX__#{{ PREFIX }}#\" \"{{ RECIPE_DIR }}/menu/open_prompt.applescript\" > \"{{ PREFIX }}/Menu/mne_open_prompt.applescript\"  # for macOS\n        - sed \"s#__PREFIX__#{{ PREFIX }}#\" \"{{ RECIPE_DIR }}/menu/open_prompt.sh\" > \"{{ PREFIX }}/Menu/mne_open_prompt.sh\"                    # for Linux\n\n        # System info\n        - cp \"{{ RECIPE_DIR }}/menu/info.icns\" \"{{ PREFIX }}/Menu/mne_info.icns\"\n        - cp \"{{ RECIPE_DIR }}/menu/info.ico\" \"{{ PREFIX }}/Menu/mne_info.ico\"\n        - cp \"{{ RECIPE_DIR }}/menu/info.png\" \"{{ PREFIX }}/Menu/mne_info.png\"\n        - cp \"{{ RECIPE_DIR }}/menu/mne_sys_info.py\" \"{{ PREFIX }}/Menu/mne_sys_info.py\"\n\n        # Website\n        - cp \"{{ RECIPE_DIR }}/menu/web.icns\" \"{{ PREFIX }}/Menu/mne_web.icns\"\n        - cp \"{{ RECIPE_DIR }}/menu/web.ico\" \"{{ PREFIX }}/Menu/mne_web.ico\"\n        - cp \"{{ RECIPE_DIR }}/menu/web.png\" \"{{ PREFIX }}/Menu/mne_web.png\"\n\n        # Forum\n        - cp \"{{ RECIPE_DIR }}/menu/forum.icns\" \"{{ PREFIX }}/Menu/mne_forum.icns\"\n        - cp \"{{ RECIPE_DIR }}/menu/forum.ico\" \"{{ PREFIX }}/Menu/mne_forum.ico\"\n        - cp \"{{ RECIPE_DIR }}/menu/forum.png\" \"{{ PREFIX }}/Menu/mne_forum.png\"\n\n        # Folder icon for macOS\n        - cp \"{{ RECIPE_DIR }}/menu/mne.png\" \"{{ PREFIX }}/Menu/mne.png\"\n\n    test:\n      commands:\n        - test -f ${CONDA_PREFIX}/Menu/mne.json\n        - test -f ${CONDA_PREFIX}/Menu/mne_sys_info.py\n        - test -f ${CONDA_PREFIX}/Menu/mne_open_prompt.applescript\n        - test -f ${CONDA_PREFIX}/Menu/mne_open_prompt.sh\n        # Check we didn't forget any icons\n        - test `ls ${CONDA_PREFIX}/Menu/mne_spyder.*  | wc -l` -eq 3\n        - test `ls ${CONDA_PREFIX}/Menu/mne_console.* | wc -l` -eq 3\n        - test `ls ${CONDA_PREFIX}/Menu/mne_info.*    | wc -l` -eq 3\n        - test `ls ${CONDA_PREFIX}/Menu/mne_web.*     | wc -l` -eq 3\n        - test `ls ${CONDA_PREFIX}/Menu/mne_forum.*   | wc -l` -eq 3\n        - test -f ${CONDA_PREFIX}/Menu/mne.png\n\nabout:\n  home: http://mne.tools\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE.txt\n  summary: MNE-Python is a software for MEG and EEG data analysis.\n  description: |\n    `mne-base` contains the basic functionality for data analysis and 2D\n    visualization. For full functionality, including 3D visualization,\n    use the `mne` package instead. `mne-installer-menus` is only used by the\n    standalone installers and should not be installed manually.\n  doc_url: http://mne.tools\n  dev_url: https://github.com/mne-tools/mne-python\n\nextra:\n  recipe-maintainers:\n    - larsoner\n    - christianbrodbeck\n    - hoechenberger\n",
  "req": {
   "__set__": true,
   "elements": [
+   "decorator",
    "dipy",
+   "h5io",
    "h5py",
    "imageio",
    "imageio-ffmpeg",
+   "ipyvtklink",
+   "ipywidgets",
+   "jinja2",
    "joblib",
+   "jupyter",
    "matplotlib",
    "matplotlib-base",
-   "mayavi",
    "mffpy",
    "mne-base",
    "mne-qt-browser",
@@ -930,26 +1065,27 @@
    "numba",
    "numexpr",
    "numpy",
+   "packaging",
    "pandas",
    "pillow",
    "pip",
    "pooch",
    "psutil",
-   "pyface",
+   "pymatreader",
    "pyqt",
-   "pysurfer",
    "python",
    "python-picard",
    "pyvista",
    "pyvistaqt",
    "scikit-learn",
    "scipy",
+   "seaborn",
+   "sed",
    "setuptools",
+   "spyder",
    "statsmodels",
    "tqdm",
    "traitlets",
-   "traits",
-   "traitsui",
    "vtk",
    "xlrd"
   ]
@@ -957,7 +1093,9 @@
  "requirements": {
   "build": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "sed"
+   ]
   },
   "host": {
    "__set__": true,
@@ -969,14 +1107,19 @@
   "run": {
    "__set__": true,
    "elements": [
+    "decorator",
     "dipy",
+    "h5io",
     "h5py",
     "imageio",
     "imageio-ffmpeg",
+    "ipyvtklink",
+    "ipywidgets",
+    "jinja2",
     "joblib",
+    "jupyter",
     "matplotlib",
     "matplotlib-base",
-    "mayavi",
     "mffpy",
     "mne-base",
     "mne-qt-browser",
@@ -985,25 +1128,25 @@
     "numba",
     "numexpr",
     "numpy",
+    "packaging",
     "pandas",
     "pillow",
     "pooch",
     "psutil",
-    "pyface",
+    "pymatreader",
     "pyqt",
-    "pysurfer",
     "python",
     "python-picard",
     "pyvista",
     "pyvistaqt",
     "scikit-learn",
     "scipy",
+    "seaborn",
     "setuptools",
+    "spyder",
     "statsmodels",
     "tqdm",
     "traitlets",
-    "traits",
-    "traitsui",
     "vtk",
     "xlrd"
    ]
@@ -1020,7 +1163,9 @@
  "total_requirements": {
   "build": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "sed"
+   ]
   },
   "host": {
    "__set__": true,
@@ -1032,14 +1177,19 @@
   "run": {
    "__set__": true,
    "elements": [
+    "decorator",
     "dipy",
+    "h5io",
     "h5py",
-    "imageio",
+    "imageio >=2.6.1",
     "imageio-ffmpeg >=0.4.1",
+    "ipyvtklink",
+    "ipywidgets",
+    "jinja2",
     "joblib",
+    "jupyter",
     "matplotlib >=3.1.0",
     "matplotlib-base >=3.1.0",
-    "mayavi",
     "mffpy >=0.5.7",
     "mne-base",
     "mne-qt-browser",
@@ -1047,26 +1197,26 @@
     "nilearn",
     "numba",
     "numexpr",
-    "numpy >=1.16.0",
+    "numpy >=1.18.1",
+    "packaging",
     "pandas >=0.23.4",
     "pillow",
     "pooch >=1.5",
     "psutil",
-    "pyface",
+    "pymatreader",
     "pyqt",
-    "pysurfer",
     "python >=3.7",
     "python-picard",
-    "pyvista >=0.24",
-    "pyvistaqt >=0.2.0",
+    "pyvista >=0.32",
+    "pyvistaqt >=0.4",
     "scikit-learn >=0.20.2",
-    "scipy >=1.2.0",
+    "scipy >=1.4.1",
+    "seaborn",
     "setuptools",
+    "spyder",
     "statsmodels",
     "tqdm",
     "traitlets",
-    "traits",
-    "traitsui",
     "vtk >=9.0.1",
     "xlrd"
    ]
@@ -1078,6 +1228,6 @@
    ]
   }
  },
- "url": "https://pypi.io/packages/source/m/mne/mne-0.24.1.tar.gz",
- "version": "0.24.1"
+ "url": "https://pypi.io/packages/source/m/mne/mne-1.0.0.tar.gz",
+ "version": "1.0.0"
 }
