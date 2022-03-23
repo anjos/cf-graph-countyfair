@@ -126,6 +126,9 @@
  "bad": false,
  "branch": "main",
  "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default"
@@ -393,6 +396,8 @@
     "maresb",
     "WardBrian",
     "maresb",
+    "WardBrian",
+    "maresb",
     "WardBrian"
    ]
   },
@@ -402,6 +407,8 @@
   },
   "requirements": {
    "build": [
+    "cxx_compiler_stub",
+    "make",
     "cxx_compiler_stub",
     "make",
     "cxx_compiler_stub",
@@ -420,9 +427,13 @@
     "tbb-devel",
     "tbb-devel",
     "tbb-devel",
+    "tbb-devel",
     "tbb-devel"
    ],
    "run": [
+    "cxx_compiler_stub",
+    "make",
+    "tbb-devel",
     "cxx_compiler_stub",
     "make",
     "tbb-devel",
@@ -452,6 +463,7 @@
   },
   "test": {
    "downstreams": [
+    "cmdstanpy",
     "cmdstanpy",
     "cmdstanpy",
     "cmdstanpy",
@@ -554,6 +566,86 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "<b>CmdStan</b> is the command line interface to Stan, a package providing\n\n* full Bayesian inference using the No-U-Turn sampler (NUTS), a variant of Hamiltonian Monte Carlo (HMC),\n* penalized maximum likelihood estimation (MLE) using optimization, either Newton or quasi-Newton algorithms BFGS and L-BFGS,\n* approximate Bayesian inference using automatic differentiation variational inference (ADVI),\n* a full first- and higher-order automatic differentiation library based on C++ template overloads, and\n* a supporting fully-templated matrix, linear algebra, and probability special function library.\n",
+   "dev_url": "https://github.com/stan-dev/cmdstan",
+   "doc_url": "https://mc-stan.org/docs/cmdstan-guide/index.html",
+   "home": "https://mc-stan.org/users/interfaces/cmdstan.html",
+   "license": "BSD-3-Clause",
+   "license_family": "BSD",
+   "license_file": "LICENSE",
+   "summary": "CmdStan, the command line interface to Stan"
+  },
+  "build": {
+   "binary_relocation": false,
+   "number": "0"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "maresb",
+    "WardBrian"
+   ]
+  },
+  "package": {
+   "name": "cmdstan",
+   "version": "2.29.1"
+  },
+  "requirements": {
+   "build": [
+    "cxx_compiler_stub",
+    "make"
+   ],
+   "host": [
+    "tbb-devel"
+   ],
+   "run": [
+    "cxx_compiler_stub",
+    "make",
+    "tbb-devel"
+   ],
+   "run_constrained": null
+  },
+  "source": {
+   "patches": [
+    "no-dtag-flag.patch"
+   ],
+   "sha256": "1900c99015a89fcf718599e0d662476bb370fef7cedc511e9adeeb82ccd75d1e",
+   "url": "https://github.com/stan-dev/cmdstan/releases/download/v2.29.1/cmdstan-2.29.1.tar.gz"
+  },
+  "test": {
+   "downstreams": [
+    "cmdstanpy"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cxx_compiler_stub",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "tbb-devel"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "cxx_compiler_stub",
+    "make",
+    "tbb-devel"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -563,7 +655,7 @@
  "pinning_version": "2022.03.22.16.50.54",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
- "raw_meta_yaml": "{% set name = \"cmdstan\" %}\n{% set version = \"2.29.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/stan-dev/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version }}.tar.gz  # [x86]\n  sha256: 1900c99015a89fcf718599e0d662476bb370fef7cedc511e9adeeb82ccd75d1e  # [x86]\n  url: https://github.com/stan-dev/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version }}-linux-arm64.tar.gz  # [aarch64]\n  sha256: 99a608dd242fec09ee5006a847ebdfe2e782c8980daf3c448cb5ff898e9e62e3  # [aarch64]\n  url: https://github.com/stan-dev/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version }}-linux-ppc64el.tar.gz  # [ppc64le]\n  sha256: a2eb7c2bf3d35d1618aa95830e28746a0c7dc53831219ef61898d2f1d56051bb  # [ppc64le]\n  patches:\n    - no-dtag-flag.patch  # [osx]\n\nbuild:\n  number: 0\n  binary_relocation: false\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}        # [not win]\n    - make                         # [not win]\n    - {{ compiler('m2w64_cxx') }}  # [win]\n    - m2w64-make                   # [win]\n    - m2-filesystem                # [win]\n    - m2-sed                       # [win]\n    - m2-coreutils                 # [win]\n  host:\n    - tbb-devel                    # [not win]\n  run:\n    - {{ compiler('cxx') }}        # [not win]\n    - make                         # [not win]\n    - tbb-devel                    # [not win]\n    - {{ compiler('m2w64_cxx') }}  # [win]\n    - m2w64-make                   # [win]\n    - m2-filesystem                # [win]\n    - m2-sed                       # [win]\n    - m2-coreutils                 # [win]\n  run_constrained:\n    - tbb >=2021                   # [win]\n\ntest:\n  downstreams:\n    - cmdstanpy\n\nabout:\n  home: https://mc-stan.org/users/interfaces/cmdstan.html\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: CmdStan, the command line interface to Stan\n  description: |\n    <b>CmdStan</b> is the command line interface to Stan, a package providing\n\n    * full Bayesian inference using the No-U-Turn sampler (NUTS), a variant of Hamiltonian Monte Carlo (HMC),\n    * penalized maximum likelihood estimation (MLE) using optimization, either Newton or quasi-Newton algorithms BFGS and L-BFGS,\n    * approximate Bayesian inference using automatic differentiation variational inference (ADVI),\n    * a full first- and higher-order automatic differentiation library based on C++ template overloads, and\n    * a supporting fully-templated matrix, linear algebra, and probability special function library.\n  doc_url: https://mc-stan.org/docs/cmdstan-guide/index.html\n  dev_url: https://github.com/stan-dev/cmdstan\n\nextra:\n  recipe-maintainers:\n    - maresb\n    - WardBrian\n",
+ "raw_meta_yaml": "{% set name = \"cmdstan\" %}\n{% set version = \"2.29.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/stan-dev/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version }}.tar.gz  # [x86 or arm64]\n  sha256: 1900c99015a89fcf718599e0d662476bb370fef7cedc511e9adeeb82ccd75d1e  # [x86 or arm64]\n  url: https://github.com/stan-dev/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version }}-linux-arm64.tar.gz  # [aarch64]\n  sha256: 99a608dd242fec09ee5006a847ebdfe2e782c8980daf3c448cb5ff898e9e62e3  # [aarch64]\n  url: https://github.com/stan-dev/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version }}-linux-ppc64el.tar.gz  # [ppc64le]\n  sha256: a2eb7c2bf3d35d1618aa95830e28746a0c7dc53831219ef61898d2f1d56051bb  # [ppc64le]\n  patches:\n    - no-dtag-flag.patch  # [osx]\n\nbuild:\n  number: 0\n  binary_relocation: false\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}        # [not win]\n    - make                         # [not win]\n    - {{ compiler('m2w64_cxx') }}  # [win]\n    - m2w64-make                   # [win]\n    - m2-filesystem                # [win]\n    - m2-sed                       # [win]\n    - m2-coreutils                 # [win]\n  host:\n    - tbb-devel                    # [not win]\n  run:\n    - {{ compiler('cxx') }}        # [not win]\n    - make                         # [not win]\n    - tbb-devel                    # [not win]\n    - {{ compiler('m2w64_cxx') }}  # [win]\n    - m2w64-make                   # [win]\n    - m2-filesystem                # [win]\n    - m2-sed                       # [win]\n    - m2-coreutils                 # [win]\n  run_constrained:\n    - tbb >=2021                   # [win]\n\ntest:\n  downstreams:\n    - cmdstanpy\n\nabout:\n  home: https://mc-stan.org/users/interfaces/cmdstan.html\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: CmdStan, the command line interface to Stan\n  description: |\n    <b>CmdStan</b> is the command line interface to Stan, a package providing\n\n    * full Bayesian inference using the No-U-Turn sampler (NUTS), a variant of Hamiltonian Monte Carlo (HMC),\n    * penalized maximum likelihood estimation (MLE) using optimization, either Newton or quasi-Newton algorithms BFGS and L-BFGS,\n    * approximate Bayesian inference using automatic differentiation variational inference (ADVI),\n    * a full first- and higher-order automatic differentiation library based on C++ template overloads, and\n    * a supporting fully-templated matrix, linear algebra, and probability special function library.\n  doc_url: https://mc-stan.org/docs/cmdstan-guide/index.html\n  dev_url: https://github.com/stan-dev/cmdstan\n\nextra:\n  recipe-maintainers:\n    - maresb\n    - WardBrian\n",
  "req": {
   "__set__": true,
   "elements": [

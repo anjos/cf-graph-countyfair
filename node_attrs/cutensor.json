@@ -118,9 +118,12 @@
   },
   "build": {
    "ignore_run_exports": [
+    "cudatoolkit",
+    "cudatoolkit",
     "cudatoolkit"
    ],
-   "number": "1",
+   "missing_dso_whitelist": null,
+   "number": "2",
    "run_exports": [
     "cutensor",
     "cutensor",
@@ -264,8 +267,15 @@
    "summary": "Tensor Linear Algebra on NVIDIA GPUs"
   },
   "build": {
-   "ignore_run_exports": null,
-   "number": "1",
+   "ignore_run_exports": [
+    "cudatoolkit",
+    "cudatoolkit"
+   ],
+   "missing_dso_whitelist": [
+    "*/libcublasLt.so*",
+    "*/libcublasLt.so*"
+   ],
+   "number": "2",
    "run_exports": [
     "cutensor",
     "cutensor"
@@ -389,9 +399,12 @@
   },
   "build": {
    "ignore_run_exports": [
+    "cudatoolkit",
+    "cudatoolkit",
     "cudatoolkit"
    ],
-   "number": "1",
+   "missing_dso_whitelist": null,
+   "number": "2",
    "run_exports": [
     "cutensor",
     "cutensor",
@@ -538,8 +551,23 @@
    "summary": "Tensor Linear Algebra on NVIDIA GPUs"
   },
   "build": {
-   "ignore_run_exports": null,
-   "number": "1",
+   "ignore_run_exports": [
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit"
+   ],
+   "missing_dso_whitelist": [
+    "*/cublasLt64*.dll"
+   ],
+   "number": "2",
    "run_exports": [
     "cutensor",
     "cutensor",
@@ -794,7 +822,7 @@
  "pre_pr_migrator_status": {
   "cuda111_112": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/586903599\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1082, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 225, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 224, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 448, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
  },
- "raw_meta_yaml": "{% set version = \"1.5.0\" %}\n{% set patch_version = \"3\" %}\n\npackage:\n  name: cutensor\n  version: {{ version }}.{{ patch_version }}\n\nsource:\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-x86_64/libcutensor-linux-x86_64-{{ version }}.{{ patch_version }}-archive.tar.xz     # [linux64]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-ppc64le/libcutensor-linux-ppc64le-{{ version }}.{{ patch_version }}-archive.tar.xz   # [ppc64le]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-sbsa/libcutensor-linux-sbsa-{{ version }}.{{ patch_version }}-archive.tar.xz         # [aarch64]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/windows-x86_64/libcutensor-windows-x86_64-{{ version }}.{{ patch_version }}-archive.zip    # [win64]\n\n  sha256: 4fdebe94f0ba3933a422cff3dd05a0ef7a18552ca274dd12564056993f55471d  # [linux64]\n  sha256: ad736acc94e88673b04a3156d7d3a408937cac32d083acdfbd8435582cbe15db  # [ppc64le]\n  sha256: 5b9ac479b1dadaf40464ff3076e45f2ec92581c07df1258a155b5bcd142f6090  # [aarch64]\n  sha256: de76f7d92600dda87a14ac756e9d0b5733cbceb88bcd20b3935a82c99342e6cd  # [win64]\n\nbuild:\n  number: 1\n  # cuTENSOR v1.3.1 supports CUDA 10.2, 11.0, and 11.1+\n  skip: True  # [win32 or cuda_compiler_version not in (\"10.2\", \"11.0\", \"11.1\")]\n  script_env:\n    # for some reason /usr/local/cuda is not added to $PATH in ppc64le's docker image\n    - CUDA_HOME  # [ppc64le or aarch64]\n  script:\n    - mkdir -p $PREFIX/include                                             # [linux]\n    - mv include/* $PREFIX/include/                                        # [linux]\n    - mkdir -p $PREFIX/lib                                                 # [linux]\n    - mv lib/{{ cuda_compiler_version }}/*.so* $PREFIX/lib/                # [linux and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - mv lib/11/*.so* $PREFIX/lib/                                         # [linux and cuda_compiler_version == \"11.1\"]\n    - patchelf --add-needed libcudart.so $PREFIX/lib/libcutensor.so        # [ppc64le]\n\n    - copy include\\\\cutensor.h %LIBRARY_INC%\\\\                             # [win64]\n    - copy include\\\\cutensorMg.h %LIBRARY_INC%\\\\                           # [win64]\n    - mkdir %LIBRARY_INC%\\\\cutensor                                        # [win64]\n    - copy include\\\\cutensor\\\\types.h %LIBRARY_INC%\\\\cutensor              # [win64]\n    - del lib\\\\{{ cuda_compiler_version }}\\\\*static*                       # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - copy lib\\\\{{ cuda_compiler_version }}\\\\*.dll %LIBRARY_BIN%\\\\         # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - copy lib\\\\{{ cuda_compiler_version }}\\\\*.lib %LIBRARY_LIB%\\\\         # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - del lib\\\\11\\\\*static*                                                # [win64 and cuda_compiler_version in (\"11.1\", )]\n    - copy lib\\\\11\\\\*.dll %LIBRARY_BIN%\\\\                                  # [win64 and cuda_compiler_version in (\"11.1\", )]\n    - copy lib\\\\11\\\\*.lib %LIBRARY_LIB%\\\\                                  # [win64 and cuda_compiler_version in (\"11.1\", )]\n  ignore_run_exports:\n    - cudatoolkit  # [linux and cuda_compiler_version == \"10.2\"]  # does not link to cublasLt\n  run_exports:\n    - {{ pin_subpackage('cutensor') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n    - patchelf >=0.12  # [linux]\n  run:\n    - cudatoolkit {{ cuda_compiler_version }}  # [cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - cudatoolkit >=11.1,<12                   # [cuda_compiler_version == \"11.1\"]\n  run_constrained:\n    # Only GLIBC_2.17 or older symbols present\n    - __glibc >=2.17      # [linux]\n\ntest:\n  requires:\n    - git\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux]\n    # make sure we pick up the version matching the docker,\n    # or the linker would complain \n    - cudatoolkit {{ cuda_compiler_version }}\n  files:\n    - test_load_elf.c        # [linux]\n\nabout:\n  home: https://developer.nvidia.com/cutensor\n  license: LicenseRef-cuTENSOR-Software-License-Agreement\n  license_url: https://docs.nvidia.com/cuda/cutensor/license.html\n  license_file: LICENSE\n  summary: \"Tensor Linear Algebra on NVIDIA GPUs\"\n  description: |\n    The cuTENSOR Library is a first-of-its-kind GPU-accelerated tensor linear\n    algebra library providing tensor contraction, reduction and elementwise\n    operations. cuTENSOR is used to accelerate applications in the areas of\n    deep learning training and inference, computer vision, quantum chemistry\n    and computational physics.\n\n    License Agreements:- The packages are governed by the NVIDIA cuTENSOR\n    Software License Agreement (EULA). By downloading and using the packages,\n    you accept the terms and conditions of the NVIDIA cuTENSOR EULA -\n    https://docs.nvidia.com/cuda/cutensor/license.html\n  doc_url: https://docs.nvidia.com/cuda/cutensor/index.html\n  dev_url: https://developer.nvidia.com/cutensor/downloads\n\nextra:\n  recipe-maintainers:\n    - leofang\n    - jakirkham\n    - mtjrider\n",
+ "raw_meta_yaml": "{% set version = \"1.5.0\" %}\n{% set patch_version = \"3\" %}\n\npackage:\n  name: cutensor\n  version: {{ version }}.{{ patch_version }}\n\nsource:\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-x86_64/libcutensor-linux-x86_64-{{ version }}.{{ patch_version }}-archive.tar.xz     # [linux64]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-ppc64le/libcutensor-linux-ppc64le-{{ version }}.{{ patch_version }}-archive.tar.xz   # [ppc64le]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-sbsa/libcutensor-linux-sbsa-{{ version }}.{{ patch_version }}-archive.tar.xz         # [aarch64]\n  url: https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/windows-x86_64/libcutensor-windows-x86_64-{{ version }}.{{ patch_version }}-archive.zip    # [win64]\n\n  sha256: 4fdebe94f0ba3933a422cff3dd05a0ef7a18552ca274dd12564056993f55471d  # [linux64]\n  sha256: ad736acc94e88673b04a3156d7d3a408937cac32d083acdfbd8435582cbe15db  # [ppc64le]\n  sha256: 5b9ac479b1dadaf40464ff3076e45f2ec92581c07df1258a155b5bcd142f6090  # [aarch64]\n  sha256: de76f7d92600dda87a14ac756e9d0b5733cbceb88bcd20b3935a82c99342e6cd  # [win64]\n\nbuild:\n  number: 2\n  # cuTENSOR v1.3.1 supports CUDA 10.2, 11.0, and 11.1+\n  skip: True  # [win32 or cuda_compiler_version not in (\"10.2\", \"11.0\", \"11.1\")]\n  script_env:\n    # for some reason /usr/local/cuda is not added to $PATH in ppc64le's docker image\n    - CUDA_HOME  # [ppc64le or aarch64]\n  script:\n    - mkdir -p $PREFIX/include                                             # [linux]\n    - mv include/* $PREFIX/include/                                        # [linux]\n    - mkdir -p $PREFIX/lib                                                 # [linux]\n    - mv lib/{{ cuda_compiler_version }}/*.so* $PREFIX/lib/                # [linux and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - mv lib/11/*.so* $PREFIX/lib/                                         # [linux and cuda_compiler_version == \"11.1\"]\n    - patchelf --add-needed libcudart.so $PREFIX/lib/libcutensor.so        # [ppc64le]\n\n    - copy include\\\\cutensor.h %LIBRARY_INC%\\\\                             # [win64]\n    - copy include\\\\cutensorMg.h %LIBRARY_INC%\\\\                           # [win64]\n    - mkdir %LIBRARY_INC%\\\\cutensor                                        # [win64]\n    - copy include\\\\cutensor\\\\types.h %LIBRARY_INC%\\\\cutensor              # [win64]\n    - del lib\\\\{{ cuda_compiler_version }}\\\\*static*                       # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - copy lib\\\\{{ cuda_compiler_version }}\\\\*.dll %LIBRARY_BIN%\\\\         # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - copy lib\\\\{{ cuda_compiler_version }}\\\\*.lib %LIBRARY_LIB%\\\\         # [win64 and cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - del lib\\\\11\\\\*static*                                                # [win64 and cuda_compiler_version in (\"11.1\", )]\n    - copy lib\\\\11\\\\*.dll %LIBRARY_BIN%\\\\                                  # [win64 and cuda_compiler_version in (\"11.1\", )]\n    - copy lib\\\\11\\\\*.lib %LIBRARY_LIB%\\\\                                  # [win64 and cuda_compiler_version in (\"11.1\", )]\n  ignore_run_exports:\n    - cudatoolkit\n  run_exports:\n    - {{ pin_subpackage('cutensor') }}\n  missing_dso_whitelist:\n    # suppress warning, as these are included in the run dependency\n    - '*/libcublasLt.so*'  # [linux and cuda_compiler_version in (\"11.0\", \"11.1\")]\n    - '*/cublasLt64*.dll'  # [win64 and cuda_compiler_version in (\"11.0\", \"11.1\")]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n    - patchelf >=0.12  # [linux]\n  run:\n    - cudatoolkit {{ cuda_compiler_version }}  # [cuda_compiler_version in (\"10.2\", \"11.0\")]\n    - cudatoolkit >=11.1,<12                   # [cuda_compiler_version == \"11.1\"]\n  run_constrained:\n    # Only GLIBC_2.17 or older symbols present\n    - __glibc >=2.17      # [linux]\n\ntest:\n  requires:\n    - git\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux]\n    # make sure we pick up the version matching the docker,\n    # or the linker would complain \n    - cudatoolkit {{ cuda_compiler_version }}\n  files:\n    - test_load_elf.c        # [linux]\n\nabout:\n  home: https://developer.nvidia.com/cutensor\n  license: LicenseRef-cuTENSOR-Software-License-Agreement\n  license_url: https://docs.nvidia.com/cuda/cutensor/license.html\n  license_file: LICENSE\n  summary: \"Tensor Linear Algebra on NVIDIA GPUs\"\n  description: |\n    The cuTENSOR Library is a first-of-its-kind GPU-accelerated tensor linear\n    algebra library providing tensor contraction, reduction and elementwise\n    operations. cuTENSOR is used to accelerate applications in the areas of\n    deep learning training and inference, computer vision, quantum chemistry\n    and computational physics.\n\n    License Agreements:- The packages are governed by the NVIDIA cuTENSOR\n    Software License Agreement (EULA). By downloading and using the packages,\n    you accept the terms and conditions of the NVIDIA cuTENSOR EULA -\n    https://docs.nvidia.com/cuda/cutensor/license.html\n  doc_url: https://docs.nvidia.com/cuda/cutensor/index.html\n  dev_url: https://developer.nvidia.com/cutensor/downloads\n\nextra:\n  recipe-maintainers:\n    - leofang\n    - jakirkham\n    - mtjrider\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -899,8 +927,15 @@
    "summary": "Tensor Linear Algebra on NVIDIA GPUs"
   },
   "build": {
-   "ignore_run_exports": null,
-   "number": "1",
+   "ignore_run_exports": [
+    "cudatoolkit",
+    "cudatoolkit",
+    "cudatoolkit"
+   ],
+   "missing_dso_whitelist": [
+    "*/cublasLt64*.dll"
+   ],
+   "number": "2",
    "run_exports": [
     "cutensor",
     "cutensor",
