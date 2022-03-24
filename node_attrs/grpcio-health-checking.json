@@ -288,25 +288,27 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/887854810.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.45.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
- "bad": {
-  "exception": "Command 'git diff --name-only c119789858123c0c3f2967c9f307ca169cc9dcd1...HEAD' returned non-zero exit status 128.",
-  "traceback": [
-   "Traceback (most recent call last):",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator",
-   "    migrator_uid, pr_json = run(",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 301, in run",
-   "    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 285, in eval_cmd",
-   "    c.check_returncode()",
-   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode",
-   "    raise CalledProcessError(self.returncode, self.args, self.stdout,",
-   "subprocess.CalledProcessError: Command 'git diff --name-only c119789858123c0c3f2967c9f307ca169cc9dcd1...HEAD' returned non-zero exit status 128.",
-   ""
-  ]
- },
+ "bad": false,
  "branch": "main",
  "conda-forge.yml": {},
  "feedstock_name": "grpcio-health-checking",
@@ -513,7 +515,7 @@
   "1.42.0": 1,
   "1.43.0": 1,
   "1.44.0": 1,
-  "1.45.0": 1
+  "1.45.0": 2
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -522,13 +524,9 @@
    "grpcio-health-checking"
   ]
  },
- "pinning_version": "2022.02.17.15.32.38",
- "pre_pr_migrator_attempts": {
-  "version": 1
- },
- "pre_pr_migrator_status": {
-  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2031279979\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 301, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 285, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only c119789858123c0c3f2967c9f307ca169cc9dcd1...HEAD' returned non-zero exit status 128.\n"
- },
+ "pinning_version": "2022.03.23.20.27.24",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"grpcio-health-checking\" %}\n{% set version = \"1.44.0\" %}\n\n# TODO: this upstream pin appears to not be updated w/r/t to code generation version\n{% set min_protobuf = \"3.12.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - folder: dist\n    url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n    sha256: e391033c29137fdcef8c405e12f626d1bb1eeaf219f5ea024068cdff43eae7d9\n  - folder: src\n    url: https://github.com/grpc/grpc/archive/v{{ version }}.tar.gz\n    sha256: 8c05641b9f91cbc92f51cc4a5b3a226788d7a63f20af4ca7aaca50d92cc94a0d\n\nbuild:\n  number: 0\n  noarch: python\n  script: cd dist && {{ PYTHON }} -m pip install . -vv --no-deps\n\nrequirements:\n  host:\n    - pip\n    - python >=3.5\n  run:\n    - grpcio >={{ version }}\n    - protobuf >={{ min_protobuf }}\n    - python >=3.5\n\ntest:\n  source_files:\n    # checked grpc version in run_test.py\n    - dist/grpc_version.py\n    # the actual tests to run under coverage\n    - src/src/python/grpcio_tests/tests/health_check/\n    # test imports\n    - src/src/python/grpcio_tests/tests/__init__.py\n    - src/src/python/grpcio_tests/tests/_loader.py\n    - src/src/python/grpcio_tests/tests/_result.py\n    - src/src/python/grpcio_tests/tests/_runner.py\n    - src/src/python/grpcio_tests/tests/unit/__init__.py\n    - src/src/python/grpcio_tests/tests/unit/framework/__init__.py\n    - src/src/python/grpcio_tests/tests/unit/framework/common/__init__.py\n    - src/src/python/grpcio_tests/tests/unit/framework/common/test_constants.py\n    - src/src/python/grpcio_tests/tests/unit/test_common.py\n    - src/src/python/grpcio_tests/tests/unit/thread_pool.py\n  imports:\n    - grpc_health\n    - grpc_health.v1.health\n  commands:\n    - pip check\n    - cd src/src/python/grpcio_tests\n    - pytest -vv -k health_check --cov grpc_health --cov-fail-under 73\n  requires:\n    - pip\n    - pytest-cov\n    # do import tests with the minimum to assure it hasn't changed\n    - protobuf =={{ min_protobuf }}\n\nabout:\n  home: https://grpc.io\n  summary: Standard Health Checking Service for gRPC\n  license: Apache-2.0\n  license_file: dist/LICENSE\n  dev_url: https://github.com/grpc/grpc/tree/master/src/python/grpcio_health_checking\n  doc_url: https://grpc.github.io/grpc/python/grpc_health_checking.html\n\nextra:\n  recipe-maintainers:\n    - bollwyvl\n",
  "req": {
   "__set__": true,
@@ -568,7 +566,7 @@
    ]
   }
  },
- "smithy_version": "3.16.2",
+ "smithy_version": "3.18.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {

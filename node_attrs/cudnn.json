@@ -278,6 +278,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/887867637.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "cuda_112_ppc64le_aarch64"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -536,12 +555,14 @@
    "cudnn"
   ]
  },
- "pinning_version": "2021.10.01.10.31.28",
+ "pinning_version": "2022.03.23.20.27.24",
  "pre_pr_migrator_attempts": {
-  "cuda111_112": 1
+  "cuda111_112": 1,
+  "cuda_112_ppc64le_aarch64": 1
  },
  "pre_pr_migrator_status": {
-  "cuda111_112": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/595996429\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1082, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 187, in run\n    migrator.run_pre_piggyback_migrations(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/core.py\", line 258, in run_pre_piggyback_migrations\n    mini_migrator.migrate(recipe_dir, attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/cos7.py\", line 70, in migrate\n    with open(cfg) as fp:\nFileNotFoundError: [Errno 2] No such file or directory: 'conda_build_config.yaml'\n"
+  "cuda111_112": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/595996429\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1082, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 187, in run\n    migrator.run_pre_piggyback_migrations(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/core.py\", line 258, in run_pre_piggyback_migrations\n    mini_migrator.migrate(recipe_dir, attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/cos7.py\", line 70, in migrate\n    with open(cfg) as fp:\nFileNotFoundError: [Errno 2] No such file or directory: 'conda_build_config.yaml'\n",
+  "cuda_112_ppc64le_aarch64": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2031725959\">bot CI job</a>): ppc64le: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1135, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 270, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 285, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
  },
  "raw_meta_yaml": "{% set version = \"8.2.1.32\" %}\n\n# cuDNN v8.2.x supports CUDA versions 10.2 - 11.3\n# For CUDA 10.2 there is a separate cuDNN distribution and a link for download\n# For CUDA 11.x there is one cuDNN distribution that works with all CUDA 11 versions\n{% if cuda_compiler_version[:2] == \"11\" %}\n{% set cudnn_cuda_version = \"11.3\" %}\n{% else %}\n{% set cudnn_cuda_version = cuda_compiler_version %}\n{% endif %}\n\npackage:\n  name: cudnn\n  version: {{ version }}\n\nsource:\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cudnn_cuda_version }}-linux-x64-v{{ version }}.tgz  # [linux64]\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cudnn_cuda_version }}-linux-ppc64le-v{{ version }}.tgz  # [ppc64le]\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cudnn_cuda_version }}-windows10-x64-v{{ version }}.zip  # [win and cuda_compiler_version == \"10.2\"]\n  url: https://developer.download.nvidia.com/compute/redist/cudnn/v{{ \".\".join(version.split(\".\")[:3]) }}/cudnn-{{ cudnn_cuda_version }}-windows-x64-v{{ version }}.zip  # [win and cuda_compiler_version == \"11.2\"]\n  sha256: 3e70876bdcf44f856d9c9dbdbde07ceec43005e97d5ffe83338b255c8466151f  # [win64 and cuda_compiler_version == \"10.2\"]\n  sha256: 5b9bf2dc4670fb1519ef55e13da5123f0b6b39fac5e6138e31388b269808d5f2  # [win64 and cuda_compiler_version == \"11.2\"]\n  sha256: fd6321ff3bce4ce0cb3342e5bd38c96dcf3b073d44d0808962711c518b6d61e2  # [linux64 and cuda_compiler_version == \"10.2\"]\n  sha256: 39412acd9ef5dd27954b6b9f5df75bd381c5d7ceb7979af6c743a7f4521f9c77  # [linux64 and cuda_compiler_version == \"11.2\"]\n\nbuild:\n  number: 0\n  skip: True   # [cuda_compiler_version in (\"None\", \"9.2\", \"10.0\", \"10.1\", \"11.0\", \"11.1\")]\n  script:\n    - mkdir -p $PREFIX/include               # [unix]\n    - cp include/cudnn*.h $PREFIX/include/    # [unix]\n    - mkdir -p $PREFIX/lib                   # [unix]\n    - mv lib64/libcudnn*.so* $PREFIX/lib/     # [linux64]\n    - mv lib/libcudnn*.so* $PREFIX/lib/       # [ppc64le]\n    - mkdir %LIBRARY_INC%                    # [win]\n    - copy %SRC_DIR%\\\\include\\\\cudnn*.h %LIBRARY_INC%\\\\     # [win]\n    - mkdir %LIBRARY_LIB%                    # [win]\n    - copy %SRC_DIR%\\\\lib\\\\x64\\\\cudnn*.lib %LIBRARY_LIB%\\\\  # [win]\n    - mkdir %LIBRARY_BIN%                    # [win]\n    - copy %SRC_DIR%\\\\bin\\\\cudnn*_8.dll %LIBRARY_BIN%\\\\     # [win]\n  ignore_run_exports_from:\n    - {{ compiler('c') }}    # [linux]\n    - {{ compiler('cuda') }}\n  run_exports:\n    - {{ pin_subpackage('cudnn') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n  run:\n    # Only GCC_3.0 or older symbols present\n    - libgcc-ng >=3.0     # [linux]\n    # Only GLIBCXX_3.4 or older symbols present\n    - libstdcxx-ng >=3.4  # [linux]\n    - cudatoolkit {{ cuda_compiler_version }}  # [cuda_compiler_version == \"10.2\"]\n    - cudatoolkit 11.*  # [cuda_compiler_version == \"11.2\"]\n  run_constrained:\n    # Only GLIBC_2.17 or older symbols present\n    - __glibc >=2.17      # [ppc64le]\n\ntest:\n  commands:\n    - if not exist %LIBRARY_INC%/cudnn.h exit 1        # [win]\n    - if not exist %LIBRARY_INC%/cudnn_adv_train.h exit 1  # [win]\n    - if not exist %LIBRARY_LIB%/cudnn.lib exit 1      # [win]\n    - if not exist %LIBRARY_LIB%/cudnn_adv_train.lib exit 1      # [win]\n    - if not exist %LIBRARY_BIN%/cudnn64_8.dll exit 1  # [win]\n    - if not exist %LIBRARY_BIN%/cudnn_adv_train64_8.dll exit 1  # [win]\n    - test -f $PREFIX/include/cudnn.h                  # [linux]\n    - test -f $PREFIX/include/cudnn_adv_train.h        # [linux]\n    - test -f $PREFIX/lib/libcudnn.so                  # [linux]\n    - test -f $PREFIX/lib/libcudnn_adv_train.so        # [linux]\n\nabout:\n  home: https://developer.nvidia.com/cudnn\n  license: LicenseRef-cuDNN-Software-License-Agreement\n  license_file: NVIDIA_SLA_cuDNN_Support.txt\n  license_url: https://docs.nvidia.com/deeplearning/cudnn/sla/index.html\n  summary: \"NVIDIA's cuDNN deep neural network acceleration library\"\n  description: |\n    NVIDIA CUDA Deep Neural Network (cuDNN) is a GPU-accelerated library of\n    primitives for deep neural networks. It provides highly tuned\n    implementations of routines arising frequently in DNN applications.\n\n    License Agreements:- The packages are governed by the NVIDIA cuDNN\n    Software License Agreement (EULA). By downloading and using the packages,\n    you accept the terms and conditions of the NVIDIA cuDNN EULA -\n    https://docs.nvidia.com/deeplearning/cudnn/sla/index.html\n  doc_url: https://docs.nvidia.com/deeplearning/cudnn/\n  dev_url: https://developer.nvidia.com/rdp/cudnn-download\n\nextra:\n  recipe-maintainers:\n    - ivanyashchuk\n    - leofang\n    - kkraus14\n",
  "req": {
@@ -590,7 +611,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.12",
+ "smithy_version": "3.18.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
