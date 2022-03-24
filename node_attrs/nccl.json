@@ -413,6 +413,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/5c1e6019-23d9-4a72-b8a8-435e89b2e82d.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "cuda_112_ppc64le_aarch64"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -904,7 +923,7 @@
    "nccl"
   ]
  },
- "pinning_version": "2022.03.07.16.58.03",
+ "pinning_version": "2022.03.23.20.27.24",
  "raw_meta_yaml": "{% set name = \"nccl\" %}\n{% set version = \"2.12.7-1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version|replace(\"-\", \".\") }}\n\nsource:\n  url: https://github.com/NVIDIA/nccl/archive/v{{ version }}.tar.gz\n  sha256: 928d02e61637128f53320a89088c9c2e597fe9d25548dfaf06238bf5a87420fd\n\nbuild:\n  number: 0\n  skip: true  # [(not linux) or cuda_compiler_version in (undefined, \"None\")]\n  run_exports:\n    # xref: https://github.com/NVIDIA/nccl/issues/218\n    - {{ pin_subpackage(name, max_pin=\"x\") }}\n  script_env:\n    # for some reason /usr/local/cuda is not added to $PATH in ppc64le's docker image\n    - CUDA_HOME  # [ppc64le or aarch64]\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n    - {{ compiler(\"cxx\") }}\n    - {{ compiler(\"cuda\") }}\n    - make\n\ntest:\n  commands:\n    - test -f \"${PREFIX}/include/nccl.h\"\n    - test -f \"${PREFIX}/lib/libnccl.so\"\n    - test ! -f \"${PREFIX}/lib/libnccl_static.a\"\n\nabout:\n  home: https://developer.nvidia.com/nccl\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE.txt\n  summary: Optimized primitives for collective multi-GPU communication\n\n  description: |\n    The NVIDIA Collective Communications Library (NCCL) implements multi-GPU\n    and multi-node collective communication primitives that are performance\n    optimized for NVIDIA GPUs. NCCL provides routines such as all-gather,\n    all-reduce, broadcast, reduce, reduce-scatter, that are optimized to\n    achieve high bandwidth over PCIe and NVLink high-speed interconnect.\n\n  doc_url: https://docs.nvidia.com/deeplearning/sdk/nccl-developer-guide/docs/index.html\n  dev_url: https://github.com/NVIDIA/nccl\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n    - leofang\n",
  "req": {
   "__set__": true,
@@ -946,7 +965,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.17.2",
+ "smithy_version": "3.18.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
