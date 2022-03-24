@@ -21,7 +21,17 @@
  "archived": false,
  "bad": false,
  "branch": "main",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "build_platform": {
+   "linux_aarch64": "linux_aarch64",
+   "linux_ppc64le": "linux_ppc64le",
+   "osx_arm64": "osx_64"
+  },
+  "provider": {
+   "linux_aarch64": "default",
+   "linux_ppc64le": "default"
+  }
+ },
  "feedstock_name": "fortran_stdlib",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -37,10 +47,14 @@
    "summary": "Fortran standard library"
   },
   "build": {
-   "number": "0",
+   "number": "1",
+   "run_exports": [
+    "fortran_stdlib"
+   ],
    "script": [
-    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build",
+    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build\n",
     "cmake --build _build",
+    "ctest --test-dir _build --output-on-failure --parallel",
     "cmake --install _build"
    ]
   },
@@ -66,7 +80,8 @@
   },
   "source": {
    "patches": [
-    "stdlib-637.patch"
+    "stdlib-637.patch",
+    "stdlib-642.patch"
    ],
    "sha256": "eccb7a1027b3055699e05e2a55cce9802c17292355380cfa5365dedd8ebe754d",
    "url": "https://github.com/fortran-lang/stdlib/archive/refs/tags/v0.2.0.tar.gz"
@@ -108,6 +123,184 @@
    ]
   }
  },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/fortran-lang/stdlib",
+   "doc_url": "https://stdlib.fortran-lang.org",
+   "home": "https://github.com/fortran-lang/stdlib",
+   "license": "MIT",
+   "license_family": "MIT",
+   "license_file": [
+    "LICENSE"
+   ],
+   "summary": "Fortran standard library"
+  },
+  "build": {
+   "number": "1",
+   "run_exports": [
+    "fortran_stdlib"
+   ],
+   "script": [
+    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build\n",
+    "cmake --build _build",
+    "ctest --test-dir _build --output-on-failure --parallel",
+    "cmake --install _build"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk",
+    "mardiehl"
+   ]
+  },
+  "package": {
+   "name": "fortran_stdlib",
+   "version": "0.2.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "ninja",
+    "fypp"
+   ]
+  },
+  "source": {
+   "patches": [
+    "stdlib-637.patch",
+    "stdlib-642.patch"
+   ],
+   "sha256": "eccb7a1027b3055699e05e2a55cce9802c17292355380cfa5365dedd8ebe754d",
+   "url": "https://github.com/fortran-lang/stdlib/archive/refs/tags/v0.2.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "pkg-config fortran_stdlib --exact-version 0.2.0",
+    "test -f $PREFIX/lib/libfortran_stdlib${SHLIB_EXT}"
+   ],
+   "requires": [
+    "pkg-config"
+   ]
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "fypp",
+    "ninja"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ },
+ "linux_ppc64le_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/fortran-lang/stdlib",
+   "doc_url": "https://stdlib.fortran-lang.org",
+   "home": "https://github.com/fortran-lang/stdlib",
+   "license": "MIT",
+   "license_family": "MIT",
+   "license_file": [
+    "LICENSE"
+   ],
+   "summary": "Fortran standard library"
+  },
+  "build": {
+   "number": "1",
+   "run_exports": [
+    "fortran_stdlib"
+   ],
+   "script": [
+    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build\n",
+    "cmake --build _build",
+    "ctest --test-dir _build --output-on-failure --parallel",
+    "cmake --install _build"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk",
+    "mardiehl"
+   ]
+  },
+  "package": {
+   "name": "fortran_stdlib",
+   "version": "0.2.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "ninja",
+    "fypp"
+   ]
+  },
+  "source": {
+   "patches": [
+    "stdlib-637.patch",
+    "stdlib-642.patch"
+   ],
+   "sha256": "eccb7a1027b3055699e05e2a55cce9802c17292355380cfa5365dedd8ebe754d",
+   "url": "https://github.com/fortran-lang/stdlib/archive/refs/tags/v0.2.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "pkg-config fortran_stdlib --exact-version 0.2.0",
+    "test -f $PREFIX/lib/libfortran_stdlib${SHLIB_EXT}"
+   ],
+   "requires": [
+    "pkg-config"
+   ]
+  }
+ },
+ "linux_ppc64le_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "fypp",
+    "ninja"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ },
  "meta_yaml": {
   "about": {
    "dev_url": "https://github.com/fortran-lang/stdlib",
@@ -117,23 +310,53 @@
    "license_family": "MIT",
    "license_file": [
     "LICENSE",
+    "LICENSE",
+    "LICENSE",
+    "LICENSE",
     "LICENSE"
    ],
    "summary": "Fortran standard library"
   },
   "build": {
-   "number": "0",
+   "number": "1",
+   "run_exports": [
+    "fortran_stdlib",
+    "fortran_stdlib",
+    "fortran_stdlib",
+    "fortran_stdlib",
+    "fortran_stdlib"
+   ],
    "script": [
-    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build",
+    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build\n",
     "cmake --build _build",
+    "ctest --test-dir _build --output-on-failure --parallel",
     "cmake --install _build",
-    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build",
+    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build\n",
     "cmake --build _build",
+    "ctest --test-dir _build --output-on-failure --parallel",
+    "cmake --install _build",
+    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build\n",
+    "cmake --build _build",
+    "ctest --test-dir _build --output-on-failure --parallel",
+    "cmake --install _build",
+    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build\n",
+    "cmake --build _build",
+    "ctest --test-dir _build --output-on-failure --parallel",
+    "cmake --install _build",
+    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build -DWITH_QP_EXITCODE=1 -DWITH_QP_EXITCODE__TRYRUN_OUTPUT='' -DWITH_XDP_EXITCODE=1 -DWITH_XDP_EXITCODE__TRYRUN_OUTPUT=''\n",
+    "cmake --build _build",
+    "ctest --test-dir _build --output-on-failure --parallel",
     "cmake --install _build"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "awvwgk",
+    "mardiehl",
+    "awvwgk",
+    "mardiehl",
+    "awvwgk",
+    "mardiehl",
     "awvwgk",
     "mardiehl",
     "awvwgk",
@@ -157,13 +380,39 @@
     "fortran_compiler_stub",
     "cmake",
     "ninja",
+    "fypp",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "ninja",
+    "fypp",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "ninja",
+    "fypp",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "ninja",
     "fypp"
    ]
   },
   "source": {
    "patches": [
     "stdlib-637.patch",
-    "stdlib-637.patch"
+    "stdlib-642.patch",
+    "stdlib-637.patch",
+    "stdlib-642.patch",
+    "stdlib-637.patch",
+    "stdlib-642.patch",
+    "stdlib-637.patch",
+    "stdlib-642.patch",
+    "stdlib-637.patch",
+    "stdlib-642.patch"
    ],
    "sha256": "eccb7a1027b3055699e05e2a55cce9802c17292355380cfa5365dedd8ebe754d",
    "url": "https://github.com/fortran-lang/stdlib/archive/refs/tags/v0.2.0.tar.gz"
@@ -173,9 +422,18 @@
     "pkg-config fortran_stdlib --exact-version 0.2.0",
     "test -f $PREFIX/lib/libfortran_stdlib${SHLIB_EXT}",
     "pkg-config fortran_stdlib --exact-version 0.2.0",
+    "test -f $PREFIX/lib/libfortran_stdlib${SHLIB_EXT}",
+    "pkg-config fortran_stdlib --exact-version 0.2.0",
+    "test -f $PREFIX/lib/libfortran_stdlib${SHLIB_EXT}",
+    "pkg-config fortran_stdlib --exact-version 0.2.0",
+    "test -f $PREFIX/lib/libfortran_stdlib${SHLIB_EXT}",
+    "pkg-config fortran_stdlib --exact-version 0.2.0",
     "test -f $PREFIX/lib/libfortran_stdlib${SHLIB_EXT}"
    ],
    "requires": [
+    "pkg-config",
+    "pkg-config",
+    "pkg-config",
     "pkg-config",
     "pkg-config"
    ]
@@ -200,10 +458,14 @@
    "summary": "Fortran standard library"
   },
   "build": {
-   "number": "0",
+   "number": "1",
+   "run_exports": [
+    "fortran_stdlib"
+   ],
    "script": [
-    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build",
+    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build\n",
     "cmake --build _build",
+    "ctest --test-dir _build --output-on-failure --parallel",
     "cmake --install _build"
    ]
   },
@@ -229,7 +491,8 @@
   },
   "source": {
    "patches": [
-    "stdlib-637.patch"
+    "stdlib-637.patch",
+    "stdlib-642.patch"
    ],
    "sha256": "eccb7a1027b3055699e05e2a55cce9802c17292355380cfa5365dedd8ebe754d",
    "url": "https://github.com/fortran-lang/stdlib/archive/refs/tags/v0.2.0.tar.gz"
@@ -271,6 +534,95 @@
    ]
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/fortran-lang/stdlib",
+   "doc_url": "https://stdlib.fortran-lang.org",
+   "home": "https://github.com/fortran-lang/stdlib",
+   "license": "MIT",
+   "license_family": "MIT",
+   "license_file": [
+    "LICENSE"
+   ],
+   "summary": "Fortran standard library"
+  },
+  "build": {
+   "number": "1",
+   "run_exports": [
+    "fortran_stdlib"
+   ],
+   "script": [
+    "cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build -DWITH_QP_EXITCODE=1 -DWITH_QP_EXITCODE__TRYRUN_OUTPUT='' -DWITH_XDP_EXITCODE=1 -DWITH_XDP_EXITCODE__TRYRUN_OUTPUT=''\n",
+    "cmake --build _build",
+    "ctest --test-dir _build --output-on-failure --parallel",
+    "cmake --install _build"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk",
+    "mardiehl"
+   ]
+  },
+  "package": {
+   "name": "fortran_stdlib",
+   "version": "0.2.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "cmake",
+    "ninja",
+    "fypp"
+   ]
+  },
+  "source": {
+   "patches": [
+    "stdlib-637.patch",
+    "stdlib-642.patch"
+   ],
+   "sha256": "eccb7a1027b3055699e05e2a55cce9802c17292355380cfa5365dedd8ebe754d",
+   "url": "https://github.com/fortran-lang/stdlib/archive/refs/tags/v0.2.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "pkg-config fortran_stdlib --exact-version 0.2.0",
+    "test -f $PREFIX/lib/libfortran_stdlib${SHLIB_EXT}"
+   ],
+   "requires": [
+    "pkg-config"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "fortran_compiler_stub",
+    "fypp",
+    "ninja"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -278,7 +630,7 @@
   ]
  },
  "pinning_version": "2022.03.17.11.17.55",
- "raw_meta_yaml": "{% set name = \"fortran_stdlib\" %}\n{% set version = \"0.2.0\" %}\n{% set build = 0 %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/fortran-lang/stdlib/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: eccb7a1027b3055699e05e2a55cce9802c17292355380cfa5365dedd8ebe754d\n  patches:\n    - stdlib-637.patch\n\nbuild:\n  number: {{ build }}\n  skip: true  # [win]\n  script:\n    - cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -G Ninja -B _build\n    - cmake --build _build\n    - ctest --test-dir _build --output-on-failure --parallel  # [build_platform != target_platform]\n    - cmake --install _build\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - cmake\n    - ninja\n    - fypp\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config {{ name }} --exact-version {{ version }}\n    - test -f $PREFIX/lib/lib{{ name }}${SHLIB_EXT}\n\nabout:\n  home: https://github.com/fortran-lang/stdlib\n  license: MIT\n  license_family: MIT\n  license_file:\n    - LICENSE\n  summary: Fortran standard library\n  doc_url: https://stdlib.fortran-lang.org\n  dev_url: https://github.com/fortran-lang/stdlib\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - mardiehl\n",
+ "raw_meta_yaml": "{% set name = \"fortran_stdlib\" %}\n{% set version = \"0.2.0\" %}\n{% set build = 1 %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/fortran-lang/stdlib/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: eccb7a1027b3055699e05e2a55cce9802c17292355380cfa5365dedd8ebe754d\n  patches:\n    - stdlib-637.patch\n    - stdlib-642.patch\n\nbuild:\n  number: {{ build }}\n  skip: true  # [win]\n  script:\n    - >\n       cmake ${CMAKE_ARGS}\n       -DBUILD_SHARED_LIBS=ON\n       -G Ninja -B _build\n       -DWITH_QP_EXITCODE=1  # [osx and arm64]\n       -DWITH_QP_EXITCODE__TRYRUN_OUTPUT=''  # [osx and arm64]\n       -DWITH_XDP_EXITCODE=1  # [osx and arm64]\n       -DWITH_XDP_EXITCODE__TRYRUN_OUTPUT=''  # [osx and arm64]\n    - cmake --build _build\n    - ctest --test-dir _build --output-on-failure --parallel  # [build_platform == target_platform]\n    - cmake --install _build\n\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - cmake\n    - ninja\n    - fypp\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config {{ name }} --exact-version {{ version }}\n    - test -f $PREFIX/lib/lib{{ name }}${SHLIB_EXT}\n\nabout:\n  home: https://github.com/fortran-lang/stdlib\n  license: MIT\n  license_family: MIT\n  license_file:\n    - LICENSE\n  summary: Fortran standard library\n  doc_url: https://stdlib.fortran-lang.org\n  dev_url: https://github.com/fortran-lang/stdlib\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - mardiehl\n",
  "req": {
   "__set__": true,
   "elements": [
