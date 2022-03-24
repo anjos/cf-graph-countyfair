@@ -211,6 +211,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/888395716.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.1.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -830,7 +847,7 @@
   }
  },
  "name": "prrng-split",
- "new_version": "1.0.1",
+ "new_version": "1.1.0",
  "new_version_attempts": {
   "0.2.0": 1,
   "0.3.0": 1,
@@ -838,7 +855,8 @@
   "0.5.0": 1,
   "0.6.1": 1,
   "1.0.0": 1,
-  "1.0.1": 1
+  "1.0.1": 1,
+  "1.1.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1176,7 +1194,7 @@
    "python-prrng"
   ]
  },
- "pinning_version": "2022.02.18.15.27.34",
+ "pinning_version": "2022.03.23.20.27.24",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"prrng\" %}\n{% set version = \"1.0.1\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 397a8945e6eb033d016d719345f6b2384ccadd7f3c129aa7909c21fe2e7e8ddc\n\nbuild:\n  number: 0\n  script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n  skip: true  # [python_impl == 'pypy']\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - xtensor\n      run:\n        - xtensor\n\n    test:\n      commands:\n        - test -f ${PREFIX}/include/{{ name }}.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - numpy *                             # [build_platform != target_platform]\n        - setuptools_scm                      # [build_platform != target_platform]\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n        - ninja\n      host:\n        - boost-cpp\n        - numpy *\n        - pip\n        - pybind11\n        - python\n        - scikit-build\n        - setuptools_scm\n        - xtensor\n        - xtensor-python\n      run:\n        - numpy *\n        - python\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n        - python -c \"import {{ name }}; assert {{ name }}.version() == '{{ version }}'\"\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Portable Reconstructible (Pseudo) Random Number Generator.\n  description: Portable Reconstructible (Pseudo) Random Number Generator.\n  doc_url: https://{{ org }}.github.io/{{ name }}\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
@@ -1239,7 +1257,7 @@
    ]
   }
  },
- "smithy_version": "3.17.0",
+ "smithy_version": "3.18.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {

@@ -99,6 +99,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/888391853.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.38.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -827,7 +844,11 @@
   }
  },
  "name": "atk",
- "new_version": false,
+ "new_version": "2.38.0",
+ "new_version_attempts": {
+  "2.38.0": 1
+ },
+ "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
    "home": "http://www.gtk.org/",
@@ -1067,7 +1088,7 @@
    "atk-1.0"
   ]
  },
- "pinning_version": "2020.12.04.16.35.12",
+ "pinning_version": "2022.03.23.20.27.24",
  "raw_meta_yaml": "{% set name = \"atk\" %}\n{% set version = \"2.36.0\" %}\n{% set major_minor = \".\".join(version.split(\".\")[:2]) %}\n{% set abi_version = \"1.0\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://ftp.gnome.org/pub/gnome/sources/{{ name }}/{{ major_minor }}/{{ name }}-{{ version }}.tar.xz\n  sha256: fb76247e369402be23f1f5c65d38a9639c1164d934e40f6a9cf3c9e96b652788\n\nbuild:\n  number: 4\n  skip: true  # [win and vc<14]\n  run_exports:\n    - atk-{{ abi_version }} >={{ version }}\n\noutputs:\n  - name: atk-{{ abi_version }}\n    script: build_atk.sh  # [unix]\n    script: bld_atk.bat   # [win]\n    build:\n      run_exports:\n        - atk-{{ abi_version }} >={{ version }}\n    requirements:\n      build:\n        - meson\n        - gobject-introspection 1.*\n        - ninja\n        - python >=3.6\n        - pkg-config\n        - {{ compiler('c') }}\n        - glib  # [build_platform != target_platform]\n        # Required for the conda-forge meson cross-compilation config to work\n        - {{ compiler('cxx') }}\n      host:\n        - glib\n      run:\n        - libglib\n      run_constrained:\n        - atk-{{ abi_version }} {{ version }}\n\n    test:\n      requires:\n        - pkg-config\n      commands:\n        # verify that libs get installed and can be located through pkg-config\n        {% set pc = \"atk\" %}\n        {% set lib = \"atk-\" + abi_version  %}\n        - test -f $PREFIX/lib/lib{{ lib }}${SHLIB_EXT}  # [unix]\n        - test -f `pkg-config --variable=libdir --dont-define-prefix {{ pc }}`/lib{{ lib }}${SHLIB_EXT}  # [unix]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ lib }}-0.dll exit 1  # [win]\n        - for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=exec_prefix --dont-define-prefix {{ pc }}`) do if not exist \"%%a/bin/{{ lib }}-0.dll\" exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ lib }}.lib exit 1  # [win]\n        - for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=libdir --dont-define-prefix {{ pc }}`) do if not exist \"%%a/{{ lib }}.lib\" exit 1  # [win]\n\n  - name: atk\n    requirements:\n      run:\n        - atk-{{ abi_version }} {{ version }}\n    test:\n      commands:\n       - test -f $PREFIX/lib/libatk-{{ abi_version }}${SHLIB_EXT}  # [unix]\n\nabout:\n  home: http://www.gtk.org/\n  license: LGPL-2.0-or-later\n  license_file: COPYING\n  summary: 'Accessibility Toolkit.'\n\nextra:\n  recipe-maintainers:\n    - pkgw\n    - ocefpaf\n    - isuruf\n    - tschoonj\n",
  "req": {
   "__set__": true,
@@ -1121,7 +1142,7 @@
    ]
   }
  },
- "smithy_version": "3.8.5",
+ "smithy_version": "3.18.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
