@@ -56,6 +56,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/888293603.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "cuda_112_ppc64le_aarch64"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -416,7 +435,7 @@
    "libastra"
   ]
  },
- "pinning_version": "2021.06.30.05.52.22",
+ "pinning_version": "2022.03.23.20.27.24",
  "raw_meta_yaml": "{% set version = \"2.1.0\" %}\n\npackage:\n  name: libastra\n  version: {{ version }}\n\nsource:\n  url: https://github.com/astra-toolbox/astra-toolbox/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 7768863a2756887e54829725e8fe95a371c7cb0cdfa5392b2e11cfc290f54dc3\n  patches:\n    - cmake.patch\n\nbuild:\n  run_exports:\n    - {{ pin_subpackage('libastra', max_pin='x.x.x') }}\n  ignore_run_exports:\n  # conda-build reports the vs2015_runtime is unused\n    - vs2015_runtime  # [win]\n  number: 0\n  string: \"{{ \"cuda\" + cuda_compiler_version|string }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}\"\n  skip: true  # [(not (linux64 or win64)) or cuda_compiler_version == \"None\"]\n\nrequirements:\n  build:\n    - {{ compiler('cuda') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n  host:\n    - boost-cpp\n    - cudatoolkit\n  run:\n  # unix uses pthread, but win links to libboost:threads\n    - {{ pin_compatible('boost-cpp', max_pin='x.x') }}  # [win]\n  # astra is written in c++ but seems to prefer including c headers\n    - ucrt  # [win]\n\ntest:\n  requires:\n  # libastra uses header-only from Boost, but the unit tests actually link to libboost_unit_test_framework.so\n    - {{ pin_compatible('boost-cpp', max_pin='x.x') }}\n  source_files:\n    - tests/astratest  # [unix]\n    - tests/astratest.exe  # [win]\n  commands:\n    - test -f $PREFIX/lib/libastra${SHLIB_EXT}                          # [linux]\n    - test -f $PREFIX/lib/libastra${SHLIB_EXT}.0                        # [linux]\n    - test -f $PREFIX/lib/libastra${SHLIB_EXT}.0.0.0                    # [linux]\n    - \"LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH ./tests/astratest\"  # [unix]\n    - if not exist %LIBRARY_LIB%\\\\AstraCuda64.lib exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\AstraCuda64.dll exit 1  # [win]\n    - tests\\\\astratest                                    # [win]\n\nabout:\n  home: http://www.astra-toolbox.com\n  license: GPL-3.0-only\n  license_file:\n    - COPYING\n    - lib/licenses/rapidxml.txt\n  summary: 'libastra is a C++ library of high-performance GPU primitives for 2D\n  and 3D tomography.'\n\nextra:\n  recipe-maintainers:\n    - carterbox\n",
  "req": {
   "__set__": true,
@@ -465,7 +484,7 @@
    ]
   }
  },
- "smithy_version": "3.10.3",
+ "smithy_version": "3.18.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
