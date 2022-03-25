@@ -177,7 +177,7 @@
   },
   "build": {
    "noarch": "python",
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -201,7 +201,7 @@
      "run": [
       "__unix",
       "python >=3.7",
-      "cylc-flow-base ==8.0rc1",
+      "cylc-flow-base ==8.0rc2",
       "tornado >=6.1",
       "graphene-tornado >=2.6.0,<2.7",
       "graphql-ws ==0.4.4",
@@ -356,7 +356,7 @@
   },
   "build": {
    "noarch": "python",
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -380,7 +380,7 @@
      "run": [
       "__unix",
       "python >=3.7",
-      "cylc-flow-base ==8.0rc1",
+      "cylc-flow-base ==8.0rc2",
       "tornado >=6.1",
       "graphene-tornado >=2.6.0,<2.7",
       "graphql-ws ==0.4.4",
@@ -507,7 +507,7 @@
   ]
  },
  "pinning_version": "2022.03.23.16.41.17",
- "raw_meta_yaml": "{% set name = \"cylc-uiserver\" %}\n{% set version = \"1.0.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 4ee50d2130adff797494c47a12881bd2b6e3afcf610a2d214c180e13f77e5818\n\nbuild:\n  number: 0\n  noarch: python\n\nrequirements:\n  host:\n    - __unix\n    - python >=3.7\n    - pip\n  run:\n    - __unix\n    - python >=3.7\n\noutputs:\n  # base package with only required dependencies\n  # (e.g. for single-user setups)\n  - name: {{ name }}-base\n    build:\n      script: python -m pip install . --no-deps --ignore-installed -vv\n      noarch: python\n    requirements:\n      host:\n        - __unix\n        - python >=3.7\n        - pip\n      run:\n        - __unix\n        - python >=3.7\n        - cylc-flow-base ==8.0rc1\n        - tornado >=6.1\n        - graphene-tornado >=2.6.0,<2.7\n        - graphql-ws ==0.4.4\n        - jupyter_server >=1.10.2,<2.0\n        - traitlets >=5.0\n        - graphene\n        # TODO: https://github.com/conda-forge/cylc-feedstock/pull/3#issuecomment-660716268\n        - rx >=1.6,<2\n\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n        - command -v jupyter-cylc\n\n  # UIS with the JupyterHub \"base\" package\n  # (e.g. for sites that provide their own configurable HTTP proxy)\n  - name: {{ name }}-hub-base\n    build:\n      script: python -m pip install .[hub] --no-deps --ignore-installed -vv\n      noarch: python\n    requirements:\n      host:\n        - __unix\n        - python >=3.7\n        - pip\n      run:\n        - {{ pin_subpackage(name + \"-base\", exact=True) }}\n        - jupyterhub-base >=1.4.0,<1.5\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n        - cylc hubapp --help\n        - command -v jupyter-cylc\n        - command -v jupyter-cylchubapp\n\n  # UIS with the full JupyterHub package\n  # (recommended)\n  - name: {{ name }}\n    build:\n      script: python -m pip install .[hub] --no-deps --ignore-installed -vv\n      noarch: python\n    requirements:\n      host:\n        - __unix\n        - python >=3.7\n        - pip\n      run:\n        - {{ pin_subpackage(name + \"-base\", exact=True) }}\n        - jupyterhub >=1.4.0,<1.5\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n        - cylc hubapp --help\n        - configurable-http-proxy --help\n        - command -v jupyter-cylc\n        - command -v jupyter-cylchubapp\n\nabout:\n  home: https://github.com/cylc/cylc-uiserver\n  license: GPL-3.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: Cylc UI Server\n  description: |\n    This project contains the Cylc UI Server.\n    A JupyterHub-compatible application, used to display\n    the Cylc UI (or simply UI) to users, and to communicate\n    with Workflow Services (WFS).\n  doc_url: https://github.com/cylc/cylc-uiserver\n  dev_url: https://github.com/cylc/cylc-uiserver\n\nextra:\n  recipe-maintainers:\n    - hjoliver\n    - oliver-sanders\n",
+ "raw_meta_yaml": "{% set name = \"cylc-uiserver\" %}\n{% set version = \"1.0.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 4ee50d2130adff797494c47a12881bd2b6e3afcf610a2d214c180e13f77e5818\n\nbuild:\n  number: 1\n  noarch: python\n\nrequirements:\n  host:\n    - __unix\n    - python >=3.7\n    - pip\n  run:\n    - __unix\n    - python >=3.7\n\noutputs:\n  # base package with only required dependencies\n  # (e.g. for single-user setups)\n  - name: {{ name }}-base\n    build:\n      script: python -m pip install . --no-deps --ignore-installed -vv\n      noarch: python\n    requirements:\n      host:\n        - __unix\n        - python >=3.7\n        - pip\n      run:\n        - __unix\n        - python >=3.7\n        - cylc-flow-base ==8.0rc2\n        - tornado >=6.1\n        - graphene-tornado >=2.6.0,<2.7\n        - graphql-ws ==0.4.4\n        - jupyter_server >=1.10.2,<2.0\n        - traitlets >=5.0\n        - graphene\n        # TODO: https://github.com/conda-forge/cylc-feedstock/pull/3#issuecomment-660716268\n        - rx >=1.6,<2\n\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n        - command -v jupyter-cylc\n\n  # UIS with the JupyterHub \"base\" package\n  # (e.g. for sites that provide their own configurable HTTP proxy)\n  - name: {{ name }}-hub-base\n    build:\n      script: python -m pip install .[hub] --no-deps --ignore-installed -vv\n      noarch: python\n    requirements:\n      host:\n        - __unix\n        - python >=3.7\n        - pip\n      run:\n        - {{ pin_subpackage(name + \"-base\", exact=True) }}\n        - jupyterhub-base >=1.4.0,<1.5\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n        - cylc hubapp --help\n        - command -v jupyter-cylc\n        - command -v jupyter-cylchubapp\n\n  # UIS with the full JupyterHub package\n  # (recommended)\n  - name: {{ name }}\n    build:\n      script: python -m pip install .[hub] --no-deps --ignore-installed -vv\n      noarch: python\n    requirements:\n      host:\n        - __unix\n        - python >=3.7\n        - pip\n      run:\n        - {{ pin_subpackage(name + \"-base\", exact=True) }}\n        - jupyterhub >=1.4.0,<1.5\n    test:\n      imports:\n        - cylc.flow\n        - cylc.uiserver\n      commands:\n        - cylc version --long\n        - cylc gui --help\n        - cylc hubapp --help\n        - configurable-http-proxy --help\n        - command -v jupyter-cylc\n        - command -v jupyter-cylchubapp\n\nabout:\n  home: https://github.com/cylc/cylc-uiserver\n  license: GPL-3.0-only\n  license_family: GPL\n  license_file: COPYING\n  summary: Cylc UI Server\n  description: |\n    This project contains the Cylc UI Server.\n    A JupyterHub-compatible application, used to display\n    the Cylc UI (or simply UI) to users, and to communicate\n    with Workflow Services (WFS).\n  doc_url: https://github.com/cylc/cylc-uiserver\n  dev_url: https://github.com/cylc/cylc-uiserver\n\nextra:\n  recipe-maintainers:\n    - hjoliver\n    - oliver-sanders\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -582,7 +582,7 @@
    "__set__": true,
    "elements": [
     "__unix",
-    "cylc-flow-base ==8.0rc1",
+    "cylc-flow-base ==8.0rc2",
     "cylc-uiserver-base",
     "graphene",
     "graphene-tornado >=2.6.0,<2.7",
