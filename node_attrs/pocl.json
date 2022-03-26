@@ -208,11 +208,10 @@
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
-   "linux_aarch64": "linux_64",
    "osx_arm64": "osx_64"
   },
   "provider": {
-   "linux_aarch64": "default",
+   "linux_aarch64": "native",
    "linux_ppc64le": "native"
   }
  },
@@ -233,7 +232,7 @@
    "summary": "Portable Computing Language -- a portable open source implementation of the OpenCL standard"
   },
   "build": {
-   "number": "2",
+   "number": "3",
    "script_env": [
     "CUDA_HOME",
     "CUDA_HOME"
@@ -345,7 +344,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -353,7 +353,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -431,205 +432,7 @@
    "summary": "Portable Computing Language -- a portable open source implementation of the OpenCL standard"
   },
   "build": {
-   "number": "2"
-  },
-  "extra": {
-   "recipe-maintainers": [
-    "inducer",
-    "mattwala",
-    "isuruf",
-    "matthiasdiener",
-    "inducer",
-    "mattwala",
-    "isuruf",
-    "matthiasdiener"
-   ]
-  },
-  "outputs": [
-   {
-    "name": "pocl"
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "pocl-cuda",
-    "requirements": {
-     "build": [
-      "cxx_compiler_stub"
-     ],
-     "host": [
-      "pocl",
-      "llvm 12.0.1.*",
-      "libhwloc"
-     ],
-     "run": [
-      "pocl"
-     ]
-    },
-    "script": "install-cuda.sh",
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/pocl/libpocl-devices-cuda.so"
-     ]
-    }
-   },
-   {
-    "name": "pocl"
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "pocl-cuda",
-    "requirements": {
-     "build": [
-      "cxx_compiler_stub"
-     ],
-     "host": [
-      "pocl",
-      "llvm 12.0.1.*",
-      "libhwloc"
-     ],
-     "run": [
-      "pocl"
-     ]
-    },
-    "script": "install-cuda.sh",
-    "test": {
-     "commands": [
-      "test -f $PREFIX/lib/pocl/libpocl-devices-cuda.so"
-     ]
-    }
-   }
-  ],
-  "package": {
-   "name": "pocl",
-   "version": "1.8"
-  },
-  "requirements": {
-   "build": [
-    "cmake",
-    "make",
-    "pkg-config",
-    "cxx_compiler_stub",
-    "cmake",
-    "make",
-    "pkg-config",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "ocl-icd",
-    "libhwloc",
-    "llvmdev 12.0.1.*",
-    "clangdev 12.0.1.*",
-    "llvm 12.0.1.*",
-    "libclang-cpp 12.0.1.*",
-    "ocl-icd",
-    "libhwloc",
-    "llvmdev 12.0.1.*",
-    "clangdev 12.0.1.*",
-    "llvm 12.0.1.*",
-    "libclang-cpp 12.0.1.*"
-   ],
-   "run": [
-    "ocl-icd",
-    "libhwloc",
-    "ocl-icd",
-    "libhwloc"
-   ]
-  },
-  "source": [
-   {
-    "patches": [
-     "1029.diff",
-     "1030.patch"
-    ],
-    "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
-    "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
-   },
-   {
-    "patches": [
-     "1029.diff",
-     "1030.patch"
-    ],
-    "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
-    "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
-   }
-  ],
-  "test": {
-   "commands": [
-    "test -f $PREFIX/lib/libpocl${SHLIB_EXT}",
-    "export OCL_ICD_DEBUG=15",
-    "curl -O https://raw.githubusercontent.com/inducer/pyopencl/main/examples/demo.py",
-    "python demo.py",
-    "test -f $PREFIX/lib/libpocl${SHLIB_EXT}",
-    "export OCL_ICD_DEBUG=15",
-    "curl -O https://raw.githubusercontent.com/inducer/pyopencl/main/examples/demo.py",
-    "python demo.py"
-   ],
-   "requires": [
-    "pyopencl",
-    "curl",
-    "pyopencl",
-    "curl"
-   ]
-  }
- },
- "linux_aarch64_requirements": {
-  "build": {
-   "__set__": true,
-   "elements": [
-    "cmake",
-    "cxx_compiler_stub",
-    "make",
-    "pkg-config"
-   ]
-  },
-  "host": {
-   "__set__": true,
-   "elements": [
-    "clangdev",
-    "libclang-cpp",
-    "libhwloc",
-    "llvm",
-    "llvmdev",
-    "ocl-icd",
-    "pocl"
-   ]
-  },
-  "run": {
-   "__set__": true,
-   "elements": [
-    "libhwloc",
-    "ocl-icd",
-    "pocl"
-   ]
-  },
-  "test": {
-   "__set__": true,
-   "elements": [
-    "curl",
-    "pyopencl"
-   ]
-  }
- },
- "linux_ppc64le_meta_yaml": {
-  "about": {
-   "dev_url": "https://github.com/pocl/pocl",
-   "doc_url": "http://portablecl.org/docs/html/",
-   "home": "http://portablecl.org/",
-   "license": "MIT",
-   "license_file": [
-    "LICENSE",
-    "LLVM-License.txt",
-    "LICENSE",
-    "LLVM-License.txt"
-   ],
-   "summary": "Portable Computing Language -- a portable open source implementation of the OpenCL standard"
-  },
-  "build": {
-   "number": "2",
+   "number": "3",
    "script_env": [
     "CUDA_HOME",
     "CUDA_HOME"
@@ -741,7 +544,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -749,7 +553,208 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
+    ],
+    "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
+    "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
+   }
+  ],
+  "test": {
+   "commands": [
+    "test -f $PREFIX/lib/libpocl${SHLIB_EXT}",
+    "export OCL_ICD_DEBUG=15",
+    "curl -O https://raw.githubusercontent.com/inducer/pyopencl/main/examples/demo.py",
+    "python demo.py",
+    "test -f $PREFIX/lib/libpocl${SHLIB_EXT}",
+    "export OCL_ICD_DEBUG=15",
+    "curl -O https://raw.githubusercontent.com/inducer/pyopencl/main/examples/demo.py",
+    "python demo.py"
+   ],
+   "requires": [
+    "pyopencl",
+    "curl",
+    "pyopencl",
+    "curl"
+   ]
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cmake",
+    "cxx_compiler_stub",
+    "make",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "clangdev",
+    "libclang-cpp",
+    "libhwloc",
+    "llvm",
+    "llvmdev",
+    "ocl-icd",
+    "pocl"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libhwloc",
+    "ocl-icd",
+    "pocl"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "curl",
+    "pyopencl"
+   ]
+  }
+ },
+ "linux_ppc64le_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/pocl/pocl",
+   "doc_url": "http://portablecl.org/docs/html/",
+   "home": "http://portablecl.org/",
+   "license": "MIT",
+   "license_file": [
+    "LICENSE",
+    "LLVM-License.txt",
+    "LICENSE",
+    "LLVM-License.txt"
+   ],
+   "summary": "Portable Computing Language -- a portable open source implementation of the OpenCL standard"
+  },
+  "build": {
+   "number": "3",
+   "script_env": [
+    "CUDA_HOME",
+    "CUDA_HOME"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "inducer",
+    "mattwala",
+    "isuruf",
+    "matthiasdiener",
+    "inducer",
+    "mattwala",
+    "isuruf",
+    "matthiasdiener"
+   ]
+  },
+  "outputs": [
+   {
+    "name": "pocl"
+   },
+   {
+    "build": null,
+    "name": "pocl-cuda",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "pocl",
+      "llvm 12.0.1.*",
+      "libhwloc"
+     ],
+     "run": [
+      "pocl"
+     ]
+    },
+    "script": "install-cuda.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/pocl/libpocl-devices-cuda.so"
+     ]
+    }
+   },
+   {
+    "name": "pocl"
+   },
+   {
+    "build": null,
+    "name": "pocl-cuda",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "pocl",
+      "llvm 12.0.1.*",
+      "libhwloc"
+     ],
+     "run": [
+      "pocl"
+     ]
+    },
+    "script": "install-cuda.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/pocl/libpocl-devices-cuda.so"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "pocl",
+   "version": "1.8"
+  },
+  "requirements": {
+   "build": [
+    "cmake",
+    "make",
+    "pkg-config",
+    "cxx_compiler_stub",
+    "cmake",
+    "make",
+    "pkg-config",
+    "cxx_compiler_stub"
+   ],
+   "host": [
+    "ocl-icd",
+    "libhwloc",
+    "llvmdev 12.0.1.*",
+    "clangdev 12.0.1.*",
+    "llvm 12.0.1.*",
+    "libclang-cpp 12.0.1.*",
+    "ocl-icd",
+    "libhwloc",
+    "llvmdev 12.0.1.*",
+    "clangdev 12.0.1.*",
+    "llvm 12.0.1.*",
+    "libclang-cpp 12.0.1.*"
+   ],
+   "run": [
+    "ocl-icd",
+    "libhwloc",
+    "ocl-icd",
+    "libhwloc"
+   ]
+  },
+  "source": [
+   {
+    "patches": [
+     "1029.diff",
+     "1030.patch",
+     "890.diff"
+    ],
+    "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
+    "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
+   },
+   {
+    "patches": [
+     "1029.diff",
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -841,7 +846,7 @@
    "summary": "Portable Computing Language -- a portable open source implementation of the OpenCL standard"
   },
   "build": {
-   "number": "2",
+   "number": "3",
    "script_env": [
     "CUDA_HOME",
     "CUDA_HOME"
@@ -944,9 +949,7 @@
     "name": "pocl"
    },
    {
-    "build": {
-     "skip": true
-    },
+    "build": null,
     "name": "pocl-cuda",
     "requirements": {
      "build": [
@@ -972,9 +975,7 @@
     "name": "pocl"
    },
    {
-    "build": {
-     "skip": true
-    },
+    "build": null,
     "name": "pocl-cuda",
     "requirements": {
      "build": [
@@ -1266,7 +1267,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1274,7 +1276,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1282,7 +1285,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1290,7 +1294,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1298,7 +1303,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1306,7 +1312,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1314,7 +1321,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1322,7 +1330,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1330,7 +1339,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1419,7 +1429,7 @@
    "summary": "Portable Computing Language -- a portable open source implementation of the OpenCL standard"
   },
   "build": {
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1537,7 +1547,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1545,7 +1556,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1625,7 +1637,7 @@
    "summary": "Portable Computing Language -- a portable open source implementation of the OpenCL standard"
   },
   "build": {
-   "number": "2"
+   "number": "3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1696,7 +1708,8 @@
    {
     "patches": [
      "1029.diff",
-     "1030.patch"
+     "1030.patch",
+     "890.diff"
     ],
     "sha256": "0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2",
     "url": "https://github.com/pocl/pocl/archive/v1.8.tar.gz"
@@ -1771,7 +1784,7 @@
  "pre_pr_migrator_status": {
   "armosxaddition": "bot error: master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1041, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 201, in run\n    migrator.run_post_piggyback_migrations(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/core.py\", line 277, in run_post_piggyback_migrations\n    mini_migrator.migrate(recipe_dir, attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/cross_compile.py\", line 41, in migrate\n    cb_work_dir = _get_source_code(recipe_dir)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 640, in _get_source_code\n    return provide(md)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/conda_build/source.py\", line 909, in provide\n    patch_attributes_output += [apply_one_patch(src_dir, metadata.path, patch, metadata.config, git)]\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/conda_build/source.py\", line 830, in apply_one_patch\n    raise exception\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/conda_build/source.py\", line 825, in apply_one_patch\n    try_apply_patch(patch_exe, patch_args,\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/conda_build/source.py\", line 770, in try_apply_patch\n    raise e\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/conda_build/source.py\", line 766, in try_apply_patch\n    check_call_env([patch] + try_patch_args, cwd=cwd, stdout=stdout, stderr=stderr)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/conda_build/utils.py\", line 410, in check_call_env\n    return _func_defaulting_env_to_os_environ('call', *popenargs, **kwargs)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/site-packages/conda_build/utils.py\", line 401, in _func_defaulting_env_to_os_environ\n    subprocess.check_call(_args, **kwargs)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 364, in check_call\n    raise CalledProcessError(retcode, cmd)\nsubprocess.CalledProcessError: Command '['/usr/bin/patch', '--no-backup-if-mismatch', '--batch', '-p1', '-i', '/tmp/tmpsfkhxuc5/gh822.patch.native', '--binary', '--dry-run']' returned non-zero exit status 1.\n"
  },
- "raw_meta_yaml": "{% set name = \"pocl\" %}\n{% set version = \"1.8\" %}\n{% set build_number = 2 %}\n{% set sha256 = \"0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2\" %}\n\n{% set llvm_version = \"12.0.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/pocl/pocl/archive/v{{ version.replace(\".rc\", \"-RC\") }}.tar.gz\n    sha256: {{ sha256 }}\n    patches:\n      # Likely unnecessary with pocl v1.9+\n      - 1029.diff\n      - 1030.patch\n\nbuild:\n  number: {{ build_number }}\n  skip: true  # [win]\n  script_env:   # [enable_cuda]\n    - CUDA_HOME   # [enable_cuda]\n\nrequirements:\n  build:\n    - cmake\n    - make\n    - pkg-config\n    - {{ compiler('cxx') }}                                   # [not osx]\n    - clangxx_{{ target_platform }} {{ llvm_version }}.*      # [osx]\n    - llvmdev {{ llvm_version }}.*       # [build_platform != target_platform]\n    - clangdev {{ llvm_version }}.*      # [build_platform != target_platform]\n  host:\n    - ocl-icd                            # [linux]\n    - khronos-opencl-icd-loader          # [osx]\n    - libhwloc\n\n    - llvmdev {{ llvm_version }}.*\n    - clangdev {{ llvm_version }}.*\n    - llvm {{ llvm_version }}.*\n    - libclang-cpp {{ llvm_version }}.*\n\n    - zlib                               # [osx]\n    - ld64 >=530                         # [osx]\n  run:\n    - ocl-icd                            # [linux]\n    - khronos-opencl-icd-loader          # [osx]\n    - ld64 >=530                         # [osx]\n    - {{ pin_compatible('libhwloc') }}\n\ntest:\n  requires:\n    - pyopencl\n    - curl\n  commands:\n    - test -f $PREFIX/lib/libpocl${SHLIB_EXT}     # [unix]\n    # Remove apple icd so that only pocl is found\n    - rm -f $PREFIX/etc/OpenCL/vendors/apple.icd     # [osx]\n    - export OCL_ICD_DEBUG=15                     # [linux]\n    - curl -O https://raw.githubusercontent.com/inducer/pyopencl/main/examples/demo.py\n    - python demo.py\n\noutputs:\n  - name: pocl\n\n  - name: pocl-cuda\n    build:\n      skip: true  # [not enable_cuda]\n    script: install-cuda.sh\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n        - {{ pin_subpackage(\"pocl\", exact=True) }}\n        - llvm {{ llvm_version }}.*\n        - libhwloc\n      run:\n        - {{ pin_subpackage(\"pocl\", exact=True) }}\n    test:\n      commands:\n        - test -f $PREFIX/lib/pocl/libpocl-devices-cuda.so     # [unix]\n\nabout:\n  home: http://portablecl.org/\n  license: MIT\n  license_file:\n    - LICENSE\n    - LLVM-License.txt\n  summary: Portable Computing Language -- a portable open source implementation of the OpenCL standard\n  dev_url: https://github.com/pocl/pocl\n  doc_url: http://portablecl.org/docs/html/\n\nextra:\n  recipe-maintainers:\n    - inducer\n    - mattwala\n    - isuruf\n    - matthiasdiener\n",
+ "raw_meta_yaml": "{% set name = \"pocl\" %}\n{% set version = \"1.8\" %}\n{% set build_number = 3 %}\n{% set sha256 = \"0f63377ae1826e16e90038fc8e7f65029be4ff6f9b059f6907174b5c0d1f8ab2\" %}\n\n{% set llvm_version = \"12.0.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/pocl/pocl/archive/v{{ version.replace(\".rc\", \"-RC\") }}.tar.gz\n    sha256: {{ sha256 }}\n    patches:\n      # Likely unnecessary with pocl v1.9+\n      - 1029.diff\n      - 1030.patch\n      - 890.diff\n\nbuild:\n  number: {{ build_number }}\n  skip: true  # [win]\n  script_env:   # [enable_cuda]\n    - CUDA_HOME   # [enable_cuda]\n\nrequirements:\n  build:\n    - cmake\n    - make\n    - pkg-config\n    - {{ compiler('cxx') }}                                   # [not osx]\n    - clangxx_{{ target_platform }} {{ llvm_version }}.*      # [osx]\n    - llvmdev {{ llvm_version }}.*       # [build_platform != target_platform]\n    - clangdev {{ llvm_version }}.*      # [build_platform != target_platform]\n  host:\n    - ocl-icd                            # [linux]\n    - khronos-opencl-icd-loader          # [osx]\n    - libhwloc\n\n    - llvmdev {{ llvm_version }}.*\n    - clangdev {{ llvm_version }}.*\n    - llvm {{ llvm_version }}.*\n    - libclang-cpp {{ llvm_version }}.*\n\n    - zlib                               # [osx]\n    - ld64 >=530                         # [osx]\n  run:\n    - ocl-icd                            # [linux]\n    - khronos-opencl-icd-loader          # [osx]\n    - ld64 >=530                         # [osx]\n    - {{ pin_compatible('libhwloc') }}\n\ntest:\n  requires:\n    - pyopencl\n    - curl\n  commands:\n    - test -f $PREFIX/lib/libpocl${SHLIB_EXT}     # [unix]\n    # Remove apple icd so that only pocl is found\n    - rm -f $PREFIX/etc/OpenCL/vendors/apple.icd     # [osx]\n    - export OCL_ICD_DEBUG=15                     # [linux]\n    - curl -O https://raw.githubusercontent.com/inducer/pyopencl/main/examples/demo.py\n    - python demo.py\n\noutputs:\n  - name: pocl\n\n  - name: pocl-cuda\n    build:\n      skip: true  # [not enable_cuda]\n    script: install-cuda.sh\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n        - {{ pin_subpackage(\"pocl\", exact=True) }}\n        - llvm {{ llvm_version }}.*\n        - libhwloc\n      run:\n        - {{ pin_subpackage(\"pocl\", exact=True) }}\n    test:\n      commands:\n        - test -f $PREFIX/lib/pocl/libpocl-devices-cuda.so     # [unix]\n\nabout:\n  home: http://portablecl.org/\n  license: MIT\n  license_file:\n    - LICENSE\n    - LLVM-License.txt\n  summary: Portable Computing Language -- a portable open source implementation of the OpenCL standard\n  dev_url: https://github.com/pocl/pocl\n  doc_url: http://portablecl.org/docs/html/\n\nextra:\n  recipe-maintainers:\n    - inducer\n    - mattwala\n    - isuruf\n    - matthiasdiener\n",
  "req": {
   "__set__": true,
   "elements": [
