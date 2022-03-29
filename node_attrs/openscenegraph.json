@@ -56,6 +56,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/892560403.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "ffmpeg44"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -76,7 +95,7 @@
    "summary": "OpenSceneGraph, an open source high performance 3D graphics toolkit"
   },
   "build": {
-   "number": "11",
+   "number": "12",
    "run_exports": [
     "openscenegraph"
    ]
@@ -94,6 +113,7 @@
    "build": [
     "cxx_compiler_stub",
     "cmake",
+    "make",
     "pkg-config",
     "doxygen",
     "graphviz",
@@ -167,6 +187,7 @@
     "cxx_compiler_stub",
     "doxygen",
     "graphviz",
+    "make",
     "pkg-config"
    ]
   },
@@ -221,7 +242,7 @@
    "summary": "OpenSceneGraph, an open source high performance 3D graphics toolkit"
   },
   "build": {
-   "number": "11",
+   "number": "12",
    "run_exports": [
     "openscenegraph",
     "openscenegraph",
@@ -243,6 +264,7 @@
    "build": [
     "cxx_compiler_stub",
     "cmake",
+    "make",
     "pkg-config",
     "doxygen",
     "graphviz",
@@ -261,11 +283,13 @@
     "cdt_stub",
     "cxx_compiler_stub",
     "cmake",
+    "make",
     "pkg-config",
     "doxygen",
     "graphviz",
     "cxx_compiler_stub",
     "cmake",
+    "make",
     "pkg-config",
     "doxygen",
     "graphviz 2.38"
@@ -389,7 +413,7 @@
    "summary": "OpenSceneGraph, an open source high performance 3D graphics toolkit"
   },
   "build": {
-   "number": "11",
+   "number": "12",
    "run_exports": [
     "openscenegraph"
    ]
@@ -407,6 +431,7 @@
    "build": [
     "cxx_compiler_stub",
     "cmake",
+    "make",
     "pkg-config",
     "doxygen",
     "graphviz"
@@ -466,6 +491,7 @@
     "cxx_compiler_stub",
     "doxygen",
     "graphviz",
+    "make",
     "pkg-config"
    ]
   },
@@ -514,14 +540,10 @@
    "openscenegraph"
   ]
  },
- "pinning_version": "2021.03.27.06.50.49",
- "pre_pr_migrator_attempts": {
-  "ffmpeg44": 24
- },
- "pre_pr_migrator_status": {
-  "ffmpeg44": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2054816485\">bot CI job</a>): main: ['win_64_: Encountered problems while solving:\\n  - nothing provides requested ffmpeg 4.4.*\\n']"
- },
- "raw_meta_yaml": "{% set name = \"openscenegraph\" %}\n{% set version = \"3.6.5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/openscenegraph/OpenSceneGraph/archive/OpenSceneGraph-{{ version }}.tar.gz\n  sha256: aea196550f02974d6d09291c5d83b51ca6a03b3767e234a8c0e21322927d1e12\n  patches:\n    - osg.patch\n    - cmake.patch  #\u00A0[win]\n    - collada-dom.patch\n\nbuild:\n  number: 11\n  skip: true  # [win and vc<14]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - pkg-config\n    - doxygen\n    - graphviz                           # [unix]\n    - graphviz 2.38                      # [win]\n    - {{ cdt('mesa-dri-drivers') }}      # [linux]\n    - {{ cdt('mesa-libgl-devel') }}      # [linux]\n    - {{ cdt('mesa-libegl-devel') }}     # [linux]\n    - {{ cdt('libselinux-devel') }}      # [linux]\n    - {{ cdt('libxdamage-devel') }}      # [linux]\n    - {{ cdt('libx11-devel') }}          # [linux]\n    - {{ cdt('libxfixes-devel') }}       # [linux]\n    - {{ cdt('libxau-devel') }}          # [linux]\n    - {{ cdt('libxfixes') }}             # [linux]\n    - {{ cdt('libxxf86vm') }}            # [linux]\n    - {{ cdt('libxext') }}               # [linux]\n    - {{ cdt('libxcb') }}                # [linux]\n    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]\n  host:\n    - expat\n    - freetype\n    - libjpeg-turbo\n    - jpeg\n    - freetype\n    - zlib\n    - libtiff\n    - libcurl\n    - libpng\n    - ffmpeg\n    - fontconfig\n    - collada-dom\n  run:\n    - expat\n    - freetype\n    - libjpeg-turbo\n    - jpeg\n    - freetype\n    - zlib\n    - libtiff\n    - libcurl\n    - libpng\n    - ffmpeg\n    - fontconfig\n    - collada-dom\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config --modversion {{ name }}                            # [unix]\n    - test -f $PREFIX/include/osg/ref_ptr                           # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\osg\\\\ref_ptr exit 1  # [win]\n\nabout:\n  home: http://github.com/openscenegraph/OpenSceneGraph\n  license: LGPL-2.1-only\n  license_family: LGPL\n  license_file: LICENSE.txt\n  summary: 'OpenSceneGraph, an open source high performance 3D graphics toolkit'\n\n  description: |\n    The OpenSceneGraph is an open source high performance 3D graphics toolkit, used by application developers in fields such as visual simulation, games, virtual reality, scientific visualization and modelling. Written entirely in Standard C++ and OpenGL it runs on all Windows platforms, OSX, GNU/Linux, IRIX, Solaris, HP-Ux, AIX and FreeBSD operating systems. The OpenSceneGraph is now well established as the world leading scene graph technology, used widely in the vis-sim, space, scientific, oil-gas, games and virtual reality industries.\n  doc_url: http://www.openscenegraph.org/index.php/documentation\n  dev_url: http://github.com/openscenegraph/OpenSceneGraph\n\nextra:\n  recipe-maintainers:\n    - jcarpent\n",
+ "pinning_version": "2022.03.28.22.11.58",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
+ "raw_meta_yaml": "{% set name = \"openscenegraph\" %}\n{% set version = \"3.6.5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/openscenegraph/OpenSceneGraph/archive/OpenSceneGraph-{{ version }}.tar.gz\n  sha256: aea196550f02974d6d09291c5d83b51ca6a03b3767e234a8c0e21322927d1e12\n  patches:\n    - osg.patch\n    - cmake.patch  #\u00A0[win]\n    - collada-dom.patch\n\nbuild:\n  number: 12\n  skip: true  # [win and vc<14]\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - make\n    - pkg-config\n    - doxygen\n    - graphviz                           # [unix]\n    - graphviz 2.38                      # [win]\n    - {{ cdt('mesa-dri-drivers') }}      # [linux]\n    - {{ cdt('mesa-libgl-devel') }}      # [linux]\n    - {{ cdt('mesa-libegl-devel') }}     # [linux]\n    - {{ cdt('libselinux-devel') }}      # [linux]\n    - {{ cdt('libxdamage-devel') }}      # [linux]\n    - {{ cdt('libx11-devel') }}          # [linux]\n    - {{ cdt('libxfixes-devel') }}       # [linux]\n    - {{ cdt('libxau-devel') }}          # [linux]\n    - {{ cdt('libxfixes') }}             # [linux]\n    - {{ cdt('libxxf86vm') }}            # [linux]\n    - {{ cdt('libxext') }}               # [linux]\n    - {{ cdt('libxcb') }}                # [linux]\n    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]\n  host:\n    - expat\n    - freetype\n    - libjpeg-turbo\n    - jpeg\n    - freetype\n    - zlib\n    - libtiff\n    - libcurl\n    - libpng\n    - ffmpeg\n    - fontconfig\n    - collada-dom\n  run:\n    - expat\n    - freetype\n    - libjpeg-turbo\n    - jpeg\n    - freetype\n    - zlib\n    - libtiff\n    - libcurl\n    - libpng\n    - ffmpeg\n    - fontconfig\n    - collada-dom\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config --modversion {{ name }}                            # [unix]\n    - test -f $PREFIX/include/osg/ref_ptr                           # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\osg\\\\ref_ptr exit 1  # [win]\n\nabout:\n  home: http://github.com/openscenegraph/OpenSceneGraph\n  license: LGPL-2.1-only\n  license_family: LGPL\n  license_file: LICENSE.txt\n  summary: 'OpenSceneGraph, an open source high performance 3D graphics toolkit'\n\n  description: |\n    The OpenSceneGraph is an open source high performance 3D graphics toolkit, used by application developers in fields such as visual simulation, games, virtual reality, scientific visualization and modelling. Written entirely in Standard C++ and OpenGL it runs on all Windows platforms, OSX, GNU/Linux, IRIX, Solaris, HP-Ux, AIX and FreeBSD operating systems. The OpenSceneGraph is now well established as the world leading scene graph technology, used widely in the vis-sim, space, scientific, oil-gas, games and virtual reality industries.\n  doc_url: http://www.openscenegraph.org/index.php/documentation\n  dev_url: http://github.com/openscenegraph/OpenSceneGraph\n\nextra:\n  recipe-maintainers:\n    - jcarpent\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -540,6 +562,7 @@
    "libjpeg-turbo",
    "libpng",
    "libtiff",
+   "make",
    "pkg-config",
    "zlib"
   ]
@@ -553,6 +576,7 @@
     "cxx_compiler_stub",
     "doxygen",
     "graphviz",
+    "make",
     "pkg-config"
    ]
   },
@@ -597,7 +621,7 @@
    ]
   }
  },
- "smithy_version": "3.9.0",
+ "smithy_version": "3.19.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
@@ -609,6 +633,7 @@
     "doxygen",
     "graphviz",
     "graphviz 2.38",
+    "make",
     "pkg-config"
    ]
   },
@@ -665,7 +690,7 @@
    "summary": "OpenSceneGraph, an open source high performance 3D graphics toolkit"
   },
   "build": {
-   "number": "11",
+   "number": "12",
    "run_exports": [
     "openscenegraph"
    ]
@@ -683,6 +708,7 @@
    "build": [
     "cxx_compiler_stub",
     "cmake",
+    "make",
     "pkg-config",
     "doxygen",
     "graphviz 2.38"
@@ -742,6 +768,7 @@
     "cxx_compiler_stub",
     "doxygen",
     "graphviz",
+    "make",
     "pkg-config"
    ]
   },
