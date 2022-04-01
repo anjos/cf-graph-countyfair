@@ -75,6 +75,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/897201943.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -920,7 +937,7 @@
    "pyg4ometry"
   ]
  },
- "pinning_version": "2022.03.25.20.30.42",
+ "pinning_version": "2022.04.01.00.07.17",
  "raw_meta_yaml": "{% set name = \"pyg4ometry\" %}\n{% set version = \"1.0.1\" %}\n{% set antlr_version = \"4.7.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - url: https://bitbucket.org/jairhul/pyg4ometry/get/v{{ version }}.tar.gz\n    sha256: 90372cefdaafcc3101a3122ade18b684d5aa725998fb5cc03d7c411267312a9b\n    folder: pyg4ometry\n    patches:\n      - 0001-Fix-setting-includeSearchDirs-and-librarySearchDirs.patch\n      - 0002-Remove-test-only-dependencies.patch\n  - url: https://www.antlr.org/download/antlr-{{ antlr_version }}-complete.jar\n    sha256: 6852386d7975eff29171dae002cc223251510d35f291ae277948f381a7b380b4\n\nbuild:\n  number: 2\n  skip: true  # [win or py<38]\n  script:\n    - cd pyg4ometry\n    # Regenerate the antlr parsers so they can be used with a newer version of the runtime\n    - find pyg4ometry/ -name '*.g4' -print -exec java -jar \"$SRC_DIR/antlr-{{ antlr_version }}-complete.jar\" {} -Dlanguage=Python3 -visitor \\;\n    # Update the antlr-python-runtime dependency pin for setuptools\n    - sed -E -i.bak 's@\"antlr4-python3-runtime==.+\"@\"antlr4-python3-runtime=={{ antlr_version }}\"@g' setup.py\n    - grep antlr4-python3-runtime=={{ antlr_version }} setup.py\n    # Build and install pyg4ometry itself\n    - {{ PYTHON }} -m pip install . -vv\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - make\n    - sed\n    - openjdk\n  host:\n    - python\n    - pip\n    - cgal\n    - vtk\n    - pybind11\n    - cython\n    - mpfr\n    - gmp\n  run:\n    - python\n    - antlr-python-runtime ={{ antlr_version }}\n    - matplotlib-base\n    - pandas\n    - networkx\n    - numpy\n    - vtk\n    - configparser\n    - sympy >=1.7\n    - scipy\n\ntest:\n  imports:\n    - pyg4ometry\n    - pyg4ometry.convert\n    - pyg4ometry.fluka\n    - pyg4ometry.geant4\n    - pyg4ometry.visualisation\n  requires:\n    - pip\n  commands:\n    - pip check\n\nabout:\n  home: https://bitbucket.org/jairhul/pyg4ometry/\n  license: GPL-3.0-only\n  license_file:\n    - pyg4ometry/LICENCE.txt\n    - pyg4ometry/COPYING.txt\n  summary: 'Python code for rapid creation and conversion of radiation transport Monte Carlo (Geant4 and Fluka) geometries'\n  doc_url: http://www.pp.rhul.ac.uk/bdsim/pyg4ometry/\n  dev_url: https://bitbucket.org/jairhul/pyg4ometry/\n\nextra:\n  recipe-maintainers:\n    - chrisburr\n",
  "req": {
   "__set__": true,
@@ -998,7 +1015,7 @@
    ]
   }
  },
- "smithy_version": "3.18.0",
+ "smithy_version": "3.19.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
