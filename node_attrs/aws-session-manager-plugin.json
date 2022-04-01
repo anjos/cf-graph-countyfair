@@ -39,7 +39,7 @@
    "summary": "AWS Command Line Interface plugin to start and end sessions"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -61,6 +61,7 @@
    ]
   },
   "source": {
+   "patches": null,
    "sha256": "61f74c2472b4f3ec31e894e3388d659125284f62e164246bee2e739cff2e845c",
    "url": "https://github.com/aws/session-manager-plugin/archive/refs/tags/1.2.312.0.tar.gz"
   },
@@ -107,15 +108,18 @@
     "LICENSE",
     "license-files/",
     "LICENSE",
+    "license-files/",
+    "LICENSE",
     "license-files/"
    ],
    "summary": "AWS Command Line Interface plugin to start and end sessions"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "manics",
     "manics",
     "manics"
    ]
@@ -131,19 +135,30 @@
     "make",
     "go_compiler_stub 1.15",
     "go-licenses >=0.0.44",
-    "make"
+    "make",
+    "go_compiler_stub 1.15",
+    "go-licenses >=0.0.44",
+    "make",
+    "m2-base",
+    "m2-patch"
    ],
    "run": [
+    "awscli",
     "awscli",
     "awscli"
    ]
   },
   "source": {
+   "patches": [
+    "windows-makefile-1.2.312.0.patch"
+   ],
    "sha256": "61f74c2472b4f3ec31e894e3388d659125284f62e164246bee2e739cff2e845c",
    "url": "https://github.com/aws/session-manager-plugin/archive/refs/tags/1.2.312.0.tar.gz"
   },
   "test": {
    "commands": [
+    "session-manager-plugin --version",
+    "ssmcli help",
     "session-manager-plugin --version",
     "ssmcli help",
     "session-manager-plugin --version",
@@ -172,7 +187,7 @@
    "summary": "AWS Command Line Interface plugin to start and end sessions"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -194,6 +209,7 @@
    ]
   },
   "source": {
+   "patches": null,
    "sha256": "61f74c2472b4f3ec31e894e3388d659125284f62e164246bee2e739cff2e845c",
    "url": "https://github.com/aws/session-manager-plugin/archive/refs/tags/1.2.312.0.tar.gz"
   },
@@ -235,13 +251,15 @@
   ]
  },
  "pinning_version": "2022.03.31.20.32.14",
- "raw_meta_yaml": "{% set name = \"aws-session-manager-plugin\" %}\n{% set version = \"1.2.312.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name.replace(\"-\", \"/\", 1) }}/archive/refs/tags/{{ version }}.tar.gz\n  sha256: 61f74c2472b4f3ec31e894e3388d659125284f62e164246bee2e739cff2e845c\n\nbuild:\n  number: 0\n  # Currently fails to build on Windows with Conda\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('go') }} 1.15\n    - go-licenses >=0.0.44\n    - make\n\n  run:\n    - awscli\n\ntest:\n  commands:\n    - session-manager-plugin --version\n    - ssmcli help\n\nabout:\n  home: https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html\n  license: Apache-2.0\n  license_family: Apache\n  license_file:\n    - LICENSE\n    - license-files/\n  summary: AWS Command Line Interface plugin to start and end sessions\n  description: |\n    Session Manager is a fully managed AWS Systems Manager capability that\n    lets you manage your Amazon Elastic Compute Cloud (Amazon EC2) instances,\n    on-premises instances and virtual machines. Session Manager provides\n    secure and auditable instance management without the need to open inbound\n    ports. When you use the Session Manager plugin with the AWS CLI to start a\n    session, the plugin builds the websocket connection to your managed\n    instances.\n  dev_url: https://github.com/aws/session-manager-plugin\n  doc_url: https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html\n\nextra:\n  recipe-maintainers:\n    - manics\n",
+ "raw_meta_yaml": "{% set name = \"aws-session-manager-plugin\" %}\n{% set version = \"1.2.312.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ name.replace(\"-\", \"/\", 1) }}/archive/refs/tags/{{ version }}.tar.gz\n  sha256: 61f74c2472b4f3ec31e894e3388d659125284f62e164246bee2e739cff2e845c\n  patches:\n    - windows-makefile-1.2.312.0.patch  # [win]\n\nbuild:\n  number: 1\n\nrequirements:\n  build:\n    - {{ compiler('go') }} 1.15\n    - go-licenses >=0.0.44\n    - make\n    # Makefile uses some unix shell utilities\n    - m2-base  # [win]\n    - m2-patch  # [win]\n\n  run:\n    - awscli\n\ntest:\n  commands:\n    - session-manager-plugin --version\n    - ssmcli help\n\nabout:\n  home: https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html\n  license: Apache-2.0\n  license_family: Apache\n  license_file:\n    - LICENSE\n    - license-files/\n  summary: AWS Command Line Interface plugin to start and end sessions\n  description: |\n    Session Manager is a fully managed AWS Systems Manager capability that\n    lets you manage your Amazon Elastic Compute Cloud (Amazon EC2) instances,\n    on-premises instances and virtual machines. Session Manager provides\n    secure and auditable instance management without the need to open inbound\n    ports. When you use the Session Manager plugin with the AWS CLI to start a\n    session, the plugin builds the websocket connection to your managed\n    instances.\n  dev_url: https://github.com/aws/session-manager-plugin\n  doc_url: https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html\n\nextra:\n  recipe-maintainers:\n    - manics\n",
  "req": {
   "__set__": true,
   "elements": [
    "awscli",
    "go-licenses",
    "go_compiler_stub",
+   "m2-base",
+   "m2-patch",
    "make"
   ]
  },
@@ -251,6 +269,8 @@
    "elements": [
     "go-licenses",
     "go_compiler_stub",
+    "m2-base",
+    "m2-patch",
     "make"
    ]
   },
@@ -277,6 +297,8 @@
    "elements": [
     "go-licenses >=0.0.44",
     "go_compiler_stub 1.15",
+    "m2-base",
+    "m2-patch",
     "make"
    ]
   },
@@ -296,5 +318,83 @@
   }
  },
  "url": "https://github.com/aws/session-manager-plugin/archive/refs/tags/1.2.312.0.tar.gz",
- "version": "1.2.312.0"
+ "version": "1.2.312.0",
+ "win_64_meta_yaml": {
+  "about": {
+   "description": "Session Manager is a fully managed AWS Systems Manager capability that\nlets you manage your Amazon Elastic Compute Cloud (Amazon EC2) instances,\non-premises instances and virtual machines. Session Manager provides\nsecure and auditable instance management without the need to open inbound\nports. When you use the Session Manager plugin with the AWS CLI to start a\nsession, the plugin builds the websocket connection to your managed\ninstances.\n",
+   "dev_url": "https://github.com/aws/session-manager-plugin",
+   "doc_url": "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html",
+   "home": "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html",
+   "license": "Apache-2.0",
+   "license_family": "Apache",
+   "license_file": [
+    "LICENSE",
+    "license-files/"
+   ],
+   "summary": "AWS Command Line Interface plugin to start and end sessions"
+  },
+  "build": {
+   "number": "1"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "manics"
+   ]
+  },
+  "package": {
+   "name": "aws-session-manager-plugin",
+   "version": "1.2.312.0"
+  },
+  "requirements": {
+   "build": [
+    "go_compiler_stub 1.15",
+    "go-licenses >=0.0.44",
+    "make",
+    "m2-base",
+    "m2-patch"
+   ],
+   "run": [
+    "awscli"
+   ]
+  },
+  "source": {
+   "patches": [
+    "windows-makefile-1.2.312.0.patch"
+   ],
+   "sha256": "61f74c2472b4f3ec31e894e3388d659125284f62e164246bee2e739cff2e845c",
+   "url": "https://github.com/aws/session-manager-plugin/archive/refs/tags/1.2.312.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "session-manager-plugin --version",
+    "ssmcli help"
+   ]
+  }
+ },
+ "win_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "go-licenses",
+    "go_compiler_stub",
+    "m2-base",
+    "m2-patch",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "awscli"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ }
 }
