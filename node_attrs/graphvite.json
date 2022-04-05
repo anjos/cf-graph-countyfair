@@ -18,6 +18,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/900435029.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "glog06"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -2053,7 +2072,7 @@
    "graphvite-mini"
   ]
  },
- "pinning_version": "2022.03.22.00.01.46",
+ "pinning_version": "2022.04.05.12.13.43",
  "raw_meta_yaml": "{% set version = \"0.2.2\" %}\n\npackage:\n  name: graphvite-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/DeepGraphLearning/graphvite/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 81c0a55102051d2933d5b51dbf49e0b6faeefb2f503331b59484134e4db4586f\n  patches:\n    - patches/0001-allow-setting-CUDA_ARCHES-through-cmake-itself.patch\n    - patches/0002-compile-with-c-17.patch\n    - patches/0003-point-to-correct-faiss-lib.patch\n    - patches/0004-add-install-step.patch\n\nbuild:\n  number: 1\n  # only linux for now\n  skip: true  # [not linux]\n  skip: true  # [cuda_compiler_version in (\"None\", \"10.2\")]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n\noutputs:\n  # only difference between graphvite-mini and graphvite is the amout on runtime-deps\n  - name: graphvite-mini\n    script: build-pkg.sh\n\n    build:\n      string: \"py{{ CONDA_PY }}cuda{{ cuda_compiler_version|replace(\".\", \"\") }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_cuda\"\n    requirements:\n      build:\n        - {{ compiler(\"cxx\") }}\n        - {{ compiler(\"cuda\") }}\n        - cmake >=3.12\n        - glog\n        - gflags\n        - python\n        - pybind11\n      host:\n        # make\n        - glog\n        - gflags\n        - libfaiss\n        - numpy\n        - python\n        - pybind11\n        # setup\n        - easydict\n        - pyyaml\n        - setuptools\n        - six\n      run:\n        - glog\n        - gflags\n        - python\n        - easydict\n        - future\n        - importlib-metadata  # [py<38]\n        - {{ pin_compatible('numpy') }}\n        - psutil\n        - pyyaml\n        - six\n    test:\n      imports:\n        - graphvite\n        - graphvite.application\n        - graphvite.graph\n      commands:\n        - graphvite baseline -h\n        - graphvite new -h\n        - graphvite run -h\n        - graphvite visualize -h\n\n  # only difference between graphvite-mini and graphvite is the amout on runtime-deps\n  - name: graphvite\n    requirements:\n      run:\n        - {{ pin_subpackage('graphvite-mini', exact=True) }}\n        - imageio\n        - matplotlib\n        - nltk\n        - pytorch *\n        - scipy\n        - torchvision\n    # already tested for graphvite-mini\n    test:\n      imports:\n        - graphvite\n\nabout:\n  home: https://graphvite.io/\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: \"GraphVite: A General and High-performance Graph Embedding System\"\n  dev_url: https://github.com/DeepGraphLearning/graphvite\n  doc_url: https://graphvite.io/docs/latest/index.html\n\nextra:\n  recipe-maintainers:\n    - h-vetinari\n  feedstock-name: graphvite\n",
  "req": {
   "__set__": true,
@@ -2140,7 +2159,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.18.0",
+ "smithy_version": "3.19.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
