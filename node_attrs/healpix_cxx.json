@@ -163,7 +163,11 @@
  "archived": false,
  "bad": false,
  "branch": "main",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  }
+ },
  "feedstock_name": "healpix_cxx",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -199,6 +203,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "libgomp",
@@ -254,6 +259,7 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
+    "gnuconfig",
     "libgomp",
     "make"
    ]
@@ -287,6 +293,8 @@
     "COPYING",
     "COPYING-libsharp",
     "COPYING",
+    "COPYING-libsharp",
+    "COPYING",
     "COPYING-libsharp"
    ],
    "summary": "Software for pixelization, hierarchical indexation, synthesis, analysis, and visualization of data on the sphere."
@@ -295,11 +303,15 @@
    "number": "2",
    "run_exports": [
     "healpix_cxx",
+    "healpix_cxx",
     "healpix_cxx"
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "giacomov",
+    "jasercion",
+    "Areustle",
     "giacomov",
     "jasercion",
     "Areustle",
@@ -314,10 +326,17 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "libgomp",
     "make",
+    "gnuconfig",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "llvm-openmp",
+    "make",
+    "gnuconfig",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "llvm-openmp",
@@ -325,9 +344,11 @@
    ],
    "host": [
     "cfitsio",
+    "cfitsio",
     "cfitsio"
    ],
    "run": [
+    "cfitsio",
     "cfitsio",
     "cfitsio"
    ]
@@ -335,6 +356,8 @@
   "source": {
    "fn": "Healpix_3.80_2021Jun22.tar.gz",
    "patches": [
+    "1189.patch",
+    "1190.patch",
     "1189.patch",
     "1190.patch",
     "1189.patch",
@@ -384,9 +407,30 @@
     "alice3 ell=200 kernel_steps=200 steps=400 in=test7.fits nside=256 out=\\!test_alice3",
     "map2tga test_alice3_background.fits test_alice1.tga -pal 0 -bar -interpol -title \"Alice background texture\"",
     "map2tga test_alice3_texture.fits test_alice2.tga -pal 0 -bar -interpol -title \"Alice convolved texture\"",
+    "map2tga test_alice3_mod_texture.fits test_alice3.tga -pal 0 -bar -interpol -title \"Alice modulated convolved texture\"",
+    "test -f ${PREFIX}/lib/libhealpix_cxx.dylib",
+    "test -d ${PREFIX}/include/healpix_cxx",
+    "syn_alm_cxx fwhm_arcmin=60 infile=cl.fits rand_seed=1234 nlmax=512 outfile=\\!test.alm polarisation=true",
+    "alm2map_cxx nlmax=512 infile=test.alm outfile=\\!test.fits nside=256 polarisation=true",
+    "map2tga test.fits test.tga -bar -title \"Synthesized Map\"",
+    "anafast_cxx nlmax=512 infile=test.fits outfile_alms=\\!test2.alm outfile=\\!test_cl.fits polarisation=true iter_order=3",
+    "alm2map_cxx nlmax=512 infile=test2.alm outfile=\\!test2.fits nside=256 polarisation=true",
+    "map2tga test2.fits test2.tga -bar -title \"Reconstructed Map\"",
+    "udgrade_cxx infile=test2.fits outfile=\\!test3.fits polarisation=false nside=8",
+    "map2tga test3.fits test3.tga -bar -title \"Downgraded Map\"",
+    "map2tga test3.fits test4.tga -bar -interpol -title \"Downgraded, Interpolated Map\"",
+    "alm2map_cxx nlmax=512 infile=test.alm outfile=!test4.fits nside=317 polarisation=true",
+    "map2tga test4.fits test5.tga -bar -title \"Synthesized Map (Nside=317)\"",
+    "median_filter_cxx test.fits '!test5.fits' 60",
+    "map2tga test5.fits test6.tga -bar -title \"Median-filtered map (1 degree)\"",
+    "smoothing_cxx nlmax=512 infile=test.fits outfile=\\!test7.fits polarisation=true fwhm_arcmin=300",
+    "alice3 ell=200 kernel_steps=200 steps=400 in=test7.fits nside=256 out=\\!test_alice3",
+    "map2tga test_alice3_background.fits test_alice1.tga -pal 0 -bar -interpol -title \"Alice background texture\"",
+    "map2tga test_alice3_texture.fits test_alice2.tga -pal 0 -bar -interpol -title \"Alice convolved texture\"",
     "map2tga test_alice3_mod_texture.fits test_alice3.tga -pal 0 -bar -interpol -title \"Alice modulated convolved texture\""
    ],
    "files": [
+    "cl.fits",
     "cl.fits",
     "cl.fits"
    ]
@@ -427,6 +471,7 @@
   },
   "requirements": {
    "build": [
+    "gnuconfig",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "llvm-openmp",
@@ -482,6 +527,118 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
+    "gnuconfig",
+    "llvm-openmp",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "cfitsio"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "cfitsio"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "HEALPix is a Hierarchical, Equal Area, and iso-Latitude Pixelation of the sphere designed to support efficiently (1)\nlocal operations on the pixel set, (2) a hierarchical tree structure for multi-resolution applications, and (3)\nthe global Fast Spherical Harmonic transform. HEALPix based mathematical software meets the challenges presented\nby high resolution and large volume data sets, such as the WMAP and Planck CMB mission products.\n",
+   "dev_url": "https://sourceforge.net/projects/healpix/",
+   "doc_url": "http://healpix.sf.net/documentation.php",
+   "home": "https://sourceforge.net/projects/healpix/",
+   "license": "GPL-2.0-or-later",
+   "license_family": "GPL",
+   "license_file": [
+    "COPYING",
+    "COPYING-libsharp"
+   ],
+   "summary": "Software for pixelization, hierarchical indexation, synthesis, analysis, and visualization of data on the sphere."
+  },
+  "build": {
+   "number": "2",
+   "run_exports": [
+    "healpix_cxx"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "giacomov",
+    "jasercion",
+    "Areustle"
+   ]
+  },
+  "package": {
+   "name": "healpix_cxx",
+   "version": "3.80"
+  },
+  "requirements": {
+   "build": [
+    "gnuconfig",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "llvm-openmp",
+    "make"
+   ],
+   "host": [
+    "cfitsio"
+   ],
+   "run": [
+    "cfitsio"
+   ]
+  },
+  "source": {
+   "fn": "Healpix_3.80_2021Jun22.tar.gz",
+   "patches": [
+    "1189.patch",
+    "1190.patch"
+   ],
+   "sha256": "8de4aabaa3d55e0c63a62c621bfd77298732c6b75782016217f5659143acbcf5",
+   "url": "https://downloads.sourceforge.net/project/healpix/Healpix_3.80/Healpix_3.80_2021Jun22.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -f ${PREFIX}/lib/libhealpix_cxx.dylib",
+    "test -d ${PREFIX}/include/healpix_cxx",
+    "syn_alm_cxx fwhm_arcmin=60 infile=cl.fits rand_seed=1234 nlmax=512 outfile=\\!test.alm polarisation=true",
+    "alm2map_cxx nlmax=512 infile=test.alm outfile=\\!test.fits nside=256 polarisation=true",
+    "map2tga test.fits test.tga -bar -title \"Synthesized Map\"",
+    "anafast_cxx nlmax=512 infile=test.fits outfile_alms=\\!test2.alm outfile=\\!test_cl.fits polarisation=true iter_order=3",
+    "alm2map_cxx nlmax=512 infile=test2.alm outfile=\\!test2.fits nside=256 polarisation=true",
+    "map2tga test2.fits test2.tga -bar -title \"Reconstructed Map\"",
+    "udgrade_cxx infile=test2.fits outfile=\\!test3.fits polarisation=false nside=8",
+    "map2tga test3.fits test3.tga -bar -title \"Downgraded Map\"",
+    "map2tga test3.fits test4.tga -bar -interpol -title \"Downgraded, Interpolated Map\"",
+    "alm2map_cxx nlmax=512 infile=test.alm outfile=!test4.fits nside=317 polarisation=true",
+    "map2tga test4.fits test5.tga -bar -title \"Synthesized Map (Nside=317)\"",
+    "median_filter_cxx test.fits '!test5.fits' 60",
+    "map2tga test5.fits test6.tga -bar -title \"Median-filtered map (1 degree)\"",
+    "smoothing_cxx nlmax=512 infile=test.fits outfile=\\!test7.fits polarisation=true fwhm_arcmin=300",
+    "alice3 ell=200 kernel_steps=200 steps=400 in=test7.fits nside=256 out=\\!test_alice3",
+    "map2tga test_alice3_background.fits test_alice1.tga -pal 0 -bar -interpol -title \"Alice background texture\"",
+    "map2tga test_alice3_texture.fits test_alice2.tga -pal 0 -bar -interpol -title \"Alice convolved texture\"",
+    "map2tga test_alice3_mod_texture.fits test_alice3.tga -pal 0 -bar -interpol -title \"Alice modulated convolved texture\""
+   ],
+   "files": [
+    "cl.fits"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "gnuconfig",
     "llvm-openmp",
     "make"
    ]
@@ -510,13 +667,14 @@
   ]
  },
  "pinning_version": "2022.04.04.20.33.41",
- "raw_meta_yaml": "{% set name = \"healpix_cxx\" %}\n{% set version = \"3.80\" %}\n{% set sha256 = \"8de4aabaa3d55e0c63a62c621bfd77298732c6b75782016217f5659143acbcf5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: Healpix_{{ version }}_2021Jun22.tar.gz\n  url: https://downloads.sourceforge.net/project/healpix/Healpix_{{ version }}/Healpix_{{ version }}_2021Jun22.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    # backport https://sourceforge.net/p/healpix/code/1189/\n    - 1189.patch\n    # backport https://sourceforge.net/p/healpix/code/1190/\n    - 1190.patch\n\nbuild:\n  run_exports:\n    - {{ pin_subpackage(\"healpix_cxx\", max_pin=\"x.x\") }}\n  number: 2\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - libgomp  # [linux]\n    - llvm-openmp  # [osx]\n    - make\n  host:\n    - cfitsio\n  run:\n    - cfitsio\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libhealpix_cxx.so  # [linux]\n    - test -f ${PREFIX}/lib/libhealpix_cxx.dylib  # [osx]\n    - test -d ${PREFIX}/include/healpix_cxx\n\n    # Test executables\n    - syn_alm_cxx fwhm_arcmin=60 infile=cl.fits rand_seed=1234 nlmax=512 outfile=\\!test.alm polarisation=true\n    - alm2map_cxx nlmax=512 infile=test.alm outfile=\\!test.fits nside=256 polarisation=true\n    - map2tga test.fits test.tga -bar -title \"Synthesized Map\"\n    - anafast_cxx nlmax=512 infile=test.fits outfile_alms=\\!test2.alm outfile=\\!test_cl.fits polarisation=true iter_order=3\n    - alm2map_cxx nlmax=512 infile=test2.alm outfile=\\!test2.fits nside=256 polarisation=true\n    - map2tga test2.fits test2.tga -bar -title \"Reconstructed Map\"\n    - udgrade_cxx infile=test2.fits outfile=\\!test3.fits polarisation=false nside=8\n    - map2tga test3.fits test3.tga -bar -title \"Downgraded Map\"\n    - map2tga test3.fits test4.tga -bar -interpol -title \"Downgraded, Interpolated Map\"\n    - alm2map_cxx nlmax=512 infile=test.alm outfile=!test4.fits nside=317 polarisation=true\n    - map2tga test4.fits test5.tga -bar -title \"Synthesized Map (Nside=317)\"\n    - median_filter_cxx test.fits '!test5.fits' 60\n    - map2tga test5.fits test6.tga -bar -title \"Median-filtered map (1 degree)\"\n    - smoothing_cxx nlmax=512 infile=test.fits outfile=\\!test7.fits polarisation=true fwhm_arcmin=300\n    - alice3 ell=200 kernel_steps=200 steps=400 in=test7.fits nside=256 out=\\!test_alice3\n    - map2tga test_alice3_background.fits test_alice1.tga -pal 0 -bar -interpol -title \"Alice background texture\"\n    - map2tga test_alice3_texture.fits test_alice2.tga -pal 0 -bar -interpol -title \"Alice convolved texture\"\n    - map2tga test_alice3_mod_texture.fits test_alice3.tga -pal 0 -bar -interpol -title \"Alice modulated convolved texture\"\n\n  files:\n    - cl.fits\n\nabout:\n  home: https://sourceforge.net/projects/healpix/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file:\n    - COPYING\n    - COPYING-libsharp\n  summary: 'Software for pixelization, hierarchical indexation, synthesis, analysis, and visualization of data on the sphere.'\n  description: |\n    HEALPix is a Hierarchical, Equal Area, and iso-Latitude Pixelation of the sphere designed to support efficiently (1)\n    local operations on the pixel set, (2) a hierarchical tree structure for multi-resolution applications, and (3)\n    the global Fast Spherical Harmonic transform. HEALPix based mathematical software meets the challenges presented\n    by high resolution and large volume data sets, such as the WMAP and Planck CMB mission products.\n  doc_url: http://healpix.sf.net/documentation.php\n  dev_url: https://sourceforge.net/projects/healpix/\n\nextra:\n  recipe-maintainers:\n    - giacomov\n    - jasercion\n    - Areustle\n",
+ "raw_meta_yaml": "{% set name = \"healpix_cxx\" %}\n{% set version = \"3.80\" %}\n{% set sha256 = \"8de4aabaa3d55e0c63a62c621bfd77298732c6b75782016217f5659143acbcf5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: Healpix_{{ version }}_2021Jun22.tar.gz\n  url: https://downloads.sourceforge.net/project/healpix/Healpix_{{ version }}/Healpix_{{ version }}_2021Jun22.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    # backport https://sourceforge.net/p/healpix/code/1189/\n    - 1189.patch\n    # backport https://sourceforge.net/p/healpix/code/1190/\n    - 1190.patch\n\nbuild:\n  run_exports:\n    - {{ pin_subpackage(\"healpix_cxx\", max_pin=\"x.x\") }}\n  number: 2\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - gnuconfig  # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - libgomp  # [linux]\n    - llvm-openmp  # [osx]\n    - make\n  host:\n    - cfitsio\n  run:\n    - cfitsio\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libhealpix_cxx.so  # [linux]\n    - test -f ${PREFIX}/lib/libhealpix_cxx.dylib  # [osx]\n    - test -d ${PREFIX}/include/healpix_cxx\n\n    # Test executables\n    - syn_alm_cxx fwhm_arcmin=60 infile=cl.fits rand_seed=1234 nlmax=512 outfile=\\!test.alm polarisation=true\n    - alm2map_cxx nlmax=512 infile=test.alm outfile=\\!test.fits nside=256 polarisation=true\n    - map2tga test.fits test.tga -bar -title \"Synthesized Map\"\n    - anafast_cxx nlmax=512 infile=test.fits outfile_alms=\\!test2.alm outfile=\\!test_cl.fits polarisation=true iter_order=3\n    - alm2map_cxx nlmax=512 infile=test2.alm outfile=\\!test2.fits nside=256 polarisation=true\n    - map2tga test2.fits test2.tga -bar -title \"Reconstructed Map\"\n    - udgrade_cxx infile=test2.fits outfile=\\!test3.fits polarisation=false nside=8\n    - map2tga test3.fits test3.tga -bar -title \"Downgraded Map\"\n    - map2tga test3.fits test4.tga -bar -interpol -title \"Downgraded, Interpolated Map\"\n    - alm2map_cxx nlmax=512 infile=test.alm outfile=!test4.fits nside=317 polarisation=true\n    - map2tga test4.fits test5.tga -bar -title \"Synthesized Map (Nside=317)\"\n    - median_filter_cxx test.fits '!test5.fits' 60\n    - map2tga test5.fits test6.tga -bar -title \"Median-filtered map (1 degree)\"\n    - smoothing_cxx nlmax=512 infile=test.fits outfile=\\!test7.fits polarisation=true fwhm_arcmin=300\n    - alice3 ell=200 kernel_steps=200 steps=400 in=test7.fits nside=256 out=\\!test_alice3\n    - map2tga test_alice3_background.fits test_alice1.tga -pal 0 -bar -interpol -title \"Alice background texture\"\n    - map2tga test_alice3_texture.fits test_alice2.tga -pal 0 -bar -interpol -title \"Alice convolved texture\"\n    - map2tga test_alice3_mod_texture.fits test_alice3.tga -pal 0 -bar -interpol -title \"Alice modulated convolved texture\"\n\n  files:\n    - cl.fits\n\nabout:\n  home: https://sourceforge.net/projects/healpix/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file:\n    - COPYING\n    - COPYING-libsharp\n  summary: 'Software for pixelization, hierarchical indexation, synthesis, analysis, and visualization of data on the sphere.'\n  description: |\n    HEALPix is a Hierarchical, Equal Area, and iso-Latitude Pixelation of the sphere designed to support efficiently (1)\n    local operations on the pixel set, (2) a hierarchical tree structure for multi-resolution applications, and (3)\n    the global Fast Spherical Harmonic transform. HEALPix based mathematical software meets the challenges presented\n    by high resolution and large volume data sets, such as the WMAP and Planck CMB mission products.\n  doc_url: http://healpix.sf.net/documentation.php\n  dev_url: https://sourceforge.net/projects/healpix/\n\nextra:\n  recipe-maintainers:\n    - giacomov\n    - jasercion\n    - Areustle\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
    "cfitsio",
    "cxx_compiler_stub",
+   "gnuconfig",
    "libgomp",
    "llvm-openmp",
    "make"
@@ -528,6 +686,7 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
+    "gnuconfig",
     "libgomp",
     "llvm-openmp",
     "make"
@@ -566,6 +725,7 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
+    "gnuconfig",
     "libgomp",
     "llvm-openmp",
     "make"
