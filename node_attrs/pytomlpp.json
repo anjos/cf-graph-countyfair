@@ -156,6 +156,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/903103307.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy38"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1248,7 +1267,7 @@
    "pytomlpp"
   ]
  },
- "pinning_version": "2022.01.17.22.01.08",
+ "pinning_version": "2022.04.07.12.27.50",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"1.0.10\" %}\n\npackage:\n  name: pytomlpp\n  version: {{ version }}\n\nsource:\n  # github tarball does not contain submodules, cf. dear-github/dear-github#214\n  # in this case, we don't mind, because tomlplusplus is packaged separately...\n  - url: https://github.com/bobfang1992/pytomlpp/archive/refs/tags/v{{ version }}.tar.gz\n    sha256: 1693ce5da425a51810288389596b1c35634c732ca159fd855d5938f53db5c2ce\n    patches:\n      - patches/0001-redirect-tomlplusplus-include-to-global-library-path.patch\n  # ... however, we do include the toml-test submodule; keep in sync with\n  # https://github.com/bobfang1992/pytomlpp/tree/master/tests/<commit>\n  - git_url: https://github.com/BurntSushi/toml-test\n    git_rev: 280497fa5f12e43d7233aed0d74e07ca61ef176b\n    folder: tests/toml-test\n\nbuild:\n  number: 0\n  script: {{ PYTHON }} -m pip install . -vv\n  skip: true  # [py<37]\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - pybind11                               # [build_platform != target_platform]\n    - {{ compiler('cxx') }}\n  host:\n    - python\n    - pip\n    - setuptools\n    - pybind11 >=2.8,<2.9\n    # pin exactly because that's what the upstream submodule does too\n    - tomlplusplus ==3.0.0\n  run:\n    - python\n\ntest:\n  requires:\n    - pytest\n    - python-dateutil\n  source_files:\n    - tests/\n  imports:\n    - pytomlpp\n  commands:\n    - pytest tests -v\n\nabout:\n  home: https://github.com/bobfang1992/pytomlpp\n  license: MIT\n  license_file: LICENSE\n  summary: A python wrapper for tomlplusplus\n  dev_url: https://github.com/bobfang1992/pytomlpp\n\nextra:\n  recipe-maintainers:\n    - bobfang1992\n    - h-vetinari\n",
@@ -1296,7 +1315,7 @@
    ]
   }
  },
- "smithy_version": "3.16.1",
+ "smithy_version": "3.19.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
