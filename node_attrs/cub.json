@@ -97,8 +97,7 @@
    "ignore_run_exports_from": [
     "cuda_compiler_stub"
    ],
-   "number": "1",
-   "script_env": null
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -173,10 +172,7 @@
    "ignore_run_exports_from": [
     "cuda_compiler_stub"
    ],
-   "number": "1",
-   "script_env": [
-    "CUDA_HOME"
-   ]
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -251,10 +247,7 @@
    "ignore_run_exports_from": [
     "cuda_compiler_stub"
    ],
-   "number": "1",
-   "script_env": [
-    "CUDA_HOME"
-   ]
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -332,8 +325,7 @@
     "cuda_compiler_stub",
     "cuda_compiler_stub"
    ],
-   "number": "1",
-   "script_env": null
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -436,7 +428,7 @@
  "pre_pr_migrator_status": {
   "version": "bot error: master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 135, in fetch_repo\n    _run_git_cmd(f\"git checkout --track upstream/{base_branch} {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout --track upstream/master --quiet' returned non-zero exit status 128.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1018, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 163, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 220, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 137, in fetch_repo\n    _run_git_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 121, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 512, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git checkout -b master upstream/master --quiet' returned non-zero exit status 128.\n"
  },
- "raw_meta_yaml": "{% set version = \"1.16.0\" %}\n{% set sha256 = \"271dc42d0a7ab3bd311eefa4ba8fd19f99ec093cf5e9053426f358914c8983d6\" %}\n\npackage:\n  name: cub\n  version: {{ version }}\n\nsource:\n  url: https://github.com/NVIDIA/cub/archive/{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 1\n  skip: true  # [(cuda_compiler_version != \"11.2\")]\n  ignore_run_exports_from:\n    - {{ compiler('cuda') }}\n  script_env:\n    # for some reason /usr/local/cuda is not added to $PATH in the docker image\n    - CUDA_HOME  # [ppc64le or aarch64]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}\n    - cmake >=3.15\n    - make\n  run_constrained:\n    - thrust {{ version }}.*\n\ntest:\n  commands:\n    - test -e \"$PREFIX\"/include/cub/cub.cuh  # [not win]\n    - test -e \"$PREFIX\"/lib/cmake/cub/cub-config.cmake  # [not win]\n    - if not exist \"%LIBRARY_INC%\"\\cub\\cub.cuh exit 1  # [win]\n    - if not exist \"%LIBRARY_LIB%\"\\cmake\\cub\\cub-config.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/NVIDIA/cub\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE.TXT\n  summary: |\n    CUB is a flexible library of cooperative threadblock primitives and other utilities for CUDA\n    kernel programming.\n  description: |\n    CUB provides state-of-the-art, reusable software components for every layer of the CUDA\n    programming model:\n    - Parallel primitives\n      - Warp-wide \"collective\" primitives\n        - Cooperative warp-wide prefix scan, reduction, etc.\n        - Safely specialized for each underlying CUDA architecture\n      - Block-wide \"collective\" primitives\n        - Cooperative I/O, sort, scan, reduction, histogram, etc.\n        - Compatible with arbitrary thread block sizes and types\n      - Device-wide primitives\n        - Parallel sort, prefix scan, reduction, histogram, etc.\n        - Compatible with CUDA dynamic parallelism\n    - Utilities\n      - Fancy iterators\n      - Thread and thread block I/O\n      - PTX intrinsics\n      - Device, kernel, and storage management\n  doc_url: http://nvlabs.github.io/cub/\n  dev_url: https://github.com/thrust/cub\n\nextra:\n  recipe-maintainers:\n    - rongou\n    - kkraus14\n    - leofang\n",
+ "raw_meta_yaml": "{% set version = \"1.16.0\" %}\n{% set sha256 = \"271dc42d0a7ab3bd311eefa4ba8fd19f99ec093cf5e9053426f358914c8983d6\" %}\n\npackage:\n  name: cub\n  version: {{ version }}\n\nsource:\n  url: https://github.com/NVIDIA/cub/archive/{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 1\n  skip: true  # [(cuda_compiler_version != \"11.2\")]\n  ignore_run_exports_from:\n    - {{ compiler('cuda') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}\n    - cmake >=3.15\n    - make\n  run_constrained:\n    - thrust {{ version }}.*\n\ntest:\n  commands:\n    - test -e \"$PREFIX\"/include/cub/cub.cuh  # [not win]\n    - test -e \"$PREFIX\"/lib/cmake/cub/cub-config.cmake  # [not win]\n    - if not exist \"%LIBRARY_INC%\"\\cub\\cub.cuh exit 1  # [win]\n    - if not exist \"%LIBRARY_LIB%\"\\cmake\\cub\\cub-config.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/NVIDIA/cub\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE.TXT\n  summary: |\n    CUB is a flexible library of cooperative threadblock primitives and other utilities for CUDA\n    kernel programming.\n  description: |\n    CUB provides state-of-the-art, reusable software components for every layer of the CUDA\n    programming model:\n    - Parallel primitives\n      - Warp-wide \"collective\" primitives\n        - Cooperative warp-wide prefix scan, reduction, etc.\n        - Safely specialized for each underlying CUDA architecture\n      - Block-wide \"collective\" primitives\n        - Cooperative I/O, sort, scan, reduction, histogram, etc.\n        - Compatible with arbitrary thread block sizes and types\n      - Device-wide primitives\n        - Parallel sort, prefix scan, reduction, histogram, etc.\n        - Compatible with CUDA dynamic parallelism\n    - Utilities\n      - Fancy iterators\n      - Thread and thread block I/O\n      - PTX intrinsics\n      - Device, kernel, and storage management\n  doc_url: http://nvlabs.github.io/cub/\n  dev_url: https://github.com/thrust/cub\n\nextra:\n  recipe-maintainers:\n    - rongou\n    - kkraus14\n    - leofang\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -522,8 +514,7 @@
    "ignore_run_exports_from": [
     "cuda_compiler_stub"
    ],
-   "number": "1",
-   "script_env": null
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
