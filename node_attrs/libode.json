@@ -147,6 +147,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/904453888.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy38"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -4252,7 +4271,7 @@
    "pyode"
   ]
  },
- "pinning_version": "2021.11.05.06.07.08",
+ "pinning_version": "2022.04.08.23.01.38",
  "raw_meta_yaml": "# defining package and version\n{% set name = \"libode\" %}\n{% set version = \"0.16.2\" %}\n{% set soversion = \"0.16.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://bitbucket.org/odedevs/ode/downloads/ode-{{ version }}.tar.gz\n  sha256: b26aebdcb015e2d89720ef48e0cb2e8a3ca77915f89d853893e7cc861f810f22\n  patches:\n    - add-rt-to-dotpc.patch          # [linux]\n    - modify-dotpc-win.patch         # [win]\n    - fix-pkg-config-setup-py.patch  # [win]\n    - macos-do-not-use-deprecated.patch\n\nbuild:\n  number: 9\n  run_exports:\n    # No ABI docs or ABI Laboratory history, better be conservative\n    - {{ pin_subpackage(name, max_pin='x.x.x') }}\n\n  # add libode to the whitelist; it can apparently not be found yet when\n  # pyode is built\n  missing_dso_whitelist:\n    - lib/libode*\n    - $RPATH/librt.*                      # [linux]\n    - $RPATH/libpthread.*                 # [linux]\n    - $RPATH/libc.*                       # [linux]\n    - $RPATH/libpython.*                  # [linux]\n    - /lib*/librt.*                       # [linux]\n    - /lib*/libpthread.*                  # [linux]\n    - /lib*/libc.*                        # [linux]\n  \nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - cython                                 # [build_platform != target_platform]\n    - gnuconfig  # [unix]\n    - {{ compiler('cxx') }}          # stage 1, library\n    - cmake\n    - {{ compiler('c') }}            # stage 2, generate bindings\n    - pkg-config\n    - m2-patch                       # [win]\n    - make                           # [unix]\n  host:\n    - python\n    - cython\n\noutputs:\n  - name: {{ name }}\n    build:\n      run_exports:\n        # No ABI docs or ABI Laboratory history, better be conservative\n        - {{ pin_subpackage(name, max_pin='x.x.x') }}\n    requirements:\n      run:\n        - pthread-stubs                                              # [unix]\n        - libstdcxx-ng                                               # [linux]\n        - libgcc-ng                                                  # [linux]\n        - libcxx                                                     # [osx]\n        - vs2015_runtime                                             # [win]\n    files:\n      - lib/libode*                                                  # [unix]\n      - lib/pkgconfig/ode.pc                                         # [unix]\n      - lib/cmake/ode-{{ soversion }}                                # [unix]\n      - bin/ode-config                                               # [unix]\n      - include/ode                                                  # [unix]\n      - Library/lib/ode_double.lib                                   # [win]\n      - Library/bin/ode_double.dll                                   # [win]\n      - Library/lib/pkgconfig/ode.pc                                 # [win]\n      - Library/lib/cmake/ode-{{ soversion }}                        # [win]\n      - Library/include/ode                                          # [win]\n\n    test:\n      commands:\n        - test -f $PREFIX/lib/libode${SHLIB_EXT}                     # [unix]\n        - test -f $PREFIX/lib/libode${SHLIB_EXT}.{{ soversion }}     # [linux]\n        - test -f $PREFIX/lib/libode.{{ soversion }}${SHLIB_EXT}     # [osx]\n        - test -f $PREFIX/include/ode/ode.h                          # [unix]\n        - test -f $PREFIX/lib/pkgconfig/ode.pc                       # [unix]\n        - test -f $PREFIX/lib/cmake/ode-{{ soversion }}/ode-config.cmake  # [unix]\n        - if not exist %PREFIX%\\Library\\lib\\ode_double.lib exit 1    # [win]\n        - if not exist %PREFIX%\\Library\\bin\\ode_double.dll exit 1    # [win]\n        - if not exist %PREFIX%\\Library\\lib\\pkgconfig\\ode.pc exit 1   # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\ode-{{ soversion }}\\\\ode-config.cmake exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\ode\\\\ode.h exit 1  # [win]\n\n  - name: pyode\n    build:\n      run_exports:\n        # No ABI docs or ABI Laboratory history, better be conservative\n        - {{ pin_subpackage(name, max_pin='x.x.x') }}\n    requirements:\n      run:\n        - libode\n    files:\n      - lib/python{{ PY_VER }}/site-packages/ode.*                   # [unix]\n      - lib/python{{ PY_VER }}/site-packages/Open_Dynamics_Engine*egg-info  # [unix]\n      - Lib/site-packages/ode.*.pyd                                  # [win]\n      - Lib/site-packages/Open_Dynamics_Engine*egg-info              # [win]\n    test:\n      imports:\n        - ode\n\nabout:\n  home: https://www.ode.org/\n  license: LGPL-2.1-or-later OR BSD-4-Clause\n  summary: Open Dynamics Engine, dynamics simulation\n  license_file:\n    - LICENSE.TXT\n    - LICENSE-BSD.TXT\n\nextra:\n  recipe-maintainers:\n    - repagh\n    - traversaro\n",
  "req": {
   "__set__": true,
@@ -4318,7 +4337,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.14.3",
+ "smithy_version": "3.19.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
