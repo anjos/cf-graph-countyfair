@@ -496,6 +496,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/904833401.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy38"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -2367,7 +2386,7 @@
    "gap-defaults"
   ]
  },
- "pinning_version": "2021.11.05.20.51.02",
+ "pinning_version": "2022.04.09.06.33.53",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"4.11.1\" %}\n{% set name = \"gap-split\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/gap-system/gap/releases/download/v{{ version }}/gap-{{ version }}.tar.gz\n  sha256: 6635c5da7d82755f8339486b9cac33766f58712f297e8234fba40818902ea304\n  patches:\n    - patches/cross-build-package.sh\n\nbuild:\n  number: 3\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - gnuconfig  # [unix]\n    - {{ compiler('cxx') }}\n    - make\n    - pkg-config\n    - curl\n    - autoconf\n    - automake\n    - libtool\n  host:\n    # Since we are using bin/buildpackages.sh to build all packages at once,\n    # these requirements are needed.\n    - gmp\n    - readline {{ readline }}\n    - ncurses    # for Browse\n    - curl       # for curlInterface\n    - cddlib     # for CddInterface\n    - mpfr       # for float\n    - mpfi       # for float\n    - mpc        # for float\n    #- fplll     # for float\n    - pari       # for alnuth\n    - zeromq     # for ZeroMQInterface\n    - libsemigroups  1.*   # for Semigroups\n    - planarity  # for digraphs\n    - bliss      # for digraphs\n    - normaliz   # for NormalizInterface\n    - libflint   # for NormalizInterface -> normaliz -> e-antic -> libflint <=2.6.0\n    - zlib\n\noutputs:\n  - name: gap-core\n    script: install-core.sh\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - libtool\n        - make\n      host:\n        - gmp\n        - readline {{ readline }}\n        - zlib\n      run:\n        - gmp\n        - readline {{ readline }}\n        - zlib\n    test:\n      commands:\n        - gap -h\n\n  - name: gap-defaults\n    script: install-defaults.sh\n    requirements:\n      host:\n        - {{ pin_subpackage('gap-core', exact=True) }}\n      run:\n        - {{ pin_subpackage('gap-core', exact=True) }}\n    test:\n      commands:\n        - echo \"TODO - test a package here\"\n\n  - name: gap\n    script: install-full.sh\n    build:\n      ignore_run_exports:\n        - python\n        - python_abi\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - libtool\n        - make\n        - python *                               # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n      host:\n        - gmp\n        - readline {{ readline }}\n        - ncurses    # for Browse\n        - cddlib     # for cddInterface\n        - libcurl    # for curlInterface\n        - mpfr       # for float\n        - mpfi       # for float\n        - mpc        # for float\n        #- fplll     # for float\n        - pari       # for alnuth\n        - zeromq     # for ZeroMQInterface\n        - libsemigroups  1.*   # for Semigroups\n        - planarity  # for digraphs\n        - bliss 0.73.*     # for digraphs\n        - normaliz   # for NormalizInterface\n        - libflint   # for NormalizInterface -> normaliz -> e-antic -> libflint <=2.6.0\n        - {{ pin_subpackage('gap-core', exact=True) }}\n        - {{ pin_subpackage('gap-defaults', exact=True) }}\n        # For JupyterKernel\n        - python *\n        - pip\n      run:\n        - gmp\n        - readline {{ readline }}\n        - ncurses    # for Browse\n        - libcurl    # for curlInterface\n        - mpfr       # for float\n        - mpfi       # for float\n        - mpc        # for float\n        #- fplll     # for float\n        - pari       # for alnuth\n        - zeromq     # for ZeroMQInterface\n        - {{ pin_compatible('libsemigroups') }}   # for Semigroups\n        - {{ pin_compatible('planarity') }}       # for digraphs\n        - bliss >=0.73.a0,<0.74.a0       # for digraphs\n        - {{ pin_compatible('normaliz') }}        # for NormalizInterface\n        - {{ pin_subpackage('gap-core', exact=True) }}\n        - {{ pin_subpackage('gap-defaults', exact=True) }}\n    test:\n      commands:\n        - echo \"TODO - test a package here\"\n\nabout:\n  home: https://www.gap-system.org/\n  license: GPL-2.0-or-later\n  license_file: LICENSE\n  summary: GAP - Groups, Algorithms, Programming, a System for Computational Discrete Algebra\n  dev_url: https://github.com/gap-system/gap\n  doc_url: https://www.gap-system.org/Manuals/doc/ref/chap0.html\n\nextra:\n  recipe-maintainers:\n    - isuruf\n    - saraedum\n",
@@ -2472,7 +2491,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.14.3",
+ "smithy_version": "3.19.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
