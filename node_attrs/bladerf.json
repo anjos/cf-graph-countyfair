@@ -2,7 +2,15 @@
  "archived": false,
  "bad": false,
  "branch": "main",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
+  "provider": {
+   "linux_aarch64": "default",
+   "linux_ppc64le": "default"
+  }
+ },
  "feedstock_name": "bladerf",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -39,8 +47,7 @@
       "sysroot_linux-64 2.17"
      ],
      "host": [
-      "libusb",
-      "libusb-cos6"
+      "libusb"
      ],
      "run": []
     },
@@ -89,10 +96,12 @@
       "bladerf-tool = bladerf._tool:main"
      ],
      "noarch": "python",
-     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python"
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
     },
     "name": "libbladerf-python",
     "requirements": {
+     "build": [],
      "host": [
       "cffi",
       "libbladerf2",
@@ -126,11 +135,7 @@
       "ninja",
       "sysroot_linux-64 2.17"
      ],
-     "host": [
-      "libbladerf",
-      "libbladerf2",
-      "libbladerf-python"
-     ],
+     "host": [],
      "run": [
       "libbladerf2",
       "libbladerf-python"
@@ -175,7 +180,7 @@
     "0005-Add-an-option-for-bundling-external-libraries-on-Win.patch",
     "0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch"
    ],
-   "sha256": "7f5b85a820d1ce2cb7c9e884d1694a3fc9ad00d5285aacb12f3a765ed375f48a",
+   "sha256": "77000a42cf5c967aa32e7f8cfa825e21d0298cbeb7c872207ff09f04be718cce",
    "url": "https://github.com/Nuand/bladeRF/archive/refs/tags/2021.10.tar.gz"
   }
  },
@@ -195,11 +200,412 @@
    "__set__": true,
    "elements": [
     "cffi",
-    "libbladerf",
-    "libbladerf-python",
     "libbladerf2",
     "libusb",
-    "libusb-cos6",
+    "pip",
+    "python"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "cffi",
+    "libbladerf-python",
+    "libbladerf2",
+    "python"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "description": "This software supports the Nuand bladeRF and bladeRF Micro USB 3.0 Software Defined Radio (SDR) devices:\n\n  - `libbladerf2` contains the library for bladeRF devices\n  - `libbladerf` contains the development files for compiling against the bladeRF library\n  - `libbladerf-python` contains the Python bindings for the bladeRF library\n  - `bladerf` package contains command line tools for using the devices\n\nFor Linux users of `bladerf`, you will likely want to link the provided udev rule into your system installation in order for the hardware to have the correct permissions:\n\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules /etc/udev/rules.d/\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules /etc/udev/rules.d/\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules /etc/udev/rules.d/\n    sudo udevadm control --reload\n    sudo udevadm trigger\n\nThen, make sure your user account belongs to the plugdev group in order to be able to access your device:\n\n    sudo usermod -a -G plugdev <user>\n\nYou may have to restart for this change to take effect.\n",
+   "dev_url": "https://github.com/Nuand/bladeRF",
+   "doc_url": "https://github.com/Nuand/bladeRF/wiki",
+   "home": "https://www.nuand.com/",
+   "license": "LGPL-2.1-or-later AND GPL-2.0-or-later",
+   "license_family": "LGPL",
+   "license_file": [
+    "COPYING",
+    "legal/licenses/"
+   ],
+   "summary": "Host software for bladeRF source software radio devices."
+  },
+  "build": {
+   "number": "0"
+  },
+  "extra": {
+   "feedstock-name": "bladerf",
+   "recipe-maintainers": [
+    "ryanvolz"
+   ]
+  },
+  "outputs": [
+   {
+    "name": "libbladerf2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.2"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libbladerf2"
+     ]
+    },
+    "name": "libbladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libbladerf2"
+     ],
+     "run": [
+      "libbladerf2"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/bladeRF1.h",
+      "test -f $PREFIX/include/bladeRF2.h",
+      "test -f $PREFIX/include/libbladeRF.h",
+      "test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.2",
+      "test -f $PREFIX/lib/pkgconfig/libbladeRF.pc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "bladerf-tool = bladerf._tool:main"
+     ],
+     "noarch": "python",
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
+    },
+    "name": "libbladerf-python",
+    "requirements": {
+     "build": [],
+     "host": [
+      "cffi",
+      "libbladerf2",
+      "pip",
+      "python >=3.6"
+     ],
+     "run": [
+      "cffi",
+      "libbladerf2 2021.10",
+      "python >=3.6"
+     ]
+    },
+    "test": {
+     "commands": [
+      "bladerf-tool version"
+     ],
+     "imports": [
+      "bladerf"
+     ]
+    }
+   },
+   {
+    "build": {
+     "post-link": "post-link"
+    },
+    "name": "bladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [],
+     "run": [
+      "libbladerf2",
+      "libbladerf-python"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "bladeRF-cli --version",
+      "bladeRF-cli --lib-version",
+      "bladeRF-fsk --help",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "bladerf-split",
+   "version": "2021.10"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config"
+   ],
+   "host": [
+    "libusb"
+   ]
+  },
+  "source": {
+   "patches": [
+    "0001-Add-required-ad9361-files-directly.patch",
+    "0002-Rename-bladeRF.dll-to-bladeRF-2.dll-on-Windows.patch",
+    "0003-Add-special-case-for-loading-windows-DLL-in-python.patch",
+    "0004-Modify-Python-bindings-to-load-major-versioned-libbl.patch",
+    "0005-Add-an-option-for-bundling-external-libraries-on-Win.patch",
+    "0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch"
+   ],
+   "sha256": "77000a42cf5c967aa32e7f8cfa825e21d0298cbeb7c872207ff09f04be718cce",
+   "url": "https://github.com/Nuand/bladeRF/archive/refs/tags/2021.10.tar.gz"
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "cffi",
+    "libbladerf2",
+    "libusb",
+    "pip",
+    "python"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "cffi",
+    "libbladerf-python",
+    "libbladerf2",
+    "python"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "linux_ppc64le_meta_yaml": {
+  "about": {
+   "description": "This software supports the Nuand bladeRF and bladeRF Micro USB 3.0 Software Defined Radio (SDR) devices:\n\n  - `libbladerf2` contains the library for bladeRF devices\n  - `libbladerf` contains the development files for compiling against the bladeRF library\n  - `libbladerf-python` contains the Python bindings for the bladeRF library\n  - `bladerf` package contains command line tools for using the devices\n\nFor Linux users of `bladerf`, you will likely want to link the provided udev rule into your system installation in order for the hardware to have the correct permissions:\n\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules /etc/udev/rules.d/\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules /etc/udev/rules.d/\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules /etc/udev/rules.d/\n    sudo udevadm control --reload\n    sudo udevadm trigger\n\nThen, make sure your user account belongs to the plugdev group in order to be able to access your device:\n\n    sudo usermod -a -G plugdev <user>\n\nYou may have to restart for this change to take effect.\n",
+   "dev_url": "https://github.com/Nuand/bladeRF",
+   "doc_url": "https://github.com/Nuand/bladeRF/wiki",
+   "home": "https://www.nuand.com/",
+   "license": "LGPL-2.1-or-later AND GPL-2.0-or-later",
+   "license_family": "LGPL",
+   "license_file": [
+    "COPYING",
+    "legal/licenses/"
+   ],
+   "summary": "Host software for bladeRF source software radio devices."
+  },
+  "build": {
+   "number": "0"
+  },
+  "extra": {
+   "feedstock-name": "bladerf",
+   "recipe-maintainers": [
+    "ryanvolz"
+   ]
+  },
+  "outputs": [
+   {
+    "name": "libbladerf2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.2"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libbladerf2"
+     ]
+    },
+    "name": "libbladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libbladerf2"
+     ],
+     "run": [
+      "libbladerf2"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/bladeRF1.h",
+      "test -f $PREFIX/include/bladeRF2.h",
+      "test -f $PREFIX/include/libbladeRF.h",
+      "test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.2",
+      "test -f $PREFIX/lib/pkgconfig/libbladeRF.pc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "bladerf-tool = bladerf._tool:main"
+     ],
+     "noarch": "python",
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
+    },
+    "name": "libbladerf-python",
+    "requirements": {
+     "build": [],
+     "host": [
+      "cffi",
+      "libbladerf2",
+      "pip",
+      "python >=3.6"
+     ],
+     "run": [
+      "cffi",
+      "libbladerf2 2021.10",
+      "python >=3.6"
+     ]
+    },
+    "test": {
+     "commands": [
+      "bladerf-tool version"
+     ],
+     "imports": [
+      "bladerf"
+     ]
+    }
+   },
+   {
+    "build": {
+     "post-link": "post-link"
+    },
+    "name": "bladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [],
+     "run": [
+      "libbladerf2",
+      "libbladerf-python"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "bladeRF-cli --version",
+      "bladeRF-cli --lib-version",
+      "bladeRF-fsk --help",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "bladerf-split",
+   "version": "2021.10"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config"
+   ],
+   "host": [
+    "libusb"
+   ]
+  },
+  "source": {
+   "patches": [
+    "0001-Add-required-ad9361-files-directly.patch",
+    "0002-Rename-bladeRF.dll-to-bladeRF-2.dll-on-Windows.patch",
+    "0003-Add-special-case-for-loading-windows-DLL-in-python.patch",
+    "0004-Modify-Python-bindings-to-load-major-versioned-libbl.patch",
+    "0005-Add-an-option-for-bundling-external-libraries-on-Win.patch",
+    "0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch"
+   ],
+   "sha256": "77000a42cf5c967aa32e7f8cfa825e21d0298cbeb7c872207ff09f04be718cce",
+   "url": "https://github.com/Nuand/bladeRF/archive/refs/tags/2021.10.tar.gz"
+  }
+ },
+ "linux_ppc64le_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "cffi",
+    "libbladerf2",
+    "libusb",
     "pip",
     "python"
    ]
@@ -232,6 +638,12 @@
     "COPYING",
     "legal/licenses/",
     "COPYING",
+    "legal/licenses/",
+    "COPYING",
+    "legal/licenses/",
+    "COPYING",
+    "legal/licenses/",
+    "COPYING",
     "legal/licenses/"
    ],
    "summary": "Host software for bladeRF source software radio devices."
@@ -242,6 +654,9 @@
   "extra": {
    "feedstock-name": "bladerf",
    "recipe-maintainers": [
+    "ryanvolz",
+    "ryanvolz",
+    "ryanvolz",
     "ryanvolz",
     "ryanvolz",
     "ryanvolz"
@@ -258,8 +673,7 @@
       "sysroot_linux-64 2.17"
      ],
      "host": [
-      "libusb",
-      "libusb-cos6"
+      "libusb"
      ],
      "run": []
     },
@@ -308,10 +722,12 @@
       "bladerf-tool = bladerf._tool:main"
      ],
      "noarch": "python",
-     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python"
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
     },
     "name": "libbladerf-python",
     "requirements": {
+     "build": [],
      "host": [
       "cffi",
       "libbladerf2",
@@ -345,11 +761,233 @@
       "ninja",
       "sysroot_linux-64 2.17"
      ],
-     "host": [
-      "libbladerf",
+     "host": [],
+     "run": [
       "libbladerf2",
       "libbladerf-python"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "bladeRF-cli --version",
+      "bladeRF-cli --lib-version",
+      "bladeRF-fsk --help",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules"
+     ]
+    }
+   },
+   {
+    "name": "libbladerf2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
      ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.2"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libbladerf2"
+     ]
+    },
+    "name": "libbladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libbladerf2"
+     ],
+     "run": [
+      "libbladerf2"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/bladeRF1.h",
+      "test -f $PREFIX/include/bladeRF2.h",
+      "test -f $PREFIX/include/libbladeRF.h",
+      "test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.2",
+      "test -f $PREFIX/lib/pkgconfig/libbladeRF.pc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "bladerf-tool = bladerf._tool:main"
+     ],
+     "noarch": "python",
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
+    },
+    "name": "libbladerf-python",
+    "requirements": {
+     "build": [],
+     "host": [
+      "cffi",
+      "libbladerf2",
+      "pip",
+      "python >=3.6"
+     ],
+     "run": [
+      "cffi",
+      "libbladerf2 2021.10",
+      "python >=3.6"
+     ]
+    },
+    "test": {
+     "commands": [
+      "bladerf-tool version"
+     ],
+     "imports": [
+      "bladerf"
+     ]
+    }
+   },
+   {
+    "build": {
+     "post-link": "post-link"
+    },
+    "name": "bladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [],
+     "run": [
+      "libbladerf2",
+      "libbladerf-python"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "bladeRF-cli --version",
+      "bladeRF-cli --lib-version",
+      "bladeRF-fsk --help",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules",
+      "test -f $PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules"
+     ]
+    }
+   },
+   {
+    "name": "libbladerf2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.2"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libbladerf2"
+     ]
+    },
+    "name": "libbladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libbladerf2"
+     ],
+     "run": [
+      "libbladerf2"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/bladeRF1.h",
+      "test -f $PREFIX/include/bladeRF2.h",
+      "test -f $PREFIX/include/libbladeRF.h",
+      "test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.2",
+      "test -f $PREFIX/lib/pkgconfig/libbladeRF.pc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "bladerf-tool = bladerf._tool:main"
+     ],
+     "noarch": "python",
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
+    },
+    "name": "libbladerf-python",
+    "requirements": {
+     "build": [],
+     "host": [
+      "cffi",
+      "libbladerf2",
+      "pip",
+      "python >=3.6"
+     ],
+     "run": [
+      "cffi",
+      "libbladerf2 2021.10",
+      "python >=3.6"
+     ]
+    },
+    "test": {
+     "commands": [
+      "bladerf-tool version"
+     ],
+     "imports": [
+      "bladerf"
+     ]
+    }
+   },
+   {
+    "build": {
+     "post-link": "post-link"
+    },
+    "name": "bladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [],
      "run": [
       "libbladerf2",
       "libbladerf-python"
@@ -424,10 +1062,12 @@
       "bladerf-tool = bladerf._tool:main"
      ],
      "noarch": "python",
-     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python"
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
     },
     "name": "libbladerf-python",
     "requirements": {
+     "build": [],
      "host": [
       "cffi",
       "libbladerf2",
@@ -458,11 +1098,115 @@
       "cmake",
       "ninja"
      ],
-     "host": [
-      "libbladerf",
+     "host": [],
+     "run": [
       "libbladerf2",
       "libbladerf-python"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "bladeRF-cli --version",
+      "bladeRF-cli --lib-version",
+      "bladeRF-fsk --help"
+     ]
+    }
+   },
+   {
+    "name": "libbladerf2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
      ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libbladeRF.2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libbladerf2"
+     ]
+    },
+    "name": "libbladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libbladerf2"
+     ],
+     "run": [
+      "libbladerf2"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/bladeRF1.h",
+      "test -f $PREFIX/include/bladeRF2.h",
+      "test -f $PREFIX/include/libbladeRF.h",
+      "test -f $PREFIX/lib/libbladeRF.2${SHLIB_EXT}",
+      "test -f $PREFIX/lib/pkgconfig/libbladeRF.pc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "bladerf-tool = bladerf._tool:main"
+     ],
+     "noarch": "python",
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
+    },
+    "name": "libbladerf-python",
+    "requirements": {
+     "build": [],
+     "host": [
+      "cffi",
+      "libbladerf2",
+      "pip",
+      "python >=3.6"
+     ],
+     "run": [
+      "cffi",
+      "libbladerf2 2021.10",
+      "python >=3.6"
+     ]
+    },
+    "test": {
+     "commands": [
+      "bladerf-tool version"
+     ],
+     "imports": [
+      "bladerf"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "bladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [],
      "run": [
       "libbladerf2",
       "libbladerf-python"
@@ -537,10 +1281,12 @@
       "bladerf-tool = bladerf._tool:main"
      ],
      "noarch": "python",
-     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python"
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
     },
     "name": "libbladerf-python",
     "requirements": {
+     "build": [],
      "host": [
       "cffi",
       "libbladerf2",
@@ -571,12 +1317,7 @@
       "cmake",
       "ninja"
      ],
-     "host": [
-      "libbladerf",
-      "libbladerf2",
-      "libbladerf-python",
-      "pthreads-win32"
-     ],
+     "host": [],
      "run": [
       "libbladerf2",
       "libbladerf-python",
@@ -614,9 +1355,27 @@
     "cxx_compiler_stub",
     "cmake",
     "ninja",
+    "pkg-config",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "ninja",
     "pkg-config"
    ],
    "host": [
+    "libusb",
+    "libusb",
+    "libusb",
     "libusb",
     "libusb",
     "libusb",
@@ -642,9 +1401,27 @@
     "0003-Add-special-case-for-loading-windows-DLL-in-python.patch",
     "0004-Modify-Python-bindings-to-load-major-versioned-libbl.patch",
     "0005-Add-an-option-for-bundling-external-libraries-on-Win.patch",
+    "0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch",
+    "0001-Add-required-ad9361-files-directly.patch",
+    "0002-Rename-bladeRF.dll-to-bladeRF-2.dll-on-Windows.patch",
+    "0003-Add-special-case-for-loading-windows-DLL-in-python.patch",
+    "0004-Modify-Python-bindings-to-load-major-versioned-libbl.patch",
+    "0005-Add-an-option-for-bundling-external-libraries-on-Win.patch",
+    "0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch",
+    "0001-Add-required-ad9361-files-directly.patch",
+    "0002-Rename-bladeRF.dll-to-bladeRF-2.dll-on-Windows.patch",
+    "0003-Add-special-case-for-loading-windows-DLL-in-python.patch",
+    "0004-Modify-Python-bindings-to-load-major-versioned-libbl.patch",
+    "0005-Add-an-option-for-bundling-external-libraries-on-Win.patch",
+    "0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch",
+    "0001-Add-required-ad9361-files-directly.patch",
+    "0002-Rename-bladeRF.dll-to-bladeRF-2.dll-on-Windows.patch",
+    "0003-Add-special-case-for-loading-windows-DLL-in-python.patch",
+    "0004-Modify-Python-bindings-to-load-major-versioned-libbl.patch",
+    "0005-Add-an-option-for-bundling-external-libraries-on-Win.patch",
     "0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch"
    ],
-   "sha256": "7f5b85a820d1ce2cb7c9e884d1694a3fc9ad00d5285aacb12f3a765ed375f48a",
+   "sha256": "77000a42cf5c967aa32e7f8cfa825e21d0298cbeb7c872207ff09f04be718cce",
    "url": "https://github.com/Nuand/bladeRF/archive/refs/tags/2021.10.tar.gz"
   }
  },
@@ -731,10 +1508,12 @@
       "bladerf-tool = bladerf._tool:main"
      ],
      "noarch": "python",
-     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python"
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
     },
     "name": "libbladerf-python",
     "requirements": {
+     "build": [],
      "host": [
       "cffi",
       "libbladerf2",
@@ -765,11 +1544,7 @@
       "cmake",
       "ninja"
      ],
-     "host": [
-      "libbladerf",
-      "libbladerf2",
-      "libbladerf-python"
-     ],
+     "host": [],
      "run": [
       "libbladerf2",
       "libbladerf-python"
@@ -810,7 +1585,7 @@
     "0005-Add-an-option-for-bundling-external-libraries-on-Win.patch",
     "0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch"
    ],
-   "sha256": "7f5b85a820d1ce2cb7c9e884d1694a3fc9ad00d5285aacb12f3a765ed375f48a",
+   "sha256": "77000a42cf5c967aa32e7f8cfa825e21d0298cbeb7c872207ff09f04be718cce",
    "url": "https://github.com/Nuand/bladeRF/archive/refs/tags/2021.10.tar.gz"
   }
  },
@@ -829,8 +1604,203 @@
    "__set__": true,
    "elements": [
     "cffi",
-    "libbladerf",
+    "libbladerf2",
+    "libusb",
+    "pip",
+    "python"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "cffi",
     "libbladerf-python",
+    "libbladerf2",
+    "python"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "This software supports the Nuand bladeRF and bladeRF Micro USB 3.0 Software Defined Radio (SDR) devices:\n\n  - `libbladerf2` contains the library for bladeRF devices\n  - `libbladerf` contains the development files for compiling against the bladeRF library\n  - `libbladerf-python` contains the Python bindings for the bladeRF library\n  - `bladerf` package contains command line tools for using the devices\n\nFor Linux users of `bladerf`, you will likely want to link the provided udev rule into your system installation in order for the hardware to have the correct permissions:\n\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules /etc/udev/rules.d/\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules /etc/udev/rules.d/\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules /etc/udev/rules.d/\n    sudo udevadm control --reload\n    sudo udevadm trigger\n\nThen, make sure your user account belongs to the plugdev group in order to be able to access your device:\n\n    sudo usermod -a -G plugdev <user>\n\nYou may have to restart for this change to take effect.\n",
+   "dev_url": "https://github.com/Nuand/bladeRF",
+   "doc_url": "https://github.com/Nuand/bladeRF/wiki",
+   "home": "https://www.nuand.com/",
+   "license": "LGPL-2.1-or-later AND GPL-2.0-or-later",
+   "license_family": "LGPL",
+   "license_file": [
+    "COPYING",
+    "legal/licenses/"
+   ],
+   "summary": "Host software for bladeRF source software radio devices."
+  },
+  "build": {
+   "number": "0"
+  },
+  "extra": {
+   "feedstock-name": "bladerf",
+   "recipe-maintainers": [
+    "ryanvolz"
+   ]
+  },
+  "outputs": [
+   {
+    "name": "libbladerf2",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libusb"
+     ],
+     "run": []
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libbladeRF.2${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libbladerf2"
+     ]
+    },
+    "name": "libbladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "libbladerf2"
+     ],
+     "run": [
+      "libbladerf2"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/include/bladeRF1.h",
+      "test -f $PREFIX/include/bladeRF2.h",
+      "test -f $PREFIX/include/libbladeRF.h",
+      "test -f $PREFIX/lib/libbladeRF.2${SHLIB_EXT}",
+      "test -f $PREFIX/lib/pkgconfig/libbladeRF.pc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "bladerf-tool = bladerf._tool:main"
+     ],
+     "noarch": "python",
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
+    },
+    "name": "libbladerf-python",
+    "requirements": {
+     "build": [],
+     "host": [
+      "cffi",
+      "libbladerf2",
+      "pip",
+      "python >=3.6"
+     ],
+     "run": [
+      "cffi",
+      "libbladerf2 2021.10",
+      "python >=3.6"
+     ]
+    },
+    "test": {
+     "commands": [
+      "bladerf-tool version"
+     ],
+     "imports": [
+      "bladerf"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "bladerf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [],
+     "run": [
+      "libbladerf2",
+      "libbladerf-python"
+     ]
+    },
+    "script": "install.sh",
+    "test": {
+     "commands": [
+      "bladeRF-cli --version",
+      "bladeRF-cli --lib-version",
+      "bladeRF-fsk --help"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "bladerf-split",
+   "version": "2021.10"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "ninja",
+    "pkg-config"
+   ],
+   "host": [
+    "libusb"
+   ]
+  },
+  "source": {
+   "patches": [
+    "0001-Add-required-ad9361-files-directly.patch",
+    "0002-Rename-bladeRF.dll-to-bladeRF-2.dll-on-Windows.patch",
+    "0003-Add-special-case-for-loading-windows-DLL-in-python.patch",
+    "0004-Modify-Python-bindings-to-load-major-versioned-libbl.patch",
+    "0005-Add-an-option-for-bundling-external-libraries-on-Win.patch",
+    "0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch"
+   ],
+   "sha256": "77000a42cf5c967aa32e7f8cfa825e21d0298cbeb7c872207ff09f04be718cce",
+   "url": "https://github.com/Nuand/bladeRF/archive/refs/tags/2021.10.tar.gz"
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "cffi",
     "libbladerf2",
     "libusb",
     "pip",
@@ -860,7 +1830,7 @@
    "libbladerf2"
   ]
  },
- "raw_meta_yaml": "{% set version = \"2021.10\" %}\n{% set lib_major_version = \"2\" %}\n\npackage:\n  name: bladerf-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/Nuand/bladeRF/archive/refs/tags/{{ version }}.tar.gz\n  sha256: 7f5b85a820d1ce2cb7c9e884d1694a3fc9ad00d5285aacb12f3a765ed375f48a\n  patches:\n    - 0001-Add-required-ad9361-files-directly.patch\n    - 0002-Rename-bladeRF.dll-to-bladeRF-2.dll-on-Windows.patch\n    - 0003-Add-special-case-for-loading-windows-DLL-in-python.patch\n    - 0004-Modify-Python-bindings-to-load-major-versioned-libbl.patch\n    - 0005-Add-an-option-for-bundling-external-libraries-on-Win.patch\n    - 0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n    - pkg-config\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n    - libusb\n    - pthreads-win32  # [win]\n\noutputs:\n  - name: libbladerf{{ lib_major_version }}\n    script: install.sh  # [unix]\n    script: install.bat  # [not unix]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - cmake\n        - ninja\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - libusb\n        # restrict to cos6-compatible libusb (and libudev)\n        - libusb-cos6  # [linux and cdt_name=='cos6']\n        - pthreads-win32  # [win]\n      run:\n        - pthreads-win32  # [win]\n    test:\n      commands:\n        # verify that libraries get installed\n        - test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.{{ lib_major_version }}  # [linux]\n        - test -f $PREFIX/lib/libbladeRF.{{ lib_major_version }}${SHLIB_EXT}  # [osx]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\bladeRF-{{ lib_major_version }}.dll exit 1  # [win]\n  - name: libbladerf\n    script: install.sh  # [unix]\n    script: install.bat  # [not unix]\n    build:\n      run_exports:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, max_pin=False) }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - cmake\n        - ninja\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n      run:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n    test:\n      commands:\n        # verify that headers get installed\n        - test -f $PREFIX/include/bladeRF1.h  # [not win]\n        - test -f $PREFIX/include/bladeRF2.h  # [not win]\n        - test -f $PREFIX/include/libbladeRF.h  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\bladeRF1.h exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\bladeRF2.h exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\libbladeRF.h exit 1  # [win]\n\n        # verify that libraries get installed\n        - test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.{{ lib_major_version }}  # [linux]\n        - test -f $PREFIX/lib/libbladeRF.{{ lib_major_version }}${SHLIB_EXT}  # [osx]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\bladeRF-{{ lib_major_version }}.dll exit 1  # [win]\n\n        # verify that pkgconfig files get installed\n        - test -f $PREFIX/lib/pkgconfig/libbladeRF.pc  # [unix]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\libbladeRF.pc exit 1  # [win]\n  - name: libbladerf-python\n    build:\n      noarch: python\n      script: python -m pip install -vv host/libraries/libbladeRF_bindings/python\n      entry_points:\n        - bladerf-tool = bladerf._tool:main\n    requirements:\n      host:\n        - cffi\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n        - pip\n        - python >=3.6\n      run:\n        - cffi\n        - libbladerf{{ lib_major_version }} {{ version }}\n        - python >=3.6\n    test:\n      imports:\n        - bladerf\n      commands:\n        - bladerf-tool version\n  - name: bladerf\n    script: install.sh  # [unix]\n    script: install.bat  # [not unix]\n    build:\n      # instructions for manually linking udev rules\n      post-link: post-link  # [linux]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - cmake\n        - ninja\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - {{ pin_subpackage('libbladerf', exact=True) }}\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n        - {{ pin_subpackage('libbladerf-python', exact=True) }}\n        - pthreads-win32  # [win]\n      run:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n        - {{ pin_subpackage('libbladerf-python', exact=True) }}\n        - pthreads-win32  # [win]\n    test:\n      commands:\n        # verify that executables get installed\n        - bladeRF-cli --version\n        - bladeRF-cli --lib-version\n        - bladeRF-fsk --help\n\n        # verify that udev rule gets installed\n        - test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules  # [linux]\n        - test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules  # [linux]\n        - test -f $PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules  # [linux]\n\nabout:\n  home: https://www.nuand.com/\n  license: LGPL-2.1-or-later AND GPL-2.0-or-later\n  license_family: LGPL\n  license_file:\n    - COPYING\n    - legal/licenses/\n  summary: 'Host software for bladeRF source software radio devices.'\n  description: >\n    This software supports the Nuand bladeRF and bladeRF Micro USB 3.0 Software\n    Defined Radio (SDR) devices:\n\n      - `libbladerf{{ lib_major_version }}` contains the library for bladeRF devices\n      - `libbladerf` contains the development files for compiling against the bladeRF library\n      - `libbladerf-python` contains the Python bindings for the bladeRF library\n      - `bladerf` package contains command line tools for using the devices\n\n    For Linux users of `bladerf`, you will likely want to link the provided udev\n    rule into your system installation in order for the hardware to have the\n    correct permissions:\n\n        sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules /etc/udev/rules.d/\n        sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules /etc/udev/rules.d/\n        sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules /etc/udev/rules.d/\n        sudo udevadm control --reload\n        sudo udevadm trigger\n\n    Then, make sure your user account belongs to the plugdev group in order to\n    be able to access your device:\n\n        sudo usermod -a -G plugdev <user>\n\n    You may have to restart for this change to take effect.\n  doc_url: https://github.com/Nuand/bladeRF/wiki\n  dev_url: https://github.com/Nuand/bladeRF\n\nextra:\n  feedstock-name: bladerf\n  recipe-maintainers:\n    - ryanvolz\n",
+ "raw_meta_yaml": "{% set version = \"2021.10\" %}\n{% set lib_major_version = \"2\" %}\n{% set build = 0 %}\n\npackage:\n  name: bladerf-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/Nuand/bladeRF/archive/refs/tags/{{ version }}.tar.gz\n  sha256: 77000a42cf5c967aa32e7f8cfa825e21d0298cbeb7c872207ff09f04be718cce\n  patches:\n    - 0001-Add-required-ad9361-files-directly.patch\n    - 0002-Rename-bladeRF.dll-to-bladeRF-2.dll-on-Windows.patch\n    - 0003-Add-special-case-for-loading-windows-DLL-in-python.patch\n    - 0004-Modify-Python-bindings-to-load-major-versioned-libbl.patch\n    - 0005-Add-an-option-for-bundling-external-libraries-on-Win.patch\n    - 0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch\n\nbuild:\n  number: {{ build }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n    - pkg-config\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n    - libusb\n    - pthreads-win32  # [win]\n\noutputs:\n  - name: libbladerf{{ lib_major_version }}\n    script: install.sh  # [unix]\n    script: install.bat  # [not unix]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - cmake\n        - ninja\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - libusb\n        - pthreads-win32  # [win]\n      run:\n        - pthreads-win32  # [win]\n    test:\n      commands:\n        # verify that libraries get installed\n        - test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.{{ lib_major_version }}  # [linux]\n        - test -f $PREFIX/lib/libbladeRF.{{ lib_major_version }}${SHLIB_EXT}  # [osx]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\bladeRF-{{ lib_major_version }}.dll exit 1  # [win]\n  - name: libbladerf\n    script: install.sh  # [unix]\n    script: install.bat  # [not unix]\n    build:\n      run_exports:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, max_pin=False) }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - cmake\n        - ninja\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n      run:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n    test:\n      commands:\n        # verify that headers get installed\n        - test -f $PREFIX/include/bladeRF1.h  # [not win]\n        - test -f $PREFIX/include/bladeRF2.h  # [not win]\n        - test -f $PREFIX/include/libbladeRF.h  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\bladeRF1.h exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\bladeRF2.h exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\libbladeRF.h exit 1  # [win]\n\n        # verify that libraries get installed\n        - test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.{{ lib_major_version }}  # [linux]\n        - test -f $PREFIX/lib/libbladeRF.{{ lib_major_version }}${SHLIB_EXT}  # [osx]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\bladeRF-{{ lib_major_version }}.dll exit 1  # [win]\n\n        # verify that pkgconfig files get installed\n        - test -f $PREFIX/lib/pkgconfig/libbladeRF.pc  # [unix]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\libbladeRF.pc exit 1  # [win]\n  - name: libbladerf-python\n    build:\n      string: py_{{ build }}\n      noarch: python\n      script: python -m pip install -vv host/libraries/libbladeRF_bindings/python\n      entry_points:\n        - bladerf-tool = bladerf._tool:main\n    requirements:\n      build:\n        # cross-compilation dependencies\n        - python >=3.6                        # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n      host:\n        - cffi\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n        - pip\n        - python >=3.6\n      run:\n        - cffi\n        - libbladerf{{ lib_major_version }} {{ version }}\n        - python >=3.6\n    test:\n      imports:\n        - bladerf\n      commands:\n        - bladerf-tool version\n  - name: bladerf\n    script: install.sh  # [unix]\n    script: install.bat  # [not unix]\n    build:\n      # instructions for manually linking udev rules\n      post-link: post-link  # [linux]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - cmake\n        - ninja\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n      run:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n        - {{ pin_subpackage('libbladerf-python', exact=True) }}\n        - pthreads-win32  # [win]\n    test:\n      commands:\n        # verify that executables get installed\n        - bladeRF-cli --version\n        - bladeRF-cli --lib-version\n        - bladeRF-fsk --help\n\n        # verify that udev rule gets installed\n        - test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules  # [linux]\n        - test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules  # [linux]\n        - test -f $PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules  # [linux]\n\nabout:\n  home: https://www.nuand.com/\n  license: LGPL-2.1-or-later AND GPL-2.0-or-later\n  license_family: LGPL\n  license_file:\n    - COPYING\n    - legal/licenses/\n  summary: 'Host software for bladeRF source software radio devices.'\n  description: >\n    This software supports the Nuand bladeRF and bladeRF Micro USB 3.0 Software\n    Defined Radio (SDR) devices:\n\n      - `libbladerf{{ lib_major_version }}` contains the library for bladeRF devices\n      - `libbladerf` contains the development files for compiling against the bladeRF library\n      - `libbladerf-python` contains the Python bindings for the bladeRF library\n      - `bladerf` package contains command line tools for using the devices\n\n    For Linux users of `bladerf`, you will likely want to link the provided udev\n    rule into your system installation in order for the hardware to have the\n    correct permissions:\n\n        sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules /etc/udev/rules.d/\n        sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules /etc/udev/rules.d/\n        sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules /etc/udev/rules.d/\n        sudo udevadm control --reload\n        sudo udevadm trigger\n\n    Then, make sure your user account belongs to the plugdev group in order to\n    be able to access your device:\n\n        sudo usermod -a -G plugdev <user>\n\n    You may have to restart for this change to take effect.\n  doc_url: https://github.com/Nuand/bladeRF/wiki\n  dev_url: https://github.com/Nuand/bladeRF\n\nextra:\n  feedstock-name: bladerf\n  recipe-maintainers:\n    - ryanvolz\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -868,11 +1838,9 @@
    "cffi",
    "cmake",
    "cxx_compiler_stub",
-   "libbladerf",
    "libbladerf-python",
    "libbladerf2",
    "libusb",
-   "libusb-cos6",
    "ninja",
    "pip",
    "pkg-config",
@@ -899,11 +1867,8 @@
     "c_compiler_stub",
     "cffi",
     "cxx_compiler_stub",
-    "libbladerf",
-    "libbladerf-python",
     "libbladerf2",
     "libusb",
-    "libusb-cos6",
     "linux-sysroot",
     "pip",
     "pthreads-win32",
@@ -945,11 +1910,8 @@
    "__set__": true,
    "elements": [
     "cffi",
-    "libbladerf",
-    "libbladerf-python",
     "libbladerf2",
     "libusb",
-    "libusb-cos6",
     "pip",
     "pthreads-win32",
     "python >=3.6"
@@ -1057,10 +2019,12 @@
       "bladerf-tool = bladerf._tool:main"
      ],
      "noarch": "python",
-     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python"
+     "script": "python -m pip install -vv host/libraries/libbladeRF_bindings/python",
+     "string": "py_0"
     },
     "name": "libbladerf-python",
     "requirements": {
+     "build": [],
      "host": [
       "cffi",
       "libbladerf2",
@@ -1091,12 +2055,7 @@
       "cmake",
       "ninja"
      ],
-     "host": [
-      "libbladerf",
-      "libbladerf2",
-      "libbladerf-python",
-      "pthreads-win32"
-     ],
+     "host": [],
      "run": [
       "libbladerf2",
       "libbladerf-python",
@@ -1139,7 +2098,7 @@
     "0005-Add-an-option-for-bundling-external-libraries-on-Win.patch",
     "0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch"
    ],
-   "sha256": "7f5b85a820d1ce2cb7c9e884d1694a3fc9ad00d5285aacb12f3a765ed375f48a",
+   "sha256": "77000a42cf5c967aa32e7f8cfa825e21d0298cbeb7c872207ff09f04be718cce",
    "url": "https://github.com/Nuand/bladeRF/archive/refs/tags/2021.10.tar.gz"
   }
  },
@@ -1158,8 +2117,6 @@
    "__set__": true,
    "elements": [
     "cffi",
-    "libbladerf",
-    "libbladerf-python",
     "libbladerf2",
     "libusb",
     "pip",
