@@ -170,11 +170,12 @@
    "summary": "Data server for TensorBoard"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "script_env": null
   },
   "extra": {
    "recipe-maintainers": [
+    "mdraw",
     "mdraw",
     "mdraw",
     "mdraw",
@@ -188,6 +189,8 @@
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
+    "rust_compiler_stub",
     "c_compiler_stub",
     "rust_compiler_stub",
     "c_compiler_stub",
@@ -214,9 +217,13 @@
     "openssl",
     "python",
     "pip",
+    "openssl",
+    "python",
+    "pip",
     "openssl"
    ],
    "run": [
+    "python",
     "python",
     "python",
     "python",
@@ -231,6 +238,7 @@
   },
   "test": {
    "imports": [
+    "tensorboard_data_server",
     "tensorboard_data_server",
     "tensorboard_data_server",
     "tensorboard_data_server",
@@ -275,8 +283,9 @@
    "summary": "Data server for TensorBoard"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "script_env": [
+    "WHEELNAME=tensorboard_data_server-0.6.0-py3-none-any.whl",
     "WHEELNAME=tensorboard_data_server-0.6.0-py3-none-any.whl",
     "WHEELNAME=tensorboard_data_server-0.6.0-py3-none-any.whl",
     "WHEELNAME=tensorboard_data_server-0.6.0-py3-none-any.whl",
@@ -303,6 +312,9 @@
     "mdraw",
     "mdraw",
     "mdraw",
+    "mdraw",
+    "mdraw",
+    "mdraw",
     "mdraw"
    ]
   },
@@ -312,6 +324,10 @@
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
+    "rust_compiler_stub",
+    "c_compiler_stub",
+    "rust_compiler_stub",
     "c_compiler_stub",
     "rust_compiler_stub",
     "c_compiler_stub",
@@ -381,6 +397,14 @@
     "openssl",
     "python",
     "pip",
+    "openssl",
+    "python",
+    "pip",
+    "openssl",
+    "python",
+    "pip",
+    "python",
+    "pip",
     "python",
     "pip",
     "python",
@@ -408,11 +432,15 @@
     "python",
     "python",
     "python",
+    "python",
+    "python",
+    "python",
     "python"
    ]
   },
   "source": {
    "patches": [
+    "0001-Do-not-try-to-remove-tmpdir-on-Windows.patch",
     "0001-Do-not-try-to-remove-tmpdir-on-Windows.patch",
     "0001-Do-not-try-to-remove-tmpdir-on-Windows.patch",
     "0001-Do-not-try-to-remove-tmpdir-on-Windows.patch",
@@ -424,6 +452,9 @@
   },
   "test": {
    "imports": [
+    "tensorboard_data_server",
+    "tensorboard_data_server",
+    "tensorboard_data_server",
     "tensorboard_data_server",
     "tensorboard_data_server",
     "tensorboard_data_server",
@@ -468,11 +499,12 @@
    "summary": "Data server for TensorBoard"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "script_env": null
   },
   "extra": {
    "recipe-maintainers": [
+    "mdraw",
     "mdraw",
     "mdraw",
     "mdraw",
@@ -486,6 +518,8 @@
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
+    "rust_compiler_stub",
     "c_compiler_stub",
     "rust_compiler_stub",
     "c_compiler_stub",
@@ -512,9 +546,13 @@
     "openssl",
     "python",
     "pip",
+    "openssl",
+    "python",
+    "pip",
     "openssl"
    ],
    "run": [
+    "python",
     "python",
     "python",
     "python",
@@ -529,6 +567,7 @@
   },
   "test": {
    "imports": [
+    "tensorboard_data_server",
     "tensorboard_data_server",
     "tensorboard_data_server",
     "tensorboard_data_server",
@@ -573,7 +612,7 @@
    "summary": "Data server for TensorBoard"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "script_env": null
   },
   "extra": {
@@ -662,7 +701,7 @@
  "pinning_version": "2022.04.06.15.06.15",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
- "raw_meta_yaml": "{% set name = \"tensorboard-data-server\" %}\n{% set version = \"0.6.0\" %}\n{% set _name = \"tensorboard_data_server\" %}\n{% set git_rev = \"1d4d904c1cc69ccdd7ed59f8539624eeb5c7a831\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  # data server versions are not tagged, so we have to use the ID of the relevant rev\n  url: https://github.com/tensorflow/tensorboard/archive/{{ git_rev }}.zip\n  sha256: e17b02eb493cb11b92db11fea4ac75805a119e68def636b455dec69bdcca31ef\n  patches:\n    - 0001-Do-not-try-to-remove-tmpdir-on-Windows.patch  # [win]\n\n# Windows is currently unsupported, so we build an universal dummy wheel instead for Windows\n# See https://github.com/tensorflow/tensorboard/blob/348af4c/tensorboard/data/server/pip_package/build.py#L78-L86\nbuild:\n  script_env:\n    - WHEELNAME={{ _name }}-{{ version }}-py3-none-any.whl  # [win]\n  number: 1\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - {{ compiler('c') }}  # [not win]\n    - {{ compiler('rust') }}  # [not win]\n  host:\n    - python\n    - pip\n    - openssl  # [not win]\n  run:\n    - python\n\ntest:\n  imports:\n    - tensorboard_data_server\n\nabout:\n  home: https://github.com/tensorflow/tensorboard\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: 'Data server for TensorBoard'\n  dev_url: https://github.com/tensorflow/tensorboard/tree/master/tensorboard/data/server\n\nextra:\n  recipe-maintainers:\n    - mdraw\n",
+ "raw_meta_yaml": "{% set name = \"tensorboard-data-server\" %}\n{% set version = \"0.6.0\" %}\n{% set _name = \"tensorboard_data_server\" %}\n{% set git_rev = \"1d4d904c1cc69ccdd7ed59f8539624eeb5c7a831\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  # data server versions are not tagged, so we have to use the ID of the relevant rev\n  url: https://github.com/tensorflow/tensorboard/archive/{{ git_rev }}.zip\n  sha256: e17b02eb493cb11b92db11fea4ac75805a119e68def636b455dec69bdcca31ef\n  patches:\n    - 0001-Do-not-try-to-remove-tmpdir-on-Windows.patch  # [win]\n\n# Windows is currently unsupported, so we build an universal dummy wheel instead for Windows\n# See https://github.com/tensorflow/tensorboard/blob/348af4c/tensorboard/data/server/pip_package/build.py#L78-L86\nbuild:\n  script_env:\n    - WHEELNAME={{ _name }}-{{ version }}-py3-none-any.whl  # [win]\n  number: 2\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - {{ compiler('c') }}  # [not win]\n    - {{ compiler('rust') }}  # [not win]\n  host:\n    - python\n    - pip\n    - openssl  # [not win]\n  run:\n    - python\n\ntest:\n  imports:\n    - tensorboard_data_server\n\nabout:\n  home: https://github.com/tensorflow/tensorboard\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: 'Data server for TensorBoard'\n  dev_url: https://github.com/tensorflow/tensorboard/tree/master/tensorboard/data/server\n\nextra:\n  recipe-maintainers:\n    - mdraw\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -742,8 +781,9 @@
    "summary": "Data server for TensorBoard"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "script_env": [
+    "WHEELNAME=tensorboard_data_server-0.6.0-py3-none-any.whl",
     "WHEELNAME=tensorboard_data_server-0.6.0-py3-none-any.whl",
     "WHEELNAME=tensorboard_data_server-0.6.0-py3-none-any.whl",
     "WHEELNAME=tensorboard_data_server-0.6.0-py3-none-any.whl",
@@ -753,6 +793,7 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "mdraw",
     "mdraw",
     "mdraw",
     "mdraw",
@@ -776,9 +817,12 @@
     "python",
     "pip",
     "python",
+    "pip",
+    "python",
     "pip"
    ],
    "run": [
+    "python",
     "python",
     "python",
     "python",
@@ -792,6 +836,7 @@
     "0001-Do-not-try-to-remove-tmpdir-on-Windows.patch",
     "0001-Do-not-try-to-remove-tmpdir-on-Windows.patch",
     "0001-Do-not-try-to-remove-tmpdir-on-Windows.patch",
+    "0001-Do-not-try-to-remove-tmpdir-on-Windows.patch",
     "0001-Do-not-try-to-remove-tmpdir-on-Windows.patch"
    ],
    "sha256": "e17b02eb493cb11b92db11fea4ac75805a119e68def636b455dec69bdcca31ef",
@@ -799,6 +844,7 @@
   },
   "test": {
    "imports": [
+    "tensorboard_data_server",
     "tensorboard_data_server",
     "tensorboard_data_server",
     "tensorboard_data_server",
