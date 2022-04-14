@@ -1448,8 +1448,12 @@
   ]
  },
  "pinning_version": "2022.03.15.10.12.29",
- "pre_pr_migrator_attempts": {},
- "pre_pr_migrator_status": {},
+ "pre_pr_migrator_attempts": {
+  "pypy38": 1
+ },
+ "pre_pr_migrator_status": {
+  "pypy38": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2167260330\">bot CI job</a>): main: ['win_64_python3.8.____73_pypyr_base4.0: Encountered problems while solving:\\n  - package coda-2.22.1-py38h5a0338e_1 requires python_abi 3.8.* *_cp38, but none of the providers can be installed\\n', 'win_64_python3.8.____73_pypyr_base4.1: Encountered problems while solving:\\n  - package coda-2.22.1-py38h5a0338e_1 requires python_abi 3.8.* *_cp38, but none of the providers can be installed\\n', 'win_64_python3.9.____73_pypyr_base4.0: Encountered problems while solving:\\n  - package coda-2.22.1-py39h0989d49_2 requires python_abi 3.9.* *_cp39, but none of the providers can be installed\\n', 'win_64_python3.9.____73_pypyr_base4.1: Encountered problems while solving:\\n  - package coda-2.22.2-py310heba9ebb_1 requires python_abi 3.10.* *_cp310, but none of the providers can be installed\\n']"
+ },
  "raw_meta_yaml": "{% set version = \"1.15\" %}\n\npackage:\n  name: harp\n  version: {{ version }}\n\nsource:\n  url: https://github.com/stcorp/harp/releases/download/{{ version }}/harp-{{ version }}.tar.gz\n  sha256: 26048cf7a0cbadaa1dbbbb380f1e1f645f71800293e5c35c5aa9905d540a6a59\n\nbuild:\n  number: 0\n  script_env:\n    - SDKROOT  # [osx]\n  rpaths:\n    - lib/R/lib\n    - lib\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make  # [not win]\n    - bison  # [not win]\n    - flex  # [not win]\n    - m2-bison  # [win]\n    - m2-flex  # [win]\n\n  host:\n    - coda\n    - python\n    - zlib\n    - hdf4\n    - hdf5\n    - jpeg\n    - r-base\n\n  run:\n    - r-base\n    - coda\n    - python\n    - numpy\n    - cffi\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libharp$SHLIB_EXT  # [unix]\n    - if not exist \"%LIBRARY_PREFIX%/lib/libharp.lib\" exit 1  # [win]\n    - if not exist \"%LIBRARY_PREFIX%/bin/harpdump.exe\" exit 1  # [win]\n    - $R -e \"library('harp')\"  # [unix]\n    - \"\\\"%R%\\\" -e \\\"library('harp')\\\"\"  # [win]\n  imports:\n    - harp\n\nabout:\n  home: https://github.com/stcorp/harp\n  license: BSD-3-Clause-Clear\n  license_family: BSD\n  license_file: COPYING\n  summary: HARP is a toolset for ingesting, processing and inter-comparing satellite or model data against correlative data. The toolset is composed of a set of command line tools, a C library of analysis functions, and import/export interfaces for Python, R, Matlab, and IDL.\n\nextra:\n  recipe-maintainers:\n    - srepmub\n    - svniemeijer\n",
  "req": {
   "__set__": true,
