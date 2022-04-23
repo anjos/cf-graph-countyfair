@@ -131,7 +131,6 @@
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
-   "linux_aarch64": "linux_64",
    "osx_arm64": "osx_64"
   },
   "provider": {
@@ -148,7 +147,10 @@
    "summary": "Library for World Coordinate System computations"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "wcslib"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -227,7 +229,10 @@
    "summary": "Library for World Coordinate System computations"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "wcslib"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -306,7 +311,13 @@
    "summary": "Library for World Coordinate System computations"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "wcslib",
+    "wcslib",
+    "wcslib",
+    "wcslib"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -393,7 +404,10 @@
    "summary": "Library for World Coordinate System computations"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "wcslib"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -472,7 +486,10 @@
    "summary": "Library for World Coordinate System computations"
   },
   "build": {
-   "number": "0"
+   "number": "1",
+   "run_exports": [
+    "wcslib"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -550,7 +567,7 @@
   ]
  },
  "pinning_version": "2022.03.22.00.01.46",
- "raw_meta_yaml": "{% set name = \"wcslib\" %}\n{% set version = \"7.7\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: ftp://ftp.atnf.csiro.au/pub/software/{{ name }}/{{ name }}-{{ version }}.tar.bz2\n  sha256: a708e6b4e90e2cd6427434715b591bb9c3d4005c99725ec494b8e0bed2de5355\n  patches:\n    - no-x-tests.patch  # avoid deluges of pgplot warnings\n    - cross-compiling-configure.patch  # [build_platform != target_platform]\n\nbuild:\n  number: 0\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - gnuconfig  # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}\n    - flex\n    - make\n\n  host:\n    - cfitsio\n    - pgplot 5.2.*  # [not win]\n  run:\n    - cfitsio\n    - pgplot 5.2.*  # [not win]\n\ntest:\n  commands:\n    # Main validation performed in 'make check' stage\n    - test -f $PREFIX/lib/libwcs$SHLIB_EXT\n\nabout:\n  home: http://www.atnf.csiro.au/people/mcalabre/WCS/wcslib/\n  license: LGPL-3.0-or-later\n  license_file: COPYING.LESSER\n  summary: 'Library for World Coordinate System computations'\n\nextra:\n  recipe-maintainers:\n    - pkgw\n",
+ "raw_meta_yaml": "{% set name = \"wcslib\" %}\n{% set version = \"7.7\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: ftp://ftp.atnf.csiro.au/pub/software/{{ name }}/{{ name }}-{{ version }}.tar.bz2\n  sha256: a708e6b4e90e2cd6427434715b591bb9c3d4005c99725ec494b8e0bed2de5355\n  patches:\n    - no-x-tests.patch  # avoid deluges of pgplot warnings\n    - cross-compiling-configure.patch  # [build_platform != target_platform]\n\nbuild:\n  number: 1\n  skip: true  # [win]\n  run_exports:\n    # changes soname at major versions\n    # https://abi-laboratory.pro/tracker/timeline/wcslib\n    - {{ pin_subpackage(name, max_pin='x') }}\n\nrequirements:\n  build:\n    - gnuconfig  # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}\n    - flex\n    - make\n\n  host:\n    - cfitsio\n    - pgplot 5.2.*  # [not win]\n  run:\n    - cfitsio\n    - pgplot 5.2.*  # [not win]\n\ntest:\n  commands:\n    # Main validation performed in 'make check' stage\n    - test -f $PREFIX/lib/libwcs$SHLIB_EXT\n\nabout:\n  home: http://www.atnf.csiro.au/people/mcalabre/WCS/wcslib/\n  license: LGPL-3.0-or-later\n  license_file: COPYING.LESSER\n  summary: 'Library for World Coordinate System computations'\n\nextra:\n  recipe-maintainers:\n    - pkgw\n",
  "req": {
   "__set__": true,
   "elements": [
