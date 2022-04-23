@@ -59,11 +59,11 @@
    "ignore_run_exports": [
     "_openmp_mutex"
    ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "_openmp_mutex"
    ],
-   "string": "1_llvm"
+   "string": "2_kmp_llvm"
   },
   "extra": {
    "recipe-maintainers": [
@@ -76,9 +76,7 @@
    "version": "4.5"
   },
   "requirements": {
-   "host": [
-    "llvm-openmp >=9.0.1"
-   ],
+   "host": [],
    "run": [
     "llvm-openmp >=9.0.1",
     "_libgcc_mutex 0.1 conda_forge"
@@ -112,9 +110,7 @@
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "llvm-openmp"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
@@ -145,11 +141,11 @@
    "ignore_run_exports": [
     "_openmp_mutex"
    ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "_openmp_mutex"
    ],
-   "string": "1_llvm"
+   "string": "2_kmp_llvm"
   },
   "extra": {
    "recipe-maintainers": [
@@ -162,9 +158,7 @@
    "version": "4.5"
   },
   "requirements": {
-   "host": [
-    "llvm-openmp >=9.0.1"
-   ],
+   "host": [],
    "run": [
     "llvm-openmp >=9.0.1"
    ]
@@ -197,9 +191,7 @@
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "llvm-openmp"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
@@ -229,11 +221,11 @@
    "ignore_run_exports": [
     "_openmp_mutex"
    ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "_openmp_mutex"
    ],
-   "string": "1_llvm"
+   "string": "2_kmp_llvm"
   },
   "extra": {
    "recipe-maintainers": [
@@ -246,9 +238,7 @@
    "version": "4.5"
   },
   "requirements": {
-   "host": [
-    "llvm-openmp >=9.0.1"
-   ],
+   "host": [],
    "run": [
     "llvm-openmp >=9.0.1",
     "_libgcc_mutex 0.1 conda_forge"
@@ -282,9 +272,7 @@
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "llvm-openmp"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
@@ -319,13 +307,13 @@
     "_openmp_mutex",
     "_openmp_mutex"
    ],
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "_openmp_mutex",
     "_openmp_mutex",
     "_openmp_mutex"
    ],
-   "string": "1_llvm"
+   "string": "2_kmp_llvm"
   },
   "extra": {
    "recipe-maintainers": [
@@ -342,11 +330,7 @@
    "version": "4.5"
   },
   "requirements": {
-   "host": [
-    "llvm-openmp >=9.0.1",
-    "llvm-openmp >=9.0.1",
-    "llvm-openmp >=9.0.1"
-   ],
+   "host": [],
    "run": [
     "llvm-openmp >=9.0.1",
     "_libgcc_mutex 0.1 conda_forge",
@@ -403,7 +387,7 @@
   ]
  },
  "pinning_version": "2020.11.12.14.52.24",
- "raw_meta_yaml": "{% set name = \"_openmp_mutex\" %}\n{% set version = \"4.5\" %}\n{% set build = \"1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  path: .\n\nbuild:\n  number: {{ build }}\n  string: {{ build }}_llvm\n  skip: true  # [not linux]\n  always_include_files:\n    # this major version has to match the libgomp version from gcc\n    - lib/libgomp.so.1\n  # Remove track_features because directly depending on mutex=*=*llvm\n  # would make the downstream package have low priority\n  # For eg: newer blas packages are not used by the solver\n  # track_features:\n  #  - llvm_openmp\n  ignore_run_exports:\n    - _openmp_mutex\n  run_exports:\n    - {{ pin_subpackage('_openmp_mutex', max_pin=None) }}\n\nrequirements:\n  host:\n    - llvm-openmp >=9.0.1\n  run:\n    - llvm-openmp >=9.0.1\n    - _libgcc_mutex {{ _libgcc_mutex }}  # [linux64 or ppc64le]\n\ntest:\n  requires:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  commands:\n    - test -f $PREFIX/lib/libgomp.so.1\n    - if [ ! \"$PREFIX/lib/libgomp.so.1\" -ef \"$PREFIX/lib/libomp.so\" ]; then exit 1; fi\n    - rm -f omp_hello && ${CC} -v -fopenmp omp_hello.c -o omp_hello && ./omp_hello\n    - ldd omp_hello  # [linux]\n    - rm -f omp_hello && ${CXX} -v -fopenmp omp_hello.c -o omp_hello && ./omp_hello\n    - ldd omp_hello  # [linux]\n  files:\n    - omp_hello.c\n\nabout:\n  summary: OpenMP Implementation Mutex\n  license: BSD-3-Clause\n  license_file: LICENSE\n  home: https://github.com/conda-forge/openmp-feedstock\n\nextra:\n  recipe-maintainers:\n    - isuruf\n    - beckermr\n",
+ "raw_meta_yaml": "{% set name = \"_openmp_mutex\" %}\n{% set version = \"4.5\" %}\n{% set build = \"2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  path: .\n\nbuild:\n  number: {{ build }}\n  string: {{ build }}_kmp_llvm\n  skip: true  # [not linux]\n  always_include_files:\n    # this major version has to match the libgomp version from gcc\n    - lib/libgomp.so.1\n  # Remove track_features because directly depending on mutex=*=*llvm\n  # would make the downstream package have low priority\n  # For eg: newer blas packages are not used by the solver\n  # track_features:\n  #  - llvm_openmp\n  ignore_run_exports:\n    - _openmp_mutex\n  run_exports:\n    - {{ pin_subpackage('_openmp_mutex', max_pin=None) }}\n\nrequirements:\n  host:\n  run:\n    - llvm-openmp >=9.0.1\n    - _libgcc_mutex {{ _libgcc_mutex }}  # [linux64 or ppc64le]\n\ntest:\n  requires:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  commands:\n    - test -f $PREFIX/lib/libgomp.so.1\n    - if [ ! \"$PREFIX/lib/libgomp.so.1\" -ef \"$PREFIX/lib/libomp.so\" ]; then exit 1; fi\n    - rm -f omp_hello && ${CC} -v -fopenmp omp_hello.c -o omp_hello && ./omp_hello\n    - ldd omp_hello  # [linux]\n    - rm -f omp_hello && ${CXX} -v -fopenmp omp_hello.c -o omp_hello && ./omp_hello\n    - ldd omp_hello  # [linux]\n  files:\n    - omp_hello.c\n\nabout:\n  summary: OpenMP Implementation Mutex\n  license: BSD-3-Clause\n  license_file: LICENSE\n  home: https://github.com/conda-forge/openmp-feedstock\n\nextra:\n  recipe-maintainers:\n    - isuruf\n    - beckermr\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -421,7 +405,6 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "llvm-openmp",
     "openmp"
    ]
   },
@@ -452,9 +435,7 @@
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "llvm-openmp >=9.0.1"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
