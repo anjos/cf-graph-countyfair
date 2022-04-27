@@ -261,7 +261,7 @@
     "__lazy_json__": "pr_json/721978614.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1651074868.0422711,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "4.0.0"
@@ -278,7 +278,7 @@
     "__lazy_json__": "pr_json/722118657.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1651074868.0424669,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "4.0.1"
@@ -295,7 +295,7 @@
     "__lazy_json__": "pr_json/722973700.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1651074868.0425727,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "4.0.2"
@@ -312,7 +312,7 @@
     "__lazy_json__": "pr_json/764624871.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1651074868.0427325,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "4.0.3"
@@ -348,7 +348,7 @@
    "summary": "MessagePack implementation for C and C++."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -439,7 +439,7 @@
    "summary": "MessagePack implementation for C and C++."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -481,7 +481,8 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake",
-    "ninja"
+    "ninja",
+    "python"
    ],
    "host": [
     "boost-cpp",
@@ -560,7 +561,7 @@
    "summary": "MessagePack implementation for C and C++."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -649,7 +650,7 @@
    "summary": "MessagePack implementation for C and C++."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -735,7 +736,7 @@
   ]
  },
  "pinning_version": "2021.10.22.20.56.07",
- "raw_meta_yaml": "{% set name = \"msgpack-c\" %}\n{% set version = \"3.3.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/msgpack/{{ name }}/archive/cpp-{{ version }}.tar.gz\n  sha256: 754c3ace499a63e45b77ef4bcab4ee602c2c414f58403bce826b76ffc2f77d0b\n  patches:\n    # This is needed for a bug in gcc version used where isnan is ambiguous. (::isnan and std::isnan)\n    - ambiguous_nan_inf.patch   # [linux]\n\nbuild:\n  number: 3\n  skip: true  # [win and vc<14]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n    - make  # [unix]\n  host:\n    - boost-cpp\n    - gtest\n    - gmock\n    - zlib\n  run:\n    - boost-cpp\n    - zlib\n\ntest:\n  commands:\n    - test -f $PREFIX/include/msgpack.h                         # [unix]\n    - test -f $PREFIX/include/msgpack.hpp                       # [unix]\n    - test -f $PREFIX/lib/libmsgpackc.a                         # [unix]\n    - test -f $PREFIX/lib/libmsgpackc.so                        # [linux]\n    - test -f $PREFIX/lib/libmsgpackc.dylib                     # [osx]\n    - if not exist %LIBRARY_INC%\\\\msgpack.h exit 1              # [win]\n    - if not exist %LIBRARY_INC%\\\\msgpack.hpp exit 1            # [win]\n    - if not exist %LIBRARY_LIB%\\\\msgpackc.lib exit 1           # [win]\n    - if not exist %LIBRARY_LIB%\\\\msgpackc_static.lib exit 1    # [win]\n    - if not exist %LIBRARY_BIN%\\\\msgpackc.dll exit 1           # [win]\n\nabout:\n  home: https://github.com/msgpack/msgpack-c\n  license: BSL-1.0\n  license_file: LICENSE_1_0.txt\n  summary: MessagePack implementation for C and C++.\n  doc_url: https://github.com/msgpack/msgpack-c/blob/master/README.md\n  dev_url: https://github.com/msgpack/msgpack-c\n\nextra:\n  recipe-maintainers:\n    - bluescarni\n    - mcs07\n    - ndevenish\n",
+ "raw_meta_yaml": "{% set name = \"msgpack-c\" %}\n{% set version = \"3.3.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/msgpack/{{ name }}/archive/cpp-{{ version }}.tar.gz\n  sha256: 754c3ace499a63e45b77ef4bcab4ee602c2c414f58403bce826b76ffc2f77d0b\n  patches:\n    # This is needed for a bug in gcc version used where isnan is ambiguous. (::isnan and std::isnan)\n    - ambiguous_nan_inf.patch   # [linux]\n\nbuild:\n  number: 4\n  skip: true  # [win and vc<14]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n    - make  # [unix]\n    - python  # [win]\n  host:\n    - boost-cpp\n    - gtest\n    - gmock\n    - zlib\n  run:\n    - boost-cpp\n    - zlib\n\ntest:\n  commands:\n    - test -f $PREFIX/include/msgpack.h                         # [unix]\n    - test -f $PREFIX/include/msgpack.hpp                       # [unix]\n    - test -f $PREFIX/lib/libmsgpackc.a                         # [unix]\n    - test -f $PREFIX/lib/libmsgpackc.so                        # [linux]\n    - test -f $PREFIX/lib/libmsgpackc.dylib                     # [osx]\n    - if not exist %LIBRARY_INC%\\\\msgpack.h exit 1              # [win]\n    - if not exist %LIBRARY_INC%\\\\msgpack.hpp exit 1            # [win]\n    - if not exist %LIBRARY_LIB%\\\\msgpackc.lib exit 1           # [win]\n    - if not exist %LIBRARY_LIB%\\\\msgpackc_static.lib exit 1    # [win]\n    - if not exist %LIBRARY_BIN%\\\\msgpackc.dll exit 1           # [win]\n\nabout:\n  home: https://github.com/msgpack/msgpack-c\n  license: BSL-1.0\n  license_file: LICENSE_1_0.txt\n  summary: MessagePack implementation for C and C++.\n  doc_url: https://github.com/msgpack/msgpack-c/blob/master/README.md\n  dev_url: https://github.com/msgpack/msgpack-c\n\nextra:\n  recipe-maintainers:\n    - bluescarni\n    - mcs07\n    - ndevenish\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -747,6 +748,7 @@
    "gtest",
    "make",
    "ninja",
+   "python",
    "zlib"
   ]
  },
@@ -758,7 +760,8 @@
     "cmake",
     "cxx_compiler_stub",
     "make",
-    "ninja"
+    "ninja",
+    "python"
    ]
   },
   "host": {
@@ -796,7 +799,8 @@
     "cmake",
     "cxx_compiler_stub",
     "make",
-    "ninja"
+    "ninja",
+    "python"
    ]
   },
   "host": {
@@ -832,7 +836,7 @@
    "summary": "MessagePack implementation for C and C++."
   },
   "build": {
-   "number": "3"
+   "number": "4"
   },
   "extra": {
    "recipe-maintainers": [
@@ -850,7 +854,8 @@
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cmake",
-    "ninja"
+    "ninja",
+    "python"
    ],
    "host": [
     "boost-cpp",
@@ -886,7 +891,8 @@
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "ninja"
+    "ninja",
+    "python"
    ]
   },
   "host": {
