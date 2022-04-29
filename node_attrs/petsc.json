@@ -1150,7 +1150,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git diff --name-only d6c0590916fc311b07bcca2e8926606249223168...HEAD' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1141, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 302, in run",
+   "    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode",
+   "    raise CalledProcessError(self.returncode, self.args, self.stdout,",
+   "subprocess.CalledProcessError: Command 'git diff --name-only d6c0590916fc311b07bcca2e8926606249223168...HEAD' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
@@ -5474,7 +5489,7 @@
   }
  },
  "name": "petsc",
- "new_version": "3.17.0",
+ "new_version": "3.17.1",
  "new_version_attempts": {
   "3.13.0": 1,
   "3.13.1": 2,
@@ -5498,7 +5513,8 @@
   "3.15.5": 1,
   "3.16.0": 2,
   "3.16.1": 1,
-  "3.17.0": 1
+  "3.17.0": 1,
+  "3.17.1": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -6724,10 +6740,12 @@
  },
  "pinning_version": "2022.04.06.21.38.29",
  "pre_pr_migrator_attempts": {
-  "gcc930": 1
+  "gcc930": 1,
+  "version": 1
  },
  "pre_pr_migrator_status": {
-  "gcc930": "not solvable: ['linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf51.10.6=mpi_mpimpich: Encountered problems while solving.\\nProblem: package superlu_dist-6.2.0-ha2c23be_4 requires libgfortran4 >=7.5.0, but none of the providers can be installed\\n', 'linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf51.10.6mpimpich: Encountered problems while solving.\\nProblem: package superlu_dist-6.2.0-ha2c23be_4 requires libgfortran4 >=7.5.0, but none of the providers can be installed\\n']"
+  "gcc930": "not solvable: ['linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf51.10.6=mpi_mpimpich: Encountered problems while solving.\\nProblem: package superlu_dist-6.2.0-ha2c23be_4 requires libgfortran4 >=7.5.0, but none of the providers can be installed\\n', 'linux_aarch64_c_compiler_version9cxx_compiler_version9fortran_compiler_version9hdf51.10.6mpimpich: Encountered problems while solving.\\nProblem: package superlu_dist-6.2.0-ha2c23be_4 requires libgfortran4 >=7.5.0, but none of the providers can be installed\\n']",
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2243805659\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1141, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 302, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only d6c0590916fc311b07bcca2e8926606249223168...HEAD' returned non-zero exit status 128.\n"
  },
  "raw_meta_yaml": "{% set version = \"3.17.0\" %}\n{% set build = 0 %}\n\n{% set mpi = mpi or 'mpich' %}\n{% if scalar == \"real\" %}\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: petsc\n  version: {{ version }}\n\nsource:\n  url: https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-{{ version }}.tar.gz\n  sha256: 96d5aca684e1ce1425891a620d278773c25611cb144165a93b17531238eaaf8a\n  patches:\n    - ignore-not-invalid.patch\n    - no-cppflags-in-pkgconfig-cflags.patch\n    - no-macos-mkdtemp-fix.patch\n\nbuild:\n  skip: true  # [win]\n  number: {{ build }}\n  string: {{ scalar }}_h{{ PKG_HASH }}_{{ build }}\n  run_exports:\n    - {{ pin_subpackage('petsc', max_pin='x.x') }}\n  track_features:\n    - petsc_complex  # [scalar == \"complex\"]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n    - pkg-config\n    - python\n    - gnuconfig   # [unix]\n    - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]\n  host:\n    - libblas\n    - libcblas\n    - liblapack\n    - cmake\n    - {{ mpi }}\n    - yaml\n    - hypre\n    - metis\n    - parmetis\n    - ptscotch\n    - scalapack\n    - superlu\n    - superlu_dist\n    - scotch\n    - mumps-mpi\n    - suitesparse\n    - hdf5\n    - fftw * mpi_{{ mpi }}_*\n  run:\n    - {{ mpi }}\n    - yaml\n    - hypre\n    - metis\n    - parmetis\n    - ptscotch\n    - scalapack\n    - superlu\n    - superlu_dist\n    - scotch\n    - mumps-mpi\n    - suitesparse\n    - hdf5\n    - fftw * mpi_{{ mpi }}_*\n\ntest:\n  requires:\n    - pkg-config\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n    - make\n  files:\n    - tests/ex1.c\n    - tests/ex1f.F90\n    - tests/makefile\n  commands:\n    - pkg-config --validate PETSc\n    - pkg-config --cflags PETSc\n    - pkg-config --libs PETSc\n\nabout:\n  home: https://www.mcs.anl.gov/petsc/\n  summary: 'PETSc: Portable, Extensible Toolkit for Scientific Computation'\n  license: BSD-2-Clause\n  license_file: LICENSE\n  license_family: BSD\n  dev_url: https://gitlab.com/petsc/petsc\n  doc_url: https://petsc.org/release/docs/manual/\n\nextra:\n  recipe-maintainers:\n    - jan-janssen\n    - dalcinl\n    - minrk\n    - davidbrochart\n    - SylvainCorlay\n    - martinRenou\n    - matthiasdiener\n",
  "req": {
