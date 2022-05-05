@@ -236,8 +236,17 @@
  "bad": false,
  "branch": "main",
  "conda-forge.yml": {
+  "build_platform": {
+   "linux_64": "linux_64",
+   "linux_aarch64": "linux_aarch64",
+   "osx_64": "osx_64",
+   "win_64": "win_64"
+  },
   "provider": {
-   "win": "azure"
+   "linux_64": "azure",
+   "linux_aarch64": "azure",
+   "osx_64": "azure",
+   "win_64": "azure"
   }
  },
  "feedstock_name": "dask-gateway",
@@ -254,41 +263,25 @@
    "summary": "A multi-tenant server for securely deploying and managing Dask clusters."
   },
   "build": {
-   "number": "2",
-   "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
-    "jcrist",
-    "jcrist",
-    "jcrist"
+    "martindurant",
+    "TomAugspurger"
    ]
   },
   "outputs": [
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
     },
     "name": "dask-gateway-server",
     "requirements": {
@@ -307,7 +300,6 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
       "dask-gateway-server --help",
@@ -319,90 +311,26 @@
     }
    },
    {
-    "build": null,
-    "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server"
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
      ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.local"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.jobqueue.slurm",
-      "dask_gateway_server.backends.jobqueue.pbs"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.yarn"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.kubernetes"
-     ]
-    }
-   },
-   {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
+    },
     "test": {
      "imports": [
       "dask_gateway"
@@ -410,125 +338,13 @@
     }
    },
    {
-    "build": {
-     "entry_points": [
-      "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
-    },
-    "name": "dask-gateway-server",
-    "requirements": {
-     "build": [
-      "go_compiler_stub"
-     ],
-     "host": [
-      "python",
-      "pip"
-     ],
-     "run": [
-      "python",
-      "aiohttp",
-      "colorlog",
-      "cryptography",
-      "traitlets"
-     ]
-    },
-    "script": "build-dask-gateway-server.sh",
-    "test": {
-     "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
-     ],
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.local"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.jobqueue.slurm",
-      "dask_gateway_server.backends.jobqueue.pbs"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.yarn"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.kubernetes"
-     ]
-    }
-   },
-   {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
     "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway"
@@ -536,48 +352,14 @@
     }
    },
    {
-    "build": {
-     "entry_points": [
-      "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
-    },
-    "name": "dask-gateway-server",
-    "requirements": {
-     "build": [
-      "go_compiler_stub"
-     ],
-     "host": [
-      "python",
-      "pip"
-     ],
-     "run": [
-      "python",
-      "aiohttp",
-      "colorlog",
-      "cryptography",
-      "traitlets"
-     ]
-    },
-    "script": "build-dask-gateway-server.sh",
-    "test": {
-     "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
-     ],
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
     "build": null,
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -587,11 +369,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -602,11 +385,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -618,138 +402,13 @@
    {
     "build": null,
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.yarn"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.kubernetes"
-     ]
-    }
-   },
-   {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
-    "build": {
-     "entry_points": [
-      "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
-    },
-    "name": "dask-gateway-server",
     "requirements": {
-     "build": [
-      "go_compiler_stub"
-     ],
-     "host": [
-      "python",
-      "pip"
-     ],
      "run": [
-      "python",
-      "aiohttp",
-      "colorlog",
-      "cryptography",
-      "traitlets"
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
-    "test": {
-     "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
-     ],
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.local"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.jobqueue.slurm",
-      "dask_gateway_server.backends.jobqueue.pbs"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -759,11 +418,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -773,49 +433,11 @@
   ],
   "package": {
    "name": "dask-gateway",
-   "version": "0.9.0"
-  },
-  "requirements": {
-   "host": [
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip"
-   ],
-   "run": [
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0"
-   ]
+   "version": "2022.4.0"
   },
   "source": {
-   "sha256": "de99927a7f2e97f53b4c0ab7a784fc36ccf5dba22fb1cb15c5bd7d29e5fe1990",
-   "url": "https://github.com/dask/dask-gateway/archive/0.9.0.tar.gz"
-  },
-  "test": {
-   "imports": [
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway"
-   ]
+   "sha256": "3c79b1458e5c52f8b875332a75c034a62bb1563b650eac14f4e9cea1a217e6e6",
+   "url": "https://github.com/dask/dask-gateway/archive/2022.4.0.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -836,6 +458,7 @@
    "__set__": true,
    "elements": [
     "aiohttp",
+    "click",
     "colorlog",
     "cryptography",
     "dask",
@@ -845,8 +468,556 @@
     "kubernetes_asyncio",
     "pykerberos",
     "python",
+    "pyyaml",
     "skein",
     "sqlalchemy",
+    "tornado",
+    "traitlets"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "description": "A multi-tenant server for securely deploying and managing Dask clusters.",
+   "dev_url": "http://github.com/dask/dask-gateway",
+   "doc_url": "https://gateway.dask.org",
+   "home": "http://github.com/dask/dask-gateway",
+   "license": "BSD-3-Clause",
+   "license_family": "BSD",
+   "license_file": "LICENSE",
+   "summary": "A multi-tenant server for securely deploying and managing Dask clusters."
+  },
+  "build": {
+   "number": "0"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "consideRatio",
+    "jacobtomlinson",
+    "jcrist",
+    "martindurant",
+    "TomAugspurger",
+    "consideRatio",
+    "jacobtomlinson",
+    "jcrist",
+    "martindurant",
+    "TomAugspurger",
+    "consideRatio",
+    "jacobtomlinson",
+    "jcrist",
+    "martindurant",
+    "TomAugspurger"
+   ]
+  },
+  "outputs": [
+   {
+    "build": {
+     "entry_points": [
+      "dask-gateway-server = dask_gateway_server.app:main",
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway-server",
+    "requirements": {
+     "build": [
+      "go_compiler_stub"
+     ],
+     "host": [
+      "python",
+      "pip"
+     ],
+     "run": [
+      "python",
+      "aiohttp",
+      "colorlog",
+      "cryptography",
+      "traitlets"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dask-gateway-server --help"
+     ],
+     "imports": [
+      "dask_gateway_server"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-local",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server",
+      "dask_gateway_server.backends.local"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-jobqueue",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server",
+      "dask_gateway_server.backends.jobqueue.slurm",
+      "dask_gateway_server.backends.jobqueue.pbs"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-yarn",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server.backends.yarn"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-kubernetes",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server.backends.kubernetes"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "dask-gateway-server = dask_gateway_server.app:main",
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway-server",
+    "requirements": {
+     "build": [
+      "go_compiler_stub"
+     ],
+     "host": [
+      "python",
+      "pip"
+     ],
+     "run": [
+      "python",
+      "aiohttp",
+      "colorlog",
+      "cryptography",
+      "traitlets"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dask-gateway-server --help"
+     ],
+     "imports": [
+      "dask_gateway_server"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-local",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server",
+      "dask_gateway_server.backends.local"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-jobqueue",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server",
+      "dask_gateway_server.backends.jobqueue.slurm",
+      "dask_gateway_server.backends.jobqueue.pbs"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-yarn",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server.backends.yarn"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-kubernetes",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server.backends.kubernetes"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "dask-gateway-server = dask_gateway_server.app:main",
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway-server",
+    "requirements": {
+     "build": [
+      "go_compiler_stub"
+     ],
+     "host": [
+      "python",
+      "pip"
+     ],
+     "run": [
+      "python",
+      "aiohttp",
+      "colorlog",
+      "cryptography",
+      "traitlets"
+     ]
+    },
+    "test": {
+     "commands": [
+      "dask-gateway-server --help"
+     ],
+     "imports": [
+      "dask_gateway_server"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-local",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server",
+      "dask_gateway_server.backends.local"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-jobqueue",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server",
+      "dask_gateway_server.backends.jobqueue.slurm",
+      "dask_gateway_server.backends.jobqueue.pbs"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-yarn",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server.backends.yarn"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "dask-gateway-server-kubernetes",
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway_server.backends.kubernetes"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "dask-gateway",
+   "version": "2022.4.0"
+  },
+  "source": {
+   "sha256": "3c79b1458e5c52f8b875332a75c034a62bb1563b650eac14f4e9cea1a217e6e6",
+   "url": "https://github.com/dask/dask-gateway/archive/2022.4.0.tar.gz"
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "go_compiler_stub"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "pip",
+    "python"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "aiohttp",
+    "click",
+    "colorlog",
+    "cryptography",
+    "dask",
+    "dask-gateway",
+    "dask-gateway-server",
+    "distributed",
+    "kubernetes_asyncio",
+    "pykerberos",
+    "python",
+    "pyyaml",
+    "skein",
+    "sqlalchemy",
+    "tornado",
     "traitlets"
    ]
   },
@@ -867,49 +1038,60 @@
    "summary": "A multi-tenant server for securely deploying and managing Dask clusters."
   },
   "build": {
-   "number": "2",
-   "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
+    "martindurant",
+    "TomAugspurger",
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
+    "martindurant",
+    "TomAugspurger",
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
+    "martindurant",
+    "TomAugspurger",
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
+    "martindurant",
+    "TomAugspurger",
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
+    "martindurant",
+    "TomAugspurger",
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
+    "martindurant",
+    "TomAugspurger",
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
+    "martindurant",
+    "TomAugspurger",
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
-    "jcrist",
-    "jcrist",
-    "jcrist",
-    "jcrist"
+    "martindurant",
+    "TomAugspurger"
    ]
   },
   "outputs": [
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
     },
     "name": "dask-gateway-server",
     "requirements": {
@@ -928,7 +1110,6 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
       "dask-gateway-server --help",
@@ -940,13 +1121,55 @@
     }
    },
    {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
     "build": null,
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -956,11 +1179,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -971,11 +1195,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -987,12 +1212,13 @@
    {
     "build": null,
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -1002,11 +1228,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -1014,28 +1241,12 @@
     }
    },
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
     },
     "name": "dask-gateway-server",
     "requirements": {
@@ -1054,11 +1265,9 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
+      "dask-gateway-server --help"
      ],
      "imports": [
       "dask_gateway_server"
@@ -1066,13 +1275,55 @@
     }
    },
    {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
     "build": null,
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -1082,11 +1333,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1097,11 +1349,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1113,12 +1366,13 @@
    {
     "build": null,
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -1128,11 +1382,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -1140,28 +1395,12 @@
     }
    },
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
     },
     "name": "dask-gateway-server",
     "requirements": {
@@ -1180,11 +1419,9 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
+      "dask-gateway-server --help"
      ],
      "imports": [
       "dask_gateway_server"
@@ -1192,13 +1429,55 @@
     }
    },
    {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
     "build": null,
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -1208,11 +1487,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1223,11 +1503,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1239,12 +1520,13 @@
    {
     "build": null,
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -1254,11 +1536,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -1266,28 +1549,12 @@
     }
    },
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
     },
     "name": "dask-gateway-server",
     "requirements": {
@@ -1306,11 +1573,9 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
+      "dask-gateway-server --help"
      ],
      "imports": [
       "dask_gateway_server"
@@ -1318,13 +1583,55 @@
     }
    },
    {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
     "build": null,
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -1334,11 +1641,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1349,11 +1657,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1365,12 +1674,13 @@
    {
     "build": null,
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -1380,11 +1690,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -1392,28 +1703,12 @@
     }
    },
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
     },
     "name": "dask-gateway-server",
     "requirements": {
@@ -1432,7 +1727,6 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
       "dask-gateway-server --help",
@@ -1444,13 +1738,55 @@
     }
    },
    {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
     "build": null,
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -1460,11 +1796,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1475,11 +1812,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1491,12 +1829,13 @@
    {
     "build": null,
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -1506,11 +1845,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -1518,28 +1858,12 @@
     }
    },
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
     },
     "name": "dask-gateway-server",
     "requirements": {
@@ -1558,7 +1882,6 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
       "dask-gateway-server --help",
@@ -1570,13 +1893,55 @@
     }
    },
    {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
     "build": null,
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -1586,11 +1951,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1601,11 +1967,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1617,12 +1984,13 @@
    {
     "build": null,
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -1632,11 +2000,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -1644,28 +2013,12 @@
     }
    },
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
     },
     "name": "dask-gateway-server",
     "requirements": {
@@ -1684,7 +2037,6 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
       "dask-gateway-server --help",
@@ -1696,13 +2048,55 @@
     }
    },
    {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
     "build": null,
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -1712,11 +2106,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1727,11 +2122,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -1743,12 +2139,13 @@
    {
     "build": null,
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -1758,11 +2155,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -1770,154 +2168,12 @@
     }
    },
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
-    },
-    "name": "dask-gateway-server",
-    "requirements": {
-     "build": [
-      "go_compiler_stub"
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
      ],
-     "host": [
-      "python",
-      "pip"
-     ],
-     "run": [
-      "python",
-      "aiohttp",
-      "colorlog",
-      "cryptography",
-      "traitlets"
-     ]
-    },
-    "script": "build-dask-gateway-server.sh",
-    "test": {
-     "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
-     ],
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.local"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.jobqueue.slurm",
-      "dask_gateway_server.backends.jobqueue.pbs"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.yarn"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.kubernetes"
-     ]
-    }
-   },
-   {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "winkerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
-    "build": {
-     "entry_points": [
-      "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps",
      "skip": true
     },
     "name": "dask-gateway-server",
@@ -1937,7 +2193,6 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
       "dask-gateway-server --help",
@@ -1950,99 +2205,39 @@
    },
    {
     "build": {
-     "skip": true
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
     },
-    "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
     "test": {
      "imports": [
-      "dask_gateway_server"
+      "dask_gateway"
      ]
     }
    },
    {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.local"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.jobqueue.slurm",
-      "dask_gateway_server.backends.jobqueue.pbs"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.yarn"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.kubernetes"
-     ]
-    }
-   },
-   {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
     "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "winkerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "winkerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway"
@@ -2051,50 +2246,15 @@
    },
    {
     "build": {
-     "entry_points": [
-      "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ],
-     "skip": true
-    },
-    "name": "dask-gateway-server",
-    "requirements": {
-     "build": [
-      "go_compiler_stub"
-     ],
-     "host": [
-      "python",
-      "pip"
-     ],
-     "run": [
-      "python",
-      "aiohttp",
-      "colorlog",
-      "cryptography",
-      "traitlets"
-     ]
-    },
-    "script": "build-dask-gateway-server.sh",
-    "test": {
-     "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
-     ],
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": {
      "skip": true
     },
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -2106,11 +2266,12 @@
      "skip": true
     },
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -2123,11 +2284,12 @@
      "skip": true
     },
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -2141,149 +2303,13 @@
      "skip": true
     },
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.yarn"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.kubernetes"
-     ]
-    }
-   },
-   {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "winkerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
-    "build": {
-     "entry_points": [
-      "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ],
-     "skip": true
-    },
-    "name": "dask-gateway-server",
     "requirements": {
-     "build": [
-      "go_compiler_stub"
-     ],
-     "host": [
-      "python",
-      "pip"
-     ],
      "run": [
-      "python",
-      "aiohttp",
-      "colorlog",
-      "cryptography",
-      "traitlets"
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
-    "test": {
-     "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
-     ],
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.local"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.jobqueue.slurm",
-      "dask_gateway_server.backends.jobqueue.pbs"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -2295,148 +2321,12 @@
      "skip": true
     },
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.kubernetes"
-     ]
-    }
-   },
-   {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "winkerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
-    "build": {
-     "entry_points": [
-      "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ],
-     "skip": true
-    },
-    "name": "dask-gateway-server",
     "requirements": {
-     "build": [
-      "go_compiler_stub"
-     ],
-     "host": [
-      "python",
-      "pip"
-     ],
      "run": [
-      "python",
-      "aiohttp",
-      "colorlog",
-      "cryptography",
-      "traitlets"
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
-    "test": {
-     "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
-     ],
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.local"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.jobqueue.slurm",
-      "dask_gateway_server.backends.jobqueue.pbs"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.yarn"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -2446,105 +2336,11 @@
   ],
   "package": {
    "name": "dask-gateway",
-   "version": "0.9.0"
-  },
-  "requirements": {
-   "host": [
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip"
-   ],
-   "run": [
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0"
-   ]
+   "version": "2022.4.0"
   },
   "source": {
-   "sha256": "de99927a7f2e97f53b4c0ab7a784fc36ccf5dba22fb1cb15c5bd7d29e5fe1990",
-   "url": "https://github.com/dask/dask-gateway/archive/0.9.0.tar.gz"
-  },
-  "test": {
-   "imports": [
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway"
-   ]
+   "sha256": "3c79b1458e5c52f8b875332a75c034a62bb1563b650eac14f4e9cea1a217e6e6",
+   "url": "https://github.com/dask/dask-gateway/archive/2022.4.0.tar.gz"
   }
  },
  "name": "dask-gateway",
@@ -2568,41 +2364,35 @@
    "summary": "A multi-tenant server for securely deploying and managing Dask clusters."
   },
   "build": {
-   "number": "2",
-   "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
+    "martindurant",
+    "TomAugspurger",
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
+    "martindurant",
+    "TomAugspurger",
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
-    "jcrist"
+    "martindurant",
+    "TomAugspurger"
    ]
   },
   "outputs": [
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
     },
     "name": "dask-gateway-server",
     "requirements": {
@@ -2621,7 +2411,6 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
       "dask-gateway-server --help",
@@ -2633,13 +2422,55 @@
     }
    },
    {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
     "build": null,
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -2649,11 +2480,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -2664,11 +2496,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -2680,12 +2513,13 @@
    {
     "build": null,
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -2695,11 +2529,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -2707,28 +2542,12 @@
     }
    },
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
     },
     "name": "dask-gateway-server",
     "requirements": {
@@ -2747,7 +2566,6 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
       "dask-gateway-server --help",
@@ -2759,13 +2577,55 @@
     }
    },
    {
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
+    "name": "dask-gateway-kerberos",
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "pykerberos"
+     ]
+    },
+    "test": {
+     "imports": [
+      "dask_gateway"
+     ]
+    }
+   },
+   {
     "build": null,
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -2775,11 +2635,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -2790,11 +2651,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -2806,12 +2668,13 @@
    {
     "build": null,
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -2821,11 +2684,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -2833,28 +2697,12 @@
     }
    },
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
+     ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps"
     },
     "name": "dask-gateway-server",
     "requirements": {
@@ -2873,7 +2721,6 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
       "dask-gateway-server --help",
@@ -2885,90 +2732,26 @@
     }
    },
    {
-    "build": null,
-    "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server"
+    "build": {
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+    },
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
      ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.local"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.jobqueue.slurm",
-      "dask_gateway_server.backends.jobqueue.pbs"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.yarn"
-     ]
-    }
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.kubernetes"
-     ]
-    }
-   },
-   {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "pykerberos"
-    ],
+    },
     "test": {
      "imports": [
       "dask_gateway"
@@ -2976,48 +2759,28 @@
     }
    },
    {
-    "build": {
-     "entry_points": [
-      "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ]
-    },
-    "name": "dask-gateway-server",
+    "name": "dask-gateway-kerberos",
     "requirements": {
-     "build": [
-      "go_compiler_stub"
-     ],
-     "host": [
-      "python",
-      "pip"
-     ],
      "run": [
-      "python",
-      "aiohttp",
-      "colorlog",
-      "cryptography",
-      "traitlets"
+      "dask-gateway 2022.4.0",
+      "pykerberos"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
-     "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
-     ],
      "imports": [
-      "dask_gateway_server"
+      "dask_gateway"
      ]
     }
    },
    {
     "build": null,
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -3027,11 +2790,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -3042,11 +2806,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -3058,12 +2823,13 @@
    {
     "build": null,
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -3073,11 +2839,12 @@
    {
     "build": null,
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -3087,49 +2854,11 @@
   ],
   "package": {
    "name": "dask-gateway",
-   "version": "0.9.0"
-  },
-  "requirements": {
-   "host": [
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip"
-   ],
-   "run": [
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0"
-   ]
+   "version": "2022.4.0"
   },
   "source": {
-   "sha256": "de99927a7f2e97f53b4c0ab7a784fc36ccf5dba22fb1cb15c5bd7d29e5fe1990",
-   "url": "https://github.com/dask/dask-gateway/archive/0.9.0.tar.gz"
-  },
-  "test": {
-   "imports": [
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway"
-   ]
+   "sha256": "3c79b1458e5c52f8b875332a75c034a62bb1563b650eac14f4e9cea1a217e6e6",
+   "url": "https://github.com/dask/dask-gateway/archive/2022.4.0.tar.gz"
   }
  },
  "osx_64_requirements": {
@@ -3150,6 +2879,7 @@
    "__set__": true,
    "elements": [
     "aiohttp",
+    "click",
     "colorlog",
     "cryptography",
     "dask",
@@ -3159,8 +2889,10 @@
     "kubernetes_asyncio",
     "pykerberos",
     "python",
+    "pyyaml",
     "skein",
     "sqlalchemy",
+    "tornado",
     "traitlets"
    ]
   },
@@ -3183,11 +2915,12 @@
   ]
  },
  "pinning_version": "2022.04.21.15.03.25",
- "raw_meta_yaml": "{% set name = \"dask-gateway\" %}\n{% set version = \"0.9.0\" %}\n\npackage:\n  version: {{ version }}\n  name: {{ name|lower }}\n\nsource:\n  url: https://github.com/dask/{{ name }}/archive/{{ version }}.tar.gz\n  sha256: de99927a7f2e97f53b4c0ab7a784fc36ccf5dba22fb1cb15c5bd7d29e5fe1990\n\n\nbuild:\n  number: 2\n  skip: true  # [py<36]\n  script: cd dask-gateway && python -m pip install . -vv --no-deps\n\nrequirements:\n  host:\n    - python\n    - pip\n  run:\n    - python\n    - aiohttp\n    - dask >=2.2.0\n    - distributed >=2.2.0\n\ntest:\n  imports:\n    - dask_gateway\n\noutputs:\n    # Core client package (full recipe is above)\n  - name: dask-gateway\n\n    # Client-side kerberos auth\n  - name: dask-gateway-kerberos\n    build:\n      skip: true  # [py<36]\n    requirements:\n      - python\n      - {{ pin_subpackage('dask-gateway', exact=True) }}\n      - pykerberos  # [osx or linux]\n      - winkerberos  # [win]\n    test:\n      imports:\n        - dask_gateway\n\n    # Core package, required dependencies only\n  - name: dask-gateway-server\n    # XXX: conda-build requires a file here for some reason, can't inline script\n    script: build-dask-gateway-server.sh\n    build:\n      skip: true  # [py<36 or win]\n      entry_points:\n        - dask-gateway-server = dask_gateway_server.app:main\n        - dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main\n    requirements:\n      build:\n        - {{ compiler('go') }}\n      host:\n        - python\n        - pip\n      run:\n        - python\n        - aiohttp\n        - colorlog\n        - cryptography\n        - traitlets\n\n    test:\n      imports:\n        - dask_gateway_server\n      commands:\n        - dask-gateway-server --help\n        - which dask-gateway-jobqueue-launcher\n\n    # Kerberos authentication\n  - name: dask-gateway-server-kerberos\n    build:\n      skip: true  # [py<36 or win]\n    requirements:\n      - python\n      - {{ pin_subpackage('dask-gateway-server', exact=True) }}\n      - pykerberos\n    test:\n      imports:\n        - dask_gateway_server\n\n    # Local backend\n  - name: dask-gateway-server-local\n    build:\n      skip: true  # [py<36 or win]\n    requirements:\n      - python\n      - {{ pin_subpackage('dask-gateway-server', exact=True) }}\n      - sqlalchemy\n    test:\n      imports:\n        - dask_gateway_server\n        - dask_gateway_server.backends.local\n\n    # Jobqueue backends\n  - name: dask-gateway-server-jobqueue\n    build:\n      skip: true  # [py<36 or win]\n    requirements:\n      - python\n      - {{ pin_subpackage('dask-gateway-server', exact=True) }}\n      - sqlalchemy\n    test:\n      imports:\n        - dask_gateway_server\n        - dask_gateway_server.backends.jobqueue.slurm\n        - dask_gateway_server.backends.jobqueue.pbs\n\n    # Hadoop/YARN backend\n  - name: dask-gateway-server-yarn\n    build:\n      skip: true  # [py<36 or win]\n    requirements:\n      - python\n      - {{ pin_subpackage('dask-gateway-server', exact=True) }}\n      - sqlalchemy\n      - skein >=0.7.3\n    test:\n      imports:\n        - dask_gateway_server.backends.yarn\n\n    # Kubernetes backend\n  - name: dask-gateway-server-kubernetes\n    build:\n      skip: true  # [py<36 or win]\n    requirements:\n      - python\n      - {{ pin_subpackage('dask-gateway-server', exact=True) }}\n      - kubernetes_asyncio\n    test:\n      imports:\n        - dask_gateway_server.backends.kubernetes\n\nabout:\n  home: http://github.com/dask/dask-gateway\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: A multi-tenant server for securely deploying and managing Dask clusters.\n  description: A multi-tenant server for securely deploying and managing Dask clusters.\n  doc_url: https://gateway.dask.org\n  dev_url: http://github.com/dask/dask-gateway\n\nextra:\n  recipe-maintainers:\n    - jcrist\n",
+ "raw_meta_yaml": "# meta.yaml is configuration for the tool conda-build.\n#\n# meta.yaml reference:\n# https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html\n#\n{% set name = \"dask-gateway\" %}\n{% set version = \"2022.4.0\" %}\n\n\n\n# Common configuration for dask-gateway and dask-gateway-server outputs\n# -----------------------------------------------------------------------------\npackage:\n  version: {{ version }}\n  name: {{ name|lower }}\n\nsource:\n  url: https://github.com/dask/{{ name }}/archive/{{ version }}.tar.gz\n  sha256: 3c79b1458e5c52f8b875332a75c034a62bb1563b650eac14f4e9cea1a217e6e6\n\nbuild:\n  number: 0\n\n\n\n# Specific configuration for outputs beyond the common configuration above\n# -----------------------------------------------------------------------------\noutputs:\n  # core package: server\n  - name: dask-gateway-server\n    build:\n      # dask-gateway-server don't support windows, dask-gateway does\n      #\n      skip: true  # [target_platform == 'win-64']\n      script: >-\n        cd dask-gateway-server &&\n        python -m pip install . -vv --no-deps\n      # entry_points below should match entry_points in setup.py:\n      # https://github.com/dask/dask-gateway/blob/main/dask-gateway-server/setup.py\n      #\n      entry_points:\n        - dask-gateway-server = dask_gateway_server.app:main\n        - dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main\n    requirements:\n      build:\n        # This jinja function expands to go-nocgo_<target-platform>, and that\n        # specific package will setup GOOS and GOARCH so that we compile for the\n        # right target architecture.\n        #\n        # For details about compiler(), see\n        # https://docs.conda.io/projects/conda-build/en/latest/resources/variants.html#extra-jinja2.\n        #\n        - {{ compiler('go') }}\n      host:\n        - python {{ python }}\n        - pip\n      run:\n        - python\n        # Requirements below should match content of requirements.txt:\n        # https://github.com/dask/dask-gateway/blob/main/dask-gateway-server/requirements.txt\n        #\n        - aiohttp\n        - colorlog\n        - cryptography\n        - traitlets\n    test:\n      imports:\n        - dask_gateway_server\n      commands:\n        - dask-gateway-server --help\n        # FIXME: For some reason, \"which dask-gateway-server\" errors even though\n        #        \"dask-gateway-server --help\" works in linux-aarch64\n        #        specifically.\n        #\n        #        Due to this, we have disabled the test below specifically for\n        #        linux-aarch64 but assume the package still is functional.\n        #\n        - which dask-gateway-jobqueue-launcher  # [target_platform != 'linux-aarch64']\n\n\n  # core package: client\n  - name: dask-gateway\n    build:\n      noarch: python\n      script: >-\n        cd dask-gateway &&\n        python -m pip install . -vv --no-deps\n    requirements:\n      host:\n        - python >=3.8\n        - pip\n      run:\n        - python >=3.8\n        # Requirements below should match content of requirements.txt:\n        # https://github.com/dask/dask-gateway/blob/main/dask-gateway/requirements.txt\n        #\n        - aiohttp\n        - click\n        - dask >=2.2.0\n        - distributed >=2021.01.1\n        - pyyaml\n        - tornado\n    test:\n      imports:\n        - dask_gateway\n\n\n\n  # client: kerberos authentication\n  - name: dask-gateway-kerberos\n    requirements:\n      run:\n        - dask-gateway {{ version }}\n        - pykerberos  # [target_platform != 'win-64']\n        - winkerberos  # [target_platform == 'win-64']\n    test:\n      imports:\n        - dask_gateway\n\n  # server: kerberos authentication\n  - name: dask-gateway-server-kerberos\n    build:\n      skip: true  # [target_platform == 'win-64']\n    requirements:\n      run:\n        - dask-gateway-server {{ version }}\n        - pykerberos\n    test:\n      imports:\n        - dask_gateway_server\n\n  # server: local backend\n  - name: dask-gateway-server-local\n    build:\n      skip: true  # [target_platform == 'win-64']\n    requirements:\n      run:\n        - dask-gateway-server {{ version }}\n        - sqlalchemy\n    test:\n      imports:\n        - dask_gateway_server\n        - dask_gateway_server.backends.local\n\n  # server: jobqueue backends\n  - name: dask-gateway-server-jobqueue\n    build:\n      skip: true  # [target_platform == 'win-64']\n    requirements:\n      run:\n        - dask-gateway-server {{ version }}\n        - sqlalchemy\n    test:\n      imports:\n        - dask_gateway_server\n        - dask_gateway_server.backends.jobqueue.slurm\n        - dask_gateway_server.backends.jobqueue.pbs\n\n  # server: hadoop yarn backend\n  - name: dask-gateway-server-yarn\n    build:\n      skip: true  # [target_platform == 'win-64']\n    requirements:\n      run:\n        - dask-gateway-server {{ version }}\n        - sqlalchemy\n        - skein >=0.7.3\n    test:\n      imports:\n        - dask_gateway_server.backends.yarn\n\n  # server: kubernetes backend\n  - name: dask-gateway-server-kubernetes\n    build:\n      skip: true  # [target_platform == 'win-64']\n    requirements:\n      run:\n        - dask-gateway-server {{ version }}\n        - kubernetes_asyncio\n    test:\n      imports:\n        - dask_gateway_server.backends.kubernetes\n\n\n\n\n# Additional information\n# -----------------------------------------------------------------------------\n\nabout:\n  home: http://github.com/dask/dask-gateway\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: A multi-tenant server for securely deploying and managing Dask clusters.\n  description: A multi-tenant server for securely deploying and managing Dask clusters.\n  doc_url: https://gateway.dask.org\n  dev_url: http://github.com/dask/dask-gateway\n\nextra:\n  # To add new maintainers, open an issue with a specific title as described in\n  # https://conda-forge.org/docs/maintainer/updating_pkgs.html#updating-the-maintainer-list\n  #\n  recipe-maintainers:\n    - consideRatio\n    - jacobtomlinson\n    - jcrist\n    - martindurant\n    - TomAugspurger\n",
  "req": {
   "__set__": true,
   "elements": [
    "aiohttp",
+   "click",
    "colorlog",
    "cryptography",
    "dask",
@@ -3199,8 +2932,10 @@
    "pip",
    "pykerberos",
    "python",
+   "pyyaml",
    "skein",
    "sqlalchemy",
+   "tornado",
    "traitlets",
    "winkerberos"
   ]
@@ -3223,6 +2958,7 @@
    "__set__": true,
    "elements": [
     "aiohttp",
+    "click",
     "colorlog",
     "cryptography",
     "dask",
@@ -3232,8 +2968,10 @@
     "kubernetes_asyncio",
     "pykerberos",
     "python",
+    "pyyaml",
     "skein",
     "sqlalchemy",
+    "tornado",
     "traitlets",
     "winkerberos"
    ]
@@ -3256,24 +2994,29 @@
    "__set__": true,
    "elements": [
     "pip",
-    "python"
+    "python",
+    "python >=3.8"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
     "aiohttp",
+    "click",
     "colorlog",
     "cryptography",
     "dask >=2.2.0",
-    "dask-gateway",
-    "dask-gateway-server",
-    "distributed >=2.2.0",
+    "dask-gateway 2022.4.0",
+    "dask-gateway-server 2022.4.0",
+    "distributed >=2021.01.1",
     "kubernetes_asyncio",
     "pykerberos",
     "python",
+    "python >=3.8",
+    "pyyaml",
     "skein >=0.7.3",
     "sqlalchemy",
+    "tornado",
     "traitlets",
     "winkerberos"
    ]
@@ -3283,8 +3026,8 @@
    "elements": []
   }
  },
- "url": "https://github.com/dask/dask-gateway/archive/0.9.0.tar.gz",
- "version": "0.9.0",
+ "url": "https://github.com/dask/dask-gateway/archive/2022.4.0.tar.gz",
+ "version": "2022.4.0",
  "win_64_meta_yaml": {
   "about": {
    "description": "A multi-tenant server for securely deploying and managing Dask clusters.",
@@ -3297,41 +3040,25 @@
    "summary": "A multi-tenant server for securely deploying and managing Dask clusters."
   },
   "build": {
-   "number": "2",
-   "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
+    "consideRatio",
+    "jacobtomlinson",
     "jcrist",
-    "jcrist",
-    "jcrist",
-    "jcrist"
+    "martindurant",
+    "TomAugspurger"
    ]
   },
   "outputs": [
    {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "winkerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
     "build": {
      "entry_points": [
       "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
+      "dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main"
      ],
+     "script": "cd dask-gateway-server && python -m pip install . -vv --no-deps",
      "skip": true
     },
     "name": "dask-gateway-server",
@@ -3351,7 +3078,6 @@
       "traitlets"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
     "test": {
      "commands": [
       "dask-gateway-server --help",
@@ -3364,99 +3090,39 @@
    },
    {
     "build": {
-     "skip": true
+     "noarch": "python",
+     "script": "cd dask-gateway && python -m pip install . -vv --no-deps"
     },
-    "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "name": "dask-gateway",
+    "requirements": {
+     "host": [
+      "python >=3.8",
+      "pip"
+     ],
+     "run": [
+      "python >=3.8",
+      "aiohttp",
+      "click",
+      "dask >=2.2.0",
+      "distributed >=2021.01.1",
+      "pyyaml",
+      "tornado"
+     ]
+    },
     "test": {
      "imports": [
-      "dask_gateway_server"
+      "dask_gateway"
      ]
     }
    },
    {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.local"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.jobqueue.slurm",
-      "dask_gateway_server.backends.jobqueue.pbs"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.yarn"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.kubernetes"
-     ]
-    }
-   },
-   {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
     "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "winkerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway 2022.4.0",
+      "winkerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway"
@@ -3465,50 +3131,15 @@
    },
    {
     "build": {
-     "entry_points": [
-      "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ],
-     "skip": true
-    },
-    "name": "dask-gateway-server",
-    "requirements": {
-     "build": [
-      "go_compiler_stub"
-     ],
-     "host": [
-      "python",
-      "pip"
-     ],
-     "run": [
-      "python",
-      "aiohttp",
-      "colorlog",
-      "cryptography",
-      "traitlets"
-     ]
-    },
-    "script": "build-dask-gateway-server.sh",
-    "test": {
-     "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
-     ],
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": {
      "skip": true
     },
     "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "pykerberos"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server"
@@ -3520,11 +3151,12 @@
      "skip": true
     },
     "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -3537,11 +3169,12 @@
      "skip": true
     },
     "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
+    "requirements": {
+     "run": [
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy"
+     ]
+    },
     "test": {
      "imports": [
       "dask_gateway_server",
@@ -3555,149 +3188,13 @@
      "skip": true
     },
     "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.yarn"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.kubernetes"
-     ]
-    }
-   },
-   {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "winkerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
-    "build": {
-     "entry_points": [
-      "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ],
-     "skip": true
-    },
-    "name": "dask-gateway-server",
     "requirements": {
-     "build": [
-      "go_compiler_stub"
-     ],
-     "host": [
-      "python",
-      "pip"
-     ],
      "run": [
-      "python",
-      "aiohttp",
-      "colorlog",
-      "cryptography",
-      "traitlets"
+      "dask-gateway-server 2022.4.0",
+      "sqlalchemy",
+      "skein >=0.7.3"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
-    "test": {
-     "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
-     ],
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.local"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.jobqueue.slurm",
-      "dask_gateway_server.backends.jobqueue.pbs"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
     "test": {
      "imports": [
       "dask_gateway_server.backends.yarn"
@@ -3709,148 +3206,12 @@
      "skip": true
     },
     "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.kubernetes"
-     ]
-    }
-   },
-   {
-    "name": "dask-gateway"
-   },
-   {
-    "build": null,
-    "name": "dask-gateway-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway",
-     "winkerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway"
-     ]
-    }
-   },
-   {
-    "build": {
-     "entry_points": [
-      "dask-gateway-server = dask_gateway_server.app:main",
-      "dask-gateway-jobqueue-launcher = dask_gateway_server.managers.jobqueue.launcher:main"
-     ],
-     "skip": true
-    },
-    "name": "dask-gateway-server",
     "requirements": {
-     "build": [
-      "go_compiler_stub"
-     ],
-     "host": [
-      "python",
-      "pip"
-     ],
      "run": [
-      "python",
-      "aiohttp",
-      "colorlog",
-      "cryptography",
-      "traitlets"
+      "dask-gateway-server 2022.4.0",
+      "kubernetes_asyncio"
      ]
     },
-    "script": "build-dask-gateway-server.sh",
-    "test": {
-     "commands": [
-      "dask-gateway-server --help",
-      "which dask-gateway-jobqueue-launcher"
-     ],
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-kerberos",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "pykerberos"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-local",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.local"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-jobqueue",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server",
-      "dask_gateway_server.backends.jobqueue.slurm",
-      "dask_gateway_server.backends.jobqueue.pbs"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-yarn",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "sqlalchemy",
-     "skein >=0.7.3"
-    ],
-    "test": {
-     "imports": [
-      "dask_gateway_server.backends.yarn"
-     ]
-    }
-   },
-   {
-    "build": {
-     "skip": true
-    },
-    "name": "dask-gateway-server-kubernetes",
-    "requirements": [
-     "python",
-     "dask-gateway-server",
-     "kubernetes_asyncio"
-    ],
     "test": {
      "imports": [
       "dask_gateway_server.backends.kubernetes"
@@ -3860,49 +3221,11 @@
   ],
   "package": {
    "name": "dask-gateway",
-   "version": "0.9.0"
-  },
-  "requirements": {
-   "host": [
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip",
-    "python",
-    "pip"
-   ],
-   "run": [
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0",
-    "python",
-    "aiohttp",
-    "dask >=2.2.0",
-    "distributed >=2.2.0"
-   ]
+   "version": "2022.4.0"
   },
   "source": {
-   "sha256": "de99927a7f2e97f53b4c0ab7a784fc36ccf5dba22fb1cb15c5bd7d29e5fe1990",
-   "url": "https://github.com/dask/dask-gateway/archive/0.9.0.tar.gz"
-  },
-  "test": {
-   "imports": [
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway",
-    "dask_gateway"
-   ]
+   "sha256": "3c79b1458e5c52f8b875332a75c034a62bb1563b650eac14f4e9cea1a217e6e6",
+   "url": "https://github.com/dask/dask-gateway/archive/2022.4.0.tar.gz"
   }
  },
  "win_64_requirements": {
@@ -3923,6 +3246,7 @@
    "__set__": true,
    "elements": [
     "aiohttp",
+    "click",
     "colorlog",
     "cryptography",
     "dask",
@@ -3932,8 +3256,10 @@
     "kubernetes_asyncio",
     "pykerberos",
     "python",
+    "pyyaml",
     "skein",
     "sqlalchemy",
+    "tornado",
     "traitlets",
     "winkerberos"
    ]
