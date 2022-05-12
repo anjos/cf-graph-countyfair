@@ -137,6 +137,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/935135806.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "6_24_01"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -470,14 +487,15 @@
   }
  },
  "name": "tcsh",
- "new_version": "6_24_00",
+ "new_version": "6_24_01",
  "new_version_attempts": {
   "6_22_03": 1,
   "6_22_04": 1,
   "6_23_00": 1,
   "6_23_01": 1,
   "6_23_02": 1,
-  "6_24_00": 1
+  "6_24_00": 1,
+  "6_24_01": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -637,7 +655,7 @@
    "tcsh"
   ]
  },
- "pinning_version": "2022.02.02.01.33.58",
+ "pinning_version": "2022.05.12.13.19.50",
  "raw_meta_yaml": "{% set name = \"tcsh\" %}\n{% set version = \"6_24_00\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version | replace(\"_\", \".\") }}\n\nsource:\n  url: https://github.com/tcsh-org/tcsh/archive/TCSH{{ version }}.tar.gz\n  sha256: a9ad7e2725b64d3ef953aac86096561e18827a9ce9b27f59d5f6e1e1b00829c9\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  script:\n    # tcsh does NOT recognize arm64 and expect arm\n    # this sed call just edits the config.sub file to\n    # replace all mentions of arm to arm64 and thus faking it to pass\n    # however, this also leads to a version: unknown-apple-darwin in test\n    # but, we don't test that... we should probably file an issue upstream...\n    # issue upstream: https://github.com/tcsh-org/tcsh/issues/46\n    - sed -i -e 's/arm/arm64/g' config.sub  # [osx and arm64]\n    - ./configure --prefix={{ PREFIX }}\n    - make\n    - make install\n    - make install.man\n\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - make\n  host:\n    - ncurses\n  run:\n    - ncurses\n\ntest:\n  commands:\n    - tcsh --version\n\nabout:\n  home: https://web.archive.org/web/20100212221424/http://www.tcsh.org/Home\n  license: BSD-3-Clause\n  license_file: Copyright\n  summary: tcsh shell is an enhanced but completely compatible version of the Berkeley UNIX C shell\n  description: |\n    Tcsh is a version of the Berkeley C-Shell, with the addition of a \n    command line editor, command and file name completion, listing, etc.\n    and a bunch of small additions to the shell itself.\n  doc_url: https://web.archive.org/web/20100216160602/http://www.tcsh.org/tcsh.html/top.html\n  dev_url: http://github.com/tcsh-org/tcsh\n\nextra:\n  recipe-maintainers:\n    - bernt-matthias\n",
  "req": {
   "__set__": true,
@@ -674,7 +692,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.16.2",
+ "smithy_version": "3.19.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
