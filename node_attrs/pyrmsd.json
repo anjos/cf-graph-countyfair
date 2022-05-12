@@ -37,6 +37,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/934333182.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "4.3.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -995,7 +1012,11 @@
   }
  },
  "name": "pyrmsd",
- "new_version": "4.3.0",
+ "new_version": "4.3.1",
+ "new_version_attempts": {
+  "4.3.1": 1
+ },
+ "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
    "description": "pyRMSD is a small Python package that aims to offer an integrative\nand efficient way of performing RMSD calculations of large sets of\nstructures. It is specially tuned to do fast collective RMSD\ncalculations, as pairwise RMSD matrices.\n\nNote that this package does not currently include any CUDA calculators.\n\nSee [the pyRMSD website](https://github.com/salilab/pyRMSD)\nand the [publication](https://doi.org/10.1093/bioinformatics/btt402)\nfor more details.\n",
@@ -1327,7 +1348,7 @@
    "pyrmsd"
   ]
  },
- "pinning_version": "2022.05.03.00.24.50",
+ "pinning_version": "2022.05.12.00.18.15",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"pyrmsd\" %}\n{% set version = \"4.3.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/salilab/pyRMSD/archive/v{{ version }}.tar.gz\n  sha256: 7d3b892e4b6f62f2d1af831eddb597a2066d11a3b6c5c93c1a996d5fb3a9d9bf\n  patches:\n    - msvc-compile.patch  # [win]\n    - cxx11-narrowing.patch\n    - eigenval-overrun.patch\n\nbuild:\n  script: {{ PYTHON }} -m pip install . -vv\n  number: 3\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - numpy                                  # [build_platform != target_platform]\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - llvm-openmp   # [osx]\n    - libgomp       # [linux]\n  host:\n    - pip\n    - python\n    - numpy\n  run:\n    - python\n    - {{ pin_compatible('numpy') }}\n\ntest:\n  source_files:\n    - src/calculators/test/\n    - pyRMSD/test/\n  imports:\n    - pyRMSD.RMSDCalculator\n    - pyRMSD.availableCalculators\n    - pyRMSD.matrixHandler\n    - pyRMSD.utils.proteinReading\n  commands:\n    - pip check\n  requires:\n    - pip\n\nabout:\n  home: https://github.com/salilab/pyRMSD\n  summary: Efficiently calculate RMSDs for large structure sets\n  license: MIT\n  license_file: LICENSE\n  description: |\n    pyRMSD is a small Python package that aims to offer an integrative\n    and efficient way of performing RMSD calculations of large sets of\n    structures. It is specially tuned to do fast collective RMSD\n    calculations, as pairwise RMSD matrices.\n\n    Note that this package does not currently include any CUDA calculators.\n\n    See [the pyRMSD website](https://github.com/salilab/pyRMSD)\n    and the [publication](https://doi.org/10.1093/bioinformatics/btt402)\n    for more details.\n  dev_url: https://github.com/salilab/pyRMSD\n\nextra:\n  recipe-maintainers:\n    - benmwebb\n",
