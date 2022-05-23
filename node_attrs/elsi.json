@@ -67,6 +67,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/944688931.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.9.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -808,10 +825,11 @@
   }
  },
  "name": "elsi",
- "new_version": "2.9.0",
+ "new_version": "2.9.1",
  "new_version_attempts": {
   "2.8.2": 1,
-  "2.9.0": 1
+  "2.9.0": 1,
+  "2.9.1": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -968,7 +986,7 @@
    "elsi"
   ]
  },
- "pinning_version": "2022.01.17.22.01.08",
+ "pinning_version": "2022.05.23.12.37.52",
  "raw_meta_yaml": "{% set name = \"elsi\" %}\n{% set version = \"2.9.0\" %}\n{% set build = 0 %}\n{% set mpi = mpi or \"mpich\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://gitlab.com/elsi_project/elsi_interface/-/archive/v{{ version }}/elsi_interface-v{{ version }}.tar.gz\n  sha256: 90124afd398bc30ab22eec36c48b85a3dcc29a19ab1e1ec231368c132fd36442\n\nbuild:\n  number: {{ build }}\n  skip: true  # [win]\n\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  string: \"{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\"\n\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }} {{ mpi_prefix }}_*\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}\n    - cmake\n    - ninja\n    - pkg-config\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  host:\n    - {{ mpi }}\n    - libomm * {{ mpi_prefix }}_*\n    - matrixswitch * {{ mpi_prefix }}_*\n    - elpa * {{ mpi_prefix }}_*\n    - ntpoly * {{ mpi_prefix }}_*\n    - scalapack\n    - libblas\n    - liblapack\n  run:\n    - {{ mpi }}\n    - libomm * {{ mpi_prefix }}_*\n    - matrixswitch * {{ mpi_prefix }}_*\n    - elpa * {{ mpi_prefix }}_*\n    - ntpoly * {{ mpi_prefix }}_*\n    - scalapack\n\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config {{ name }} --exact-version {{ version }}\n    - test -f $PREFIX/include/{{ name }}.h\n    - test -f $PREFIX/include/{{ name }}.mod\n    - test -f $PREFIX/lib/lib{{ name }}${SHLIB_EXT}\n\nabout:\n  home: https://wordpress.elsi-interchange.org/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file:\n    - LICENSE\n    # FortJSON is BSD-3-Clause, but developed by the ELSI team\n    # https://gitlab.com/elsi_project/elsi_interface/-/issues/52\n    - external/FortJSON/LICENSE\n  summary: >-\n    Unified software interface designed for electronic structure codes to connect\n    with various high-performance eigensolvers and density matrix solvers.\n  dev_url: https://gitlab.com/elsi_project/elsi_interface\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n    - volkerblum\n",
  "req": {
   "__set__": true,
@@ -1045,7 +1063,7 @@
    ]
   }
  },
- "smithy_version": "3.16.1",
+ "smithy_version": "3.19.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
