@@ -1,27 +1,27 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/72551607-c3ca-4c7d-943f-7e06f70369b6.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python310"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  }
+ ],
  "archived": false,
- "bad": {
-  "exception": "404 {\"message\": \"Not Found\", \"documentation_url\": \"https://docs.github.com/rest/reference/repos#get-a-repository\"}",
-  "traceback": [
-   "Traceback (most recent call last):",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1147, in _run_migrator",
-   "    migrator_uid, pr_json = run(",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 209, in run",
-   "    feedstock_dir, repo = get_repo(",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 306, in get_repo",
-   "    _sync_default_branches(",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 329, in _sync_default_branches",
-   "    forked_default_branch = gh.get_repo(f\"{forked_user}/{reponame}\").default_branch",
-   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/github/MainClass.py\", line 330, in get_repo",
-   "    headers, data = self.__requester.requestJsonAndCheck(\"GET\", url)",
-   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/github/Requester.py\", line 353, in requestJsonAndCheck",
-   "    return self.__check(",
-   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/github/Requester.py\", line 378, in __check",
-   "    raise self.__createException(status, responseHeaders, output)",
-   "github.GithubException.UnknownObjectException: 404 {\"message\": \"Not Found\", \"documentation_url\": \"https://docs.github.com/rest/reference/repos#get-a-repository\"}",
-   ""
-  ]
- },
+ "bad": false,
  "branch": "main",
  "conda-forge.yml": {},
  "feedstock_name": "fenics-basix",
@@ -471,12 +471,9 @@
    "fenics-libbasix"
   ]
  },
- "pre_pr_migrator_attempts": {
-  "python310": 1
- },
- "pre_pr_migrator_status": {
-  "python310": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2429872551\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1147, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 209, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 306, in get_repo\n    _sync_default_branches(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 329, in _sync_default_branches\n    forked_default_branch = gh.get_repo(f\"{forked_user}/{reponame}\").default_branch\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/github/MainClass.py\", line 330, in get_repo\n    headers, data = self.__requester.requestJsonAndCheck(\"GET\", url)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/github/Requester.py\", line 353, in requestJsonAndCheck\n    return self.__check(\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/github/Requester.py\", line 378, in __check\n    raise self.__createException(status, responseHeaders, output)\ngithub.GithubException.UnknownObjectException: 404 {\"message\": \"Not Found\", \"documentation_url\": \"https://docs.github.com/rest/reference/repos#get-a-repository\"}\n"
- },
+ "pinning_version": "2022.06.02.10.52.40",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"fenics-basix\" %}\n{% set version = \"0.4.2\" %}\n\npackage:\n  name: {{ name|lower }}-meta\n  version: {{ version }}\n\nsource:\n  url: https://github.com/fenics/basix/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: a54f5e442b7cbf3dbb6319c682f9161272557bd7f42e2b8b8ccef88bc1b7a22f\n\nbuild:\n  skip: true  # [win]\n  number: 2\n\noutputs:\n  - name: fenics-libbasix\n    script: build-libbasix.sh\n    build:\n      run_exports:\n        - {{ pin_subpackage(\"fenics-libbasix\", max_pin=\"x.x.x\") }}\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make\n        - pkg-config\n      host:\n        - libblas\n        - libcblas\n        - liblapack\n        - xtensor\n    test:\n      commands:\n        - test -f $PREFIX/lib/libbasix${SHLIB_EXT}\n  - name: fenics-basix\n    script: build-basix-py.sh\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make\n        - pkg-config\n      host:\n        - python\n        - pip\n        - pybind11\n        - xtensor\n        - {{ pin_subpackage('fenics-libbasix', exact=True) }}\n      run:\n        - python\n        - {{ pin_subpackage('fenics-libbasix', exact=True) }}\n        - numpy\n    test:\n      requires:\n        - pytest\n        - pytest-xdist\n      source_files:\n        - test\n      imports:\n        - basix\n      commands:\n        - pytest -v test/test_create.py\n\n\nabout:\n  home: https://fenicsproject.org\n  summary: Basix is a finite element definition and tabulation runtime library\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  doc_url: https://docs.fenicsproject.org/basix/main/\n  dev_url: https://github.com/fenics/basix\n\nextra:\n  feedstock-name: fenics-basix\n  recipe-maintainers:\n    - minrk\n",
  "req": {
   "__set__": true,
@@ -537,6 +534,7 @@
    ]
   }
  },
+ "smithy_version": "3.20.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
