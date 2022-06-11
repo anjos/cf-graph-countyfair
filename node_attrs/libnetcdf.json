@@ -341,6 +341,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/964666315.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "4.9.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1623,7 +1640,8 @@
  "new_version": "4.9.0",
  "new_version_attempts": {
   "4.8.0": 1,
-  "4.8.1": 1
+  "4.8.1": 1,
+  "4.9.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -2046,7 +2064,7 @@
    "libnetcdf"
   ]
  },
- "pinning_version": "2021.08.30.12.31.33",
+ "pinning_version": "2022.06.10.18.09.10",
  "raw_meta_yaml": "{% set version = \"4.8.1\" %}\n{% set build = 2 %}\n\n# recipe-lint fails if mpi is undefined\n{% set mpi = mpi or 'nompi' %}\n{% if mpi == \"nompi\" %}\n# prioritize nompi via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: libnetcdf\n  version: {{ version }}\n\nsource:\n  url: https://github.com/Unidata/netcdf-c/archive/v{{ version }}.tar.gz\n  sha256: bc018cc30d5da402622bf76462480664c6668b55eb16ba205a0dfb8647161dd0\n  patches:\n    - patches/0004-Prefer-getenv-TOPSRCDIR-over-STRINGIFY-TOPSRCDIR.patch\n    - patches/0006-Fix-tests-for-Windows-VS2008-define-__func__-as-__FU.patch\n    - patches/0008-Finish-the-missing-code-to-handle-VS-in-test_common..patch\n    - patches/0009-topsrcdir.patch\n    - patches/prevent_MS_runtime_libs_being_installed_again.patch  # [win]\n    - patches/strdup.patch\n    - patches/do_not_use_16_processes_in_tests.patch  # [ppc64le]\n    # Revert upstream change in 4.8.1--maybe unnecessary in 4.8.2\n    - patches/fix_cmake.patch  # [win]\n    # Fix renaming file with multiple builds--will be in 4.8.2\n    - patches/fix-rename.patch\n\nbuild:\n  number: {{ build }}\n  skip: true  # [win and vc<14]\n  {% if mpi != \"nompi\" %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  # add build string so packages can depend on\n  # mpi or nompi variants\n  # dependencies:\n  # `PKG_NAME * mpi_mpich_*` for mpich\n  # `PKG_NAME * mpi_*` for any mpi\n  # `PKG_NAME * nompi_*` for no mpi\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\n  # mpi builds require the right mpi\n  # non-mpi builds *do not* appear to require non-mpi builds\n  # at least not always\n\n  {% if mpi != 'nompi' %}\n  {% set build_pin = mpi_prefix + '_*' %}\n  {% else %}\n  {% set build_pin = '' %}\n  {% endif %}\n\n  run_exports:\n    #   https://abi-laboratory.pro/tracker/timeline/netcdf/\n    - {{ pin_subpackage('libnetcdf', max_pin='x.x.x.x') }} {{ build_pin }}\n\nrequirements:\n  build:\n    - cmake\n    - make  # [not win]\n    - pkg-config  # [not win]\n    - gnuconfig  # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]\n    - unzip  # [not win]\n    - m2-unzip  # [win]\n  host:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - msinttypes  # [win and vc<14]\n    - bzip2\n    - curl\n    - zlib\n    - hdf4\n    # without this repeat reference, conda-smithy doesn't pin correctly\n    - hdf5\n    - hdf5 * {{ mpi_prefix }}_*\n    - jpeg\n    - libzip\n  run:\n    - {{ mpi }}  # [mpi != 'nompi']\n    - bzip2\n    - curl\n    - zlib\n    - hdf4\n    - hdf5 * {{ mpi_prefix }}_*\n    - jpeg\n    - libzip\n    # Curl should be pulling this... Investigate it later.\n    - libssh2  # [win]\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libnetcdf.a  # [not win]\n    - test -f ${PREFIX}/lib/libnetcdf${SHLIB_EXT}  # [not win]\n    - nc-config --all  # [not win]\n\nabout:\n  home: http://www.unidata.ucar.edu/software/netcdf/\n  license: MIT\n  license_file: COPYRIGHT\n  summary: Libraries and data formats that support array-oriented scientific data\n\nextra:\n  recipe-maintainers:\n    - groutr\n    - kmuehlbauer\n    - ocefpaf\n    - mingwandroid\n    - msarahan\n    - xylar\n    - dopplershift\n",
  "req": {
   "__set__": true,
@@ -2123,7 +2141,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.12",
+ "smithy_version": "3.20.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
