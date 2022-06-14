@@ -230,6 +230,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/966384060.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2022.6.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -2349,7 +2366,8 @@
   "0.7.0": 1,
   "0.7.1": 1,
   "0.8.0": 1,
-  "2022.4.0": 1
+  "2022.4.0": 1,
+  "2022.6.1": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -2914,7 +2932,7 @@
    "dask-gateway-server-yarn"
   ]
  },
- "pinning_version": "2022.04.21.15.03.25",
+ "pinning_version": "2022.06.13.22.29.59",
  "raw_meta_yaml": "# meta.yaml is configuration for the tool conda-build.\n#\n# meta.yaml reference:\n# https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html\n#\n{% set name = \"dask-gateway\" %}\n{% set version = \"2022.4.0\" %}\n\n\n\n# Common configuration for dask-gateway and dask-gateway-server outputs\n# -----------------------------------------------------------------------------\npackage:\n  version: {{ version }}\n  name: {{ name|lower }}\n\nsource:\n  url: https://github.com/dask/{{ name }}/archive/{{ version }}.tar.gz\n  sha256: 3c79b1458e5c52f8b875332a75c034a62bb1563b650eac14f4e9cea1a217e6e6\n\nbuild:\n  number: 0\n\n\n\n# Specific configuration for outputs beyond the common configuration above\n# -----------------------------------------------------------------------------\noutputs:\n  # core package: server\n  - name: dask-gateway-server\n    build:\n      # dask-gateway-server don't support windows, dask-gateway does\n      #\n      skip: true  # [target_platform == 'win-64']\n      script: >-\n        cd dask-gateway-server &&\n        python -m pip install . -vv --no-deps\n      # entry_points below should match entry_points in setup.py:\n      # https://github.com/dask/dask-gateway/blob/main/dask-gateway-server/setup.py\n      #\n      entry_points:\n        - dask-gateway-server = dask_gateway_server.app:main\n        - dask-gateway-jobqueue-launcher = dask_gateway_server.backends.jobqueue.launcher:main\n    requirements:\n      build:\n        # This jinja function expands to go-nocgo_<target-platform>, and that\n        # specific package will setup GOOS and GOARCH so that we compile for the\n        # right target architecture.\n        #\n        # For details about compiler(), see\n        # https://docs.conda.io/projects/conda-build/en/latest/resources/variants.html#extra-jinja2.\n        #\n        - {{ compiler('go') }}\n      host:\n        - python {{ python }}\n        - pip\n      run:\n        - python\n        # Requirements below should match content of requirements.txt:\n        # https://github.com/dask/dask-gateway/blob/main/dask-gateway-server/requirements.txt\n        #\n        - aiohttp\n        - colorlog\n        - cryptography\n        - traitlets\n    test:\n      imports:\n        - dask_gateway_server\n      commands:\n        - dask-gateway-server --help\n        # FIXME: For some reason, \"which dask-gateway-server\" errors even though\n        #        \"dask-gateway-server --help\" works in linux-aarch64\n        #        specifically.\n        #\n        #        Due to this, we have disabled the test below specifically for\n        #        linux-aarch64 but assume the package still is functional.\n        #\n        - which dask-gateway-jobqueue-launcher  # [target_platform != 'linux-aarch64']\n\n\n  # core package: client\n  - name: dask-gateway\n    build:\n      noarch: python\n      script: >-\n        cd dask-gateway &&\n        python -m pip install . -vv --no-deps\n    requirements:\n      host:\n        - python >=3.8\n        - pip\n      run:\n        - python >=3.8\n        # Requirements below should match content of requirements.txt:\n        # https://github.com/dask/dask-gateway/blob/main/dask-gateway/requirements.txt\n        #\n        - aiohttp\n        - click\n        - dask >=2.2.0\n        - distributed >=2021.01.1\n        - pyyaml\n        - tornado\n    test:\n      imports:\n        - dask_gateway\n\n\n\n  # client: kerberos authentication\n  - name: dask-gateway-kerberos\n    requirements:\n      run:\n        - dask-gateway {{ version }}\n        - pykerberos  # [target_platform != 'win-64']\n        - winkerberos  # [target_platform == 'win-64']\n    test:\n      imports:\n        - dask_gateway\n\n  # server: kerberos authentication\n  - name: dask-gateway-server-kerberos\n    build:\n      skip: true  # [target_platform == 'win-64']\n    requirements:\n      run:\n        - dask-gateway-server {{ version }}\n        - pykerberos\n    test:\n      imports:\n        - dask_gateway_server\n\n  # server: local backend\n  - name: dask-gateway-server-local\n    build:\n      skip: true  # [target_platform == 'win-64']\n    requirements:\n      run:\n        - dask-gateway-server {{ version }}\n        - sqlalchemy\n    test:\n      imports:\n        - dask_gateway_server\n        - dask_gateway_server.backends.local\n\n  # server: jobqueue backends\n  - name: dask-gateway-server-jobqueue\n    build:\n      skip: true  # [target_platform == 'win-64']\n    requirements:\n      run:\n        - dask-gateway-server {{ version }}\n        - sqlalchemy\n    test:\n      imports:\n        - dask_gateway_server\n        - dask_gateway_server.backends.jobqueue.slurm\n        - dask_gateway_server.backends.jobqueue.pbs\n\n  # server: hadoop yarn backend\n  - name: dask-gateway-server-yarn\n    build:\n      skip: true  # [target_platform == 'win-64']\n    requirements:\n      run:\n        - dask-gateway-server {{ version }}\n        - sqlalchemy\n        - skein >=0.7.3\n    test:\n      imports:\n        - dask_gateway_server.backends.yarn\n\n  # server: kubernetes backend\n  - name: dask-gateway-server-kubernetes\n    build:\n      skip: true  # [target_platform == 'win-64']\n    requirements:\n      run:\n        - dask-gateway-server {{ version }}\n        - kubernetes_asyncio\n    test:\n      imports:\n        - dask_gateway_server.backends.kubernetes\n\n\n\n\n# Additional information\n# -----------------------------------------------------------------------------\n\nabout:\n  home: http://github.com/dask/dask-gateway\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: A multi-tenant server for securely deploying and managing Dask clusters.\n  description: A multi-tenant server for securely deploying and managing Dask clusters.\n  doc_url: https://gateway.dask.org\n  dev_url: http://github.com/dask/dask-gateway\n\nextra:\n  # To add new maintainers, open an issue with a specific title as described in\n  # https://conda-forge.org/docs/maintainer/updating_pkgs.html#updating-the-maintainer-list\n  #\n  recipe-maintainers:\n    - consideRatio\n    - jacobtomlinson\n    - jcrist\n    - martindurant\n    - TomAugspurger\n",
  "req": {
   "__set__": true,
@@ -2981,7 +2999,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.19.0",
+ "smithy_version": "3.20.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
