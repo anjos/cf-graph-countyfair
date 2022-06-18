@@ -18,6 +18,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/971122199.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.3.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -987,14 +1004,18 @@
   }
  },
  "name": "openmm-atmmetaforce-plugin",
- "new_version": "0.2.4.2",
+ "new_version": "0.3.0",
+ "new_version_attempts": {
+  "0.3.0": 1
+ },
+ "new_version_errors": {},
  "outputs_names": {
   "__set__": true,
   "elements": [
    "openmm-atmmetaforce-plugin"
   ]
  },
- "pinning_version": "2022.06.15.16.25.59",
+ "pinning_version": "2022.06.17.10.28.32",
  "raw_meta_yaml": "{% set name = \"openmm-atmmetaforce-plugin\" %}\n{% set version = \"0.2.4.2\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/Gallicchio-Lab/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: e966b51b7d6935c97813c31d59e85499434b276a8f77f510984eb26dd1b7be09\n\nbuild:\n  number: 1\n  skip: true  # [not linux64]\n  skip: true  # [cuda_compiler_version in (undefined, 'None')]\n  run_exports:\n    # TODO: Relax max_pin at version 1.0 / stable API\n    - {{ pin_subpackage(name, max_pin='x.x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}  # [linux]\n    - cmake\n    - swig\n\n  host:\n    - python\n    - openmm\n    - pthread-stubs\n    - lxml\n    \n  run:\n    - python\n    - numpy\n    # openmm package is missing a run_export as of 9 June 2022\n    - {{ pin_compatible('openmm') }}\n\ntest:\n  requires:\n    - pocl  # [unix]\n    - pip\n  imports:\n    - simtk\n    - openmm\n    - numpy\n  commands:\n    - pip check\n    - test -f $PREFIX/lib/plugins/libATMMetaForcePluginCUDA$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/lib/plugins/libATMMetaForcePluginOpenCL$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/lib/plugins/libATMMetaForcePluginReference$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/include/ATMMetaForce.h  # [unix]\n    - test -f $PREFIX/include/internal/ATMMetaForceImpl.h  # [unix]\n\nabout:\n  home: https://github.com/Gallicchio-Lab/openmm-atmmetaforce-plugin.git\n  license: LGPL-2.0-only\n  license_family: LGPL\n  license_file:\n    - LICENSE\n  summary: The Alchemical Transfer Method Plugin for OpenMM\n  description: |\n     This plugin implements the Alchemical Transfer Potential (ATM) for the calculation\n     of absolute and relative binding free energies of molecular complexes\n     in OpenMM, a high performance toolkit for molecular simulation.\n  doc_url: https://github.com/Gallicchio-Lab/async_re-openmm/tree/master/examples\n  dev_url: https://github.com/Gallicchio-Lab/openmm-atmmetaforce-plugin.git\n\nextra:\n  recipe-maintainers:\n    - egallicc\n",
  "req": {
   "__set__": true,
