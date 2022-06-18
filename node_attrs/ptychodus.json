@@ -1,4 +1,23 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/971314233.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.2.2"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "branch": "main",
@@ -286,7 +305,11 @@
   }
  },
  "name": "ptychodus",
- "new_version": "0.2.1",
+ "new_version": "0.2.2",
+ "new_version_attempts": {
+  "0.2.2": 1
+ },
+ "new_version_errors": {},
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -295,6 +318,7 @@
    "ptychodus-core"
   ]
  },
+ "pinning_version": "2022.06.18.07.34.24",
  "raw_meta_yaml": "{% set name = \"ptychodus\" %}\n{% set version = \"0.2.1\" %}\n\npackage:\n  name: ptychodus\n  version: {{ version }}\n\nsource:\n  url: https://github.com/AdvancedPhotonSource/ptychodus/archive/v{{ version }}.tar.gz\n  sha256: 90a3f2e0692c762e7836047e397026f8abfb3884eb4c3866645dc289f951658c\n\nbuild:\n  number: 0\n\noutputs:\n  # all optional packages\n  - name: ptychodus-all\n\n    build:\n      noarch: generic\n\n    requirements:\n      run:\n        - {{ pin_subpackage('ptychodus', exact=True) }}\n        - tike\n\n    test:\n      # no import test because tike imports cupy\n      requires:\n        - pip\n      commands:\n        - pip check\n      # no CLI test because tike imports cupy\n\n  # with QT\n  - name: ptychodus\n\n    build:\n      noarch: generic\n\n    requirements:\n      run:\n        - {{ pin_subpackage('ptychodus-core', exact=True) }}\n        - pyqt\n\n    test:\n      imports:\n        - ptychodus\n      requires:\n        - pip\n      commands:\n        - pip check\n        - ptychodus --version\n\n  # ptychodus without QT (headless) without optional packages\n  - name: ptychodus-core\n\n    script: build-core.sh\n\n    build:\n      noarch: python\n      entry_points:\n        - ptychodus = ptychodus.__main__:main\n\n    requirements:\n      host:\n        - pip\n        - python >=3.9\n        - setuptools >=46.4.0\n        - setuptools_scm >=6.2\n        - setuptools_scm_git_archive\n        - wheel\n      run:\n        - h5py =3.*\n        - hdf5-external-filter-plugins-lz4\n        - matplotlib-base =3.*\n        - numpy =1.*\n        - python >=3.9\n        - scipy =1.*\n        - tifffile =2022.*\n        - watchdog =2.*\n      run_constrained:\n        - pyqt =5.*\n        - tike =0.22.*\n\n    test:\n      imports:\n        - ptychodus\n      requires:\n        - pip\n      commands:\n        - pip check\n        - ptychodus --version\n\nabout:\n  home: https://github.com/AdvancedPhotonSource/ptychodus\n  summary: 'Ptychodus is a ptychography analysis front-end.'\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  dev_url: https://github.com/AdvancedPhotonSource/ptychodus\n\nextra:\n  recipe-maintainers:\n    - AdvancedPhotonSource/ptychodus\n    - carterbox\n    - stevehenke\n",
  "req": {
   "__set__": true,
@@ -358,6 +382,7 @@
    ]
   }
  },
+ "smithy_version": "3.20.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
