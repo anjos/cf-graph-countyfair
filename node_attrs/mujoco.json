@@ -59,7 +59,11 @@
  "archived": false,
  "bad": false,
  "branch": "main",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  }
+ },
  "feedstock_name": "mujoco",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -375,6 +379,10 @@
     "LICENSE",
     "build/_deps/tinyobjloader-src/LICENSE",
     "LICENSE",
+    "build/_deps/tinyobjloader-src/LICENSE",
+    "LICENSE",
+    "build/_deps/tinyobjloader-src/LICENSE",
+    "LICENSE",
     "build/_deps/tinyobjloader-src/LICENSE"
    ],
    "summary": "Multi-Joint dynamics with Contact. A general purpose multi-body dynamics simulator."
@@ -384,6 +392,8 @@
   },
   "extra": {
    "recipe-maintainers": [
+    "traversaro",
+    "traversaro",
     "traversaro",
     "traversaro",
     "traversaro",
@@ -802,6 +812,200 @@
       "cmake",
       "c_compiler_stub",
       "cxx_compiler_stub",
+      "ninja"
+     ],
+     "host": [
+      "eigen",
+      "qhull",
+      "tinyxml2",
+      "libccd-double",
+      "abseil-cpp",
+      "lodepng"
+     ],
+     "run": []
+    },
+    "script": "build_cxx.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/include/mujoco/mujoco.h",
+      "test -f ${PREFIX}/lib/libmujoco${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "name": "mujoco-python",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake",
+      "bash"
+     ],
+     "host": [
+      "mujoco-cxx",
+      "eigen",
+      "abseil-cpp",
+      "python",
+      "pip",
+      "setuptools",
+      "pybind11",
+      "pybind11-abi",
+      "numpy",
+      "absl-py",
+      "pyglfw",
+      "pyopengl"
+     ],
+     "run": [
+      "mujoco-cxx",
+      "python",
+      "numpy",
+      "absl-py",
+      "pyglfw",
+      "pyopengl"
+     ]
+    },
+    "script": "build_py.sh",
+    "test": {
+     "commands": [
+      "pytest --pyargs mujoco -v -k \"not render\"",
+      "pip check"
+     ],
+     "imports": [
+      "mujoco"
+     ],
+     "requires": [
+      "pytest",
+      "pip"
+     ]
+    }
+   },
+   {
+    "name": "mujoco",
+    "requirements": {
+     "run": [
+      "mujoco-cxx",
+      "mujoco-python"
+     ]
+    },
+    "test": {
+     "imports": [
+      "mujoco"
+     ]
+    }
+   },
+   {
+    "build": {
+     "ignore_run_exports": [
+      "abseil-cpp"
+     ],
+     "run_exports": [
+      "mujoco-cxx"
+     ]
+    },
+    "name": "mujoco-cxx",
+    "requirements": {
+     "build": [
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "ninja"
+     ],
+     "host": [
+      "eigen",
+      "qhull",
+      "tinyxml2",
+      "libccd-double",
+      "abseil-cpp",
+      "lodepng"
+     ],
+     "run": []
+    },
+    "script": "build_cxx.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/include/mujoco/mujoco.h",
+      "test -f ${PREFIX}/lib/libmujoco${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "name": "mujoco-python",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake",
+      "bash"
+     ],
+     "host": [
+      "mujoco-cxx",
+      "eigen",
+      "abseil-cpp",
+      "python",
+      "pip",
+      "setuptools",
+      "pybind11",
+      "pybind11-abi",
+      "numpy",
+      "absl-py",
+      "pyglfw",
+      "pyopengl"
+     ],
+     "run": [
+      "mujoco-cxx",
+      "python",
+      "numpy",
+      "absl-py",
+      "pyglfw",
+      "pyopengl"
+     ]
+    },
+    "script": "build_py.sh",
+    "test": {
+     "commands": [
+      "pytest --pyargs mujoco -v -k \"not render\"",
+      "pip check"
+     ],
+     "imports": [
+      "mujoco"
+     ],
+     "requires": [
+      "pytest",
+      "pip"
+     ]
+    }
+   },
+   {
+    "name": "mujoco",
+    "requirements": {
+     "run": [
+      "mujoco-cxx",
+      "mujoco-python"
+     ]
+    },
+    "test": {
+     "imports": [
+      "mujoco"
+     ]
+    }
+   },
+   {
+    "build": {
+     "ignore_run_exports": [
+      "abseil-cpp"
+     ],
+     "run_exports": [
+      "mujoco-cxx"
+     ]
+    },
+    "name": "mujoco-cxx",
+    "requirements": {
+     "build": [
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
       "ninja",
       "clang"
      ],
@@ -994,6 +1198,22 @@
   },
   "source": {
    "patches": [
+    "python_remove_avx.patch",
+    "python_remove_werror.patch",
+    "disable_gcc_pragma.patch",
+    "cxx_devendor.patch",
+    "python_devendor.patch",
+    "ccd_vec3_origin_link_problem.patch",
+    "disable_copy_cxx_files_in_python_package.patch",
+    "do_not_install_via_pip.patch",
+    "python_remove_avx.patch",
+    "python_remove_werror.patch",
+    "disable_gcc_pragma.patch",
+    "cxx_devendor.patch",
+    "python_devendor.patch",
+    "ccd_vec3_origin_link_problem.patch",
+    "disable_copy_cxx_files_in_python_package.patch",
+    "do_not_install_via_pip.patch",
     "python_remove_avx.patch",
     "python_remove_werror.patch",
     "disable_gcc_pragma.patch",
@@ -1336,6 +1556,303 @@
    "__set__": true,
    "elements": [
     "__osx",
+    "absl-py",
+    "mujoco-cxx",
+    "mujoco-python",
+    "numpy",
+    "pyglfw",
+    "pyopengl",
+    "python"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pip",
+    "pytest"
+   ]
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "https://github.com/deepmind/mujoco",
+   "license": "Apache-2.0",
+   "license_file": [
+    "LICENSE",
+    "build/_deps/tinyobjloader-src/LICENSE",
+    "LICENSE",
+    "build/_deps/tinyobjloader-src/LICENSE"
+   ],
+   "summary": "Multi-Joint dynamics with Contact. A general purpose multi-body dynamics simulator."
+  },
+  "build": {
+   "number": "1"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "traversaro",
+    "traversaro"
+   ]
+  },
+  "outputs": [
+   {
+    "build": {
+     "ignore_run_exports": [
+      "abseil-cpp"
+     ],
+     "run_exports": [
+      "mujoco-cxx"
+     ]
+    },
+    "name": "mujoco-cxx",
+    "requirements": {
+     "build": [
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "ninja"
+     ],
+     "host": [
+      "eigen",
+      "qhull",
+      "tinyxml2",
+      "libccd-double",
+      "abseil-cpp",
+      "lodepng"
+     ],
+     "run": []
+    },
+    "script": "build_cxx.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/include/mujoco/mujoco.h",
+      "test -f ${PREFIX}/lib/libmujoco${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "name": "mujoco-python",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake",
+      "bash"
+     ],
+     "host": [
+      "mujoco-cxx",
+      "eigen",
+      "abseil-cpp",
+      "python",
+      "pip",
+      "setuptools",
+      "pybind11",
+      "pybind11-abi",
+      "numpy",
+      "absl-py",
+      "pyglfw",
+      "pyopengl"
+     ],
+     "run": [
+      "mujoco-cxx",
+      "python",
+      "numpy",
+      "absl-py",
+      "pyglfw",
+      "pyopengl"
+     ]
+    },
+    "script": "build_py.sh",
+    "test": {
+     "commands": [
+      "pytest --pyargs mujoco -v -k \"not render\"",
+      "pip check"
+     ],
+     "imports": [
+      "mujoco"
+     ],
+     "requires": [
+      "pytest",
+      "pip"
+     ]
+    }
+   },
+   {
+    "name": "mujoco",
+    "requirements": {
+     "run": [
+      "mujoco-cxx",
+      "mujoco-python"
+     ]
+    },
+    "test": {
+     "imports": [
+      "mujoco"
+     ]
+    }
+   },
+   {
+    "build": {
+     "ignore_run_exports": [
+      "abseil-cpp"
+     ],
+     "run_exports": [
+      "mujoco-cxx"
+     ]
+    },
+    "name": "mujoco-cxx",
+    "requirements": {
+     "build": [
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "ninja"
+     ],
+     "host": [
+      "eigen",
+      "qhull",
+      "tinyxml2",
+      "libccd-double",
+      "abseil-cpp",
+      "lodepng"
+     ],
+     "run": []
+    },
+    "script": "build_cxx.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/include/mujoco/mujoco.h",
+      "test -f ${PREFIX}/lib/libmujoco${SHLIB_EXT}"
+     ]
+    }
+   },
+   {
+    "name": "mujoco-python",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "make",
+      "cmake",
+      "bash"
+     ],
+     "host": [
+      "mujoco-cxx",
+      "eigen",
+      "abseil-cpp",
+      "python",
+      "pip",
+      "setuptools",
+      "pybind11",
+      "pybind11-abi",
+      "numpy",
+      "absl-py",
+      "pyglfw",
+      "pyopengl"
+     ],
+     "run": [
+      "mujoco-cxx",
+      "python",
+      "numpy",
+      "absl-py",
+      "pyglfw",
+      "pyopengl"
+     ]
+    },
+    "script": "build_py.sh",
+    "test": {
+     "commands": [
+      "pytest --pyargs mujoco -v -k \"not render\"",
+      "pip check"
+     ],
+     "imports": [
+      "mujoco"
+     ],
+     "requires": [
+      "pytest",
+      "pip"
+     ]
+    }
+   },
+   {
+    "name": "mujoco",
+    "requirements": {
+     "run": [
+      "mujoco-cxx",
+      "mujoco-python"
+     ]
+    },
+    "test": {
+     "imports": [
+      "mujoco"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "mujoco",
+   "version": "2.2.0"
+  },
+  "source": {
+   "patches": [
+    "python_remove_avx.patch",
+    "python_remove_werror.patch",
+    "disable_gcc_pragma.patch",
+    "cxx_devendor.patch",
+    "python_devendor.patch",
+    "ccd_vec3_origin_link_problem.patch",
+    "disable_copy_cxx_files_in_python_package.patch",
+    "do_not_install_via_pip.patch",
+    "python_remove_avx.patch",
+    "python_remove_werror.patch",
+    "disable_gcc_pragma.patch",
+    "cxx_devendor.patch",
+    "python_devendor.patch",
+    "ccd_vec3_origin_link_problem.patch",
+    "disable_copy_cxx_files_in_python_package.patch",
+    "do_not_install_via_pip.patch"
+   ],
+   "sha256": "98cab2735817456c028e96ba34b2ee2c94cc4fab33ebcae15ab46fcc45a762ad",
+   "url": "https://github.com/deepmind/mujoco/archive/refs/tags/2.2.0.tar.gz"
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "bash",
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "make",
+    "ninja"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "abseil-cpp",
+    "absl-py",
+    "eigen",
+    "libccd-double",
+    "lodepng",
+    "mujoco-cxx",
+    "numpy",
+    "pip",
+    "pybind11",
+    "pybind11-abi",
+    "pyglfw",
+    "pyopengl",
+    "python",
+    "qhull",
+    "setuptools",
+    "tinyxml2"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
     "absl-py",
     "mujoco-cxx",
     "mujoco-python",
