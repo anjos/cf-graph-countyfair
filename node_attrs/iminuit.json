@@ -968,6 +968,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/976417852.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.12.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -2572,7 +2589,7 @@
   "2.11.0": 1,
   "2.11.1": 1,
   "2.11.2": 1,
-  "2.12.0": 1,
+  "2.12.0": 2,
   "2.2.0": 25,
   "2.2.1": 189,
   "2.3.0": 14,
@@ -2989,16 +3006,14 @@
    "iminuit"
   ]
  },
- "pinning_version": "2022.04.10.16.18.16",
+ "pinning_version": "2022.06.22.11.09.47",
  "pre_pr_migrator_attempts": {
   "python39": 1,
-  "rebuild-broken": 1,
-  "version": 1
+  "rebuild-broken": 1
  },
  "pre_pr_migrator_status": {
   "python39": "not solvable: ['Encountered problems while solving.\\nProblem: package numpy-1.19.1-py36h5510c5b_0 requires python >=3.6,<3.7.0a0, but none of the providers can be installed\\n']",
-  "rebuild-broken": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1265438560\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1175, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 196, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/broken_rebuild.py\", line 361, in migrate\n    self.set_build_number(os.path.join(recipe_dir, \"meta.yaml\"))\nNameError: name 'os' is not defined\n",
-  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2536886821\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1150, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 278, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 287, in eval_cmd\n    c = subprocess.run(\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 507, in run\n    stdout, stderr = process.communicate(input, timeout=timeout)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 1134, in communicate\n    stdout, stderr = self._communicate(input, endtime, timeout)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 1980, in _communicate\n    self._check_timeout(endtime, orig_timeout, stdout, stderr)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 1178, in _check_timeout\n    raise TimeoutExpired(\nsubprocess.TimeoutExpired: Command 'conda smithy rerender -c auto --no-check-uptodate' timed out after 900 seconds\n"
+  "rebuild-broken": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1265438560\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1175, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 196, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/broken_rebuild.py\", line 361, in migrate\n    self.set_build_number(os.path.join(recipe_dir, \"meta.yaml\"))\nNameError: name 'os' is not defined\n"
  },
  "raw_meta_yaml": "{% set name = \"iminuit\" %}\n{% set version = \"2.11.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 8cae7917ca2d22c691e00792bfbbb812b84ac5c75120eb2ae879fb4ada41ee6c\n  patches:\n    - externpybind11.patch\n\nbuild:\n  number: 1\n  script:\n    - export CMAKE_BUILD_PARALLEL_LEVEL=${CPU_COUNT}                  # [unix]\n    - export CMAKE_ARGS=\"$CMAKE_ARGS -DIMINUIT_EXTERNAL_PYBIND11=ON\"  # [unix]\n    - set CMAKE_BUILD_PARALLEL_LEVEL=%CPU_COUNT%                      # [win]\n    - set CMAKE_ARGS=\"%CMAKE_ARGS% -DIMINUIT_EXTERNAL_PYBIND11=ON\"    # [win]\n    - python -m pip install . -vvv\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make  # [unix]\n  host:\n    - python\n    - pip\n    - pybind11\n  run:\n    - python\n    - {{ pin_compatible('numpy') }}\n\ntest:\n  source_files:\n    - tests\n  requires:\n    - pytest\n    - pip\n  imports:\n    - iminuit\n  commands:\n    - python -m pytest tests\n    - pip check\n\nabout:\n  home: https://github.com/scikit-hep/iminuit\n  license: LGPL-2.0-or-later\n  license_family: LGPL\n  license_file: LICENSE\n  summary: Interactive Minimization Tools based on MINUIT\n  description: |\n    iminuit is designed from ground up to be fast, interactive and cython\n    friendly. iminuit extract function signature very permissively starting\n    from checking func_code down to last resort of parsing docstring (or you\n    could tell iminuit to stop looking and take your answer). The interface is\n    inspired heavily by PyMinuit and the status printout is inspired by ROOT\n    Minuit. iminuit is mostly compatible with PyMinuit (with few exceptions).\n    Existing PyMinuit code can be ported to iminuit by just changing the\n    import statement.\n  doc_url: http://iminuit.readthedocs.io\n  dev_url: https://github.com/scikit-hep/iminuit\n\nextra:\n  recipe-maintainers:\n    - mwcraig\n    - bsipocz\n    - piti118\n    - HDembinski\n    - chrisburr\n    - henryiii\n",
  "req": {
@@ -3051,7 +3066,7 @@
    ]
   }
  },
- "smithy_version": "3.19.0",
+ "smithy_version": "3.21.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
