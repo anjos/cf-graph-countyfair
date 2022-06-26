@@ -216,6 +216,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/979400829.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -622,7 +639,7 @@
    "chemfiles-lib"
   ]
  },
- "pinning_version": "2021.10.20.11.00.47",
+ "pinning_version": "2022.06.26.11.17.33",
  "raw_meta_yaml": "# Chemfiles version and SHA256\n{% set version = \"0.10.2\" %}\n{% set prerelease = \"\" %}\n{% set sha256 = \"2e3b58167f25d561ab19ae06acdc02f26b5640bd6c85e0a5b10fedfec59f5285\" %}\n\n# Chemfiles test data git version and SHA256\n{% set data_git = \"2db410d1f7651776e142676d26ec0d2cccd7b3cd\" %}\n{% set data_sha256 = \"8be5dc48c31a193d93ffe9fc7d0a785fc912427739b94dfee658827c497a7d53\" %}\n\n{% set CMAKE_INSTALL_PREFIX = \"-DCMAKE_INSTALL_PREFIX=$PREFIX\" %}  # [not win]\n{% set CMAKE_INSTALL_PREFIX = \"-DCMAKE_INSTALL_PREFIX=%PREFIX%/Library\" %}  # [win]\n\n{% set CMAKE_COMPILERS = \"\" %}  # [not win]\n{% set CMAKE_COMPILERS = \"-DCMAKE_C_COMPILER=cl.exe -DCMAKE_CXX_COMPILER=cl.exe\" %}  # [win]\n\n{% set EXTRA_FLAGS = \"\" %}  # [not win]\n# Remove -GL from CXXFLAGS as this takes too much time and memory\n{% set EXTRA_FLAGS = \"-DCMAKE_CXX_FLAGS=-MD -DCMAKE_C_FLAGS=-MD\" %}  # [win]\n\n{% set CHFL_CONFIG = \"-DCHFL_SYSTEM_NETCDF=OFF -DCHFL_SYSTEM_LZMA=ON -DCHFL_SYSTEM_BZIP2=ON\" %}\n{% set CMAKE_CONFIG = \"-DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON\" %}\n\n{% set TESTS_PATH = \"export DYLD_FALLBACK_LIBRARY_PATH=$(dirname $CLANG)/../lib\" %}  # [osx]\n{% set TESTS_PATH = \"\" %}  # [not osx]\n\npackage:\n  name: chemfiles-lib\n  version: {{ version }}{{ prerelease | list | reject(\"equalto\", \"-\") | join }}\n\nsource:\n  - fn: chemfiles-{{ version }}{{ prerelease }}.tar.gz\n    url: https://github.com/chemfiles/chemfiles/archive/{{ version }}{{ prerelease }}.tar.gz\n    sha256: {{ sha256 }}\n  - url: https://github.com/chemfiles/tests-data/archive/{{ data_git }}.tar.gz\n    sha256: {{ data_sha256 }}\n    folder: tests/data\n\nbuild:\n  skip: true  # [win and vc<14]\n  number: 2\n  script: |\n    cmake -G Ninja {{ CMAKE_COMPILERS }} {{ EXTRA_FLAGS }} {{ CMAKE_CONFIG }} {{ CHFL_CONFIG }} {{ CMAKE_INSTALL_PREFIX }} .\n    cmake  .\n    cmake --build . --config Release --target install\n\nrequirements:\n  build:\n    - cmake\n    - ninja\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - bzip2\n    - xz\n  run:\n    - libcxx >=8  # [osx]\n    - bzip2\n    - xz\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libchemfiles$SHLIB_EXT  # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\chemfiles.dll exit 1  # [win]\n\nabout:\n  home: https://chemfiles.org\n  license: BSD-3-Clause\n  license_file: LICENSE\n  summary: Modern library for chemistry file reading and writing\n  doc_url: https://chemfiles.org/chemfiles/{{ version }}/\n  dev_url: https://github.com/chemfiles/chemfiles\n\nextra:\n  recipe-maintainers:\n    - luthaf\n",
  "req": {
   "__set__": true,
@@ -670,7 +687,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.12",
+ "smithy_version": "3.21.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
