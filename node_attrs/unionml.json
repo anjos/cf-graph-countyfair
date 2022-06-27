@@ -21,7 +21,11 @@
    ],
    "noarch": "python",
    "number": "0",
-   "script": "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install . -vv"
+   "script": [
+    "echo -e \"\\n>>> ENSURE INCLUSION OF 'requirements.txt' <<<\\n\\n\"",
+    "if [ ! -f requirements.txt ] && [ -f unionml.egg-info/requires.txt ]; then cp unionml.egg-info/requires.txt requirements.txt; fi",
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install . -vv"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -63,7 +67,6 @@
   },
   "test": {
    "commands": [
-    "pip check",
     "unionml --help"
    ],
    "imports": [
@@ -131,7 +134,11 @@
    ],
    "noarch": "python",
    "number": "0",
-   "script": "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install . -vv"
+   "script": [
+    "echo -e \"\\n>>> ENSURE INCLUSION OF 'requirements.txt' <<<\\n\\n\"",
+    "if [ ! -f requirements.txt ] && [ -f unionml.egg-info/requires.txt ]; then cp unionml.egg-info/requires.txt requirements.txt; fi",
+    "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install . -vv"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
@@ -173,7 +180,6 @@
   },
   "test": {
    "commands": [
-    "pip check",
     "unionml --help"
    ],
    "imports": [
@@ -192,7 +198,7 @@
    "unionml"
   ]
  },
- "raw_meta_yaml": "{% set name = \"unionml\" %}\n{% set version = \"0.1.2\" %}\n\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/unionml-{{ version }}.tar.gz\n  sha256: e2d906402dcf3710f0fbc6726e764d5cd21569a1f23864ae2fcbf97198119125\n\nbuild:\n  number: 0\n  noarch: python\n  entry_points:\n    - unionml = unionml.cli:app\n  script: {{ PYTHON }} -m pip install . -vv\n\nrequirements:\n  host:\n    - pip\n    - python >=3.7\n  run:\n    - python >=3.7\n    - click\n    - cookiecutter\n    - dataclasses-json\n    - docker-py\n    - fastapi\n    - flytekit >=1.0.0\n    - gitpython\n    - joblib\n    - mangum\n    - numpy\n    - pandas\n    - pydantic\n    - scikit-learn\n    - typer\n    - uvicorn\n    # necessary for gitpython\n    - git\n\ntest:\n  imports:\n    - unionml\n  commands:\n    - pip check\n    - unionml --help\n  requires:\n    - pip\n\nabout:\n  home: https://pypi.org/project/unionml/\n  summary: The easiest way to build and deploy machine learning microservices.\n  license: Apache-2.0\n  license_file: LICENSE\n  description: |\n    **UnionML** is an open source MLOps framework that aims to reduce the boilerplate and friction\n    that comes with building models and deploying them to production.\n\n    You can create **UnionML Apps** by defining a few core methods that are automatically bundled\n    into ML microservices, starting with model training and offline and online prediction.\n\n    Built on top of [Flyte](https://docs.flyte.org/en/latest/), UnionML provides a high-level\n    interface for productionizing your ML models so that you can focus on curating a better dataset\n    and improving your models.\n\n    To learn more, check out the \uD83D\uDCD6 [documentation](https://unionml.readthedocs.io).\n\n    PyPI: [https://pypi.org/project/unionml/](https://pypi.org/project/unionml/)\n\n  doc_url: https://unionml.readthedocs.io/\n  dev_url: https://github.com/unionai-oss/unionml\n\nextra:\n  recipe-maintainers:\n    - sugatoray\n",
+ "raw_meta_yaml": "{% set name = \"unionml\" %}\n{% set version = \"0.1.2\" %}\n\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/unionml-{{ version }}.tar.gz\n  sha256: e2d906402dcf3710f0fbc6726e764d5cd21569a1f23864ae2fcbf97198119125\n\nbuild:\n  number: 0\n  noarch: python\n  entry_points:\n    - unionml = unionml.cli:app\n  script:\n    ## Ensure inclusion of requirements.txt\n    {% set reqfile = \"requirements.txt\" %}\n    {% set reqsource = name ~ \".egg-info/requires.txt\" %}\n    # IF {{ reqfile }} is NOT PRESENT, COPY {{ reqfile }} from {{ reqsource }}\n    - echo -e \"\\n>>> ENSURE INCLUSION OF '{{ reqfile }}' <<<\\n\\n\"\n    - if [ ! -f {{ reqfile }} ] && [ -f {{ reqsource }} ]; then cp {{ reqsource }} {{ reqfile }}; fi  # [not win]\n    #- copy {{ name }}.egg-info\\requires.txt {{ reqfile }}  # [win]\n    - copy {{ reqsource | replace('/', '\\\\') }} {{ reqfile }}  # [win] \n    ## Install package {{ name }} from PyPI \n    - {{ PYTHON }} -m pip install . -vv\n\nrequirements:\n  host:\n    - pip\n    - python >=3.7\n  run:\n    - python >=3.7\n    - click\n    - cookiecutter\n    - dataclasses-json\n    - docker-py\n    - fastapi\n    - flytekit >=1.0.0\n    - gitpython\n    - joblib\n    - mangum\n    - numpy\n    - pandas\n    - pydantic\n    - scikit-learn\n    - typer\n    - uvicorn\n    # necessary for gitpython\n    - git\n\ntest:\n  imports:\n    - unionml\n  commands:\n    #- pip check\n    - unionml --help\n  requires:\n    - pip\n\nabout:\n  home: https://pypi.org/project/unionml/\n  summary: The easiest way to build and deploy machine learning microservices.\n  license: Apache-2.0\n  license_file: LICENSE\n  description: |\n    **UnionML** is an open source MLOps framework that aims to reduce the boilerplate and friction\n    that comes with building models and deploying them to production.\n\n    You can create **UnionML Apps** by defining a few core methods that are automatically bundled\n    into ML microservices, starting with model training and offline and online prediction.\n\n    Built on top of [Flyte](https://docs.flyte.org/en/latest/), UnionML provides a high-level\n    interface for productionizing your ML models so that you can focus on curating a better dataset\n    and improving your models.\n\n    To learn more, check out the \uD83D\uDCD6 [documentation](https://unionml.readthedocs.io).\n\n    PyPI: [https://pypi.org/project/unionml/](https://pypi.org/project/unionml/)\n\n  doc_url: https://unionml.readthedocs.io/\n  dev_url: https://github.com/unionai-oss/unionml\n\nextra:\n  recipe-maintainers:\n    - sugatoray\n",
  "req": {
   "__set__": true,
   "elements": [
