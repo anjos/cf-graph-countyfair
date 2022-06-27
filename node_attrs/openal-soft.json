@@ -53,7 +53,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git diff --name-only 1b1d42b32f1dcad2ed5098a9330ef5e9b015d0b2...HEAD' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1150, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 309, in run",
+   "    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode",
+   "    raise CalledProcessError(self.returncode, self.args, self.stdout,",
+   "subprocess.CalledProcessError: Command 'git diff --name-only 1b1d42b32f1dcad2ed5098a9330ef5e9b015d0b2...HEAD' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
@@ -290,12 +305,13 @@
   }
  },
  "name": "openal-soft",
- "new_version": "1.22.1",
+ "new_version": "1.22.2",
  "new_version_attempts": {
   "1.21.0": 2,
   "1.21.1": 292,
   "1.22.0": 1,
-  "1.22.1": 1
+  "1.22.1": 1,
+  "1.22.2": 1
  },
  "new_version_errors": {
   "1.21.1": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '1.21.1' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/kcat/{{ name }}/archive/{{ name }}-{{ version }}.tar.gz'\n"
@@ -445,6 +461,12 @@
   ]
  },
  "pinning_version": "2022.06.21.18.05.41",
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2568839352\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1150, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 309, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only 1b1d42b32f1dcad2ed5098a9330ef5e9b015d0b2...HEAD' returned non-zero exit status 128.\n"
+ },
  "raw_meta_yaml": "{% set name = \"openal-soft\" %}\n{% set version = \"1.22.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/kcat/{{ name }}/archive/refs/tags/{{ version }}.tar.gz\n  sha256: be771f9a8b3c9f283e71d7a9e3dc29a8f8fd3b25263b228d61fbcc638ec8a629\n\nbuild:\n  number: 0\n  run_exports:\n    - {{ pin_subpackage('openal-soft', max_pin='x.x') }}\n\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake\n    - make  # [unix]\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/cmake/OpenAL/OpenALConfig.cmake                             # [unix]\n    - test -f ${PREFIX}/bin/altonegen                                                   # [unix]\n    - test -f ${PREFIX}/bin/alrecord                                                    # [unix]\n    - test -f ${PREFIX}/bin/openal-info                                                 # [unix]\n    - if exist %LIBRARY_LIB%\\\\cmake\\\\OpenAL\\\\OpenALConfig.cmake (exit 0) else (exit 1)  # [win]\n    - if exist %LIBRARY_BIN%\\\\altonegen.exe (exit 0) else (exit 1)                      # [win]\n    - if exist %LIBRARY_BIN%\\\\alrecord.exe (exit 0) else (exit 1)                       # [win]\n    - if exist %LIBRARY_BIN%\\\\openal-info.exe (exit 0) else (exit 1)                    # [win]\n\nabout:\n  home: https://github.com/kcat/openal-soft\n  license: LGPL-2.0-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: OpenAL Soft is a software implementation of the OpenAL 3D audio API.\n\n  description: |\n    OpenAL Soft is an LGPL-licensed, cross-platform, software implementation of\n    the OpenAL 3D audio API. It's forked from the open-sourced Windows version\n    available originally from openal.org's SVN repository (now defunct). OpenAL\n    provides capabilities for playing audio in a virtual 3D environment. Distance\n    attenuation, doppler shift, and directional sound emitters are among the\n    features handled by the API. More advanced effects, including air absorption,\n    occlusion, and environmental reverb, are available through the EFX extension.\n    It also facilitates streaming audio, multi-channel buffers, and audio capture.\n  doc_url: https://openal-soft.org\n  dev_url: https://github.com/kcat/openal-soft\n\nextra:\n  recipe-maintainers:\n    - martinRenou\n    - Tobias-Fischer\n",
  "req": {
   "__set__": true,

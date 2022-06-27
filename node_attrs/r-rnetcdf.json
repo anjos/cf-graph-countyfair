@@ -542,11 +542,12 @@
   }
  },
  "name": "r-rnetcdf",
- "new_version": "2.5_2",
+ "new_version": "2.6_1",
  "new_version_attempts": {
   "2.3_1": 1,
   "2.4_2": 1,
-  "2.5_2": 1
+  "2.5_2": 1,
+  "2.6_1": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -657,6 +658,12 @@
   ]
  },
  "pinning_version": "2021.08.31.17.13.10",
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2568839352\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1150, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 278, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
+ },
  "raw_meta_yaml": "{% set version = \"2.5-2\" %}\n\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-rnetcdf\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  fn: RNetCDF_{{ version }}.tar.gz\n  url:\n    - https://cran.r-project.org/src/contrib/RNetCDF_{{ version }}.tar.gz\n    - https://cran.r-project.org/src/contrib/Archive/RNetCDF/RNetCDF_{{ version }}.tar.gz\n  sha256: f8fe46a43ca0938a683fa2be173264f7dd5b902c75e9717c2a7629a9cc06aa44\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 1\n  script:\n    - R CMD INSTALL --build .\n  skip: true  # [win32]\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - posix  # [win]\n    - {{ compiler('c') }}        # [unix]\n    - {{ compiler('m2w64_c') }}  # [win]\n  host:\n    - r-base\n    - libnetcdf\n    - udunits2\n  run:\n    - libnetcdf\n    - udunits2\n    - r-base\n\ntest:\n  commands:\n    - $R -e \"library('RNetCDF')\"  # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('RNetCDF')\\\"\"  # [win]\n\nabout:\n  home: https://cran.r-project.org/web/packages/RNetCDF\n  license: GPL-2.0-or-later\n  license_file: LICENSE\n  summary: An interface to the NetCDF file format designed by Unidata for efficient storage of array-oriented scientific data and descriptions. The R interface is closely based on the C API of the NetCDF library, and it includes calendar conversions from the Unidata UDUNITS library. The current implementation supports all\n    operations on NetCDF datasets in classic and 64-bit offset file formats, and NetCDF4-classic format is supported for reading and modification of existing files.\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - marcelotrevisani\n    - conda-forge/r\n",
  "req": {
   "__set__": true,
