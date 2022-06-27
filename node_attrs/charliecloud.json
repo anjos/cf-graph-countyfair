@@ -71,6 +71,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/980551754.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.28"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -459,7 +476,7 @@
  "new_version_attempts": {
   "0.26": 2,
   "0.27": 4,
-  "0.28": 8
+  "0.28": 9
  },
  "new_version_errors": {
   "0.26": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '0.26' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/hpc/charliecloud/releases/download/v{{ version }}/charliecloud-{{ version }}.tar.gz'\n",
@@ -472,7 +489,7 @@
    "charliecloud"
   ]
  },
- "pinning_version": "2022.04.16.05.14.45",
+ "pinning_version": "2022.06.27.18.30.08",
  "raw_meta_yaml": "{% set version = \"0.27\" %}\n\npackage:\n  name: charliecloud\n  version: {{ version }}\n\nsource:\n  url: https://github.com/hpc/charliecloud/releases/download/v{{ version }}/charliecloud-{{ version }}.tar.gz\n  sha256: 1142938ce73ec8a5dfe3a19a241b1f1ffbb63b582ac63d459aebec842c3f4b72\n  patches:\n    # this hard-turns the flag OFF for building the tests (otherwise fail)\n    # it also hard-turns the flag ON for ch-image.\n    - 0001-hardcode-build.patch\n\nbuild:\n  number: 1\n  skip: true  # [not linux]\n  script:\n    - ./configure --prefix=$PREFIX\n    - make\n    - make check\n    - make install\n\n  missing_dso_whitelist:\n    - $RPATH/libsotest.so.1\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - sysroot_linux-64 2.17  # [linux64]\n    - make\n\n  host:\n  # not clear if python (>=3.6) + requests (>=2.6.0) are needed at all?\n    - python\n    - requests >=2.6.0\n\n  # strictly speaking:\n  # squashfs + squashfuse are not needed\n  # however, it is best to bundle them here\n  # otherwise the pkg is meaningless... \n  run:\n    - tar\n    - python\n    - requests >=2.6.0\n    - squashfs-tools >=4.2\n    - squashfuse >=0.1.100\n\ntest:\n  commands:\n    - echo \"testing...\"\n    - ch-run --help\n    - ch-run --version\n    - ch-image --help\n#     # try the tutorial: \n#     # https://hpc.github.io/charliecloud/tutorial.html#seconds-to-charliecloud\n#     - cd $PREFIX/share/doc/charliecloud/examples/hello\n#     - ch-build -t hello . --force\n#     - ch-builder2tar hello /var/tmp\n#     - ch-tar2dir /var/tmp/hello.tar.gz /var/tmp\n# #     # all tests pass up to ch-run because of problem with user+mnt usernames\n# #     # in conda-forge build centos build containers\n# #     - ch-run /var/tmp/hello -- echo \"I'm in a container\"\n\nabout:\n  home: https://hpc.github.io/charliecloud\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: Lightweight user-defined software stacks for high-performance computing.\n\n  description: Lightweight user-defined software stacks for high-performance computing.\n\n\n  dev_url: https://github.com/hpc/charliecloud\n  doc_url: https://hpc.github.io/charliecloud\n\nextra:\n  recipe-maintainers:\n    - ngam\n",
  "req": {
   "__set__": true,
@@ -522,7 +539,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.19.0",
+ "smithy_version": "3.21.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
