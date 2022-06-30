@@ -1220,6 +1220,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/983952009.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.2022.27"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1432,7 +1449,7 @@
   "0.2022.24": 1.2,
   "0.2022.25": 1.2,
   "0.2022.26": 1.2,
-  "0.2022.27": 0.19999999999999996,
+  "0.2022.27": 1.2,
   "0.2022.3": 1.4,
   "0.2022.4": 1.4,
   "0.2022.5": 1.4,
@@ -1590,13 +1607,9 @@
    "stackvana-afw"
   ]
  },
- "pinning_version": "2022.06.23.15.55.08",
- "pre_pr_migrator_attempts": {
-  "version": 1
- },
- "pre_pr_migrator_status": {
-  "version": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2589579819\">bot CI job</a>): main: ['linux_64_python3.10.____cpython: Encountered problems while solving:\\n  - nothing provides requested stackvana-core 0.2022.27.*\\n', 'osx_64_python3.10.____cpython: Encountered problems while solving:\\n  - nothing provides requested stackvana-core 0.2022.27.*\\n']"
- },
+ "pinning_version": "2022.06.30.11.45.20",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"stackvana-afw\" %}\n# LSST DM versions are prefixed with letters\n#\n#  - a weekly build is 'w_2018_50'\n#  - a major release is 'v18_1'\n#\n# In order to play nice with conda, we take the following conventions\n#\n#  - for a weekly build 'w_2018_50', the conda version is '0.2018.50'\n#  - for a major version 'v18_1', the conda version is '18.1.0'\n#\n{% set version = \"0.2022.26\" %}\n{% set patch_version = version.split(\".\")[-1] if version.split(\".\")[-1].__len__() == 2 else \"0\" + version.split(\".\")[-1] %}\n{% set dm_tag = \"w_\" + version.split(\".\")[1] + \"_\" + patch_version if version.startswith(\"0.\") else \"v\" + version.replace(\".\", \"_\") %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://eups.lsst.codes/stack/src/tags/{{ dm_tag }}.list\n  sha256: a1f3d955a9667fc2964e735d97a81ca3265e3d301306bd21736951d817afb25d\n\nbuild:\n  skip: true  # [win or py != 310]\n  number: 0\n  merge_build_host: true\n  script:\n    - stackvana-build afw\n\nrequirements:\n  host:\n    - stackvana-core =={{ version }}\n    - python\n  run:\n    - python\n    - stackvana-core =={{ version }}\n\ntest:\n  commands:\n    - setup afw\n    - python -c \"import lsst.afw\"\n\nabout:\n  home: https://github.com/beckermr/stackvana-core\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file:\n    - LICENSE\n    - COPYRIGHT\n  summary: stackvana build up to afw\n\nextra:\n  recipe-maintainers:\n    - beckermr\n",
  "req": {
   "__set__": true,
