@@ -18,6 +18,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/985603327.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -692,7 +709,7 @@
    "cuquantum-python"
   ]
  },
- "pinning_version": "2021.12.20.19.09.43",
+ "pinning_version": "2022.07.02.21.02.52",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"22.05\" %}\n{% set py_version = \"0\" %}\n\npackage:\n  name: cuquantum-python\n  version: {{ version }}.{{ py_version }}\n\nsource:\n  url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ version }}.{{ py_version }}.tar.gz\n  sha256: a589b153b8680bdca8e49e957bce7e171b84776e78beb93f1cb0eedc39094302\n\nbuild:\n  number: 0\n  skip: True  # [win or ppc64le or cuda_compiler_version != \"11.2\"]\n  script_env:\n    # for some reason /usr/local/cuda is not added to $PATH in ppc64le's docker image\n    - CUDA_HOME  # [ppc64le or aarch64]\n    - CUQUANTUM_ROOT=$PREFIX\n    - CUTENSOR_ROOT=$PREFIX\n    - CUQUANTUM_IGNORE_SOLVER=1\n  script:\n    - cd python\n    - {{ PYTHON }} -m pip install . --no-deps -vv\n  ignore_run_exports_from:\n    # let cuquantum handle the CUDA deps\n    - {{ compiler('cuda') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n    - python\n    - pip\n    - cython\n    - cuquantum {{ version }}.*\n    - packaging\n  run:\n    - python\n    - numpy >=1.17\n    - cupy >=9.5\n    - cuquantum {{ version }}.*\n    - typing_extensions  # see NVIDIA/cuQuantum#3\n  run_constrained:\n    - pytorch >=1.10\n\ntest:\n  imports:\n    - cuquantum\n    - cuquantum.custatevec\n    - cuquantum.cutensornet\n\nabout:\n  home: https://developer.nvidia.com/cuquantum-sdk\n  license: BSD-3-Clause\n  license_url: https://docs.nvidia.com/cuda/cuquantum/license.html#nvidia-cuquantum-python\n  license_file: LICENSE\n  summary: \"cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK\"\n  description: |\n    NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented\n    models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.\n  doc_url: https://docs.nvidia.com/cuda/cuquantum/python/index.html\n  dev_url: https://github.com/NVIDIA/cuQuantum\n\nextra:\n  recipe-maintainers:\n    - leofang\n    - JeremyWangNVDA\n    - mtjrider\n",
@@ -756,7 +773,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.16.0",
+ "smithy_version": "3.21.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
