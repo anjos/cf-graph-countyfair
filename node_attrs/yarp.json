@@ -314,11 +314,11 @@
   ],
   "package": {
    "name": "yarp",
-   "version": "3.7.1"
+   "version": "3.7.2"
   },
   "source": {
-   "sha256": "ac55a253d500b8c2d9b4fad8d4c4810232a46dd75dcd8ca28ef971cd2af2203c",
-   "url": "https://github.com/robotology/yarp/archive/refs/tags/v3.7.1.tar.gz"
+   "sha256": "bf16e70b26e9b33323e17c4a298499e50299641a7c384904b331f2fb247c84cf",
+   "url": "https://github.com/robotology/yarp/archive/refs/tags/v3.7.2.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -737,11 +737,11 @@
   ],
   "package": {
    "name": "yarp",
-   "version": "3.7.1"
+   "version": "3.7.2"
   },
   "source": {
-   "sha256": "ac55a253d500b8c2d9b4fad8d4c4810232a46dd75dcd8ca28ef971cd2af2203c",
-   "url": "https://github.com/robotology/yarp/archive/refs/tags/v3.7.1.tar.gz"
+   "sha256": "bf16e70b26e9b33323e17c4a298499e50299641a7c384904b331f2fb247c84cf",
+   "url": "https://github.com/robotology/yarp/archive/refs/tags/v3.7.2.tar.gz"
   }
  },
  "name": "yarp",
@@ -879,11 +879,11 @@
   ],
   "package": {
    "name": "yarp",
-   "version": "3.7.1"
+   "version": "3.7.2"
   },
   "source": {
-   "sha256": "ac55a253d500b8c2d9b4fad8d4c4810232a46dd75dcd8ca28ef971cd2af2203c",
-   "url": "https://github.com/robotology/yarp/archive/refs/tags/v3.7.1.tar.gz"
+   "sha256": "bf16e70b26e9b33323e17c4a298499e50299641a7c384904b331f2fb247c84cf",
+   "url": "https://github.com/robotology/yarp/archive/refs/tags/v3.7.2.tar.gz"
   }
  },
  "osx_64_requirements": {
@@ -951,7 +951,7 @@
   ]
  },
  "pinning_version": "2022.06.30.11.45.20",
- "raw_meta_yaml": "{% set name = \"yarp\" %}\n{% set namecxx = \"yarp-cxx\" %}\n{% set namepython = \"yarp-python\" %}\n{% set version = \"3.7.1\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/robotology/yarp/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: ac55a253d500b8c2d9b4fad8d4c4810232a46dd75dcd8ca28ef971cd2af2203c\n\nbuild:\n  number: 0\n\noutputs:\n  - name: {{ namecxx }}\n    script: build_cxx.sh  # [unix]\n    script: bld_cxx.bat  # [win]\n    build:\n      run_exports:\n        - {{ pin_subpackage(namecxx, max_pin='x.x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        # Visual Studio 2017 is not supported\n        - vs2019_win-64  # [win]\n        - cmake\n        - pkg-config\n        - ninja\n        - multisheller\n        - {{ cdt('mesa-libgl-devel') }}  # [linux]\n        - {{ cdt('mesa-dri-drivers') }}  # [linux]\n        - {{ cdt('libselinux') }}  # [linux]\n        - {{ cdt('libxdamage') }}  # [linux]\n        - {{ cdt('libxxf86vm') }}  # [linux]\n        - {{ cdt('libxext') }}  # [linux]\n        - {{ cdt('libxcb') }}  # [linux]\n        - {{ cdt('libxfixes') }}  # [linux]\n        - {{ cdt('libxau') }}  # [linux]\n        - {{ cdt('expat') }}  # [linux]\n\n      host:\n        - ace\n        - tinyxml\n        - eigen\n        - sdl\n        - sqlite\n        - jpeg\n        - bash-completion  # [not win]\n        - libi2c  # [linux]\n        - ycm-cmake-modules\n        - robot-testing-framework\n        - xorg-libxfixes  # [linux]\n        - libpng\n        - libzlib\n        - soxr\n        - libedit  # [not win]\n        - libopencv\n        - portaudio\n        - qt-main\n\n      run:\n        # ycm and eigen are mentioned in the headers so needed when building\n        # against yarp-cxx\n        - ycm-cmake-modules\n        - eigen\n\n    test:\n      commands:\n        - yarp help\n        - test -f ${PREFIX}/include/yarp/os/all.h  # [not win]\n        - test -f ${PREFIX}/lib/libYARP_os.so  # [linux]\n        - test -f ${PREFIX}/lib/libYARP_os.dylib  # [osx]\n        - test -f ${PREFIX}/lib/cmake/YARP_os/YARP_osConfig.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\yarp\\\\os\\\\all.h exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\YARP_os.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\YARP_os.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\YARP_os\\\\YARP_osConfig.cmake exit 1  # [win]\n\n  - name: {{ namepython }}\n    script: build_py.sh  # [unix]\n    script: bld_py.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - swig\n        - ninja\n        - cmake\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n      host:\n        - {{ pin_subpackage(namecxx, exact=True) }}\n        - python\n        - pip\n        - openssl 1.1.1\n\n      run:\n        - {{ pin_subpackage(namecxx, exact=True) }}\n        - python\n        - numpy\n    test:\n      commands:\n        - test $(pip list | grep yarp | tr -s \" \" | grep $PKG_VERSION | wc -l) -eq 1  # [unix]\n        - pip check\n      requires:\n        - pip\n      imports:\n        - yarp\n\n  - name: {{ name }}\n    build:\n      run_exports:\n        - {{ pin_subpackage(namecxx, max_pin='x.x.x') }}\n    requirements:\n      run:\n        - {{ pin_subpackage(namecxx, exact=True) }}\n        - {{ pin_subpackage(namepython, max_pin='x.x.x') }}\n    test:\n      imports:\n        - yarp\n\nabout:\n  home: https://github.com/robotology/yarp\n  license: BSD-3-Clause AND MIT AND GPL-3.0-or-later\n  license_file:\n    - COPYING\n    - extern/thrift/LICENSES/BSD-3-Clause.txt\n    - extern/dirent/dirent/LICENSE\n    - extern/xmlrpcpp/xmlrpcpp/COPYING\n  summary: YARP is a library and toolkit for communication and device interfaces, used on everything from humanoids to embedded devices.\n\n\nextra:\n  recipe-maintainers:\n    - traversaro\n",
+ "raw_meta_yaml": "{% set name = \"yarp\" %}\n{% set namecxx = \"yarp-cxx\" %}\n{% set namepython = \"yarp-python\" %}\n{% set version = \"3.7.2\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/robotology/yarp/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: bf16e70b26e9b33323e17c4a298499e50299641a7c384904b331f2fb247c84cf\n\nbuild:\n  number: 0\n\noutputs:\n  - name: {{ namecxx }}\n    script: build_cxx.sh  # [unix]\n    script: bld_cxx.bat  # [win]\n    build:\n      run_exports:\n        - {{ pin_subpackage(namecxx, max_pin='x.x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        # Visual Studio 2017 is not supported\n        - vs2019_win-64  # [win]\n        - cmake\n        - pkg-config\n        - ninja\n        - multisheller\n        - {{ cdt('mesa-libgl-devel') }}  # [linux]\n        - {{ cdt('mesa-dri-drivers') }}  # [linux]\n        - {{ cdt('libselinux') }}  # [linux]\n        - {{ cdt('libxdamage') }}  # [linux]\n        - {{ cdt('libxxf86vm') }}  # [linux]\n        - {{ cdt('libxext') }}  # [linux]\n        - {{ cdt('libxcb') }}  # [linux]\n        - {{ cdt('libxfixes') }}  # [linux]\n        - {{ cdt('libxau') }}  # [linux]\n        - {{ cdt('expat') }}  # [linux]\n\n      host:\n        - ace\n        - tinyxml\n        - eigen\n        - sdl\n        - sqlite\n        - jpeg\n        - bash-completion  # [not win]\n        - libi2c  # [linux]\n        - ycm-cmake-modules\n        - robot-testing-framework\n        - xorg-libxfixes  # [linux]\n        - libpng\n        - libzlib\n        - soxr\n        - libedit  # [not win]\n        - libopencv\n        - portaudio\n        - qt-main\n\n      run:\n        # ycm and eigen are mentioned in the headers so needed when building\n        # against yarp-cxx\n        - ycm-cmake-modules\n        - eigen\n\n    test:\n      commands:\n        - yarp help\n        - test -f ${PREFIX}/include/yarp/os/all.h  # [not win]\n        - test -f ${PREFIX}/lib/libYARP_os.so  # [linux]\n        - test -f ${PREFIX}/lib/libYARP_os.dylib  # [osx]\n        - test -f ${PREFIX}/lib/cmake/YARP_os/YARP_osConfig.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\yarp\\\\os\\\\all.h exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\YARP_os.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\YARP_os.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\YARP_os\\\\YARP_osConfig.cmake exit 1  # [win]\n\n  - name: {{ namepython }}\n    script: build_py.sh  # [unix]\n    script: bld_py.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - swig\n        - ninja\n        - cmake\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n      host:\n        - {{ pin_subpackage(namecxx, exact=True) }}\n        - python\n        - pip\n        - openssl 1.1.1\n\n      run:\n        - {{ pin_subpackage(namecxx, exact=True) }}\n        - python\n        - numpy\n    test:\n      commands:\n        - test $(pip list | grep yarp | tr -s \" \" | grep $PKG_VERSION | wc -l) -eq 1  # [unix]\n        - pip check\n      requires:\n        - pip\n      imports:\n        - yarp\n\n  - name: {{ name }}\n    build:\n      run_exports:\n        - {{ pin_subpackage(namecxx, max_pin='x.x.x') }}\n    requirements:\n      run:\n        - {{ pin_subpackage(namecxx, exact=True) }}\n        - {{ pin_subpackage(namepython, max_pin='x.x.x') }}\n    test:\n      imports:\n        - yarp\n\nabout:\n  home: https://github.com/robotology/yarp\n  license: BSD-3-Clause AND MIT AND GPL-3.0-or-later\n  license_file:\n    - COPYING\n    - extern/thrift/LICENSES/BSD-3-Clause.txt\n    - extern/dirent/dirent/LICENSE\n    - extern/xmlrpcpp/xmlrpcpp/COPYING\n  summary: YARP is a library and toolkit for communication and device interfaces, used on everything from humanoids to embedded devices.\n\n\nextra:\n  recipe-maintainers:\n    - traversaro\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1118,8 +1118,8 @@
    ]
   }
  },
- "url": "https://github.com/robotology/yarp/archive/refs/tags/v3.7.1.tar.gz",
- "version": "3.7.1",
+ "url": "https://github.com/robotology/yarp/archive/refs/tags/v3.7.2.tar.gz",
+ "version": "3.7.2",
  "win_64_meta_yaml": {
   "about": {
    "home": "https://github.com/robotology/yarp",
@@ -1247,11 +1247,11 @@
   ],
   "package": {
    "name": "yarp",
-   "version": "3.7.1"
+   "version": "3.7.2"
   },
   "source": {
-   "sha256": "ac55a253d500b8c2d9b4fad8d4c4810232a46dd75dcd8ca28ef971cd2af2203c",
-   "url": "https://github.com/robotology/yarp/archive/refs/tags/v3.7.1.tar.gz"
+   "sha256": "bf16e70b26e9b33323e17c4a298499e50299641a7c384904b331f2fb247c84cf",
+   "url": "https://github.com/robotology/yarp/archive/refs/tags/v3.7.2.tar.gz"
   }
  },
  "win_64_requirements": {
