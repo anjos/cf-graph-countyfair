@@ -162,14 +162,14 @@
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
   "about": {
-   "description": "FFmpeg version of headers required to interface with Nvidias codec APIs.\n\nCorresponds to Video Codec SDK version 8.2.25.\n\nMinimum required driver versions:\nLinux: 396.24 or newer\nWindows: 397.93 or newer\n\nOptional CUDA 10 features:\nLinux: 410.48 or newer\nWindows: 411.31 or newer\n",
+   "description": "Corresponds to Video Codec SDK version 11.1.5.\n\nMinimum required driver versions:\nLinux: 470.57.02 or newer\nWindows: 471.41 or newer\n",
    "home": "https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git",
    "license": "MIT",
    "license_file": "LICENSE",
    "summary": "FFmpeg version of headers required to interface with Nvidias codec APIs"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "script": "make PREFIX=/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla install"
   },
   "extra": {
@@ -224,15 +224,15 @@
  },
  "meta_yaml": {
   "about": {
-   "description": "FFmpeg version of headers required to interface with Nvidias codec APIs.\n\nCorresponds to Video Codec SDK version 8.2.25.\n\nMinimum required driver versions:\nLinux: 396.24 or newer\nWindows: 397.93 or newer\n\nOptional CUDA 10 features:\nLinux: 410.48 or newer\nWindows: 411.31 or newer\n",
+   "description": "Corresponds to Video Codec SDK version 11.1.5.\n\nMinimum required driver versions:\nLinux: 470.57.02 or newer\nWindows: 471.41 or newer\n",
    "home": "https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git",
    "license": "MIT",
    "license_file": "LICENSE",
    "summary": "FFmpeg version of headers required to interface with Nvidias codec APIs"
   },
   "build": {
-   "number": "1",
-   "script": "make PREFIX=/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla install"
+   "number": "2",
+   "script": "make PREFIX=/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Library install"
   },
   "extra": {
    "recipe-maintainers": [
@@ -249,7 +249,7 @@
   "requirements": {
    "build": [
     "make",
-    "git",
+    "m2-sed",
     "make"
    ]
   },
@@ -258,7 +258,20 @@
    "url": "https://github.com/FFmpeg/nv-codec-headers/releases/download/n11.1.5.1/nv-codec-headers-11.1.5.1.tar.gz"
   },
   "test": {
-   "commands": null
+   "commands": [
+    "test -f ${PREFIX}/include/ffnvcodec/dynlink_cuda.h",
+    "test -f ${PREFIX}/include/ffnvcodec/dynlink_cuviddec.h",
+    "test -f ${PREFIX}/include/ffnvcodec/dynlink_loader.h",
+    "test -f ${PREFIX}/include/ffnvcodec/dynlink_nvcuvid.h",
+    "test -f ${PREFIX}/include/ffnvcodec/nvEncodeAPI.h",
+    "test -f ${PREFIX}/lib/pkgconfig/ffnvcodec.pc",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_cuda.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_cuviddec.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_loader.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_nvcuvid.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\nvEncodeAPI.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\ffnvcodec.pc exit 1"
+   ]
   }
  },
  "name": "ffnvcodec-headers",
@@ -279,11 +292,11 @@
   ]
  },
  "pinning_version": "2022.01.11.20.10.31",
- "raw_meta_yaml": "{% set name = \"ffnvcodec-headers\" %}\n{% set version = \"11.1.5.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/FFmpeg/nv-codec-headers/releases/download/n{{ version }}/nv-codec-headers-{{ version }}.tar.gz\n  sha256: a28cdde3ac0e9e02c2dde7a1b4de5333b4ac6148a8332ca712da243a3361a0d9\n\nbuild:\n  number: 1\n  skip: true  # [osx]\n  script: make PREFIX={{ PREFIX }} install\n\nrequirements:\n  build:\n    # git provides the sed command\n    - git   # [win]\n    - make\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ffnvcodec/dynlink_cuda.h       # [unix]\n    - test -f ${PREFIX}/include/ffnvcodec/dynlink_cuviddec.h   # [unix]\n    - test -f ${PREFIX}/include/ffnvcodec/dynlink_loader.h     # [unix]\n    - test -f ${PREFIX}/include/ffnvcodec/dynlink_nvcuvid.h    # [unix]\n    - test -f ${PREFIX}/include/ffnvcodec/nvEncodeAPI.h        # [unix]\n    - test -f ${PREFIX}/lib/pkgconfig/ffnvcodec.pc             # [unix]\n\nabout:\n  home: https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git\n  license: MIT\n  license_file: LICENSE\n  summary: FFmpeg version of headers required to interface with Nvidias codec APIs\n  description: |\n    FFmpeg version of headers required to interface with Nvidias codec APIs.\n\n    Corresponds to Video Codec SDK version 8.2.25.\n\n    Minimum required driver versions:\n    Linux: 396.24 or newer\n    Windows: 397.93 or newer\n\n    Optional CUDA 10 features:\n    Linux: 410.48 or newer\n    Windows: 411.31 or newer\n\nextra:\n  recipe-maintainers:\n    - hmaarrfk\n    - sdvillal\n",
+ "raw_meta_yaml": "{% set name = \"ffnvcodec-headers\" %}\n{% set version = \"11.1.5.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/FFmpeg/nv-codec-headers/releases/download/n{{ version }}/nv-codec-headers-{{ version }}.tar.gz\n  sha256: a28cdde3ac0e9e02c2dde7a1b4de5333b4ac6148a8332ca712da243a3361a0d9\n\nbuild:\n  number: 2\n  skip: true  # [osx]\n  script: make PREFIX={{ PREFIX }} install          # [unix]\n  script: make PREFIX={{ PREFIX }}/Library install  # [win]\n\nrequirements:\n  build:\n    - m2-sed  # [win]\n    - make\n\ntest:\n  commands:\n    - test -f ${PREFIX}/include/ffnvcodec/dynlink_cuda.h       # [unix]\n    - test -f ${PREFIX}/include/ffnvcodec/dynlink_cuviddec.h   # [unix]\n    - test -f ${PREFIX}/include/ffnvcodec/dynlink_loader.h     # [unix]\n    - test -f ${PREFIX}/include/ffnvcodec/dynlink_nvcuvid.h    # [unix]\n    - test -f ${PREFIX}/include/ffnvcodec/nvEncodeAPI.h        # [unix]\n    - test -f ${PREFIX}/lib/pkgconfig/ffnvcodec.pc             # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_cuda.h exit 1      # [win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_cuviddec.h exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_loader.h exit 1    # [win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_nvcuvid.h exit 1   # [win]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\nvEncodeAPI.h exit 1       # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\ffnvcodec.pc exit 1            # [win]\n\nabout:\n  home: https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git\n  license: MIT\n  license_file: LICENSE\n  summary: FFmpeg version of headers required to interface with Nvidias codec APIs\n  description: |\n    Corresponds to Video Codec SDK version 11.1.5.\n\n    Minimum required driver versions:\n    Linux: 470.57.02 or newer\n    Windows: 471.41 or newer\n\nextra:\n  recipe-maintainers:\n    - hmaarrfk\n    - sdvillal\n",
  "req": {
   "__set__": true,
   "elements": [
-   "git",
+   "m2-sed",
    "make"
   ]
  },
@@ -291,7 +304,7 @@
   "build": {
    "__set__": true,
    "elements": [
-    "git",
+    "m2-sed",
     "make"
    ]
   },
@@ -314,7 +327,7 @@
   "build": {
    "__set__": true,
    "elements": [
-    "git",
+    "m2-sed",
     "make"
    ]
   },
@@ -335,15 +348,15 @@
  "version": "11.1.5.1",
  "win_64_meta_yaml": {
   "about": {
-   "description": "FFmpeg version of headers required to interface with Nvidias codec APIs.\n\nCorresponds to Video Codec SDK version 8.2.25.\n\nMinimum required driver versions:\nLinux: 396.24 or newer\nWindows: 397.93 or newer\n\nOptional CUDA 10 features:\nLinux: 410.48 or newer\nWindows: 411.31 or newer\n",
+   "description": "Corresponds to Video Codec SDK version 11.1.5.\n\nMinimum required driver versions:\nLinux: 470.57.02 or newer\nWindows: 471.41 or newer\n",
    "home": "https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git",
    "license": "MIT",
    "license_file": "LICENSE",
    "summary": "FFmpeg version of headers required to interface with Nvidias codec APIs"
   },
   "build": {
-   "number": "1",
-   "script": "make PREFIX=/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla install"
+   "number": "2",
+   "script": "make PREFIX=/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/Library install"
   },
   "extra": {
    "recipe-maintainers": [
@@ -357,7 +370,7 @@
   },
   "requirements": {
    "build": [
-    "git",
+    "m2-sed",
     "make"
    ]
   },
@@ -366,14 +379,21 @@
    "url": "https://github.com/FFmpeg/nv-codec-headers/releases/download/n11.1.5.1/nv-codec-headers-11.1.5.1.tar.gz"
   },
   "test": {
-   "commands": null
+   "commands": [
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_cuda.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_cuviddec.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_loader.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\dynlink_nvcuvid.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\include\\\\ffnvcodec\\\\nvEncodeAPI.h exit 1",
+    "if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\ffnvcodec.pc exit 1"
+   ]
   }
  },
  "win_64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "git",
+    "m2-sed",
     "make"
    ]
   },
