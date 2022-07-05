@@ -260,6 +260,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/987489291.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.0.5"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -948,7 +965,7 @@
   }
  },
  "name": "openssl_split",
- "new_version": "3.0.4",
+ "new_version": "3.0.5",
  "new_version_attempts": {
   "1.1.1j": 1,
   "1.1.1k": 1,
@@ -956,7 +973,8 @@
   "3.0.1": 1,
   "3.0.2": 1,
   "3.0.3": 1,
-  "3.0.4": 1
+  "3.0.4": 1,
+  "3.0.5": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1186,7 +1204,7 @@
    "openssl"
   ]
  },
- "pinning_version": "2022.06.21.09.02.52",
+ "pinning_version": "2022.07.05.08.26.14",
  "raw_meta_yaml": "{% set version = \"3.0.4\" %}\n\npackage:\n  name: openssl_split\n  version: {{ version }}\n\nsource:\n  url: http://www.openssl.org/source/openssl-{{ version }}.tar.gz\n  sha256: 2831843e9a668a0ab478e7020ad63d2d65e51f72977472dc73efcefbafc0c00f\n  patches:\n    # backport fix for https://github.com/openssl/openssl/issues/18625\n    - patches/GH18626.patch\n\nbuild:\n  number: 2\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - nasm               # [win]\n    - make               # [unix]\n    - perl *\n  # Empty host section to ensure that this is identified as cb3\n  host:\n\noutputs:\n  - name: openssl\n    build:\n      no_link: lib/libcrypto.so.3.0  # [linux]\n      no_link: lib/libcrypto.3.0.dylib  # [osx]\n      run_exports:\n        # openssl's versioning used to be X.Y.Z(rev), but is MAJOR.MINOR.PATCH since 3.0.0;\n        # see https://www.openssl.org/policies/releasestrat.html\n        - {{ pin_subpackage('openssl', max_pin='x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - make\n        - perl *\n      # Empty host section to ensure that this is identified as cb3\n      # FIXME: this doesn't seem to be enough. We need a compiler in build\n      # with `compiler` jinja used to not use legacy cb2 build==host\n      host:\n      run:\n        - ca-certificates\n    script: install_openssl.sh  # [unix]\n    script: install_openssl.bat  # [win]\n    test:\n      commands:\n        - copy NUL checksum.txt        # [win]\n        - touch checksum.txt           # [unix]\n        - $PREFIX/bin/openssl sha256 checksum.txt       # [unix]\n        - '%LIBRARY_BIN%\\openssl sha256 checksum.txt'   # [win]\n\n  - name: libopenssl-static\n    requirements:\n      build:\n        - {{ compiler('c') }}\n    script: install_libopenssl-static.sh  # [unix]\n    script: install_libopenssl-static.bat  # [win]\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/libcrypto.a                   # [unix]\n        - test -f ${PREFIX}/lib/libssl.a                      # [unix]\n        - if exist %LIBRARY_PREFIX%\\lib\\libcrypto_static.lib (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\libssl_static.lib (exit 0) else (exit 1)     # [win]\n\nabout:\n  home: http://www.openssl.org/\n  license_file: LICENSE.txt\n  license: Apache-2.0\n  license_family: Apache\n  summary: OpenSSL is an open-source implementation of the SSL and TLS protocols\n  dev_url: https://github.com/openssl/openssl\n  doc_url: https://www.openssl.org/docs/man3.0/\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n    - msarahan\n    - ocefpaf\n    - pelson\n  feedstock-name: openssl\n",
  "req": {
   "__set__": true,
@@ -1226,7 +1244,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.20.0",
+ "smithy_version": "3.21.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
