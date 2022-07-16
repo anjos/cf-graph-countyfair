@@ -18,6 +18,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/998328520.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -841,7 +858,7 @@
    "functorch"
   ]
  },
- "pinning_version": "2022.07.15.01.49.26",
+ "pinning_version": "2022.07.15.23.29.22",
  "raw_meta_yaml": "{% set version = \"0.1.1\" %}\n\npackage:\n  name: functorch\n  version: {{ version }}\n\nsource:\n  url: https://github.com/pytorch/functorch/archive/v{{ version }}.tar.gz\n  sha256: 3b297f4acf1d61fd95b86bd2ec1805bc9c236bb0fb341a42c2300a4b3d497fbd\n\nbuild:\n  script: {{ PYTHON }} -m pip install . -vv\n  number: 1\n  skip: true  # [win]\n  # functorch doesn't require cuda the compiler\n  # in the future, it may be necessary to build against cu1xx versions\n  skip: true  # [cuda_compiler_version != \"None\"]\n  detect_binary_files_with_prefix: false\n  missing_dso_whitelist:\n    # conda-forge::pytorch provides these libs\n    - \"$RPATH/libc10_cuda.so\"\n    - \"$RPATH/libtorch_python.so\"\n    - \"$RPATH/libtorch_cpu.so\"\n    - \"$RPATH/libc10.so\"\n    - \"$RPATH/libc10_cuda.dylib\"\n    - \"$RPATH/libtorch_python.dylib\"\n    - \"$RPATH/libtorch_cpu.dylib\"\n    - \"$RPATH/libc10.dylib\"\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - python                                   # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}       # [build_platform != target_platform]\n    - pytorch                                  # [build_platform != target_platform]\n\n  host:\n    - pip\n    - python\n    - pytorch\n  run:\n    - python\n    # we rely on global pinning to resolve pytorch\n    # functorch 0.1.x requires pytorch 1.11.x\n    # functorch 0.2.x requires pytorch 1.12.x\n    - pytorch\n\ntest:\n  source_files:\n    - test\n  requires:\n    - pip\n    - pytest\n    - expecttest\n    # torchvision isn't needed really, but some tests softly depend on it\n    - torchvision\n  imports:\n    - functorch\n  commands:\n    - pip check\n    # adding two tests from readme besides the sanity check in run_test.py\n    - pytest test/test_vmap.py -v\n    - pytest test/test_eager_transforms.py -v\n\nabout:\n  home: https://github.com/pytorch/functorch\n  summary: functorch is JAX-like composable function transforms for PyTorch\n  license: BSD-3-Clause\n  license_file: LICENSE\n\nextra:\n  recipe-maintainers:\n    - ngam\n",
  "req": {
   "__set__": true,
