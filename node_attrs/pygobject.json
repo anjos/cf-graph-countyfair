@@ -250,6 +250,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/998574579.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.42.2"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1784,7 +1801,8 @@
  "new_version": "3.42.2",
  "new_version_attempts": {
   "3.40.1": 1,
-  "3.42.1": 12
+  "3.42.1": 12,
+  "3.42.2": 1
  },
  "new_version_errors": {
   "3.42.1": "We found a problem parsing the recipe for version '3.42.1': \n\nAssertionError('\\n')\n\ntraceback:\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/version.py\", line 509, in migrate\n    cmeta = CondaMetaYAML(fp.read())\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/recipe_parser/_parser.py\", line 476, in __init__\n    v, e = _parse_jinja2_variables(meta_yaml)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/recipe_parser/_parser.py\", line 117, in _parse_jinja2_variables\n    assert False, jinja2_data\n"
@@ -2171,7 +2189,7 @@
    "pygobject"
   ]
  },
- "pinning_version": "2022.04.02.04.11.01",
+ "pinning_version": "2022.07.16.21.44.50",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"pygobject\" %}\n{% set version = \"3.42.1\" %}\n{% set majmin = '.'.join(version.split('.', 2)[:2]) %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://download.gnome.org/sources/{{ name }}/{{ majmin }}/{{ name }}-{{ version }}.tar.xz\n  sha256: 1f34b5f7624de35e44eb5a7eb428353285bd03004d55131a5f7f7fa9b90f3cc9\n\nbuild:\n  number: 0\n  skip: true  # [py<35]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - meson\n    - ninja\n    - pkg-config\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n  host:\n    - cairo\n    - glib\n    - gobject-introspection\n    - libffi\n    - pycairo\n    - python\n  run:\n    - libgirepository\n    - libiconv  # on Windows we seem to need the conda-forge version here (see #15)\n    - pycairo\n    - python\n    - ucrt  # [win]\n\ntest:\n  requires:\n    - pkg-config\n  imports:\n    - gi\n    - gi.pygtkcompat\n    - gi.repository.GLib\n  commands:\n    # verify that header gets installed and can be located through pkg-config\n    - test -f $PREFIX/include/pygobject-3.0/pygobject.h  # [unix]\n    - test -f `pkg-config --variable=pygobjectincludedir --dont-define-prefix pygobject-3.0`/pygobject.h  # [unix]\n    - if not exist %LIBRARY_INC%\\\\pygobject-3.0\\\\pygobject.h exit 1  # [win]\n    - for /f \"usebackq tokens=*\" %%a in (`pkg-config --variable=pygobjectincludedir --dont-define-prefix pygobject-3.0`) do if not exist \"%%a/pygobject.h\" exit 1  # [win]\n\n\nabout:\n  home: https://pygobject.readthedocs.io\n  license: LGPL-2.1-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: Python bindings for GObject Introspection\n\n  description: |\n    PyGObject is a Python package which provides bindings for GObject based libraries\n    such as GTK+, GStreamer, WebKitGTK+, GLib, GIO and many more.\n\n  doc_url: https://pygobject.readthedocs.io\n  dev_url: https://git.gnome.org/browse/pygobject\n\nextra:\n  recipe-maintainers:\n    - pkgw\n    - ryanvolz\n    - sebastian-luna-valero\n    - tschoonj\n",
@@ -2233,7 +2251,7 @@
    ]
   }
  },
- "smithy_version": "3.19.0",
+ "smithy_version": "3.21.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
