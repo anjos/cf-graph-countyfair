@@ -230,6 +230,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1000748849.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -634,7 +651,7 @@
    "nds2-client"
   ]
  },
- "pinning_version": "2021.09.20.19.58.40",
+ "pinning_version": "2022.07.19.11.33.02",
  "raw_meta_yaml": "{% set name = \"nds2-client\" %}\n{% set version = \"0.16.7\" %}\n{% set sha256 = \"3d800c91aa7de328baf356d4a9e49a8eb53c0c7f5bbfa9423d2cd717a476c306\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/{{ name }}-{{ version }}.tar.bz2\n  sha256: {{ sha256 }}\n  patches:\n    # workaround https://git.ligo.org/nds/nds2-client/-/issues/124\n    - catch-trap-osx-arm64.patch  # [osx and arm64]\n\nbuild:\n  error_overdepending: true\n  error_overlinking: true  # [not win]\n  number: 0\n  run_exports:\n    - {{ pin_subpackage(\"nds2-client\", max_pin=\"x.x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.6\n    - make  # [unix]\n    - python\n  host:\n    - boost-cpp\n    - cyrus-sasl  # [not win]\n    - krb5  # [win]\n  run:\n    - cyrus-sasl  # [not win]\n    - krb5  # [win]\n\ntest:\n  requires:\n    - pkg-config  # [unix]\n  commands:\n    # check executables\n    - nds_query --version\n    - nds-client-config --includedir --libdir  # [not win]\n    # check pkg-=config\n    - pkg-config --print-errors --exact-version {{ version }} nds2-client  # [unix]\n    - pkg-config --print-errors --exact-version {{ version }} libndscxx  # [unix]\n    - pkg-config --print-errors --exact-version {{ version }} conlibndscxx  # [unix]\n    - pkg-config --print-errors --exact-version {{ version }} nds-client-tester  # [unix]\n\nabout:\n  home: https://wiki.ligo.org/Computing/NDSClient\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: NDS2 Client interface\n  description: |\n    The NDS2 client interface allows the user to down-load LIGO data\n    from V1 and V2 LIGO Network Data Servers.\n\n    This package only provides the low-level C/C++ client and associated\n    binaries.  If you want to install the Python bindings, please install\n    the python-nds2-client package.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n",
  "req": {
   "__set__": true,
@@ -684,7 +701,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.12",
+ "smithy_version": "3.21.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
