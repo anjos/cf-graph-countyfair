@@ -466,6 +466,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1004894425.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.13.4-1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -938,13 +955,14 @@
   }
  },
  "name": "nccl",
- "new_version": "2.12.12-1",
+ "new_version": "2.13.4-1",
  "new_version_attempts": {
   "2.10.3-1": 1,
   "2.11.4-1": 1,
   "2.12.10-1": 1,
   "2.12.12-1": 1,
   "2.12.7-1": 1,
+  "2.13.4-1": 1,
   "2.7.3-1": 1,
   "2.7.5-1": 1,
   "2.7.6-1": 1,
@@ -962,7 +980,7 @@
    "nccl"
   ]
  },
- "pinning_version": "2022.05.12.18.05.03",
+ "pinning_version": "2022.07.21.20.07.05",
  "raw_meta_yaml": "{% set name = \"nccl\" %}\n{% set version = \"2.12.12-1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version|replace(\"-\", \".\") }}\n\nsource:\n  url: https://github.com/NVIDIA/nccl/archive/v{{ version }}.tar.gz\n  sha256: 49b4fbfeebf1f62f6ceb69e72504045d8d1b4e7609e3c2477906f3004c7e2d82\n\nbuild:\n  number: 0\n  skip: true  # [(not linux) or cuda_compiler_version in (undefined, \"None\")]\n  run_exports:\n    # xref: https://github.com/NVIDIA/nccl/issues/218\n    - {{ pin_subpackage(name, max_pin=\"x\") }}\n  script_env:\n    # for some reason /usr/local/cuda is not added to $PATH in ppc64le's docker image\n    - CUDA_HOME  # [ppc64le or aarch64]\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n    - {{ compiler(\"cxx\") }}\n    - {{ compiler(\"cuda\") }}\n    - make\n\ntest:\n  commands:\n    - test -f \"${PREFIX}/include/nccl.h\"\n    - test -f \"${PREFIX}/lib/libnccl.so\"\n    - test ! -f \"${PREFIX}/lib/libnccl_static.a\"\n\nabout:\n  home: https://developer.nvidia.com/nccl\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE.txt\n  summary: Optimized primitives for collective multi-GPU communication\n\n  description: |\n    The NVIDIA Collective Communications Library (NCCL) implements multi-GPU\n    and multi-node collective communication primitives that are performance\n    optimized for NVIDIA GPUs. NCCL provides routines such as all-gather,\n    all-reduce, broadcast, reduce, reduce-scatter, that are optimized to\n    achieve high bandwidth over PCIe and NVLink high-speed interconnect.\n\n  doc_url: https://docs.nvidia.com/deeplearning/sdk/nccl-developer-guide/docs/index.html\n  dev_url: https://github.com/NVIDIA/nccl\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n    - leofang\n",
  "req": {
   "__set__": true,
@@ -1004,7 +1022,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.19.0",
+ "smithy_version": "3.21.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
