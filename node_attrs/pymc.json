@@ -385,6 +385,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1009730030.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "4.1.4"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -2426,7 +2443,7 @@
   }
  },
  "name": "pymc-suite",
- "new_version": "4.1.3",
+ "new_version": "4.1.4",
  "new_version_attempts": {
   "2.3.8": 1,
   "3.11.4": 1,
@@ -2435,7 +2452,8 @@
   "4.1.0": 1,
   "4.1.1": 1,
   "4.1.2": 1,
-  "4.1.3": 1
+  "4.1.3": 1,
+  "4.1.4": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -3287,7 +3305,7 @@
    "pymc-base"
   ]
  },
- "pinning_version": "2022.07.15.01.49.26",
+ "pinning_version": "2022.07.26.20.23.31",
  "raw_meta_yaml": "{% set version = \"4.1.3\" %}\n\npackage:\n  name: pymc-suite  # https://github.com/conda/conda-build/issues/3933\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/p/pymc/pymc-{{ version }}.tar.gz\n  sha256: f90b3d55b71c9dbe3078db110c85483758e739cc3f361e912f6726019d78b4a1\n\nbuild:\n  number: 0\n\noutputs:\n  - name: pymc-base\n    build:\n      # This skip should be duplicated below in the pymc section.\n      # Ref: <https://github.com/conda-forge/conda-smithy/issues/1641>\n      skip: true  # [py<38]\n      script:\n        - python -m pip install . --no-deps -vv\n    requirements:\n      build:\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n      host:\n        - python\n        - pip\n      run:\n        - python\n        # https://github.com/pymc-devs/pymc/blob/v{{ version }}/requirements.txt\n        - aeppl-base ==0.0.32\n        - aesara-base ==2.7.7\n        - arviz >=0.12.0\n        - cachetools >=4.2.1\n        - cloudpickle\n        - fastprogress >=0.2.0\n        - numpy >=1.15.0\n        - pandas >=0.24.0\n        - scipy >=1.4.1\n        - typing-extensions >=3.7.4\n    test:\n      imports:\n        - pymc\n        - pymc.backends\n        - pymc.distributions\n        - pymc.gp\n        - pymc.step_methods\n        - pymc.tests\n        - pymc.tuning\n        - pymc.variational\n        - pymc.ode\n      commands:\n        - pip check\n        - python check-for-warnings.py allowed-warnings-base.txt\n      requires:\n        - pip\n      files:\n        - check-for-warnings.py\n        - allowed-warnings-base.txt\n  - name: pymc\n    build:\n      # This skip should be duplicated above in the pymc-base section.\n      # Ref: <https://github.com/conda-forge/conda-smithy/issues/1641>\n      skip: true  # [py<38]\n      script:\n        - echo \"Nothing to build here, just add dependencies.\"\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage(\"pymc-base\", exact=True) }}\n        # As of Aesara v2.7.5, there is a 1-1 correspondence between the \"aesara-base\"\n        # package and the \"aesara\" package of the same version and build number on\n        # which it depends. Thus the pin from the \"aesara-base\" package above will\n        # implicitly transfer here to the \"aesara\" package.\n        - aesara >=2.7.5\n\n        # The same story for aeppl:\n        # As of aeppl v0.0.32, there is a 1-1 correspondence between the \"aeppl-base\"\n        # package and the \"aeppl\" package of the same version and build number on\n        # which it depends. Thus the pin from the \"aeppl-base\" package above will\n        # implicitly transfer here to the \"aeppl\" package.\n        - aeppl >=0.0.32\n    test:\n      imports:\n        - pymc\n        - pymc.backends\n        - pymc.distributions\n        - pymc.gp\n        - pymc.step_methods\n        - pymc.tests\n        - pymc.tuning\n        - pymc.variational\n        - pymc.ode\n      commands:\n        - pip check\n        - python check-for-warnings.py allowed-warnings-main.txt\n      requires:\n        - pip\n      files:\n        - check-for-warnings.py\n        - allowed-warnings-main.txt\n\nabout:\n  home: http://github.com/pymc-devs/pymc\n  license: Apache-2.0\n  license_file: LICENSE\n  license_family: Apache\n  summary: Probabilistic Programming in Python\n\nextra:\n  recipe-maintainers:\n    - ericmjl\n    - twiecki\n    - fonnesbeck\n    - ocefpaf\n    - michaelosthege\n    - maresb\n    - ricardoV94\n",
  "req": {
   "__set__": true,
