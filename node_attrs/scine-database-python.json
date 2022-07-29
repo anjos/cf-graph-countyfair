@@ -460,6 +460,12 @@
   ]
  },
  "pinning_version": "2022.07.19.11.33.02",
+ "pre_pr_migrator_attempts": {
+  "pypy38": 1
+ },
+ "pre_pr_migrator_status": {
+  "pypy38": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2757542171\">bot CI job</a>): main: ['linux_64_python3.8.____73_pypy: Encountered problems while solving:\\n  - package scine-utilities-python-4.0.0-py310hdda0239_1 requires python_abi 3.10.* *_cp310, but none of the providers can be installed\\n', 'linux_64_python3.9.____73_pypy: Encountered problems while solving:\\n  - package scine-utilities-python-4.0.0-py310hdda0239_1 requires python_abi 3.10.* *_cp310, but none of the providers can be installed\\n']"
+ },
  "raw_meta_yaml": "{% set name = \"scine-database-python\" %}\n{% set version = \"1.0.0\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/qcscine/database/archive/refs/tags/{{ version }}.tar.gz\n    sha256: 3e1298efbefb97886575c46fd537d62493f69fe4324667217c096cffa6763e31\n    patches:\n      - skip_library_build.patch\n  - url: https://github.com/qcscine/development-utils/archive/refs/tags/5.0.0.tar.gz\n    sha256: bb2f161ed15811def85ca635924427356564a811779993123077f4ada048be84\n    folder: dev\n    patches:\n      - pybind11_pin.patch\n\nbuild:\n  number: 1\n  skip: true  # [win]\n  skip: true  # [osx]\n  ignore_run_exports:\n    - libblas\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n    - pkg-config\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  host:\n    - eigen\n    # Needed for eigen detection\n    - libblas\n    - pip\n    - pybind11\n    - pybind11-abi\n    - python\n    - scine-database {{ version }}\n  run:\n    - python\n    - scine-database {{ version }}\n    - scine-utilsos\n    - scine-utilities-python\n\ntest:\n  imports:\n    - scine_database\n  source_files:\n    - src/Database/Python/Tests/\n  requires:\n    - pip\n    - pytest\n\nabout:\n  license: BSD-3-Clause\n  license_file: LICENSE.txt\n  summary: |\n    The SCINE database module is a database wrapper for a MongoDB encoding reaction networks\n    (Python bindings).\n  home: https://scine.ethz.ch/\n  dev_url: https://github.com/qcscine/database\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
  "req": {
   "__set__": true,
