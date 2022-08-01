@@ -50,6 +50,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1013919823.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.0.6"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -478,10 +495,11 @@
   }
  },
  "name": "libapparmor",
- "new_version": "3.0.5",
+ "new_version": "3.0.6",
  "new_version_attempts": {
   "3.0.4": 2,
-  "3.0.5": 2
+  "3.0.5": 2,
+  "3.0.6": 1
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -490,7 +508,7 @@
    "libapparmor"
   ]
  },
- "pinning_version": "2022.07.22.23.35.10",
+ "pinning_version": "2022.08.01.12.11.42",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"libapparmor\" %}\n{% set version = \"3.0.5\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://gitlab.com/apparmor/apparmor/-/archive/v{{ version }}/apparmor-v{{ version }}.tar.gz\n  sha256: 842f8c2bf8e316d19c51519c7907ff402f9c33607f51ea207747523a12f0097f\n\nbuild:\n  skip: true  # [not linux]\n  number: 0\n  script:\n    - export PYTHONPATH=$(realpath libraries/libapparmor/swig/python)\n    - cd ./libraries/libapparmor\n    - ./autogen.sh\n    - ./configure --prefix=$PREFIX\n    - make\n    - make check\n    - make install\n\nrequirements:\n  build:\n    - perl\n    - python >=3.3\n    - psutil\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - sysroot_linux-64 2.17  # [linux64]\n    - make\n    - cmake\n    - autoconf\n    - automake\n    - libtool\n    - swig\n    - python-configuration\n    - bison\n    - flex\n    - pkgconfig\n    - pkg-config\n\ntest:\n  commands:\n    - echo \"testing...\"\n\nabout:\n  home: https://apparmor.net/\n  license: GPL-2.0-or-later\n  license_file: LICENSE\n  summary: Linux kernel security module\n  description: |\n    AppArmor protects systems from insecure or untrusted processes\n    by running them in restricted confinement, while still allowing\n    processes to share files, exercise privilege and communicate with\n    other processes. AppArmor is a Mandatory Access Control (MAC)\n    mechanism which uses the Linux Security Module (LSM) framework.\n    The confinement's restrictions are mandatory and are not bound to\n    identity, group membership, or object ownership. The protections\n    provided are in addition to the kernel's regular access control\n    mechanisms (including DAC) and can be used to restrict the\n    superuser.\n\n  dev_url: https://gitlab.com/apparmor\n  doc_url: https://gitlab.com/apparmor/apparmor/-/wikis/Documentation\n\nextra:\n  recipe-maintainers:\n    - ngam\n",
