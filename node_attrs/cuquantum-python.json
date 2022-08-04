@@ -54,6 +54,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1017990352.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "22.07.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -794,11 +811,12 @@
   }
  },
  "name": "cuquantum-python",
- "new_version": "22.07.0",
+ "new_version": "22.07.1",
  "new_version_attempts": {
   "0.1.0.1": 24,
   "22.03.0": 3,
-  "22.07.0": 3
+  "22.07.0": 3,
+  "22.07.1": 1
  },
  "new_version_errors": {
   "0.1.0.1": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '0.1.0.1' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ version }}.{{ py_version }}.tar.gz'\n",
@@ -811,7 +829,7 @@
    "cuquantum-python"
   ]
  },
- "pinning_version": "2022.07.02.21.02.52",
+ "pinning_version": "2022.08.04.07.32.40",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"22.07.0\" %}\n\npackage:\n  name: cuquantum-python\n  version: {{ version }}\n\nsource:\n  url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 220ce5ef4bfd0ecd7a260f8b456af4b2c85a9d9ddeffb98d8adcb62f5dec6207\n\nbuild:\n  number: 0\n  skip: True  # [win or cuda_compiler_version != \"11.2\" or py < 38]\n  script_env:\n    - CUQUANTUM_ROOT=$PREFIX\n    - CUTENSOR_ROOT=$PREFIX\n    - CUQUANTUM_IGNORE_SOLVER=1\n  script:\n    - cd python\n    - {{ PYTHON }} -m pip install . --no-deps -vv\n  ignore_run_exports_from:\n    # let cuquantum handle the CUDA deps\n    - {{ compiler('cuda') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n    - python\n    - pip\n    - cython\n    - cuquantum {{ version }}\n    - packaging\n  run:\n    - python\n    - numpy >=1.19\n    - cupy >=9.5\n    # cuquantum has run_exports, so we don't need to pin here\n  run_constrained:\n    - pytorch >=1.10\n    # we don't have to pin Qiskit or Cirq here because their versions are fairly recent on conda-forge\n\ntest:\n  imports:\n    - cuquantum\n    - cuquantum.custatevec\n    - cuquantum.cutensornet\n\nabout:\n  home: https://developer.nvidia.com/cuquantum-sdk\n  license: BSD-3-Clause\n  license_url: https://docs.nvidia.com/cuda/cuquantum/license.html#nvidia-cuquantum-python\n  license_file: LICENSE\n  summary: \"cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK\"\n  description: |\n    NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented\n    models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.\n  doc_url: https://docs.nvidia.com/cuda/cuquantum/python/index.html\n  dev_url: https://github.com/NVIDIA/cuQuantum\n\nextra:\n  recipe-maintainers:\n    - leofang\n    - JeremyWangNVDA\n    - mtjrider\n",
@@ -872,7 +890,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.21.0",
+ "smithy_version": "3.21.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
