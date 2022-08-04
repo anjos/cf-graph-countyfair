@@ -52,6 +52,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1017883591.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "22.07.1.14"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -499,9 +516,10 @@
   }
  },
  "name": "cuquantum",
- "new_version": "22.07.0.11",
+ "new_version": "22.07.1.14",
  "new_version_attempts": {
-  "22.07.0.11": 1
+  "22.07.0.11": 1,
+  "22.07.1.14": 1
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -510,7 +528,7 @@
    "cuquantum"
   ]
  },
- "pinning_version": "2022.07.21.11.35.29",
+ "pinning_version": "2022.08.04.07.32.40",
  "raw_meta_yaml": "{% set version = \"22.07.0.11\" %}\n\npackage:\n  name: cuquantum\n  version: {{ version }}\n\nsource:\n  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}-archive.tar.xz    # [linux64]\n  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}-archive.tar.xz        # [aarch64]\n  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}-archive.tar.xz  # [ppc64le]\n\n  sha256: bb67c2ddc9822cd0b3c50d6d269c051eab4971c4d75a02ac24de03b48e30f639  # [linux64]\n  sha256: d1d386ed4c7876bd7dcdef9f0dddcfdd2c0ccbeece49937017688469dadef123  # [aarch64]\n  sha256: 60541d5cc4999ee2e514bc20cdab42e8737b5969ab0816d93a0c324d5d318864  # [ppc64le]\n\nbuild:\n  number: 0\n  skip: true  # [win or cuda_compiler_version != \"11.2\"]\n  script:\n    - mkdir -p $PREFIX/include                                            # [linux]\n    - cp -r include/* $PREFIX/include/                                    # [linux]\n    - mkdir -p $PREFIX/lib                                                # [linux]\n    - mv lib/*.so* $PREFIX/lib/                                           # [linux]\n\n    # Patch for conda-forge:\n    # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa\n    # and ppc64le, while conda-forge is still on 2.17. However, given that powf is\n    # the only offending symbol that needs a newer glibc, it is the easiest if we\n    # just patch it.\n    - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]\n  run_exports:\n    - {{ pin_subpackage('cuquantum', max_pin='x.x') }}\n  ignore_run_exports_from:\n    - {{ compiler('cuda') }}\n  missing_dso_whitelist:\n    - '*/libcutensor.so*'\n    - '*/libcublas.so*'\n    - '*/libcublasLt.so*'\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n  run:\n    - libgomp        # [linux]\n    - cudatoolkit >=11.0,<12\n    - cutensor >=1.5,<2\n\ntest:\n  requires:\n    - git\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}\n    - sysroot_linux-64 2.17  # [linux64]\n    # make sure we pick up the version matching the docker,\n    # or the linker would complain \n    - cudatoolkit {{ cuda_compiler_version }}\n  files:\n    - test_load_elf.c        # [linux]\n\nabout:\n  home: https://developer.nvidia.com/cuquantum-sdk\n  license: LicenseRef-cuQuantum-Software-License-Agreement\n  license_url: https://docs.nvidia.com/cuda/cuquantum/license.html\n  license_file: docs/cuQuantum_license.pdf\n  summary: 'cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science'\n  description: |\n    NVIDIA cuQuantum is an SDK of optimized libraries and tools for accelerating quantum computing workflows.\n    Using NVIDIA GPU Tensor Core GPUs, developers can use cuQuantum to speed up quantum circuit simulations\n    based on state vector and tensor network methods by orders of magnitude. Two major components of the\n    SDK are\n\n      - cuStateVec: a high-performance library for state vector computations\n      - cuTensorNet: a high-performance library for tensor network computations\n\n    License Agreements:- The packages are governed by the NVIDIA cuQuantum\n    Software License Agreement (EULA). By downloading and using the packages,\n    you accept the terms and conditions of the NVIDIA cuQuantum EULA -\n    https://docs.nvidia.com/cuda/cuquantum/license.html\n  doc_url: https://docs.nvidia.com/cuda/cuquantum/index.html\n  dev_url: https://developer.nvidia.com/cuquantum-downloads\n\nextra:\n  recipe-maintainers:\n    - leofang\n    - JeremyWangNVDA\n    - mtjrider\n",
  "req": {
   "__set__": true,
@@ -567,7 +585,7 @@
    ]
   }
  },
- "smithy_version": "3.21.0",
+ "smithy_version": "3.21.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
