@@ -88,9 +88,11 @@
   },
   "build": {
    "entry_points": [
+    "mintpy = mintpy.__main__:main",
     "add_attribute.py = mintpy.add_attribute:main",
     "add.py = mintpy.add:main",
     "asc_desc2horz_vert.py = mintpy.asc_desc2horz_vert:main",
+    "bulk_plate_motion.py = mintpy.bulk_plate_motion:main",
     "closure_phase_bias.py = mintpy.closure_phase_bias:main",
     "dem_error.py = mintpy.dem_error:main",
     "dem_gsi.py = mintpy.dem_gsi:main",
@@ -98,7 +100,6 @@
     "generate_mask.py = mintpy.generate_mask:main",
     "geocode.py = mintpy.geocode:main",
     "ifgram_inversion.py = mintpy.ifgram_inversion:main",
-    "ifgram_reconstruction.py = mintpy.ifgram_reconstruction:main",
     "image_math.py = mintpy.image_math:main",
     "image_stitch.py = mintpy.image_stitch:main",
     "info.py = mintpy.info:main",
@@ -118,7 +119,6 @@
     "prep_cosicorr.py = mintpy.prep_cosicorr:main",
     "prep_fringe.py = mintpy.prep_fringe:main",
     "prep_gamma.py = mintpy.prep_gamma:main",
-    "prep_giant.py = mintpy.prep_giant:main",
     "prep_gmtsar.py = mintpy.prep_gmtsar:main",
     "prep_hyp3.py = mintpy.prep_hyp3:main",
     "prep_isce.py = mintpy.prep_isce:main",
@@ -128,6 +128,7 @@
     "reference_point.py = mintpy.reference_point:main",
     "remove_hdf5_dataset.py = mintpy.remove_hdf5_dataset:main",
     "remove_ramp.py = mintpy.remove_ramp:main",
+    "s1ab_range_bias.py = mintpy.s1ab_range_bias:main",
     "save_gbis.py = mintpy.save_gbis:main",
     "save_gdal.py = mintpy.save_gdal:main",
     "save_gmt.py = mintpy.save_gmt:main",
@@ -150,7 +151,6 @@
     "tropo_gacos.py = mintpy.tropo_gacos:main",
     "tropo_phase_elevation.py = mintpy.tropo_phase_elevation:main",
     "tropo_pyaps3.py = mintpy.tropo_pyaps3:main",
-    "tropo_pyaps.py = mintpy.tropo_pyaps:main",
     "tsview.py = mintpy.tsview:main",
     "unwrap_error_bridging.py = mintpy.unwrap_error_bridging:main",
     "unwrap_error_phase_closure.py = mintpy.unwrap_error_phase_closure:main",
@@ -158,7 +158,7 @@
    ],
    "noarch": "python",
    "number": "0",
-   "script": "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install . -vv"
+   "script": "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install .[cli] -vv"
   },
   "extra": {
    "recipe-maintainers": [
@@ -169,7 +169,7 @@
   },
   "package": {
    "name": "mintpy",
-   "version": "1.3.3"
+   "version": "1.4.0"
   },
   "requirements": {
    "host": [
@@ -178,6 +178,7 @@
    ],
    "run": [
     "python >=3.6",
+    "argcomplete",
     "cartopy",
     "cvxopt",
     "dask >=1.0",
@@ -194,18 +195,20 @@
     "scipy",
     "pykml >=0.2",
     "pysolid",
-    "pyaps3",
+    "pyaps3 >=0.3",
     "gdal >=3",
-    "pyresample",
-    "openmp"
+    "pyresample"
    ]
   },
   "source": {
-   "sha256": "3986957e31f91580d9aae4815a9160259bb7450e5ac4b95ecb09c009c0a72eae",
-   "url": "https://github.com/insarlab/MintPy/archive/refs/tags/v1.3.3.tar.gz"
+   "sha256": "0ed149158ba06ec7b0ba2adf363c46ea517e2362347abb88f72917a926cd05c9",
+   "url": "https://github.com/insarlab/MintPy/archive/refs/tags/v1.4.0.tar.gz"
   },
   "test": {
    "commands": [
+    "pip check",
+    "mintpy --help",
+    "mintpy smallbaselineApp --help",
     "smallbaselineApp.py --help",
     "view.py --help",
     "tsview.py --help",
@@ -213,6 +216,9 @@
    ],
    "imports": [
     "mintpy"
+   ],
+   "requires": [
+    "pip"
    ]
   }
  },
@@ -231,6 +237,7 @@
   "run": {
    "__set__": true,
    "elements": [
+    "argcomplete",
     "cartopy",
     "cvxopt",
     "dask",
@@ -242,7 +249,6 @@
     "lxml",
     "matplotlib-base",
     "numpy",
-    "openmp",
     "pip",
     "pyaps3",
     "pykml",
@@ -256,7 +262,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "meta_yaml": {
@@ -272,9 +280,11 @@
   },
   "build": {
    "entry_points": [
+    "mintpy = mintpy.__main__:main",
     "add_attribute.py = mintpy.add_attribute:main",
     "add.py = mintpy.add:main",
     "asc_desc2horz_vert.py = mintpy.asc_desc2horz_vert:main",
+    "bulk_plate_motion.py = mintpy.bulk_plate_motion:main",
     "closure_phase_bias.py = mintpy.closure_phase_bias:main",
     "dem_error.py = mintpy.dem_error:main",
     "dem_gsi.py = mintpy.dem_gsi:main",
@@ -282,7 +292,6 @@
     "generate_mask.py = mintpy.generate_mask:main",
     "geocode.py = mintpy.geocode:main",
     "ifgram_inversion.py = mintpy.ifgram_inversion:main",
-    "ifgram_reconstruction.py = mintpy.ifgram_reconstruction:main",
     "image_math.py = mintpy.image_math:main",
     "image_stitch.py = mintpy.image_stitch:main",
     "info.py = mintpy.info:main",
@@ -302,7 +311,6 @@
     "prep_cosicorr.py = mintpy.prep_cosicorr:main",
     "prep_fringe.py = mintpy.prep_fringe:main",
     "prep_gamma.py = mintpy.prep_gamma:main",
-    "prep_giant.py = mintpy.prep_giant:main",
     "prep_gmtsar.py = mintpy.prep_gmtsar:main",
     "prep_hyp3.py = mintpy.prep_hyp3:main",
     "prep_isce.py = mintpy.prep_isce:main",
@@ -312,6 +320,7 @@
     "reference_point.py = mintpy.reference_point:main",
     "remove_hdf5_dataset.py = mintpy.remove_hdf5_dataset:main",
     "remove_ramp.py = mintpy.remove_ramp:main",
+    "s1ab_range_bias.py = mintpy.s1ab_range_bias:main",
     "save_gbis.py = mintpy.save_gbis:main",
     "save_gdal.py = mintpy.save_gdal:main",
     "save_gmt.py = mintpy.save_gmt:main",
@@ -334,7 +343,6 @@
     "tropo_gacos.py = mintpy.tropo_gacos:main",
     "tropo_phase_elevation.py = mintpy.tropo_phase_elevation:main",
     "tropo_pyaps3.py = mintpy.tropo_pyaps3:main",
-    "tropo_pyaps.py = mintpy.tropo_pyaps:main",
     "tsview.py = mintpy.tsview:main",
     "unwrap_error_bridging.py = mintpy.unwrap_error_bridging:main",
     "unwrap_error_phase_closure.py = mintpy.unwrap_error_phase_closure:main",
@@ -342,7 +350,7 @@
    ],
    "noarch": "python",
    "number": "0",
-   "script": "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install . -vv"
+   "script": "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install .[cli] -vv"
   },
   "extra": {
    "recipe-maintainers": [
@@ -353,7 +361,7 @@
   },
   "package": {
    "name": "mintpy",
-   "version": "1.3.3"
+   "version": "1.4.0"
   },
   "requirements": {
    "host": [
@@ -362,6 +370,7 @@
    ],
    "run": [
     "python >=3.6",
+    "argcomplete",
     "cartopy",
     "cvxopt",
     "dask >=1.0",
@@ -378,18 +387,20 @@
     "scipy",
     "pykml >=0.2",
     "pysolid",
-    "pyaps3",
+    "pyaps3 >=0.3",
     "gdal >=3",
-    "pyresample",
-    "openmp"
+    "pyresample"
    ]
   },
   "source": {
-   "sha256": "3986957e31f91580d9aae4815a9160259bb7450e5ac4b95ecb09c009c0a72eae",
-   "url": "https://github.com/insarlab/MintPy/archive/refs/tags/v1.3.3.tar.gz"
+   "sha256": "0ed149158ba06ec7b0ba2adf363c46ea517e2362347abb88f72917a926cd05c9",
+   "url": "https://github.com/insarlab/MintPy/archive/refs/tags/v1.4.0.tar.gz"
   },
   "test": {
    "commands": [
+    "pip check",
+    "mintpy --help",
+    "mintpy smallbaselineApp --help",
     "smallbaselineApp.py --help",
     "view.py --help",
     "tsview.py --help",
@@ -397,6 +408,9 @@
    ],
    "imports": [
     "mintpy"
+   ],
+   "requires": [
+    "pip"
    ]
   }
  },
@@ -415,10 +429,11 @@
   ]
  },
  "pinning_version": "2022.08.04.07.32.40",
- "raw_meta_yaml": "{% set name = \"MintPy\" %}\n{% set version = \"1.3.3\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/insarlab/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 3986957e31f91580d9aae4815a9160259bb7450e5ac4b95ecb09c009c0a72eae\n\nbuild:\n  noarch: python\n  number: 0\n  script: {{ PYTHON }} -m pip install . -vv\n  entry_points:\n    - add_attribute.py = mintpy.add_attribute:main\n    - add.py = mintpy.add:main\n    - asc_desc2horz_vert.py = mintpy.asc_desc2horz_vert:main\n    - closure_phase_bias.py = mintpy.closure_phase_bias:main\n    - dem_error.py = mintpy.dem_error:main\n    - dem_gsi.py = mintpy.dem_gsi:main\n    - diff.py = mintpy.diff:main\n    - generate_mask.py = mintpy.generate_mask:main\n    - geocode.py = mintpy.geocode:main\n    - ifgram_inversion.py = mintpy.ifgram_inversion:main\n    - ifgram_reconstruction.py = mintpy.ifgram_reconstruction:main\n    - image_math.py = mintpy.image_math:main\n    - image_stitch.py = mintpy.image_stitch:main\n    - info.py = mintpy.info:main\n    - iono_tec.py = mintpy.iono_tec:main\n    - load_data.py = mintpy.load_data:main\n    - load_gbis.py = mintpy.load_gbis:main\n    - local_oscilator_drift.py = mintpy.local_oscilator_drift:main\n    - lookup_geo2radar.py = mintpy.lookup_geo2radar:main\n    - mask.py = mintpy.mask:main\n    - modify_network.py = mintpy.modify_network:main\n    - multilook.py = mintpy.multilook:main\n    - multi_transect.py = mintpy.multi_transect:main\n    - plot_coherence_matrix.py = mintpy.plot_coherence_matrix:main\n    - plot_network.py = mintpy.plot_network:main\n    - plot_transection.py = mintpy.plot_transection:main\n    - prep_aria.py = mintpy.prep_aria:main\n    - prep_cosicorr.py = mintpy.prep_cosicorr:main\n    - prep_fringe.py = mintpy.prep_fringe:main\n    - prep_gamma.py = mintpy.prep_gamma:main\n    - prep_giant.py = mintpy.prep_giant:main\n    - prep_gmtsar.py = mintpy.prep_gmtsar:main\n    - prep_hyp3.py = mintpy.prep_hyp3:main\n    - prep_isce.py = mintpy.prep_isce:main\n    - prep_roipac.py = mintpy.prep_roipac:main\n    - prep_snap.py = mintpy.prep_snap:main\n    - reference_date.py = mintpy.reference_date:main\n    - reference_point.py = mintpy.reference_point:main\n    - remove_hdf5_dataset.py = mintpy.remove_hdf5_dataset:main\n    - remove_ramp.py = mintpy.remove_ramp:main\n    - save_gbis.py = mintpy.save_gbis:main\n    - save_gdal.py = mintpy.save_gdal:main\n    - save_gmt.py = mintpy.save_gmt:main\n    - save_hdfeos5.py = mintpy.save_hdfeos5:main\n    - save_kite.py = mintpy.save_kite:main\n    - save_kmz.py = mintpy.save_kmz:main\n    - save_kmz_timeseries.py = mintpy.save_kmz_timeseries:main\n    - save_qgis.py = mintpy.save_qgis:main\n    - save_roipac.py = mintpy.save_roipac:main\n    - smallbaselineApp.py = mintpy.smallbaselineApp:main\n    - solid_earth_tides.py = mintpy.solid_earth_tides:main\n    - spatial_average.py = mintpy.spatial_average:main\n    - spatial_filter.py = mintpy.spatial_filter:main\n    - subset.py = mintpy.subset:main\n    - temporal_average.py = mintpy.temporal_average:main\n    - temporal_derivative.py = mintpy.temporal_derivative:main\n    - temporal_filter.py = mintpy.temporal_filter:main\n    - timeseries2velocity.py = mintpy.timeseries2velocity:main\n    - timeseries_rms.py = mintpy.timeseries_rms:main\n    - tropo_gacos.py = mintpy.tropo_gacos:main\n    - tropo_phase_elevation.py = mintpy.tropo_phase_elevation:main\n    - tropo_pyaps3.py = mintpy.tropo_pyaps3:main\n    - tropo_pyaps.py = mintpy.tropo_pyaps:main\n    - tsview.py = mintpy.tsview:main\n    - unwrap_error_bridging.py = mintpy.unwrap_error_bridging:main\n    - unwrap_error_phase_closure.py = mintpy.unwrap_error_phase_closure:main\n    - view.py = mintpy.view:main\n\nrequirements:\n  host:\n    - python >=3.6\n    - pip\n  run:\n    - python >=3.6\n    - cartopy\n    - cvxopt\n    - dask >=1.0\n    - dask-jobqueue >=0.3\n    - defusedxml\n    - h5py\n    - joblib\n    - lxml\n    - matplotlib-base\n    - numpy\n    - pip\n    - pyproj\n    - scikit-image\n    - scipy\n    - pykml >=0.2\n    - pysolid\n    - pyaps3\n    - gdal >=3\n    - pyresample\n    - openmp\n\ntest:\n  imports:\n    - mintpy\n  commands:\n    - smallbaselineApp.py --help\n    - view.py --help\n    - tsview.py --help\n    - info.py --help\n\nabout:\n  home: https://github.com/insarlab/mintpy\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: Miami INsar Time-series software in PYthon\n  description: |\n    The Miami INsar Time-series software in PYthon (MintPy as /m\u026Ant pa\u026A/) is an\n    open-source package for Interferometric Synthetic Aperture Radar (InSAR)\n    time series analysis. It reads the stack of interferograms (coregistered and\n    unwrapped) in ISCE, ARIA, FRInGE, HyP3, GMTSAR, SNAP, GAMMA or ROI_PAC format,\n    and produces three dimensional (2D in space and 1D in time) ground surface\n    displacement in line-of-sight direction. It includes a routine time series\n    analysis (smallbaselineApp.py) and some independent toolbox.\n  doc_url: https://mintpy.readthedocs.io\n  dev_url: https://github.com/insarlab/mintpy\n\nextra:\n  recipe-maintainers:\n    - jhkennedy\n    - jlrine2\n    - yunjunz\n",
+ "raw_meta_yaml": "{% set name = \"MintPy\" %}\n{% set version = \"1.4.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/insarlab/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 0ed149158ba06ec7b0ba2adf363c46ea517e2362347abb88f72917a926cd05c9\n\nbuild:\n  noarch: python\n  number: 0\n  script: {{ PYTHON }} -m pip install .[cli] -vv\n  entry_points:\n    - mintpy = mintpy.__main__:main\n    - add_attribute.py = mintpy.add_attribute:main\n    - add.py = mintpy.add:main\n    - asc_desc2horz_vert.py = mintpy.asc_desc2horz_vert:main\n    - bulk_plate_motion.py = mintpy.bulk_plate_motion:main\n    - closure_phase_bias.py = mintpy.closure_phase_bias:main\n    - dem_error.py = mintpy.dem_error:main\n    - dem_gsi.py = mintpy.dem_gsi:main\n    - diff.py = mintpy.diff:main\n    - generate_mask.py = mintpy.generate_mask:main\n    - geocode.py = mintpy.geocode:main\n    - ifgram_inversion.py = mintpy.ifgram_inversion:main\n    - image_math.py = mintpy.image_math:main\n    - image_stitch.py = mintpy.image_stitch:main\n    - info.py = mintpy.info:main\n    - iono_tec.py = mintpy.iono_tec:main\n    - load_data.py = mintpy.load_data:main\n    - load_gbis.py = mintpy.load_gbis:main\n    - local_oscilator_drift.py = mintpy.local_oscilator_drift:main\n    - lookup_geo2radar.py = mintpy.lookup_geo2radar:main\n    - mask.py = mintpy.mask:main\n    - modify_network.py = mintpy.modify_network:main\n    - multilook.py = mintpy.multilook:main\n    - multi_transect.py = mintpy.multi_transect:main\n    - plot_coherence_matrix.py = mintpy.plot_coherence_matrix:main\n    - plot_network.py = mintpy.plot_network:main\n    - plot_transection.py = mintpy.plot_transection:main\n    - prep_aria.py = mintpy.prep_aria:main\n    - prep_cosicorr.py = mintpy.prep_cosicorr:main\n    - prep_fringe.py = mintpy.prep_fringe:main\n    - prep_gamma.py = mintpy.prep_gamma:main\n    - prep_gmtsar.py = mintpy.prep_gmtsar:main\n    - prep_hyp3.py = mintpy.prep_hyp3:main\n    - prep_isce.py = mintpy.prep_isce:main\n    - prep_roipac.py = mintpy.prep_roipac:main\n    - prep_snap.py = mintpy.prep_snap:main\n    - reference_date.py = mintpy.reference_date:main\n    - reference_point.py = mintpy.reference_point:main\n    - remove_hdf5_dataset.py = mintpy.remove_hdf5_dataset:main\n    - remove_ramp.py = mintpy.remove_ramp:main\n    - s1ab_range_bias.py = mintpy.s1ab_range_bias:main\n    - save_gbis.py = mintpy.save_gbis:main\n    - save_gdal.py = mintpy.save_gdal:main\n    - save_gmt.py = mintpy.save_gmt:main\n    - save_hdfeos5.py = mintpy.save_hdfeos5:main\n    - save_kite.py = mintpy.save_kite:main\n    - save_kmz.py = mintpy.save_kmz:main\n    - save_kmz_timeseries.py = mintpy.save_kmz_timeseries:main\n    - save_qgis.py = mintpy.save_qgis:main\n    - save_roipac.py = mintpy.save_roipac:main\n    - smallbaselineApp.py = mintpy.smallbaselineApp:main\n    - solid_earth_tides.py = mintpy.solid_earth_tides:main\n    - spatial_average.py = mintpy.spatial_average:main\n    - spatial_filter.py = mintpy.spatial_filter:main\n    - subset.py = mintpy.subset:main\n    - temporal_average.py = mintpy.temporal_average:main\n    - temporal_derivative.py = mintpy.temporal_derivative:main\n    - temporal_filter.py = mintpy.temporal_filter:main\n    - timeseries2velocity.py = mintpy.timeseries2velocity:main\n    - timeseries_rms.py = mintpy.timeseries_rms:main\n    - tropo_gacos.py = mintpy.tropo_gacos:main\n    - tropo_phase_elevation.py = mintpy.tropo_phase_elevation:main\n    - tropo_pyaps3.py = mintpy.tropo_pyaps3:main\n    - tsview.py = mintpy.tsview:main\n    - unwrap_error_bridging.py = mintpy.unwrap_error_bridging:main\n    - unwrap_error_phase_closure.py = mintpy.unwrap_error_phase_closure:main\n    - view.py = mintpy.view:main\n\nrequirements:\n  host:\n    - python >=3.6\n    - pip\n  run:\n    - python >=3.6\n    - argcomplete\n    - cartopy\n    - cvxopt\n    - dask >=1.0\n    - dask-jobqueue >=0.3\n    - defusedxml\n    - h5py\n    - joblib\n    - lxml\n    - matplotlib-base\n    - numpy\n    - pip\n    - pyproj\n    - scikit-image\n    - scipy\n    - pykml >=0.2\n    - pysolid\n    - pyaps3 >=0.3\n    - gdal >=3\n    - pyresample\n\ntest:\n  imports:\n    - mintpy\n  requires:\n    - pip\n  commands:\n    - pip check\n    - mintpy --help\n    - mintpy smallbaselineApp --help\n    - smallbaselineApp.py --help\n    - view.py --help\n    - tsview.py --help\n    - info.py --help\n\nabout:\n  home: https://github.com/insarlab/mintpy\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: Miami INsar Time-series software in PYthon\n  description: |\n    The Miami INsar Time-series software in PYthon (MintPy as /m\u026Ant pa\u026A/) is an\n    open-source package for Interferometric Synthetic Aperture Radar (InSAR)\n    time series analysis. It reads the stack of interferograms (coregistered and\n    unwrapped) in ISCE, ARIA, FRInGE, HyP3, GMTSAR, SNAP, GAMMA or ROI_PAC format,\n    and produces three dimensional (2D in space and 1D in time) ground surface\n    displacement in line-of-sight direction. It includes a routine time series\n    analysis (smallbaselineApp.py) and some independent toolbox.\n  doc_url: https://mintpy.readthedocs.io\n  dev_url: https://github.com/insarlab/mintpy\n\nextra:\n  recipe-maintainers:\n    - jhkennedy\n    - jlrine2\n    - yunjunz\n",
  "req": {
   "__set__": true,
   "elements": [
+   "argcomplete",
    "cartopy",
    "cvxopt",
    "dask",
@@ -430,7 +445,6 @@
    "lxml",
    "matplotlib-base",
    "numpy",
-   "openmp",
    "pip",
    "pyaps3",
    "pykml",
@@ -450,7 +464,6 @@
   "host": {
    "__set__": true,
    "elements": [
-    "openmp",
     "pip",
     "python"
    ]
@@ -458,6 +471,7 @@
   "run": {
    "__set__": true,
    "elements": [
+    "argcomplete",
     "cartopy",
     "cvxopt",
     "dask",
@@ -469,7 +483,6 @@
     "lxml",
     "matplotlib-base",
     "numpy",
-    "openmp",
     "pip",
     "pyaps3",
     "pykml",
@@ -483,7 +496,9 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
  "smithy_version": "3.21.1",
@@ -503,6 +518,7 @@
   "run": {
    "__set__": true,
    "elements": [
+    "argcomplete",
     "cartopy",
     "cvxopt",
     "dask >=1.0",
@@ -514,9 +530,8 @@
     "lxml",
     "matplotlib-base",
     "numpy",
-    "openmp",
     "pip",
-    "pyaps3",
+    "pyaps3 >=0.3",
     "pykml >=0.2",
     "pyproj",
     "pyresample",
@@ -528,9 +543,11 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "pip"
+   ]
   }
  },
- "url": "https://github.com/insarlab/MintPy/archive/refs/tags/v1.3.3.tar.gz",
- "version": "1.3.3"
+ "url": "https://github.com/insarlab/MintPy/archive/refs/tags/v1.4.0.tar.gz",
+ "version": "1.4.0"
 }
