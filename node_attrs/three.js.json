@@ -391,32 +391,60 @@
    "summary": "JavaScript 3D library."
   },
   "build": {
-   "noarch": "generic",
-   "number": "1",
-   "script": "cat $RECIPE_DIR/sage.js >> src/Three.js\nnpm install rollup\nnpm run build\ntgz=$(npm pack)\nnpm install -g $tgz\nmkdir -p $PREFIX/share\nmv $PREFIX/lib/node_modules/three $PREFIX/share/threejs\nln -s $PREFIX/share/threejs $PREFIX/lib/node_modules/three\necho \"$PKG_VERSION\" > $PREFIX/share/threejs/version\n"
+   "number": "2"
   },
   "extra": {
+   "feedstock-name": "three.js",
    "recipe-maintainers": [
     "isuruf"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "noarch": "generic"
+    },
+    "name": "three.js",
+    "requirements": {
+     "build": [
+      "nodejs *"
+     ]
+    },
+    "script": "build-threejs.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/share/threejs/build/three.min.js"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "generic"
+    },
+    "name": "threejs-sage",
+    "requirements": {
+     "host": [
+      "three.js 122"
+     ],
+     "run": [
+      "three.js 122"
+     ]
+    },
+    "script": "build-threejs-sage.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/share/threejs-sage/r122/three.min.js"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "three.js",
+   "name": "three.js-split",
    "version": "122"
-  },
-  "requirements": {
-   "build": [
-    "nodejs"
-   ]
   },
   "source": {
    "sha256": "eeed366444ff521cfa0f3f97a33dea6adefb8a3111617dc1599df83722bcd56a",
    "url": "https://github.com/mrdoob/three.js/archive/r122.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f $PREFIX/share/threejs/build/three.min.js"
-   ]
   }
  },
  "linux_64_requirements": {
@@ -428,11 +456,15 @@
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "three.js"
+   ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "three.js"
+   ]
   },
   "test": {
    "__set__": true,
@@ -449,35 +481,63 @@
    "summary": "JavaScript 3D library."
   },
   "build": {
-   "noarch": "generic",
-   "number": "1",
-   "script": "cat $RECIPE_DIR/sage.js >> src/Three.js\nnpm install rollup\nnpm run build\ntgz=$(npm pack)\nnpm install -g $tgz\nmkdir -p $PREFIX/share\nmv $PREFIX/lib/node_modules/three $PREFIX/share/threejs\nln -s $PREFIX/share/threejs $PREFIX/lib/node_modules/three\necho \"$PKG_VERSION\" > $PREFIX/share/threejs/version\n"
+   "number": "2"
   },
   "extra": {
+   "feedstock-name": "three.js",
    "recipe-maintainers": [
     "isuruf"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "noarch": "generic"
+    },
+    "name": "three.js",
+    "requirements": {
+     "build": [
+      "nodejs *"
+     ]
+    },
+    "script": "build-threejs.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/share/threejs/build/three.min.js"
+     ]
+    }
+   },
+   {
+    "build": {
+     "noarch": "generic"
+    },
+    "name": "threejs-sage",
+    "requirements": {
+     "host": [
+      "three.js 122"
+     ],
+     "run": [
+      "three.js 122"
+     ]
+    },
+    "script": "build-threejs-sage.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/share/threejs-sage/r122/three.min.js"
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "three.js",
+   "name": "three.js-split",
    "version": "122"
-  },
-  "requirements": {
-   "build": [
-    "nodejs"
-   ]
   },
   "source": {
    "sha256": "eeed366444ff521cfa0f3f97a33dea6adefb8a3111617dc1599df83722bcd56a",
    "url": "https://github.com/mrdoob/three.js/archive/r122.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f $PREFIX/share/threejs/build/three.min.js"
-   ]
   }
  },
- "name": "three.js",
+ "name": "three.js-split",
  "new_version": "142",
  "new_version_attempts": {
   "115": 1,
@@ -497,15 +557,17 @@
  "outputs_names": {
   "__set__": true,
   "elements": [
-   "three.js"
+   "three.js",
+   "threejs-sage"
   ]
  },
  "pinning_version": "2021.07.29.07.25.26",
- "raw_meta_yaml": "{% set name = \"three.js\" %}\n{% set version = \"122\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/mrdoob/three.js/archive/r{{ version }}.tar.gz\n  sha256: eeed366444ff521cfa0f3f97a33dea6adefb8a3111617dc1599df83722bcd56a\n\nbuild:\n  number: 1\n  noarch: generic\n  script: |\n    cat $RECIPE_DIR/sage.js >> src/Three.js\n    npm install rollup\n    npm run build\n    tgz=$(npm pack)\n    npm install -g $tgz\n    mkdir -p $PREFIX/share\n    mv $PREFIX/lib/node_modules/three $PREFIX/share/threejs\n    ln -s $PREFIX/share/threejs $PREFIX/lib/node_modules/three\n    echo \"$PKG_VERSION\" > $PREFIX/share/threejs/version\n\nrequirements:\n  build:\n    - nodejs\n\ntest:\n  commands:\n    - test -f $PREFIX/share/threejs/build/three.min.js  # [unix]\n\nabout:\n  home: https://threejs.org\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: JavaScript 3D library.\n  dev_url: https://github.com/mrdoob/three.js\n\nextra:\n  recipe-maintainers:\n    - isuruf\n",
+ "raw_meta_yaml": "{% set name = \"three.js\" %}\n{% set version = \"122\" %}\n\npackage:\n  name: three.js-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/mrdoob/three.js/archive/r{{ version }}.tar.gz\n  sha256: eeed366444ff521cfa0f3f97a33dea6adefb8a3111617dc1599df83722bcd56a\n\nbuild:\n  number: 2\n\noutputs:\n  - name: three.js\n    build:\n      noarch: generic\n    script: build-threejs.sh\n    requirements:\n      build:\n        - nodejs *\n    test:\n      commands:\n        - test -f $PREFIX/share/threejs/build/three.min.js  # [unix]\n\n  - name: threejs-sage\n    build:\n      noarch: generic\n    script: build-threejs-sage.sh\n    requirements:\n      host:\n        - three.js {{ version }}\n      run:\n        - three.js {{ version }}\n    test:\n      commands:\n        - test -f $PREFIX/share/threejs-sage/r{{ version }}/three.min.js  # [unix]\n\nabout:\n  home: https://threejs.org\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: JavaScript 3D library.\n  dev_url: https://github.com/mrdoob/three.js\n\nextra:\n  recipe-maintainers:\n    - isuruf\n  feedstock-name: three.js\n",
  "req": {
   "__set__": true,
   "elements": [
-   "nodejs"
+   "nodejs",
+   "three.js"
   ]
  },
  "requirements": {
@@ -517,11 +579,15 @@
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "three.js"
+   ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "three.js"
+   ]
   },
   "test": {
    "__set__": true,
@@ -534,16 +600,20 @@
   "build": {
    "__set__": true,
    "elements": [
-    "nodejs"
+    "nodejs *"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "three.js 122"
+   ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "three.js 122"
+   ]
   },
   "test": {
    "__set__": true,
