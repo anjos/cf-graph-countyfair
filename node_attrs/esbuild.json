@@ -86,8 +86,7 @@
   },
   "build": {
    "binary_relocation": false,
-   "number": "0",
-   "script": "go build -o $PREFIX/bin/esbuild ./cmd/esbuild"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -100,11 +99,9 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub"
-   ],
-   "host": [
-    "go",
-    "go-cgo"
+    "go-nocgo_compiler_stub",
+    "make",
+    "nodejs"
    ]
   },
   "source": {
@@ -121,15 +118,14 @@
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "go-nocgo_compiler_stub",
+    "make",
+    "nodejs"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "go",
-    "go-cgo"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
@@ -151,8 +147,7 @@
   },
   "build": {
    "binary_relocation": false,
-   "number": "0",
-   "script": "go build -o %LIBRARY_BIN%\\esbuild.exe .\\cmd\\esbuild"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -167,17 +162,16 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub",
-    "c_compiler_stub",
-    "c_compiler_stub"
-   ],
-   "host": [
-    "go",
-    "go-cgo",
-    "go",
-    "go-cgo",
-    "go",
-    "go-cgo"
+    "go-nocgo_compiler_stub",
+    "make",
+    "nodejs",
+    "go-nocgo_compiler_stub",
+    "make",
+    "nodejs",
+    "go-nocgo_compiler_stub",
+    "m2-base",
+    "m2-make",
+    "nodejs"
    ]
   },
   "source": {
@@ -210,8 +204,7 @@
   },
   "build": {
    "binary_relocation": false,
-   "number": "0",
-   "script": "go build -o $PREFIX/bin/esbuild ./cmd/esbuild"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -224,11 +217,9 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub"
-   ],
-   "host": [
-    "go",
-    "go-cgo"
+    "go-nocgo_compiler_stub",
+    "make",
+    "nodejs"
    ]
   },
   "source": {
@@ -245,15 +236,14 @@
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "go-nocgo_compiler_stub",
+    "make",
+    "nodejs"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "go",
-    "go-cgo"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
@@ -271,35 +261,41 @@
   ]
  },
  "pinning_version": "2022.08.08.13.43.09",
- "raw_meta_yaml": "{% set version = '0.14.51' %}\n\npackage:\n  name: esbuild\n  version: {{ version }}\n\nsource:\n  url: https://github.com/evanw/esbuild/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 10c07c70388375f1dffe408f5cbbb7e7ea77dc0fc561173781bac8fcc6578b5e\n\nbuild:\n  number: 0\n  # Go-built binaries do not react well to prefix replacement. They don't need it, though.\n  binary_relocation: False\n  script: go build -o $PREFIX/bin/esbuild ./cmd/esbuild        # [unix]\n  script: go build -o %LIBRARY_BIN%\\esbuild.exe .\\cmd\\esbuild  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n  host:\n    - go\n    - go-cgo\n\ntest:\n  commands:\n    - esbuild --version\n\nabout:\n  home: https://esbuild.github.io/\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE.md\n  summary: An extremely fast javascript bundler\n  dev_url: https://github.com/evanw/esbuild\n\nextra:\n  recipe-maintainers:\n    - msarahan\n",
+ "pre_pr_migrator_attempts": {
+  "nodejs18": 1
+ },
+ "pre_pr_migrator_status": {
+  "nodejs18": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2820367140\">bot CI job</a>): main: ['linux_ppc64le_nodejs18: Encountered problems while solving:\\n  - nothing provides requested nodejs 18.*\\n']"
+ },
+ "raw_meta_yaml": "{% set version = '0.14.51' %}\n\npackage:\n  name: esbuild\n  version: {{ version }}\n\nsource:\n  url: https://github.com/evanw/esbuild/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 10c07c70388375f1dffe408f5cbbb7e7ea77dc0fc561173781bac8fcc6578b5e\n\nbuild:\n  number: 1\n  # Go-built binaries do not react well to prefix replacement. They don't need it, though.\n  binary_relocation: False\n\nrequirements:\n  build:\n    - {{ compiler('go-nocgo') }}\n    - make     # [unix]\n    - m2-base  # [win]\n    - m2-make  # [win]\n    - nodejs\n\ntest:\n  commands:\n    - esbuild --version\n\nabout:\n  home: https://esbuild.github.io/\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE.md\n  summary: An extremely fast javascript bundler\n  dev_url: https://github.com/evanw/esbuild\n\nextra:\n  recipe-maintainers:\n    - msarahan\n",
  "req": {
   "__set__": true,
   "elements": [
-   "c_compiler_stub",
-   "go",
-   "go-cgo"
+   "go-nocgo_compiler_stub",
+   "m2-base",
+   "m2-make",
+   "make",
+   "nodejs"
   ]
  },
  "requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "go-nocgo_compiler_stub",
+    "m2-base",
+    "m2-make",
+    "make",
+    "nodejs"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "c_compiler_stub",
-    "go",
-    "go-cgo"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
-   "elements": [
-    "c_compiler_stub"
-   ]
+   "elements": []
   },
   "test": {
    "__set__": true,
@@ -312,15 +308,16 @@
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "go-nocgo_compiler_stub",
+    "m2-base",
+    "m2-make",
+    "make",
+    "nodejs"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "go",
-    "go-cgo"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
@@ -344,8 +341,7 @@
   },
   "build": {
    "binary_relocation": false,
-   "number": "0",
-   "script": "go build -o %LIBRARY_BIN%\\esbuild.exe .\\cmd\\esbuild"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -358,11 +354,10 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub"
-   ],
-   "host": [
-    "go",
-    "go-cgo"
+    "go-nocgo_compiler_stub",
+    "m2-base",
+    "m2-make",
+    "nodejs"
    ]
   },
   "source": {
@@ -379,15 +374,15 @@
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "go-nocgo_compiler_stub",
+    "m2-base",
+    "m2-make",
+    "nodejs"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": [
-    "go",
-    "go-cgo"
-   ]
+   "elements": []
   },
   "run": {
    "__set__": true,
