@@ -118,6 +118,40 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1020417951.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1020421016.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "OSXArm",
+    "migrator_version": 1,
+    "name": "arm osx addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -362,7 +396,7 @@
    "deno"
   ]
  },
- "pinning_version": "2022.08.04.07.32.40",
+ "pinning_version": "2022.08.08.13.43.09",
  "raw_meta_yaml": "{% set version = \"1.24.2\" %}\n\npackage:\n  name: deno\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/denoland/deno/releases/download/v{{ version }}/deno_src.tar.gz\n    sha256: 3135c9fd8f9635f0dffcd22c5eae02222a5c1b549789af01fda683909687b8cb\n\nbuild:\n  number: 1\n  missing_dso_whitelist:\n    # As mentioned below, we fall back to the system compilers on MacOS, because the conda-forge\n    # clang compilers do not provide Metal support. This Metal framework might be good to add to\n    # conda-build's default list of missing_dso_whitelist\n    - /System/Library/Frameworks/Metal.framework/Versions/A/Metal  # [osx]\n\nrequirements:\n  build:\n    # use XCode compilers on MacOS because we need Metal\n    - {{ compiler(\"c\") }}      # [not osx]\n    - {{ compiler(\"cxx\") }}    # [not osx]\n    - cargo-bundle-licenses\n    - make   # [unix]\n    - rust\n\ntest:\n  commands:\n    - deno --help\n    - deno run https://deno.land/std/examples/welcome.ts\n    - if [ \"$DENO_INSTALL_ROOT\" != \"$PREFIX\" ]; then echo \"DENO_INTALL_ROOT var not set correctly\" && exit 1; fi    # [linux]\n    - IF \"%DENO_INSTALL_ROOT:/=\\%\" NEQ \"%PREFIX:/=\\%\\Library\" exit 1    # [win]\n\nabout:\n  home: https://deno.land\n  license: MIT\n  license_family: MIT\n  license_file:\n    - LICENSE.md\n    - DENO_THIRDPARTY_LICENSES.yml\n  summary: A simple, modern and secure runtime for JavaScript and TypeScript that uses V8 and is built in Rust\n  doc_url: https://deno.land/manual\n  dev_url: https://github.com/denoland/deno\n\nextra:\n  recipe-maintainers:\n    - msarahan\n",
  "req": {
   "__set__": true,
