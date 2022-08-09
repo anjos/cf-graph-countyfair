@@ -1440,10 +1440,10 @@
  },
  "pinning_version": "2022.07.12.18.44.47",
  "pre_pr_migrator_attempts": {
-  "tiledb211": 2
+  "tiledb211": 3
  },
  "pre_pr_migrator_status": {
-  "tiledb211": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2824343896\">bot CI job</a>): main: ['osx_arm64_r_base4.0: Encountered problems while solving:\\n  - nothing provides requested tiledb 2.10.*\\n', 'osx_arm64_r_base4.1: Encountered problems while solving:\\n  - nothing provides requested tiledb 2.10.*\\n']"
+  "tiledb211": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2825249047\">bot CI job</a>): main: ['osx_arm64_r_base4.0: Encountered problems while solving:\\n  - nothing provides requested tiledb 2.10.*\\n', 'osx_arm64_r_base4.1: Encountered problems while solving:\\n  - nothing provides requested tiledb 2.10.*\\n']"
  },
  "raw_meta_yaml": "{% set name = \"r-tiledb\" %}\n{% set version = \"0.14.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/TileDB-Inc/TileDB-R/archive/{{ version }}.tar.gz\n  sha256: cc9ad04b188b4e1c16ea8b603f78dcea95f0ad5a7b803230171d5146cdf7884d\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  rpaths:\n    - lib/R/lib/\n    - lib/\n  ignore_run_exports: # ignore here to avoid overlink warning b/c test require doesn't work\n    - r-testthat\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - pkg-config\n    - make\n    - cross-r-base {{ r_base }}  # [build_platform != target_platform]\n    - r-sys                      # [build_platform != target_platform]\n    - r-nanotime  # [build_platform != target_platform]\n    - r-rcpp >=0.12.15  # [build_platform != target_platform]\n  host:\n    - r-base\n    - tiledb 2.10.*\n    - r-rcpp >=0.12.15\n    - r-testthat\n    - r-nanotime\n  run:\n    - r-base\n    - r-nanotime\n    - tiledb 2.10.*\n\ntest:\n  requires:\n    - r-tinytest\n    - r-nycflights13\n    - r-palmerpenguins\n  commands:\n    - Rscript -e 'tinytest::test_package(\"tiledb\")'\n\nabout:\n  home: https://www.tiledb.com\n  license: MIT\n  license_file: LICENSE\n  summary: R interface to the TileDB array storage manager\n\n  description: |\n    TileDB is a highly-parallelized, cloud native array storage engine.\n  doc_url: https://docs.tiledb.com/developer/\n  dev_url: https://github.com/TileDB-Inc/TileDB-R\n\nextra:\n  recipe-maintainers:\n    - ihnorton\n    - Shelnutt2\n    - eddelbuettel\n",
  "req": {
