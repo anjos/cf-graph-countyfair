@@ -598,16 +598,33 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1024328343.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.6.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
- "bad": "make_graph: render error No module named 'toml'\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/feedstock_parser.py\", line 241, in populate_feedstock_attributes\n    parse_meta_yaml(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 167, in parse_meta_yaml\n    return _parse_meta_yaml_impl(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 239, in _parse_meta_yaml_impl\n    m = MetaData(tmpdir, config=config, variant=var)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/metadata.py\", line 932, in __init__\n    self.parse_again(permit_undefined_jinja=True, allow_no_other_outputs=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/metadata.py\", line 1007, in parse_again\n    self.meta = parse(self._get_contents(permit_undefined_jinja,\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/metadata.py\", line 1546, in _get_contents\n    from conda_build.jinja_context import context_processor, UndefinedNeverFail, FilteredLoader\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/jinja_context.py\", line 13, in <module>\n    import toml\nModuleNotFoundError: No module named 'toml'\n",
+ "bad": false,
  "branch": "main",
  "conda-forge.yml": {},
  "feedstock_name": "isce2",
  "hash_type": "sha256",
  "name": "isce2",
- "new_version": "2.6.0",
+ "new_version": "2.6.1",
  "new_version_attempts": {
   "2.4.0": 1,
   "2.4.1": 1,
@@ -616,7 +633,8 @@
   "2.5.1": 1,
   "2.5.2": 1,
   "2.5.3": 1,
-  "2.6.0": 1
+  "2.6.0": 1,
+  "2.6.1": 1
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -625,11 +643,11 @@
    "isce2"
   ]
  },
- "pinning_version": "2022.06.03.22.56.00",
+ "pinning_version": "2022.08.11.15.16.27",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"isce2\" %}\n{% set version = \"2.6.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/isce-framework/isce2/archive/v{{ version }}.tar.gz\n    sha256: 04e81de62416753afc8d177e9bdd77258fdba42093bbb88272fd866056805351\n    folder: isce2\n    patches:\n      # Use LDFLAGS from conda build environment\n      - env-ldflags.patch\n      - py310.patch\n      # Add missing release entry\n      - release-260.patch\n\nbuild:\n  number: 1\n  skip: true  # [win or py2k]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('fortran') }}\n  host:\n    - python\n    - numpy\n    - cython\n    - scons\n    - hdf5\n    - libgdal\n    - fftw\n    - opencv\n    - openmotif-dev\n    - xorg-libxt\n    - xorg-libxft\n    - xorg-libxmu\n  run:\n    - python\n    - {{ pin_compatible('numpy') }}\n    - scikit-image\n    - scipy\n    - hdf5\n    - h5py\n    - {{ pin_compatible('opencv') }}\n    - gdal\n    - libgdal\n    - fftw\n    - xorg-libxt\n    - xorg-libxft\n    - xorg-libxmu\n    - xorg-libxdmcp\n    - openmotif\n    - requests\n    - zstd  # [osx]\n\ntest:\n  imports:\n    - isce\n  commands:\n    - ISCEHOME=`$PYTHON -c \"import isce, os; print(os.path.dirname(isce.__file__))\" | tail -n 1`\n    - ${ISCEHOME}/applications/topsApp.py --help --steps\n    - ${ISCEHOME}/applications/stripmapApp.py --help --steps\n    - ${ISCEHOME}/applications/dem.py --help\n    - ${ISCEHOME}/applications/isce2gis.py -h\n    - ${ISCEHOME}/applications/imageMath.py -h\n    - ${ISCEHOME}/applications/alos2App.py --help --steps\n    - ${ISCEHOME}/applications/alos2burstApp.py --help --steps\n    - python {{ RECIPE_DIR }}/run_test.py\n    - ${ISCEHOME}/bin/mdx  # [not osx]\n\nabout:\n  home: http://github.com/isce-framework/isce2\n  license: Apache-2.0\n  license_family: Apache\n  license_file: isce2/LICENSE-2.0.txt\n  summary: InSAR Scientific Computing Environment\n\n  description: |\n    InSAR Scientific Computing Environment (ISCE) is a framework designed\n    for processing Synthetic Aperture Radar (SAR) And Interferometric SAR\n    (InSAR) data. Currently, ISCE supports processing of data acquired by\n    following platforms - ALOS, ALOS2, COSMO-SkyMed, EnviSAT, ERS,\n    KOMPSAT5,  RadarSAT2, RISAT1, Sentinel1, TerraSAR-X, Tandem-X, \n    and UAVSAR. ISCE can also read some SICD format data.\n\n  doc_url: https://github.com/isce-framework/isce2-docs\n  dev_url: https://github.com/isce-framework/isce2\n\nextra:\n  recipe-maintainers:\n    - bryanvriel\n    - piyushrpt\n    - rtburns-jpl\n",
- "smithy_version": "3.20.0",
+ "smithy_version": "3.21.1",
  "strong_exports": false,
  "url": "https://github.com/isce-framework/isce2/archive/v2.6.0.tar.gz",
  "version": "2.6.0"
