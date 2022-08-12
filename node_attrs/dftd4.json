@@ -72,7 +72,7 @@
   }
  ],
  "archived": false,
- "bad": "make_graph: render error No module named 'toml'\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/feedstock_parser.py\", line 241, in populate_feedstock_attributes\n    parse_meta_yaml(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 167, in parse_meta_yaml\n    return _parse_meta_yaml_impl(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 239, in _parse_meta_yaml_impl\n    m = MetaData(tmpdir, config=config, variant=var)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/metadata.py\", line 932, in __init__\n    self.parse_again(permit_undefined_jinja=True, allow_no_other_outputs=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/metadata.py\", line 1007, in parse_again\n    self.meta = parse(self._get_contents(permit_undefined_jinja,\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/metadata.py\", line 1546, in _get_contents\n    from conda_build.jinja_context import context_processor, UndefinedNeverFail, FilteredLoader\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/jinja_context.py\", line 13, in <module>\n    import toml\nModuleNotFoundError: No module named 'toml'\n",
+ "bad": false,
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
@@ -87,6 +87,501 @@
  },
  "feedstock_name": "dftd4",
  "hash_type": "sha256",
+ "linux_64_meta_yaml": {
+  "about": {
+   "description": "This program implements the D4 London dispersion correction\nfor molecular and 3D periodic systems.\n",
+   "doc_url": "https://dftd4.github.io/dftd4",
+   "home": "https://github.com/dftd4/dftd4",
+   "license": "LGPL-3.0-or-later",
+   "license_family": "LGPL",
+   "license_file": [
+    "COPYING",
+    "COPYING.LESSER"
+   ],
+   "summary": "A generally applicable London dispersion correction"
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "dftd4"
+   ],
+   "script": [
+    "set -ex",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk"
+   ]
+  },
+  "package": {
+   "name": "dftd4",
+   "version": "3.4.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "asciidoctor",
+    "pkg-config",
+    "libgomp"
+   ],
+   "host": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "source": {
+   "patches": null,
+   "sha256": "f3b0a16a952817ae48e819626e13676fba3b61c8beea47b0f8ada2fbb679fb7b",
+   "url": "https://github.com/dftd4/dftd4/archive/refs/tags/v3.4.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "dftd4 --version",
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.4.0"
+   ],
+   "requires": [
+    "pkg-config"
+   ]
+  }
+ },
+ "linux_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "asciidoctor",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "libgomp",
+    "meson",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "description": "This program implements the D4 London dispersion correction\nfor molecular and 3D periodic systems.\n",
+   "doc_url": "https://dftd4.github.io/dftd4",
+   "home": "https://github.com/dftd4/dftd4",
+   "license": "LGPL-3.0-or-later",
+   "license_family": "LGPL",
+   "license_file": [
+    "COPYING",
+    "COPYING.LESSER"
+   ],
+   "summary": "A generally applicable London dispersion correction"
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "dftd4"
+   ],
+   "script": [
+    "set -ex",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk"
+   ]
+  },
+  "package": {
+   "name": "dftd4",
+   "version": "3.4.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "asciidoctor",
+    "pkg-config",
+    "libgomp"
+   ],
+   "host": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "source": {
+   "patches": null,
+   "sha256": "f3b0a16a952817ae48e819626e13676fba3b61c8beea47b0f8ada2fbb679fb7b",
+   "url": "https://github.com/dftd4/dftd4/archive/refs/tags/v3.4.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "dftd4 --version",
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.4.0"
+   ],
+   "requires": [
+    "pkg-config"
+   ]
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "asciidoctor",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "libgomp",
+    "meson",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ },
+ "linux_ppc64le_meta_yaml": {
+  "about": {
+   "description": "This program implements the D4 London dispersion correction\nfor molecular and 3D periodic systems.\n",
+   "doc_url": "https://dftd4.github.io/dftd4",
+   "home": "https://github.com/dftd4/dftd4",
+   "license": "LGPL-3.0-or-later",
+   "license_family": "LGPL",
+   "license_file": [
+    "COPYING",
+    "COPYING.LESSER"
+   ],
+   "summary": "A generally applicable London dispersion correction"
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "dftd4"
+   ],
+   "script": [
+    "set -ex",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk"
+   ]
+  },
+  "package": {
+   "name": "dftd4",
+   "version": "3.4.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "asciidoctor",
+    "pkg-config",
+    "libgomp"
+   ],
+   "host": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "source": {
+   "patches": null,
+   "sha256": "f3b0a16a952817ae48e819626e13676fba3b61c8beea47b0f8ada2fbb679fb7b",
+   "url": "https://github.com/dftd4/dftd4/archive/refs/tags/v3.4.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "dftd4 --version",
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.4.0"
+   ],
+   "requires": [
+    "pkg-config"
+   ]
+  }
+ },
+ "linux_ppc64le_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "asciidoctor",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "libgomp",
+    "meson",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ },
+ "meta_yaml": {
+  "about": {
+   "description": "This program implements the D4 London dispersion correction\nfor molecular and 3D periodic systems.\n",
+   "doc_url": "https://dftd4.github.io/dftd4",
+   "home": "https://github.com/dftd4/dftd4",
+   "license": "LGPL-3.0-or-later",
+   "license_family": "LGPL",
+   "license_file": [
+    "COPYING",
+    "COPYING.LESSER",
+    "COPYING",
+    "COPYING.LESSER",
+    "COPYING",
+    "COPYING.LESSER",
+    "COPYING",
+    "COPYING.LESSER",
+    "COPYING",
+    "COPYING.LESSER",
+    "COPYING",
+    "COPYING.LESSER"
+   ],
+   "summary": "A generally applicable London dispersion correction"
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "dftd4",
+    "dftd4",
+    "dftd4",
+    "dftd4",
+    "dftd4",
+    "dftd4"
+   ],
+   "script": [
+    "set -ex",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig",
+    "set -ex",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig",
+    "set -ex",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig",
+    "set -ex",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig",
+    "set -ex",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig",
+    "meson setup _build --prefix=%LIBRARY_PREFIX% --pkg-config-path=%PREFIX%\\lib\\pkgconfig --buildtype=release -Dlapack=custom \"-Dfortran_link_args=%LIBRARY_PREFIX%\\lib\\liblapack.dll.a %LIBRARY_PREFIX%\\lib\\libblas.dll.a\"\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk",
+    "awvwgk",
+    "awvwgk",
+    "awvwgk",
+    "awvwgk",
+    "awvwgk"
+   ]
+  },
+  "package": {
+   "name": "dftd4",
+   "version": "3.4.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "asciidoctor",
+    "pkg-config",
+    "libgomp",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "asciidoctor",
+    "pkg-config",
+    "libgomp",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "asciidoctor",
+    "pkg-config",
+    "libgomp",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "asciidoctor",
+    "pkg-config",
+    "llvm-openmp",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "asciidoctor",
+    "pkg-config",
+    "llvm-openmp",
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "cmake",
+    "pkg-config"
+   ],
+   "host": [
+    "libblas",
+    "liblapack",
+    "mctc-lib",
+    "libblas",
+    "liblapack",
+    "mctc-lib",
+    "libblas",
+    "liblapack",
+    "mctc-lib",
+    "libblas",
+    "liblapack",
+    "mctc-lib",
+    "libblas",
+    "liblapack",
+    "mctc-lib",
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "source": {
+   "patches": [
+    "gcc5.patch"
+   ],
+   "sha256": "f3b0a16a952817ae48e819626e13676fba3b61c8beea47b0f8ada2fbb679fb7b",
+   "url": "https://github.com/dftd4/dftd4/archive/refs/tags/v3.4.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "dftd4 --version",
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.4.0",
+    "dftd4 --version",
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.4.0",
+    "dftd4 --version",
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.4.0",
+    "dftd4 --version",
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.4.0",
+    "dftd4 --version",
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.4.0",
+    "dftd4 --version",
+    "set PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig",
+    "pkg-config dftd4 --exact-version 3.4.0"
+   ],
+   "requires": [
+    "pkg-config",
+    "pkg-config",
+    "pkg-config",
+    "pkg-config",
+    "pkg-config",
+    "pkg-config"
+   ]
+  }
+ },
  "name": "dftd4",
  "new_version": "3.4.0",
  "new_version_attempts": {
@@ -94,6 +589,208 @@
   "3.4.0": 1
  },
  "new_version_errors": {},
+ "osx_64_meta_yaml": {
+  "about": {
+   "description": "This program implements the D4 London dispersion correction\nfor molecular and 3D periodic systems.\n",
+   "doc_url": "https://dftd4.github.io/dftd4",
+   "home": "https://github.com/dftd4/dftd4",
+   "license": "LGPL-3.0-or-later",
+   "license_family": "LGPL",
+   "license_file": [
+    "COPYING",
+    "COPYING.LESSER"
+   ],
+   "summary": "A generally applicable London dispersion correction"
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "dftd4"
+   ],
+   "script": [
+    "set -ex",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk"
+   ]
+  },
+  "package": {
+   "name": "dftd4",
+   "version": "3.4.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "asciidoctor",
+    "pkg-config",
+    "llvm-openmp"
+   ],
+   "host": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "source": {
+   "patches": null,
+   "sha256": "f3b0a16a952817ae48e819626e13676fba3b61c8beea47b0f8ada2fbb679fb7b",
+   "url": "https://github.com/dftd4/dftd4/archive/refs/tags/v3.4.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "dftd4 --version",
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.4.0"
+   ],
+   "requires": [
+    "pkg-config"
+   ]
+  }
+ },
+ "osx_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "asciidoctor",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "llvm-openmp",
+    "meson",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "This program implements the D4 London dispersion correction\nfor molecular and 3D periodic systems.\n",
+   "doc_url": "https://dftd4.github.io/dftd4",
+   "home": "https://github.com/dftd4/dftd4",
+   "license": "LGPL-3.0-or-later",
+   "license_family": "LGPL",
+   "license_file": [
+    "COPYING",
+    "COPYING.LESSER"
+   ],
+   "summary": "A generally applicable London dispersion correction"
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "dftd4"
+   ],
+   "script": [
+    "set -ex",
+    "mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR",
+    "meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release -Dlapack=custom -Dcustom_libraries=lapack,blas\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild",
+    "mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk"
+   ]
+  },
+  "package": {
+   "name": "dftd4",
+   "version": "3.4.0"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "asciidoctor",
+    "pkg-config",
+    "llvm-openmp"
+   ],
+   "host": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "source": {
+   "patches": null,
+   "sha256": "f3b0a16a952817ae48e819626e13676fba3b61c8beea47b0f8ada2fbb679fb7b",
+   "url": "https://github.com/dftd4/dftd4/archive/refs/tags/v3.4.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "dftd4 --version",
+    "test -f $PREFIX/lib/libdftd4$SHLIB_EXT",
+    "pkg-config dftd4 --exact-version 3.4.0"
+   ],
+   "requires": [
+    "pkg-config"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "asciidoctor",
+    "c_compiler_stub",
+    "fortran_compiler_stub",
+    "llvm-openmp",
+    "meson",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -102,8 +799,206 @@
  },
  "pinning_version": "2022.04.28.22.31.46",
  "raw_meta_yaml": "{% set name = \"dftd4\" %}\n{% set version = \"3.4.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/dftd4/dftd4/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: f3b0a16a952817ae48e819626e13676fba3b61c8beea47b0f8ada2fbb679fb7b\n  patches:\n    - gcc5.patch  # [win]\n\nbuild:\n  number: 0\n  script:\n    - set -ex  # [unix]\n    - mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR  # [unix]\n    - >\n       meson setup _build\n       ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib}  # [unix]\n       --prefix=%LIBRARY_PREFIX% --pkg-config-path=%PREFIX%\\lib\\pkgconfig  # [win]\n       --buildtype=release -Dlapack=custom\n       -Dcustom_libraries=lapack,blas  # [unix]\n       \"-Dfortran_link_args=%LIBRARY_PREFIX%\\lib\\liblapack.dll.a %LIBRARY_PREFIX%\\lib\\libblas.dll.a\"  # [win]\n    - meson compile -C _build\n    - meson test -C _build --no-rebuild --print-errorlogs  # [build_platform == target_platform]\n    - meson install -C _build --no-rebuild\n    - mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig  # [unix]\n\n  run_exports:\n    - {{ pin_subpackage(name, max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [unix]\n    - {{ compiler('fortran') }}  # [unix]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - {{ compiler('m2w64_fortran') }}  # [win]\n    - meson\n    - ninja\n    - cmake  # [win]\n    - asciidoctor  # [unix]\n    - pkg-config\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  host:\n    - libblas\n    - liblapack\n    - mctc-lib\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - {{ name }} --version  # [build_platform == target_platform]\n    - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT  # [unix]\n    - set PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig  # [win]\n    - pkg-config {{ name }} --exact-version {{ version }}\n\nabout:\n  home: https://github.com/dftd4/dftd4\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file:\n    - COPYING\n    - COPYING.LESSER\n  summary: A generally applicable London dispersion correction\n  description: |\n    This program implements the D4 London dispersion correction\n    for molecular and 3D periodic systems.\n  doc_url: https://dftd4.github.io/dftd4\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
+ "req": {
+  "__set__": true,
+  "elements": [
+   "asciidoctor",
+   "c_compiler_stub",
+   "cmake",
+   "fortran_compiler_stub",
+   "libblas",
+   "libgomp",
+   "liblapack",
+   "llvm-openmp",
+   "m2w64_c_compiler_stub",
+   "m2w64_fortran_compiler_stub",
+   "mctc-lib",
+   "meson",
+   "ninja",
+   "pkg-config"
+  ]
+ },
+ "requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "asciidoctor",
+    "c_compiler_stub",
+    "cmake",
+    "fortran_compiler_stub",
+    "libgomp",
+    "llvm-openmp",
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "ctng-compilers",
+    "fortran_compiler_stub",
+    "libblas",
+    "liblapack",
+    "mctc-lib",
+    "openmp"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "ctng-compilers",
+    "fortran_compiler_stub",
+    "openmp"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ },
  "smithy_version": "3.19.0",
  "strong_exports": false,
+ "total_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "asciidoctor",
+    "c_compiler_stub",
+    "cmake",
+    "fortran_compiler_stub",
+    "libgomp",
+    "llvm-openmp",
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ },
  "url": "https://github.com/dftd4/dftd4/archive/refs/tags/v3.4.0.tar.gz",
- "version": "3.4.0"
+ "version": "3.4.0",
+ "win_64_meta_yaml": {
+  "about": {
+   "description": "This program implements the D4 London dispersion correction\nfor molecular and 3D periodic systems.\n",
+   "doc_url": "https://dftd4.github.io/dftd4",
+   "home": "https://github.com/dftd4/dftd4",
+   "license": "LGPL-3.0-or-later",
+   "license_family": "LGPL",
+   "license_file": [
+    "COPYING",
+    "COPYING.LESSER"
+   ],
+   "summary": "A generally applicable London dispersion correction"
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "dftd4"
+   ],
+   "script": [
+    "meson setup _build --prefix=%LIBRARY_PREFIX% --pkg-config-path=%PREFIX%\\lib\\pkgconfig --buildtype=release -Dlapack=custom \"-Dfortran_link_args=%LIBRARY_PREFIX%\\lib\\liblapack.dll.a %LIBRARY_PREFIX%\\lib\\libblas.dll.a\"\n",
+    "meson compile -C _build",
+    "meson test -C _build --no-rebuild --print-errorlogs",
+    "meson install -C _build --no-rebuild"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "awvwgk"
+   ]
+  },
+  "package": {
+   "name": "dftd4",
+   "version": "3.4.0"
+  },
+  "requirements": {
+   "build": [
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "cmake",
+    "pkg-config"
+   ],
+   "host": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "source": {
+   "patches": [
+    "gcc5.patch"
+   ],
+   "sha256": "f3b0a16a952817ae48e819626e13676fba3b61c8beea47b0f8ada2fbb679fb7b",
+   "url": "https://github.com/dftd4/dftd4/archive/refs/tags/v3.4.0.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "dftd4 --version",
+    "set PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig",
+    "pkg-config dftd4 --exact-version 3.4.0"
+   ],
+   "requires": [
+    "pkg-config"
+   ]
+  }
+ },
+ "win_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cmake",
+    "m2w64_c_compiler_stub",
+    "m2w64_fortran_compiler_stub",
+    "meson",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libblas",
+    "liblapack",
+    "mctc-lib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "pkg-config"
+   ]
+  }
+ }
 }

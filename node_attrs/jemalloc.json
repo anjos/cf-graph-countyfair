@@ -133,7 +133,7 @@
   }
  ],
  "archived": false,
- "bad": "make_graph: render error No module named 'toml'\nTraceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/feedstock_parser.py\", line 241, in populate_feedstock_attributes\n    parse_meta_yaml(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 167, in parse_meta_yaml\n    return _parse_meta_yaml_impl(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 239, in _parse_meta_yaml_impl\n    m = MetaData(tmpdir, config=config, variant=var)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/metadata.py\", line 932, in __init__\n    self.parse_again(permit_undefined_jinja=True, allow_no_other_outputs=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/metadata.py\", line 1007, in parse_again\n    self.meta = parse(self._get_contents(permit_undefined_jinja,\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/metadata.py\", line 1546, in _get_contents\n    from conda_build.jinja_context import context_processor, UndefinedNeverFail, FilteredLoader\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/site-packages/conda_build/jinja_context.py\", line 13, in <module>\n    import toml\nModuleNotFoundError: No module named 'toml'\n",
+ "bad": false,
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
@@ -146,12 +146,1651 @@
  },
  "feedstock_name": "jemalloc",
  "hash_type": "sha256",
+ "linux_64_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/jemalloc/jemalloc",
+   "home": "http://jemalloc.net",
+   "license": "BSD-2-Clause",
+   "license_file": "COPYING",
+   "summary": "general purpose malloc(3) implementation"
+  },
+  "build": {
+   "number": "6"
+  },
+  "extra": {
+   "feedstock-name": "jemalloc",
+   "recipe-maintainers": [
+    "wesm",
+    "xhochy"
+   ]
+  },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "libjemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloc.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc.a",
+      "test ! -f $PREFIX/lib/libjemalloc_pic.a",
+      "test ! -f $PREFIX/bin/jeprof",
+      "test -f $PREFIX/include/jemalloc/jemalloc.h"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "jemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc"
+     ],
+     "run": [
+      "libjemalloc"
+     ]
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloc test.c"
+     ],
+     "files": [
+      "test.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "libjemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloclocal.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc${SHLIB_EXT}",
+      "test ! -f $PREFIX/lib/libjemalloclocal.a",
+      "test ! -f $PREFIX/lib/libjemalloclocal_pic.a",
+      "test -f $PREFIX/include/jemalloc/jemalloclocal.h",
+      "test ! -f $PREFIX/jeprof"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "jemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc-local"
+     ],
+     "run": [
+      "libjemalloc-local"
+     ],
+     "run_constrained": [
+      "jemalloc <0a0"
+     ]
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloclocal test-local.c"
+     ],
+     "files": [
+      "test-local.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "jemalloc-split",
+   "version": "5.2.1"
+  },
+  "source": {
+   "patches": [
+    "export-mangled-syms.patch"
+   ],
+   "sha256": "34330e5ce276099e2e8950d9335db5a875689a4c6a56751ef3b1d8c537f887f6",
+   "url": "https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2"
+  }
+ },
+ "linux_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "gnuconfig",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub"
+   ]
+  }
+ },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/jemalloc/jemalloc",
+   "home": "http://jemalloc.net",
+   "license": "BSD-2-Clause",
+   "license_file": "COPYING",
+   "summary": "general purpose malloc(3) implementation"
+  },
+  "build": {
+   "number": "6"
+  },
+  "extra": {
+   "feedstock-name": "jemalloc",
+   "recipe-maintainers": [
+    "wesm",
+    "xhochy"
+   ]
+  },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "libjemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloc.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc.a",
+      "test ! -f $PREFIX/lib/libjemalloc_pic.a",
+      "test ! -f $PREFIX/bin/jeprof",
+      "test -f $PREFIX/include/jemalloc/jemalloc.h"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "jemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc"
+     ],
+     "run": [
+      "libjemalloc"
+     ]
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloc test.c"
+     ],
+     "files": [
+      "test.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "libjemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloclocal.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc${SHLIB_EXT}",
+      "test ! -f $PREFIX/lib/libjemalloclocal.a",
+      "test ! -f $PREFIX/lib/libjemalloclocal_pic.a",
+      "test -f $PREFIX/include/jemalloc/jemalloclocal.h",
+      "test ! -f $PREFIX/jeprof"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "jemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc-local"
+     ],
+     "run": [
+      "libjemalloc-local"
+     ],
+     "run_constrained": [
+      "jemalloc <0a0"
+     ]
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloclocal test-local.c"
+     ],
+     "files": [
+      "test-local.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "jemalloc-split",
+   "version": "5.2.1"
+  },
+  "source": {
+   "patches": [
+    "export-mangled-syms.patch"
+   ],
+   "sha256": "34330e5ce276099e2e8950d9335db5a875689a4c6a56751ef3b1d8c537f887f6",
+   "url": "https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2"
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "gnuconfig",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub"
+   ]
+  }
+ },
+ "linux_ppc64le_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/jemalloc/jemalloc",
+   "home": "http://jemalloc.net",
+   "license": "BSD-2-Clause",
+   "license_file": "COPYING",
+   "summary": "general purpose malloc(3) implementation"
+  },
+  "build": {
+   "number": "6"
+  },
+  "extra": {
+   "feedstock-name": "jemalloc",
+   "recipe-maintainers": [
+    "wesm",
+    "xhochy"
+   ]
+  },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "libjemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloc.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc.a",
+      "test ! -f $PREFIX/lib/libjemalloc_pic.a",
+      "test ! -f $PREFIX/bin/jeprof",
+      "test -f $PREFIX/include/jemalloc/jemalloc.h"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "jemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc"
+     ],
+     "run": [
+      "libjemalloc"
+     ]
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloc test.c"
+     ],
+     "files": [
+      "test.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "libjemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloclocal.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc${SHLIB_EXT}",
+      "test ! -f $PREFIX/lib/libjemalloclocal.a",
+      "test ! -f $PREFIX/lib/libjemalloclocal_pic.a",
+      "test -f $PREFIX/include/jemalloc/jemalloclocal.h",
+      "test ! -f $PREFIX/jeprof"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "jemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc-local"
+     ],
+     "run": [
+      "libjemalloc-local"
+     ],
+     "run_constrained": [
+      "jemalloc <0a0"
+     ]
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloclocal test-local.c"
+     ],
+     "files": [
+      "test-local.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "jemalloc-split",
+   "version": "5.2.1"
+  },
+  "source": {
+   "patches": [
+    "export-mangled-syms.patch"
+   ],
+   "sha256": "34330e5ce276099e2e8950d9335db5a875689a4c6a56751ef3b1d8c537f887f6",
+   "url": "https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2"
+  }
+ },
+ "linux_ppc64le_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "gnuconfig",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub"
+   ]
+  }
+ },
+ "meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/jemalloc/jemalloc",
+   "home": "http://jemalloc.net",
+   "license": "BSD-2-Clause",
+   "license_file": "COPYING",
+   "summary": "general purpose malloc(3) implementation"
+  },
+  "build": {
+   "number": "6"
+  },
+  "extra": {
+   "feedstock-name": "jemalloc",
+   "recipe-maintainers": [
+    "wesm",
+    "xhochy",
+    "wesm",
+    "xhochy",
+    "wesm",
+    "xhochy",
+    "wesm",
+    "xhochy",
+    "wesm",
+    "xhochy"
+   ]
+  },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "libjemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloc.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc.a",
+      "test ! -f $PREFIX/lib/libjemalloc_pic.a",
+      "test ! -f $PREFIX/bin/jeprof",
+      "test -f $PREFIX/include/jemalloc/jemalloc.h"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "jemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc"
+     ],
+     "run": [
+      "libjemalloc"
+     ]
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloc test.c"
+     ],
+     "files": [
+      "test.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "libjemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloclocal.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc${SHLIB_EXT}",
+      "test ! -f $PREFIX/lib/libjemalloclocal.a",
+      "test ! -f $PREFIX/lib/libjemalloclocal_pic.a",
+      "test -f $PREFIX/include/jemalloc/jemalloclocal.h",
+      "test ! -f $PREFIX/jeprof"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "jemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc-local"
+     ],
+     "run": [
+      "libjemalloc-local"
+     ],
+     "run_constrained": [
+      "jemalloc <0a0"
+     ]
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloclocal test-local.c"
+     ],
+     "files": [
+      "test-local.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "libjemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloc.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc.a",
+      "test ! -f $PREFIX/lib/libjemalloc_pic.a",
+      "test ! -f $PREFIX/bin/jeprof",
+      "test -f $PREFIX/include/jemalloc/jemalloc.h"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "jemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc"
+     ],
+     "run": [
+      "libjemalloc"
+     ]
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloc test.c"
+     ],
+     "files": [
+      "test.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "libjemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloclocal.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc${SHLIB_EXT}",
+      "test ! -f $PREFIX/lib/libjemalloclocal.a",
+      "test ! -f $PREFIX/lib/libjemalloclocal_pic.a",
+      "test -f $PREFIX/include/jemalloc/jemalloclocal.h",
+      "test ! -f $PREFIX/jeprof"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "jemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc-local"
+     ],
+     "run": [
+      "libjemalloc-local"
+     ],
+     "run_constrained": [
+      "jemalloc <0a0"
+     ]
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloclocal test-local.c"
+     ],
+     "files": [
+      "test-local.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "libjemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloc.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc.a",
+      "test ! -f $PREFIX/lib/libjemalloc_pic.a",
+      "test ! -f $PREFIX/bin/jeprof",
+      "test -f $PREFIX/include/jemalloc/jemalloc.h"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "jemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc"
+     ],
+     "run": [
+      "libjemalloc"
+     ]
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloc test.c"
+     ],
+     "files": [
+      "test.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "libjemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/lib/libjemalloclocal.so.2",
+      "test ! -f $PREFIX/lib/libjemalloc${SHLIB_EXT}",
+      "test ! -f $PREFIX/lib/libjemalloclocal.a",
+      "test ! -f $PREFIX/lib/libjemalloclocal_pic.a",
+      "test -f $PREFIX/include/jemalloc/jemalloclocal.h",
+      "test ! -f $PREFIX/jeprof"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "jemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc-local"
+     ],
+     "run": [
+      "libjemalloc-local"
+     ],
+     "run_constrained": [
+      "jemalloc <0a0"
+     ]
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloclocal test-local.c"
+     ],
+     "files": [
+      "test-local.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "libjemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test ! -f $PREFIX/lib/libjemalloc.a",
+      "test ! -f $PREFIX/lib/libjemalloc_pic.a",
+      "test ! -f $PREFIX/bin/jeprof",
+      "test -f $PREFIX/lib/libjemalloc.2.dylib",
+      "test -f $PREFIX/include/jemalloc/jemalloc.h"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "jemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc"
+     ],
+     "run": [
+      "libjemalloc"
+     ]
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloc test.c"
+     ],
+     "files": [
+      "test.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "libjemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test ! -f $PREFIX/lib/libjemalloc${SHLIB_EXT}",
+      "test ! -f $PREFIX/lib/libjemalloclocal.a",
+      "test ! -f $PREFIX/lib/libjemalloclocal_pic.a",
+      "test -f $PREFIX/lib/libjemalloclocal.2.dylib",
+      "test -f $PREFIX/include/jemalloc/jemalloclocal.h",
+      "test ! -f $PREFIX/jeprof"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "jemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc-local"
+     ],
+     "run": [
+      "libjemalloc-local"
+     ],
+     "run_constrained": [
+      "jemalloc <0a0"
+     ]
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloclocal test-local.c"
+     ],
+     "files": [
+      "test-local.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "libjemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test ! -f $PREFIX/lib/libjemalloc.a",
+      "test ! -f $PREFIX/lib/libjemalloc_pic.a",
+      "test ! -f $PREFIX/bin/jeprof",
+      "test -f $PREFIX/lib/libjemalloc.2.dylib",
+      "test -f $PREFIX/include/jemalloc/jemalloc.h"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "jemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc"
+     ],
+     "run": [
+      "libjemalloc"
+     ]
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloc test.c"
+     ],
+     "files": [
+      "test.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "libjemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test ! -f $PREFIX/lib/libjemalloc${SHLIB_EXT}",
+      "test ! -f $PREFIX/lib/libjemalloclocal.a",
+      "test ! -f $PREFIX/lib/libjemalloclocal_pic.a",
+      "test -f $PREFIX/lib/libjemalloclocal.2.dylib",
+      "test -f $PREFIX/include/jemalloc/jemalloclocal.h",
+      "test ! -f $PREFIX/jeprof"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "jemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc-local"
+     ],
+     "run": [
+      "libjemalloc-local"
+     ],
+     "run_constrained": [
+      "jemalloc <0a0"
+     ]
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloclocal test-local.c"
+     ],
+     "files": [
+      "test-local.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "jemalloc-split",
+   "version": "5.2.1"
+  },
+  "source": {
+   "patches": [
+    "export-mangled-syms.patch",
+    "export-mangled-syms.patch",
+    "export-mangled-syms.patch",
+    "export-mangled-syms.patch",
+    "export-mangled-syms.patch"
+   ],
+   "sha256": "34330e5ce276099e2e8950d9335db5a875689a4c6a56751ef3b1d8c537f887f6",
+   "url": "https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2"
+  }
+ },
  "name": "jemalloc-split",
  "new_version": "5.3.0",
  "new_version_attempts": {
   "5.3.0": 1
  },
  "new_version_errors": {},
+ "osx_64_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/jemalloc/jemalloc",
+   "home": "http://jemalloc.net",
+   "license": "BSD-2-Clause",
+   "license_file": "COPYING",
+   "summary": "general purpose malloc(3) implementation"
+  },
+  "build": {
+   "number": "6"
+  },
+  "extra": {
+   "feedstock-name": "jemalloc",
+   "recipe-maintainers": [
+    "wesm",
+    "xhochy"
+   ]
+  },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "libjemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test ! -f $PREFIX/lib/libjemalloc.a",
+      "test ! -f $PREFIX/lib/libjemalloc_pic.a",
+      "test ! -f $PREFIX/bin/jeprof",
+      "test -f $PREFIX/lib/libjemalloc.2.dylib",
+      "test -f $PREFIX/include/jemalloc/jemalloc.h"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "jemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc"
+     ],
+     "run": [
+      "libjemalloc"
+     ]
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloc test.c"
+     ],
+     "files": [
+      "test.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "libjemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test ! -f $PREFIX/lib/libjemalloc${SHLIB_EXT}",
+      "test ! -f $PREFIX/lib/libjemalloclocal.a",
+      "test ! -f $PREFIX/lib/libjemalloclocal_pic.a",
+      "test -f $PREFIX/lib/libjemalloclocal.2.dylib",
+      "test -f $PREFIX/include/jemalloc/jemalloclocal.h",
+      "test ! -f $PREFIX/jeprof"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "jemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc-local"
+     ],
+     "run": [
+      "libjemalloc-local"
+     ],
+     "run_constrained": [
+      "jemalloc <0a0"
+     ]
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloclocal test-local.c"
+     ],
+     "files": [
+      "test-local.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "jemalloc-split",
+   "version": "5.2.1"
+  },
+  "source": {
+   "patches": [
+    "export-mangled-syms.patch"
+   ],
+   "sha256": "34330e5ce276099e2e8950d9335db5a875689a4c6a56751ef3b1d8c537f887f6",
+   "url": "https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2"
+  }
+ },
+ "osx_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "gnuconfig",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub"
+   ]
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "dev_url": "https://github.com/jemalloc/jemalloc",
+   "home": "http://jemalloc.net",
+   "license": "BSD-2-Clause",
+   "license_file": "COPYING",
+   "summary": "general purpose malloc(3) implementation"
+  },
+  "build": {
+   "number": "6"
+  },
+  "extra": {
+   "feedstock-name": "jemalloc",
+   "recipe-maintainers": [
+    "wesm",
+    "xhochy"
+   ]
+  },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "libjemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test ! -f $PREFIX/lib/libjemalloc.a",
+      "test ! -f $PREFIX/lib/libjemalloc_pic.a",
+      "test ! -f $PREFIX/bin/jeprof",
+      "test -f $PREFIX/lib/libjemalloc.2.dylib",
+      "test -f $PREFIX/include/jemalloc/jemalloc.h"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc"
+     ]
+    },
+    "name": "jemalloc",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc"
+     ],
+     "run": [
+      "libjemalloc"
+     ]
+    },
+    "script": "build-jemalloc.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloc test.c"
+     ],
+     "files": [
+      "test.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "libjemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": []
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test ! -f $PREFIX/lib/libjemalloc${SHLIB_EXT}",
+      "test ! -f $PREFIX/lib/libjemalloclocal.a",
+      "test ! -f $PREFIX/lib/libjemalloclocal_pic.a",
+      "test -f $PREFIX/lib/libjemalloclocal.2.dylib",
+      "test -f $PREFIX/include/jemalloc/jemalloclocal.h",
+      "test ! -f $PREFIX/jeprof"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libjemalloc-local"
+     ]
+    },
+    "name": "jemalloc-local",
+    "requirements": {
+     "build": [
+      "make",
+      "gnuconfig",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ],
+     "host": [
+      "libjemalloc-local"
+     ],
+     "run": [
+      "libjemalloc-local"
+     ],
+     "run_constrained": [
+      "jemalloc <0a0"
+     ]
+    },
+    "script": "build-jemalloc-local.sh",
+    "test": {
+     "commands": [
+      "test -f $PREFIX/bin/jeprof",
+      "$CC -I$PREFIX/include -L$PREFIX/lib -ljemalloclocal test-local.c"
+     ],
+     "files": [
+      "test-local.c"
+     ],
+     "requires": [
+      "c_compiler_stub"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "jemalloc-split",
+   "version": "5.2.1"
+  },
+  "source": {
+   "patches": [
+    "export-mangled-syms.patch"
+   ],
+   "sha256": "34330e5ce276099e2e8950d9335db5a875689a4c6a56751ef3b1d8c537f887f6",
+   "url": "https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2"
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "gnuconfig",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub"
+   ]
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
@@ -163,8 +1802,85 @@
  },
  "pinning_version": "2022.05.06.15.41.10",
  "raw_meta_yaml": "{% set name = \"jemalloc\" %}\n{% set version = \"5.2.1\" %}\n\npackage:\n  name: {{ name }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/jemalloc/jemalloc/releases/download/{{ version }}/jemalloc-{{ version }}.tar.bz2\n  sha256: 34330e5ce276099e2e8950d9335db5a875689a4c6a56751ef3b1d8c537f887f6\n  patches:\n    - export-mangled-syms.patch\n\nbuild:\n  number: 6\n  skip: true  # [win]\n\noutputs:\n  - name: libjemalloc\n    script: build-jemalloc.sh\n    build:\n      run_exports:\n        # Symbols were only removed in update from 3 to 4\n        # https://abi-laboratory.pro/index.php?view=timeline&l=jemalloc\n        - {{ pin_subpackage('libjemalloc', max_pin=None) }}\n    requirements:\n      build:\n        - make\n        - gnuconfig  # [unix]\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n      host:\n    test:\n      commands:\n        - test -f $PREFIX/lib/libjemalloc.so.2  # [linux]\n        - test ! -f $PREFIX/lib/libjemalloc.a\n        - test ! -f $PREFIX/lib/libjemalloc_pic.a\n        - test ! -f $PREFIX/bin/jeprof\n        - test -f $PREFIX/lib/libjemalloc.2.dylib  # [osx]\n        - test -f $PREFIX/include/jemalloc/jemalloc.h\n\n  - name: {{ name }}\n    script: build-jemalloc.sh\n    build:\n      run_exports:\n        # Symbols were only removed in update from 3 to 4\n        # https://abi-laboratory.pro/index.php?view=timeline&l=jemalloc\n        - {{ pin_subpackage('libjemalloc', max_pin=None) }}\n    requirements:\n      build:\n        - make\n        - gnuconfig  # [unix]\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n      host:\n        - {{\u00A0pin_subpackage('libjemalloc', exact=true) }}\n      run:\n        - {{\u00A0pin_subpackage('libjemalloc', exact=true) }}\n    test:\n      requires:\n        - {{ compiler('c') }}\n      files:\n        - test.c\n      commands:\n        - test -f $PREFIX/bin/jeprof\n        - $CC -I$PREFIX/include -L$PREFIX/lib -ljemalloc test.c\n\n  - name: lib{{ name }}-local\n    script: build-jemalloc-local.sh\n    build:\n      run_exports:\n        # Symbols were only removed in update from 3 to 4\n        # https://abi-laboratory.pro/index.php?view=timeline&l=jemalloc\n        - {{ pin_subpackage(\"libjemalloc-local\", max_pin=None) }}\n    requirements:\n      build:\n        - make\n        - gnuconfig  # [unix]\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n      host:\n    test:\n      commands:\n        - test -f $PREFIX/lib/libjemalloclocal.so.2  # [linux]\n        - test ! -f $PREFIX/lib/libjemalloc${SHLIB_EXT}\n        - test ! -f $PREFIX/lib/libjemalloclocal.a\n        - test ! -f $PREFIX/lib/libjemalloclocal_pic.a\n        - test -f $PREFIX/lib/libjemalloclocal.2.dylib  # [osx]\n        - test -f $PREFIX/include/jemalloc/jemalloclocal.h\n        - test ! -f $PREFIX/jeprof\n\n  - name: {{ name }}-local\n    script: build-jemalloc-local.sh\n    build:\n      run_exports:\n        # Symbols were only removed in update from 3 to 4\n        # https://abi-laboratory.pro/index.php?view=timeline&l=jemalloc\n        - {{ pin_subpackage(\"libjemalloc-local\", max_pin=None) }}\n    requirements:\n      build:\n        - make\n        - gnuconfig  # [unix]\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n      host:\n        - {{\u00A0pin_subpackage('libjemalloc-local', exact=true) }}\n      run:\n        - {{\u00A0pin_subpackage('libjemalloc-local', exact=true) }}\n      run_constrained:\n        - jemalloc <0a0\n    test:\n      requires:\n        - {{ compiler('c') }}\n      files:\n        - test-local.c\n      commands:\n        - test -f $PREFIX/bin/jeprof\n        - $CC -I$PREFIX/include -L$PREFIX/lib -ljemalloclocal test-local.c\n\nabout:\n  home: http://jemalloc.net\n  dev_url: https://github.com/jemalloc/jemalloc\n  license: BSD-2-Clause\n  license_file: COPYING\n  summary: 'general purpose malloc(3) implementation'\n\nextra:\n  feedstock-name: jemalloc\n  recipe-maintainers:\n    - wesm\n    - xhochy\n",
+ "req": {
+  "__set__": true,
+  "elements": [
+   "c_compiler_stub",
+   "cxx_compiler_stub",
+   "gnuconfig",
+   "libjemalloc",
+   "libjemalloc-local",
+   "make"
+  ]
+ },
+ "requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "gnuconfig",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub"
+   ]
+  }
+ },
  "smithy_version": "3.19.0",
  "strong_exports": false,
+ "total_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "gnuconfig",
+    "make"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "libjemalloc",
+    "libjemalloc-local"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub"
+   ]
+  }
+ },
  "url": "https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2",
  "version": "5.2.1"
 }
