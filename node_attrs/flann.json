@@ -131,6 +131,8 @@
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
+   "linux_aarch64": "linux_64",
+   "linux_ppc64le": "linux_64",
    "osx_arm64": "osx_64"
   },
   "provider": {
@@ -149,7 +151,7 @@
    "summary": "The Fast Library for Approximate Nearest Neighbors"
   },
   "build": {
-   "number": "1010"
+   "number": "1011"
   },
   "extra": {
    "recipe-maintainers": [
@@ -170,9 +172,6 @@
     "make"
    ],
    "host": [
-    "hdf5"
-   ],
-   "run": [
     "hdf5"
    ]
   },
@@ -212,9 +211,7 @@
   },
   "run": {
    "__set__": true,
-   "elements": [
-    "hdf5"
-   ]
+   "elements": []
   },
   "test": {
    "__set__": true,
@@ -229,7 +226,7 @@
    "summary": "The Fast Library for Approximate Nearest Neighbors"
   },
   "build": {
-   "number": "1010"
+   "number": "1011"
   },
   "extra": {
    "recipe-maintainers": [
@@ -250,9 +247,6 @@
     "make"
    ],
    "host": [
-    "hdf5"
-   ],
-   "run": [
     "hdf5"
    ]
   },
@@ -292,9 +286,7 @@
   },
   "run": {
    "__set__": true,
-   "elements": [
-    "hdf5"
-   ]
+   "elements": []
   },
   "test": {
    "__set__": true,
@@ -309,7 +301,7 @@
    "summary": "The Fast Library for Approximate Nearest Neighbors"
   },
   "build": {
-   "number": "1010"
+   "number": "1011"
   },
   "extra": {
    "recipe-maintainers": [
@@ -330,9 +322,6 @@
     "make"
    ],
    "host": [
-    "hdf5"
-   ],
-   "run": [
     "hdf5"
    ]
   },
@@ -372,9 +361,7 @@
   },
   "run": {
    "__set__": true,
-   "elements": [
-    "hdf5"
-   ]
+   "elements": []
   },
   "test": {
    "__set__": true,
@@ -389,7 +376,7 @@
    "summary": "The Fast Library for Approximate Nearest Neighbors"
   },
   "build": {
-   "number": "1010"
+   "number": "1011"
   },
   "extra": {
    "recipe-maintainers": [
@@ -451,14 +438,6 @@
     "llvm-openmp",
     "hdf5",
     "llvm-openmp",
-    "hdf5"
-   ],
-   "run": [
-    "hdf5",
-    "hdf5",
-    "hdf5",
-    "hdf5",
-    "hdf5",
     "hdf5"
    ]
   },
@@ -528,7 +507,7 @@
    "summary": "The Fast Library for Approximate Nearest Neighbors"
   },
   "build": {
-   "number": "1010"
+   "number": "1011"
   },
   "extra": {
    "recipe-maintainers": [
@@ -551,9 +530,6 @@
    "host": [
     "hdf5",
     "llvm-openmp"
-   ],
-   "run": [
-    "hdf5"
    ]
   },
   "source": {
@@ -593,9 +569,7 @@
   },
   "run": {
    "__set__": true,
-   "elements": [
-    "hdf5"
-   ]
+   "elements": []
   },
   "test": {
    "__set__": true,
@@ -610,7 +584,7 @@
    "summary": "The Fast Library for Approximate Nearest Neighbors"
   },
   "build": {
-   "number": "1010"
+   "number": "1011"
   },
   "extra": {
    "recipe-maintainers": [
@@ -633,9 +607,6 @@
    "host": [
     "hdf5",
     "llvm-openmp"
-   ],
-   "run": [
-    "hdf5"
    ]
   },
   "source": {
@@ -675,9 +646,7 @@
   },
   "run": {
    "__set__": true,
-   "elements": [
-    "hdf5"
-   ]
+   "elements": []
   },
   "test": {
    "__set__": true,
@@ -691,7 +660,7 @@
   ]
  },
  "pinning_version": "2022.07.28.00.27.46",
- "raw_meta_yaml": "{% set version = \"1.9.1\" %}\n\npackage:\n    name: flann\n    version: {{ version }}\n\nsource:\n    fn: flann-{{ version }}.tar.gz\n    url: https://github.com/mariusmuja/flann/archive/{{ version }}.tar.gz\n    sha256: b23b5f4e71139faa3bcb39e6bbcc76967fbaf308c4ee9d4f5bfbeceaa76cc5d3\n    patches:\n        # CMake 3.11 breaks FLANN's existing src/cpp/CMakeLists.txt. See\n        # https://github.com/mariusmuja/flann/issues/369 for more information.\n        - src-cpp-fix-cmake-3.11-build.patch\n        # This serializer workaround for VS 2013 doesn't work correctly in VC9.\n        - remove-serializer-workaround.patch\n\nbuild:\n    skip: True  # [win and vc<14]\n    number: 1010\n\nrequirements:\n    build:\n        - {{ compiler('cxx') }}  # [not win64]\n        - vs2017_win-64  # [win64]\n        - cmake\n        - make  # [unix]\n    host:\n        - hdf5\n        - llvm-openmp  # [osx]\n    run:\n        - hdf5\n\ntest:\n    commands:\n        # Verify libraries exist\n        {% set flann_libs = [\n                \"flann_cpp\",\n                \"flann\"\n        ] %}\n        {% for each_flann_lib in flann_libs %}\n        - test -f $PREFIX/lib/lib{{ each_flann_lib }}_s.a                # [unix]\n        - test -f $PREFIX/lib/lib{{ each_flann_lib }}.dylib              # [osx]\n        - test -f $PREFIX/lib/lib{{ each_flann_lib }}.so                 # [linux]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ each_flann_lib }}.dll exit 1    # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ each_flann_lib }}.lib exit 1    # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ each_flann_lib }}_s.lib exit 1  # [win]\n        {% endfor %}\n        - test -d $PREFIX/include/flann                 # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\flann exit 1      # [win]\n\nabout:\n    home: http://www.cs.ubc.ca/research/flann/\n    license: BSD-3-Clause\n    license_file: COPYING\n    summary: \"The Fast Library for Approximate Nearest Neighbors\"\n\nextra:\n  recipe-maintainers:\n    - jakevdp\n    - jakirkham\n    - djsutherland\n    - seanyen\n",
+ "raw_meta_yaml": "{% set version = \"1.9.1\" %}\n\npackage:\n    name: flann\n    version: {{ version }}\n\nsource:\n    fn: flann-{{ version }}.tar.gz\n    url: https://github.com/mariusmuja/flann/archive/{{ version }}.tar.gz\n    sha256: b23b5f4e71139faa3bcb39e6bbcc76967fbaf308c4ee9d4f5bfbeceaa76cc5d3\n    patches:\n        # CMake 3.11 breaks FLANN's existing src/cpp/CMakeLists.txt. See\n        # https://github.com/mariusmuja/flann/issues/369 for more information.\n        - src-cpp-fix-cmake-3.11-build.patch\n        # This serializer workaround for VS 2013 doesn't work correctly in VC9.\n        - remove-serializer-workaround.patch\n\nbuild:\n    skip: True  # [win and vc<14]\n    number: 1011\n\nrequirements:\n    build:\n        - {{ compiler('cxx') }}  # [not win64]\n        - vs2017_win-64  # [win64]\n        - cmake\n        - make  # [unix]\n    host:\n        - hdf5\n        - llvm-openmp  # [osx]\n\ntest:\n    commands:\n        # Verify libraries exist\n        {% set flann_libs = [\n                \"flann_cpp\",\n                \"flann\"\n        ] %}\n        {% for each_flann_lib in flann_libs %}\n        - test -f $PREFIX/lib/lib{{ each_flann_lib }}_s.a                # [unix]\n        - test -f $PREFIX/lib/lib{{ each_flann_lib }}.dylib              # [osx]\n        - test -f $PREFIX/lib/lib{{ each_flann_lib }}.so                 # [linux]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ each_flann_lib }}.dll exit 1    # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ each_flann_lib }}.lib exit 1    # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ each_flann_lib }}_s.lib exit 1  # [win]\n        {% endfor %}\n        - test -d $PREFIX/include/flann                 # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\flann exit 1      # [win]\n\nabout:\n    home: http://www.cs.ubc.ca/research/flann/\n    license: BSD-3-Clause\n    license_file: COPYING\n    summary: \"The Fast Library for Approximate Nearest Neighbors\"\n\nextra:\n  recipe-maintainers:\n    - jakevdp\n    - jakirkham\n    - djsutherland\n    - seanyen\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -727,7 +696,6 @@
    "__set__": true,
    "elements": [
     "cxx_compiler_stub",
-    "hdf5",
     "openmp",
     "vc"
    ]
@@ -758,9 +726,7 @@
   },
   "run": {
    "__set__": true,
-   "elements": [
-    "hdf5"
-   ]
+   "elements": []
   },
   "test": {
    "__set__": true,
@@ -777,7 +743,7 @@
    "summary": "The Fast Library for Approximate Nearest Neighbors"
   },
   "build": {
-   "number": "1010"
+   "number": "1011"
   },
   "extra": {
    "recipe-maintainers": [
@@ -797,9 +763,6 @@
     "cmake"
    ],
    "host": [
-    "hdf5"
-   ],
-   "run": [
     "hdf5"
    ]
   },
@@ -840,9 +803,7 @@
   },
   "run": {
    "__set__": true,
-   "elements": [
-    "hdf5"
-   ]
+   "elements": []
   },
   "test": {
    "__set__": true,
