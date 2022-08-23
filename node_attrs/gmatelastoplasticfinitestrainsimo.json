@@ -109,7 +109,7 @@
     "__lazy_json__": "pr_json/911553889.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1661257098.8444078,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "0.3.0"
@@ -126,7 +126,7 @@
     "__lazy_json__": "pr_json/950499897.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1661257098.8445857,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -145,7 +145,7 @@
     "__lazy_json__": "pr_json/1030587914.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1661257098.8446786,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "0.4.0"
@@ -162,7 +162,7 @@
     "__lazy_json__": "pr_json/1032884094.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1661257098.8447597,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "0.5.0"
@@ -179,7 +179,7 @@
     "__lazy_json__": "pr_json/1033048804.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1661257098.8448393,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "0.5.1"
@@ -189,6 +189,25 @@
     "migrator_name",
     "migrator_version",
     "version"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1034214842.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy38"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
    ]
   }
  ],
@@ -678,9 +697,11 @@
   "0.3.0": 1,
   "0.4.0": 1,
   "0.5.0": 1,
-  "0.5.1": 1
+  "0.5.1": 2
  },
- "new_version_errors": {},
+ "new_version_errors": {
+  "0.5.1": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '0.5.1' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz'\n"
+ },
  "osx_64_meta_yaml": {
   "about": {
    "description": "Finite strain elasto-plastic model.",
@@ -978,7 +999,7 @@
    "python-gmatelastoplasticfinitestrainsimo"
   ]
  },
- "pinning_version": "2022.08.22.11.57.44",
+ "pinning_version": "2022.08.23.01.05.47",
  "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"GMatElastoPlasticFiniteStrainSimo\" %}\n{% set version = \"0.3.0\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 7faf0df9d05710bc7c7703b75f3232a97b08ad258296ae6a3b6ae8cfe49eca76\n\nbuild:\n  number: 0\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - gmattensor >=0.10.1\n        - xtensor >=0.24.2\n      run:\n        - gmattensor >=0.10.1\n        - xtensor >=0.24.2\n\n    test:\n      commands:\n        - test -d ${PREFIX}/include/{{ name }}  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/Cartesian3d.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\Cartesian3d.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n      skip: true  # [python_impl == 'pypy']\n\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - numpy *                             # [build_platform != target_platform]\n        - setuptools_scm                      # [build_platform != target_platform]\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n        - ninja\n      host:\n        - gmattensor >=0.10.1\n        - numpy *\n        - pip\n        - pybind11\n        - pybind11-abi\n        - python\n        - scikit-build\n        - setuptools_scm\n        - xtensor >=0.24.2\n        - xtensor-python\n      run:\n        - numpy *\n        - python\n        - python-gmattensor >0.9.0\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n        - python -c \"import {{ name }}; assert {{ name }}.version() == '{{ version }}'\"\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Finite strain elasto-plastic model.\n  description: Finite strain elasto-plastic model.\n  doc_url: https://{{ org }}.github.io/{{ name }}\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
  "req": {
   "__set__": true,
