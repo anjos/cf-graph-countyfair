@@ -71,25 +71,29 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/6f8e18e0-80a7-43ce-8f1b-8dfa9dd53271.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "libflint29"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
- "bad": {
-  "exception": "[Errno 17] File exists: 'migrations'",
-  "traceback": [
-   "Traceback (most recent call last):",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1150, in _run_migrator",
-   "    migrator_uid, pr_json = run(",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 235, in run",
-   "    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/migration_yaml.py\", line 227, in migrate",
-   "    os.makedirs(\"migrations\", exist_ok=True)",
-   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/os.py\", line 225, in makedirs",
-   "    mkdir(name, mode)",
-   "FileExistsError: [Errno 17] File exists: 'migrations'",
-   ""
-  ]
- },
+ "bad": false,
  "branch": "main",
  "conda-forge.yml": {},
  "feedstock_name": "flatsurf",
@@ -576,13 +580,9 @@
    "pyflatsurf"
   ]
  },
- "pinning_version": "2022.08.03.21.47.28",
- "pre_pr_migrator_attempts": {
-  "libflint29": 8
- },
- "pre_pr_migrator_status": {
-  "libflint29": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/2909684895\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1150, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 235, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/migration_yaml.py\", line 227, in migrate\n    os.makedirs(\"migrations\", exist_ok=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/os.py\", line 225, in makedirs\n    mkdir(name, mode)\nFileExistsError: [Errno 17] File exists: 'migrations'\n"
- },
+ "pinning_version": "2022.08.23.01.05.47",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"flatsurf\" %}\n{% set version = \"3.11.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/flatsurf/{{ name }}/releases/download/{{ version }}/{{ name }}-{{ version }}.tar.gz\n  sha256: eead37aa75f077e00eab5b16a83cdb2d73bb183d05271d027cdc5a852371f635\n\nbuild:\n  number: 0\n  # dependency libeantic is not available for Windows on conda-forge yet\n  skip: true  # [win]\n\noutputs:\n  - name: libflatsurf\n    script: build-libflatsurf.sh  # [not win]\n    script: build-libflatsurf.bat  # [win]\n    run_exports:\n      - {{ pin_subpackage(\"libflatsurf\") }}\n    requirements:\n      build:\n        - libtool    # [unix]\n        - automake   # [unix]\n        - make       # [unix]\n        - gnuconfig  # [unix]\n        - autotools_clang_conda  # [win]\n        - {{ compiler('cxx') }}\n      host:\n        - arb\n        - boost-cpp\n        - fmt\n        - gmp   # [unix]\n        - mpir  # [win]\n        - libflint\n        - libintervalxt\n        - libexactreal\n        - libeantic\n        - gmpxxll\n    test:\n      commands:\n        - test -f $PREFIX/include/flatsurf/flatsurf.hpp  # [unix]\n        - test -f $PREFIX/lib/libflatsurf${SHLIB_EXT}      # [unix]\n  - name: pyflatsurf\n    script: build-pyflatsurf.sh  # [not win]\n    script: bld-pyflatsurf.bat  # [win]\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - libtool   # [unix]\n        - automake  # [unix]\n        - make      # [unix]\n        - autotools_clang_conda  # [win]\n        - gnuconfig  # [unix]\n        - {{ compiler('cxx') }}\n      host:\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        - setuptools\n        - pytest\n        - pyexactreal\n        - {{ pin_subpackage(\"libflatsurf\") }}\n      run:\n        # cppyy dynamically compiles C++ wrappers at runtime, therefore we need C++ headers of boost.\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        - gmpxxyy\n        - pyexactreal\n        # A subpackage does not see the run_exports of another subpackage:\n        # https://github.com/conda/conda-build/issues/3478\n        - {{ pin_subpackage(\"libflatsurf\") }}\n    test:\n      imports:\n        - pyflatsurf\n\nabout:\n  home: https://github.com/flatsurf/flatsurf\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: Algorithms on Flat Triangulations\n  dev_url: https://github.com/flatsurf/flatsurf\n\nextra:\n  recipe-maintainers:\n    - saraedum\n",
  "req": {
   "__set__": true,
