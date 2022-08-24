@@ -16,6 +16,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1035420194.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.5.0.post0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -277,7 +294,8 @@
  "name": "fenics-ffcx-ufcx",
  "new_version": "0.5.0.post0",
  "new_version_attempts": {
-  "0.5.0": 1
+  "0.5.0": 1,
+  "0.5.0.post0": 1
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -287,7 +305,7 @@
    "fenics-ufcx"
   ]
  },
- "pinning_version": "2022.08.11.15.16.27",
+ "pinning_version": "2022.08.24.10.15.47",
  "raw_meta_yaml": "{% set name = \"fenics-ffcx-ufcx\" %}\n{% set version = \"0.5.0\" %}\n\n# pins are usually updated on minor bumps:\n# basix is currently co-versioned with ffcx\n{% set major_minor = version.rsplit(\".\", 1)[0] %}\n{% set ufl_version = \"2022.2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  # PyPI sdist missing ufcx sources in 0.4.2. Should be fixed in 0.4.3\n  # url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}{{ extra }}.tar.gz\n  url: https://github.com/fenics/ffcx/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 3413409e5885e41e220f99e0f95cc817e94c4931143d1f700c6e0c5e1bfad1f6\nbuild:\n  number: 1\n  skip: true  # [win]\n\noutputs:\n  - name: fenics-ufcx\n    script: build-ufcx.sh\n    build:\n      noarch: generic\n      ignore_run_exports:\n        # we don't use the compiler, but cmake still needs it\n        - {{ compiler(\"c\") }}  # [linux]\n    requirements:\n      build:\n        - cmake\n        - make\n        - {{ compiler(\"c\") }}  # [linux]\n    test:\n      script: test-ufcx.sh\n      files:\n        - test-ufcx\n      requires:\n        - pkg-config\n        - cmake\n        - make\n        - {{ compiler(\"cxx\") }}\n      commands:\n        - test -f ${PREFIX}/include/ufcx.h\n        - pkg-config --cflags ufcx\n  - name: fenics-ffcx\n    build:\n      script: $PYTHON -m pip install -vv --no-deps .\n      noarch: python\n    requirements:\n      host:\n        - python >=3.7\n        - pip\n        - setuptools >=58\n        - wheel\n      run:\n        - python >=3.7\n        - setuptools\n        - numpy\n        - cffi\n        - fenics-basix {{ major_minor }}.*\n        - fenics-ufl {{ ufl_version }}.*\n    test:\n      files:\n        - test-ffcx\n      requires:\n        - pip\n        - pytest >=6\n        - {{ compiler(\"c\") }}\n        - {{ compiler(\"cxx\") }}\n      imports:\n        - ffcx\n      commands:\n        - pytest -v test-ffcx\n\nabout:\n  home: https://fenicsproject.org\n  summary: The FEniCSx Form Compiler\n  description: |\n    FFCx is a new version of the FEniCS Form Compiler.\n    It is being actively developed and is compatible with DOLFINx.\n\n    FFCx is a compiler for finite element variational forms.\n    From a high-level description of the form in the Unified Form Language (UFL),\n    it generates efficient low-level C code that can be used to assemble the corresponding discrete operator (tensor).\n    In particular, a bilinear form may be assembled into a matrix and a linear form may be assembled into a vector.\n    FFCx may be used either from the command line (by invoking the ffcx command) or as a Python module (import ffcx).\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file: COPYING.LESSER\n  doc_url: https://docs.fenicsproject.org/ffcx/v{{ version }}/\n  dev_url: https://github.com/fenics/ffcx\n\nextra:\n  feedstock-name: fenics-ffcx\n  recipe-maintainers:\n    - minrk\n",
  "req": {
   "__set__": true,
