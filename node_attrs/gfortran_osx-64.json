@@ -974,9 +974,7 @@
     }
    },
    {
-    "build": {
-     "skip": true
-    },
+    "build": null,
     "name": "gfortran",
     "requirements": {
      "run": [
@@ -1444,9 +1442,7 @@
     }
    },
    {
-    "build": {
-     "skip": true
-    },
+    "build": null,
     "name": "gfortran",
     "requirements": {
      "run": [
@@ -1517,7 +1513,7 @@
   ]
  },
  "pinning_version": "2020.11.15.19.46.57",
- "raw_meta_yaml": "{% if gfortran_version is not defined %}\n{% set gfortran_version = \"11.3.0\" %}\n{% endif %}\n{% set version = gfortran_version %}\n\n{% set libgfortran_major_version = \"5\" %}\n\n{% set version_suffix = \"\" %}\n\npackage:\n  name: gfortran-split\n  version: {{ version }}{{ version_suffix }}\n\nbuild:\n  number: 0\n  skip: True  # [win]\n\noutputs:\n  - name: gfortran_{{ cross_target_platform }}\n    script: build_gfortran.sh\n    build:\n      run_exports:\n        strong:\n          - libgfortran {{ libgfortran_major_version }}.*\n          - libgfortran{{ libgfortran_major_version }} >={{ version }}{{ version_suffix }}\n      ignore_run_exports_from:\n        - gfortran_{{ target_platform }}\n    requirements:\n      build:\n      host:\n        - gfortran_impl_{{ cross_target_platform }} =={{ version }}{{ version_suffix }}\n        - clang_{{ target_platform }}    # [osx]\n        - gcc_{{ target_platform }}      # [linux]\n      run:\n        - clang\n        - ld64_{{ cross_target_platform }}\n        - cctools_{{ cross_target_platform }}\n        - gfortran_impl_{{ cross_target_platform }} =={{ version }}{{ version_suffix }}\n        - gfortran_impl_{{ target_platform }}\n        - libgfortran-devel_{{ cross_target_platform }} =={{ version }}{{ version_suffix }}\n        - libgfortran-devel_{{ target_platform }}         # [osx]\n        - libgfortran {{ libgfortran_major_version }}.*                                   # [target_platform == cross_target_platform]\n        - libgfortran{{ libgfortran_major_version }} >={{ version }}{{ version_suffix }}  # [target_platform == cross_target_platform]\n        - clang_{{ cross_target_platform }}\n    test:\n      files:\n        - hello.f90\n        - maths.f90\n      commands:\n        - echo {{ MACOSX_DEPLOYMENT_TARGET }}\n        - {{ macos_machine }}-gfortran --help\n        - test \"$(readlink $PREFIX/lib/gcc/{{ macos_machine }}/{{ version }}/clang)\" = \"../../../../bin/clang\"\n\n  - name: gfortran\n    build:\n      skip: True  # [cross_target_platform != target_platform]\n      skip: True  # [win]\n      skip: True  # [gfortran_version in (\"11.0.1\", \"10.2.1\") and cross_target_platform != \"osx-arm64\"]\n      skip: True  # [gfortran_version not in (\"11.0.1\", \"10.2.1\") and (cross_target_platform == \"osx-arm64\" or target_platform == \"osx-arm64\")]\n    requirements:\n      run:\n        - gfortran_{{ cross_target_platform }}\n        - ld64\n        - cctools\n    test:\n      commands:\n        - echo {{ MACOSX_DEPLOYMENT_TARGET }}\n        - gfortran --help\n\nabout:\n  home: http://gcc.gnu.org/\n  license: GPL-3.0-or-later WITH GCC-exception-3.1\n  license_file: COPYING3\n  summary: Fortran compiler from the GNU Compiler Collection\n\nextra:\n  recipe-maintainers:\n    - beckermr\n    - isuruf\n",
+ "raw_meta_yaml": "{% if gfortran_version is not defined %}\n{% set gfortran_version = \"11.3.0\" %}\n{% endif %}\n{% set version = gfortran_version %}\n\n{% set libgfortran_major_version = \"5\" %}\n\n{% set version_suffix = \"\" %}\n\npackage:\n  name: gfortran-split\n  version: {{ version }}{{ version_suffix }}\n\nbuild:\n  number: 0\n  skip: True  # [win]\n\noutputs:\n  - name: gfortran_{{ cross_target_platform }}\n    script: build_gfortran.sh\n    build:\n      run_exports:\n        strong:\n          - libgfortran {{ libgfortran_major_version }}.*\n          - libgfortran{{ libgfortran_major_version }} >={{ version }}{{ version_suffix }}\n      ignore_run_exports_from:\n        - gfortran_{{ target_platform }}\n    requirements:\n      build:\n      host:\n        - gfortran_impl_{{ cross_target_platform }} =={{ version }}{{ version_suffix }}\n        - clang_{{ target_platform }}    # [osx]\n        - gcc_{{ target_platform }}      # [linux]\n      run:\n        - clang\n        - ld64_{{ cross_target_platform }}\n        - cctools_{{ cross_target_platform }}\n        - gfortran_impl_{{ cross_target_platform }} =={{ version }}{{ version_suffix }}\n        - gfortran_impl_{{ target_platform }}\n        - libgfortran-devel_{{ cross_target_platform }} =={{ version }}{{ version_suffix }}\n        - libgfortran-devel_{{ target_platform }}         # [osx]\n        - libgfortran {{ libgfortran_major_version }}.*                                   # [target_platform == cross_target_platform]\n        - libgfortran{{ libgfortran_major_version }} >={{ version }}{{ version_suffix }}  # [target_platform == cross_target_platform]\n        - clang_{{ cross_target_platform }}\n    test:\n      files:\n        - hello.f90\n        - maths.f90\n      commands:\n        - echo {{ MACOSX_DEPLOYMENT_TARGET }}\n        - {{ macos_machine }}-gfortran --help\n        - test \"$(readlink $PREFIX/lib/gcc/{{ macos_machine }}/{{ version }}/clang)\" = \"../../../../bin/clang\"\n\n  - name: gfortran\n    build:\n      skip: True  # [cross_target_platform != target_platform]\n      skip: True  # [win]\n    requirements:\n      run:\n        - gfortran_{{ cross_target_platform }}\n        - ld64\n        - cctools\n    test:\n      commands:\n        - echo {{ MACOSX_DEPLOYMENT_TARGET }}\n        - gfortran --help\n\nabout:\n  home: http://gcc.gnu.org/\n  license: GPL-3.0-or-later WITH GCC-exception-3.1\n  license_file: COPYING3\n  summary: Fortran compiler from the GNU Compiler Collection\n\nextra:\n  recipe-maintainers:\n    - beckermr\n    - isuruf\n",
  "req": {
   "__set__": true,
   "elements": [
