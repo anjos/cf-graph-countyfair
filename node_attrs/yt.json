@@ -438,6 +438,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1037995000.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy38"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -2590,7 +2609,7 @@
    "yt"
   ]
  },
- "pinning_version": "2022.08.09.15.26.55",
+ "pinning_version": "2022.08.26.11.30.05",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"4.0.5\" %}\n\npackage:\n  name: yt\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/y/yt/yt-{{ version }}.tar.gz\n  sha256: dab6020da98ffa297c4c978ca9e789cdd6366d7d81a2449c11cc87ef22e53347\n  patches:\n    - patches/force_cythonize.patch\n    - patches/crossc-openmp.patch  # [linux]\n    - patches/drop_iyt.patch  # [python_impl == 'pypy']\n\nbuild:\n  number: 0\n  entry_points:\n    - yt = yt.utilities.command_line:run_main\n  script: {{ PYTHON }} -m pip install . -vv\n  script_env:\n    - OMP_NUM_THREADS=1\n    - MAX_BUILD_CORES=2\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - numpy                                  # [build_platform != target_platform]\n    - libgomp                                # [linux]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - python\n    - pip\n    - numpy\n    - cython >=0.24.0\n  run:\n    - python\n    - ipython >=1.0\n    - matplotlib-base !=3.4.2,>=2.1.0,<3.6\n    - more-itertools >=8.4\n    - numpy >=1.13.3\n    - packaging >=20.9\n    - setuptools >=19.6\n    - sympy >=1.2\n    - tomli >=1.2.3\n    - tomli-w >=0.4.0\n    - tqdm >=3.4.0\n    - unyt >=2.8.0\n    - cmyt >=0.2.2\n    - {{ pin_compatible('numpy') }}\n\ntest:\n  imports:\n    - yt\n  commands:\n    - pip check\n    - yt --help\n  requires:\n    - pip\n\nabout:\n  home: http://yt-project.org/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: COPYING.txt\n  summary: Analysis and visualization toolkit for volumetric data\n\nextra:\n  recipe-maintainers:\n    - matthewturk\n    - munkm\n    - xarthisius\n",
