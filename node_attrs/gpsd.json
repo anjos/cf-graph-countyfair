@@ -126,13 +126,15 @@
     "COPYING",
     "COPYING",
     "COPYING",
+    "COPYING",
     "COPYING"
    ],
    "summary": "gpsd is a service daemon that monitors one or more GPSes or AIS receivers attached to a host computer through serial or USB ports, making all data on the location/course/velocity of the sensors available to be queried on TCP port 2947 of the host computer."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
+    "gpsd",
     "gpsd",
     "gpsd",
     "gpsd",
@@ -146,6 +148,7 @@
     "Tobias-Fischer",
     "Tobias-Fischer",
     "Tobias-Fischer",
+    "Tobias-Fischer",
     "Tobias-Fischer"
    ]
   },
@@ -155,6 +158,11 @@
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "scons",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cdt_stub",
@@ -206,9 +214,15 @@
     "libusb",
     "ncurses",
     "pyserial",
+    "matplotlib-base",
+    "python",
+    "libusb",
+    "ncurses",
+    "pyserial",
     "matplotlib-base"
    ],
    "run": [
+    "python",
     "python",
     "python",
     "python",
@@ -251,10 +265,20 @@
     ],
     "sha256": "522c2362a7eb2d7ac37eaa1504f12aded1c373479a87ba06cc6795974b567bbc",
     "url": "http://download.savannah.gnu.org/releases/gpsd/gpsd-3.23.tar.gz"
+   },
+   {
+    "patches": [
+     "fix_build.patch"
+    ],
+    "sha256": "522c2362a7eb2d7ac37eaa1504f12aded1c373479a87ba06cc6795974b567bbc",
+    "url": "http://download.savannah.gnu.org/releases/gpsd/gpsd-3.23.tar.gz"
    }
   ],
   "test": {
    "commands": [
+    "test -f $PREFIX/lib/pkgconfig/libgps.pc",
+    "test -f $PREFIX/include/gps.h",
+    "test -f $PREFIX/bin/gpsfake",
     "test -f $PREFIX/lib/pkgconfig/libgps.pc",
     "test -f $PREFIX/include/gps.h",
     "test -f $PREFIX/bin/gpsfake",
@@ -313,13 +337,15 @@
     "COPYING",
     "COPYING",
     "COPYING",
+    "COPYING",
     "COPYING"
    ],
    "summary": "gpsd is a service daemon that monitors one or more GPSes or AIS receivers attached to a host computer through serial or USB ports, making all data on the location/course/velocity of the sensors available to be queried on TCP port 2947 of the host computer."
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
+    "gpsd",
     "gpsd",
     "gpsd",
     "gpsd",
@@ -333,6 +359,7 @@
     "Tobias-Fischer",
     "Tobias-Fischer",
     "Tobias-Fischer",
+    "Tobias-Fischer",
     "Tobias-Fischer"
    ]
   },
@@ -342,6 +369,11 @@
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cdt_stub",
+    "cdt_stub",
+    "scons",
     "c_compiler_stub",
     "cxx_compiler_stub",
     "cdt_stub",
@@ -393,9 +425,15 @@
     "libusb",
     "ncurses",
     "pyserial",
+    "matplotlib-base",
+    "python",
+    "libusb",
+    "ncurses",
+    "pyserial",
     "matplotlib-base"
    ],
    "run": [
+    "python",
     "python",
     "python",
     "python",
@@ -404,6 +442,13 @@
    ]
   },
   "source": [
+   {
+    "patches": [
+     "fix_build.patch"
+    ],
+    "sha256": "522c2362a7eb2d7ac37eaa1504f12aded1c373479a87ba06cc6795974b567bbc",
+    "url": "http://download.savannah.gnu.org/releases/gpsd/gpsd-3.23.tar.gz"
+   },
    {
     "patches": [
      "fix_build.patch"
@@ -456,6 +501,9 @@
     "test -f $PREFIX/bin/gpsfake",
     "test -f $PREFIX/lib/pkgconfig/libgps.pc",
     "test -f $PREFIX/include/gps.h",
+    "test -f $PREFIX/bin/gpsfake",
+    "test -f $PREFIX/lib/pkgconfig/libgps.pc",
+    "test -f $PREFIX/include/gps.h",
     "test -f $PREFIX/bin/gpsfake"
    ]
   }
@@ -474,7 +522,7 @@
   ]
  },
  "pinning_version": "2022.08.26.15.40.48",
- "raw_meta_yaml": "{% set name = \"gpsd\" %}\n{% set version = \"3.23\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: http://download.savannah.gnu.org/releases/{{ name }}/{{ name }}-{{ version }}.tar.gz\n    sha256: 522c2362a7eb2d7ac37eaa1504f12aded1c373479a87ba06cc6795974b567bbc\n    patches:\n      - fix_build.patch\n\nbuild:\n  number: 1\n  skip: true  # [not linux]\n  run_exports:\n    - {{ pin_subpackage('gpsd', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ cdt('libudev') }}\n    - {{ cdt('libudev-devel') }}\n    - scons\n  host:\n    - python\n    - libusb\n    - ncurses\n    - pyserial\n    - matplotlib-base\n  run:\n    - python\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/pkgconfig/libgps.pc  # [unix]\n    - test -f $PREFIX/include/gps.h  # [unix]\n    - test -f $PREFIX/bin/gpsfake  # [unix]\n\n\nabout:\n  home: https://gpsd.io\n  license: BSD-2-Clause\n  license_file:\n    - COPYING\n  summary: gpsd is a service daemon that monitors one or more GPSes or AIS receivers attached to a host computer through serial or USB ports, making all data on the location/course/velocity of the sensors available to be queried on TCP port 2947 of the host computer.\n\nextra:\n  recipe-maintainers:\n    - Tobias-Fischer\n",
+ "raw_meta_yaml": "{% set name = \"gpsd\" %}\n{% set version = \"3.23\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: http://download.savannah.gnu.org/releases/{{ name }}/{{ name }}-{{ version }}.tar.gz\n    sha256: 522c2362a7eb2d7ac37eaa1504f12aded1c373479a87ba06cc6795974b567bbc\n    patches:\n      - fix_build.patch\n\nbuild:\n  number: 2\n  skip: true  # [not linux]\n  run_exports:\n    - {{ pin_subpackage('gpsd', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ cdt('libudev') }}\n    - {{ cdt('libudev-devel') }}\n    - scons\n  host:\n    - python\n    - libusb\n    - ncurses\n    - pyserial\n    - matplotlib-base\n  run:\n    - python\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/pkgconfig/libgps.pc  # [unix]\n    - test -f $PREFIX/include/gps.h  # [unix]\n    - test -f $PREFIX/bin/gpsfake  # [unix]\n\n\nabout:\n  home: https://gpsd.io\n  license: BSD-2-Clause\n  license_file:\n    - COPYING\n  summary: gpsd is a service daemon that monitors one or more GPSes or AIS receivers attached to a host computer through serial or USB ports, making all data on the location/course/velocity of the sensors available to be queried on TCP port 2947 of the host computer.\n\nextra:\n  recipe-maintainers:\n    - Tobias-Fischer\n",
  "req": {
   "__set__": true,
   "elements": [
