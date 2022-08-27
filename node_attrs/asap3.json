@@ -318,6 +318,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1038539292.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy38"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1116,7 +1135,7 @@
    "asap3"
   ]
  },
- "pinning_version": "2021.11.13.15.55.10",
+ "pinning_version": "2022.08.26.18.27.48",
  "raw_meta_yaml": "{% set name = \"asap3\" %}\n{% set version = \"3.12.8\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: bc0e94fb3f6ab62b5cc9f0822ae59022e83f450af6f452d159a0e34a22372d11\n\nbuild:\n  number: 1\n  script:\n    - echo \"libraries += ['mpi']\" >> customize.py  # [mpi != 'nompi'] \n    - {{ PYTHON }} -m pip install . -vv\n  skip: true  # [win or py2k or (py < 38)]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - python\n    - pip\n    - numpy\n    - openblas\n    - {{ mpi }}  # [mpi != 'nompi']\n    - kim-api\n  run:\n    - python\n    - openblas\n    - ase\n    - {{ pin_compatible('numpy') }}\n    - {{ mpi }}  # [mpi != 'nompi']    \n    - kim-api\n\ntest:\n  requires:\n    - {{ mpi }}  # [mpi != 'nompi']\n  files:\n    - Verlet*.pickle\n    - hostfile\n  source_files:\n    - Test\n  imports:\n    - asap3\n  commands:\n    - cp Verlet*.pickle hostfile Test\n    - cd Test\n    - python TestAll.py\n    - mpirun -np 2 --hostfile hostfile python -W error::FutureWarning TestAll.py --parallel  # [mpi != 'nompi']\n\nabout:\n  home: https://wiki.fysik.dtu.dk/asap\n  license: LGPL-3.0-only\n  license_family: LGPL\n  license_file: LICENSE.txt\n  summary: ASAP is a calculator for doing large-scale classical molecular dynamics within ASE.\n\n  description: |\n    ASAP is a tool for doing atomic-scale computer simulations\n    (mainly molecular dynamics) using classical potentials\n    (mainly Effective Medium Theory). It is intended to work \n    as an energy calculator in connection with the Atomic Simulation \n    Environment (ASE). However, some parts of the ASE are either \n    extended or reimplemented for reasons of efficiency and \n    ease-of-use on parallel computers.\n  doc_url: https://wiki.fysik.dtu.dk/asap/Manual\n  dev_url: https://gitlab.com/asap/asap\n\nextra:\n  recipe-maintainers:\n    - jochym\n",
  "req": {
   "__set__": true,
@@ -1173,7 +1192,7 @@
    ]
   }
  },
- "smithy_version": "3.14.3",
+ "smithy_version": "3.21.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
