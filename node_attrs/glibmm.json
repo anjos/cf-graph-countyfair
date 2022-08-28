@@ -141,7 +141,7 @@
     "__lazy_json__": "pr_json/878096264.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1661714083.7253928,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "2.70.0"
@@ -169,12 +169,32 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1038946567.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.70.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
  "bad": false,
  "branch": "main",
  "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  },
   "provider": {
    "linux_aarch64": "default",
    "linux_ppc64le": "default"
@@ -191,54 +211,91 @@
    "summary": "This is glibmm, a C++ API for parts of glib that are useful for C++."
   },
   "build": {
-   "number": "1"
+   "number": "0",
+   "run_exports": [
+    "glibmm-2.4 >=2.66.3"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
     "scopatz",
-    "isuruf"
+    "isuruf",
+    "tschoonj"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/pkg-config/glibmm-2.4.pc"
+     ]
+    }
+   }
+  ],
   "package": {
    "name": "glibmm",
-   "version": "2.58.1"
-  },
-  "requirements": {
-   "build": [
-    "make",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "libsigcpp 2.*",
-    "glib",
-    "xz"
-   ],
-   "run": [
-    "libsigcpp 2.*"
-   ]
+   "version": "2.66.3"
   },
   "source": {
-   "fn": "glibmm-2.58.1.tar.xz",
-   "sha256": "6e5fe03bdf1e220eeffd543e017fd2fb15bcec9235f0ffd50674aff9362a85f0",
-   "url": "http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.58/glibmm-2.58.1.tar.xz"
-  },
-  "test": {
-   "commands": [
-    "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}"
-   ]
+   "fn": "glibmm-2.66.3.tar.xz",
+   "sha256": "afb96202491485d3f44102d98219a172da2d3f9eb78fce3cfb92559ba496e499",
+   "url": "https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.3.tar.xz"
   }
  },
  "linux_64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub",
     "cxx_compiler_stub",
-    "make",
+    "meson",
+    "ninja",
     "pkg-config"
    ]
   },
@@ -246,19 +303,25 @@
    "__set__": true,
    "elements": [
     "glib",
-    "libsigcpp",
-    "xz"
+    "sigcpp-2.0",
+    "xz",
+    "zlib"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "libsigcpp"
+    "glibmm-2.4"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "glib",
+    "pkg-config",
+    "xz",
+    "zlib"
+   ]
   }
  },
  "linux_aarch64_meta_yaml": {
@@ -270,54 +333,91 @@
    "summary": "This is glibmm, a C++ API for parts of glib that are useful for C++."
   },
   "build": {
-   "number": "1"
+   "number": "0",
+   "run_exports": [
+    "glibmm-2.4 >=2.66.3"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
     "scopatz",
-    "isuruf"
+    "isuruf",
+    "tschoonj"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/pkg-config/glibmm-2.4.pc"
+     ]
+    }
+   }
+  ],
   "package": {
    "name": "glibmm",
-   "version": "2.58.1"
-  },
-  "requirements": {
-   "build": [
-    "make",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "libsigcpp 2.*",
-    "glib",
-    "xz"
-   ],
-   "run": [
-    "libsigcpp 2.*"
-   ]
+   "version": "2.66.3"
   },
   "source": {
-   "fn": "glibmm-2.58.1.tar.xz",
-   "sha256": "6e5fe03bdf1e220eeffd543e017fd2fb15bcec9235f0ffd50674aff9362a85f0",
-   "url": "http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.58/glibmm-2.58.1.tar.xz"
-  },
-  "test": {
-   "commands": [
-    "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}"
-   ]
+   "fn": "glibmm-2.66.3.tar.xz",
+   "sha256": "afb96202491485d3f44102d98219a172da2d3f9eb78fce3cfb92559ba496e499",
+   "url": "https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.3.tar.xz"
   }
  },
  "linux_aarch64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub",
     "cxx_compiler_stub",
-    "make",
+    "meson",
+    "ninja",
     "pkg-config"
    ]
   },
@@ -325,19 +425,25 @@
    "__set__": true,
    "elements": [
     "glib",
-    "libsigcpp",
-    "xz"
+    "sigcpp-2.0",
+    "xz",
+    "zlib"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "libsigcpp"
+    "glibmm-2.4"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "glib",
+    "pkg-config",
+    "xz",
+    "zlib"
+   ]
   }
  },
  "linux_ppc64le_meta_yaml": {
@@ -349,54 +455,91 @@
    "summary": "This is glibmm, a C++ API for parts of glib that are useful for C++."
   },
   "build": {
-   "number": "1"
+   "number": "0",
+   "run_exports": [
+    "glibmm-2.4 >=2.66.3"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
     "scopatz",
-    "isuruf"
+    "isuruf",
+    "tschoonj"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/pkg-config/glibmm-2.4.pc"
+     ]
+    }
+   }
+  ],
   "package": {
    "name": "glibmm",
-   "version": "2.58.1"
-  },
-  "requirements": {
-   "build": [
-    "make",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "libsigcpp 2.*",
-    "glib",
-    "xz"
-   ],
-   "run": [
-    "libsigcpp 2.*"
-   ]
+   "version": "2.66.3"
   },
   "source": {
-   "fn": "glibmm-2.58.1.tar.xz",
-   "sha256": "6e5fe03bdf1e220eeffd543e017fd2fb15bcec9235f0ffd50674aff9362a85f0",
-   "url": "http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.58/glibmm-2.58.1.tar.xz"
-  },
-  "test": {
-   "commands": [
-    "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}"
-   ]
+   "fn": "glibmm-2.66.3.tar.xz",
+   "sha256": "afb96202491485d3f44102d98219a172da2d3f9eb78fce3cfb92559ba496e499",
+   "url": "https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.3.tar.xz"
   }
  },
  "linux_ppc64le_requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub",
     "cxx_compiler_stub",
-    "make",
+    "meson",
+    "ninja",
     "pkg-config"
    ]
   },
@@ -404,19 +547,25 @@
    "__set__": true,
    "elements": [
     "glib",
-    "libsigcpp",
-    "xz"
+    "sigcpp-2.0",
+    "xz",
+    "zlib"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "libsigcpp"
+    "glibmm-2.4"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "glib",
+    "pkg-config",
+    "xz",
+    "zlib"
+   ]
   }
  },
  "meta_yaml": {
@@ -428,84 +577,370 @@
    "summary": "This is glibmm, a C++ API for parts of glib that are useful for C++."
   },
   "build": {
-   "number": "1"
+   "number": "0",
+   "run_exports": [
+    "glibmm-2.4 >=2.66.3",
+    "glibmm-2.4 >=2.66.3",
+    "glibmm-2.4 >=2.66.3",
+    "glibmm-2.4 >=2.66.3",
+    "glibmm-2.4 >=2.66.3",
+    "glibmm-2.4 >=2.66.3"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
     "scopatz",
     "isuruf",
+    "tschoonj",
     "scopatz",
     "isuruf",
+    "tschoonj",
     "scopatz",
     "isuruf",
+    "tschoonj",
     "scopatz",
-    "isuruf"
+    "isuruf",
+    "tschoonj",
+    "scopatz",
+    "isuruf",
+    "tschoonj",
+    "scopatz",
+    "isuruf",
+    "tschoonj"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/pkg-config/glibmm-2.4.pc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/pkg-config/glibmm-2.4.pc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/pkg-config/glibmm-2.4.pc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/pkg-config/glibmm-2.4.pc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/pkg-config/glibmm-2.4.pc"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.bat",
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_BIN%\\\\glibmm-vc142-2.4-1.dll exit 1",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_LIB%\\\\pkgconfig\\\\glibmm-2.4.pc exit 1"
+     ]
+    }
+   }
+  ],
   "package": {
    "name": "glibmm",
-   "version": "2.58.1"
-  },
-  "requirements": {
-   "build": [
-    "make",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub",
-    "make",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "libsigcpp 2.*",
-    "glib",
-    "xz",
-    "libsigcpp 2.*",
-    "glib",
-    "xz",
-    "libsigcpp 2.*",
-    "glib",
-    "xz",
-    "libsigcpp 2.*",
-    "glib",
-    "xz"
-   ],
-   "run": [
-    "libsigcpp 2.*",
-    "libsigcpp 2.*",
-    "libsigcpp 2.*",
-    "libsigcpp 2.*"
-   ]
+   "version": "2.66.3"
   },
   "source": {
-   "fn": "glibmm-2.58.1.tar.xz",
-   "sha256": "6e5fe03bdf1e220eeffd543e017fd2fb15bcec9235f0ffd50674aff9362a85f0",
-   "url": "http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.58/glibmm-2.58.1.tar.xz"
-  },
-  "test": {
-   "commands": [
-    "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}"
-   ]
+   "fn": "glibmm-2.66.3.tar.xz",
+   "sha256": "afb96202491485d3f44102d98219a172da2d3f9eb78fce3cfb92559ba496e499",
+   "url": "https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.3.tar.xz"
   }
  },
  "name": "glibmm",
@@ -513,7 +948,7 @@
  "new_version_attempts": {
   "2.64.4": 1,
   "2.66.0": 1,
-  "2.70.0": 2
+  "2.70.0": 3
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -525,54 +960,91 @@
    "summary": "This is glibmm, a C++ API for parts of glib that are useful for C++."
   },
   "build": {
-   "number": "1"
+   "number": "0",
+   "run_exports": [
+    "glibmm-2.4 >=2.66.3"
+   ]
   },
   "extra": {
    "recipe-maintainers": [
     "scopatz",
-    "isuruf"
+    "isuruf",
+    "tschoonj"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/pkg-config/glibmm-2.4.pc"
+     ]
+    }
+   }
+  ],
   "package": {
    "name": "glibmm",
-   "version": "2.58.1"
-  },
-  "requirements": {
-   "build": [
-    "make",
-    "pkg-config",
-    "c_compiler_stub",
-    "cxx_compiler_stub"
-   ],
-   "host": [
-    "libsigcpp 2.*",
-    "glib",
-    "xz"
-   ],
-   "run": [
-    "libsigcpp 2.*"
-   ]
+   "version": "2.66.3"
   },
   "source": {
-   "fn": "glibmm-2.58.1.tar.xz",
-   "sha256": "6e5fe03bdf1e220eeffd543e017fd2fb15bcec9235f0ffd50674aff9362a85f0",
-   "url": "http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.58/glibmm-2.58.1.tar.xz"
-  },
-  "test": {
-   "commands": [
-    "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
-    "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}"
-   ]
+   "fn": "glibmm-2.66.3.tar.xz",
+   "sha256": "afb96202491485d3f44102d98219a172da2d3f9eb78fce3cfb92559ba496e499",
+   "url": "https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.3.tar.xz"
   }
  },
  "osx_64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub",
     "cxx_compiler_stub",
-    "make",
+    "meson",
+    "ninja",
     "pkg-config"
    ]
   },
@@ -580,83 +1052,218 @@
    "__set__": true,
    "elements": [
     "glib",
-    "libsigcpp",
-    "xz"
+    "sigcpp-2.0",
+    "xz",
+    "zlib"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "libsigcpp"
+    "glibmm-2.4"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "glib",
+    "pkg-config",
+    "xz",
+    "zlib"
+   ]
+  }
+ },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "http://www.gtkmm.org",
+   "license": "LGPL-2.1-or-later",
+   "license_family": "GPL",
+   "license_file": "COPYING",
+   "summary": "This is glibmm, a C++ API for parts of glib that are useful for C++."
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "glibmm-2.4 >=2.66.3"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "scopatz",
+    "isuruf",
+    "tschoonj"
+   ]
+  },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}",
+      "test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/pkg-config/glibmm-2.4.pc"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "glibmm",
+   "version": "2.66.3"
+  },
+  "source": {
+   "fn": "glibmm-2.66.3.tar.xz",
+   "sha256": "afb96202491485d3f44102d98219a172da2d3f9eb78fce3cfb92559ba496e499",
+   "url": "https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.3.tar.xz"
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cxx_compiler_stub",
+    "meson",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "glib",
+    "sigcpp-2.0",
+    "xz",
+    "zlib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "glibmm-2.4"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "glib",
+    "pkg-config",
+    "xz",
+    "zlib"
+   ]
   }
  },
  "outputs_names": {
   "__set__": true,
   "elements": [
-   "glibmm"
+   "glibmm",
+   "glibmm-2.4"
   ]
  },
- "pinning_version": "2022.05.31.15.36.22",
- "raw_meta_yaml": "{% set version = \"2.58.1\" %}\n{% set major_minor = \".\".join(version.split(\".\")[:2]) %}\n{% set sha256 = \"6e5fe03bdf1e220eeffd543e017fd2fb15bcec9235f0ffd50674aff9362a85f0\" %}\n\npackage:\n  name: glibmm\n  version: {{ version }}\n\nsource:\n  fn: glibmm-{{ version }}.tar.xz\n  url: http://ftp.gnome.org/pub/GNOME/sources/glibmm/{{ major_minor }}/glibmm-{{ version }}.tar.xz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 1\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - make\n    - pkg-config\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - libsigcpp 2.*\n    - glib\n    - xz\n  run:\n    - libsigcpp 2.*\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libgiomm-2.4${SHLIB_EXT}\n    - test -f ${PREFIX}/lib/libglibmm-2.4${SHLIB_EXT}\n    - test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-2.4${SHLIB_EXT}\n\nabout:\n  home: http://www.gtkmm.org\n  license: LGPL-2.1-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: \"This is glibmm, a C++ API for parts of glib that are useful for C++.\"\n\nextra:\n  recipe-maintainers:\n    - scopatz\n    - isuruf\n",
+ "pinning_version": "2022.08.27.13.34.34",
+ "raw_meta_yaml": "{% set version = \"2.66.3\" %}\n{% set major_minor = \".\".join(version.split(\".\")[:2]) %}\n{% set sha256 = \"afb96202491485d3f44102d98219a172da2d3f9eb78fce3cfb92559ba496e499\" %}\n{% set abi_version = \"2.4\" %}\n\npackage:\n  name: glibmm\n  version: {{ version }}\n\nsource:\n  fn: glibmm-{{ version }}.tar.xz\n  url: https://download.gnome.org/sources/glibmm/{{ major_minor }}/glibmm-{{ version }}.tar.xz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 0\n  run_exports:\n    - glibmm-{{ abi_version }} >={{ version }}\n\noutputs:\n  - name: glibmm-{{ abi_version }}\n    script: build_glibmm.sh  # [unix]\n    script: build_glibmm.bat  # [win]\n    build:\n      run_exports:\n        - glibmm-{{ abi_version }} >={{ version }}\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - meson\n        - ninja\n        - pkg-config\n      host:\n        - sigcpp-2.0  >=2.6.0\n        - glib\n        - zlib\n        - xz\n      run_constrained:\n        - glibmm {{ version }}\n    test:\n      requires:\n        - pkg-config\n        - glib\n        - zlib\n        - xz\n      commands:\n        - test -f ${PREFIX}/lib/libglibmm-{{ abi_version }}${SHLIB_EXT}  # [unix]\n        - test -f ${PREFIX}/lib/libgiomm-{{ abi_version }}${SHLIB_EXT}  # [unix]\n        - test -f ${PREFIX}/lib/libglibmm_generate_extra_defs-{{ abi_version }}${SHLIB_EXT}  # [unix]\n        - if not exist %LIBRARY_BIN%\\\\glibmm-vc142-{{ abi_version }}-1.dll exit 1  # [win]\n        - pkg-config --exact-version {{ version }} glibmm-{{ abi_version }}\n        - pkg-config --exact-version {{ version }} giomm-{{ abi_version }}\n\n  - name: glibmm\n    requirements:\n      run:\n        - glibmm-{{ abi_version }}  {{ version }}\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/pkg-config/glibmm-{{ abi_version }}.pc  # [unix]\n        - if not exist %LIBRARY_LIB%\\\\pkgconfig\\\\glibmm-{{ abi_version }}.pc exit 1  # [win]\n\nabout:\n  home: http://www.gtkmm.org\n  license: LGPL-2.1-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: \"This is glibmm, a C++ API for parts of glib that are useful for C++.\"\n\nextra:\n  recipe-maintainers:\n    - scopatz\n    - isuruf\n    - tschoonj\n",
  "req": {
   "__set__": true,
   "elements": [
-   "c_compiler_stub",
    "cxx_compiler_stub",
    "glib",
-   "libsigcpp",
-   "make",
+   "glibmm-2.4",
+   "meson",
+   "ninja",
    "pkg-config",
-   "xz"
+   "sigcpp-2.0",
+   "xz",
+   "zlib"
   ]
  },
  "requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub",
     "cxx_compiler_stub",
-    "make",
+    "meson",
+    "ninja",
     "pkg-config"
    ]
   },
   "host": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub",
     "cxx_compiler_stub",
     "glib",
-    "libsigcpp",
-    "xz"
+    "sigcpp-2.0",
+    "xz",
+    "zlib"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub",
     "cxx_compiler_stub",
-    "libsigcpp"
+    "glibmm-2.4"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "glib",
+    "pkg-config",
+    "xz",
+    "zlib"
+   ]
   }
  },
- "smithy_version": "3.20.0",
+ "smithy_version": "3.21.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub",
     "cxx_compiler_stub",
-    "make",
+    "meson",
+    "ninja",
     "pkg-config"
    ]
   },
@@ -664,21 +1271,147 @@
    "__set__": true,
    "elements": [
     "glib",
-    "libsigcpp 2.*",
-    "xz"
+    "sigcpp-2.0  >=2.6.0",
+    "xz",
+    "zlib"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "libsigcpp 2.*"
+    "glibmm-2.4  2.66.3"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "glib",
+    "pkg-config",
+    "xz",
+    "zlib"
+   ]
   }
  },
- "url": "http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.58/glibmm-2.58.1.tar.xz",
- "version": "2.58.1"
+ "url": "https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.3.tar.xz",
+ "version": "2.66.3",
+ "win_64_meta_yaml": {
+  "about": {
+   "home": "http://www.gtkmm.org",
+   "license": "LGPL-2.1-or-later",
+   "license_family": "GPL",
+   "license_file": "COPYING",
+   "summary": "This is glibmm, a C++ API for parts of glib that are useful for C++."
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "glibmm-2.4 >=2.66.3"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "scopatz",
+    "isuruf",
+    "tschoonj"
+   ]
+  },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "glibmm-2.4 >=2.66.3"
+     ]
+    },
+    "name": "glibmm-2.4",
+    "requirements": {
+     "build": [
+      "cxx_compiler_stub",
+      "meson",
+      "ninja",
+      "pkg-config"
+     ],
+     "host": [
+      "sigcpp-2.0  >=2.6.0",
+      "glib",
+      "zlib",
+      "xz"
+     ],
+     "run_constrained": [
+      "glibmm 2.66.3"
+     ]
+    },
+    "script": "build_glibmm.bat",
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_BIN%\\\\glibmm-vc142-2.4-1.dll exit 1",
+      "pkg-config --exact-version 2.66.3 glibmm-2.4",
+      "pkg-config --exact-version 2.66.3 giomm-2.4"
+     ],
+     "requires": [
+      "pkg-config",
+      "glib",
+      "zlib",
+      "xz"
+     ]
+    }
+   },
+   {
+    "name": "glibmm",
+    "requirements": {
+     "run": [
+      "glibmm-2.4  2.66.3"
+     ]
+    },
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_LIB%\\\\pkgconfig\\\\glibmm-2.4.pc exit 1"
+     ]
+    }
+   }
+  ],
+  "package": {
+   "name": "glibmm",
+   "version": "2.66.3"
+  },
+  "source": {
+   "fn": "glibmm-2.66.3.tar.xz",
+   "sha256": "afb96202491485d3f44102d98219a172da2d3f9eb78fce3cfb92559ba496e499",
+   "url": "https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.3.tar.xz"
+  }
+ },
+ "win_64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "cxx_compiler_stub",
+    "meson",
+    "ninja",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "glib",
+    "sigcpp-2.0",
+    "xz",
+    "zlib"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": [
+    "glibmm-2.4"
+   ]
+  },
+  "test": {
+   "__set__": true,
+   "elements": [
+    "glib",
+    "pkg-config",
+    "xz",
+    "zlib"
+   ]
+  }
+ }
 }
