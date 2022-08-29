@@ -111,6 +111,10 @@
  "conda-forge.yml": {
   "build_platform": {
    "osx_arm64": "osx_64"
+  },
+  "provider": {
+   "linux_aarch64": "default",
+   "linux_ppc64le": "default"
   }
  },
  "feedstock_name": "dart-sass",
@@ -177,11 +181,74 @@
    "elements": []
   }
  },
+ "linux_aarch64_meta_yaml": {
+  "about": {
+   "home": "https://sass-lang.com/dart-sass",
+   "license": "MIT",
+   "license_file": [
+    "LICENSE"
+   ],
+   "summary": "Dart implementation of Sass. Sass makes CSS fun again."
+  },
+  "build": {
+   "binary_relocation": false,
+   "number": "0"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "msarahan"
+   ]
+  },
+  "package": {
+   "name": "dart-sass",
+   "version": "1.54.4"
+  },
+  "requirements": {
+   "host": [
+    "dart-sdk"
+   ]
+  },
+  "source": [
+   {
+    "sha256": "669a52ec200a71141886793a2d98549ba7ac9c3da7479f1b05a0603d51e14cac",
+    "url": "https://github.com/sass/dart-sass/archive/refs/tags/1.54.4.tar.gz"
+   }
+  ],
+  "test": {
+   "commands": [
+    "sass test.sass output.css"
+   ],
+   "files": [
+    "test.sass"
+   ]
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": []
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "dart-sdk"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "meta_yaml": {
   "about": {
    "home": "https://sass-lang.com/dart-sass",
    "license": "MIT",
    "license_file": [
+    "LICENSE",
     "LICENSE",
     "LICENSE",
     "src/LICENSE",
@@ -198,6 +265,7 @@
     "msarahan",
     "msarahan",
     "msarahan",
+    "msarahan",
     "msarahan"
    ]
   },
@@ -209,10 +277,15 @@
    "host": [
     "dart-sdk",
     "dart-sdk",
+    "dart-sdk",
     "dart-sdk"
    ]
   },
   "source": [
+   {
+    "sha256": "669a52ec200a71141886793a2d98549ba7ac9c3da7479f1b05a0603d51e14cac",
+    "url": "https://github.com/sass/dart-sass/archive/refs/tags/1.54.4.tar.gz"
+   },
    {
     "sha256": "669a52ec200a71141886793a2d98549ba7ac9c3da7479f1b05a0603d51e14cac",
     "url": "https://github.com/sass/dart-sass/archive/refs/tags/1.54.4.tar.gz"
@@ -231,8 +304,15 @@
    }
   ],
   "test": {
-   "commands": null,
+   "commands": [
+    "sass test.sass output.css",
+    "sass test.sass output.css",
+    "sass test.sass output.css",
+    "sass test.sass output.css",
+    "sass test.sass output.css"
+   ],
    "files": [
+    "test.sass",
     "test.sass",
     "test.sass",
     "test.sass",
@@ -377,7 +457,7 @@
   ]
  },
  "pinning_version": "2022.08.08.19.07.35",
- "raw_meta_yaml": "{% set name = \"dart-sass\" %}\n{% set version = \"1.54.4\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/sass/dart-sass/archive/refs/tags/{{ version }}.tar.gz                                      # [not osx or not arm64]\n    sha256: 669a52ec200a71141886793a2d98549ba7ac9c3da7479f1b05a0603d51e14cac                                           # [not osx or not arm64]\n  # binary repack for arm64 and windows due to compiling issues\n  - url: https://github.com/sass/dart-sass/releases/download/{{ version }}/dart-sass-{{ version }}-macos-arm64.tar.gz  # [osx and arm64]\n    sha256: 38a68a04224cd0b107a405317caae29aeac43ff884acdf12ce36630ad6991b3e                                           # [osx and arm64]\n\nbuild:\n  number: 0\n  binary_relocation: False\n\nrequirements:\n  host:\n    - dart-sdk       # [not arm64]\n\ntest:\n  files:\n    - test.sass\n  commands:\n    - sass test.sass output.css  # [unix]\n\nabout:\n  home: https://sass-lang.com/dart-sass\n  license: MIT\n  license_file:\n    - LICENSE           # [not arm64]\n    - src/LICENSE       # [osx and arm64]\n  summary: Dart implementation of Sass. Sass makes CSS fun again.\n\nextra:\n  recipe-maintainers:\n    - msarahan\n",
+ "raw_meta_yaml": "{% set name = \"dart-sass\" %}\n{% set version = \"1.54.4\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/sass/dart-sass/archive/refs/tags/{{ version }}.tar.gz                                      # [not osx or not arm64]\n    sha256: 669a52ec200a71141886793a2d98549ba7ac9c3da7479f1b05a0603d51e14cac                                           # [not osx or not arm64]\n  # binary repack for osx-arm64 due to compiling issues\n  - url: https://github.com/sass/dart-sass/releases/download/{{ version }}/dart-sass-{{ version }}-macos-arm64.tar.gz  # [osx and arm64]\n    sha256: 38a68a04224cd0b107a405317caae29aeac43ff884acdf12ce36630ad6991b3e                                           # [osx and arm64]\n\nbuild:\n  number: 0\n  binary_relocation: False\n  # we don't have dart-sdk on ppc64le, so we can't build this.\n  skip: True   # [ppc64le]\n\nrequirements:\n  host:\n    - dart-sdk       # [not arm64]\n\ntest:\n  files:\n    - test.sass\n  commands:\n    - sass test.sass output.css\n\nabout:\n  home: https://sass-lang.com/dart-sass\n  license: MIT\n  license_file:\n    - LICENSE           # [not arm64]\n    - src/LICENSE       # [osx and arm64]\n  summary: Dart implementation of Sass. Sass makes CSS fun again.\n\nextra:\n  recipe-maintainers:\n    - msarahan\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -462,7 +542,9 @@
    }
   ],
   "test": {
-   "commands": null,
+   "commands": [
+    "sass test.sass output.css"
+   ],
    "files": [
     "test.sass"
    ]

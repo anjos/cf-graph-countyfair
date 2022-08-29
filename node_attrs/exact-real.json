@@ -90,6 +90,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1040026762.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "arb223"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -552,7 +571,7 @@
    "pyexactreal"
   ]
  },
- "pinning_version": "2022.02.12.08.56.54",
+ "pinning_version": "2022.08.29.15.07.45",
  "raw_meta_yaml": "{% set name = \"exact-real\" %}\n{% set version = \"2.3.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/flatsurf/exact-real/releases/download/{{ version }}/exact-real-{{ version }}.tar.gz\n  sha256: bf71dec2fbda5ffa53369f1d23e2c6fe276586eb377cbd1586e1a71f4e28182f\n  patches:\n    - 0001-Fix-compile-error.patch\n\nbuild:\n  number: 3\n  # dependency libeantic is not available for Windows on conda-forge yet\n  skip: true  # [win]\n\noutputs:\n  - name: libexactreal\n    script: build-libexactreal.sh  # [not win]\n    script: build-libexactreal.bat  # [win]\n    run_exports:\n      - {{ pin_subpackage(\"libexactreal\") }}\n    requirements:\n      build:\n        - libtool   # [unix]\n        - automake  # [unix]\n        - make      # [unix]\n        - autotools_clang_conda  # [win]\n        - gnuconfig  # [unix]\n        - {{ compiler('cxx') }}\n      host:\n        - arb\n        - boost-cpp\n        - libeantic >=1.0.2,<2\n        - gmp  # [unix]\n        - mpir  # [win]\n    test:\n      commands:\n        - test -f $PREFIX/include/exact-real/exact-real.hpp  # [unix]\n        - test -f $PREFIX/lib/libexactreal${SHLIB_EXT}                # [unix]\n  - name: pyexactreal\n    script: build-pyexactreal.sh  # [not win]\n    script: bld-pyexactreal.bat  # [win]\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - libtool   # [unix]\n        - automake  # [unix]\n        - make      # [unix]\n        - autotools_clang_conda  # [win]\n        - gnuconfig  # [unix]\n        - {{ compiler('cxx') }}\n      host:\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        - setuptools\n        - pytest\n        - {{ pin_subpackage(\"libexactreal\") }}\n      run:\n        # cppyy dynamically compiles C++ wrappers at runtime, therefore we need C++ headers of boost.\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        - pyeantic\n        - gmpxxyy\n        # A subpackage does not see the run_exports of another subpackage:\n        # https://github.com/conda/conda-build/issues/3478\n        - {{ pin_subpackage(\"libexactreal\") }}\n    test:\n      imports:\n        - pyexactreal\n\nabout:\n  home: https://github.com/flatsurf/exact-real\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: Lazy computations with real numbers in C++ and Python\n  description: |\n    exact-real is a C++/Python library which provides exact lazy computations\n    in the Real Numbers. In particular it provides arithmetic and comparisons\n    of (random) transcendental numbers.\n  dev_url: https://github.com/flatsurf/exact-real\n\nextra:\n  recipe-maintainers:\n    - saraedum\n",
  "req": {
   "__set__": true,
@@ -621,7 +640,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.16.2",
+ "smithy_version": "3.21.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
