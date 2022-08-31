@@ -763,15 +763,42 @@
     "licenses/prometheus-LICENSE.txt",
     "licenses/redis-hiredis-COPYING.txt",
     "licenses/tporadowski-redis-license.txt",
+    "licenses/zlib-LICENSE.txt",
+    "LICENSE",
+    "licenses/abseil-LICENSE.txt",
+    "licenses/antirez-redis-COPYING.txt",
+    "licenses/arrow-LICENSE.txt",
+    "licenses/boost-LICENSE_1_0.txt",
+    "licenses/boringssl-LICENSE.txt",
+    "licenses/deckarep-golang-set-LICENSE.txt",
+    "licenses/flatbuffers-LICENSE.txt",
+    "licenses/gabime-spdlog-LICENSE.txt",
+    "licenses/gflags-COPYING.txt",
+    "licenses/glog-COPYING.txt",
+    "licenses/go-logr-LICENSE.txt",
+    "licenses/googletest-LICENSE.txt",
+    "licenses/grpc-LICENSE.txt",
+    "licenses/msgpack-COPYING.txt",
+    "licenses/onsi-ginkgo-LICENSE.txt",
+    "licenses/onsi-gomega-LICENSE.txt",
+    "licenses/opencensus-LICENSE.txt",
+    "licenses/opencensus-proto-LICENSE.txt",
+    "licenses/prometheus-LICENSE.txt",
+    "licenses/redis-hiredis-COPYING.txt",
+    "licenses/tporadowski-redis-license.txt",
     "licenses/zlib-LICENSE.txt"
    ],
    "summary": "Ray is a fast and simple framework for building and running distributed applications."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "dHannasch",
+    "h-vetinari",
+    "vnlitvinov",
+    "krfricke",
     "dHannasch",
     "h-vetinari",
     "vnlitvinov",
@@ -787,6 +814,270 @@
    ]
   },
   "outputs": [
+   {
+    "name": "ray-all",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-default",
+      "ray-dashboard",
+      "ray-k8s",
+      "ray-data",
+      "ray-rllib",
+      "ray-serve",
+      "ray-tune"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray"
+     ]
+    }
+   },
+   {
+    "name": "ray-core",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "bazel =4.2.2",
+      "sysroot_linux-64 2.17",
+      "curl",
+      "cython >=0.29.26",
+      "make",
+      "python"
+     ],
+     "host": [
+      "python",
+      "pip",
+      "packaging"
+     ],
+     "run": [
+      "python",
+      "aiosignal",
+      "attrs",
+      "click >=7.0, <=8.0.4",
+      "colorama",
+      "filelock",
+      "frozenlist",
+      "grpcio >=1.28.1, <=1.43.0",
+      "msgpack-python >=1.0.0, <2.0.0",
+      "numpy >=1.20",
+      "protobuf >=3.15.3, <4.0.0",
+      "psutil",
+      "pyyaml",
+      "requests",
+      "setproctitle =1.2.2",
+      "virtualenv"
+     ]
+    },
+    "script": "build-core.sh",
+    "test": {
+     "commands": [
+      "python -c \"import ray; ray.init()\""
+     ],
+     "imports": [
+      "ray",
+      "ray._raylet",
+      "ray.actor",
+      "ray.runtime_context",
+      "ray.state",
+      "ray.worker"
+     ]
+    }
+   },
+   {
+    "name": "ray-default",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "aiohttp >=3.7",
+      "aiohttp-cors",
+      "aioredis <2",
+      "colorful",
+      "gpustat",
+      "jsonschema",
+      "opencensus",
+      "prometheus_client >=0.7.1, <0.14.0",
+      "requests",
+      "smart_open",
+      "py-spy >=0.2.0"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray",
+      "ray._private.metrics_agent"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "cd python/ray/dashboard/client",
+      "npm install",
+      "npm ci",
+      "npm run build",
+      "mkdir -p $SP_DIR/ray/dashboard/client",
+      "cp -R ./build $SP_DIR/ray/dashboard/client/build"
+     ]
+    },
+    "name": "ray-dashboard",
+    "requirements": {
+     "build": [
+      "nodejs"
+     ],
+     "host": [
+      "nodejs",
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-default",
+      "typing-extensions"
+     ]
+    },
+    "test": {
+     "commands": [
+      "python -c \"import ray; ray.init(include_dashboard=True)\""
+     ],
+     "imports": [
+      "ray.dashboard"
+     ]
+    }
+   },
+   {
+    "name": "ray-k8s",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "kubernetes",
+      "urllib3"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray"
+     ]
+    }
+   },
+   {
+    "name": "ray-data",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "pandas",
+      "pyarrow >=6.0.1, <7.0.0",
+      "fsspec"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.data"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "rllib = ray.rllib.scripts:cli"
+     ]
+    },
+    "name": "ray-rllib",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-tune",
+      "dm-tree",
+      "gym <0.22",
+      "lz4",
+      "matplotlib !=3.4.3",
+      "pooch <1.5",
+      "pyyaml",
+      "scikit-image",
+      "scipy"
+     ]
+    },
+    "test": {
+     "commands": [
+      "rllib --help"
+     ],
+     "imports": [
+      "ray.rllib"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "serve = ray.serve.scripts:cli"
+     ]
+    },
+    "name": "ray-serve",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "uvicorn =0.16.0",
+      "requests",
+      "starlette",
+      "fastapi",
+      "aiorwlock"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.serve"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "tune = ray.tune.scripts:cli"
+     ]
+    },
+    "name": "ray-tune",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "pandas",
+      "requests",
+      "tabulate",
+      "tensorboardX >=1.9"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.tune"
+     ]
+    }
+   },
    {
     "name": "ray-all",
     "requirements": {
@@ -1606,11 +1897,23 @@
     "cython >=0.29",
     "curl",
     "make",
+    "python",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "bazel =4.2.2",
+    "cython >=0.29",
+    "curl",
+    "make",
     "python"
    ]
   },
   "source": {
    "patches": [
+    "patches/0001-Redis-deps-now-build-but-do-not-link.patch",
+    "patches/0002-Disable-making-non-core-entry-scripts.patch",
+    "patches/0003-Remove-all-dependencies-from-setup.py.patch",
+    "patches/0004-Ignore-warnings-in-event.cc-and-logging.cc.patch",
+    "patches/0005-Add-bazel-linkopts-libs.patch",
     "patches/0001-Redis-deps-now-build-but-do-not-link.patch",
     "patches/0002-Disable-making-non-core-entry-scripts.patch",
     "patches/0003-Remove-all-dependencies-from-setup.py.patch",
@@ -1864,15 +2167,69 @@
     "licenses/prometheus-LICENSE.txt",
     "licenses/redis-hiredis-COPYING.txt",
     "licenses/tporadowski-redis-license.txt",
+    "licenses/zlib-LICENSE.txt",
+    "LICENSE",
+    "licenses/abseil-LICENSE.txt",
+    "licenses/antirez-redis-COPYING.txt",
+    "licenses/arrow-LICENSE.txt",
+    "licenses/boost-LICENSE_1_0.txt",
+    "licenses/boringssl-LICENSE.txt",
+    "licenses/deckarep-golang-set-LICENSE.txt",
+    "licenses/flatbuffers-LICENSE.txt",
+    "licenses/gabime-spdlog-LICENSE.txt",
+    "licenses/gflags-COPYING.txt",
+    "licenses/glog-COPYING.txt",
+    "licenses/go-logr-LICENSE.txt",
+    "licenses/googletest-LICENSE.txt",
+    "licenses/grpc-LICENSE.txt",
+    "licenses/msgpack-COPYING.txt",
+    "licenses/onsi-ginkgo-LICENSE.txt",
+    "licenses/onsi-gomega-LICENSE.txt",
+    "licenses/opencensus-LICENSE.txt",
+    "licenses/opencensus-proto-LICENSE.txt",
+    "licenses/prometheus-LICENSE.txt",
+    "licenses/redis-hiredis-COPYING.txt",
+    "licenses/tporadowski-redis-license.txt",
+    "licenses/zlib-LICENSE.txt",
+    "LICENSE",
+    "licenses/abseil-LICENSE.txt",
+    "licenses/antirez-redis-COPYING.txt",
+    "licenses/arrow-LICENSE.txt",
+    "licenses/boost-LICENSE_1_0.txt",
+    "licenses/boringssl-LICENSE.txt",
+    "licenses/deckarep-golang-set-LICENSE.txt",
+    "licenses/flatbuffers-LICENSE.txt",
+    "licenses/gabime-spdlog-LICENSE.txt",
+    "licenses/gflags-COPYING.txt",
+    "licenses/glog-COPYING.txt",
+    "licenses/go-logr-LICENSE.txt",
+    "licenses/googletest-LICENSE.txt",
+    "licenses/grpc-LICENSE.txt",
+    "licenses/msgpack-COPYING.txt",
+    "licenses/onsi-ginkgo-LICENSE.txt",
+    "licenses/onsi-gomega-LICENSE.txt",
+    "licenses/opencensus-LICENSE.txt",
+    "licenses/opencensus-proto-LICENSE.txt",
+    "licenses/prometheus-LICENSE.txt",
+    "licenses/redis-hiredis-COPYING.txt",
+    "licenses/tporadowski-redis-license.txt",
     "licenses/zlib-LICENSE.txt"
    ],
    "summary": "Ray is a fast and simple framework for building and running distributed applications."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "dHannasch",
+    "h-vetinari",
+    "vnlitvinov",
+    "krfricke",
+    "dHannasch",
+    "h-vetinari",
+    "vnlitvinov",
+    "krfricke",
     "dHannasch",
     "h-vetinari",
     "vnlitvinov",
@@ -2541,6 +2898,532 @@
       "npm run build",
       "mkdir -p $SP_DIR/ray/dashboard/client",
       "cp -R ./build $SP_DIR/ray/dashboard/client/build"
+     ]
+    },
+    "name": "ray-dashboard",
+    "requirements": {
+     "build": [
+      "nodejs"
+     ],
+     "host": [
+      "nodejs",
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-default",
+      "typing-extensions"
+     ]
+    },
+    "test": {
+     "commands": [
+      "python -c \"import ray; ray.init(include_dashboard=True)\""
+     ],
+     "imports": [
+      "ray.dashboard"
+     ]
+    }
+   },
+   {
+    "name": "ray-k8s",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "kubernetes",
+      "urllib3"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray"
+     ]
+    }
+   },
+   {
+    "name": "ray-data",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "pandas",
+      "pyarrow >=6.0.1, <7.0.0",
+      "fsspec"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.data"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "rllib = ray.rllib.scripts:cli"
+     ]
+    },
+    "name": "ray-rllib",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-tune",
+      "dm-tree",
+      "gym <0.22",
+      "lz4",
+      "matplotlib !=3.4.3",
+      "pooch <1.5",
+      "pyyaml",
+      "scikit-image",
+      "scipy"
+     ]
+    },
+    "test": {
+     "commands": [
+      "rllib --help"
+     ],
+     "imports": [
+      "ray.rllib"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "serve = ray.serve.scripts:cli"
+     ]
+    },
+    "name": "ray-serve",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "uvicorn =0.16.0",
+      "requests",
+      "starlette",
+      "fastapi",
+      "aiorwlock"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.serve"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "tune = ray.tune.scripts:cli"
+     ]
+    },
+    "name": "ray-tune",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "pandas",
+      "requests",
+      "tabulate",
+      "tensorboardX >=1.9"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.tune"
+     ]
+    }
+   },
+   {
+    "name": "ray-all",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-default",
+      "ray-dashboard",
+      "ray-k8s",
+      "ray-data",
+      "ray-rllib",
+      "ray-serve",
+      "ray-tune"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray"
+     ]
+    }
+   },
+   {
+    "name": "ray-core",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "bazel =4.2.2",
+      "sysroot_linux-64 2.17",
+      "curl",
+      "cython >=0.29.26",
+      "make",
+      "python"
+     ],
+     "host": [
+      "python",
+      "pip",
+      "packaging"
+     ],
+     "run": [
+      "python",
+      "aiosignal",
+      "attrs",
+      "click >=7.0, <=8.0.4",
+      "colorama",
+      "filelock",
+      "frozenlist",
+      "grpcio >=1.28.1, <=1.43.0",
+      "msgpack-python >=1.0.0, <2.0.0",
+      "numpy >=1.20",
+      "protobuf >=3.15.3, <4.0.0",
+      "psutil",
+      "pyyaml",
+      "requests",
+      "setproctitle =1.2.2",
+      "virtualenv"
+     ]
+    },
+    "script": "build-core.sh",
+    "test": {
+     "commands": [
+      "python -c \"import ray; ray.init()\""
+     ],
+     "imports": [
+      "ray",
+      "ray._raylet",
+      "ray.actor",
+      "ray.runtime_context",
+      "ray.state",
+      "ray.worker"
+     ]
+    }
+   },
+   {
+    "name": "ray-default",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "aiohttp >=3.7",
+      "aiohttp-cors",
+      "aioredis <2",
+      "colorful",
+      "gpustat",
+      "jsonschema",
+      "opencensus",
+      "prometheus_client >=0.7.1, <0.14.0",
+      "requests",
+      "smart_open",
+      "py-spy >=0.2.0"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray",
+      "ray._private.metrics_agent"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "cd python/ray/dashboard/client",
+      "npm install",
+      "npm ci",
+      "npm run build",
+      "mkdir -p $SP_DIR/ray/dashboard/client",
+      "cp -R ./build $SP_DIR/ray/dashboard/client/build"
+     ]
+    },
+    "name": "ray-dashboard",
+    "requirements": {
+     "build": [
+      "nodejs"
+     ],
+     "host": [
+      "nodejs",
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-default",
+      "typing-extensions"
+     ]
+    },
+    "test": {
+     "commands": [
+      "python -c \"import ray; ray.init(include_dashboard=True)\""
+     ],
+     "imports": [
+      "ray.dashboard"
+     ]
+    }
+   },
+   {
+    "name": "ray-k8s",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "kubernetes",
+      "urllib3"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray"
+     ]
+    }
+   },
+   {
+    "name": "ray-data",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "pandas",
+      "pyarrow >=6.0.1, <7.0.0",
+      "fsspec"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.data"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "rllib = ray.rllib.scripts:cli"
+     ]
+    },
+    "name": "ray-rllib",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-tune",
+      "dm-tree",
+      "gym <0.22",
+      "lz4",
+      "matplotlib !=3.4.3",
+      "pooch <1.5",
+      "pyyaml",
+      "scikit-image",
+      "scipy"
+     ]
+    },
+    "test": {
+     "commands": [
+      "rllib --help"
+     ],
+     "imports": [
+      "ray.rllib"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "serve = ray.serve.scripts:cli"
+     ]
+    },
+    "name": "ray-serve",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "uvicorn =0.16.0",
+      "requests",
+      "starlette",
+      "fastapi",
+      "aiorwlock"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.serve"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "tune = ray.tune.scripts:cli"
+     ]
+    },
+    "name": "ray-tune",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "pandas",
+      "requests",
+      "tabulate",
+      "tensorboardX >=1.9"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.tune"
+     ]
+    }
+   },
+   {
+    "name": "ray-all",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-default",
+      "ray-dashboard",
+      "ray-k8s",
+      "ray-data",
+      "ray-rllib",
+      "ray-serve",
+      "ray-tune"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray"
+     ]
+    }
+   },
+   {
+    "name": "ray-core",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "bazel =4.2.2",
+      "curl",
+      "cython >=0.29.26",
+      "make",
+      "m2-bash",
+      "python"
+     ],
+     "host": [
+      "python",
+      "pip",
+      "packaging"
+     ],
+     "run": [
+      "python",
+      "aiosignal",
+      "attrs",
+      "click >=7.0, <=8.0.4",
+      "colorama",
+      "filelock",
+      "frozenlist",
+      "grpcio >=1.28.1, <=1.43.0",
+      "msgpack-python >=1.0.0, <2.0.0",
+      "numpy >=1.20",
+      "protobuf >=3.15.3, <4.0.0",
+      "psutil",
+      "pyyaml",
+      "redis-py >=3.5.0",
+      "requests",
+      "setproctitle =1.2.2",
+      "virtualenv"
+     ]
+    },
+    "script": "build-core.bat",
+    "test": {
+     "commands": [
+      "python -c \"import ray; ray.init()\""
+     ],
+     "imports": [
+      "ray",
+      "ray._raylet",
+      "ray.actor",
+      "ray.runtime_context",
+      "ray.state",
+      "ray.worker"
+     ]
+    }
+   },
+   {
+    "name": "ray-default",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "aiohttp >=3.7",
+      "aiohttp-cors",
+      "aioredis <2",
+      "colorful",
+      "jsonschema",
+      "opencensus",
+      "prometheus_client >=0.7.1, <0.14.0",
+      "requests",
+      "smart_open",
+      "py-spy >=0.2.0"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray",
+      "ray._private.metrics_agent"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "cd python/ray/dashboard/client",
+      "npm install",
+      "npm ci",
+      "npm run build"
      ]
     },
     "name": "ray-dashboard",
@@ -3512,6 +4395,21 @@
     "cython >=0.29",
     "curl",
     "make",
+    "python",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "bazel =4.2.2",
+    "cython >=0.29",
+    "curl",
+    "make",
+    "m2-patch",
+    "python",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "bazel =4.2.2",
+    "cython >=0.29",
+    "curl",
+    "make",
     "m2-patch",
     "python",
     "c_compiler_stub",
@@ -3534,6 +4432,16 @@
   },
   "source": {
    "patches": [
+    "patches/0001-Redis-deps-now-build-but-do-not-link.patch",
+    "patches/0002-Disable-making-non-core-entry-scripts.patch",
+    "patches/0003-Remove-all-dependencies-from-setup.py.patch",
+    "patches/0004-Ignore-warnings-in-event.cc-and-logging.cc.patch",
+    "patches/0005-Add-bazel-linkopts-libs.patch",
+    "patches/0001-Redis-deps-now-build-but-do-not-link.patch",
+    "patches/0002-Disable-making-non-core-entry-scripts.patch",
+    "patches/0003-Remove-all-dependencies-from-setup.py.patch",
+    "patches/0004-Ignore-warnings-in-event.cc-and-logging.cc.patch",
+    "patches/0005-Add-bazel-linkopts-libs.patch",
     "patches/0001-Redis-deps-now-build-but-do-not-link.patch",
     "patches/0002-Disable-making-non-core-entry-scripts.patch",
     "patches/0003-Remove-all-dependencies-from-setup.py.patch",
@@ -3612,7 +4520,7 @@
  "pinning_version": "2022.08.23.01.05.47",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
- "raw_meta_yaml": "{% set version = \"1.13.0\" %}\n\npackage:\n  name: ray-packages\n  version: {{ version }}\n\nsource:\n  url: https://github.com/ray-project/ray/archive/ray-{{ version }}.tar.gz\n  sha256: f877891804c60b404ddb6eabe5896902ffdf5b6e8830e8150803a2b64b56a79f\n  patches:\n    - patches/0001-Redis-deps-now-build-but-do-not-link.patch\n    - patches/0002-Disable-making-non-core-entry-scripts.patch\n    - patches/0003-Remove-all-dependencies-from-setup.py.patch\n    - patches/0004-Ignore-warnings-in-event.cc-and-logging.cc.patch\n    - patches/0005-Add-bazel-linkopts-libs.patch\n\n\nbuild:\n  number: 0\n  skip: true  # [py<36 or py>39]\n  # skip on MacOS as there's some weird compilation issue and I have no MacOS to develop on\n  skip: true  # [osx]\n\n# Need these up here for conda-smithy to handle them properly.\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - bazel =4.2.2\n    - cython >=0.29\n    - curl\n    - make\n    - m2-patch       # [win]\n    - python\n\noutputs:\n  - name: ray-all\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-default', exact=True) }}\n        - {{ pin_subpackage('ray-dashboard', exact=True) }}\n        - {{ pin_subpackage('ray-k8s', exact=True) }}\n        - {{ pin_subpackage('ray-data', exact=True) }}\n        - {{ pin_subpackage('ray-rllib', exact=True) }}\n        - {{ pin_subpackage('ray-serve', exact=True) }}\n        - {{ pin_subpackage('ray-tune', exact=True) }}\n    test:\n      imports:\n        # dummy test; actual tests are in subpackages\n        - ray\n\n  - name: ray-core\n    script: build-core.sh  # [not win]\n    script: build-core.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - bazel =4.2.2\n        - sysroot_linux-64 2.17  # [linux64]\n        - curl\n        - cython >=0.29.26\n        - make\n        - m2-bash  # [win]\n        - python\n      host:\n        - python\n        - pip\n        - packaging\n        # pickle5 needs to be here, otherwise setup.py tries\n        # to install it and it fails on conda-forge Windows CI\n        - pickle5  # [py<38]\n      run:\n        - python\n        - aiosignal\n        - attrs\n        - click >=7.0, <=8.0.4\n        - colorama\n        - dataclasses  # [py<37]\n        - filelock\n        - frozenlist\n        - grpcio >=1.28.1, <=1.43.0\n        - msgpack-python >=1.0.0, <2.0.0\n        - numpy >=1.20\n        - pickle5  # [py<38]\n        - protobuf >=3.15.3, <4.0.0\n        - psutil\n        - pyyaml\n        - redis-py >=3.5.0  # [win]\n        - requests\n        - setproctitle =1.2.2\n        - virtualenv\n\n    test:\n      imports:\n        - ray\n        - ray._raylet\n        - ray.actor\n        - ray.runtime_context\n        - ray.state\n        - ray.worker\n      commands:\n        - python -c \"import ray; ray.init()\"\n\n  - name: ray-default\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-core', exact=True) }}\n        - aiohttp >=3.7\n        - aiohttp-cors\n        - aioredis <2\n        - colorful\n        # gpustat-0.6.0 has a dependency which does not exist on Windows;\n        # skip it there until gpustat is fixed as it is optional\n        - gpustat  # [not win]\n        - jsonschema\n        - opencensus\n        - prometheus_client >=0.7.1, <0.14.0\n        - requests\n        - smart_open\n        - py-spy >=0.2.0\n\n    test:\n      imports:\n        # ray-default is a convenience wrapper with no imports of its own\n        - ray\n        # init-code seemingly depends on platform or other ambient things;\n        # the following doesn't get triggered in CI, but was a problem in\n        # https://github.com/conda-forge/ray-packages-feedstock/issues/16\n        - ray._private.metrics_agent\n\n  - name: ray-dashboard\n    build:\n      script:\n        - cd python/ray/dashboard/client\n        - npm install\n        - npm ci\n        - npm run build\n        # not sure why this seems to get copied on windows but not linux...\n        - mkdir -p $SP_DIR/ray/dashboard/client             # [not win]\n        - cp -R ./build $SP_DIR/ray/dashboard/client/build  # [not win]\n    requirements:\n      build:\n        - nodejs\n      host:\n        - nodejs\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-default', exact=True) }}\n        - typing-extensions\n    test:\n      imports:\n        - ray.dashboard\n      commands:\n        - python -c \"import ray; ray.init(include_dashboard=True)\"\n\n  - name: ray-k8s\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-core', exact=True) }}\n        - kubernetes\n        - urllib3\n    test:\n      imports:\n        # there doesn't appear to be a k8s module, not sure how to test this\n        - ray\n\n  - name: ray-data\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-core', exact=True) }}\n        - pandas\n        - pyarrow >=6.0.1, <7.0.0\n        - fsspec\n    test:\n      imports:\n        - ray.data\n\n  - name: ray-rllib\n    build:\n      entry_points:\n        - rllib = ray.rllib.scripts:cli\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-tune', exact=True) }}\n        - dm-tree\n        - gym <0.22\n        - lz4\n        - matplotlib !=3.4.3\n        # scikit-image uses a deprecated import for pooch, causing rllib to fail on import\n        # pinning pooch to <1.5 solves this issue for now\n        - pooch <1.5\n        - pyyaml\n        - scikit-image\n        - scipy\n\n    test:\n      imports:\n        - ray.rllib\n      commands:\n        - rllib --help\n\n  - name: ray-serve\n    build:\n      entry_points:\n        - serve = ray.serve.scripts:cli\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-core', exact=True) }}\n        - uvicorn =0.16.0\n        - requests\n        - starlette\n        - fastapi\n        - aiorwlock\n    test:\n      imports:\n        - ray.serve\n\n  - name: ray-tune\n    build:\n      entry_points:\n        - tune = ray.tune.scripts:cli\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-core', exact=True) }}\n        - pandas\n        - requests\n        - tabulate\n        - tensorboardX >=1.9\n    test:\n      imports:\n        - ray.tune\n\nabout:\n  home: https://github.com/ray-project/ray\n  license: Apache-2.0\n  license_family: Apache\n  license_file:\n    - LICENSE\n    - licenses/abseil-LICENSE.txt\n    - licenses/antirez-redis-COPYING.txt\n    - licenses/arrow-LICENSE.txt\n    - licenses/boost-LICENSE_1_0.txt\n    - licenses/boringssl-LICENSE.txt\n    - licenses/deckarep-golang-set-LICENSE.txt\n    - licenses/flatbuffers-LICENSE.txt\n    - licenses/gabime-spdlog-LICENSE.txt\n    - licenses/gflags-COPYING.txt\n    - licenses/glog-COPYING.txt\n    - licenses/go-logr-LICENSE.txt\n    - licenses/googletest-LICENSE.txt\n    - licenses/grpc-LICENSE.txt\n    - licenses/msgpack-COPYING.txt\n    - licenses/onsi-ginkgo-LICENSE.txt\n    - licenses/onsi-gomega-LICENSE.txt\n    - licenses/opencensus-LICENSE.txt\n    - licenses/opencensus-proto-LICENSE.txt\n    - licenses/prometheus-LICENSE.txt\n    - licenses/redis-hiredis-COPYING.txt\n    - licenses/tporadowski-redis-license.txt\n    - licenses/zlib-LICENSE.txt\n  summary: Ray is a fast and simple framework for building and running distributed applications.\n  description: |\n    Ray is a fast and simple framework for building and running\n    distributed applications.\n  doc_url: https://ray.readthedocs.io/\n  dev_url: https://github.com/ray-project/ray\n\nextra:\n  recipe-maintainers:\n    - dHannasch\n    - h-vetinari\n    - vnlitvinov\n    - krfricke\n",
+ "raw_meta_yaml": "{% set version = \"1.13.0\" %}\n\npackage:\n  name: ray-packages\n  version: {{ version }}\n\nsource:\n  url: https://github.com/ray-project/ray/archive/ray-{{ version }}.tar.gz\n  sha256: f877891804c60b404ddb6eabe5896902ffdf5b6e8830e8150803a2b64b56a79f\n  patches:\n    - patches/0001-Redis-deps-now-build-but-do-not-link.patch\n    - patches/0002-Disable-making-non-core-entry-scripts.patch\n    - patches/0003-Remove-all-dependencies-from-setup.py.patch\n    - patches/0004-Ignore-warnings-in-event.cc-and-logging.cc.patch\n    - patches/0005-Add-bazel-linkopts-libs.patch\n\n\nbuild:\n  number: 1\n  # skip on MacOS as there's some weird compilation issue and I have no MacOS to develop on\n  skip: true  # [osx]\n\n# Need these up here for conda-smithy to handle them properly.\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - bazel =4.2.2\n    - cython >=0.29\n    - curl\n    - make\n    - m2-patch       # [win]\n    - python\n\noutputs:\n  - name: ray-all\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-default', exact=True) }}\n        - {{ pin_subpackage('ray-dashboard', exact=True) }}\n        - {{ pin_subpackage('ray-k8s', exact=True) }}\n        - {{ pin_subpackage('ray-data', exact=True) }}\n        - {{ pin_subpackage('ray-rllib', exact=True) }}\n        - {{ pin_subpackage('ray-serve', exact=True) }}\n        - {{ pin_subpackage('ray-tune', exact=True) }}\n    test:\n      imports:\n        # dummy test; actual tests are in subpackages\n        - ray\n\n  - name: ray-core\n    script: build-core.sh  # [not win]\n    script: build-core.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - bazel =4.2.2\n        - sysroot_linux-64 2.17  # [linux64]\n        - curl\n        - cython >=0.29.26\n        - make\n        - m2-bash  # [win]\n        - python\n      host:\n        - python\n        - pip\n        - packaging\n        # pickle5 needs to be here, otherwise setup.py tries\n        # to install it and it fails on conda-forge Windows CI\n        - pickle5  # [py<38]\n      run:\n        - python\n        - aiosignal\n        - attrs\n        - click >=7.0, <=8.0.4\n        - colorama\n        - dataclasses  # [py<37]\n        - filelock\n        - frozenlist\n        - grpcio >=1.28.1, <=1.43.0\n        - msgpack-python >=1.0.0, <2.0.0\n        - numpy >=1.20\n        - pickle5  # [py<38]\n        - protobuf >=3.15.3, <4.0.0\n        - psutil\n        - pyyaml\n        - redis-py >=3.5.0  # [win]\n        - requests\n        - setproctitle =1.2.2\n        - virtualenv\n\n    test:\n      imports:\n        - ray\n        - ray._raylet\n        - ray.actor\n        - ray.runtime_context\n        - ray.state\n        - ray.worker\n      commands:\n        - python -c \"import ray; ray.init()\"\n\n  - name: ray-default\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-core', exact=True) }}\n        - aiohttp >=3.7\n        - aiohttp-cors\n        - aioredis <2\n        - colorful\n        # gpustat-0.6.0 has a dependency which does not exist on Windows;\n        # skip it there until gpustat is fixed as it is optional\n        - gpustat  # [not win]\n        - jsonschema\n        - opencensus\n        - prometheus_client >=0.7.1, <0.14.0\n        - requests\n        - smart_open\n        - py-spy >=0.2.0\n\n    test:\n      imports:\n        # ray-default is a convenience wrapper with no imports of its own\n        - ray\n        # init-code seemingly depends on platform or other ambient things;\n        # the following doesn't get triggered in CI, but was a problem in\n        # https://github.com/conda-forge/ray-packages-feedstock/issues/16\n        - ray._private.metrics_agent\n\n  - name: ray-dashboard\n    build:\n      script:\n        - cd python/ray/dashboard/client\n        - npm install\n        - npm ci\n        - npm run build\n        # not sure why this seems to get copied on windows but not linux...\n        - mkdir -p $SP_DIR/ray/dashboard/client             # [not win]\n        - cp -R ./build $SP_DIR/ray/dashboard/client/build  # [not win]\n    requirements:\n      build:\n        - nodejs\n      host:\n        - nodejs\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-default', exact=True) }}\n        - typing-extensions\n    test:\n      imports:\n        - ray.dashboard\n      commands:\n        - python -c \"import ray; ray.init(include_dashboard=True)\"\n\n  - name: ray-k8s\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-core', exact=True) }}\n        - kubernetes\n        - urllib3\n    test:\n      imports:\n        # there doesn't appear to be a k8s module, not sure how to test this\n        - ray\n\n  - name: ray-data\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-core', exact=True) }}\n        - pandas\n        - pyarrow >=6.0.1, <7.0.0\n        - fsspec\n    test:\n      imports:\n        - ray.data\n\n  - name: ray-rllib\n    build:\n      entry_points:\n        - rllib = ray.rllib.scripts:cli\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-tune', exact=True) }}\n        - dm-tree\n        - gym <0.22\n        - lz4\n        - matplotlib !=3.4.3\n        # scikit-image uses a deprecated import for pooch, causing rllib to fail on import\n        # pinning pooch to <1.5 solves this issue for now\n        - pooch <1.5\n        - pyyaml\n        - scikit-image\n        - scipy\n\n    test:\n      imports:\n        - ray.rllib\n      commands:\n        - rllib --help\n\n  - name: ray-serve\n    build:\n      entry_points:\n        - serve = ray.serve.scripts:cli\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-core', exact=True) }}\n        - uvicorn =0.16.0\n        - requests\n        - starlette\n        - fastapi\n        - aiorwlock\n    test:\n      imports:\n        - ray.serve\n\n  - name: ray-tune\n    build:\n      entry_points:\n        - tune = ray.tune.scripts:cli\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('ray-core', exact=True) }}\n        - pandas\n        - requests\n        - tabulate\n        - tensorboardX >=1.9\n    test:\n      imports:\n        - ray.tune\n\nabout:\n  home: https://github.com/ray-project/ray\n  license: Apache-2.0\n  license_family: Apache\n  license_file:\n    - LICENSE\n    - licenses/abseil-LICENSE.txt\n    - licenses/antirez-redis-COPYING.txt\n    - licenses/arrow-LICENSE.txt\n    - licenses/boost-LICENSE_1_0.txt\n    - licenses/boringssl-LICENSE.txt\n    - licenses/deckarep-golang-set-LICENSE.txt\n    - licenses/flatbuffers-LICENSE.txt\n    - licenses/gabime-spdlog-LICENSE.txt\n    - licenses/gflags-COPYING.txt\n    - licenses/glog-COPYING.txt\n    - licenses/go-logr-LICENSE.txt\n    - licenses/googletest-LICENSE.txt\n    - licenses/grpc-LICENSE.txt\n    - licenses/msgpack-COPYING.txt\n    - licenses/onsi-ginkgo-LICENSE.txt\n    - licenses/onsi-gomega-LICENSE.txt\n    - licenses/opencensus-LICENSE.txt\n    - licenses/opencensus-proto-LICENSE.txt\n    - licenses/prometheus-LICENSE.txt\n    - licenses/redis-hiredis-COPYING.txt\n    - licenses/tporadowski-redis-license.txt\n    - licenses/zlib-LICENSE.txt\n  summary: Ray is a fast and simple framework for building and running distributed applications.\n  description: |\n    Ray is a fast and simple framework for building and running\n    distributed applications.\n  doc_url: https://ray.readthedocs.io/\n  dev_url: https://github.com/ray-project/ray\n\nextra:\n  recipe-maintainers:\n    - dHannasch\n    - h-vetinari\n    - vnlitvinov\n    - krfricke\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -3952,15 +4860,42 @@
     "licenses/prometheus-LICENSE.txt",
     "licenses/redis-hiredis-COPYING.txt",
     "licenses/tporadowski-redis-license.txt",
+    "licenses/zlib-LICENSE.txt",
+    "LICENSE",
+    "licenses/abseil-LICENSE.txt",
+    "licenses/antirez-redis-COPYING.txt",
+    "licenses/arrow-LICENSE.txt",
+    "licenses/boost-LICENSE_1_0.txt",
+    "licenses/boringssl-LICENSE.txt",
+    "licenses/deckarep-golang-set-LICENSE.txt",
+    "licenses/flatbuffers-LICENSE.txt",
+    "licenses/gabime-spdlog-LICENSE.txt",
+    "licenses/gflags-COPYING.txt",
+    "licenses/glog-COPYING.txt",
+    "licenses/go-logr-LICENSE.txt",
+    "licenses/googletest-LICENSE.txt",
+    "licenses/grpc-LICENSE.txt",
+    "licenses/msgpack-COPYING.txt",
+    "licenses/onsi-ginkgo-LICENSE.txt",
+    "licenses/onsi-gomega-LICENSE.txt",
+    "licenses/opencensus-LICENSE.txt",
+    "licenses/opencensus-proto-LICENSE.txt",
+    "licenses/prometheus-LICENSE.txt",
+    "licenses/redis-hiredis-COPYING.txt",
+    "licenses/tporadowski-redis-license.txt",
     "licenses/zlib-LICENSE.txt"
    ],
    "summary": "Ray is a fast and simple framework for building and running distributed applications."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "dHannasch",
+    "h-vetinari",
+    "vnlitvinov",
+    "krfricke",
     "dHannasch",
     "h-vetinari",
     "vnlitvinov",
@@ -3976,6 +4911,268 @@
    ]
   },
   "outputs": [
+   {
+    "name": "ray-all",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-default",
+      "ray-dashboard",
+      "ray-k8s",
+      "ray-data",
+      "ray-rllib",
+      "ray-serve",
+      "ray-tune"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray"
+     ]
+    }
+   },
+   {
+    "name": "ray-core",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "bazel =4.2.2",
+      "curl",
+      "cython >=0.29.26",
+      "make",
+      "m2-bash",
+      "python"
+     ],
+     "host": [
+      "python",
+      "pip",
+      "packaging"
+     ],
+     "run": [
+      "python",
+      "aiosignal",
+      "attrs",
+      "click >=7.0, <=8.0.4",
+      "colorama",
+      "filelock",
+      "frozenlist",
+      "grpcio >=1.28.1, <=1.43.0",
+      "msgpack-python >=1.0.0, <2.0.0",
+      "numpy >=1.20",
+      "protobuf >=3.15.3, <4.0.0",
+      "psutil",
+      "pyyaml",
+      "redis-py >=3.5.0",
+      "requests",
+      "setproctitle =1.2.2",
+      "virtualenv"
+     ]
+    },
+    "script": "build-core.bat",
+    "test": {
+     "commands": [
+      "python -c \"import ray; ray.init()\""
+     ],
+     "imports": [
+      "ray",
+      "ray._raylet",
+      "ray.actor",
+      "ray.runtime_context",
+      "ray.state",
+      "ray.worker"
+     ]
+    }
+   },
+   {
+    "name": "ray-default",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "aiohttp >=3.7",
+      "aiohttp-cors",
+      "aioredis <2",
+      "colorful",
+      "jsonschema",
+      "opencensus",
+      "prometheus_client >=0.7.1, <0.14.0",
+      "requests",
+      "smart_open",
+      "py-spy >=0.2.0"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray",
+      "ray._private.metrics_agent"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "cd python/ray/dashboard/client",
+      "npm install",
+      "npm ci",
+      "npm run build"
+     ]
+    },
+    "name": "ray-dashboard",
+    "requirements": {
+     "build": [
+      "nodejs"
+     ],
+     "host": [
+      "nodejs",
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-default",
+      "typing-extensions"
+     ]
+    },
+    "test": {
+     "commands": [
+      "python -c \"import ray; ray.init(include_dashboard=True)\""
+     ],
+     "imports": [
+      "ray.dashboard"
+     ]
+    }
+   },
+   {
+    "name": "ray-k8s",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "kubernetes",
+      "urllib3"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray"
+     ]
+    }
+   },
+   {
+    "name": "ray-data",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "pandas",
+      "pyarrow >=6.0.1, <7.0.0",
+      "fsspec"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.data"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "rllib = ray.rllib.scripts:cli"
+     ]
+    },
+    "name": "ray-rllib",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-tune",
+      "dm-tree",
+      "gym <0.22",
+      "lz4",
+      "matplotlib !=3.4.3",
+      "pooch <1.5",
+      "pyyaml",
+      "scikit-image",
+      "scipy"
+     ]
+    },
+    "test": {
+     "commands": [
+      "rllib --help"
+     ],
+     "imports": [
+      "ray.rllib"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "serve = ray.serve.scripts:cli"
+     ]
+    },
+    "name": "ray-serve",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "uvicorn =0.16.0",
+      "requests",
+      "starlette",
+      "fastapi",
+      "aiorwlock"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.serve"
+     ]
+    }
+   },
+   {
+    "build": {
+     "entry_points": [
+      "tune = ray.tune.scripts:cli"
+     ]
+    },
+    "name": "ray-tune",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "ray-core",
+      "pandas",
+      "requests",
+      "tabulate",
+      "tensorboardX >=1.9"
+     ]
+    },
+    "test": {
+     "imports": [
+      "ray.tune"
+     ]
+    }
+   },
    {
     "name": "ray-all",
     "requirements": {
@@ -4792,11 +5989,24 @@
     "curl",
     "make",
     "m2-patch",
+    "python",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "bazel =4.2.2",
+    "cython >=0.29",
+    "curl",
+    "make",
+    "m2-patch",
     "python"
    ]
   },
   "source": {
    "patches": [
+    "patches/0001-Redis-deps-now-build-but-do-not-link.patch",
+    "patches/0002-Disable-making-non-core-entry-scripts.patch",
+    "patches/0003-Remove-all-dependencies-from-setup.py.patch",
+    "patches/0004-Ignore-warnings-in-event.cc-and-logging.cc.patch",
+    "patches/0005-Add-bazel-linkopts-libs.patch",
     "patches/0001-Redis-deps-now-build-but-do-not-link.patch",
     "patches/0002-Disable-making-non-core-entry-scripts.patch",
     "patches/0003-Remove-all-dependencies-from-setup.py.patch",
