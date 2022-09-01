@@ -262,6 +262,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1043148528.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "22.8.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -3575,7 +3592,7 @@
   }
  },
  "name": "black-recipe",
- "new_version": "22.6.0",
+ "new_version": "22.8.0",
  "new_version_attempts": {
   "21.10b0": 1,
   "21.11b0": 1,
@@ -3584,7 +3601,8 @@
   "21.8b0": 1,
   "21.9b0": 1,
   "22.1.0": 1,
-  "22.6.0": 1
+  "22.6.0": 1,
+  "22.8.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -4046,7 +4064,7 @@
    "blackd"
   ]
  },
- "pinning_version": "2022.08.05.23.22.55",
+ "pinning_version": "2022.08.31.16.57.19",
  "raw_meta_yaml": "{% set name = \"black\" %}\n{% set version = \"22.6.0\" %}\n\npackage:\n  name: {{ name|lower }}-recipe\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 6c6d39e28aed379aec40da1c65434c77d75e65bb59a1e1c283de545fb4e7c6c9\n\nbuild:\n  number: 2\n\noutputs:\n  - name: {{ name }}\n    script: build_base.sh\n    build:\n      skip: true  # [py<36]\n      entry_points:\n        - black = black:patched_main\n    requirements:\n      host:\n        - python\n        - pip\n        - setuptools_scm\n      run:\n        - python\n        - click >=8.0.0\n        - platformdirs >=2\n        - tomli >=1.1.0  # [py<311]\n        - typed-ast >=1.4.2  # [py<38]\n        - pathspec >=0.9\n        - dataclasses >=0.6  # [py<37]\n        - typing_extensions >=3.10  # [py<310]\n        - mypy_extensions >=0.4.3\n    test:\n      requires:\n        - pip\n      commands:\n        - black --help\n        - pip check\n\n  - name: {{ name }}d\n    build:\n      noarch: python\n      entry_points:\n        - blackd = blackd:patched_main\n    requirements:\n      run:\n        - {{ pin_subpackage('black', max_pin='x.x.x') }}\n        - aiohttp >=3.7.4\n    test:\n      commands:\n        - black --help\n        - blackd --help\n\n  - name: {{ name }}-colorama\n    build:\n      noarch: python\n    requirements:\n      run:\n        - {{ pin_subpackage('black', max_pin='x.x.x') }}\n        - colorama  >=0.4.3\n    test:\n      commands:\n        - black --help\n\n  - name: {{ name }}-jupyter\n    build:\n      noarch: python\n    requirements:\n      run:\n        - {{ pin_subpackage('black', max_pin='x.x.x') }}\n        - ipython >=7.8.0\n        - tokenize-rt >=3.2.0\n    test:\n      commands:\n        - black --help\n        - python -c \"import black.handle_ipynb_magics; assert black.handle_ipynb_magics.jupyter_dependencies_are_installed(verbose=True, quiet=False) == True\"\n\nabout:\n  home: https://github.com/psf/black\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: The uncompromising code formatter.\n\n  description: |\n    Black is the uncompromising Python code formatter. By using it, you agree\n    to cease control over minutiae of hand-formatting. In return, Black gives\n    you speed, determinism, and freedom from pycodestyle nagging about\n    formatting. You will save time and mental energy for more important matters.\n  doc_url: https://black.readthedocs.io/\n  dev_url: https://github.com/psf/black\n\nextra:\n  recipe-maintainers:\n    - seanlaw\n    - carlodri\n    - ambv\n    - mariusvniekerk\n    - xhochy\n",
  "req": {
   "__set__": true,
