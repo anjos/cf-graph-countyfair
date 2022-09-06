@@ -1109,6 +1109,7 @@
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
+   "linux_aarch64": "linux_64",
    "linux_ppc64le": "linux_64",
    "osx_arm64": "osx_64"
   },
@@ -1123,6 +1124,7 @@
  "linux_64_meta_yaml": {
   "about": {
    "description": "Protocol buffers are Google's language-neutral,\nplatform-neutral, extensible mechanism for serializing structured data-\nthink XML, but smaller, faster, and simpler.\n",
+   "dev_url": "https://github.com/protocolbuffers/protobuf",
    "doc_source_url": "https://github.com/protocolbuffers/protobuf/releases",
    "doc_url": "https://developers.google.com/protocol-buffers/",
    "home": "https://developers.google.com/protocol-buffers/",
@@ -1132,9 +1134,10 @@
    "summary": "Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
+   "feedstock-name": "libprotobuf",
    "recipe-maintainers": [
     "xylar",
     "dopplershift",
@@ -1158,23 +1161,27 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib"
-     ]
+     ],
+     "run": []
     },
-    "script": "build-shared.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
-      "protoc --help",
-      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libprotobuf.a"
+      "test -f ${PREFIX}/lib/libprotoc.so",
+      "test ! -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf-lite.a",
+      "test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf.pc",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc",
+      "protoc --help"
      ]
     }
    },
@@ -1184,12 +1191,8 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib",
@@ -1197,26 +1200,28 @@
      ],
      "run": [
       "libprotobuf"
-     ],
-     "run_constrained": null
+     ]
     },
-    "script": "build_static.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.a",
       "test -f ${PREFIX}/lib/libprotobuf.a",
-      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
-      "test -f ${PREFIX}/lib/libprotoc.a"
+      "test -f ${PREFIX}/lib/libprotobuf-lite.a"
      ]
     }
    }
   ],
   "package": {
-   "name": "libprotobuf",
+   "name": "libprotobuf-split",
    "version": "3.21.5"
   },
   "source": [
    {
-    "patches": null,
+    "patches": [
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
+    ],
     "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
     "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
    },
@@ -1236,14 +1241,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
+    "cmake",
     "cxx_compiler_stub",
-    "libtool",
-    "make",
-    "pkg-config",
-    "unzip"
+    "ninja"
    ]
   },
   "host": {
@@ -1267,6 +1268,7 @@
  "linux_aarch64_meta_yaml": {
   "about": {
    "description": "Protocol buffers are Google's language-neutral,\nplatform-neutral, extensible mechanism for serializing structured data-\nthink XML, but smaller, faster, and simpler.\n",
+   "dev_url": "https://github.com/protocolbuffers/protobuf",
    "doc_source_url": "https://github.com/protocolbuffers/protobuf/releases",
    "doc_url": "https://developers.google.com/protocol-buffers/",
    "home": "https://developers.google.com/protocol-buffers/",
@@ -1276,9 +1278,10 @@
    "summary": "Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
+   "feedstock-name": "libprotobuf",
    "recipe-maintainers": [
     "xylar",
     "dopplershift",
@@ -1302,23 +1305,27 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib"
-     ]
+     ],
+     "run": []
     },
-    "script": "build-shared.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
-      "protoc --help",
-      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libprotobuf.a"
+      "test -f ${PREFIX}/lib/libprotoc.so",
+      "test ! -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf-lite.a",
+      "test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf.pc",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc",
+      "protoc --help"
      ]
     }
    },
@@ -1328,12 +1335,8 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib",
@@ -1341,27 +1344,28 @@
      ],
      "run": [
       "libprotobuf"
-     ],
-     "run_constrained": null
+     ]
     },
-    "script": "build_static.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.a",
       "test -f ${PREFIX}/lib/libprotobuf.a",
-      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
-      "test -f ${PREFIX}/lib/libprotoc.a"
+      "test -f ${PREFIX}/lib/libprotobuf-lite.a"
      ]
     }
    }
   ],
   "package": {
-   "name": "libprotobuf",
+   "name": "libprotobuf-split",
    "version": "3.21.5"
   },
   "source": [
    {
     "patches": [
-     "0001-remove-Werror-from-test-flags.patch"
+     "patches/0001-remove-Werror-from-test-flags.patch",
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
     ],
     "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
     "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
@@ -1382,14 +1386,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
+    "cmake",
     "cxx_compiler_stub",
-    "libtool",
-    "make",
-    "pkg-config",
-    "unzip"
+    "ninja"
    ]
   },
   "host": {
@@ -1413,6 +1413,7 @@
  "linux_ppc64le_meta_yaml": {
   "about": {
    "description": "Protocol buffers are Google's language-neutral,\nplatform-neutral, extensible mechanism for serializing structured data-\nthink XML, but smaller, faster, and simpler.\n",
+   "dev_url": "https://github.com/protocolbuffers/protobuf",
    "doc_source_url": "https://github.com/protocolbuffers/protobuf/releases",
    "doc_url": "https://developers.google.com/protocol-buffers/",
    "home": "https://developers.google.com/protocol-buffers/",
@@ -1422,9 +1423,10 @@
    "summary": "Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
+   "feedstock-name": "libprotobuf",
    "recipe-maintainers": [
     "xylar",
     "dopplershift",
@@ -1448,23 +1450,27 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib"
-     ]
+     ],
+     "run": []
     },
-    "script": "build-shared.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
-      "protoc --help",
-      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libprotobuf.a"
+      "test -f ${PREFIX}/lib/libprotoc.so",
+      "test ! -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf-lite.a",
+      "test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf.pc",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc",
+      "protoc --help"
      ]
     }
    },
@@ -1474,12 +1480,8 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib",
@@ -1487,27 +1489,28 @@
      ],
      "run": [
       "libprotobuf"
-     ],
-     "run_constrained": null
+     ]
     },
-    "script": "build_static.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.a",
       "test -f ${PREFIX}/lib/libprotobuf.a",
-      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
-      "test -f ${PREFIX}/lib/libprotoc.a"
+      "test -f ${PREFIX}/lib/libprotobuf-lite.a"
      ]
     }
    }
   ],
   "package": {
-   "name": "libprotobuf",
+   "name": "libprotobuf-split",
    "version": "3.21.5"
   },
   "source": [
    {
     "patches": [
-     "0001-remove-Werror-from-test-flags.patch"
+     "patches/0001-remove-Werror-from-test-flags.patch",
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
     ],
     "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
     "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
@@ -1528,14 +1531,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
+    "cmake",
     "cxx_compiler_stub",
-    "libtool",
-    "make",
-    "pkg-config",
-    "unzip"
+    "ninja"
    ]
   },
   "host": {
@@ -1559,6 +1558,7 @@
  "meta_yaml": {
   "about": {
    "description": "Protocol buffers are Google's language-neutral,\nplatform-neutral, extensible mechanism for serializing structured data-\nthink XML, but smaller, faster, and simpler.\n",
+   "dev_url": "https://github.com/protocolbuffers/protobuf",
    "doc_source_url": "https://github.com/protocolbuffers/protobuf/releases",
    "doc_url": "https://developers.google.com/protocol-buffers/",
    "home": "https://developers.google.com/protocol-buffers/",
@@ -1568,9 +1568,10 @@
    "summary": "Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
+   "feedstock-name": "libprotobuf",
    "recipe-maintainers": [
     "xylar",
     "dopplershift",
@@ -1634,23 +1635,27 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib"
-     ]
+     ],
+     "run": []
     },
-    "script": "build-shared.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
-      "protoc --help",
-      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libprotobuf.a"
+      "test -f ${PREFIX}/lib/libprotoc.so",
+      "test ! -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf-lite.a",
+      "test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf.pc",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc",
+      "protoc --help"
      ]
     }
    },
@@ -1660,12 +1665,8 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib",
@@ -1673,263 +1674,14 @@
      ],
      "run": [
       "libprotobuf"
-     ],
-     "run_constrained": null
+     ]
     },
-    "script": "build_static.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.a",
       "test -f ${PREFIX}/lib/libprotobuf.a",
-      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
-      "test -f ${PREFIX}/lib/libprotoc.a"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libprotobuf"
-     ]
-    },
-    "name": "libprotobuf",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
-     ],
-     "host": [
-      "zlib"
-     ]
-    },
-    "script": "build-shared.sh",
-    "test": {
-     "commands": [
-      "protoc --help",
-      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libprotobuf.a"
-     ]
-    }
-   },
-   {
-    "name": "libprotobuf-static",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
-     ],
-     "host": [
-      "zlib",
-      "libprotobuf"
-     ],
-     "run": [
-      "libprotobuf"
-     ],
-     "run_constrained": null
-    },
-    "script": "build_static.sh",
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libprotobuf.a",
-      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
-      "test -f ${PREFIX}/lib/libprotoc.a"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libprotobuf"
-     ]
-    },
-    "name": "libprotobuf",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
-     ],
-     "host": [
-      "zlib"
-     ]
-    },
-    "script": "build-shared.sh",
-    "test": {
-     "commands": [
-      "protoc --help",
-      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libprotobuf.a"
-     ]
-    }
-   },
-   {
-    "name": "libprotobuf-static",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
-     ],
-     "host": [
-      "zlib",
-      "libprotobuf"
-     ],
-     "run": [
-      "libprotobuf"
-     ],
-     "run_constrained": null
-    },
-    "script": "build_static.sh",
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libprotobuf.a",
-      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
-      "test -f ${PREFIX}/lib/libprotoc.a"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libprotobuf"
-     ]
-    },
-    "name": "libprotobuf",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
-     ],
-     "host": [
-      "zlib"
-     ]
-    },
-    "script": "build-shared.sh",
-    "test": {
-     "commands": [
-      "protoc --help",
-      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libprotobuf.a"
-     ]
-    }
-   },
-   {
-    "name": "libprotobuf-static",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
-     ],
-     "host": [
-      "zlib",
-      "libprotobuf"
-     ],
-     "run": [
-      "libprotobuf"
-     ],
-     "run_constrained": null
-    },
-    "script": "build_static.sh",
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libprotobuf.a",
-      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
-      "test -f ${PREFIX}/lib/libprotoc.a"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "libprotobuf"
-     ]
-    },
-    "name": "libprotobuf",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
-     ],
-     "host": [
-      "zlib"
-     ]
-    },
-    "script": "build-shared.sh",
-    "test": {
-     "commands": [
-      "protoc --help",
-      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libprotobuf.a"
-     ]
-    }
-   },
-   {
-    "name": "libprotobuf-static",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
-     ],
-     "host": [
-      "zlib",
-      "libprotobuf"
-     ],
-     "run": [
-      "libprotobuf"
-     ],
-     "run_constrained": null
-    },
-    "script": "build_static.sh",
-    "test": {
-     "commands": [
-      "test -f ${PREFIX}/lib/libprotobuf.a",
-      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
-      "test -f ${PREFIX}/lib/libprotoc.a"
+      "test -f ${PREFIX}/lib/libprotobuf-lite.a"
      ]
     }
    },
@@ -1949,15 +1701,22 @@
      ],
      "host": [
       "zlib"
-     ]
+     ],
+     "run": []
     },
-    "script": "bld-shared.bat",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
-      "protoc --help",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotoc.lib exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf.lib exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf-lite.lib exit 1"
+      "test -f ${PREFIX}/lib/libprotoc.so",
+      "test ! -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf-lite.a",
+      "test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf.pc",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc",
+      "protoc --help"
      ]
     }
    },
@@ -1971,47 +1730,281 @@
       "ninja"
      ],
      "host": [
-      "zlib"
+      "zlib",
+      "libprotobuf"
      ],
-     "run": [],
-     "run_constrained": [
-      "libprotobuf <0a0"
+     "run": [
+      "libprotobuf"
      ]
     },
-    "script": "bld-static.bat",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
-      "if exist %PREFIX%\\\\Library\\\\bin\\\\libprotoc.dll exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotoc.lib exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf.lib exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf-lite.lib exit 1"
+      "test -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libprotobuf"
+     ]
+    },
+    "name": "libprotobuf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "zlib"
+     ],
+     "run": []
+    },
+    "script": "build-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.so",
+      "test ! -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.so",
+      "test ! -f ${PREFIX}/lib/libprotobuf-lite.a",
+      "test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf.pc",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc",
+      "protoc --help"
+     ]
+    }
+   },
+   {
+    "name": "libprotobuf-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "zlib",
+      "libprotobuf"
+     ],
+     "run": [
+      "libprotobuf"
+     ]
+    },
+    "script": "build-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libprotobuf"
+     ]
+    },
+    "name": "libprotobuf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "zlib"
+     ],
+     "run": []
+    },
+    "script": "build-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.dylib",
+      "test ! -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.dylib",
+      "test ! -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.dylib",
+      "test ! -f ${PREFIX}/lib/libprotobuf-lite.a",
+      "test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf.pc",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc",
+      "protoc --help"
+     ]
+    }
+   },
+   {
+    "name": "libprotobuf-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "zlib",
+      "libprotobuf"
+     ],
+     "run": [
+      "libprotobuf"
+     ]
+    },
+    "script": "build-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libprotobuf"
+     ]
+    },
+    "name": "libprotobuf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "zlib"
+     ],
+     "run": []
+    },
+    "script": "build-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.dylib",
+      "test ! -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.dylib",
+      "test ! -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.dylib",
+      "test ! -f ${PREFIX}/lib/libprotobuf-lite.a",
+      "test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf.pc",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc",
+      "protoc --help"
+     ]
+    }
+   },
+   {
+    "name": "libprotobuf-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "zlib",
+      "libprotobuf"
+     ],
+     "run": [
+      "libprotobuf"
+     ]
+    },
+    "script": "build-lib.sh",
+    "test": {
+     "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libprotobuf"
+     ]
+    },
+    "name": "libprotobuf",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "zlib"
+     ],
+     "run": [
+      "ucrt"
+     ]
+    },
+    "script": "build-lib.bat",
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_BIN%\\libprotoc.dll exit 1",
+      "if not exist %LIBRARY_LIB%\\libprotoc-import.lib exit 1",
+      "if exist %LIBRARY_LIB%\\libprotoc.lib exit 1",
+      "if not exist %LIBRARY_BIN%\\libprotobuf.dll exit 1",
+      "if not exist %LIBRARY_LIB%\\libprotobuf-import.lib exit 1",
+      "if exist %LIBRARY_LIB%\\libprotobuf.lib exit 1",
+      "if not exist %LIBRARY_BIN%\\libprotobuf-lite.dll exit 1",
+      "if not exist %LIBRARY_LIB%\\libprotobuf-lite-import.lib exit 1",
+      "if exist %LIBRARY_LIB%\\libprotobuf-lite.lib exit 1",
+      "if not exist %LIBRARY_LIB%\\cmake\\protobuf\\protobuf-config.cmake exit 1",
+      "if not exist %LIBRARY_LIB%\\pkgconfig\\protobuf.pc exit 1",
+      "if not exist %LIBRARY_LIB%\\pkgconfig\\protobuf-lite.pc exit 1",
+      "protoc --help"
+     ]
+    }
+   },
+   {
+    "name": "libprotobuf-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "cmake",
+      "ninja"
+     ],
+     "host": [
+      "zlib",
+      "libprotobuf"
+     ],
+     "run": [
+      "libprotobuf"
+     ]
+    },
+    "script": "build-lib.bat",
+    "test": {
+     "commands": [
+      "if not exist %LIBRARY_LIB%\\libprotoc.lib exit 1",
+      "if not exist %LIBRARY_LIB%\\libprotobuf.lib exit 1",
+      "if not exist %LIBRARY_LIB%\\libprotobuf-lite.lib exit 1"
      ]
     }
    }
   ],
   "package": {
-   "name": "libprotobuf",
+   "name": "libprotobuf-split",
    "version": "3.21.5"
   },
   "source": [
    {
-    "patches": null,
-    "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
-    "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
-   },
-   {
-    "folder": "third_party/benchmark",
-    "sha256": "5dc92703f811f94e2aa63bdab07ab749f28a094befa6cdfd5fe177f947590a48",
-    "url": "https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz"
-   },
-   {
-    "folder": "third_party/googletest",
-    "sha256": "0e2f36e8e403c125fd0ab02171bdb786d3b6b3875b6ccf3b2eb7969be8faecd0",
-    "url": "https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz"
-   },
-   {
     "patches": [
-     "0001-remove-Werror-from-test-flags.patch"
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
     ],
     "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
     "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
@@ -2028,7 +2021,9 @@
    },
    {
     "patches": [
-     "0001-remove-Werror-from-test-flags.patch"
+     "patches/0001-remove-Werror-from-test-flags.patch",
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
     ],
     "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
     "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
@@ -2044,7 +2039,11 @@
     "url": "https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz"
    },
    {
-    "patches": null,
+    "patches": [
+     "patches/0001-remove-Werror-from-test-flags.patch",
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
+    ],
     "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
     "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
    },
@@ -2059,7 +2058,10 @@
     "url": "https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz"
    },
    {
-    "patches": null,
+    "patches": [
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
+    ],
     "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
     "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
    },
@@ -2074,7 +2076,28 @@
     "url": "https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz"
    },
    {
-    "patches": null,
+    "patches": [
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
+    ],
+    "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
+    "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
+   },
+   {
+    "folder": "third_party/benchmark",
+    "sha256": "5dc92703f811f94e2aa63bdab07ab749f28a094befa6cdfd5fe177f947590a48",
+    "url": "https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz"
+   },
+   {
+    "folder": "third_party/googletest",
+    "sha256": "0e2f36e8e403c125fd0ab02171bdb786d3b6b3875b6ccf3b2eb7969be8faecd0",
+    "url": "https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz"
+   },
+   {
+    "patches": [
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
+    ],
     "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
     "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
    },
@@ -2090,7 +2113,7 @@
    }
   ]
  },
- "name": "libprotobuf",
+ "name": "libprotobuf-split",
  "new_version": "21.5",
  "new_version_attempts": {
   "21.1": 1,
@@ -2136,6 +2159,7 @@
  "osx_64_meta_yaml": {
   "about": {
    "description": "Protocol buffers are Google's language-neutral,\nplatform-neutral, extensible mechanism for serializing structured data-\nthink XML, but smaller, faster, and simpler.\n",
+   "dev_url": "https://github.com/protocolbuffers/protobuf",
    "doc_source_url": "https://github.com/protocolbuffers/protobuf/releases",
    "doc_url": "https://developers.google.com/protocol-buffers/",
    "home": "https://developers.google.com/protocol-buffers/",
@@ -2145,9 +2169,10 @@
    "summary": "Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
+   "feedstock-name": "libprotobuf",
    "recipe-maintainers": [
     "xylar",
     "dopplershift",
@@ -2171,23 +2196,27 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib"
-     ]
+     ],
+     "run": []
     },
-    "script": "build-shared.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
-      "protoc --help",
-      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libprotobuf.a"
+      "test -f ${PREFIX}/lib/libprotoc.dylib",
+      "test ! -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.dylib",
+      "test ! -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.dylib",
+      "test ! -f ${PREFIX}/lib/libprotobuf-lite.a",
+      "test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf.pc",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc",
+      "protoc --help"
      ]
     }
    },
@@ -2197,12 +2226,8 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib",
@@ -2210,26 +2235,28 @@
      ],
      "run": [
       "libprotobuf"
-     ],
-     "run_constrained": null
+     ]
     },
-    "script": "build_static.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.a",
       "test -f ${PREFIX}/lib/libprotobuf.a",
-      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
-      "test -f ${PREFIX}/lib/libprotoc.a"
+      "test -f ${PREFIX}/lib/libprotobuf-lite.a"
      ]
     }
    }
   ],
   "package": {
-   "name": "libprotobuf",
+   "name": "libprotobuf-split",
    "version": "3.21.5"
   },
   "source": [
    {
-    "patches": null,
+    "patches": [
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
+    ],
     "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
     "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
    },
@@ -2249,14 +2276,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
+    "cmake",
     "cxx_compiler_stub",
-    "libtool",
-    "make",
-    "pkg-config",
-    "unzip"
+    "ninja"
    ]
   },
   "host": {
@@ -2280,6 +2303,7 @@
  "osx_arm64_meta_yaml": {
   "about": {
    "description": "Protocol buffers are Google's language-neutral,\nplatform-neutral, extensible mechanism for serializing structured data-\nthink XML, but smaller, faster, and simpler.\n",
+   "dev_url": "https://github.com/protocolbuffers/protobuf",
    "doc_source_url": "https://github.com/protocolbuffers/protobuf/releases",
    "doc_url": "https://developers.google.com/protocol-buffers/",
    "home": "https://developers.google.com/protocol-buffers/",
@@ -2289,9 +2313,10 @@
    "summary": "Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
+   "feedstock-name": "libprotobuf",
    "recipe-maintainers": [
     "xylar",
     "dopplershift",
@@ -2315,23 +2340,27 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib"
-     ]
+     ],
+     "run": []
     },
-    "script": "build-shared.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
-      "protoc --help",
-      "test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}",
-      "test ! -f ${PREFIX}/lib/libprotobuf.a"
+      "test -f ${PREFIX}/lib/libprotoc.dylib",
+      "test ! -f ${PREFIX}/lib/libprotoc.a",
+      "test -f ${PREFIX}/lib/libprotobuf.dylib",
+      "test ! -f ${PREFIX}/lib/libprotobuf.a",
+      "test -f ${PREFIX}/lib/libprotobuf-lite.dylib",
+      "test ! -f ${PREFIX}/lib/libprotobuf-lite.a",
+      "test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf.pc",
+      "test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc",
+      "protoc --help"
      ]
     }
    },
@@ -2341,12 +2370,8 @@
      "build": [
       "c_compiler_stub",
       "cxx_compiler_stub",
-      "autoconf",
-      "automake",
-      "libtool",
-      "pkg-config",
-      "unzip",
-      "make"
+      "cmake",
+      "ninja"
      ],
      "host": [
       "zlib",
@@ -2354,26 +2379,28 @@
      ],
      "run": [
       "libprotobuf"
-     ],
-     "run_constrained": null
+     ]
     },
-    "script": "build_static.sh",
+    "script": "build-lib.sh",
     "test": {
      "commands": [
+      "test -f ${PREFIX}/lib/libprotoc.a",
       "test -f ${PREFIX}/lib/libprotobuf.a",
-      "test -f ${PREFIX}/lib/libprotobuf-lite.a",
-      "test -f ${PREFIX}/lib/libprotoc.a"
+      "test -f ${PREFIX}/lib/libprotobuf-lite.a"
      ]
     }
    }
   ],
   "package": {
-   "name": "libprotobuf",
+   "name": "libprotobuf-split",
    "version": "3.21.5"
   },
   "source": [
    {
-    "patches": null,
+    "patches": [
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
+    ],
     "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
     "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
    },
@@ -2393,14 +2420,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
+    "cmake",
     "cxx_compiler_stub",
-    "libtool",
-    "make",
-    "pkg-config",
-    "unzip"
+    "ninja"
    ]
   },
   "host": {
@@ -2435,21 +2458,16 @@
  "pre_pr_migrator_status": {
   "rebuild-broken": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1265438560\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1175, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 196, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/broken_rebuild.py\", line 361, in migrate\n    self.set_build_number(os.path.join(recipe_dir, \"meta.yaml\"))\nNameError: name 'os' is not defined\n"
  },
- "raw_meta_yaml": "# keep this without major version to let the bot pick it up\n{% set version = \"21.5\" %}\n# protobuf doesn't add the major version in the tag...\n{% set major = \"3\" %}\n\npackage:\n  name: libprotobuf\n  version: {{ major + \".\" + version }}\n\nsource:\n  - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz\n    sha256: 4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639\n    patches:\n      - 0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]\n      # This issue gets fixed and then reintroduced often\n      # https://github.com/protocolbuffers/protobuf/issues/7567\n      #- issue-7567.patch\n  # these are git submodules from the v21.5 release\n  # https://github.com/protocolbuffers/protobuf/tree/v21.5/third_party\n  - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz\n    sha256: 5dc92703f811f94e2aa63bdab07ab749f28a094befa6cdfd5fe177f947590a48\n    folder: third_party/benchmark\n  - url: https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz\n    sha256: 0e2f36e8e403c125fd0ab02171bdb786d3b6b3875b6ccf3b2eb7969be8faecd0\n    folder: third_party/googletest\n\nbuild:\n  number: 0\n\noutputs:\n  - name: libprotobuf\n    script: build-shared.sh  # [unix]\n    script: bld-shared.bat  # [win]\n    build:\n      run_exports:\n        # breaks backwards compatibility and new SONAME each minor release\n        # https://abi-laboratory.pro/tracker/timeline/protobuf/\n        # One exception was that 3.6.1 was incompatible with 3.6.0\n        - {{ pin_subpackage('libprotobuf', max_pin='x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake  # [win]\n        - ninja  # [win]\n        - autoconf  # [not win]\n        - automake  # [not win]\n        - libtool  # [not win]\n        - pkg-config  # [not win]\n        - unzip  # [not win]\n        - make  # [not win]\n      host:\n        - zlib\n    test:\n      commands:\n        - protoc --help\n        - test -f ${PREFIX}/lib/libprotobuf${SHLIB_EXT}  # [not win]\n        - test ! -f ${PREFIX}/lib/libprotobuf.a  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotoc.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf-lite.lib exit 1  # [win]\n  - name: libprotobuf-static\n    script: build_static.sh  # [unix]\n    script: bld-static.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake  # [win]\n        - ninja  # [win]\n        - autoconf  # [not win]\n        - automake  # [not win]\n        - libtool  # [not win]\n        - pkg-config  # [not win]\n        - unzip  # [not win]\n        - make  # [not win]\n      host:\n        - zlib\n        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]\n      run:\n        - {{ pin_subpackage('libprotobuf', exact=True) }}  # [not win]\n      run_constrained:\n        - libprotobuf <0a0  # [win]\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/libprotobuf.a  # [unix]\n        - test -f ${PREFIX}/lib/libprotobuf-lite.a  # [unix]\n        - test -f ${PREFIX}/lib/libprotoc.a  # [unix]\n        - if exist %PREFIX%\\\\Library\\\\bin\\\\libprotoc.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotoc.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf-lite.lib exit 1  # [win]\n\nabout:\n  home: https://developers.google.com/protocol-buffers/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler.\n  description: |\n    Protocol buffers are Google's language-neutral,\n    platform-neutral, extensible mechanism for serializing structured data-\n    think XML, but smaller, faster, and simpler.\n  doc_url: https://developers.google.com/protocol-buffers/\n  doc_source_url: https://github.com/protocolbuffers/protobuf/releases\n\nextra:\n  recipe-maintainers:\n    - xylar\n    - dopplershift\n    - jakirkham\n    - ocefpaf\n    - wesm\n    - hajapy\n    - xhochy\n    - h-vetinari\n",
+ "raw_meta_yaml": "# keep this without major version to let the bot pick it up\n{% set version = \"21.5\" %}\n# protobuf doesn't add the major version in the tag...\n{% set major = \"3\" %}\n\n{% set libraries = [\"libprotoc\", \"libprotobuf\", \"libprotobuf-lite\"] %}\n\npackage:\n  name: libprotobuf-split\n  version: {{ major + \".\" + version }}\n\nsource:\n  - url: https://github.com/protocolbuffers/protobuf/archive/v{{ version }}/protobuf-v{{ version }}.tar.gz\n    sha256: 4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639\n    patches:\n      - patches/0001-remove-Werror-from-test-flags.patch  # [ppc64le or aarch64]\n      - patches/0002-use-consistent-cmake-location.patch\n      - patches/0003-set-import-lib-extension-on-windows.patch\n      # This issue gets fixed and then reintroduced often\n      # https://github.com/protocolbuffers/protobuf/issues/7567\n      # - patches/issue-7567.patch\n  # these are git submodules from the v21.5 release\n  # https://github.com/protocolbuffers/protobuf/tree/v21.5/third_party\n  - url: https://github.com/google/benchmark/archive/5b7683f49e1e9223cf9927b24f6fd3d6bd82e3f8.tar.gz\n    sha256: 5dc92703f811f94e2aa63bdab07ab749f28a094befa6cdfd5fe177f947590a48\n    folder: third_party/benchmark\n  - url: https://github.com/google/googletest/archive/5ec7f0c4a113e2f18ac2c6cc7df51ad6afc24081.tar.gz\n    sha256: 0e2f36e8e403c125fd0ab02171bdb786d3b6b3875b6ccf3b2eb7969be8faecd0\n    folder: third_party/googletest\n\nbuild:\n  number: 1\n\noutputs:\n  - name: libprotobuf\n    script: build-lib.sh   # [unix]\n    script: build-lib.bat  # [win]\n    build:\n      run_exports:\n        # breaks backwards compatibility and new SONAME each minor release\n        # https://abi-laboratory.pro/tracker/timeline/protobuf/\n        # One exception was that 3.6.1 was incompatible with 3.6.0\n        - {{ pin_subpackage('libprotobuf', max_pin='x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake\n        - ninja\n      host:\n        - zlib\n      run:\n        - ucrt  # [win]\n    test:\n      commands:\n        {% for each_lib in libraries %}\n        # shared libraries\n        - test -f ${PREFIX}/lib/{{ each_lib }}.so                      # [linux]\n        - test -f ${PREFIX}/lib/{{ each_lib }}.dylib                   # [osx]\n        - if not exist %LIBRARY_BIN%\\{{ each_lib }}.dll exit 1         # [win]\n        - if not exist %LIBRARY_LIB%\\{{ each_lib }}-import.lib exit 1  # [win]\n\n        # absence of static libraries\n        - test ! -f ${PREFIX}/lib/{{ each_lib }}.a                     # [unix]\n        - if exist %LIBRARY_LIB%\\{{ each_lib }}.lib exit 1             # [win]\n        {% endfor %}\n\n        # cmake\n        - test -f ${PREFIX}/lib/cmake/protobuf/protobuf-config.cmake              # [unix]\n        - if not exist %LIBRARY_LIB%\\cmake\\protobuf\\protobuf-config.cmake exit 1  # [win]\n\n        # pkgconfig\n        - test -f ${PREFIX}/lib/pkgconfig/protobuf.pc                   # [unix]\n        - test -f ${PREFIX}/lib/pkgconfig/protobuf-lite.pc              # [unix]\n        - if not exist %LIBRARY_LIB%\\pkgconfig\\protobuf.pc exit 1       # [win]\n        - if not exist %LIBRARY_LIB%\\pkgconfig\\protobuf-lite.pc exit 1  # [win]\n\n        # binary\n        - protoc --help\n\n  - name: libprotobuf-static\n    script: build-lib.sh   # [unix]\n    script: build-lib.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake\n        - ninja\n      host:\n        - zlib\n        - {{ pin_subpackage('libprotobuf', exact=True) }}\n      run:\n        - {{ pin_subpackage('libprotobuf', exact=True) }}\n    test:\n      commands:\n        {% for each_lib in libraries %}\n        # static libraries\n        - test -f ${PREFIX}/lib/{{ each_lib }}.a                       # [unix]\n        - if not exist %LIBRARY_LIB%\\{{ each_lib }}.lib exit 1         # [win]\n        {% endfor %}\n\nabout:\n  home: https://developers.google.com/protocol-buffers/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler.\n  description: |\n    Protocol buffers are Google's language-neutral,\n    platform-neutral, extensible mechanism for serializing structured data-\n    think XML, but smaller, faster, and simpler.\n  dev_url: https://github.com/protocolbuffers/protobuf\n  doc_url: https://developers.google.com/protocol-buffers/\n  doc_source_url: https://github.com/protocolbuffers/protobuf/releases\n\nextra:\n  recipe-maintainers:\n    - xylar\n    - dopplershift\n    - jakirkham\n    - ocefpaf\n    - wesm\n    - hajapy\n    - xhochy\n    - h-vetinari\n  feedstock-name: libprotobuf\n",
  "req": {
   "__set__": true,
   "elements": [
-   "autoconf",
-   "automake",
    "c_compiler_stub",
    "cmake",
    "cxx_compiler_stub",
    "libprotobuf",
-   "libtool",
-   "make",
    "ninja",
-   "pkg-config",
-   "unzip",
+   "ucrt",
    "zlib"
   ]
  },
@@ -2457,16 +2475,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "libtool",
-    "make",
-    "ninja",
-    "pkg-config",
-    "unzip"
+    "ninja"
    ]
   },
   "host": {
@@ -2483,7 +2495,8 @@
    "elements": [
     "c_compiler_stub",
     "cxx_compiler_stub",
-    "libprotobuf"
+    "libprotobuf",
+    "ucrt"
    ]
   },
   "test": {
@@ -2497,16 +2510,10 @@
   "build": {
    "__set__": true,
    "elements": [
-    "autoconf",
-    "automake",
     "c_compiler_stub",
     "cmake",
     "cxx_compiler_stub",
-    "libtool",
-    "make",
-    "ninja",
-    "pkg-config",
-    "unzip"
+    "ninja"
    ]
   },
   "host": {
@@ -2519,7 +2526,8 @@
   "run": {
    "__set__": true,
    "elements": [
-    "libprotobuf"
+    "libprotobuf",
+    "ucrt"
    ]
   },
   "test": {
@@ -2532,6 +2540,7 @@
  "win_64_meta_yaml": {
   "about": {
    "description": "Protocol buffers are Google's language-neutral,\nplatform-neutral, extensible mechanism for serializing structured data-\nthink XML, but smaller, faster, and simpler.\n",
+   "dev_url": "https://github.com/protocolbuffers/protobuf",
    "doc_source_url": "https://github.com/protocolbuffers/protobuf/releases",
    "doc_url": "https://developers.google.com/protocol-buffers/",
    "home": "https://developers.google.com/protocol-buffers/",
@@ -2541,9 +2550,10 @@
    "summary": "Protocol Buffers - Google's data interchange format. C++ Libraries and protoc, the protobuf compiler."
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
+   "feedstock-name": "libprotobuf",
    "recipe-maintainers": [
     "xylar",
     "dopplershift",
@@ -2572,15 +2582,27 @@
      ],
      "host": [
       "zlib"
+     ],
+     "run": [
+      "ucrt"
      ]
     },
-    "script": "bld-shared.bat",
+    "script": "build-lib.bat",
     "test": {
      "commands": [
-      "protoc --help",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotoc.lib exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf.lib exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf-lite.lib exit 1"
+      "if not exist %LIBRARY_BIN%\\libprotoc.dll exit 1",
+      "if not exist %LIBRARY_LIB%\\libprotoc-import.lib exit 1",
+      "if exist %LIBRARY_LIB%\\libprotoc.lib exit 1",
+      "if not exist %LIBRARY_BIN%\\libprotobuf.dll exit 1",
+      "if not exist %LIBRARY_LIB%\\libprotobuf-import.lib exit 1",
+      "if exist %LIBRARY_LIB%\\libprotobuf.lib exit 1",
+      "if not exist %LIBRARY_BIN%\\libprotobuf-lite.dll exit 1",
+      "if not exist %LIBRARY_LIB%\\libprotobuf-lite-import.lib exit 1",
+      "if exist %LIBRARY_LIB%\\libprotobuf-lite.lib exit 1",
+      "if not exist %LIBRARY_LIB%\\cmake\\protobuf\\protobuf-config.cmake exit 1",
+      "if not exist %LIBRARY_LIB%\\pkgconfig\\protobuf.pc exit 1",
+      "if not exist %LIBRARY_LIB%\\pkgconfig\\protobuf-lite.pc exit 1",
+      "protoc --help"
      ]
     }
    },
@@ -2594,31 +2616,33 @@
       "ninja"
      ],
      "host": [
-      "zlib"
+      "zlib",
+      "libprotobuf"
      ],
-     "run": [],
-     "run_constrained": [
-      "libprotobuf <0a0"
+     "run": [
+      "libprotobuf"
      ]
     },
-    "script": "bld-static.bat",
+    "script": "build-lib.bat",
     "test": {
      "commands": [
-      "if exist %PREFIX%\\\\Library\\\\bin\\\\libprotoc.dll exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotoc.lib exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf.lib exit 1",
-      "if not exist %PREFIX%\\\\Library\\\\lib\\\\libprotobuf-lite.lib exit 1"
+      "if not exist %LIBRARY_LIB%\\libprotoc.lib exit 1",
+      "if not exist %LIBRARY_LIB%\\libprotobuf.lib exit 1",
+      "if not exist %LIBRARY_LIB%\\libprotobuf-lite.lib exit 1"
      ]
     }
    }
   ],
   "package": {
-   "name": "libprotobuf",
+   "name": "libprotobuf-split",
    "version": "3.21.5"
   },
   "source": [
    {
-    "patches": null,
+    "patches": [
+     "patches/0002-use-consistent-cmake-location.patch",
+     "patches/0003-set-import-lib-extension-on-windows.patch"
+    ],
     "sha256": "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
     "url": "https://github.com/protocolbuffers/protobuf/archive/v21.5/protobuf-v21.5.tar.gz"
    },
@@ -2647,12 +2671,16 @@
   "host": {
    "__set__": true,
    "elements": [
+    "libprotobuf",
     "zlib"
    ]
   },
   "run": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "libprotobuf",
+    "ucrt"
+   ]
   },
   "test": {
    "__set__": true,
