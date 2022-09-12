@@ -105,6 +105,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1053684109.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 3,
+    "migrator_version": 0,
+    "name": "boost1780"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -363,7 +382,7 @@
    "clsparse"
   ]
  },
- "pinning_version": "2020.09.11.19.40.57",
+ "pinning_version": "2022.09.12.04.26.16",
  "raw_meta_yaml": "{% set name = \"clSPARSE\" %}\n{% set version = \"0.10.2.0\" %}\n{% set sha256 = \"952b26670625646c5386299a4d360aaa9cd2139555376b48aaed163a6ea60325\" %}\n\n{% set OSX_VARIANT = os.environ.get(\"OSX_VARIANT\", \"native\") %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: {{ name }}-{{ version }}.tar.gz\n  url: https://github.com/clMathLibraries/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 3\n  script_env:\n    - OSX_VARIANT\n\n{% if OSX_VARIANT != \"native\" %}\n  skip: True  # [not osx]\n{% else %}\n  skip: True  # [win and py<36]\n{% endif %}\n\n  features:\n{% if OSX_VARIANT == \"pocl\" %}\n    - osx_pocl_opencl            # [osx]\n{% endif %}\n\nrequirements:\n  build:\n    - cmake\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - boost-cpp\n    - clhpp\n    - gtest\n    - ocl-icd                    # [linux]\n    - khronos-opencl-icd-loader  # [win]\n{% if OSX_VARIANT == \"pocl\" %}\n    - osx-pocl-opencl            # [osx]\n    - pocl >=0.14                # [unix]\n{% endif %}\n\n  run:\n    - khronos-opencl-icd-loader  # [win]\n    - ocl-icd                    # [linux]\n{% if OSX_VARIANT == \"pocl\" %}\n    - osx-pocl-opencl            # [osx]\n    - pocl >=0.14                # [unix]\n{% endif %}\n\ntest:\n  requires:\n    - python {{ environ['PY_VER'] + '*' }}              # [win]\n\n  commands:\n    # Check files\n    - test -f \"${PREFIX}/include/clSPARSE.h\"           # [unix]\n    - test -f \"${PREFIX}/lib/libclSPARSE.so\"           # [linux]\n    - test -f \"${PREFIX}/lib/libclSPARSE.dylib\"        # [osx]\n    - if not exist %LIBRARY_INC%\\\\clSPARSE.h exit 1    # [win]\n    - if not exist %LIBRARY_BIN%\\\\clSPARSE.dll exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\clSPARSE.lib exit 1  # [win]\n\nabout:\n  home: https://github.com/clMathLibraries/{{ name }}\n  license: Apache 2.0\n  license_file: LICENSE\n  summary: A software library containing Sparse functions written in OpenCL\n\nextra:\n  recipe-maintainers:\n    - inducer\n    - jakirkham\n",
  "req": {
   "__set__": true,
@@ -415,7 +434,7 @@
    ]
   }
  },
- "smithy_version": "No azure token. Create a token and\nput it in ~/.conda-smithy/azure.token\n3.7.10",
+ "smithy_version": "3.21.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
