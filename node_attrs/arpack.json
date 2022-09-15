@@ -272,18 +272,18 @@
    "summary": "Fortran77 subroutines designed to solve large scale eigenvalue problems"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
-    "arpack",
-    "arpack",
-    "arpack"
+    "arpack mpi_mpich_*",
+    "arpack nompi_*",
+    "arpack mpi_openmpi_*"
    ],
    "script_env": [
     "DMPI=ON",
     "DMPI=OFF",
     "DMPI=ON"
    ],
-   "string": "mpi_openmpi_h1234567_0"
+   "string": "mpi_openmpi_h1234567_1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -391,18 +391,18 @@
    "summary": "Fortran77 subroutines designed to solve large scale eigenvalue problems"
   },
   "build": {
-   "number": "100",
+   "number": "101",
    "run_exports": [
-    "arpack",
-    "arpack",
-    "arpack"
+    "arpack mpi_openmpi_*",
+    "arpack mpi_mpich_*",
+    "arpack nompi_*"
    ],
    "script_env": [
     "DMPI=ON",
     "DMPI=ON",
     "DMPI=OFF"
    ],
-   "string": "nompi_h1234567_100"
+   "string": "nompi_h1234567_101"
   },
   "extra": {
    "recipe-maintainers": [
@@ -510,18 +510,18 @@
    "summary": "Fortran77 subroutines designed to solve large scale eigenvalue problems"
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "run_exports": [
-    "arpack",
-    "arpack",
-    "arpack"
+    "arpack nompi_*",
+    "arpack mpi_mpich_*",
+    "arpack mpi_openmpi_*"
    ],
    "script_env": [
     "DMPI=OFF",
     "DMPI=ON",
     "DMPI=ON"
    ],
-   "string": "mpi_openmpi_h1234567_0"
+   "string": "mpi_openmpi_h1234567_1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -629,22 +629,22 @@
    "summary": "Fortran77 subroutines designed to solve large scale eigenvalue problems"
   },
   "build": {
-   "number": "100",
+   "number": "101",
    "run_exports": [
-    "arpack",
-    "arpack",
-    "arpack",
-    "arpack",
-    "arpack",
-    "arpack",
-    "arpack",
-    "arpack",
-    "arpack",
-    "arpack",
-    "arpack",
-    "arpack",
-    "arpack",
-    "arpack"
+    "arpack mpi_mpich_*",
+    "arpack nompi_*",
+    "arpack mpi_openmpi_*",
+    "arpack mpi_openmpi_*",
+    "arpack mpi_mpich_*",
+    "arpack nompi_*",
+    "arpack nompi_*",
+    "arpack mpi_mpich_*",
+    "arpack mpi_openmpi_*",
+    "arpack mpi_mpich_*",
+    "arpack mpi_openmpi_*",
+    "arpack nompi_*",
+    "arpack nompi_*",
+    "arpack nompi_*"
    ],
    "script_env": [
     "DMPI=ON",
@@ -662,7 +662,7 @@
     "DMPI=OFF",
     "DMPI=OFF"
    ],
-   "string": "nompi_h1234567_100"
+   "string": "nompi_h1234567_101"
   },
   "extra": {
    "recipe-maintainers": [
@@ -888,18 +888,18 @@
    "summary": "Fortran77 subroutines designed to solve large scale eigenvalue problems"
   },
   "build": {
-   "number": "100",
+   "number": "101",
    "run_exports": [
-    "arpack",
-    "arpack",
-    "arpack"
+    "arpack mpi_mpich_*",
+    "arpack mpi_openmpi_*",
+    "arpack nompi_*"
    ],
    "script_env": [
     "DMPI=ON",
     "DMPI=ON",
     "DMPI=OFF"
    ],
-   "string": "nompi_h1234567_100"
+   "string": "nompi_h1234567_101"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1007,14 +1007,14 @@
    "summary": "Fortran77 subroutines designed to solve large scale eigenvalue problems"
   },
   "build": {
-   "number": "100",
+   "number": "101",
    "run_exports": [
-    "arpack"
+    "arpack nompi_*"
    ],
    "script_env": [
     "DMPI=OFF"
    ],
-   "string": "nompi_h1234567_100"
+   "string": "nompi_h1234567_101"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1087,7 +1087,7 @@
   ]
  },
  "pinning_version": "2021.03.04.15.24.59",
- "raw_meta_yaml": "{% set version = \"3.8.0\" %}\n{% set build = 0 %}\n\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n\n{% if mpi == 'nompi' %}\n# prioritize nompi variant via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: arpack\n  version: {{ version }}\n\nsource:\n  fn: arpack-{{ version }}.tar.gz\n  url: https://github.com/opencollab/arpack-ng/archive/{{ version }}.tar.gz\n  sha256: ada5aeb3878874383307239c9235b716a8a170c6d096a6625bfd529844df003d\n\nbuild:\n  number: {{ build }}\n  # Per https://conda-forge.org/docs/maintainer/knowledge_base.html#preferring-a-provider-usually-nompi\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `pkg * mpi_mpich_*` for mpich\n  # `pkg * mpi_*` for any mpi\n  # `pkg * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: \"{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\"\n  run_exports:\n    - {{ pin_subpackage('arpack', max_pin='x.x') }}\n  script_env:\n   - DMPI=ON  # [mpi != 'nompi']\n   - DMPI=OFF  # [mpi == 'nompi']\n\nrequirements:\n  build:\n    - cmake\n    - make  # [unix]\n    - {{ compiler('fortran') }}  # [unix]\n    - {{ compiler('c') }}  # [unix]\n    - {{ compiler('cxx') }}  # [unix]\n    - {{ compiler('m2w64_fortran') }}  # [win]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - {{ compiler('m2w64_cxx') }}  # [win]\n  host:\n    - libblas\n    - liblapack\n    - {{ mpi }}  # [mpi != 'nompi']\n  run:\n    - {{ mpi }}  # [mpi != 'nompi']\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libarpack.a  # [unix]\n    - test -f ${PREFIX}/lib/libarpack${SHLIB_EXT}  # [unix]\n    - test -f ${PREFIX}/include/arpack/arpack.hpp  # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\mingw-w64\\\\lib\\\\libarpack.a exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\mingw-w64\\\\lib\\\\libarpack.dll.a exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\mingw-w64\\\\bin\\\\libarpack.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\mingw-w64\\\\include\\\\arpack\\\\arpack.hpp exit 1  # [win]\n\nabout:\n  home: https://github.com/opencollab/arpack-ng\n  license: BSD-3-Clause\n  license_file: COPYING\n  summary: Fortran77 subroutines designed to solve large scale eigenvalue problems\n\nextra:\n  recipe-maintainers:\n    - jschueller\n    - mrakitin\n",
+ "raw_meta_yaml": "{% set version = \"3.8.0\" %}\n{% set build = 1 %}\n\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n\n{% if mpi == 'nompi' %}\n# prioritize nompi variant via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: arpack\n  version: {{ version }}\n\nsource:\n  fn: arpack-{{ version }}.tar.gz\n  url: https://github.com/opencollab/arpack-ng/archive/{{ version }}.tar.gz\n  sha256: ada5aeb3878874383307239c9235b716a8a170c6d096a6625bfd529844df003d\n\nbuild:\n  number: {{ build }}\n  # Per https://conda-forge.org/docs/maintainer/knowledge_base.html#preferring-a-provider-usually-nompi\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `pkg * mpi_mpich_*` for mpich\n  # `pkg * mpi_*` for any mpi\n  # `pkg * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: \"{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\"\n  run_exports:\n    - {{ pin_subpackage('arpack', max_pin='x.x') }} {{ mpi_prefix }}_*\n  script_env:\n   - DMPI=ON  # [mpi != 'nompi']\n   - DMPI=OFF  # [mpi == 'nompi']\n\nrequirements:\n  build:\n    - cmake\n    - make  # [unix]\n    - {{ compiler('fortran') }}  # [unix]\n    - {{ compiler('c') }}  # [unix]\n    - {{ compiler('cxx') }}  # [unix]\n    - {{ compiler('m2w64_fortran') }}  # [win]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - {{ compiler('m2w64_cxx') }}  # [win]\n  host:\n    - libblas\n    - liblapack\n    - {{ mpi }}  # [mpi != 'nompi']\n  run:\n    - {{ mpi }}  # [mpi != 'nompi']\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libarpack.a  # [unix]\n    - test -f ${PREFIX}/lib/libarpack${SHLIB_EXT}  # [unix]\n    - test -f ${PREFIX}/include/arpack/arpack.hpp  # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\mingw-w64\\\\lib\\\\libarpack.a exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\mingw-w64\\\\lib\\\\libarpack.dll.a exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\mingw-w64\\\\bin\\\\libarpack.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\mingw-w64\\\\include\\\\arpack\\\\arpack.hpp exit 1  # [win]\n\nabout:\n  home: https://github.com/opencollab/arpack-ng\n  license: BSD-3-Clause\n  license_file: COPYING\n  summary: Fortran77 subroutines designed to solve large scale eigenvalue problems\n\nextra:\n  recipe-maintainers:\n    - jschueller\n    - mrakitin\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1193,14 +1193,14 @@
    "summary": "Fortran77 subroutines designed to solve large scale eigenvalue problems"
   },
   "build": {
-   "number": "100",
+   "number": "101",
    "run_exports": [
-    "arpack"
+    "arpack nompi_*"
    ],
    "script_env": [
     "DMPI=OFF"
    ],
-   "string": "nompi_h1234567_100"
+   "string": "nompi_h1234567_101"
   },
   "extra": {
    "recipe-maintainers": [
