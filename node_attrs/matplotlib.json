@@ -1052,25 +1052,27 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1058301564.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.6.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
- "bad": {
-  "exception": "Command 'git diff --name-only 2e211a7b75a15bc65a86321556eb2628b895bd0c...HEAD' returned non-zero exit status 128.",
-  "traceback": [
-   "Traceback (most recent call last):",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1150, in _run_migrator",
-   "    migrator_uid, pr_json = run(",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 309, in run",
-   "    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd",
-   "    c.check_returncode()",
-   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode",
-   "    raise CalledProcessError(self.returncode, self.args, self.stdout,",
-   "subprocess.CalledProcessError: Command 'git diff --name-only 2e211a7b75a15bc65a86321556eb2628b895bd0c...HEAD' returned non-zero exit status 128.",
-   ""
-  ]
- },
+ "bad": false,
  "branch": "main",
  "conda-forge.yml": {
   "bot": {
@@ -5575,7 +5577,7 @@
   "3.5.1": 1,
   "3.5.2": 1,
   "3.5.3": 1,
-  "3.6.0": 1
+  "3.6.0": 2
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -6464,14 +6466,12 @@
    "matplotlib-base"
   ]
  },
- "pinning_version": "2022.08.25.12.06.07",
+ "pinning_version": "2022.09.13.20.27.40",
  "pre_pr_migrator_attempts": {
-  "python39": 1,
-  "version": 1
+  "python39": 1
  },
  "pre_pr_migrator_status": {
-  "python39": "not solvable: ['Encountered problems while solving.\\nProblem: package numpy-1.19.0-py36h3849536_0 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n']",
-  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3065385354\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1150, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 309, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only 2e211a7b75a15bc65a86321556eb2628b895bd0c...HEAD' returned non-zero exit status 128.\n"
+  "python39": "not solvable: ['Encountered problems while solving.\\nProblem: package numpy-1.19.0-py36h3849536_0 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n']"
  },
  "raw_meta_yaml": "# Full credit goes to https://github.com/conda/conda-recipes for providing this recipe.\n# It has been subsequently adapted for automated building with conda-forge.\n\n{% set version = \"3.5.3\" %}\n\npackage:\n  name: matplotlib-suite\n  version: {{ version }}\n\nsource:\n  url: https://github.com/matplotlib/matplotlib/archive/v{{ version }}.tar.gz\n  sha256: 9d6ee7190fde3cb0c6285d462a0258c9735a72c7b532321a3983e05076aa41dc\n\nbuild:\n  number: 2\n\noutputs:\n  - name: matplotlib-base\n    script: build_base.bat  # [win]\n    script: build_base.sh  # [not win]\n    build:\n      skip: true  # [py<37]\n      ignore_run_exports_from:\n        - zlib\n    requirements:\n      build:\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n        - numpy                                  # [build_platform != target_platform]\n        - pkg-config  # [not win]\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n      host:\n        - python\n        - pip\n        - certifi>=2020.06.20\n        - freetype\n        # freetype.pc requires zlib.pc\n        - zlib\n        - numpy\n        - setuptools_scm>=4\n        - setuptools_scm_git_archive\n        - tk  # [linux]\n      run:\n        - python\n        - {{ pin_compatible('numpy') }}\n        - numpy >=1.17\n        - certifi >=2020.06.20\n        - cycler >=0.10\n        - python-dateutil >=2.7\n        - pillow >=6.2.0\n        - fonttools >=4.22.0\n        - freetype\n        - packaging >=20.0\n        - pyparsing >=2.2.1\n        - tk  # [linux]\n        - kiwisolver >=1.0.1\n    test:\n      imports:\n        - matplotlib\n        - matplotlib.pyplot\n        - matplotlib._contour\n        - matplotlib._image\n        - matplotlib._path\n        - matplotlib._qhull\n        - matplotlib._tri\n        - matplotlib._ttconv\n        - matplotlib.backends._backend_agg\n        - matplotlib.ft2font\n        - matplotlib.backends._tkagg  # [not win]\n        - mpl_toolkits\n        - pylab\n\n  - name: matplotlib\n    build:\n      skip: true  # [py<37]\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - pyqt  # [not osx and not aarch64 and not ppc64le and python_impl == \"cpython\"]\n        - tornado\n        - {{ pin_subpackage('matplotlib-base', max_pin=\"x.x.x\") }}\n    test:\n      imports:\n        - matplotlib\n\nabout:\n  home: http://matplotlib.org/\n  license: LicenseRef-PSF-based\n  license_url: http://matplotlib.sourceforge.net/users/license.html\n  license_family: PSF\n  license_file: LICENSE/LICENSE\n  summary: Publication quality figures in Python\n  description: |\n    matplotlib is a python 2D plotting library which produces publication\n    quality figures in a variety of hardcopy formats and interactive\n    environments across platforms. matplotlib can be used in Python scripts,\n    the Python and IPython shell (ala MATLAB or Mathematica), web\n    application servers, and six graphical user interface toolkits.\n  dev_url: https://github.com/matplotlib/matplotlib/\n  doc_url: http://matplotlib.org/contents.html\n\nextra:\n  recipe-maintainers:\n    - mdboom\n    - ocefpaf\n    - pelson\n    - tacaswell\n    - dopplershift\n",
  "req": {
