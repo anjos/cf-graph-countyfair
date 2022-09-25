@@ -44,7 +44,7 @@
    "summary": "Solves the Kohn-Sham equation as a generalized eigenvalue problem for a fixed Hamiltonian. It implements the orbital minimization method (OMM), which works within a density matrix formalism."
   },
   "build": {
-   "number": "102",
+   "number": "2",
    "run_exports": [
     "libOMM * mpi_mpich_*",
     "libOMM * mpi_openmpi_*"
@@ -59,21 +59,21 @@
     "make -j ${CPU_COUNT:-1}",
     "make install",
     "set -ex",
+    "pushd libOMM && bash autogen.sh && popd",
+    "LINALG_LIBS=\"-llapack -lblas\"",
+    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
+    "make -j ${CPU_COUNT:-1}",
+    "make install",
+    "set -ex",
     "CC=\"$PREFIX/bin/mpicc\" FC=\"$PREFIX/bin/mpifort\"",
     "pushd libOMM && bash autogen.sh && popd",
     "LINALG_LIBS=\"-llapack -lblas\"",
     "LINALG_LIBS=\"-lscalapack ${LINALG_LIBS}\"",
     "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
     "make -j ${CPU_COUNT:-1}",
-    "make install",
-    "set -ex",
-    "pushd libOMM && bash autogen.sh && popd",
-    "LINALG_LIBS=\"-llapack -lblas\"",
-    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
-    "make -j ${CPU_COUNT:-1}",
     "make install"
    ],
-   "string": "nompi_h1234567_102"
+   "string": "mpi_openmpi_h1234567_2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -119,12 +119,12 @@
     "scalapack",
     "libblas",
     "liblapack",
+    "matrixswitch * nompi_*",
+    "libblas",
+    "liblapack",
     "openmpi",
     "matrixswitch * mpi_openmpi_*",
     "scalapack",
-    "libblas",
-    "liblapack",
-    "matrixswitch * nompi_*",
     "libblas",
     "liblapack"
    ],
@@ -132,10 +132,10 @@
     "mpich",
     "matrixswitch * mpi_mpich_*",
     "scalapack",
+    "matrixswitch * nompi_*",
     "openmpi",
     "matrixswitch * mpi_openmpi_*",
-    "scalapack",
-    "matrixswitch * nompi_*"
+    "scalapack"
    ]
   },
   "source": {
@@ -221,8 +221,8 @@
   "build": {
    "number": "102",
    "run_exports": [
-    "libOMM * mpi_mpich_*",
-    "libOMM * mpi_openmpi_*"
+    "libOMM * mpi_openmpi_*",
+    "libOMM * mpi_mpich_*"
    ],
    "script": [
     "set -ex",
@@ -289,13 +289,13 @@
     "libgomp"
    ],
    "host": [
-    "mpich",
-    "matrixswitch * mpi_mpich_*",
+    "openmpi",
+    "matrixswitch * mpi_openmpi_*",
     "scalapack",
     "libblas",
     "liblapack",
-    "openmpi",
-    "matrixswitch * mpi_openmpi_*",
+    "mpich",
+    "matrixswitch * mpi_mpich_*",
     "scalapack",
     "libblas",
     "liblapack",
@@ -304,11 +304,11 @@
     "liblapack"
    ],
    "run": [
-    "mpich",
-    "matrixswitch * mpi_mpich_*",
-    "scalapack",
     "openmpi",
     "matrixswitch * mpi_openmpi_*",
+    "scalapack",
+    "mpich",
+    "matrixswitch * mpi_mpich_*",
     "scalapack",
     "matrixswitch * nompi_*"
    ]
@@ -396,21 +396,21 @@
   "build": {
    "number": "2",
    "run_exports": [
-    "libOMM * mpi_openmpi_*",
-    "libOMM * mpi_mpich_*"
+    "libOMM * mpi_mpich_*",
+    "libOMM * mpi_openmpi_*"
    ],
    "script": [
+    "set -ex",
+    "pushd libOMM && bash autogen.sh && popd",
+    "LINALG_LIBS=\"-llapack -lblas\"",
+    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
+    "make -j ${CPU_COUNT:-1}",
+    "make install",
     "set -ex",
     "CC=\"$PREFIX/bin/mpicc\" FC=\"$PREFIX/bin/mpifort\"",
     "pushd libOMM && bash autogen.sh && popd",
     "LINALG_LIBS=\"-llapack -lblas\"",
     "LINALG_LIBS=\"-lscalapack ${LINALG_LIBS}\"",
-    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
-    "make -j ${CPU_COUNT:-1}",
-    "make install",
-    "set -ex",
-    "pushd libOMM && bash autogen.sh && popd",
-    "LINALG_LIBS=\"-llapack -lblas\"",
     "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
     "make -j ${CPU_COUNT:-1}",
     "make install",
@@ -423,7 +423,7 @@
     "make -j ${CPU_COUNT:-1}",
     "make install"
    ],
-   "string": "mpi_mpich_h1234567_2"
+   "string": "mpi_openmpi_h1234567_2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -464,27 +464,27 @@
     "libgomp"
    ],
    "host": [
-    "openmpi",
-    "matrixswitch * mpi_openmpi_*",
-    "scalapack",
-    "libblas",
-    "liblapack",
     "matrixswitch * nompi_*",
     "libblas",
     "liblapack",
     "mpich",
     "matrixswitch * mpi_mpich_*",
+    "scalapack",
+    "libblas",
+    "liblapack",
+    "openmpi",
+    "matrixswitch * mpi_openmpi_*",
     "scalapack",
     "libblas",
     "liblapack"
    ],
    "run": [
-    "openmpi",
-    "matrixswitch * mpi_openmpi_*",
-    "scalapack",
     "matrixswitch * nompi_*",
     "mpich",
     "matrixswitch * mpi_mpich_*",
+    "scalapack",
+    "openmpi",
+    "matrixswitch * mpi_openmpi_*",
     "scalapack"
    ]
   },
@@ -578,14 +578,14 @@
    "summary": "Solves the Kohn-Sham equation as a generalized eigenvalue problem for a fixed Hamiltonian. It implements the orbital minimization method (OMM), which works within a density matrix formalism."
   },
   "build": {
-   "number": "2",
+   "number": "102",
    "run_exports": [
     "libOMM * mpi_mpich_*",
     "libOMM * mpi_openmpi_*",
-    "libOMM * mpi_mpich_*",
-    "libOMM * mpi_openmpi_*",
     "libOMM * mpi_openmpi_*",
     "libOMM * mpi_mpich_*",
+    "libOMM * mpi_mpich_*",
+    "libOMM * mpi_openmpi_*",
     "libOMM * mpi_mpich_*",
     "libOMM * mpi_openmpi_*"
    ],
@@ -599,14 +599,6 @@
     "make -j ${CPU_COUNT:-1}",
     "make install",
     "set -ex",
-    "CC=\"$PREFIX/bin/mpicc\" FC=\"$PREFIX/bin/mpifort\"",
-    "pushd libOMM && bash autogen.sh && popd",
-    "LINALG_LIBS=\"-llapack -lblas\"",
-    "LINALG_LIBS=\"-lscalapack ${LINALG_LIBS}\"",
-    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
-    "make -j ${CPU_COUNT:-1}",
-    "make install",
-    "set -ex",
     "pushd libOMM && bash autogen.sh && popd",
     "LINALG_LIBS=\"-llapack -lblas\"",
     "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
@@ -629,12 +621,6 @@
     "make -j ${CPU_COUNT:-1}",
     "make install",
     "set -ex",
-    "pushd libOMM && bash autogen.sh && popd",
-    "LINALG_LIBS=\"-llapack -lblas\"",
-    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
-    "make -j ${CPU_COUNT:-1}",
-    "make install",
-    "set -ex",
     "CC=\"$PREFIX/bin/mpicc\" FC=\"$PREFIX/bin/mpifort\"",
     "pushd libOMM && bash autogen.sh && popd",
     "LINALG_LIBS=\"-llapack -lblas\"",
@@ -645,14 +631,6 @@
     "set -ex",
     "pushd libOMM && bash autogen.sh && popd",
     "LINALG_LIBS=\"-llapack -lblas\"",
-    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
-    "make -j ${CPU_COUNT:-1}",
-    "make install",
-    "set -ex",
-    "CC=\"$PREFIX/bin/mpicc\" FC=\"$PREFIX/bin/mpifort\"",
-    "pushd libOMM && bash autogen.sh && popd",
-    "LINALG_LIBS=\"-llapack -lblas\"",
-    "LINALG_LIBS=\"-lscalapack ${LINALG_LIBS}\"",
     "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
     "make -j ${CPU_COUNT:-1}",
     "make install",
@@ -675,11 +653,33 @@
     "pushd libOMM && bash autogen.sh && popd",
     "LINALG_LIBS=\"-llapack -lblas\"",
     "LINALG_LIBS=\"-lscalapack ${LINALG_LIBS}\"",
+    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
+    "make -j ${CPU_COUNT:-1}",
+    "make install",
+    "set -ex",
+    "CC=\"$PREFIX/bin/mpicc\" FC=\"$PREFIX/bin/mpifort\"",
+    "pushd libOMM && bash autogen.sh && popd",
+    "LINALG_LIBS=\"-llapack -lblas\"",
+    "LINALG_LIBS=\"-lscalapack ${LINALG_LIBS}\"",
+    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
+    "make -j ${CPU_COUNT:-1}",
+    "make install",
+    "set -ex",
+    "CC=\"$PREFIX/bin/mpicc\" FC=\"$PREFIX/bin/mpifort\"",
+    "pushd libOMM && bash autogen.sh && popd",
+    "LINALG_LIBS=\"-llapack -lblas\"",
+    "LINALG_LIBS=\"-lscalapack ${LINALG_LIBS}\"",
+    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
+    "make -j ${CPU_COUNT:-1}",
+    "make install",
+    "set -ex",
+    "pushd libOMM && bash autogen.sh && popd",
+    "LINALG_LIBS=\"-llapack -lblas\"",
     "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
     "make -j ${CPU_COUNT:-1}",
     "make install"
    ],
-   "string": "mpi_openmpi_h1234567_2"
+   "string": "nompi_h1234567_102"
   },
   "extra": {
    "recipe-maintainers": [
@@ -806,9 +806,25 @@
     "scalapack",
     "libblas",
     "liblapack",
+    "matrixswitch * nompi_*",
+    "libblas",
+    "liblapack",
     "openmpi",
     "matrixswitch * mpi_openmpi_*",
     "scalapack",
+    "libblas",
+    "liblapack",
+    "openmpi",
+    "matrixswitch * mpi_openmpi_*",
+    "scalapack",
+    "libblas",
+    "liblapack",
+    "mpich",
+    "matrixswitch * mpi_mpich_*",
+    "scalapack",
+    "libblas",
+    "liblapack",
+    "matrixswitch * nompi_*",
     "libblas",
     "liblapack",
     "matrixswitch * nompi_*",
@@ -824,25 +840,6 @@
     "scalapack",
     "libblas",
     "liblapack",
-    "matrixswitch * nompi_*",
-    "libblas",
-    "liblapack",
-    "openmpi",
-    "matrixswitch * mpi_openmpi_*",
-    "scalapack",
-    "libblas",
-    "liblapack",
-    "matrixswitch * nompi_*",
-    "libblas",
-    "liblapack",
-    "mpich",
-    "matrixswitch * mpi_mpich_*",
-    "scalapack",
-    "libblas",
-    "liblapack",
-    "matrixswitch * nompi_*",
-    "libblas",
-    "liblapack",
     "mpich",
     "matrixswitch * mpi_mpich_*",
     "scalapack",
@@ -851,6 +848,9 @@
     "openmpi",
     "matrixswitch * mpi_openmpi_*",
     "scalapack",
+    "libblas",
+    "liblapack",
+    "matrixswitch * nompi_*",
     "libblas",
     "liblapack"
    ],
@@ -858,9 +858,17 @@
     "mpich",
     "matrixswitch * mpi_mpich_*",
     "scalapack",
+    "matrixswitch * nompi_*",
     "openmpi",
     "matrixswitch * mpi_openmpi_*",
     "scalapack",
+    "openmpi",
+    "matrixswitch * mpi_openmpi_*",
+    "scalapack",
+    "mpich",
+    "matrixswitch * mpi_mpich_*",
+    "scalapack",
+    "matrixswitch * nompi_*",
     "matrixswitch * nompi_*",
     "mpich",
     "matrixswitch * mpi_mpich_*",
@@ -868,21 +876,13 @@
     "openmpi",
     "matrixswitch * mpi_openmpi_*",
     "scalapack",
-    "matrixswitch * nompi_*",
-    "openmpi",
-    "matrixswitch * mpi_openmpi_*",
-    "scalapack",
-    "matrixswitch * nompi_*",
-    "mpich",
-    "matrixswitch * mpi_mpich_*",
-    "scalapack",
-    "matrixswitch * nompi_*",
     "mpich",
     "matrixswitch * mpi_mpich_*",
     "scalapack",
     "openmpi",
     "matrixswitch * mpi_openmpi_*",
-    "scalapack"
+    "scalapack",
+    "matrixswitch * nompi_*"
    ]
   },
   "source": {
@@ -962,19 +962,13 @@
    "summary": "Solves the Kohn-Sham equation as a generalized eigenvalue problem for a fixed Hamiltonian. It implements the orbital minimization method (OMM), which works within a density matrix formalism."
   },
   "build": {
-   "number": "2",
+   "number": "102",
    "run_exports": [
     "libOMM * mpi_mpich_*",
     "libOMM * mpi_openmpi_*"
    ],
    "script": [
     "set -ex",
-    "pushd libOMM && bash autogen.sh && popd",
-    "LINALG_LIBS=\"-llapack -lblas\"",
-    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
-    "make -j ${CPU_COUNT:-1}",
-    "make install",
-    "set -ex",
     "CC=\"$PREFIX/bin/mpicc\" FC=\"$PREFIX/bin/mpifort\"",
     "pushd libOMM && bash autogen.sh && popd",
     "LINALG_LIBS=\"-llapack -lblas\"",
@@ -987,11 +981,17 @@
     "pushd libOMM && bash autogen.sh && popd",
     "LINALG_LIBS=\"-llapack -lblas\"",
     "LINALG_LIBS=\"-lscalapack ${LINALG_LIBS}\"",
+    "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
+    "make -j ${CPU_COUNT:-1}",
+    "make install",
+    "set -ex",
+    "pushd libOMM && bash autogen.sh && popd",
+    "LINALG_LIBS=\"-llapack -lblas\"",
     "libOMM/configure --prefix=$PREFIX --with-msw=$PREFIX LINALG_LIBS=\"${LINALG_LIBS}\"",
     "make -j ${CPU_COUNT:-1}",
     "make install"
    ],
-   "string": "mpi_openmpi_h1234567_2"
+   "string": "nompi_h1234567_102"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1032,9 +1032,6 @@
     "llvm-openmp"
    ],
    "host": [
-    "matrixswitch * nompi_*",
-    "libblas",
-    "liblapack",
     "mpich",
     "matrixswitch * mpi_mpich_*",
     "scalapack",
@@ -1043,17 +1040,20 @@
     "openmpi",
     "matrixswitch * mpi_openmpi_*",
     "scalapack",
+    "libblas",
+    "liblapack",
+    "matrixswitch * nompi_*",
     "libblas",
     "liblapack"
    ],
    "run": [
-    "matrixswitch * nompi_*",
     "mpich",
     "matrixswitch * mpi_mpich_*",
     "scalapack",
     "openmpi",
     "matrixswitch * mpi_openmpi_*",
-    "scalapack"
+    "scalapack",
+    "matrixswitch * nompi_*"
    ]
   },
   "source": {
