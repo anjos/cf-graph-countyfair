@@ -29,7 +29,7 @@ jobs:
 
       - name: install bot code
         run: |
-          mamba install -y -q pygithub requests git pytest
+          mamba install -y -q pygithub requests git
 
           git config --global user.name regro-cf-autotick-bot
           git config --global user.email 36490558+regro-cf-autotick-bot@users.noreply.github.com
@@ -42,15 +42,8 @@ jobs:
 
           git clone --depth=1 https://github.com/regro/cf-scripts.git
           pushd cf-scripts
-          export GIT_FULL_HASH=$(git rev-parse HEAD)
-          mamba create -n run_env --yes --quiet curl python=3.9
-          conda activate run_env
-          for i in `seq 1 10`; do
-            echo $i
-            mamba install --quiet --yes --file requirements/run || echo 'mamba install failed!'
-          done
           mamba install --quiet --yes --file requirements/run
-
+          mamba install --quiet --yes pytest
           python setup.py develop
           popd
 
@@ -59,6 +52,5 @@ jobs:
       - name: load graph
         run: |
           pushd cf-graph
-          conda activate run_env
           pytest -vv test_load_graph.py
           popd
