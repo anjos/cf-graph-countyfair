@@ -1,4 +1,7 @@
 # cf-graph
+
+[![tests](https://github.com/regro/cf-graph-countyfair/actions/workflows/tests.yaml/badge.svg)](https://github.com/regro/cf-graph-countyfair/actions/workflows/tests.yaml)
+
 Repo for holding the conda-forge dependency graph and its introspection.
 
 Note that this repos is mostly bot managed and operated.
