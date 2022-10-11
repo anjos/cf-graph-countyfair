@@ -182,6 +182,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1083473503.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "r-base42"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -682,13 +701,9 @@
    "r-irlba"
   ]
  },
- "pinning_version": "2022.10.05.18.50.28",
- "pre_pr_migrator_attempts": {
-  "r-base42": 2
- },
- "pre_pr_migrator_status": {
-  "r-base42": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3226603028\">bot CI job</a>): main: ['osx_64_r_base4.2: Encountered problems while solving:\\n  - nothing provides icu 54.* needed by r-base-3.3.2-0\\n']"
- },
+ "pinning_version": "2022.10.11.03.04.53",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"2.3.5\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-irlba\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/irlba_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/irlba/irlba_{{ version }}.tar.gz\n  sha256: 26fc8c0d36460e422ab77f43a597b8ec292eacd452628c54d34b8bf7d5269bb9\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 0\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - cross-r-base {{ r_base }}  # [build_platform != target_platform]\n    - r-matrix                   # [build_platform != target_platform]\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n  host:\n    - r-base\n    - r-matrix\n    - libblas\n    - liblapack\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - r-matrix\n\ntest:\n  commands:\n    - $R -e \"library('irlba')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('irlba')\\\"\"  # [win]\n\nabout:\n  home: https://CRAN.R-project.org/package=irlba\n  license: GPL-3.0-only\n  summary: Fast and memory efficient methods for truncated singular and eigenvalue decompositions and principal component analysis of large sparse or dense matrices.\n  license_family: GPL3\n  license_file:\n    - {{ environ[\"PREFIX\"] }}/lib/R/share/licenses/GPL-3\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n",
  "req": {
   "__set__": true,
