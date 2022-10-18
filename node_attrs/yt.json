@@ -474,6 +474,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1090010821.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "4.1.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -2455,7 +2472,8 @@
   "4.0.3": 1,
   "4.0.4": 2,
   "4.0.5": 1,
-  "4.1.0": 1
+  "4.1.0": 1,
+  "4.1.1": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -2945,7 +2963,7 @@
    "yt"
   ]
  },
- "pinning_version": "2022.10.06.21.48.30",
+ "pinning_version": "2022.10.17.17.07.36",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"4.1.0\" %}\n\npackage:\n  name: yt\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/y/yt/yt-{{ version }}.tar.gz\n  sha256: b9bc7d011d3f825ff702ee8f9ac8d479dfb728d202333af738f24c8474c5c154\n  patches:\n    - patches/force_cythonize.patch\n    - patches/crossc-openmp.patch  # [linux]\n    - patches/drop_iyt.patch  # [python_impl == 'pypy']\n\nbuild:\n  number: 0\n  skip: true  # [aarch64 and python_impl == 'pypy']\n  entry_points:\n    - yt = yt.utilities.command_line:run_main\n  script: {{ PYTHON }} -m pip install . -vv\n  script_env:\n    - OMP_NUM_THREADS=1\n    - MAX_BUILD_CORES=2\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - numpy                                  # [build_platform != target_platform]\n    - libgomp                                # [linux]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - python\n    - pip\n    - numpy\n    - cython >=0.24.0\n  run:\n    - python\n    - ipython >=1.0\n    - matplotlib-base !=3.4.2,>=2.1.0,<3.6\n    - more-itertools >=8.4\n    - numpy >=1.13.3\n    - packaging >=20.9\n    - pillow >=6.2.0\n    - pyparsing >=2.0.2\n    - setuptools >=19.6\n    - sympy >=1.2\n    - tomli >=1.2.3\n    - tomli-w >=0.4.0\n    - tqdm >=3.4.0\n    - unyt >=2.8.0\n    - cmyt >=0.2.2\n    - {{ pin_compatible('numpy') }}\n    - importlib-metadata >=1.4.0  # [py<38]\n    - typing-extensions >=4.2.0  # [py<38]\n\ntest:\n  imports:\n    - yt\n  commands:\n    - pip check\n    - yt --help\n  requires:\n    - pip\n\nabout:\n  home: http://yt-project.org/\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: COPYING.txt\n  summary: Analysis and visualization toolkit for volumetric data\n\nextra:\n  recipe-maintainers:\n    - matthewturk\n    - munkm\n    - xarthisius\n",
