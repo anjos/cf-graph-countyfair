@@ -35,6 +35,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1091454809.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.1_7"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -270,7 +287,8 @@
  "name": "r-mlecens",
  "new_version": "0.1_7",
  "new_version_attempts": {
-  "0.1_5": 1
+  "0.1_5": 1,
+  "0.1_7": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -378,7 +396,7 @@
    "r-mlecens"
   ]
  },
- "pinning_version": "2022.10.10.17.52.17",
+ "pinning_version": "2022.10.18.20.25.22",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"0.1-5\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-mlecens\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/MLEcens_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/MLEcens/MLEcens_{{ version }}.tar.gz\n  sha256: 0605393308e4b915e0ca9da2e7fc72b91745ca987046889e26ba51468807b431\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 1\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n    - cross-r-base {{ r_base }}    # [build_platform != target_platform]\n  host:\n    - r-base\n    - libblas\n    - liblapack\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - libblas\n    - liblapack\n\ntest:\n  commands:\n    - $R -e \"library('MLEcens')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('MLEcens')\\\"\"  # [win]\n\nabout:\n  home: http://stat.ethz.ch/~maathuis/\n  license: GPL-2.0-or-later\n  summary: This package contains functions to compute the nonparametric maximum likelihood estimator (MLE) for the bivariate distribution of (X,Y), when realizations of (X,Y) cannot be observed directly.  To be more precise, we consider the situation where we observe a set of rectangles that are known to contain the unobservable\n    realizations of (X,Y). We compute the MLE based on such a set of rectangles.  The methods can also be used for univariate censored data (see data set 'cosmesis'), and for censored data with competing risks (see data set 'menopause').  We also provide functions to visualize the observed data and the MLE.\n  license_family: GPL2\n  license_file:\n    - {{ environ[\"PREFIX\"] }}/lib/R/share/licenses/GPL-2\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n",
