@@ -607,7 +607,7 @@
    "summary": "A C++ platform to perform parallel computations of optimisation tasks (global and local) via the asynchronous generalized island model"
   },
   "build": {
-   "number": "5"
+   "number": "6"
   },
   "extra": {
    "recipe-maintainers": [
@@ -735,7 +735,7 @@
    "summary": "A C++ platform to perform parallel computations of optimisation tasks (global and local) via the asynchronous generalized island model"
   },
   "build": {
-   "number": "5"
+   "number": "6"
   },
   "extra": {
    "recipe-maintainers": [
@@ -863,7 +863,7 @@
    "summary": "A C++ platform to perform parallel computations of optimisation tasks (global and local) via the asynchronous generalized island model"
   },
   "build": {
-   "number": "5"
+   "number": "6"
   },
   "extra": {
    "recipe-maintainers": [
@@ -991,7 +991,7 @@
    "summary": "A C++ platform to perform parallel computations of optimisation tasks (global and local) via the asynchronous generalized island model"
   },
   "build": {
-   "number": "5"
+   "number": "6"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1418,7 +1418,7 @@
    "summary": "A C++ platform to perform parallel computations of optimisation tasks (global and local) via the asynchronous generalized island model"
   },
   "build": {
-   "number": "5"
+   "number": "6"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1546,7 +1546,7 @@
    "summary": "A C++ platform to perform parallel computations of optimisation tasks (global and local) via the asynchronous generalized island model"
   },
   "build": {
-   "number": "5"
+   "number": "6"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1680,7 +1680,7 @@
  "pre_pr_migrator_status": {
   "aarch64andppc64leaddition": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1229493326\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1143, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 193, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/arch.py\", line 122, in migrate\n    y = yaml_safe_load(f)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 77, in yaml_safe_load\n    return ruamel.yaml.YAML(typ=\"safe\", pure=True).load(stream)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/ruamel/yaml/main.py\", line 434, in load\n    return constructor.get_single_data()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/ruamel/yaml/constructor.py\", line 122, in get_single_data\n    return self.construct_document(node)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/ruamel/yaml/constructor.py\", line 132, in construct_document\n    for _dummy in generator:\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/ruamel/yaml/constructor.py\", line 722, in construct_yaml_map\n    value = self.construct_mapping(node)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/ruamel/yaml/constructor.py\", line 446, in construct_mapping\n    return BaseConstructor.construct_mapping(self, node, deep=deep)\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/ruamel/yaml/constructor.py\", line 264, in construct_mapping\n    if self.check_mapping_key(node, key_node, mapping, key, value):\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.9/site-packages/ruamel/yaml/constructor.py\", line 295, in check_mapping_key\n    raise DuplicateKeyError(*args)\nruamel.yaml.constructor.DuplicateKeyError: while constructing a mapping\n  in \"conda-forge.yml\", line 1, column 1\nfound duplicate key \"provider\" with value \"{}\" (original value: \"{}\")\n  in \"conda-forge.yml\", line 4, column 1\n\nTo suppress this check see:\n    http://yaml.readthedocs.io/en/latest/api.html#duplicate-keys\n\n"
  },
- "raw_meta_yaml": "{% set version = \"2.18.0\" %}\n\npackage:\n  name: pagmo\n  version: {{ version }}\n\nsource:\n  url: https://github.com/esa/pagmo2/archive/v{{ version }}.tar.gz\n  sha256: 5ad40bf3aa91857a808d6b632d9e1020341a33f1a4115d7a2b78b78fd063ae31\n\nbuild:\n  number: 5\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - cmake\n    - make    # [unix]\n\noutputs:\n  - name: pagmo\n    requirements:\n      host:\n        - eigen\n        - nlopt\n        - boost-cpp\n        - tbb-devel\n        - ipopt\n      run:\n        # NOTE: nlopt, tbb and ipopt\n        # use run_exports().\n        - {{ pin_compatible('boost-cpp', max_pin='x.x') }}\n    files:\n      - lib/libpagmo*{{ SHLIB_EXT }}   # [not win]\n      - lib/libpagmo.so.*              # [linux]\n      - lib/libpagmo.*.dylib           # [osx]\n      - Library/bin/pagmo.dll          # [win]\n    test:\n      commands:\n        - test -f $PREFIX/lib/libpagmo.so                                     # [linux]\n        - test -f $PREFIX/lib/libpagmo.dylib                                  # [osx]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\pagmo.dll exit 1               # [win]\n\n  - name: pagmo-devel\n    build:\n      run_exports:\n        # NOTE: don't need to list tbb, as\n        # the pagmo public headers do not\n        # use tbb (thus, a dependee of pagmo\n        # does not need to link to tbb).\n        # pagmo's API and ABI change at minor rev bumps.\n        - {{ pin_subpackage('pagmo', max_pin='x.x') }}\n        - {{ pin_compatible('boost-cpp', max_pin='x.x') }}\n        - {{ pin_compatible('nlopt', max_pin='x.x') }}\n        - {{ pin_compatible('ipopt', max_pin='x.x') }}\n    requirements:\n      host:\n        - eigen\n        - nlopt\n        - boost-cpp\n        - tbb-devel\n        - ipopt\n      run:\n        - {{ pin_subpackage(\"pagmo\", exact=True) }}\n        - eigen\n        - {{ pin_compatible('boost-cpp', max_pin='x.x') }}\n        - tbb-devel\n    files:\n      - include/pagmo            # [not win]\n      - lib/cmake/pagmo          # [not win]\n      - Library/include/pagmo    # [win]\n      - Library/lib/pagmo.lib    # [win]\n      - Library/lib/cmake/pagmo  # [win]\n    test:\n      commands:\n        - test -f $PREFIX/include/pagmo/config.hpp                            # [unix]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\pagmo\\\\config.hpp exit 1   # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\pagmo.lib exit 1               # [win]\n\nabout:\n  home: https://esa.github.io/pagmo2/\n  license: GPL-3.0-or-later OR LGPL-3.0-or-later\n  license_file: COPYING.lgpl3\n  summary: A C++ platform to perform parallel computations of optimisation tasks (global and local) via the asynchronous generalized island model\n\nextra:\n  recipe-maintainers:\n    - bluescarni\n    - darioizzo\n",
+ "raw_meta_yaml": "{% set version = \"2.18.0\" %}\n\npackage:\n  name: pagmo\n  version: {{ version }}\n\nsource:\n  url: https://github.com/esa/pagmo2/archive/v{{ version }}.tar.gz\n  sha256: 5ad40bf3aa91857a808d6b632d9e1020341a33f1a4115d7a2b78b78fd063ae31\n\nbuild:\n  number: 6\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - cmake\n    - make    # [unix]\n\noutputs:\n  - name: pagmo\n    requirements:\n      host:\n        - eigen\n        - nlopt\n        - boost-cpp\n        - tbb-devel\n        - ipopt\n      run:\n        # NOTE: nlopt, tbb and ipopt\n        # use run_exports().\n        - {{ pin_compatible('boost-cpp', max_pin='x.x') }}\n    files:\n      - lib/libpagmo*{{ SHLIB_EXT }}   # [not win]\n      - lib/libpagmo.so.*              # [linux]\n      - lib/libpagmo.*.dylib           # [osx]\n      - Library/bin/pagmo.dll          # [win]\n    test:\n      commands:\n        - test -f $PREFIX/lib/libpagmo.so                                     # [linux]\n        - test -f $PREFIX/lib/libpagmo.dylib                                  # [osx]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\pagmo.dll exit 1               # [win]\n\n  - name: pagmo-devel\n    build:\n      run_exports:\n        # NOTE: don't need to list tbb, as\n        # the pagmo public headers do not\n        # use tbb (thus, a dependee of pagmo\n        # does not need to link to tbb).\n        # pagmo's API and ABI change at minor rev bumps.\n        - {{ pin_subpackage('pagmo', max_pin='x.x') }}\n        - {{ pin_compatible('boost-cpp', max_pin='x.x') }}\n        - {{ pin_compatible('nlopt', max_pin='x.x') }}\n        - {{ pin_compatible('ipopt', max_pin='x.x') }}\n    requirements:\n      host:\n        - eigen\n        - nlopt\n        - boost-cpp\n        - tbb-devel\n        - ipopt\n      run:\n        - {{ pin_subpackage(\"pagmo\", exact=True) }}\n        - eigen\n        - {{ pin_compatible('boost-cpp', max_pin='x.x') }}\n        - tbb-devel\n    files:\n      - include/pagmo            # [not win]\n      - lib/cmake/pagmo          # [not win]\n      - Library/include/pagmo    # [win]\n      - Library/lib/pagmo.lib    # [win]\n      - Library/lib/cmake/pagmo  # [win]\n    test:\n      commands:\n        - test -f $PREFIX/include/pagmo/config.hpp                            # [unix]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\pagmo\\\\config.hpp exit 1   # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\pagmo.lib exit 1               # [win]\n\nabout:\n  home: https://esa.github.io/pagmo2/\n  license: GPL-3.0-or-later OR LGPL-3.0-or-later\n  license_file: COPYING.lgpl3\n  summary: A C++ platform to perform parallel computations of optimisation tasks (global and local) via the asynchronous generalized island model\n\nextra:\n  recipe-maintainers:\n    - bluescarni\n    - darioizzo\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1780,7 +1780,7 @@
    "summary": "A C++ platform to perform parallel computations of optimisation tasks (global and local) via the asynchronous generalized island model"
   },
   "build": {
-   "number": "5"
+   "number": "6"
   },
   "extra": {
    "recipe-maintainers": [
