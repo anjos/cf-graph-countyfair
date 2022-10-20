@@ -860,6 +860,48 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1093491010.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "branch": "v12",
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "urdfdom31"
+   },
+   "keys": [
+    "bot_rerun",
+    "branch",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1093509619.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "branch": "v12",
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy38"
+   },
+   "keys": [
+    "bot_rerun",
+    "branch",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -869,7 +911,8 @@
   "bot": {
    "abi_migration_branches": [
     "v9",
-    "v11"
+    "v11",
+    "v12"
    ]
   },
   "build_platform": {
@@ -3444,7 +3487,7 @@
    "sdformat13-python"
   ]
  },
- "pinning_version": "2022.10.12.23.16.12",
+ "pinning_version": "2022.10.19.23.15.01",
  "raw_meta_yaml": "{% set repo_name = \"sdformat\" %}\n{% set version = \"13.1.0\" %}\n{% set major_version = version.split('.')[0] %}\n{% set name = repo_name  + major_version %}\n{% set cxx_name = \"lib\" + name %}\n{% set python_name = name + \"-python\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/osrf/sdformat/archive/sdformat{{ major_version }}_{{ version }}.tar.gz\n    sha256: 4b40bf64bc7d3f22c89a2395c2802d5315a3fd5e5dbaf29b087c5c806180a9db\n    patches:\n      - standalone_bindings.patch\n      - 1183.patch\n\nbuild:\n  number: 0\n\noutputs:\n  - name: {{ cxx_name }}\n    script: build_cxx.sh  # [unix]\n    script: bld_cxx.bat  # [win]\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - {{ compiler('c') }}\n        - ninja                              # [not win]\n        - ruby                               # [not win]\n        - ruby 2.7                           # [win]\n        - cmake\n        - pkg-config\n      host:\n        - libgz-cmake3\n        - libgz-math7\n        - libgz-tools2\n        - libgz-utils2\n        - urdfdom\n        - tinyxml2\n\n    test:\n      commands:\n        - test -f ${PREFIX}/include/gz/sdformat{{ version.split('.')[0] }}/sdf/sdf.hh  # [not win]\n        - test -f ${PREFIX}/lib/libsdformat{{ version.split('.')[0] }}${SHLIB_EXT}  # [unix]\n        - test -f ${PREFIX}/lib/cmake/sdformat{{ version.split('.')[0] }}/sdformat{{ version.split('.')[0] }}-config.cmake  # [not win]\n        - if not exist %LIBRARY_INC%\\\\gz\\\\sdformat{{ version.split('.')[0] }}\\\\sdf\\\\sdf.hh exit 1  # [win]\n        - if not exist %LIBRARY_LIB%\\\\sdformat{{ version.split('.')[0] }}.lib exit 1  # [win]\n        - if not exist %LIBRARY_BIN%\\\\sdformat{{ version.split('.')[0] }}.dll exit 1  # [win]\n        - if not exist %LIBRARY_LIB%\\\\cmake\\\\sdformat{{ version.split('.')[0] }}\\\\sdformat{{ version.split('.')[0] }}-config.cmake exit 1  # [win]\n\n  - name: {{ python_name }}\n    script: build_py.sh  # [unix]\n    script: bld_py.bat  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - ninja\n        - cmake\n        - pkg-config\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n        - pybind11                               # [build_platform != target_platform]\n        - pybind11-abi                           # [build_platform != target_platform]\n        - pytest                                 # [build_platform != target_platform]\n      host:\n        - {{ pin_subpackage(cxx_name, exact=True) }}\n        - python\n        - pip\n        - pybind11\n        - pybind11-abi\n        - pytest\n      run:\n        - {{ pin_subpackage(cxx_name, exact=True) }}\n        - python\n        - gz-math7-python\n    test:\n      commands:\n        - pip check\n      requires:\n        - pip\n      imports:\n        - sdformat13\n\n  - name: {{ name }}\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n    requirements:\n      run:\n        - {{ pin_subpackage(cxx_name, exact=True) }}\n        - {{ pin_subpackage(python_name, max_pin='x.x.x') }}\n    test:\n      imports:\n        - sdformat13\n\n\nabout:\n  home: http://sdformat.org/\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: |\n    Simulation Description Format (SDF) parser and description files.\n\nextra:\n  recipe-maintainers:\n    - seanyen\n    - j-rivero\n    - conda-forge/ros-core\n    - Tobias-Fischer\n    - traversaro\n",
  "req": {
   "__set__": true,
