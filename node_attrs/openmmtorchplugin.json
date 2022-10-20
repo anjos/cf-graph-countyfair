@@ -56,7 +56,7 @@
    "summary": "OpenMM plugin to get forces for neural networks"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "rpaths": [
     "lib/",
     "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/lib/python3.10/site-packages/torch/lib",
@@ -97,7 +97,7 @@
     "openmmtorchplugin",
     "openmmtorchplugin"
    ],
-   "string": "cuda112py37h1234567_1"
+   "string": "cuda112py37h1234567_2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -389,7 +389,7 @@
    "summary": "OpenMM plugin to get forces for neural networks"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "rpaths": [
     "lib/",
     "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/lib/python3.10/site-packages/torch/lib",
@@ -430,7 +430,7 @@
     "openmmtorchplugin",
     "openmmtorchplugin"
    ],
-   "string": "cuda112py37h1234567_1"
+   "string": "cuda112py37h1234567_2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -686,7 +686,7 @@
   ]
  },
  "pinning_version": "2022.07.18.11.18.34",
- "raw_meta_yaml": "{% set name = \"openmmtorchplugin\" %}\n{% set version = \"1.0.0\" %}\n\n# see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion\n{% set torch_proc_type = \"cuda\" if cuda_compiler_version != \"None\" else \"cpu\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/SCMusson/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 1a9197c32209eaa37b9dcb1a7ef6ed30841ea5beed124b902485c20f5dd92021\n\nbuild:\n  number: 1\n  string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}   # [cuda_compiler_version != \"None\"]\n  string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}                                                 # [cuda_compiler_version == \"None\"]\n  skip: true  # [cuda_compiler_version in (undefined, 'None', '10.2')]\n  skip: true  # [not unix]\n  # Set rpaths we need to link against libtorch.so, but it is located in site-packages\n  rpaths:\n    - lib/\n    - {{ SP_DIR }}/torch/lib\n  run_exports:\n    - {{ pin_subpackage( name|lower ) }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]\n    - {{ cdt('mesa-libgl-devel') }}  # [linux]\n    - cmake\n    - make\n    - swig\n  host:\n    - openmm\n    - pip\n    - python\n    # First for global version pin, second for build variant\n    - pytorch\n    - pytorch =*={{ torch_proc_type }}*\n  run:\n    - {{ pin_compatible('openmm', max_pin='x.x') }}\n    - python\n  run_constrained:\n    - pytorch =*={{ torch_proc_type }}*\n\ntest:\n  imports:\n    - torchintegratorplugin\n  commands:\n    - test -f $PREFIX/include/TorchIntegratorKernels.h  # [unix]\nabout:\n  home: https://github.com/SCMusson/openmmtorchplugin\n  license: GPL-3.0-only\n  license_file: LICENSE\n  summary: OpenMM plugin to get forces for neural networks\n  description: |\n    This is a plugin for OpenMM that allows neural networks to \n    access force and energy. It is implemented with PyTorch.\n  doc_url: https://github.com/SCMusson/openmmtorchplugin\n  dev_url: https://github.com/SCMusson/openmmtorchplugin\n\nextra:\n  recipe-maintainers:\n    - SCMusson\n",
+ "raw_meta_yaml": "{% set name = \"openmmtorchplugin\" %}\n{% set version = \"1.0.0\" %}\n\n# see github.com/conda-forge/conda-forge.github.io/issues/1059 for naming discussion\n{% set torch_proc_type = \"cuda\" if cuda_compiler_version != \"None\" else \"cpu\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/SCMusson/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 1a9197c32209eaa37b9dcb1a7ef6ed30841ea5beed124b902485c20f5dd92021\n\nbuild:\n  number: 2\n  string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}   # [cuda_compiler_version != \"None\"]\n  string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}                                                 # [cuda_compiler_version == \"None\"]\n  skip: true  # [cuda_compiler_version in (undefined, 'None', '10.2')]\n  skip: true  # [not unix]\n  # Set rpaths we need to link against libtorch.so, but it is located in site-packages\n  rpaths:\n    - lib/\n    - {{ SP_DIR }}/torch/lib\n  run_exports:\n    - {{ pin_subpackage( name|lower ) }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]\n    - {{ cdt('mesa-libgl-devel') }}  # [linux]\n    - cmake\n    - make\n    - swig\n  host:\n    - openmm\n    - pip\n    - python\n    # First for global version pin, second for build variant\n    - pytorch\n    - pytorch =*={{ torch_proc_type }}*\n  run:\n    - {{ pin_compatible('openmm', max_pin='x.x') }}\n    - python\n  run_constrained:\n    - pytorch =*={{ torch_proc_type }}*\n\ntest:\n  imports:\n    - torchintegratorplugin\n  commands:\n    - test -f $PREFIX/include/TorchIntegratorKernels.h  # [unix]\nabout:\n  home: https://github.com/SCMusson/openmmtorchplugin\n  license: GPL-3.0-only\n  license_file: LICENSE\n  summary: OpenMM plugin to get forces for neural networks\n  description: |\n    This is a plugin for OpenMM that allows neural networks to \n    access force and energy. It is implemented with PyTorch.\n  doc_url: https://github.com/SCMusson/openmmtorchplugin\n  dev_url: https://github.com/SCMusson/openmmtorchplugin\n\nextra:\n  recipe-maintainers:\n    - SCMusson\n",
  "req": {
   "__set__": true,
   "elements": [
