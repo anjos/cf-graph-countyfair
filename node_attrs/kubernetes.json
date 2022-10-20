@@ -1235,6 +1235,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1094435816.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1879,7 +1896,7 @@
    "kubernetes-server"
   ]
  },
- "pinning_version": "2022.10.12.23.16.12",
+ "pinning_version": "2022.10.20.19.20.00",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"kubernetes\" %}\n{% set version = \"1.24.3\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/kubernetes/kubernetes/archive/v{{ version }}.tar.gz  # [not win]\n  sha256: 38331986b729a2ceaa87a42388c6de7852ad073267276238a6d6c6272e4769a6  # [not win]\n  patches:   # [not win]\n    - 0001-unset-conda-go-compiler.diff  # [not win]\n\n  url: https://dl.k8s.io/v{{ version }}/kubernetes-node-windows-amd64.tar.gz  # [win]\n  sha256: 9c0f6839b9c9085292d4aa4705807d81c4d8b2270fc8cd7ccb5c5ffac9defed8  # [win]\n\nbuild:\n  skip: true  # [osx and not arm64]\n  number: 0\n\nrequirements:\n  run:\n    - {{ pin_subpackage('kubernetes-client', exact=True) }}\n    - {{ pin_subpackage('kubernetes-node', exact=True) }}\n    - {{ pin_subpackage('kubernetes-server', exact=True) }}  # [unix]\n\n\ntest:\n  commands:\n    - kubectl\n\n    - kubelet --help\n    - kube-proxy --help\n    - kubeadm --help\n\n    - kube-apiserver --help  # [unix]\n    - kube-controller-manager --help  # [unix]\n    - kube-scheduler --help  # [unix]\n\noutputs:\n  - name: {{ name }}-client\n    script: client/build.sh  # [unix]\n    script: client/bld.bat  # [win]\n    test:\n      script: client/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }}  # [unix]\n        - {{ compiler('c') }}  # [unix]\n        - bash >=4.2  # [unix]\n        - make  # [unix]\n        - rsync  # [unix]\n        - jq  # [unix]\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      license_file: LICENSES/  # [win]\n      summary: Kubernetes client binaries\n\n  - name: {{ name }}-node\n    script: node/build.sh  # [unix]\n    script: node/bld.bat  # [win]\n    test:\n      script: node/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }}  # [unix]\n        - {{ compiler('c') }}  # [unix]\n        - bash >=4.2  # [unix]\n        - make  # [unix]\n        - rsync  # [unix]\n        - jq  # [unix]\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      license_file: LICENSES/  # [win]\n      summary: Kubernetes node binaries\n\n  - name: {{ name }}-server\n    build:\n      skip: true  # [not unix]\n    script: server/build.sh\n    test:\n      script: server/test.sh\n    requirements:\n      build:\n        - {{ compiler('cgo') }}\n        - {{ compiler('c') }}\n        - bash >=4.2\n        - make\n        - rsync\n        - jq\n      run:\n        - {{ pin_subpackage('kubernetes-node', exact=True) }}\n    about:\n      license: Apache-2.0\n      license_file: LICENSE\n      summary: Kubernetes server binaries\n\nabout:\n  home: https://www.kubernetes.io\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE  # [not win]\n  license_file: LICENSES/  # [win]\n  summary: Production-Grade Container Orchestration\n  doc_url: https://docs.kubernetes.io\n  dev_url: https://github.com/kubernetes/kubernetes\n\nextra:\n  recipe-maintainers:\n    - mxr-conda\n    - sodre\n    - dhirschfeld\n",
