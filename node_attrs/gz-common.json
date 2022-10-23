@@ -37,6 +37,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1096504501.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 2,
+    "migrator_version": 0,
+    "name": "ffmpeg5"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -568,7 +587,7 @@
    "libgz-common5"
   ]
  },
- "pinning_version": "2022.10.22.18.03.18",
+ "pinning_version": "2022.10.23.00.15.36",
  "raw_meta_yaml": "{% set component_name = \"common\" %}\n{% set repo_name = \"gz-\" + component_name %}\n{% set version = \"5.0.0\" %}\n{% set major_version = version.split('.')[0] %}\n{% set name = repo_name + major_version %}\n{% set component_version = component_name + major_version %}\n{% set cxx_name = \"lib\" + name %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/gazebosim/{{ repo_name }}/archive/{{ repo_name }}{{ major_version }}_{{ version }}.tar.gz\n    sha256: 046552ca440fd9b8bcb2900da4bd0b9eacc1a5561373bdfae10e99d41536b159\n    patches:\n      - librt_linkage.patch  # [linux]\n      - macro_path_binary_relocation.patch\n\nbuild:\n  number: 2\n\noutputs:\n  - name: {{ cxx_name }}\n    script: build_cxx.sh  # [unix]\n    script: bld_cxx.bat  # [win]\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - {{ compiler('c') }}\n        - ninja\n        - cmake\n        - pkg-config\n      host:\n        - libgz-math7\n        - libgz-cmake3\n        - libgz-utils2\n        - dlfcn-win32  # [win]\n        - libuuid      # [linux]\n        - freeimage\n        - gts\n        - tinyxml2\n        - glib\n        - ffmpeg\n        - libgdal\n        - assimp\n    test:\n      commands:\n        - test -f ${PREFIX}/include/gz/{{ component_version }}/gz/{{ component_name }}.hh  # [not win]\n        - test -f ${PREFIX}/lib/lib{{ name }}.so  # [linux]\n        - test -f ${PREFIX}/lib/lib{{ name }}.dylib  # [osx]\n        - test -f ${PREFIX}/lib/lib{{ name }}-graphics.so  # [linux]\n        - test -f ${PREFIX}/lib/lib{{ name }}-graphics.dylib  # [osx]\n        - test -f ${PREFIX}/lib/lib{{ name }}-av.so  # [linux]\n        - test -f ${PREFIX}/lib/lib{{ name }}-av.dylib  # [osx]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}-config.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\gz\\\\{{ component_version }}\\\\gz\\\\{{ component_name }}.hh exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ name }}.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ name }}.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ name }}-graphics.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ name }}-graphics.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ name }}-av.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ name }}-av.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\{{ name }}\\\\{{ name }}-config.cmake exit 1  # [win]\n\n  - name: {{ name }}\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n    requirements:\n      run:\n        - {{ pin_subpackage(cxx_name, exact=True) }}\n    test:\n      commands:\n        - test -f ${PREFIX}/include/gz/{{ component_version }}/gz/{{ component_name }}.hh  # [not win]\n        - test -f ${PREFIX}/lib/lib{{ name }}.so  # [linux]\n        - test -f ${PREFIX}/lib/lib{{ name }}.dylib  # [osx]\n        - test -f ${PREFIX}/lib/lib{{ name }}-graphics.so  # [linux]\n        - test -f ${PREFIX}/lib/lib{{ name }}-graphics.dylib  # [osx]\n        - test -f ${PREFIX}/lib/lib{{ name }}-av.so  # [linux]\n        - test -f ${PREFIX}/lib/lib{{ name }}-av.dylib  # [osx]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}-config.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\gz\\\\{{ component_version }}\\\\gz\\\\{{ component_name }}.hh exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ name }}.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ name }}.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ name }}-graphics.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ name }}-graphics.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ name }}-av.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ name }}-av.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\{{ name }}\\\\{{ name }}-config.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/gazebosim/{{ repo_name }}\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: 'An audio-visual library supports processing audio and video files, a graphics library can load a variety 3D mesh file formats into a generic in-memory representation, and the core library of Gazebo Common contains functionality that spans Base64 encoding/decoding to thread pools.'\n\nextra:\n  feedstock-name: {{ repo_name }}\n  recipe-maintainers:\n    - Tobias-Fischer\n    - traversaro\n",
  "req": {
   "__set__": true,
