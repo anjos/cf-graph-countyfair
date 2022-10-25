@@ -303,7 +303,7 @@
     "libuuid",
     "libuuid"
    ],
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "davix",
     "davix"
@@ -444,7 +444,7 @@
     "libuuid",
     "libuuid"
    ],
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "davix",
     "davix"
@@ -585,7 +585,7 @@
     "libuuid",
     "libuuid"
    ],
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "davix",
     "davix"
@@ -734,7 +734,7 @@
     "libuuid",
     "libuuid"
    ],
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "davix",
     "davix",
@@ -1074,7 +1074,7 @@
     "libuuid",
     "libuuid"
    ],
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "davix",
     "davix"
@@ -1215,7 +1215,7 @@
     "libuuid",
     "libuuid"
    ],
-   "number": "0",
+   "number": "1",
    "run_exports": [
     "davix",
     "davix"
@@ -1350,7 +1350,7 @@
  "pinning_version": "2022.10.24.19.50.07",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
- "raw_meta_yaml": "{% set name = \"davix\" %}\n{% set version = \"0_8_3\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version.replace('_', '.') }}\n\nsource:\n  url: https://github.com/cern-fts/davix/releases/download/R_{{ version }}/davix-{{ version.replace('_', '.') }}.tar.gz\n  sha256: 7e30b5541e08d32dbf5ae03c6bcabeaec063aec10a6647787822227b4541ae3e\n  patches:\n    - system-curl.patch\n    # set LIB_SUFFIX to empty to install everything in '/lib/'\n    - lib-suffix.patch\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    # https://abi-laboratory.pro/tracker/timeline/davix/\n    - {{ pin_subpackage('davix', max_pin='x.x') }}\n  ignore_run_exports:\n    - libuuid\n\nrequirements:\n  build:\n    - gnuconfig  # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make\n    - git\n    - python\n    - pkg-config\n    - gsoap\n  host:\n    - gsoap\n    - openssl\n    - curl\n    - libxml2\n    - libuuid\n    - zlib\n  run:\n    - openssl\n    - libcurl\n    - libxml2\n\ntest:\n  commands:\n    # We expect davix-ls to exit with 1 if everything is okay\n    - bash -c 'davix-ls --help && exit 3 || [ $? -eq 1 ]'\n    # Check the pkg-config file is as expected\n    - cat \"${PREFIX}/lib/pkgconfig/davix.pc\"\n    - grep -q \"${PREFIX}\" \"${PREFIX}/lib/pkgconfig/davix.pc\"\n    - bash -c 'grep -q \"lib64\" \"${PREFIX}/lib/pkgconfig/davix.pc\" && exit 3 || [ $? -eq 1 ]'\n\nabout:\n  home: https://dmc.web.cern.ch/projects/davix/home\n  license: LGPL-2.1-only\n  license_file: LICENSE\n  summary: High-performance data access client for HTTP-based protocols. (WebDAV / S3 / Microsoft Azure / HTTP)\n\n  description: |\n    The davix project aims to make file management over HTTP-based protocols\n    simple. The focus is on high-performance remote I/O and data management of\n    large collections of files. Currently, there is support for the WebDav,\n    Amazon S3, Microsoft Azure, and HTTP protocols.\n  doc_url: https://dmc-docs.web.cern.ch/dmc-docs/versions/docs/davix-epel/html/\n  dev_url: https://github.com/cern-it-sdc-id/davix\n\nextra:\n  recipe-maintainers:\n    - chrisburr\n    - egpbos\n    - henryiii\n",
+ "raw_meta_yaml": "{% set name = \"davix\" %}\n{% set version = \"0_8_3\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version.replace('_', '.') }}\n\nsource:\n  url: https://github.com/cern-fts/davix/releases/download/R_{{ version }}/davix-{{ version.replace('_', '.') }}.tar.gz\n  sha256: 7e30b5541e08d32dbf5ae03c6bcabeaec063aec10a6647787822227b4541ae3e\n  patches:\n    - system-curl.patch\n    # set LIB_SUFFIX to empty to install everything in '/lib/'\n    - lib-suffix.patch\n\nbuild:\n  number: 1\n  skip: true  # [win]\n  run_exports:\n    # https://abi-laboratory.pro/tracker/timeline/davix/\n    - {{ pin_subpackage('davix', max_pin='x.x') }}\n  ignore_run_exports:\n    - libuuid\n\nrequirements:\n  build:\n    - gnuconfig  # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make\n    - git\n    - python\n    - pkg-config\n    - gsoap\n  host:\n    - gsoap\n    - openssl\n    - curl\n    - libxml2\n    - libuuid\n    - zlib\n  run:\n    - openssl\n    - libcurl\n    - libxml2\n\ntest:\n  commands:\n    # We expect davix-ls to exit with 1 if everything is okay\n    - bash -c 'davix-ls --help && exit 3 || [ $? -eq 1 ]'\n    # Check the pkg-config file is as expected\n    - cat \"${PREFIX}/lib/pkgconfig/davix.pc\"\n    - grep -q \"${PREFIX}\" \"${PREFIX}/lib/pkgconfig/davix.pc\"\n    - bash -c 'grep -q \"lib64\" \"${PREFIX}/lib/pkgconfig/davix.pc\" && exit 3 || [ $? -eq 1 ]'\n\nabout:\n  home: https://dmc.web.cern.ch/projects/davix/home\n  license: LGPL-2.1-only\n  license_file: LICENSE\n  summary: High-performance data access client for HTTP-based protocols. (WebDAV / S3 / Microsoft Azure / HTTP)\n\n  description: |\n    The davix project aims to make file management over HTTP-based protocols\n    simple. The focus is on high-performance remote I/O and data management of\n    large collections of files. Currently, there is support for the WebDav,\n    Amazon S3, Microsoft Azure, and HTTP protocols.\n  doc_url: https://dmc-docs.web.cern.ch/dmc-docs/versions/docs/davix-epel/html/\n  dev_url: https://github.com/cern-it-sdc-id/davix\n\nextra:\n  recipe-maintainers:\n    - chrisburr\n    - egpbos\n    - henryiii\n",
  "req": {
   "__set__": true,
   "elements": [
