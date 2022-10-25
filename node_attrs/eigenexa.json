@@ -16,6 +16,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1098307368.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.12"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -249,9 +266,10 @@
   }
  },
  "name": "eigenexa",
- "new_version": "2.11",
+ "new_version": "2.12",
  "new_version_attempts": {
-  "2.11": 1
+  "2.11": 1,
+  "2.12": 1
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -260,7 +278,7 @@
    "eigenexa"
   ]
  },
- "pinning_version": "2021.12.09.14.59.11",
+ "pinning_version": "2022.10.24.19.50.07",
  "raw_meta_yaml": "{% set name = \"EigenExa\" %}\n{% set version = \"2.11\" %}\n{% set build = 0 %}\n{% set mpi = mpi or \"mpich\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://www.r-ccs.riken.jp/labs/lpnctrt/projects/{{ name|lower }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 87dee8ac13f410a007e82df2688fa7f143883229dac729fd20836f4a28fac43d\n  patches:\n    - omp.patch\n\nbuild:\n  number: {{ build }}\n  skip: true  # [win or osx]\n  script:\n    - set -ex\n    - export OMPI_MCA_plm=isolated OMPI_MCA_btl_vader_single_copy_mechanism=none OMPI_MCA_rmaps_base_oversubscribe=yes  # [mpi == \"openmpi\"]\n    - export CC=\"$PREFIX/bin/mpicc\" FC=\"$PREFIX/bin/mpifort\" F77=\"$PREFIX/bin/mpifort\"\n    - export FFLAGS=\"$FFLAGS -fopenmp\"  # [osx]\n    - ./bootstrap\n    - ./configure --prefix=$PREFIX --enable-mpi={{ mpi }}\n    - make\n    - make check  # [build_platform == target_platform]\n    - make install\n\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\n  run_exports:\n    - {{ name|lower }} * {{ mpi_prefix }}_*\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}\n    - automake\n    - autoconf\n    - make\n    - perl\n    - llvm-openmp  # [osx]\n    - libgomp  # [linux]\n  host:\n    - {{ mpi }}\n    - scalapack\n    - libblas\n    - liblapack\n  run:\n    - {{ mpi }}\n    - scalapack\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/lib{{ name }}${SHLIB_EXT}\n\nabout:\n  home: https://www.r-ccs.riken.jp/labs/lpnctrt/projects/eigenexa/index.html\n  license: BSD-2-Clause\n  license_file:\n    - LICENCE.txt\n  summary: Massively parallel implementations of direct, dense eigensolver\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
  "req": {
   "__set__": true,
@@ -321,7 +339,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.15.1",
+ "smithy_version": "3.21.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
