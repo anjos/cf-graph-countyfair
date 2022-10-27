@@ -351,6 +351,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1101309949.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 3,
+    "migrator_version": 0,
+    "name": "boost1780"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1569,7 +1588,7 @@
    "ldas-tools-framecpp"
   ]
  },
- "pinning_version": "2022.07.12.18.44.47",
+ "pinning_version": "2022.10.27.03.11.11",
  "raw_meta_yaml": "{% set name = \"ldas-tools-framecpp\" %}\n{% set version = \"2.9.1\" %}\n\n# dependency versions\n{% set ldas_tools_al_version = \"2.6.7\" %}\n{% set ldas_tools_cmake_version = \"1.2.3\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/{{ name }}-{{ version }}.tar.gz\n  sha256: 032d3f707c0c3bda5b6f9121e1eabde326cdd2dc377e95533062744e4a56b929\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(\"ldas-tools-framecpp\", max_pin=\"x.x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.6\n    - make  # [unix]\n    - pkg-config  # [unix]\n  host:\n    - boost-cpp\n    - gmock\n    - gtest\n    - ldas-tools-al >={{ ldas_tools_al_version }}\n    - ldas-tools-cmake >={{ ldas_tools_cmake_version }}\n    - openssl\n    - zlib\n  run:\n    - boost-cpp\n    - ldas-tools-al >={{ ldas_tools_al_version }}\n\ntest:\n  requires:\n    - pkg-config  # [unix]\n  commands:\n    # framecpp_sample creates Z-ilwd_test_frame-600000000-1.gwf\n    - framecpp_sample\n    - framecpp_checksum --verbose --checksum-file --checksum-frame --checksum-structure Z-ilwd_test_frame-600000000-1.gwf\n    - framecpp_compressor --compression-level 9 --output compressed.gwf Z-ilwd_test_frame-600000000-1.gwf\n    - framecpp_dump_channel --channel Z0:RAMPED_INT_2U_1 Z-ilwd_test_frame-600000000-1.gwf\n    - framecpp_dump_objects --silent Z-ilwd_test_frame-600000000-1.gwf\n    - framecpp_dump_toc Z-ilwd_test_frame-600000000-1.gwf\n    - framecpp_fix_metadata --output fixed.gwf Z-ilwd_test_frame-600000000-1.gwf\n    - framecpp_fracfg --channels Z0:RAMPED_INT_2U_1 --output fracfg.gwf Z-ilwd_test_frame-600000000-1.gwf\n    - framecpp_dump_toc fracfg.gwf\n    - framecpp_transform --help\n    - framecpp_verify --verbose Z-ilwd_test_frame-600000000-1.gwf\n    - pkg-config --print-errors --exact-version {{ version }} framecpp  # [unix]\n    - pkg-config --print-errors --exact-version {{ version }} framecpp_common  # [unix]\n    - pkg-config --print-errors --exact-version {{ version }} framecppc  # [unix]\n    - pkg-config --print-errors --exact-version {{ version }} framecpp3  # [unix]\n    - pkg-config --print-errors --exact-version {{ version }} framecpp4  # [unix]\n    - pkg-config --print-errors --exact-version {{ version }} framecpp6  # [unix]\n    - pkg-config --print-errors --exact-version {{ version }} framecpp7  # [unix]\n    - pkg-config --print-errors --exact-version {{ version }} framecpp8  # [unix]\n\nabout:\n  home: https://wiki.ligo.org/Computing/LDASTools\n  dev_url: https://git.ligo.org/ldastools/LDAS_Tools.git\n  doc_url: https://computing.docs.ligo.org/ldastools/LDAS_Tools/ldas-tools-framecpp/\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LDAS tools libframecpp toolkit runtime files\n  description: |\n    This provides the runtime libraries for the framecpp library.\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - emaros\n",
  "req": {
   "__set__": true,
@@ -1629,7 +1648,7 @@
    ]
   }
  },
- "smithy_version": "3.21.0",
+ "smithy_version": "3.21.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
