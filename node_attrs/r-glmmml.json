@@ -52,6 +52,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1101121126.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.1.4"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -287,7 +304,8 @@
  "new_version": "1.1.4",
  "new_version_attempts": {
   "1.1.2": 1,
-  "1.1.3": 1
+  "1.1.3": 1,
+  "1.1.4": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -394,7 +412,7 @@
    "r-glmmml"
   ]
  },
- "pinning_version": "2022.10.12.08.17.18",
+ "pinning_version": "2022.10.27.02.26.04",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"1.1.3\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-glmmml\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/glmmML_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/glmmML/glmmML_{{ version }}.tar.gz\n  sha256: 24e34f0834bded06d52cbd9cb025dc65ea2db2faa7dbee01d545aa33eea35e7c\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 1\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ compiler('fortran') }}        # [not win]\n    - {{ compiler('m2w64_fortran') }}  # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n    - cross-r-base {{ r_base }}    # [build_platform != target_platform]\n  host:\n    - r-base\n    - libblas\n    - libcblas\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n\ntest:\n  commands:\n    - $R -e \"library('glmmML')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('glmmML')\\\"\"  # [win]\n\nabout:\n  home: https://CRAN.R-project.org/package=glmmML\n  license: GPL-3.0-or-later\n  summary: Binomial and Poisson regression for clustered data, fixed and random effects with bootstrapping.\n  license_family: GPL3\n  license_file:\n    - {{ environ[\"PREFIX\"] }}/lib/R/share/licenses/GPL-3\n\nextra:\n  recipe-maintainers:\n    - izahn\n    - conda-forge/r\n",
