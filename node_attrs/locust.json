@@ -951,6 +951,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1103168134.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.13.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1176,7 +1193,7 @@
   }
  },
  "name": "locust",
- "new_version": "2.12.2",
+ "new_version": "2.13.0",
  "new_version_attempts": {
   "0.14.6": 1,
   "0.999": 1,
@@ -1199,6 +1216,7 @@
   "2.12.0": 1,
   "2.12.1": 1,
   "2.12.2": 1,
+  "2.13.0": 1,
   "2.2.0": 1,
   "2.2.1": 1,
   "2.2.2": 1,
@@ -1235,7 +1253,7 @@
    "locust"
   ]
  },
- "pinning_version": "2022.10.15.11.07.55",
+ "pinning_version": "2022.10.28.00.55.45",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"2.12.2\" %}\n\npackage:\n  name: locust\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/l/locust/locust-{{ version }}.tar.gz\n  sha256: 22cc509b4c03032a30e58a7267d5b051771ddb747e85e06c0fbda374b2837bfa\n\nbuild:\n  noarch: python\n  number: 0\n  script: {{ PYTHON }} -m pip install . -vv --no-deps\n  entry_points:\n    - locust = locust.main:main\n\nrequirements:\n  host:\n    - python >=3.7\n    - pip\n    - setuptools_scm >=6.2\n    - wheel\n  run:\n    - configargparse >=1.0\n    - flask >=2.0.0\n    - flask-basicauth >=0.2.0\n    - flask-cors >=3.0.10\n    - gevent >=20.12.1\n    - geventhttpclient >=2.0.2\n    - msgpack-python >=0.6.2\n    - psutil >=5.6.7\n    - python >=3.7\n    - pywin32-on-windows\n    - pyzmq >=22.2.1,!=23.0.0\n    - requests >=2.23.0\n    - roundrobin >=0.0.2\n    - typing-extensions >=3.7.4.3\n    - werkzeug >=2.0.0\n\n{% set skips = [\n  \"autostart_w_load_shape\",\n  \"custom_arguments\",\n  \"custom_exit_code\",\n  \"default_headless_spawn_options_with_shape\",\n  \"from_relative_path\",\n  \"headless_spawn_options_wo_run_time\",\n  \"no_content_length_streaming\",\n  \"skip_logging\",\n  \"web_options\",\n  \"webserver\",\n] %}\ntest:\n  requires:\n    - coverage\n    - cryptography\n    - mock\n    - pip\n    - pyquery\n    - pytest\n    - pytest-cov\n    - retry\n  imports:\n    - locust\n  commands:\n    - python -m pip check\n    - python -c \"import locust; assert locust.__version__ == '{{ PKG_VERSION }}'\"\n    - pip list | grep -E \"locust\\s*{{ PKG_VERSION | replace('.', '\\.') }}\"  # [unix]\n    - locust --version\n    - locust --help\n    # make empty test fixture folder\n    - python -c '__import__(\"pathlib\").Path(\"locust/test\").mkdir(parents=True)'\n    # TODO: restore coverage threshold, dynamic code getting skipped, throwing many warnings --cov-fail-under 80\n    - pytest --pyargs locust --cov locust -vv -k \"not ({{ \" or \".join(skips) }})\" --cov-report term-missing:skip-covered --no-cov-on-fail\nabout:\n  home: https://locust.io\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Website load testing framework\n  description: |\n    Locust is an easy-to-use, distributed, user load testing tool. It is\n    intended for load-testing web sites (or other systems) and figuring out how\n    many concurrent users a system can handle.\n  doc_url: https://docs.locust.io\n  dev_url: https://github.com/locustio/locust\n  doc_source_url: https://github.com/locustio/locust/blob/master/docs/index.rst\n\nextra:\n  recipe-maintainers:\n    - carlodri\n    - bollwyvl\n",
