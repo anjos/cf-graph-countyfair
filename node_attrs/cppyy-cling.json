@@ -695,7 +695,7 @@
    "summary": "A repackaging of Cling for Automatic Python-C++ Bindings"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -907,7 +907,7 @@
    "summary": "A repackaging of Cling for Automatic Python-C++ Bindings"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1119,7 +1119,7 @@
    "summary": "A repackaging of Cling for Automatic Python-C++ Bindings"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1331,10 +1331,12 @@
    "summary": "A repackaging of Cling for Automatic Python-C++ Bindings"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
+    "saraedum",
+    "isuruf",
     "saraedum",
     "isuruf",
     "saraedum",
@@ -1397,6 +1399,10 @@
   },
   "requirements": {
    "build": [
+    "cxx_compiler_stub",
+    "sed",
+    "cmake",
+    "make",
     "cxx_compiler_stub",
     "sed",
     "cmake",
@@ -1668,9 +1674,17 @@
     "zlib",
     "clangdev =9.0.1 root_62400*",
     "llvmdev ==9.0.1 cling*",
+    "llvm ==9.0.1",
+    "python",
+    "pip",
+    "zlib",
+    "clangdev =9.0.1 root_62400*",
+    "llvmdev ==9.0.1 cling*",
     "llvm ==9.0.1"
    ],
    "run": [
+    "cxx-compiler",
+    "python",
     "cxx-compiler",
     "python",
     "cxx-compiler",
@@ -1801,6 +1815,11 @@
     "clang-cpp.patch",
     "pri.patch",
     "thread.patch",
+    "use-dumb-setup.py.patch",
+    "clang-cpp.patch",
+    "pri.patch",
+    "thread.patch",
+    "system_dirs.patch",
     "use-dumb-setup.py.patch",
     "clang-cpp.patch",
     "pri.patch",
@@ -1986,6 +2005,11 @@
     "bash -c \"${SP_DIR}\"'/cppyy_backend/bin/rootcling; [[ $? == 1 ]]'",
     "which cppyy-generator",
     "cling-config --incdir",
+    "which genreflex",
+    "which rootcling",
+    "bash -c \"${SP_DIR}\"'/cppyy_backend/bin/rootcling; [[ $? == 1 ]]'",
+    "which cppyy-generator",
+    "cling-config --incdir",
     "which genreflex"
    ]
   }
@@ -2023,7 +2047,7 @@
    "summary": "A repackaging of Cling for Automatic Python-C++ Bindings"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -2241,10 +2265,12 @@
    "summary": "A repackaging of Cling for Automatic Python-C++ Bindings"
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
+    "saraedum",
+    "isuruf",
     "saraedum",
     "isuruf",
     "saraedum",
@@ -2259,6 +2285,10 @@
   },
   "requirements": {
    "build": [
+    "cxx_compiler_stub",
+    "sed",
+    "cmake",
+    "make",
     "cxx_compiler_stub",
     "sed",
     "cmake",
@@ -2290,9 +2320,17 @@
     "zlib",
     "clangdev =9.0.1 root_62400*",
     "llvmdev ==9.0.1 cling*",
+    "llvm ==9.0.1",
+    "python",
+    "pip",
+    "zlib",
+    "clangdev =9.0.1 root_62400*",
+    "llvmdev ==9.0.1 cling*",
     "llvm ==9.0.1"
    ],
    "run": [
+    "cxx-compiler",
+    "python",
     "cxx-compiler",
     "python",
     "cxx-compiler",
@@ -2317,6 +2355,11 @@
     "clang-cpp.patch",
     "pri.patch",
     "thread.patch",
+    "system_dirs.patch",
+    "use-dumb-setup.py.patch",
+    "clang-cpp.patch",
+    "pri.patch",
+    "thread.patch",
     "system_dirs.patch"
    ],
    "sha256": "9c077c2b31e002cae7c9f48b4b5863611e7f392353cc7c66317d2ff6503a392d",
@@ -2324,6 +2367,11 @@
   },
   "test": {
    "commands": [
+    "which rootcling",
+    "bash -c \"${SP_DIR}\"'/cppyy_backend/bin/rootcling; [[ $? == 1 ]]'",
+    "which cppyy-generator",
+    "cling-config --incdir",
+    "which genreflex",
     "which rootcling",
     "bash -c \"${SP_DIR}\"'/cppyy_backend/bin/rootcling; [[ $? == 1 ]]'",
     "which cppyy-generator",
@@ -2384,7 +2432,7 @@
  "pinning_version": "2022.10.28.00.55.45",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
- "raw_meta_yaml": "{% set name = \"cppyy-cling\" %}\n{% set version = \"6.27.0\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/c/cppyy-cling/cppyy-cling-{{ version }}.tar.gz\n  sha256: 9c077c2b31e002cae7c9f48b4b5863611e7f392353cc7c66317d2ff6503a392d\n  patches:\n    - use-dumb-setup.py.patch\n    # Disable use of llvm-config, a binary which we cannot invoke when cross-compiling\n    - cross.patch  # [build_platform != target_platform]\n    # Use pre-built generated files when we cannot invoke rootcling\n    - rootcling.patch  # [build_platform != target_platform]\n    - clang-cpp.patch\n    - pri.patch\n    - thread.patch\n    # Revert patch for non-macOS https://github.com/conda-forge/cppyy-cling-feedstock/pull/40#issuecomment-975781900\n    - system_dirs.patch  # [osx]\n\nbuild:\n  number: 1\n  skip: true  # [win]\n  # cross-python does not support pypy yet\n  skip: true  # [build_platform != target_platform and python_impl == \"pypy\"]\n\nrequirements:\n  build:\n    - python  # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n    - {{ compiler('cxx') }}\n    - sed\n    - cmake\n    - make  # [unix]\n  host:\n    - python\n    - pip\n    - zlib\n    - clangdev =9.0.1 root_62400*\n    # Use the same versions of llvm that clangdev's root variant uses\n    - llvmdev ==9.0.1 cling*\n    - llvm ==9.0.1\n  run:\n    # We need a C++ compiler at runtime to compile cppdef snippets and glue\n    # code and also so that all the standard headers are available. We do not\n    # need the exact compiler that was used during the build {{ compiler('cxx') }}\n    # but just any functional C++ compiler.\n    - cxx-compiler\n    - python\n\ntest:\n  commands:\n    - which rootcling\n    # calling rootcling directly without argument fails but it should find all\n    # its libraries (it exits with 134 on macOS otherwise.)\n    - bash -c \"${SP_DIR}\"'/cppyy_backend/bin/rootcling; [[ $? == 1 ]]'\n    - which cppyy-generator\n    - cling-config --incdir\n    - which genreflex\n\nabout:\n  home: https://pypi.org/project/cppyy-cling\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE.txt\n  summary: A repackaging of Cling for Automatic Python-C++ Bindings\n  description: |\n    A repackaging of Cling, the interactive C++ interpreter, including C/C++\n    wrappers that expose no further external headers or types.\n  doc_url: http://cppyy.readthedocs.io/\n  dev_url: https://bitbucket.org/wlav/cppyy-backend/src/master/cling/\n\nextra:\n  recipe-maintainers:\n    - saraedum\n    - isuruf\n",
+ "raw_meta_yaml": "{% set name = \"cppyy-cling\" %}\n{% set version = \"6.27.0\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/c/cppyy-cling/cppyy-cling-{{ version }}.tar.gz\n  sha256: 9c077c2b31e002cae7c9f48b4b5863611e7f392353cc7c66317d2ff6503a392d\n  patches:\n    - use-dumb-setup.py.patch\n    # Disable use of llvm-config, a binary which we cannot invoke when cross-compiling\n    - cross.patch  # [build_platform != target_platform]\n    # Use pre-built generated files when we cannot invoke rootcling\n    - rootcling.patch  # [build_platform != target_platform]\n    - clang-cpp.patch\n    - pri.patch\n    - thread.patch\n    # Revert patch for non-macOS https://github.com/conda-forge/cppyy-cling-feedstock/pull/40#issuecomment-975781900\n    - system_dirs.patch  # [osx]\n\nbuild:\n  number: 2\n  skip: true  # [win]\n  # cross-python does not support pypy yet\n  skip: true  # [build_platform != target_platform and python_impl == \"pypy\"]\n\nrequirements:\n  build:\n    - python  # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n    - {{ compiler('cxx') }}\n    - sed\n    - cmake\n    - make  # [unix]\n  host:\n    - python\n    - pip\n    - zlib\n    - clangdev =9.0.1 root_62400*\n    # Use the same versions of llvm that clangdev's root variant uses\n    - llvmdev ==9.0.1 cling*\n    - llvm ==9.0.1\n  run:\n    # We need a C++ compiler at runtime to compile cppdef snippets and glue\n    # code and also so that all the standard headers are available. We do not\n    # need the exact compiler that was used during the build {{ compiler('cxx') }}\n    # but just any functional C++ compiler.\n    - cxx-compiler\n    - python\n\ntest:\n  commands:\n    - which rootcling\n    # calling rootcling directly without argument fails but it should find all\n    # its libraries (it exits with 134 on macOS otherwise.)\n    - bash -c \"${SP_DIR}\"'/cppyy_backend/bin/rootcling; [[ $? == 1 ]]'\n    - which cppyy-generator\n    - cling-config --incdir\n    - which genreflex\n\nabout:\n  home: https://pypi.org/project/cppyy-cling\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE.txt\n  summary: A repackaging of Cling for Automatic Python-C++ Bindings\n  description: |\n    A repackaging of Cling, the interactive C++ interpreter, including C/C++\n    wrappers that expose no further external headers or types.\n  doc_url: http://cppyy.readthedocs.io/\n  dev_url: https://bitbucket.org/wlav/cppyy-backend/src/master/cling/\n\nextra:\n  recipe-maintainers:\n    - saraedum\n    - isuruf\n",
  "req": {
   "__set__": true,
   "elements": [
