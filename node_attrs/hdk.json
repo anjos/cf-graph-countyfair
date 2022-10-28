@@ -35,6 +35,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1102361703.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1632,7 +1651,7 @@
    "pyhdk"
   ]
  },
- "pinning_version": "2022.10.07.16.50.25",
+ "pinning_version": "2022.10.27.19.11.26",
  "raw_meta_yaml": "{% set version = \"0.2.0\" %}  # PEP 386\n{% set number = \"1\" %}\n{% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '11.0' %}\n{% set build_ext = \"cuda\" if cuda_enabled else \"cpu\" %}\n{% set build_string = \"h{}_{}\".format(PKG_HASH, number) %}\n{% set build_string_ext = \"{}_{}\".format(build_string, build_ext) %}\n{% set py_build_string_ext = \"py{}{}_{}\".format(CONDA_PY, build_string, build_ext) %}\n{% set py_build_string = \"py{}{}\".format(CONDA_PY, build_string) %}\n{% set install_base = \"opt/hdk\" %}\n{% set arrow_version = \"6.*\" %}\n{% set arrow_proc_version = \"3.*\" %}\n{% set llvm_version = \"12\" %}\n\npackage:\n  name: hdk\n  version: {{ version }}\n\nsource:\n  url: https://github.com/intel-ai/hdk/releases/download/v{{ version }}/v{{ version }}.full.tar.gz\n  sha256: 3343012ecc940f1378ddb4abe95169568246a2b2ca1d612c79698ec231d5b126\n\nbuild:\n  number: {{ number }}\n  skip: True  # [cuda_compiler_version not in (undefined, \"None\", \"11.0\")]\n  skip: True  # [not linux64]\n\noutputs:\n\n  - name: pyhdk\n    version: {{ version }}\n    script: build-hdk.sh\n    build:\n      string: {{ py_build_string_ext }}\n      skip: True  # [py not in (38, 39, 310)]\n      missing_dso_whitelist:\n        - '*/libcuda.*'  # [cuda_compiler_version not in (undefined, \"None\")]\n        - '*/libjvm.so'\n      track_features:\n        {{ \"- arrow-cuda\" if cuda_enabled else \"\" }}\n      rpaths:\n        - lib\n        # path for libjvm.so searching\n        - lib/server\n        - lib/jvm/lib/server\n        # fixes \"overlinking check failed\"\n        - {{ install_base }}/lib64\n    requirements:\n      build:\n        # c compiler is specified here to get run constraint pins correct, presumably..\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - {{ compiler(\"cuda\") }}  # [cuda_compiler_version not in (undefined, \"None\")]\n        - clangdev {{ llvm_version }}\n        # clang++ is used for generating the bytecodes of extension functions\n        - clangxx {{ llvm_version }}\n        - cmake\n        - llvmdev {{ llvm_version }}\n        - make\n        - maven\n        - ninja\n      host:\n        - arrow-cpp ={{ arrow_version }}=*{{ build_ext }}\n        - boost-cpp\n        - clangdev {{ llvm_version }}\n        - cython\n        - glog\n        - llvmdev {{ llvm_version }}\n        - llvm {{ llvm_version }}\n        - numpy\n        - pyarrow ={{ arrow_version }}=*{{ build_ext }}\n        - python\n        - tbb-devel\n      run:\n        - arrow-cpp-proc {{ arrow_proc_version }} {{ build_ext }}\n        - pyarrow ={{ arrow_version }}=*{{ build_ext }}\n        - python\n        - openjdk 17.*\n        - zlib\n        - tbb\n        - boost-cpp\n\n      run_constrained:\n        - arrow-cpp-proc {{ arrow_proc_version }} {{ build_ext }}\n        - cudatoolkit >=11.0  # [cuda_compiler_version not in (undefined, \"None\")]\n\n    test:\n      requires:\n        - pytest\n        - numpy\n        - pandas\n      imports:\n        - pyhdk\n      source_files:\n        - python/tests/test_pyhdk_bindings.py\n        - python/tests/test_pyhdk_sql.py\n      commands:\n        - python python/tests/test_pyhdk_bindings.py\n        - python python/tests/test_pyhdk_sql.py\n\n    about:\n      home: https://github.com/intel-ai/hdk\n      license: Apache-2.0\n      license_family: APACHE\n      license_file: LICENSE\n      summary: oneHDK\n\n      description: |\n        oneHDK\n      doc_url: https://github.com/intel-ai/hdk\n      dev_url: https://github.com/intel-ai/hdk\n\nabout:\n  home: https://github.com/intel-ai/hdk\n  license: Apache-2.0\n  license_family: APACHE\n  license_file: LICENSE\n  summary: oneHDK\n\n  description: |\n    oneHDK\n  doc_url: https://github.com/intel-ai/hdk\n  dev_url: https://github.com/intel-ai/hdk\n\nextra:\n  recipe-maintainers:\n    - alexbaden\n    - ienkovich\n    - Garra1980\n    - vlad-penkin\n    - leshikus\n",
  "req": {
   "__set__": true,
