@@ -395,6 +395,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1103778429.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.7.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -959,7 +976,7 @@
   }
  },
  "name": "cpp-opentelemetry-sdk",
- "new_version": "1.6.1",
+ "new_version": "1.7.0",
  "new_version_attempts": {
   "1.1.1": 1,
   "1.2.0": 3,
@@ -968,7 +985,8 @@
   "1.4.1": 1,
   "1.5.0": 1,
   "1.6.0": 1,
-  "1.6.1": 1
+  "1.6.1": 1,
+  "1.7.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1193,7 +1211,7 @@
    "cpp-opentelemetry-sdk"
   ]
  },
- "pinning_version": "2022.09.23.15.53.14",
+ "pinning_version": "2022.10.28.22.34.20",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "# code: language: jinja-yaml\n{% set name = \"cpp-opentelemetry-sdk\" %}\n{% set version = \"1.6.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/open-telemetry/opentelemetry-cpp/archive/refs/tags/v{{ version }}.tar.gz\n    sha256: 1fc371be049b3220b8b9571c8b713f03e9a84f3c5684363f64ccc814638391a5\n    patches:\n      - cross_compile_grpc_cpp_plugin_path.patch  # [build_platform != target_platform]\n      - include_ctime.patch\n\nbuild:\n  number: 0\n  always_include_files:\n    # Must overwrite the ones installed by cpp-opentelemetry-api\n    - lib/cmake/opentelemetry-cpp/  # [unix]\n    - Library/lib/cmake/opentelemetry-cpp/  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - cmake >=3.1\n    - ninja\n    - proto-opentelemetry-proto =0.19.0\n\n    # For cross-compiling\n    - curl                    # [build_platform != target_platform]\n    - grpc-cpp                # [build_platform != target_platform]\n    - libprotobuf >=3.18      # [build_platform != target_platform]\n    - nlohmann_json >=3.10.5  # [build_platform != target_platform]\n    - zlib                    # [build_platform != target_platform]\n    - prometheus-cpp          # [build_platform != target_platform] \n  host:\n    # -api and -sdk packages of different versions are not necessarily\n    # compatible.\n    - cpp-opentelemetry-api ={{ version }}\n    - curl\n    - grpc-cpp\n    - libprotobuf >=3.18\n    - nlohmann_json >=3.10.5\n    - zlib\n    - prometheus-cpp\n  run:\n    - cpp-opentelemetry-api ={{ version }}\n    - curl\n    - grpc-cpp\n    - libprotobuf >=3.18\n    - nlohmann_json\n    - prometheus-cpp\n\ntest:\n  commands:\n    - test -d $PREFIX/include/opentelemetry/sdk/  # [unix]\n    - test -d $PREFIX/lib/cmake/opentelemetry-cpp/  # [unix]\n    - test -f $PREFIX/lib/cmake/opentelemetry-cpp/opentelemetry-cpp-config.cmake  # [unix]\n    - test -f $PREFIX/lib/libopentelemetry_common.a  # [unix]\n    - test -f $PREFIX/lib/libopentelemetry_exporter_otlp_grpc.a  # [unix]\n    - if not exist %LIBRARY_INC%\\opentelemetry\\sdk exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\cmake\\opentelemetry-cpp exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\cmake\\opentelemetry-cpp\\opentelemetry-cpp-config.cmake exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\opentelemetry_common.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\opentelemetry_exporter_otlp_grpc.lib exit 1  # [win]\n\nabout:\n  home: https://github.com/open-telemetry/opentelemetry-cpp\n  license: Apache-2.0\n  license_family: APACHE\n  license_file: LICENSE\n  summary: The OpenTelemetry C++ Client\n  description: |\n    OpenTelemetry is a collection of tools, APIs, and SDKs. Use it to\n    instrument, generate, collect, and export telemetry data (metrics,\n    logs, and traces) to help you analyze your software\u2019s performance\n    and behavior.\n  doc_url: https://opentelemetry.io/docs/instrumentation/cpp/\n  dev_url: https://github.com/open-telemetry/opentelemetry-cpp\n\nextra:\n  recipe-maintainers:\n    - lidavidm\n",
@@ -1253,7 +1271,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.21.1",
+ "smithy_version": "3.21.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
