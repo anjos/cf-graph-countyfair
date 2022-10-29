@@ -516,7 +516,7 @@
     "__lazy_json__": "pr_json/992128919.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1667042283.2311747,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "5.2"
@@ -533,7 +533,7 @@
     "__lazy_json__": "pr_json/1012923071.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1667042283.2314434,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "5.3"
@@ -550,7 +550,7 @@
     "__lazy_json__": "pr_json/1052291467.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1667042283.2316418,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "5.4"
@@ -567,7 +567,7 @@
     "__lazy_json__": "pr_json/1052506556.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1667042283.2317877,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "5.4.1"
@@ -589,6 +589,42 @@
     "migrator_object_version": 1,
     "migrator_version": 0,
     "name": "pypy38"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1103939979.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "5.6.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1103960565.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
    },
    "keys": [
     "bot_rerun",
@@ -2311,7 +2347,8 @@
   "5.2": 1,
   "5.3": 1,
   "5.4": 1,
-  "5.4.1": 0
+  "5.4.1": 0,
+  "5.6.1": 1
  },
  "new_version_errors": {
   "4.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '4.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz'\n",
@@ -2769,7 +2806,7 @@
    "pyinstaller"
   ]
  },
- "pinning_version": "2022.10.28.16.47.40",
+ "pinning_version": "2022.10.29.07.48.33",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"pyinstaller\" %}\n{% set version = \"5.1\" %}\n{% set sha256 = \"9596c70c860cbce19537354db95b180351959b4cd14a70db6ab1d1432668c313\" %}\n\npackage:\n  name: {{ name.lower() }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    - 0001-don-t-set-arch.patch\n\nbuild:\n  number: 0\n  skip: true  # [py<37 or py>310]\n  entry_points:\n    - pyinstaller = PyInstaller.__main__:run\n    - pyi-archive_viewer = PyInstaller.utils.cliutils.archive_viewer:run\n    - pyi-bindepend = PyInstaller.utils.cliutils.bindepend:run\n    - pyi-grab_version = PyInstaller.utils.cliutils.grab_version:run\n    - pyi-makespec = PyInstaller.utils.cliutils.makespec:run\n    - pyi-set_version = PyInstaller.utils.cliutils.set_version:run\n  script:\n    - export PYI_STATIC_ZLIB=1  # [unix]\n    - export LDFLAGS=\"${LDFLAGS} -L${PREFIX}/lib\"               # [unix]\n    - export LDFLAGS=\"${LDFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}\"  # [osx]\n    # Remove the pre-compiled bootloaders (available in sdist)\n    - rm -fr ${SRC_DIR}/PyInstaller/bootloader/{Darwin,Linux,Windows}-{64,32}bit  # [unix]\n    # Remove vendored waflib dir\n    - rm -fr ${SRC_DIR}/bootloader/waflib   # [unix]\n    - rd /s /q %SRC_DIR%\\bootloader\\waflib  # [win]\n    # Build the bootloader\n    - pushd bootloader\n    - waf --prefix=\"${PREFIX}\" --clang distclean all            # [osx]\n    - waf --prefix=\"${PREFIX}\" --gcc --no-lsb distclean all     # [linux]\n    - waf --prefix=\"%LIBRARY_PREFIX%\" distclean all             # [win]\n    # Build the package\n    - popd\n    - {{ PYTHON }} -m pip install . --no-deps -vv\n  preserve_egg_dir: true\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n    - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n    - pip\n    - python\n    - setuptools\n  host:\n    - pip\n    - python\n    - setuptools\n    - waf\n    - zlib\n\n  run:\n    - altgraph\n    - python\n    - pefile >=2017.8.1       # [win]\n    - pywin32                 # [win]\n    - pywin32-ctypes >=0.2.0  # [win]\n    - macholib >=1.8\n    - pyinstaller-hooks-contrib >=2020.6\n    - setuptools  # due to pkg_resources import\n    - importlib-metadata >=0.8  # [py<38]\n\ntest:\n  imports:\n    - PyInstaller\n\n  commands:\n    - pyinstaller --help\n    - pyi-archive_viewer --help\n    - pyi-bindepend --help\n    - pyi-makespec --help\n    # These are designed for Windows only.\n    - pyi-grab_version --help     # [win]\n    - pyi-set_version --help      # [win]\n\n  files:\n    - hello.py\n\nabout:\n  home: http://www.pyinstaller.org\n  # https://github.com/pyinstaller/pyinstaller/blob/v3.6/COPYING.txt#L11\n  license: GPL-2.0-or-later WITH Bootloader-exception\n  license_family: GPL\n  license_file: COPYING.txt\n  dev_url: https://github.com/pyinstaller/pyinstaller\n  summary: PyInstaller bundles a Python application and all its dependencies into a single package.\n\nextra:\n  recipe-maintainers:\n    - isuruf\n    - jakirkham\n    - nicoddemus\n    - nehaljwani\n",
