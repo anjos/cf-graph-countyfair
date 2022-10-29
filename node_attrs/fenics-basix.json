@@ -108,6 +108,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1104029139.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1162,7 +1181,7 @@
    "fenics-libbasix"
   ]
  },
- "pinning_version": "2022.09.13.14.40.25",
+ "pinning_version": "2022.10.29.07.48.33",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"fenics-basix\" %}\n{% set version = \"0.5.1\" %}\n\npackage:\n  name: {{ name|lower }}-meta\n  version: {{ version }}\n\nsource:\n  url: https://github.com/fenics/basix/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 69133476ac35f0bd0deccb480676030378c341d7dfb2adaca22cd16b7e1dc1cb\n\nbuild:\n  skip: true  # [win or python_impl == 'pypy']\n  number: 0\n\noutputs:\n  - name: fenics-libbasix\n    script: build-libbasix.sh\n    build:\n      run_exports:\n        - {{ pin_subpackage(\"fenics-libbasix\", max_pin=\"x.x.x\") }}\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make\n        - pkg-config\n      host:\n        - libblas\n        - libcblas\n        - liblapack\n    test:\n      commands:\n        - test -f $PREFIX/lib/libbasix${SHLIB_EXT}\n  - name: fenics-basix\n    script: build-basix-py.sh\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make\n        - pkg-config\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n        - pybind11                               # [build_platform != target_platform]\n      host:\n        - python\n        - pip\n        - pybind11\n        - {{ pin_subpackage('fenics-libbasix', exact=True) }}\n      run:\n        - python\n        - {{ pin_subpackage('fenics-libbasix', exact=True) }}\n        - numpy\n    test:\n      requires:\n        - pytest\n        - pytest-xdist\n      source_files:\n        - test\n      imports:\n        - basix\n      commands:\n        - pytest -v test/test_create.py\n\n\nabout:\n  home: https://fenicsproject.org\n  summary: Basix is a finite element definition and tabulation runtime library\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  doc_url: https://docs.fenicsproject.org/basix/main/\n  dev_url: https://github.com/fenics/basix\n\nextra:\n  feedstock-name: fenics-basix\n  recipe-maintainers:\n    - minrk\n",
@@ -1223,7 +1242,7 @@
    ]
   }
  },
- "smithy_version": "3.21.1",
+ "smithy_version": "3.21.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
