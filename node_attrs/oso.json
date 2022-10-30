@@ -344,6 +344,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1104344731.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -2821,7 +2840,7 @@
    "oso"
   ]
  },
- "pinning_version": "2022.10.17.17.07.36",
+ "pinning_version": "2022.10.29.17.19.28",
  "raw_meta_yaml": "{% set version = \"0.26.3\" %}\n# from languages/python/oso/Makefile\n{% set cffi_version_from_makefile = \">=1.15,<2\" %}\n\npackage:\n  name: oso\n  version: {{ version }}\n\nsource:\n  url: https://github.com/osohq/oso/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 53ee9fff6f8addcc797f5d9584eb951d91b785bc65d7d87875b41bb4773914d4\n  patches:\n    - 0000-no-pip-install-makefile.patch\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - cffi                                   # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - make                                   # [build_platform != target_platform]\n    - openssl                                # [build_platform != target_platform]\n    - python                                 # [build_platform != target_platform]\n    - clangdev                               # [not osx and build_platform != target_platform]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - rust >=1.46\n    - cargo-bundle-licenses\n  host:\n    - make\n    - clangdev  # [not osx]\n    - openssl\n    - python\n    - pip\n    - cffi {{ cffi_version_from_makefile }}\n  run:\n    - python\n    - cffi {{ cffi_version_from_makefile }}\n\ntest:\n  source_files:\n    - languages/python/oso/tests\n  imports:\n    - oso\n    - polar\n  commands:\n    - pip check\n    # must be run from this folder because of hard-coded paths in tests\n    - cd languages/python/oso && pytest tests -vv --cov=oso --cov=polar --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-fail-under=84 -k \"not test_parser_errors and not test_repr_when_logging\"\n  requires:\n    - pip\n    - pytest-cov\n    - ruamel_yaml\n    - sqlalchemy\n\nabout:\n  home: https://github.com/osohq/oso\n  summary: Oso is a batteries-included framework for building authorization in your application.\n  license: Apache-2.0\n  license_file: LICENSE\n  doc_url: https://docs.osohq.com\n  dev_url: https://github.com/osohq/oso\n\nextra:\n  recipe-maintainers:\n    - alexpilot11\n    - bollwyvl\n",
  "req": {
   "__set__": true,
