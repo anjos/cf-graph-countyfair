@@ -449,6 +449,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1106814410.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1295,7 +1314,7 @@
    "python-frictionqpotspringblock"
   ]
  },
- "pinning_version": "2022.10.07.20.39.23",
+ "pinning_version": "2022.11.01.12.20.19",
  "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"FrictionQPotSpringBlock\" %}\n{% set version = \"0.17.1\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: d41b3a4acbf61df5b6d72252bff4f3b5d1753124539d4f6ee566660bbfbe11d1\n\nbuild:\n  number: 0\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - gmattensor >0.10.1\n        - goosefem\n        - qpot >=0.12.1\n        - xtensor >=0.24.2\n      run:\n        - gmattensor >0.10.1\n        - goosefem\n        - qpot >=0.12.1\n        - xtensor >=0.24.2\n\n    test:\n      commands:\n        - test -d ${PREFIX}/include/{{ name }}  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/Line1d.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\Line1d.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n      skip: true  # [python_impl == 'pypy']\n\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - numpy *                             # [build_platform != target_platform]\n        - setuptools_scm                      # [build_platform != target_platform]\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n        - ninja\n      host:\n        - gmattensor >0.10.1\n        - goosefem\n        - numpy *\n        - pip\n        - pybind11\n        - pybind11-abi\n        - python\n        - qpot >=0.12.1\n        - scikit-build\n        - setuptools_scm\n        - xtensor >=0.24.2\n        - xtensor-python\n      run:\n        - numpy *\n        - python\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n        - python -c \"import {{ name }}; assert {{ name }}.version() == '{{ version }}'\"\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Spring-block friction model.\n  description: Spring-block friction model.\n  doc_url: https://{{ org }}.github.io/{{ name }}\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
  "req": {
   "__set__": true,
