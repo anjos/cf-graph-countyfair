@@ -50,6 +50,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1106338424.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "38"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -367,7 +384,8 @@
  "new_version_attempts": {
   "33": 1,
   "34": 1,
-  "37": 1
+  "37": 1,
+  "38": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -491,7 +509,7 @@
    "ngspice-lib"
   ]
  },
- "pinning_version": "2022.05.18.23.47.38",
+ "pinning_version": "2022.11.01.00.02.24",
  "raw_meta_yaml": "{% set name = \"ngspice-suite\" %}\n{% set version = \"37\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n\n  url: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/{{ version }}/ngspice-{{ version }}.tar.gz\n  sha256: 9beea6741a36a36a70f3152a36c82b728ee124c59a495312796376b30c8becbe\n\n  patches:\n    - patches/libtoolize-name.patch            # [osx]\n    - patches/fix-xspice-ldflags.patch         # [osx]\n    - patches/vngspice-install-location.patch  # [win]\n\nbuild:\n  number: 1\n  skip: true  # [win and vc<14]\n\n# Due to how 'conda render' extracts metadata info, the 'outputs'\n# key must appear OUTSIDE of the jinja conditional below!\noutputs:\n\n##\n## UNIX\n##\n{% if unix %}\n\n  - name: ngspice-lib\n    script: build_lib.sh\n\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - llvm-openmp  # [osx]\n        - libgomp      # [linux]\n        - autoconf\n        - automake\n        - make\n        - libtool\n        - texinfo\n        - bison\n        - flex\n\n      host:\n        - llvm-openmp  # [osx]\n        - libgomp      # [linux]\n        - ncurses\n        - readline\n\n      run:\n        - llvm-openmp  # [osx]\n        - libgomp      # [linux]\n        - ncurses\n        - readline\n\n    test:\n      commands:\n        - test -f $PREFIX/lib/libngspice{{ SHLIB_EXT }}\n\n  - name: ngspice-exe\n    script: build_exe.sh\n\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - llvm-openmp  # [osx]\n        - libgomp      # [linux]\n        - autoconf\n        - automake\n        - make\n        - libtool\n        - texinfo\n        - bison\n        - flex\n\n      host:\n        - llvm-openmp  # [osx]\n        - libgomp      # [linux]\n        - ncurses\n        - readline\n        - xorg-libx11\n        - xorg-libxaw\n        - xorg-libxt\n\n      run:\n        - llvm-openmp  # [osx]\n        - libgomp      # [linux]\n        - ncurses\n        - readline\n        - xorg-libx11\n        - xorg-libxaw\n        - xorg-libxt\n\n    test:\n      files: test-files\n      commands:\n        - $PREFIX/bin/ngspice --version\n        - $PREFIX/bin/ngspice -b -r /tmp/raw.out test-files/test.cir\n\n  - name: ngspice\n    requirements:\n      run:\n        - {{ pin_subpackage('ngspice-lib', exact=True) }}\n        - {{ pin_subpackage('ngspice-exe', exact=True) }}\n\n    test:\n      commands:\n        - test -f $PREFIX/lib/libngspice{{ SHLIB_EXT }}\n        - $PREFIX/bin/ngspice --version\n\n##\n## WINDOWS\n##\n{% else %}\n\n  - name: ngspice-lib\n    script: build_lib.bat\n\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n\n      host:\n        # technically this ought to be in the 'build' requirements,\n        # but it's easier to locate if we put it here, via LIBRARY_BIN\n        - winflexbison\n\n    test:\n      commands:\n        - if not exist %LIBRARY_PREFIX%\\\\bin\\\\ngspice.dll exit 1\n\n  - name: ngspice-exe\n    script: build_exe.bat\n\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n\n      host:\n        # technically this ought to be in the 'build' requirements,\n        # but it's easier to locate if we put it here, via LIBRARY_BIN\n        - winflexbison\n\n    test:\n      files: test-files\n      commands:\n        - call %LIBRARY_PREFIX%\\bin\\ngspice_con.exe --version\n        - call %LIBRARY_PREFIX%\\bin\\ngspice_con.exe -b -r raw.out test-files\\test.cir\n\n  - name: ngspice\n    requirements:\n      run:\n        - {{ pin_subpackage('ngspice-lib', exact=True) }}\n        - {{ pin_subpackage('ngspice-exe', exact=True) }}\n\n    test:\n      commands:\n        - if not exist %LIBRARY_PREFIX%\\\\bin\\\\ngspice.dll exit 1\n        - '%LIBRARY_PREFIX%\\bin\\ngspice_con.exe --version'\n\n{% endif %}\n\nabout:\n  home: http://ngspice.sourceforge.net\n  doc_url: http://ngspice.sourceforge.net/docs.html\n  dev_url: http://ngspice.sourceforge.net/devel.html\n\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: COPYING\n\n  summary: The open source spice simulator for electric and electronic circuits\n  description: |\n    ngspice is the open source spice simulator for electric and electronic circuits.\n\n    Such a circuit may comprise of JFETs, bipolar and MOS transistors, passive elements\n    like R, L, or C, diodes, transmission lines and other devices, all interconnected\n    in a netlist. Digital circuits are simulated as well, event driven and fast, from\n    single gates to complex circuits. And you may enter the combination of both analog\n    and digital as a mixed-signal circuit.\n\n    ngspice offers a wealth of device models for active, passive, analog, and digital\n    elements. Model parameters are provided by the semiconductor manufacturers.\n    The user add her circuits as a netlist, and the output is one or more graphs of\n    currents, voltages and other electrical quantities or is saved in a data file.\n\n    Note:\n      This build was configured with `--enable-xspice --enable-cider --enable=openmp`\n      See the [build script](https://git.io/JfVZX) for more specifics.\n\nextra:\n  recipe-maintainers:\n    - stuarteberg\n",
  "req": {
   "__set__": true,
@@ -533,7 +551,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.19.0",
+ "smithy_version": "3.21.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
