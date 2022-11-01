@@ -167,7 +167,7 @@
    "summary": "Non-linear elastic material model."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -319,7 +319,7 @@
    "summary": "Non-linear elastic material model."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -664,7 +664,7 @@
    "summary": "Non-linear elastic material model."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -816,7 +816,7 @@
    "summary": "Non-linear elastic material model."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -964,7 +964,7 @@
   ]
  },
  "pinning_version": "2022.11.01.06.59.37",
- "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"GMatNonLinearElastic\" %}\n{% set version = \"0.3.2\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 1850bc4629d564740dd74ef7fa01fa2459721f20ec3221096b276318b699ac19\n\nbuild:\n  number: 1\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - gmatelastic >=0.5.1\n        - gmattensor >=0.10.1\n        - xtensor >=0.24.2\n      run:\n        - gmatelastic >=0.5.1\n        - gmattensor >=0.10.1\n        - xtensor >=0.24.2\n\n    test:\n      commands:\n        - test -d ${PREFIX}/include/{{ name }}  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/Cartesian3d.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\Cartesian3d.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n      skip: true  # [python_impl == 'pypy']\n\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - numpy *                             # [build_platform != target_platform]\n        - setuptools_scm                      # [build_platform != target_platform]\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n        - ninja\n      host:\n        - gmatelastic >=0.5.1\n        - gmattensor >=0.10.1\n        - numpy *\n        - pip\n        - pybind11\n        - pybind11-abi\n        - python\n        - scikit-build\n        - setuptools_scm\n        - xtensor >=0.24.2\n        - xtensor-python\n      run:\n        - numpy *\n        - python\n        - python-gmatelastic >=0.5.1\n        - python-gmattensor >0.9.0\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n        - python -c \"import {{ name }}; assert {{ name }}.version() == '{{ version }}'\"\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Non-linear elastic material model.\n  description: Non-linear elastic material model.\n  doc_url: https://{{ org }}.github.io/{{ name }}\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
+ "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"GMatNonLinearElastic\" %}\n{% set version = \"0.3.2\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 1850bc4629d564740dd74ef7fa01fa2459721f20ec3221096b276318b699ac19\n\nbuild:\n  number: 2\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - gmatelastic >=0.5.1\n        - gmattensor >=0.10.1\n        - xtensor >=0.24.2\n      run:\n        - gmatelastic >=0.5.1\n        - gmattensor >=0.10.1\n        - xtensor >=0.24.2\n\n    test:\n      commands:\n        - test -d ${PREFIX}/include/{{ name }}  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/Cartesian3d.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\Cartesian3d.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n      skip: true  # [python_impl == 'pypy']\n\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - numpy *                             # [build_platform != target_platform]\n        - setuptools_scm                      # [build_platform != target_platform]\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n        - ninja\n      host:\n        - gmatelastic >=0.5.1\n        - gmattensor >=0.10.1\n        - numpy *\n        - pip\n        - pybind11\n        - pybind11-abi\n        - python\n        - scikit-build\n        - setuptools_scm\n        - xtensor >=0.24.2\n        - xtensor-python\n      run:\n        - numpy *\n        - python\n        - python-gmatelastic >=0.5.1\n        - python-gmattensor >0.9.0\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n        - python -c \"import {{ name }}; assert {{ name }}.version() == '{{ version }}'\"\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Non-linear elastic material model.\n  description: Non-linear elastic material model.\n  doc_url: https://{{ org }}.github.io/{{ name }}\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1095,7 +1095,7 @@
    "summary": "Non-linear elastic material model."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "recipe-maintainers": [
