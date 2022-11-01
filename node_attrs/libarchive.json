@@ -563,7 +563,7 @@
     "__lazy_json__": "pr_json/967719787.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1667322775.7336123,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "3.6.1"
@@ -580,7 +580,7 @@
     "__lazy_json__": "pr_json/1030242329.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1667322775.733801,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -639,11 +639,7 @@
    "summary": "Multi-format archive and compression library"
   },
   "build": {
-   "number": "3",
-   "run_exports": [
-    "libarchive",
-    "libarchive"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -655,43 +651,157 @@
     "ocefpaf"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "libarchive",
-   "version": "3.5.2"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make"
-   ],
-   "host": [
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd"
-   ]
+   "name": "libarchive-split",
+   "version": "3.6.1"
   },
   "source": {
    "patches": [
@@ -700,44 +810,14 @@
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
-    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch"
+    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch"
    ],
-   "sha256": "126058cb4cf50e36bcf83307f5d987bde2ecebabcae985b6a153116362d25b7b",
-   "url": "https://github.com/libarchive/libarchive/archive/v3.5.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar"
-   ],
-   "files": [
-    "test/hello_world.xar",
-    "test/hello_world.xar"
-   ]
+   "sha256": "3d5dce7be5ed9b2c239e25b0579167c133296d9dedd17b484b678aec6c010b62",
+   "url": "https://github.com/libarchive/libarchive/archive/v3.6.1.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -783,11 +863,7 @@
    "summary": "Multi-format archive and compression library"
   },
   "build": {
-   "number": "3",
-   "run_exports": [
-    "libarchive",
-    "libarchive"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -799,43 +875,157 @@
     "ocefpaf"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "libarchive",
-   "version": "3.5.2"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make"
-   ],
-   "host": [
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd"
-   ]
+   "name": "libarchive-split",
+   "version": "3.6.1"
   },
   "source": {
    "patches": [
@@ -844,44 +1034,14 @@
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
-    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch"
+    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch"
    ],
-   "sha256": "126058cb4cf50e36bcf83307f5d987bde2ecebabcae985b6a153116362d25b7b",
-   "url": "https://github.com/libarchive/libarchive/archive/v3.5.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar"
-   ],
-   "files": [
-    "test/hello_world.xar",
-    "test/hello_world.xar"
-   ]
+   "sha256": "3d5dce7be5ed9b2c239e25b0579167c133296d9dedd17b484b678aec6c010b62",
+   "url": "https://github.com/libarchive/libarchive/archive/v3.6.1.tar.gz"
   }
  },
  "linux_aarch64_requirements": {
@@ -927,11 +1087,7 @@
    "summary": "Multi-format archive and compression library"
   },
   "build": {
-   "number": "3",
-   "run_exports": [
-    "libarchive",
-    "libarchive"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -943,43 +1099,157 @@
     "ocefpaf"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "libarchive",
-   "version": "3.5.2"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make"
-   ],
-   "host": [
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd"
-   ]
+   "name": "libarchive-split",
+   "version": "3.6.1"
   },
   "source": {
    "patches": [
@@ -988,44 +1258,14 @@
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
-    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch"
+    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch"
    ],
-   "sha256": "126058cb4cf50e36bcf83307f5d987bde2ecebabcae985b6a153116362d25b7b",
-   "url": "https://github.com/libarchive/libarchive/archive/v3.5.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar"
-   ],
-   "files": [
-    "test/hello_world.xar",
-    "test/hello_world.xar"
-   ]
+   "sha256": "3d5dce7be5ed9b2c239e25b0579167c133296d9dedd17b484b678aec6c010b62",
+   "url": "https://github.com/libarchive/libarchive/archive/v3.6.1.tar.gz"
   }
  },
  "linux_ppc64le_requirements": {
@@ -1071,21 +1311,7 @@
    "summary": "Multi-format archive and compression library"
   },
   "build": {
-   "number": "3",
-   "run_exports": [
-    "libarchive",
-    "libarchive",
-    "libarchive",
-    "libarchive",
-    "libarchive",
-    "libarchive",
-    "libarchive",
-    "libarchive",
-    "libarchive",
-    "libarchive",
-    "libarchive",
-    "libarchive"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1127,183 +1353,865 @@
     "ocefpaf"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "libiconv",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "libiconv",
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "libiconv",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "libiconv",
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "libiconv",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "libiconv",
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "libiconv",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "libiconv",
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja",
+      "m2-patch"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.bat",
+    "test": {
+     "commands": [
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": {
+     "skip": true
+    },
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": null
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja",
+      "m2-patch"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.bat",
+    "test": {
+     "commands": [
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": {
+     "skip": true
+    },
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": null
+    }
+   }
+  ],
   "package": {
-   "name": "libarchive",
-   "version": "3.5.2"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "cmake",
-    "ninja",
-    "m2-patch",
-    "c_compiler_stub",
-    "cmake",
-    "ninja",
-    "m2-patch"
-   ],
-   "host": [
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "libiconv",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "libiconv",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "libiconv",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "libiconv",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd"
-   ]
+   "name": "libarchive-split",
+   "version": "3.6.1"
   },
   "source": {
    "patches": [
@@ -1312,207 +2220,67 @@
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
-    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch"
+    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch"
    ],
-   "sha256": "126058cb4cf50e36bcf83307f5d987bde2ecebabcae985b6a153116362d25b7b",
-   "url": "https://github.com/libarchive/libarchive/archive/v3.5.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar"
-   ],
-   "files": [
-    "test/hello_world.xar",
-    "test/hello_world.xar",
-    "test/hello_world.xar",
-    "test/hello_world.xar",
-    "test/hello_world.xar",
-    "test/hello_world.xar",
-    "test/hello_world.xar",
-    "test/hello_world.xar",
-    "test/hello_world.xar",
-    "test/hello_world.xar",
-    "test/hello_world.xar",
-    "test/hello_world.xar"
-   ]
+   "sha256": "3d5dce7be5ed9b2c239e25b0579167c133296d9dedd17b484b678aec6c010b62",
+   "url": "https://github.com/libarchive/libarchive/archive/v3.6.1.tar.gz"
   }
  },
- "name": "libarchive",
+ "name": "libarchive-split",
  "new_version": "3.6.1",
  "new_version_attempts": {
   "3.4.1": 1,
@@ -1534,11 +2302,7 @@
    "summary": "Multi-format archive and compression library"
   },
   "build": {
-   "number": "3",
-   "run_exports": [
-    "libarchive",
-    "libarchive"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1550,45 +2314,161 @@
     "ocefpaf"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "libiconv",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "libiconv",
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "libiconv",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "libiconv",
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "libarchive",
-   "version": "3.5.2"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make"
-   ],
-   "host": [
-    "bzip2",
-    "libiconv",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "libiconv",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd"
-   ]
+   "name": "libarchive-split",
+   "version": "3.6.1"
   },
   "source": {
    "patches": [
@@ -1597,44 +2477,14 @@
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
-    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch"
+    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch"
    ],
-   "sha256": "126058cb4cf50e36bcf83307f5d987bde2ecebabcae985b6a153116362d25b7b",
-   "url": "https://github.com/libarchive/libarchive/archive/v3.5.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar"
-   ],
-   "files": [
-    "test/hello_world.xar",
-    "test/hello_world.xar"
-   ]
+   "sha256": "3d5dce7be5ed9b2c239e25b0579167c133296d9dedd17b484b678aec6c010b62",
+   "url": "https://github.com/libarchive/libarchive/archive/v3.6.1.tar.gz"
   }
  },
  "osx_64_requirements": {
@@ -1681,11 +2531,7 @@
    "summary": "Multi-format archive and compression library"
   },
   "build": {
-   "number": "3",
-   "run_exports": [
-    "libarchive",
-    "libarchive"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1697,45 +2543,161 @@
     "ocefpaf"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "libiconv",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "libiconv",
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "bzip2",
+      "libiconv",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\"",
+      "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": null,
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "autoconf",
+      "automake",
+      "libtool",
+      "pkg-config",
+      "make"
+     ],
+     "host": [
+      "libiconv",
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": [
+      "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
+      "test -f \"${PREFIX}/include/archive.h\"",
+      "test -f \"${PREFIX}/include/archive_entry.h\"",
+      "test -f \"${PREFIX}/lib/libarchive.a\""
+     ]
+    }
+   }
+  ],
   "package": {
-   "name": "libarchive",
-   "version": "3.5.2"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make",
-    "c_compiler_stub",
-    "autoconf",
-    "automake",
-    "libtool",
-    "pkg-config",
-    "make"
-   ],
-   "host": [
-    "bzip2",
-    "libiconv",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "libiconv",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd"
-   ]
+   "name": "libarchive-split",
+   "version": "3.6.1"
   },
   "source": {
    "patches": [
@@ -1744,44 +2706,14 @@
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
-    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch"
+    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch"
    ],
-   "sha256": "126058cb4cf50e36bcf83307f5d987bde2ecebabcae985b6a153116362d25b7b",
-   "url": "https://github.com/libarchive/libarchive/archive/v3.5.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"",
-    "test -f \"${PREFIX}/include/archive.h\"",
-    "test -f \"${PREFIX}/include/archive_entry.h\"",
-    "test -f \"${PREFIX}/lib/libarchive.a\"",
-    "test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar"
-   ],
-   "files": [
-    "test/hello_world.xar",
-    "test/hello_world.xar"
-   ]
+   "sha256": "3d5dce7be5ed9b2c239e25b0579167c133296d9dedd17b484b678aec6c010b62",
+   "url": "https://github.com/libarchive/libarchive/archive/v3.6.1.tar.gz"
   }
  },
  "osx_arm64_requirements": {
@@ -1822,7 +2754,8 @@
  "outputs_names": {
   "__set__": true,
   "elements": [
-   "libarchive"
+   "libarchive",
+   "libarchive-minimal-static"
   ]
  },
  "pinning_version": "2022.09.10.02.28.29",
@@ -1832,7 +2765,7 @@
  "pre_pr_migrator_status": {
   "lz4-c193": "not solvable: master: ['linux_aarch64_: Encountered problems while solving.\\nProblem: package zstd-1.4.0-h3b9ef0a_0 requires lz4-c >=1.8.3,<1.8.4.0a0, but none of the providers can be installed\\n']"
  },
- "raw_meta_yaml": "{% set version = \"3.5.2\" %}\n\npackage:\n  name: libarchive\n  version: {{ version }}\n\nsource:\n  url: https://github.com/libarchive/libarchive/archive/v{{ version }}.tar.gz\n  sha256: 126058cb4cf50e36bcf83307f5d987bde2ecebabcae985b6a153116362d25b7b\n  patches:\n    - patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch\n    - patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch\n    - patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch\n    # This should not be applied in general. It exists so I can build it for\n    # debugging Visual Studio where warnings are errors for some reason.\n    # Hiding warnings is poor practice.\n    # - patches/0005-VC9-compatibility-ignore-some-warnings.patch\n    - patches/0006-VC-openssl-define-inline-as-__inline.patch\n    # These warnings are errors when compiling lz-4 support\n    - patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch\n    - patches/0008-VC9-compatibility-remove-C99.patch\n    - patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch\n\nbuild:\n  number: 3\n  skip: true  # [win and vc<14]\n  run_exports:\n    # https://abi-laboratory.pro/index.php?view=timeline&l=libarchive\n    - {{ pin_subpackage('libarchive', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    # Does not work in this recips at present\n    # we manually convert C99 to C89 instead.\n    # - c99-to-c89  # [win and vc<14]\n    - msinttypes  # [win and vc<14]\n    - autoconf    # [unix]\n    - automake    # [unix]\n    - libtool     # [unix]\n    - pkg-config  # [unix]\n    - cmake       # [win]\n    - make        # [unix]\n    - ninja       # [win]\n    - m2-patch    # [win]\n  host:\n    - msinttypes  # [win and vc<14]\n    - bzip2\n    - libiconv    # [osx]\n    - lz4-c\n    - xz\n    - lzo\n    - openssl\n    - libxml2\n    - zlib\n    - zstd\n\ntest:\n  files:\n    - test/hello_world.xar\n  commands:\n    # Verify pkg-config file is in place.\n    - test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"  # [unix]\n\n    # Verify headers are in place.\n    - test -f \"${PREFIX}/include/archive.h\"            # [unix]\n    - test -f \"${PREFIX}/include/archive_entry.h\"      # [unix]\n\n    # Verify libraries are in place.\n    - test -f \"${PREFIX}/lib/libarchive.a\"             # [unix]\n    - test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"   # [unix]\n\n    # Check for commands\n    - bsdcat --version\n    - bsdcpio --version\n    - bsdtar --version\n    - bsdtar -tf test/hello_world.xar\n\nabout:\n  home: http://www.libarchive.org/\n  summary: Multi-format archive and compression library\n  license: BSD-2-Clause\n  license_file: COPYING\n  license_family: BSD\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n    - mingwandroid\n    - ocefpaf\n",
+ "raw_meta_yaml": "{% set version = \"3.6.1\" %}\n\npackage:\n  name: libarchive-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/libarchive/libarchive/archive/v{{ version }}.tar.gz\n  sha256: 3d5dce7be5ed9b2c239e25b0579167c133296d9dedd17b484b678aec6c010b62\n  patches:\n    - patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch\n    - patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch\n    - patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch\n    # This should not be applied in general. It exists so I can build it for\n    # debugging Visual Studio where warnings are errors for some reason.\n    # Hiding warnings is poor practice.\n    # - patches/0005-VC9-compatibility-ignore-some-warnings.patch\n    - patches/0006-VC-openssl-define-inline-as-__inline.patch\n    # These warnings are errors when compiling lz-4 support\n    - patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch\n\nbuild:\n  number: 0\n\noutputs:\n  - name: libarchive\n    script: build_libarchive.sh  # [unix]\n    script: build_libarchive.bat  # [win]\n\n    build:\n      run_exports:\n        # https://abi-laboratory.pro/index.php?view=timeline&l=libarchive\n        - {{ pin_subpackage('libarchive', max_pin='x.x') }}\n\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        # Does not work in this recips at present\n        # we manually convert C99 to C89 instead.\n        # - c99-to-c89  # [win and vc<14]\n        - msinttypes  # [win and vc<14]\n        - autoconf    # [unix]\n        - automake    # [unix]\n        - libtool     # [unix]\n        - pkg-config  # [unix]\n        - cmake       # [win]\n        - make        # [unix]\n        - ninja       # [win]\n        - m2-patch    # [win]\n      host:\n        - msinttypes  # [win and vc<14]\n        - bzip2\n        - libiconv    # [osx]\n        - lz4-c\n        - xz\n        - lzo\n        - openssl\n        - libxml2\n        - zlib\n        - zstd\n    test:\n      files:\n        - test/hello_world.xar\n      commands:\n        # Verify pkg-config file is in place.\n        - test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"  # [unix]\n\n        # Verify headers are in place.\n        - test -f \"${PREFIX}/include/archive.h\"            # [unix]\n        - test -f \"${PREFIX}/include/archive_entry.h\"      # [unix]\n\n        # Verify libraries are in place.\n        - test -f \"${PREFIX}/lib/libarchive.a\"             # [unix]\n        - test -f \"${PREFIX}/lib/libarchive${SHLIB_EXT}\"   # [unix]\n\n        # Check for commands\n        - bsdcat --version\n        - bsdcpio --version\n        - bsdtar --version\n        - bsdtar -tf test/hello_world.xar\n\n\n  - name: libarchive-minimal-static\n    script: build_minimal.sh\n    build:\n      skip: true  # [win]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - autoconf    # [unix]\n        - automake    # [unix]\n        - libtool     # [unix]\n        - pkg-config  # [unix]\n        - make        # [unix]\n      host:\n        - libiconv    # [osx]\n        - bzip2\n        - zlib\n        - zstd\n\n    test:\n      commands:\n        # Verify pkg-config file is in place.\n        - test -f \"${PREFIX}/lib/pkgconfig/libarchive.pc\"  # [unix]\n\n        # Verify headers are in place.\n        - test -f \"${PREFIX}/include/archive.h\"            # [unix]\n        - test -f \"${PREFIX}/include/archive_entry.h\"      # [unix]\n\n        # Verify libraries are in place.\n        - test -f \"${PREFIX}/lib/libarchive.a\"             # [unix]\n\nabout:\n  home: http://www.libarchive.org/\n  summary: Multi-format archive and compression library\n  license: BSD-2-Clause\n  license_file: COPYING\n  license_family: BSD\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n    - mingwandroid\n    - ocefpaf\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1937,8 +2870,8 @@
    "elements": []
   }
  },
- "url": "https://github.com/libarchive/libarchive/archive/v3.5.2.tar.gz",
- "version": "3.5.2",
+ "url": "https://github.com/libarchive/libarchive/archive/v3.6.1.tar.gz",
+ "version": "3.6.1",
  "win_64_meta_yaml": {
   "about": {
    "home": "http://www.libarchive.org/",
@@ -1948,11 +2881,7 @@
    "summary": "Multi-format archive and compression library"
   },
   "build": {
-   "number": "3",
-   "run_exports": [
-    "libarchive",
-    "libarchive"
-   ]
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1964,39 +2893,127 @@
     "ocefpaf"
    ]
   },
+  "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja",
+      "m2-patch"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.bat",
+    "test": {
+     "commands": [
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": {
+     "skip": true
+    },
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": null
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "libarchive"
+     ]
+    },
+    "name": "libarchive",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cmake",
+      "ninja",
+      "m2-patch"
+     ],
+     "host": [
+      "bzip2",
+      "lz4-c",
+      "xz",
+      "lzo",
+      "openssl",
+      "libxml2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_libarchive.bat",
+    "test": {
+     "commands": [
+      "bsdcat --version",
+      "bsdcpio --version",
+      "bsdtar --version",
+      "bsdtar -tf test/hello_world.xar"
+     ],
+     "files": [
+      "test/hello_world.xar"
+     ]
+    }
+   },
+   {
+    "build": {
+     "skip": true
+    },
+    "name": "libarchive-minimal-static",
+    "requirements": {
+     "build": [
+      "c_compiler_stub"
+     ],
+     "host": [
+      "bzip2",
+      "zlib",
+      "zstd"
+     ]
+    },
+    "script": "build_minimal.sh",
+    "test": {
+     "commands": null
+    }
+   }
+  ],
   "package": {
-   "name": "libarchive",
-   "version": "3.5.2"
-  },
-  "requirements": {
-   "build": [
-    "c_compiler_stub",
-    "cmake",
-    "ninja",
-    "m2-patch",
-    "c_compiler_stub",
-    "cmake",
-    "ninja",
-    "m2-patch"
-   ],
-   "host": [
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd",
-    "bzip2",
-    "lz4-c",
-    "xz",
-    "lzo",
-    "openssl",
-    "libxml2",
-    "zlib",
-    "zstd"
-   ]
+   "name": "libarchive-split",
+   "version": "3.6.1"
   },
   "source": {
    "patches": [
@@ -2005,34 +3022,14 @@
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
     "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch",
     "patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
     "patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch",
     "patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch",
     "patches/0006-VC-openssl-define-inline-as-__inline.patch",
-    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch",
-    "patches/0008-VC9-compatibility-remove-C99.patch",
-    "patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch"
+    "patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch"
    ],
-   "sha256": "126058cb4cf50e36bcf83307f5d987bde2ecebabcae985b6a153116362d25b7b",
-   "url": "https://github.com/libarchive/libarchive/archive/v3.5.2.tar.gz"
-  },
-  "test": {
-   "commands": [
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar",
-    "bsdcat --version",
-    "bsdcpio --version",
-    "bsdtar --version",
-    "bsdtar -tf test/hello_world.xar"
-   ],
-   "files": [
-    "test/hello_world.xar",
-    "test/hello_world.xar"
-   ]
+   "sha256": "3d5dce7be5ed9b2c239e25b0579167c133296d9dedd17b484b678aec6c010b62",
+   "url": "https://github.com/libarchive/libarchive/archive/v3.6.1.tar.gz"
   }
  },
  "win_64_requirements": {
