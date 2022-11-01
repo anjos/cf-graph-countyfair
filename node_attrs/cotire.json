@@ -264,7 +264,7 @@
    "summary": "A CMake module that speeds up the build process of CMake based build."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
     "cd \"${PREFIX}\"/share/cmake*/Modules",
     "cp \"${SRC_DIR}/cotire_src/CMake/cotire.cmake\" ."
@@ -281,7 +281,8 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "cxx_compiler_stub"
    ],
    "host": [
     "cmake"
@@ -322,7 +323,8 @@
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "cxx_compiler_stub"
    ]
   },
   "host": {
@@ -355,7 +357,7 @@
    "summary": "A CMake module that speeds up the build process of CMake based build."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
     "cd \"${PREFIX}\"/share/cmake*/Modules",
     "cp \"${SRC_DIR}/cotire_src/CMake/cotire.cmake\" .",
@@ -379,8 +381,11 @@
   "requirements": {
    "build": [
     "c_compiler_stub",
+    "cxx_compiler_stub",
     "c_compiler_stub",
-    "c_compiler_stub"
+    "cxx_compiler_stub",
+    "c_compiler_stub",
+    "cxx_compiler_stub"
    ],
    "host": [
     "cmake",
@@ -420,8 +425,6 @@
     "pushd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules",
     "if not exist cotire.cmake exit 1",
     "popd",
-    "set \"CMAKE_GENERATOR_PLATFORM=\"",
-    "set \"CMAKE_GENERATOR_TOOLSET=\"",
     "cd cotire_src && cd src && mkdir build && cd build",
     "cmake -G \"NMake Makefiles\" ..",
     "cmake --build ."
@@ -456,7 +459,7 @@
    "summary": "A CMake module that speeds up the build process of CMake based build."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
     "cd \"${PREFIX}\"/share/cmake*/Modules",
     "cp \"${SRC_DIR}/cotire_src/CMake/cotire.cmake\" ."
@@ -473,7 +476,8 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "cxx_compiler_stub"
    ],
    "host": [
     "cmake"
@@ -514,7 +518,8 @@
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "cxx_compiler_stub"
    ]
   },
   "host": {
@@ -546,19 +551,21 @@
   ]
  },
  "pinning_version": "2022.10.29.17.19.28",
- "raw_meta_yaml": "{% set version = \"1.8.1\" %}\n{% set sha256 = \"79b976b9e822941e3e2a3d82881c5fbcfbc971156640cb745e74f845e764f192\" %}\n\npackage:\n  name: cotire\n  version: {{ version }}\n\nsource:\n  url: https://github.com/sakra/cotire/archive/cotire-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    # Include cotire in example CMakeLists.txt.\n    #\n    # https://github.com/sakra/cotire/pull/100\n    #\n    - PR_100.diff\n  folder: cotire_src\n\nbuild:\n  number: 0\n  script:\n    - cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules        # [win]\n    - cd \"${PREFIX}\"/share/cmake*/Modules                # [unix]\n    - cp \"${SRC_DIR}/cotire_src/CMake/cotire.cmake\" .    # [unix]\n    - copy %SRC_DIR%\\\\cotire_src\\\\CMake\\\\cotire.cmake .  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n  host:\n    - cmake\n  run:\n    - cmake\n\ntest:\n  source_files:\n    - cotire_src\n  requires:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make                                                # [unix]\n  commands:\n    # Verify that the cotire CMake file is in place.\n    - pushd \"${PREFIX}\"/share/cmake*/Modules/             # [unix]\n    - pushd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules      # [win]\n    - test -f cotire.cmake                                # [unix]\n    - if not exist cotire.cmake exit 1                    # [win]\n    - popd\n\n    # Use cotire in a simple test to make sure it works.\n    - set \"CMAKE_GENERATOR_PLATFORM=\"                     # [win]\n    - set \"CMAKE_GENERATOR_TOOLSET=\"                      # [win]\n    - cd cotire_src && cd src && mkdir build && cd build  #\n    - cmake -G \"Unix Makefiles\" ..                        # [unix]\n    - cmake -G \"NMake Makefiles\" ..                       # [win]\n    - cmake --build .\n\n\nabout:\n  home: https://github.com/sakra/cotire\n  license: MIT\n  license_file: cotire_src/license\n  summary: A CMake module that speeds up the build process of CMake based build.\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n",
+ "raw_meta_yaml": "{% set version = \"1.8.1\" %}\n{% set sha256 = \"79b976b9e822941e3e2a3d82881c5fbcfbc971156640cb745e74f845e764f192\" %}\n\npackage:\n  name: cotire\n  version: {{ version }}\n\nsource:\n  url: https://github.com/sakra/cotire/archive/cotire-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    # Include cotire in example CMakeLists.txt.\n    #\n    # https://github.com/sakra/cotire/pull/100\n    #\n    - PR_100.diff\n  folder: cotire_src\n\nbuild:\n  number: 1\n  script:\n    - cd \"${PREFIX}\"/share/cmake*/Modules                # [unix]\n    - cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules        # [win]\n    - cp \"${SRC_DIR}/cotire_src/CMake/cotire.cmake\" .    # [unix]\n    - copy %SRC_DIR%\\\\cotire_src\\\\CMake\\\\cotire.cmake .  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - cmake\n  run:\n    - cmake\n\ntest:\n  source_files:\n    - cotire_src\n  requires:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make                                                # [unix]\n  commands:\n    # Verify that the cotire CMake file is in place.\n    - pushd \"${PREFIX}\"/share/cmake*/Modules/             # [unix]\n    - pushd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules      # [win]\n    - test -f cotire.cmake                                # [unix]\n    - if not exist cotire.cmake exit 1                    # [win]\n    - popd\n\n    # Use cotire in a simple test to make sure it works.\n    - cd cotire_src && cd src && mkdir build && cd build\n    - cmake -G \"Unix Makefiles\" ..                        # [unix]\n    - cmake -G \"NMake Makefiles\" ..                       # [win]\n    - cmake --build .\n\n\nabout:\n  home: https://github.com/sakra/cotire\n  license: MIT\n  license_file: cotire_src/license\n  summary: A CMake module that speeds up the build process of CMake based build.\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n",
  "req": {
   "__set__": true,
   "elements": [
    "c_compiler_stub",
-   "cmake"
+   "cmake",
+   "cxx_compiler_stub"
   ]
  },
  "requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "cxx_compiler_stub"
    ]
   },
   "host": {
@@ -593,7 +600,8 @@
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "cxx_compiler_stub"
    ]
   },
   "host": {
@@ -628,7 +636,7 @@
    "summary": "A CMake module that speeds up the build process of CMake based build."
   },
   "build": {
-   "number": "0",
+   "number": "1",
    "script": [
     "cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules",
     "copy %SRC_DIR%\\\\cotire_src\\\\CMake\\\\cotire.cmake ."
@@ -645,7 +653,8 @@
   },
   "requirements": {
    "build": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "cxx_compiler_stub"
    ],
    "host": [
     "cmake"
@@ -667,8 +676,6 @@
     "pushd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules",
     "if not exist cotire.cmake exit 1",
     "popd",
-    "set \"CMAKE_GENERATOR_PLATFORM=\"",
-    "set \"CMAKE_GENERATOR_TOOLSET=\"",
     "cd cotire_src && cd src && mkdir build && cd build",
     "cmake -G \"NMake Makefiles\" ..",
     "cmake --build ."
@@ -687,7 +694,8 @@
   "build": {
    "__set__": true,
    "elements": [
-    "c_compiler_stub"
+    "c_compiler_stub",
+    "cxx_compiler_stub"
    ]
   },
   "host": {
