@@ -175,6 +175,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1106531741.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -926,7 +945,7 @@
    "python-gooseeye"
   ]
  },
- "pinning_version": "2022.06.22.11.09.47",
+ "pinning_version": "2022.11.01.06.59.37",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"GooseEYE\" %}\n{% set version = \"0.6.3\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 0639f355193bc80d873013058914206e494d6054a5f8224533552a7049d091e6\n\nbuild:\n  number: 2\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - xtensor\n      run:\n        - xtensor\n\n    test:\n      commands:\n        - test -d ${PREFIX}/include/{{ name }}  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/{{ name }}.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\{{ name }}.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n      skip: true  # [python_impl == 'pypy']\n\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - numpy *                             # [build_platform != target_platform]\n        - setuptools_scm                      # [build_platform != target_platform]\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n        - ninja\n      host:\n        - numpy *\n        - pip\n        - pybind11\n        - pybind11-abi\n        - python\n        - scikit-build\n        - setuptools_scm\n        - xtensor\n        - xtensor-python\n      run:\n        - numpy *\n        - python\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n        - python -c \"import {{ name }}; assert {{ name }}.version() == '{{ version }}'\"\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE\n  summary: Evaluate several geometrical statistical measures on images.\n  description: |\n    Library to evaluate several geometrical statistical measures on (ensembles of) 'images'\n    (i.e. 1-D, 2-D, or 3-D matrices).\n  doc_url: https://{{ name }}.rtfd.io\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
@@ -989,7 +1008,7 @@
    ]
   }
  },
- "smithy_version": "3.21.0",
+ "smithy_version": "3.21.2",
  "strong_exports": false,
  "total_requirements": {
   "build": {
