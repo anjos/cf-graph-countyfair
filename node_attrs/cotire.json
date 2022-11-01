@@ -260,13 +260,14 @@
   "about": {
    "home": "https://github.com/sakra/cotire",
    "license": "MIT",
+   "license_file": "cotire_src/license",
    "summary": "A CMake module that speeds up the build process of CMake based build."
   },
   "build": {
-   "features": null,
    "number": "0",
    "script": [
-    "cp \"${SRC_DIR}/CMake/cotire.cmake\" \"${PREFIX}\"/share/cmake*/Modules"
+    "cd \"${PREFIX}\"/share/cmake*/Modules",
+    "cp \"${SRC_DIR}/cotire_src/CMake/cotire.cmake\" ."
    ]
   },
   "extra": {
@@ -276,10 +277,13 @@
   },
   "package": {
    "name": "cotire",
-   "version": "1.7.8"
+   "version": "1.8.1"
   },
   "requirements": {
    "build": [
+    "c_compiler_stub"
+   ],
+   "host": [
     "cmake"
    ],
    "run": [
@@ -287,33 +291,45 @@
    ]
   },
   "source": {
-   "fn": "cotire-1.7.8.tar.gz",
+   "folder": "cotire_src",
    "patches": [
     "PR_100.diff"
    ],
-   "sha256": "84be4ff66248ba629666bed5c2b76b869db7f04425e44bba3555bbc25d5701c1",
-   "url": "https://github.com/sakra/cotire/archive/cotire-1.7.8.tar.gz"
+   "sha256": "79b976b9e822941e3e2a3d82881c5fbcfbc971156640cb745e74f845e764f192",
+   "url": "https://github.com/sakra/cotire/archive/cotire-1.8.1.tar.gz"
   },
   "test": {
    "commands": [
-    "test -f \"${PREFIX}\"/share/cmake*/Modules/cotire.cmake",
-    "cd \"${SRC_DIR}/src\" && mkdir build && cd build",
+    "pushd \"${PREFIX}\"/share/cmake*/Modules/",
+    "test -f cotire.cmake",
+    "popd",
+    "cd cotire_src && cd src && mkdir build && cd build",
     "cmake -G \"Unix Makefiles\" ..",
     "cmake --build ."
    ],
-   "requires": null
+   "requires": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "make"
+   ],
+   "source_files": [
+    "cotire_src"
+   ]
   }
  },
  "linux_64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "cmake"
+    "c_compiler_stub"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "cmake"
+   ]
   },
   "run": {
    "__set__": true,
@@ -323,22 +339,30 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "make"
+   ]
   }
  },
  "meta_yaml": {
   "about": {
    "home": "https://github.com/sakra/cotire",
    "license": "MIT",
+   "license_file": "cotire_src/license",
    "summary": "A CMake module that speeds up the build process of CMake based build."
   },
   "build": {
-   "features": null,
    "number": "0",
    "script": [
-    "cp \"${SRC_DIR}/CMake/cotire.cmake\" \"${PREFIX}\"/share/cmake*/Modules",
-    "cp \"${SRC_DIR}/CMake/cotire.cmake\" \"${PREFIX}\"/share/cmake*/Modules",
-    "cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules && copy %SRC_DIR%\\\\CMake\\\\cotire.cmake ."
+    "cd \"${PREFIX}\"/share/cmake*/Modules",
+    "cp \"${SRC_DIR}/cotire_src/CMake/cotire.cmake\" .",
+    "cd \"${PREFIX}\"/share/cmake*/Modules",
+    "cp \"${SRC_DIR}/cotire_src/CMake/cotire.cmake\" .",
+    "cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules",
+    "copy %SRC_DIR%\\\\cotire_src\\\\CMake\\\\cotire.cmake ."
    ]
   },
   "extra": {
@@ -350,13 +374,17 @@
   },
   "package": {
    "name": "cotire",
-   "version": "1.7.8"
+   "version": "1.8.1"
   },
   "requirements": {
    "build": [
+    "c_compiler_stub",
+    "c_compiler_stub",
+    "c_compiler_stub"
+   ],
+   "host": [
     "cmake",
     "cmake",
-    "python",
     "cmake"
    ],
    "run": [
@@ -366,29 +394,56 @@
    ]
   },
   "source": {
-   "fn": "cotire-1.7.8.tar.gz",
+   "folder": "cotire_src",
    "patches": [
     "PR_100.diff",
     "PR_100.diff",
     "PR_100.diff"
    ],
-   "sha256": "84be4ff66248ba629666bed5c2b76b869db7f04425e44bba3555bbc25d5701c1",
-   "url": "https://github.com/sakra/cotire/archive/cotire-1.7.8.tar.gz"
+   "sha256": "79b976b9e822941e3e2a3d82881c5fbcfbc971156640cb745e74f845e764f192",
+   "url": "https://github.com/sakra/cotire/archive/cotire-1.8.1.tar.gz"
   },
   "test": {
    "commands": [
-    "test -f \"${PREFIX}\"/share/cmake*/Modules/cotire.cmake",
-    "cd \"${SRC_DIR}/src\" && mkdir build && cd build",
+    "pushd \"${PREFIX}\"/share/cmake*/Modules/",
+    "test -f cotire.cmake",
+    "popd",
+    "cd cotire_src && cd src && mkdir build && cd build",
     "cmake -G \"Unix Makefiles\" ..",
     "cmake --build .",
-    "test -f \"${PREFIX}\"/share/cmake*/Modules/cotire.cmake",
-    "cd \"${SRC_DIR}/src\" && mkdir build && cd build",
+    "pushd \"${PREFIX}\"/share/cmake*/Modules/",
+    "test -f cotire.cmake",
+    "popd",
+    "cd cotire_src && cd src && mkdir build && cd build",
     "cmake -G \"Unix Makefiles\" ..",
     "cmake --build .",
-    "cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules && if not exist cotire.cmake exit 1",
-    "cd \"%SRC_DIR%/src\" && mkdir build && cd build"
+    "pushd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules",
+    "if not exist cotire.cmake exit 1",
+    "popd",
+    "set \"CMAKE_GENERATOR_PLATFORM=\"",
+    "set \"CMAKE_GENERATOR_TOOLSET=\"",
+    "cd cotire_src && cd src && mkdir build && cd build",
+    "cmake -G \"NMake Makefiles\" ..",
+    "cmake --build ."
    ],
-   "requires": null
+   "requires": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "make",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "make",
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake"
+   ],
+   "source_files": [
+    "cotire_src",
+    "cotire_src",
+    "cotire_src"
+   ]
   }
  },
  "name": "cotire",
@@ -397,13 +452,14 @@
   "about": {
    "home": "https://github.com/sakra/cotire",
    "license": "MIT",
+   "license_file": "cotire_src/license",
    "summary": "A CMake module that speeds up the build process of CMake based build."
   },
   "build": {
-   "features": null,
    "number": "0",
    "script": [
-    "cp \"${SRC_DIR}/CMake/cotire.cmake\" \"${PREFIX}\"/share/cmake*/Modules"
+    "cd \"${PREFIX}\"/share/cmake*/Modules",
+    "cp \"${SRC_DIR}/cotire_src/CMake/cotire.cmake\" ."
    ]
   },
   "extra": {
@@ -413,10 +469,13 @@
   },
   "package": {
    "name": "cotire",
-   "version": "1.7.8"
+   "version": "1.8.1"
   },
   "requirements": {
    "build": [
+    "c_compiler_stub"
+   ],
+   "host": [
     "cmake"
    ],
    "run": [
@@ -424,33 +483,45 @@
    ]
   },
   "source": {
-   "fn": "cotire-1.7.8.tar.gz",
+   "folder": "cotire_src",
    "patches": [
     "PR_100.diff"
    ],
-   "sha256": "84be4ff66248ba629666bed5c2b76b869db7f04425e44bba3555bbc25d5701c1",
-   "url": "https://github.com/sakra/cotire/archive/cotire-1.7.8.tar.gz"
+   "sha256": "79b976b9e822941e3e2a3d82881c5fbcfbc971156640cb745e74f845e764f192",
+   "url": "https://github.com/sakra/cotire/archive/cotire-1.8.1.tar.gz"
   },
   "test": {
    "commands": [
-    "test -f \"${PREFIX}\"/share/cmake*/Modules/cotire.cmake",
-    "cd \"${SRC_DIR}/src\" && mkdir build && cd build",
+    "pushd \"${PREFIX}\"/share/cmake*/Modules/",
+    "test -f cotire.cmake",
+    "popd",
+    "cd cotire_src && cd src && mkdir build && cd build",
     "cmake -G \"Unix Makefiles\" ..",
     "cmake --build ."
    ],
-   "requires": null
+   "requires": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake",
+    "make"
+   ],
+   "source_files": [
+    "cotire_src"
+   ]
   }
  },
  "osx_64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "cmake"
+    "c_compiler_stub"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "cmake"
+   ]
   },
   "run": {
    "__set__": true,
@@ -460,7 +531,12 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "make"
+   ]
   }
  },
  "outputs_names": {
@@ -470,35 +546,45 @@
   ]
  },
  "pinning_version": "2022.10.29.17.19.28",
- "raw_meta_yaml": "{% set version = \"1.7.8\" %}\n{% set sha256 = \"84be4ff66248ba629666bed5c2b76b869db7f04425e44bba3555bbc25d5701c1\" %}\n\npackage:\n  name: cotire\n  version: {{ version }}\n\nsource:\n  fn: cotire-{{ version }}.tar.gz\n  url: https://github.com/sakra/cotire/archive/cotire-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    # Include cotire in example CMakeLists.txt.\n    #\n    # https://github.com/sakra/cotire/pull/100\n    #\n    - PR_100.diff\n\nbuild:\n  number: 0\n  features:\n    - vc9   # [win and py27]\n    - vc10  # [win and py34]\n    - vc14  # [win and py35]\n  script:\n    - cp \"${SRC_DIR}/CMake/cotire.cmake\" \"${PREFIX}\"/share/cmake*/Modules                   # [unix]\n    - cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules && copy %SRC_DIR%\\\\CMake\\\\cotire.cmake .  # [win]\n\nrequirements:\n  build:\n    - python  # [win]\n    - cmake\n\n  run:\n    - cmake\n\ntest:\n  requires:\n     - python 2.7.*  # [win and py27]\n     - python 3.4.*  # [win and py34]\n     - python 3.5.*  # [win and py35]\n  commands:\n    # Verify that the cotire CMake file is in place.\n    - test -f \"${PREFIX}\"/share/cmake*/Modules/cotire.cmake                            # [unix]\n    - cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules && if not exist cotire.cmake exit 1  # [win]\n\n\n    # Use cotire in a simple test to make sure it works.\n    - cd \"${SRC_DIR}/src\" && mkdir build && cd build                                  # [unix]\n    - cd \"%SRC_DIR%/src\" && mkdir build && cd build                                   # [win]\n    - cmake -G \"Unix Makefiles\" ..                                                    # [unix]\n    # Cannot find `cl` on Windows during tests.\n    # Please see this issue.\n    #\n    # https://github.com/conda/conda-build/issues/1059\n    #\n    #- cmake -G \"NMake Makefiles\" ..                                                  # [win]\n    - cmake --build .                                                                 # [unix]\n\n\nabout:\n  home: https://github.com/sakra/cotire\n  license: MIT\n  summary: A CMake module that speeds up the build process of CMake based build.\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n",
+ "raw_meta_yaml": "{% set version = \"1.8.1\" %}\n{% set sha256 = \"79b976b9e822941e3e2a3d82881c5fbcfbc971156640cb745e74f845e764f192\" %}\n\npackage:\n  name: cotire\n  version: {{ version }}\n\nsource:\n  url: https://github.com/sakra/cotire/archive/cotire-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    # Include cotire in example CMakeLists.txt.\n    #\n    # https://github.com/sakra/cotire/pull/100\n    #\n    - PR_100.diff\n  folder: cotire_src\n\nbuild:\n  number: 0\n  script:\n    - cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules        # [win]\n    - cd \"${PREFIX}\"/share/cmake*/Modules                # [unix]\n    - cp \"${SRC_DIR}/cotire_src/CMake/cotire.cmake\" .    # [unix]\n    - copy %SRC_DIR%\\\\cotire_src\\\\CMake\\\\cotire.cmake .  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n  host:\n    - cmake\n  run:\n    - cmake\n\ntest:\n  source_files:\n    - cotire_src\n  requires:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make                                                # [unix]\n  commands:\n    # Verify that the cotire CMake file is in place.\n    - pushd \"${PREFIX}\"/share/cmake*/Modules/             # [unix]\n    - pushd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules      # [win]\n    - test -f cotire.cmake                                # [unix]\n    - if not exist cotire.cmake exit 1                    # [win]\n    - popd\n\n    # Use cotire in a simple test to make sure it works.\n    - set \"CMAKE_GENERATOR_PLATFORM=\"                     # [win]\n    - set \"CMAKE_GENERATOR_TOOLSET=\"                      # [win]\n    - cd cotire_src && cd src && mkdir build && cd build  #\n    - cmake -G \"Unix Makefiles\" ..                        # [unix]\n    - cmake -G \"NMake Makefiles\" ..                       # [win]\n    - cmake --build .\n\n\nabout:\n  home: https://github.com/sakra/cotire\n  license: MIT\n  license_file: cotire_src/license\n  summary: A CMake module that speeds up the build process of CMake based build.\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n",
  "req": {
   "__set__": true,
   "elements": [
-   "cmake",
-   "python"
+   "c_compiler_stub",
+   "cmake"
   ]
  },
  "requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "cmake",
-    "python"
+    "c_compiler_stub"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub"
+   ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "cmake"
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "make"
+   ]
   }
  },
  "smithy_version": "3.21.2",
@@ -507,13 +593,14 @@
   "build": {
    "__set__": true,
    "elements": [
-    "cmake",
-    "python"
+    "c_compiler_stub"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "cmake"
+   ]
   },
   "run": {
    "__set__": true,
@@ -523,22 +610,28 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub",
+    "make"
+   ]
   }
  },
- "url": "https://github.com/sakra/cotire/archive/cotire-1.7.8.tar.gz",
- "version": "1.7.8",
+ "url": "https://github.com/sakra/cotire/archive/cotire-1.8.1.tar.gz",
+ "version": "1.8.1",
  "win_64_meta_yaml": {
   "about": {
    "home": "https://github.com/sakra/cotire",
    "license": "MIT",
+   "license_file": "cotire_src/license",
    "summary": "A CMake module that speeds up the build process of CMake based build."
   },
   "build": {
-   "features": null,
    "number": "0",
    "script": [
-    "cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules && copy %SRC_DIR%\\\\CMake\\\\cotire.cmake ."
+    "cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules",
+    "copy %SRC_DIR%\\\\cotire_src\\\\CMake\\\\cotire.cmake ."
    ]
   },
   "extra": {
@@ -548,11 +641,13 @@
   },
   "package": {
    "name": "cotire",
-   "version": "1.7.8"
+   "version": "1.8.1"
   },
   "requirements": {
    "build": [
-    "python",
+    "c_compiler_stub"
+   ],
+   "host": [
     "cmake"
    ],
    "run": [
@@ -560,32 +655,46 @@
    ]
   },
   "source": {
-   "fn": "cotire-1.7.8.tar.gz",
+   "folder": "cotire_src",
    "patches": [
     "PR_100.diff"
    ],
-   "sha256": "84be4ff66248ba629666bed5c2b76b869db7f04425e44bba3555bbc25d5701c1",
-   "url": "https://github.com/sakra/cotire/archive/cotire-1.7.8.tar.gz"
+   "sha256": "79b976b9e822941e3e2a3d82881c5fbcfbc971156640cb745e74f845e764f192",
+   "url": "https://github.com/sakra/cotire/archive/cotire-1.8.1.tar.gz"
   },
   "test": {
    "commands": [
-    "cd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules && if not exist cotire.cmake exit 1",
-    "cd \"%SRC_DIR%/src\" && mkdir build && cd build"
+    "pushd %LIBRARY_PREFIX%\\\\share\\\\cmake*\\\\Modules",
+    "if not exist cotire.cmake exit 1",
+    "popd",
+    "set \"CMAKE_GENERATOR_PLATFORM=\"",
+    "set \"CMAKE_GENERATOR_TOOLSET=\"",
+    "cd cotire_src && cd src && mkdir build && cd build",
+    "cmake -G \"NMake Makefiles\" ..",
+    "cmake --build ."
    ],
-   "requires": null
+   "requires": [
+    "c_compiler_stub",
+    "cxx_compiler_stub",
+    "cmake"
+   ],
+   "source_files": [
+    "cotire_src"
+   ]
   }
  },
  "win_64_requirements": {
   "build": {
    "__set__": true,
    "elements": [
-    "cmake",
-    "python"
+    "c_compiler_stub"
    ]
   },
   "host": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "cmake"
+   ]
   },
   "run": {
    "__set__": true,
@@ -595,7 +704,11 @@
   },
   "test": {
    "__set__": true,
-   "elements": []
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "cxx_compiler_stub"
+   ]
   }
  }
 }
