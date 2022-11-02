@@ -349,7 +349,8 @@
  "name": "r-santoku",
  "new_version": "0.9.0",
  "new_version_attempts": {
-  "0.8.0": 1
+  "0.8.0": 1,
+  "0.9.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -487,6 +488,12 @@
   ]
  },
  "pinning_version": "2022.10.11.03.04.53",
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3378737767\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1158, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 278, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
+ },
  "raw_meta_yaml": "{% set version = \"0.8.0\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-santoku\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/santoku_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/santoku/santoku_{{ version }}.tar.gz\n  sha256: 3864b079d43a62f41c62f2094341f5c091c071bb7543357e1aed5ab970600b77\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 1\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ compiler('cxx') }}            # [not win]\n    - {{ compiler('m2w64_cxx') }}      # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n    - cross-r-base {{ r_base }}    # [build_platform != target_platform]\n  host:\n    - r-base\n    - r-rcpp\n    - r-assertthat\n    - r-glue\n    - r-lifecycle\n    - r-rlang\n    - r-vctrs\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - r-rcpp\n    - r-assertthat\n    - r-glue\n    - r-lifecycle\n    - r-rlang\n    - r-vctrs\n\ntest:\n  commands:\n    - $R -e \"library('santoku')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('santoku')\\\"\"  # [win]\n\nabout:\n  home: https://github.com/hughjonesd/santoku, https://hughjonesd.github.io/santoku/\n  license: MIT\n  summary: A tool for cutting data into intervals. Allows singleton intervals. Always includes the whole range of data by default. Flexible labelling. Convenience functions for cutting by quantiles etc. Handles dates, times, units and other vectors.\n  license_family: MIT\n  license_file:\n    - {{ environ[\"PREFIX\"] }}/lib/R/share/licenses/MIT\n    - LICENSE\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n",
  "req": {
   "__set__": true,
