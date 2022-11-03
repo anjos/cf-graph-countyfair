@@ -105,6 +105,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1110051580.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.7.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -4107,7 +4124,8 @@
  "new_version_attempts": {
   "1.6.0": 1,
   "1.6.1": 2,
-  "1.6.2": 0
+  "1.6.2": 0,
+  "1.7.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -4851,7 +4869,7 @@
    "mmcv-full"
   ]
  },
- "pinning_version": "2022.09.28.16.00.31",
+ "pinning_version": "2022.11.03.18.25.45",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"1.6.0\" %}\n{% set number = 1 %}\n{% set proc_type = \"cuda\" if cuda_compiler_version != \"None\" else \"cpu\" %}\n{% if cuda_compiler_version != \"None\" %}\n{% set number = number + 200 %}\n{% endif %}\n\npackage:\n  name: mmcv-recipe\n  version: {{ version }}\n\nsource:\n  url: https://github.com/open-mmlab/mmcv/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 623029d6a4e0a2426e04bd7a2d5ba434848ca63522d7e6b939acd62f1edf6e77\nbuild:\n  number: {{ number }}\n  skip: true  # [win]\n\noutputs:\n  - name: mmcv-full\n    build:\n      string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version != \"None\"]\n      string: cpu_py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}  # [cuda_compiler_version == \"None\"]\n      detect_binary_files_with_prefix: false\n      run_exports:\n        - {{ pin_subpackage('mmcv-full', max_pin='x.x') }}\n      missing_dso_whitelist:\n        # conda-forge::pytorch provides these libs\n        - $RPATH/libc10_cuda.so\n        - $RPATH/libtorch_python.so\n        - $RPATH/libtorch_cpu.so\n        - $RPATH/libc10.so\n        - $RPATH/libc10_cuda.dylib\n        - $RPATH/libtorch_python.dylib\n        - $RPATH/libtorch_cpu.dylib\n        - $RPATH/libc10.dylib\n    script: build_mmcv.sh  # [not win]\n    requirements:\n      build:\n        - python                                   # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}       # [build_platform != target_platform]\n        - pytorch ={{ pytorch }}={{ proc_type }}*  # [build_platform != target_platform]\n        - numpy                                    # [build_platform != target_platform]\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        # this adds matching cuda requirement to run deps using __cuda package\n        - {{ compiler('cuda') }}    # [cuda_compiler_version != \"None\"]\n        - ninja\n      host:\n        - python\n        - pip\n        - requests\n        - future\n        - six\n        - typing\n        - pkg-config  # [unix]\n        - typing_extensions\n        - pytorch ={{ pytorch }}={{ proc_type }}*\n        - torchvision\n        - setuptools\n        - numpy\n        - py-opencv\n      run:\n        # intentionally skipping opencv and pytorch (following upstream vendor)\n        - addict\n        - packaging\n        - Pillow\n        - pyyaml\n        - yapf\n        - {{ pin_compatible('numpy') }}\n        - typing_extensions\n        - __cuda  # [cuda_compiler_version != \"None\"]\n\n      run_constrained:\n        - pytorch =*={{ proc_type }}*\n    test:\n      requires:\n        - pytest\n        - requests\n        - scipy\n        - libopencv\n        - py-opencv\n        - opencv\n        - python-lmdb\n        - libiconv\n        - tifffile\n        - python-dateutil\n        - torchvision\n      imports:\n        - mmcv\n      source_files:\n        - tests\n      commands:\n        {% set failing_tests = [\"test_imcrop\",\n                                \"test_tensor2imgs\",\n                                \"test_imwrite\",\n                                \"test_imfrombytes\",\n                                \"test_imread\"] %}\n        {% set slow_tests = [\"test_eval_hook\",\n                             \"test_start_param\",\n                             \"test_flat_cosine_runner_hook\",\n                             \"test_momentum_runner_hook\",\n                             \"test_step_runner_hook\",\n                             \"test_adjust_sharpness\",\n                             \"test_adjust_contrast\",\n                             \"test_adjust_brightness\",\n                             \"test_gradient_cumulative_optimizer_hook\",\n                             \"test_auto_contrast\"] %}\n        {% set ignored_files = [\"./tests/test_ops/test_onnx.py\",\n                                \"./tests/test_ops/test_tensorrt.py\",\n                                \"./tests/test_ops/test_tensorrt_preprocess.py\",\n                                \"./tests/test_utils/test_timer.py\",\n                                \"./tests/test_utils/test_progressbar.py\"] %}\n        # ignored tests:\n        # test_onnx.py,test_tensorrt.py,test_tensorrt_preprocess.py - mccv currently compiled without onnx runtime\n        # test_geometric.py:test_imcrop - depending on what backend opencv uses it produces diff results (lipjpeg vs libturbojpeg)\n        # test_io.py - tries to import libturbojpeg that we don't install (conflicts with opencv that uses libjpeg)\n        # test_progressbar.py, test_timer.py - on OSX sleep(1) takes 1.1sec, so all related tests fail\n        # test_image_misc.py::test_tensor2imgs - need to investigate 2/75 mismatch\n        - python3 -m pytest ./tests/ -k \"not ({{ (failing_tests + slow_tests)|join(' or ') }})\" --ignore={{ ignored_files|join(' --ignore=') }}\n        - python3 -c \"import mmcv; print(mmcv.__version__)\"\n\n\nabout:\n  home: https://github.com/open-mmlab/mmcv\n  summary: Foundational library for computer vision research\n  description: |\n    MMCV is a foundational library for computer vision research and supports many research projects.\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  dev_url: https://github.com/open-mmlab/mmcv\n\nextra:\n  recipe-maintainers:\n    - apatsekin\n",
@@ -4947,7 +4965,7 @@
    ]
   }
  },
- "smithy_version": "3.21.2",
+ "smithy_version": "3.21.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {

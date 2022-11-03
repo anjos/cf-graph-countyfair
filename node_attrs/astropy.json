@@ -677,6 +677,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1110116608.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -3480,15 +3499,13 @@
    "astropy"
   ]
  },
- "pinning_version": "2022.11.01.17.37.31",
+ "pinning_version": "2022.11.03.18.25.45",
  "pre_pr_migrator_attempts": {
   "pypy37": 1,
-  "python311": 3,
   "python39": 1
  },
  "pre_pr_migrator_status": {
   "pypy37": "not solvable: master: ['linux_aarch64_python3.7.____73_pypy: Encountered problems while solving.\\nProblem: nothing provides openssl >=1.0.2p,<1.0.3a needed by python-3.6.7-hd21baee_1002\\n']",
-  "python311": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3334114065\">bot CI job</a>): main: ['linux_64_numpy1.23python3.11.____cpython: Encountered problems while solving:\\n  - package numpy-base-1.23.1-py38ha15fc14_0 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n', 'linux_aarch64_numpy1.23python3.11.____cpython: Encountered problems while solving:\\n  - package numpy-base-1.23.1-py38h4a83355_0 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n', 'linux_ppc64le_numpy1.23python3.11.____cpython: Encountered problems while solving:\\n  - package numpy-base-1.23.1-py38h1bde650_0 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n', 'osx_64_numpy1.23python3.11.____cpython: Encountered problems while solving:\\n  - package numpy-base-1.23.1-py38h3b1a694_0 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n', 'osx_arm64_numpy1.23python3.11.____cpython: Encountered problems while solving:\\n  - package numpy-base-1.23.1-py38hadd41eb_0 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n', 'win_64_numpy1.23python3.11.____cpython: Encountered problems while solving:\\n  - package numpy-base-1.23.1-py38hca35cd5_0 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n']",
   "python39": "not solvable: master: ['linux_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package numpy-base-1.17.0-py36hde5b4d6_0 requires python >=3.6,<3.7.0a0, but none of the providers can be installed\\n', 'linux_aarch64_python3.9.____cpython: Encountered problems while solving.\\nProblem: nothing provides openssl >=1.0.2p,<1.0.3a needed by python-3.6.7-hd21baee_1002\\n', 'linux_ppc64le_python3.9.____cpython: Encountered problems while solving.\\nProblem: package numpy-base-1.17.0-py36h2f8d375_0 requires python >=3.6,<3.7.0a0, but none of the providers can be installed\\n', 'osx_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package numpy-1.17.0-py36h6b0580a_0 requires python >=3.6,<3.7.0a0, but none of the providers can be installed\\n', 'win_64_python3.9.____cpython: Encountered problems while solving.\\nProblem: package numpy-base-1.17.0-py36hc3f5095_0 requires python >=3.6,<3.7.0a0, but none of the providers can be installed\\n']"
  },
  "raw_meta_yaml": "{% set version = \"5.1.1\" %}\n\npackage:\n  name: astropy\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/a/astropy/astropy-{{ version }}.tar.gz\n  sha256: ba4bd696af7090fd399b464c704bf27b5633121e461785edc70432606a94bd81\n\nbuild:\n  entry_points:\n    - fits2bitmap = astropy.visualization.scripts.fits2bitmap:main\n    - fitscheck = astropy.io.fits.scripts.fitscheck:main\n    - fitsdiff = astropy.io.fits.scripts.fitsdiff:main\n    - fitsheader = astropy.io.fits.scripts.fitsheader:main\n    - fitsinfo = astropy.io.fits.scripts.fitsinfo:main\n    - samp_hub = astropy.samp.hub_script:hub_script\n    - volint = astropy.io.votable.volint:main\n    - wcslint = astropy.wcs.wcslint:main\n  number: 2\n  script: {{ PYTHON }} -m pip install . -vv\n  skip: true  # [py<38]\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - cython                                 # [build_platform != target_platform]\n    - numpy                                  # [build_platform != target_platform]\n    - {{ compiler('c') }}\n  host:\n    - python\n    - pip\n    - setuptools\n    - jinja2 =3.0.3\n    - markupsafe =2.1.1\n    - cython\n    - setuptools_scm >=6.2\n    - extension-helpers\n    - numpy\n  run:\n    - python\n    - {{ pin_compatible(\"numpy\") }}\n    - pyerfa >=2.0\n    - importlib-metadata\n    - pyyaml >=3.13\n    - packaging >=19.0\n\ntest:\n  requires:\n    - pytest-astropy\n  commands:\n    - fits2bitmap --help\n    - fitscheck --help\n    - fitsdiff --help\n    - fitsheader --help\n    - fitsinfo --help\n    - samp_hub --help\n    - volint --help\n    - wcslint --help\n  imports:\n    - astropy\n\nabout:\n  home: http://www.astropy.org/\n  license: BSD-3-Clause\n  license_file: LICENSE.rst\n  summary: Community-developed Python Library for Astronomy\n  description: |\n    The Astropy Project is a community effort to develop a single package for\n    Astronomy in Python. It contains core functionality and common tools\n    needed for performing astronomy and astrophysics research with Python.\n  doc_url: http://docs.astropy.org/en/stable/\n  dev_url: https://github.com/astropy/astropy\n\nextra:\n  recipe-maintainers:\n    - astrofrog-conda-forge\n    - mwcraig\n    - bsipocz\n",
@@ -3552,7 +3569,7 @@
    ]
   }
  },
- "smithy_version": "3.21.2",
+ "smithy_version": "3.21.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
