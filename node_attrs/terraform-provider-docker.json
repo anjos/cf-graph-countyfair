@@ -339,6 +339,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1108980183.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.23.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -498,6 +515,7 @@
  "new_version": "2.23.0",
  "new_version_attempts": {
   "2.22.0": 1,
+  "2.23.0": 1,
   "2.7.1": 1,
   "2.7.2": 1
  },
@@ -578,7 +596,7 @@
    "terraform-provider-docker"
   ]
  },
- "pinning_version": "2022.10.12.23.16.12",
+ "pinning_version": "2022.11.02.18.55.19",
  "raw_meta_yaml": "{% set provider = \"Docker\" %}\n{% set goname = \"github.com/kreuzwerker/terraform-provider-\"+provider.lower() %}\n{% set version = \"2.22.0\" %}\n\n{% set name = goname.split('/')[-1] %}\n\n{% set plugin_dir = os.sep.join([\"plugins\", \"registry.terraform.io\", \"hashicorp\", provider.lower(), version]) %}\n{% set x4_plugin = name + '_v' + version %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://{{ goname }}/archive/v{{ version }}.tar.gz\n  sha256: 64dd9573274aab7d48af9d43e15eb38417a2044f4b4d3bd883db9bc7fe31d4f0\n\nbuild:\n  number: 0\n  script:\n    - go build -v -o {{ target_gobin }}..{{ os.sep }}{{ plugin_dir }}{{ os.sep }}{{ target_goos }}_{{ target_goarch }}{{ os.sep }}{{ x4_plugin }}{{ target_goexe }}\n\nrequirements:\n  build:\n    - {{ compiler('go') }} 1.18\n\ntest:\n  requires:\n    - terraform 1\n\n  commands:\n    # Create a sample init.tf loading the provider\n    - echo 'provider \"{{ provider|lower }}\" { version=\"{{ version }}\" }' > init.tf  # [unix]\n    - echo provider \"{{ provider|lower }}\" { version=\"{{ version }}\" } > init.tf    # [win]\n\n    # Initialize\n    - terraform init --plugin-dir={{ target_gobin }}..{{ os.sep }}plugins\n\n    # Tests that init was successful\n    - test -f .terraform.lock.hcl              # [unix]\n    - if not exist .terraform.lock.hcl exit 1  # [win]\n\n    # Test that the provider was not downloaded\n    - test ! -f .terraform/plugins/{{ plugin_dir }}/{{ target_goos }}_{{ target_goarch }}/README.md  # [unix]\n    - if exist .terraform\\plugins\\{{ plugin_dir }}\\{{ target_goos }}_{{ target_goarch }}/README.md exit 1  # [win]\n\nabout:\n  home: https://www.terraform.io\n  license: MPL-2.0\n  license_file: LICENSE\n  summary: The Terraform {{ provider }} provider\n  doc_url: https://www.terraform.io/docs/providers/{{ provider|lower }}/index.html\n  dev_url: https://github.com/terraform-providers/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - conda-forge/terraform\n    - agcopenhaver\n    - oblute\n    - rluria14\n",
  "req": {
   "__set__": true,
@@ -608,7 +626,7 @@
    ]
   }
  },
- "smithy_version": "3.21.2",
+ "smithy_version": "3.21.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
