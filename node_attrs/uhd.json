@@ -614,6 +614,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1109090287.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -3820,13 +3839,11 @@
    "uhd"
   ]
  },
- "pinning_version": "2022.10.28.22.34.20",
+ "pinning_version": "2022.11.02.18.55.19",
  "pre_pr_migrator_attempts": {
-  "python311": 4,
   "python39": 1
  },
  "pre_pr_migrator_status": {
-  "python311": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3376946155\">bot CI job</a>): main: ['linux_64_numpy1.23python3.11.____cpythonpython_implcpython: Encountered problems while solving:\\n  - package numpy-base-1.23.1-py38ha15fc14_0 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n', 'linux_aarch64_numpy1.23python3.11.____cpythonpython_implcpython: Encountered problems while solving:\\n  - package numpy-base-1.23.1-py38h4a83355_0 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n', 'linux_ppc64le_numpy1.23python3.11.____cpythonpython_implcpython: Encountered problems while solving:\\n  - package numpy-base-1.23.1-py38h1bde650_0 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n', 'osx_64_numpy1.23python3.11.____cpythonpython_implcpython: Encountered problems while solving:\\n  - package numpy-base-1.23.1-py38h3b1a694_0 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n', 'osx_arm64_numpy1.23python3.11.____cpython: Encountered problems while solving:\\n  - package ruamel.yaml-0.16.10-py38h1a28f6b_1 requires python >=3.8,<3.9.0a0, but none of the providers can be installed\\n']",
   "python39": "not solvable: ['Encountered problems while solving.\\nProblem: nothing provides vc 10.* needed by python-3.4.5-0\\n', 'Encountered problems while solving.\\nProblem: package numpy-1.19.2-py39hb68c0c8_1 requires python_abi 3.9.* *_cp39, but none of the providers can be installed\\n', 'Encountered problems while solving.\\nProblem: package python-3.9.0-h1821ab9_0_cpython requires readline >=8.0,<9.0a0, but none of the providers can be installed\\n']"
  },
  "raw_meta_yaml": "{% set uhd_lib = \"uhd\" %}\n{% set version = \"4.3.0.0\" %}\n\npackage:\n  name: uhd\n  version: {{ version }}\n\nsource:\n  url: https://github.com/EttusResearch/uhd/archive/v{{ version }}.tar.gz\n  sha256: 8695800d593c58b557cbf9905b02bbf65a74ca68674e8c8c8c28bb6e203635ad\n  patches:\n    - 0001-usrp2-Include-DSP-bit-gain-derived-from-peak-stream-.patch\n    - 0002-python-Fix-libpyuhd-install_name-on-macOS.patch\n    - 0003-cmake-Make-libuhd-linking-to-Python-library-PRIVATE.patch\n    - 0004-cmake-Don-t-set-package_dir-in-setup.py.in.patch\n    - 0005-cmake-Prefer-python-confix-extension-suffix-to-hard-.patch\n    - 0006-lib-types-Declare-types-used-with-digital_filter_-ba.patch\n\nbuild:\n  number: 1\n  run_exports:\n    - {{ pin_subpackage('uhd', min_pin='x.x.x', max_pin='x.x.x') }}\n  entry_points:   # [not linux]\n    - uhd_images_downloader = uhd.uhd_images_downloader:main  # [not linux]\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - pybind11                               # [build_platform != target_platform]\n    - numpy                                  # [build_platform != target_platform]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.5.1\n    - ninja\n    - pkg-config\n\n  host:\n    - boost-cpp\n    - libusb\n    - mako >=0.5.0\n    - ncurses  # [not win]\n    - numpy\n    - pybind11\n    - python\n    - requests\n    - ruamel.yaml\n    - setuptools\n\n  run:\n    - boost-cpp\n    - ncurses  # [not win]\n    - {{ pin_compatible('numpy') }}\n    - python\n    - pyyaml\n    - requests\n    - ruamel.yaml\n\ntest:\n  commands:\n    # verify CLI tools\n    {% set cmds = [\"uhd_cal_rx_iq_balance\", \"uhd_cal_tx_dc_offset\"] %}\n    {% set cmds = cmds + [\"uhd_cal_tx_iq_balance\", \"uhd_config_info\"] %}\n    {% set cmds = cmds + [\"uhd_find_devices\", \"uhd_image_loader\"] %}\n    {% set cmds = cmds + [\"uhd_images_downloader\", \"uhd_usrp_probe\"] %}\n    {% set cmds = cmds + [\"usrp2_card_burner\"] %}  # [linux]\n    {% for cmd in cmds %}\n    - {{ cmd }} --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi  # [not win]\n    - {{ cmd }} --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"  # [win]\n    {% endfor %}\n\n    # verify libraries\n    - test -f $PREFIX/lib/libuhd${SHLIB_EXT}  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\uhd.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\uhd.lib exit 1  # [win]\n\n    # run select commands\n    - uhd_config_info --print-all\n    - uhd_find_devices || (($? < 128))  # [unix]\n\n  imports:\n    - uhd\n\nabout:\n  home: httsp://github.com/EttusResearch/uhd\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: host/LICENSE\n  summary: Software driver and API for the Ettus Research USRP SDR platform\n  description: |\n    UHD is the free & open-source software driver and API for the Universal\n    Software Radio Peripheral (USRP(TM)) SDR platform, created and sold by\n    Ettus Research. UHD supports all Ettus Research USRP(TM) hardware,\n    including all motherboards and daughterboards, and the combinations thereof.\n  doc_url: https://files.ettus.com/manual/\n  dev_url: https://github.com/EttusResearch/uhd\n\nextra:\n  recipe-maintainers:\n    - ryanvolz\n",
@@ -3898,7 +3915,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.21.2",
+ "smithy_version": "3.21.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
