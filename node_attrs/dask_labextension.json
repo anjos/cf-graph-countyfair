@@ -330,6 +330,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/6d735e27-9467-4845-8bea-dd431ef1530f.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -558,7 +577,7 @@
    "dask_labextension"
   ]
  },
- "pinning_version": "2022.11.01.22.10.41",
+ "pinning_version": "2022.11.04.17.37.23",
  "raw_meta_yaml": "{% set version = \"6.0.0\" %}\n\npackage:\n  name: dask-labextension\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/d/dask_labextension/dask_labextension-{{ version }}.tar.gz\n  sha256: 516d1faccd0b172d07f794250a5c3427b082d70954ebe8d3f9c92dc08cb79f7e\n\nbuild:\n  number: 0\n  noarch: python\n\noutputs:\n  - name: dask-labextension\n    script: build_base.bat  # [win]\n    script: build_base.sh  # [not win]\n    requirements:\n      host:\n        - python >=3.6\n        - pip\n        - jupyter-packaging\n      run:\n        - python >=3.6\n        - bokeh >=1.0.0,!=2.0.0\n        - distributed >=1.24.1\n        - jupyter-server-proxy >=1.3.2\n        - jupyterlab >=3.0.0\n    test:\n      imports:\n        - dask_labextension\n      requires:\n        - pip\n      commands:\n        - pip check\n        - jupyter labextension list\n        - jupyter labextension list 1>labextensions 2>&1\n        - cat labextensions | grep \"dask-labextension.*OK.*dask_labextension\"  # [unix]\n        - dir %PREFIX%\\share\\jupyter\\labextensions\\dask-labextension\\schemas\\dask-labextension\\plugin.json || exit 1  # [win]\n        - ls ${PREFIX}/share/jupyter/labextensions/dask-labextension/schemas/dask-labextension/plugin.json  # [not win]\n\n  - name: dask_labextension\n    build:\n      noarch: generic\n    requirements:\n      run:\n        - {{ pin_subpackage('dask-labextension', max_pin=\"x.x.x\") }}\n    test:\n      imports:\n        - dask_labextension\n\nabout:\n  home: https://github.com/dask/dask-labextension\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file:\n    - LICENSE\n    - dask_labextension/labextension/static/third-party-licenses.json\n  summary: A JupyterLab extension for Dask.\n\nextra:\n  recipe-maintainers:\n    - xhochy\n    - ocefpaf\n    - jsignell\n    - bollwyvl\n",
  "req": {
   "__set__": true,
