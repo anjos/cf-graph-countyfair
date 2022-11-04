@@ -603,7 +603,7 @@
    "summary": "The modular galaxy image simulation toolkit"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -774,7 +774,7 @@
    "summary": "The modular galaxy image simulation toolkit"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -945,10 +945,13 @@
    "summary": "The modular galaxy image simulation toolkit"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "beckermr",
+    "rmjarvis",
+    "erykoff",
     "beckermr",
     "rmjarvis",
     "erykoff",
@@ -1018,6 +1021,8 @@
     "libgomp",
     "cxx_compiler_stub",
     "libgomp",
+    "cxx_compiler_stub",
+    "llvm-openmp",
     "cxx_compiler_stub",
     "llvm-openmp",
     "cxx_compiler_stub",
@@ -1123,9 +1128,21 @@
     "pybind11 >=2.2",
     "fftw",
     "eigen >=3.3",
+    "pip",
+    "python",
+    "numpy",
+    "pybind11 >=2.2",
+    "fftw",
+    "eigen >=3.3",
     "pip"
    ],
    "run": [
+    "python",
+    "numpy",
+    "astropy >=2.0",
+    "pybind11 >=2.2",
+    "eigen >=3.3",
+    "lsstdesc.coord >=1.0.5",
     "python",
     "numpy",
     "astropy >=2.0",
@@ -1320,9 +1337,17 @@
     "test -L $PREFIX/lib/libgalsim${SHLIB_EXT}",
     "test -f $PREFIX/include/GalSim.h",
     "test -d $PREFIX/include/galsim",
+    "otool -D ${PREFIX}/lib/libgalsim.dylib | tail -n1 | grep \"@rpath/libgalsim\"",
+    "ls -lah $PREFIX/lib/libgalsim*",
+    "otool -L $PREFIX/lib/libgalsim.dylib",
+    "test -f $PREFIX/lib/libgalsim${SHLIB_EXT}",
+    "test -L $PREFIX/lib/libgalsim${SHLIB_EXT}",
+    "test -f $PREFIX/include/GalSim.h",
+    "test -d $PREFIX/include/galsim",
     "otool -D ${PREFIX}/lib/libgalsim.dylib | tail -n1 | grep \"@rpath/libgalsim\""
    ],
    "imports": [
+    "galsim",
     "galsim",
     "galsim",
     "galsim",
@@ -1371,7 +1396,7 @@
    "summary": "The modular galaxy image simulation toolkit"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1546,10 +1571,13 @@
    "summary": "The modular galaxy image simulation toolkit"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "recipe-maintainers": [
+    "beckermr",
+    "rmjarvis",
+    "erykoff",
     "beckermr",
     "rmjarvis",
     "erykoff",
@@ -1567,6 +1595,8 @@
   },
   "requirements": {
    "build": [
+    "cxx_compiler_stub",
+    "llvm-openmp",
     "cxx_compiler_stub",
     "llvm-openmp",
     "cxx_compiler_stub",
@@ -1592,9 +1622,21 @@
     "pybind11 >=2.2",
     "fftw",
     "eigen >=3.3",
+    "pip",
+    "python",
+    "numpy",
+    "pybind11 >=2.2",
+    "fftw",
+    "eigen >=3.3",
     "pip"
    ],
    "run": [
+    "python",
+    "numpy",
+    "astropy >=2.0",
+    "pybind11 >=2.2",
+    "eigen >=3.3",
+    "lsstdesc.coord >=1.0.5",
     "python",
     "numpy",
     "astropy >=2.0",
@@ -1641,9 +1683,17 @@
     "test -L $PREFIX/lib/libgalsim${SHLIB_EXT}",
     "test -f $PREFIX/include/GalSim.h",
     "test -d $PREFIX/include/galsim",
+    "otool -D ${PREFIX}/lib/libgalsim.dylib | tail -n1 | grep \"@rpath/libgalsim\"",
+    "ls -lah $PREFIX/lib/libgalsim*",
+    "otool -L $PREFIX/lib/libgalsim.dylib",
+    "test -f $PREFIX/lib/libgalsim${SHLIB_EXT}",
+    "test -L $PREFIX/lib/libgalsim${SHLIB_EXT}",
+    "test -f $PREFIX/include/GalSim.h",
+    "test -d $PREFIX/include/galsim",
     "otool -D ${PREFIX}/lib/libgalsim.dylib | tail -n1 | grep \"@rpath/libgalsim\""
    ],
    "imports": [
+    "galsim",
     "galsim",
     "galsim",
     "galsim"
@@ -1694,7 +1744,7 @@
  "pinning_version": "2022.11.03.19.49.57",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
- "raw_meta_yaml": "{% set name = \"GalSim\" %}\n{% set version = \"2.4.5\" %}\n{% set sha256 = \"db2d121eadbf60677c03c9b851ca88fc84e69663c299fbe16341580db857d0fe\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/Galsim-Developers/galsim/archive/v{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 0\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - numpy  # [build_platform != target_platform]\n    - {{ compiler('cxx') }}\n    - llvm-openmp  # [osx]\n    - libgomp      # [linux]\n\n  host:\n    - python\n    - numpy\n    - pybind11 >=2.2\n    - fftw\n    - eigen >=3.3\n    - pip\n\n  run:\n    - python\n    - {{ pin_compatible('numpy') }}\n    - astropy >=2.0\n    - pybind11 >=2.2\n    - eigen >=3.3\n    - lsstdesc.coord >=1.0.5\n\ntest:\n  imports:\n    - galsim\n  commands:\n    - ls -lah $PREFIX/lib/libgalsim*\n    - ldd $PREFIX/lib/libgalsim.so  # [linux]\n    - otool -L $PREFIX/lib/libgalsim.dylib  # [osx]\n    - test -f $PREFIX/lib/libgalsim${SHLIB_EXT}\n    - test -L $PREFIX/lib/libgalsim${SHLIB_EXT}\n    - test -f $PREFIX/include/GalSim.h\n    - test -d $PREFIX/include/galsim\n    - otool -D ${PREFIX}/lib/libgalsim.dylib | tail -n1 | grep \"@rpath/libgalsim\"  # [osx]\n\nabout:\n  home: https://github.com/GalSim-developers/GalSim\n  license: MIT AND BSD-2-Clause\n  license_file: LICENSE\n  summary: The modular galaxy image simulation toolkit\n  description: |\n    GalSim is open-source software for simulating images of astronomical objects\n    (stars, galaxies) in a variety of ways. The bulk of the calculations are\n    carried out in C++, and the user interface is in python. In addition, the\n    code can operate directly on \"config\" files, for those users who prefer not\n    to work in python. (http://adsabs.harvard.edu/abs/2015A%26C....10..121R)\n  doc_url: https://github.com/GalSim-developers/GalSim/wiki\n  dev_url: https://github.com/GalSim-developers/GalSim\n\nextra:\n  recipe-maintainers:\n    - beckermr\n    - rmjarvis\n    - erykoff\n",
+ "raw_meta_yaml": "{% set name = \"GalSim\" %}\n{% set version = \"2.4.5\" %}\n{% set sha256 = \"db2d121eadbf60677c03c9b851ca88fc84e69663c299fbe16341580db857d0fe\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/Galsim-Developers/galsim/archive/v{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 1\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - numpy  # [build_platform != target_platform]\n    - {{ compiler('cxx') }}\n    - llvm-openmp  # [osx]\n    - libgomp      # [linux]\n\n  host:\n    - python\n    - numpy\n    - pybind11 >=2.2\n    - fftw\n    - eigen >=3.3\n    - pip\n\n  run:\n    - python\n    - {{ pin_compatible('numpy') }}\n    - astropy >=2.0\n    - pybind11 >=2.2\n    - eigen >=3.3\n    - lsstdesc.coord >=1.0.5\n\ntest:\n  imports:\n    - galsim\n  commands:\n    - ls -lah $PREFIX/lib/libgalsim*\n    - ldd $PREFIX/lib/libgalsim.so  # [linux]\n    - otool -L $PREFIX/lib/libgalsim.dylib  # [osx]\n    - test -f $PREFIX/lib/libgalsim${SHLIB_EXT}\n    - test -L $PREFIX/lib/libgalsim${SHLIB_EXT}\n    - test -f $PREFIX/include/GalSim.h\n    - test -d $PREFIX/include/galsim\n    - otool -D ${PREFIX}/lib/libgalsim.dylib | tail -n1 | grep \"@rpath/libgalsim\"  # [osx]\n\nabout:\n  home: https://github.com/GalSim-developers/GalSim\n  license: MIT AND BSD-2-Clause\n  license_file: LICENSE\n  summary: The modular galaxy image simulation toolkit\n  description: |\n    GalSim is open-source software for simulating images of astronomical objects\n    (stars, galaxies) in a variety of ways. The bulk of the calculations are\n    carried out in C++, and the user interface is in python. In addition, the\n    code can operate directly on \"config\" files, for those users who prefer not\n    to work in python. (http://adsabs.harvard.edu/abs/2015A%26C....10..121R)\n  doc_url: https://github.com/GalSim-developers/GalSim/wiki\n  dev_url: https://github.com/GalSim-developers/GalSim\n\nextra:\n  recipe-maintainers:\n    - beckermr\n    - rmjarvis\n    - erykoff\n",
  "req": {
   "__set__": true,
   "elements": [
