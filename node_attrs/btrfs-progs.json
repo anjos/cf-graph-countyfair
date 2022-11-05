@@ -154,6 +154,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1111462003.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "6.0.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -597,7 +614,8 @@
   "5.16.1": 1,
   "5.16.2": 1,
   "5.18.1": 1,
-  "5.19.1": 0
+  "5.19.1": 0,
+  "6.0.1": 1
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -606,7 +624,7 @@
    "btrfs-progs"
   ]
  },
- "pinning_version": "2022.09.12.22.24.22",
+ "pinning_version": "2022.11.04.17.37.23",
  "raw_meta_yaml": "{% set version = \"5.16.2\" %}\n\npackage:\n  name: btrfs-progs\n  version: {{ version }}\n\nsource:\n  - url: https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v{{ version }}.tar.xz\n    sha256: 9e9b303a1d0fd9ceaaf204ee74c1c8fa1fd55794e223d9fe2bc62875ecbd53d2\n    patches:\n      - 0001-Install-udev-rules-inside-prefix.patch\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - autoconf >=2.60\n    - automake\n    - make\n    - pkg-config\n    # We override UDEVDIR in 0001-Install-udev-rules-inside-prefix.patch anyway\n    # hence we can omit the libudev dependency and and compile for CentOS 6.\n    # # Needs libudev >=190 which is not available on Centos 6.\n    # # On Centos 7 it is provided by systemd-devel.\n    # # - {{ cdt('libudev-devel') }}\n    # # - sysroot_linux-64 >=2.17\n    # # - {{ cdt('systemd-devel') }}\n  host:\n    - e2fsprogs-libs\n    # Upstream requires libgcrypt >=1.8.0, but only >=1.8.5 has the pkgconfig files we want.\n    - libgcrypt >=1.8.5\n    - libgcrypt\n    - lzo\n    # Only need the libs, but util-linux doesn't offer a subpackage for it.\n    # - util-linux-libs\n    - util-linux\n    - zstd >=1.0.0\n    - zstd\n    - zlib\n    - libudev\n  run:\n\ntest:\n  commands:\n    - test -f \"${PREFIX}/include/btrfs/version.h\"\n    - test -f \"${PREFIX}/include/btrfsutil.h\"\n    - test -f \"${PREFIX}/lib/libbtrfs${SHLIB_EXT}\"\n    - test -f \"${PREFIX}/lib/libbtrfsutil${SHLIB_EXT}\"\n    - test -f \"${PREFIX}/lib/pkgconfig/libbtrfsutil.pc\"\n    - btrfs --help\n    - btrfs --version\n\nabout:\n  home: https://btrfs.wiki.kernel.org\n  dev_url: https://github.com/kdave/btrfs-progs\n  doc_url: https://btrfs.wiki.kernel.org/index.php/Category:Manpage\n  license: GPL-2.0-only AND LGPL-3.0-or-later\n  license_file:\n    - COPYING\n    - libbtrfsutil/COPYING\n  summary: Userspace utilities to manage btrfs filesystems.\n\nextra:\n  recipe-maintainers:\n    - mbargull\n",
  "req": {
   "__set__": true,
@@ -660,7 +678,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.21.1",
+ "smithy_version": "3.21.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
