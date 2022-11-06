@@ -202,6 +202,25 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1111924761.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1364,7 +1383,7 @@
    "pyspice"
   ]
  },
- "pinning_version": "2022.08.25.22.39.31",
+ "pinning_version": "2022.11.05.21.08.08",
  "raw_meta_yaml": "{% set name = \"PySpice\" %}\n{% set version = \"1.5\" %}\n{% set sha256 = \"9779f8d32aab078b1bc4f3b92ae72cd578a5a0fa512b3f66ec3312ca97cb6773\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/FabriceSalvaire/PySpice/archive/v{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  # git_url: https://github.com/FabriceSalvaire/PySpice\n  # git_rev:\n\n  patches:\n    # Tiny patch to the examples to handle API change in matplotlib 3.4\n    - patches/matplotlib-3.4-api.patch\n\nbuild:\n  number: 1\n  script:\n    # Note: On Windows, pip handles console_scripts in a strange way, so we can't use it.\n    #- {{ PYTHON }} -m pip install . -vv\n    - {{ PYTHON }} setup.py install --single-version-externally-managed --record=record.txt\n\nrequirements:\n  host:\n    - python\n    - pip\n  run:\n    - python\n    - pyyaml >=5.3\n    - cffi >=1.14\n    - numpy >=1.18\n    - scipy >=1.4\n    - matplotlib-base >=3.4\n    - ply >=3.11\n    - ngspice-lib >=32  # ???\n\ntest:\n  imports:\n    - PySpice\n    - PySpice.Config\n    - PySpice.Doc\n    - PySpice.Logging\n    - PySpice.Math\n    - PySpice.Physics\n    - PySpice.Plot\n    - PySpice.Probe\n    - PySpice.Spice\n    - PySpice.Tools\n    - PySpice.Unit\n  requires:\n    - invoke\n    - pint\n    - pytest\n    - requests  # required ???\n    # - pyterate >=2.1.5\n  source_files:\n    - examples\n    - unit-test\n    - invoke.yaml\n    - tasks\n  commands:\n    - python -c \"import PySpice; print(PySpice.__version__)\"\n    - pytest unit-test\n    - pyspice-post-installation --check-install\n    - setx PySpiceLibraryPath %SRC_DIR%\\examples\\libraries  # [win]\n    - setx PYTHONLEGACYWINDOWSSTDIO utf_8  # [win]\n    - setx PYTHONIOENCODING utf_8  # [win]\n    - chcp 65001  # [win]\n    - invoke test.run-examples\n\n    #! - conda install --yes -c fabricesalvaire pyterate\n    #! - pyterate --config=%SRC_DIR%\\examples\\Settings.py --only-run  # [win]\n    #! - PySpiceLogLevel=DEBUG PySpiceLibraryPath=$PWD/examples/libraries pyterate --config=./examples/Settings.py --only-run  # [unix]\n\nabout:\n  home: https://pyspice.fabrice-salvaire.fr\n  doc_url: https://pyspice.fabrice-salvaire.fr\n  dev_url: https://github.com/FabriceSalvaire/PySpice\n\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: LICENSE.txt\n\n  summary: Simulate electronic circuit using Python and the Ngspice / Xyce simulators\n  description: |\n    PySpice is a free and open source Python module which interfaces Python to\n    the Ngspice and Xyce circuit simulators. PySpice implements a Ngspice\n    binding and provides an oriented object API on top of SPICE, the simulation\n    output is converted to Numpy arrays for convenience.\n\nextra:\n  recipe-maintainers:\n    - FabriceSalvaire\n    - stuarteberg\n    - proppy\n",
  "req": {
   "__set__": true,
@@ -1415,7 +1434,7 @@
    ]
   }
  },
- "smithy_version": "3.21.1",
+ "smithy_version": "3.21.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
