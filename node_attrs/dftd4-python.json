@@ -187,7 +187,7 @@
     "__lazy_json__": "pr_json/1038367008.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1667842681.571116,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -211,6 +211,25 @@
     "migrator_object_version": 1,
     "migrator_version": 0,
     "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1113150086.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "pypy38"
    },
    "keys": [
     "bot_rerun",
@@ -1638,7 +1657,7 @@
    "dftd4-python"
   ]
  },
- "pinning_version": "2022.11.06.17.50.32",
+ "pinning_version": "2022.11.07.16.21.19",
  "raw_meta_yaml": "{% set name = \"dftd4-python\" %}\n{% set version = \"3.4.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/dftd4/dftd4/archive/v{{ version }}.tar.gz\n  sha256: f3b0a16a952817ae48e819626e13676fba3b61c8beea47b0f8ada2fbb679fb7b\n\nbuild:\n  number: 1\n  skip: true  # [osx and py<38]\n  skip: true  # [(not x86_64 and linux) and (python_impl != 'cpython')]\n  script:\n    - set -ex  # [unix]\n    - cd python\n    - >\n       meson setup _build\n       ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib}  # [unix]\n       --prefix=%PREFIX% --pkg-config-path=%LIBRARY_PREFIX%\\lib\\pkgconfig;%PREFIX%\\lib\\pkgconfig  # [win]\n       -Dpython_version={{ PYTHON }}\n       --buildtype=release\n    - meson compile -C _build\n    - meson install -C _build --no-rebuild\n    - copy %SRC_DIR%\\assets\\parameters.toml %PREFIX%\\lib\\site-packages\\dftd4  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [unix]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - meson\n    - ninja\n    - python\n    - pkg-config\n  host:\n    - python\n    - cffi\n    - pip\n    - dftd4 >={{ version }}\n    - libblas\n    - liblapack\n  run:\n    - python\n    - cffi\n    - numpy\n\n\ntest:\n  imports:\n    - dftd4\n  requires:\n    - pytest\n    - setuptools\n    - qcelemental\n    - ase\n  commands:\n    - pytest --pyargs dftd4 -vv  # [build_platform == target_platform]\n\nabout:\n  home: https://github.com/dftd4/dftd4/tree/main/python\n  license: LGPL-3.0-or-later\n  license_family: LGPL\n  license_file:\n    - COPYING\n    - COPYING.LESSER\n  summary: Python API for the DFT-D4 project\n  description: |\n    Python interface for the generally applicable atomic-charge dependent\n    London dispersion correction.\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
  "req": {
   "__set__": true,
