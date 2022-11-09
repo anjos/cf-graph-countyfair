@@ -327,7 +327,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git diff --name-only 0971c3f07dfdd8cb0cc707b6dc7de8e34802199b...HEAD' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 310, in run",
+   "    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode",
+   "    raise CalledProcessError(self.returncode, self.args, self.stdout,",
+   "subprocess.CalledProcessError: Command 'git diff --name-only 0971c3f07dfdd8cb0cc707b6dc7de8e34802199b...HEAD' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {},
  "feedstock_name": "ansible-runner",
@@ -528,7 +543,7 @@
   }
  },
  "name": "ansible-runner",
- "new_version": "2.3.0",
+ "new_version": "2.3.1",
  "new_version_attempts": {
   "1.4.7": 1,
   "2.0.0": 1,
@@ -540,7 +555,8 @@
   "2.1.3": 1,
   "2.2.0": 2,
   "2.2.1": 1,
-  "2.3.0": 1
+  "2.3.0": 1,
+  "2.3.1": 1
  },
  "new_version_errors": {},
  "outputs_names": {
@@ -550,8 +566,12 @@
   ]
  },
  "pinning_version": "2022.11.01.22.10.41",
- "pre_pr_migrator_attempts": {},
- "pre_pr_migrator_status": {},
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3431010810\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 310, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only 0971c3f07dfdd8cb0cc707b6dc7de8e34802199b...HEAD' returned non-zero exit status 128.\n"
+ },
  "raw_meta_yaml": "{% set name = \"ansible-runner\" %}\n{% set version = \"2.3.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  - folder: dist\n    url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n    sha256: 99c4dfbbeade446397bd1a9e0bf050873d8a06b5926d55d24085b295ddbf11cb\n  - folder: src\n    url: https://github.com/ansible/{{ name }}/archive/{{ version }}.tar.gz\n    sha256: 5ee59983136dd7855eddd2622098d4f48e14d8e21dcbf3625deaf076a10205fb\n\nbuild:\n  number: 0\n  noarch: python\n  script: cd dist && {{ PYTHON }} -m pip install . -vv\n  entry_points:\n    - ansible-runner = ansible_runner.__main__:main\n\nrequirements:\n  host:\n    - pip\n    - python >=3.6\n    - pbr\n  run:\n    - pexpect >=4.5\n    - psutil\n    - python >=3.6\n    - python-daemon\n    - pyyaml\n    - six\n\n{% set skips = [\n  \"containerization\",\n  \"env_vars\",\n  \"prepare_env_sshkey\",\n  \"container_volmount\",\n  \"registry_auth_cleanup\",\n  \"prepare_env_directory_isolation_from_settings\",\n] %}\n\ntest:\n  source_files:\n    - src/test\n  requires:\n    # from /test/requirements.txt\n    - ansible >=5.4.0,<5.5.0\n    # TODO: unpin after https://github.com/conda-forge/ansible-feedstock/pull/93\n    - ansible-core >=2.12.2,<2.13.0\n    - pip\n    - pytest\n    - pytest-cov\n    - pytest-timeout\n    - pytest-mock\n  imports:\n    - ansible_runner\n  commands:\n    - python -m pip check\n    - ansible-runner --version\n    - ansible-runner --help\n    - cd src\n    - pytest test/unit --cov ansible_runner -vv -k \"not ({{ ' or '.join(skips) }})\" --cov-report term-missing:skip-covered --no-cov-on-fail\n\nabout:\n  home: https://github.com/ansible/ansible-runner\n  license: Apache-2.0\n  license_family: Apache\n  license_file: dist/LICENSE.md\n  doc_url: https://ansible-runner.readthedocs.io\n  doc_source_url: https://github.com/ansible/ansible-runner/tree/master/docs\n  summary: |\n    A tool and python library that helps when interfacing with Ansible directly\n    or as part of another system whether that be through a container image\n    interface, as a standalone tool, or as a Python module that can be\n    imported. The goal is to provide a stable and consistent interface\n    abstraction to Ansible.\n\nextra:\n  recipe-maintainers:\n    - bollwyvl\n",
  "req": {
   "__set__": true,
