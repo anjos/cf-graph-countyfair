@@ -1135,6 +1135,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1118882364.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.8.9"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -3803,7 +3820,7 @@
   }
  },
  "name": "aesara-suite",
- "new_version": "2.8.8",
+ "new_version": "2.8.9",
  "new_version_attempts": {
   "2.0.10": 1,
   "2.0.11": 1,
@@ -3862,7 +3879,8 @@
   "2.8.5": 1,
   "2.8.6": 1,
   "2.8.7": 1,
-  "2.8.8": 1
+  "2.8.8": 1,
+  "2.8.9": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -4916,7 +4934,7 @@
    "aesara-base"
   ]
  },
- "pinning_version": "2022.11.03.18.25.45",
+ "pinning_version": "2022.11.10.22.07.33",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"2.8.8\" %}\n\npackage:\n  name: aesara-suite  # https://github.com/conda/conda-build/issues/3933\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/a/aesara/aesara-{{ version }}.tar.gz\n  sha256: 067b95f9fd628650b846980ddfa2881a45f2877c43ce6bda23f7e565bccfe3d8\n  patches:\n\nbuild:\n  number: 0\n\noutputs:\n  - name: aesara-base\n    build:\n      script:\n        - python -m pip install . --no-deps -vv\n      entry_points:\n        - aesara-cache = bin.aesara_cache:main\n    requirements:\n      build:\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n      host:\n        - pip\n        - python\n      run:\n        - python\n\n        # Ref: <https://github.com/aesara-devs/aesara/blob/rel-{{ version }}/setup.py>\n        - numpy>=1.17.0\n        - scipy>=0.14\n        - filelock\n        - etuples\n        - logical-unification\n        - miniKanren\n        - cons\n        - typing_extensions\n        - setuptools >=48.0.0\n    test:\n      imports:\n        - aesara\n      commands:\n        - aesara-cache help\n        - pip check\n        - python check-for-warnings.py allowed-warnings-base.txt\n      requires:\n        - pip\n      files:\n        - check-for-warnings.py\n        - allowed-warnings-base.txt\n  - name: aesara\n    build:\n      script:\n        - echo \"Nothing to build here, just add dependencies.\"\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('aesara-base', exact=True) }}\n        - {{ compiler('c') }}  # [not win]\n        - cxx-compiler  # [not win]\n        - {{ compiler('m2w64_c') }}  # [win]\n        - {{ compiler('m2w64_cxx') }}  # [win]\n\n        - m2w64-toolchain  # [win]\n        # The libpython conda-forge package seems to be a wrapper package\n        # which configures m2w64-toolchain for Python.\n        # <https://github.com/conda-forge/libpython-feedstock/blob/main/recipe/bld.bat>\n        - libpython >=2.2  # [win]\n\n        # Use openblas on Apple M1. For everything else, use mkl-service.\n        - openblas  # [arm64]\n        - mkl-service  # [not arm64]\n        # For some reason we also need the \"blas\" package. Otherwise we get reports\n        # of \"cblas.h: No such file or directory\" at import time.\n        # Ref: <https://github.com/conda-forge/aesara-feedstock/issues/80>\n        - blas\n    test:\n      imports:\n        - aesara\n        - aesara.configdefaults\n      commands:\n        - aesara-cache help\n        - pip check\n        - python check-for-warnings.py allowed-warnings-main.txt\n      requires:\n        - pip\n      files:\n        - check-for-warnings.py\n        - allowed-warnings-main.txt\n\nabout:\n  home: https://github.com/aesara-devs/aesara\n  license: BSD-3-Clause\n  summary: An optimizing compiler for evaluating mathematical expressions.\n  license_file: LICENSE.txt\n  dev_url: https://github.com/aesara-devs/aesara/\n  doc_url: https://aesara.readthedocs.io/en/latest/\n\nextra:\n  recipe-maintainers:\n    - maresb\n    - ricardoV94\n    - brandonwillard\n    - rlouf\n    - dgerlanc\n",
