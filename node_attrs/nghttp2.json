@@ -364,6 +364,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1120349042.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.51.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1980,7 +1997,7 @@
   }
  },
  "name": "nghttp2",
- "new_version": "1.50.0",
+ "new_version": "1.51.0",
  "new_version_attempts": {
   "1.41.0": 1,
   "1.42.0": 1,
@@ -1992,7 +2009,8 @@
   "1.47.0": 1,
   "1.48.0": 2,
   "1.49.0": 1,
-  "1.50.0": 0
+  "1.50.0": 0,
+  "1.51.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -2467,7 +2485,7 @@
    "nghttp2"
   ]
  },
- "pinning_version": "2022.09.21.08.37.33",
+ "pinning_version": "2022.11.13.03.29.29",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"nghttp2\" %}\n{% set version = \"1.47.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/nghttp2/{{ name }}/releases/download/v{{ version }}/nghttp2-{{ version }}.tar.gz\n  sha256: 62f50f0e9fc479e48b34e1526df8dd2e94136de4c426b7680048181606832b7c\n\nbuild:\n  number: 1\n  skip: true  # [not unix]\n\nrequirements:\n  build:\n    - libtool  # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - make\n    - pkg-config  # [unix]\n  host:\n    - zlib\n    - openssl  # [unix]\n    # Use one dependency without any constraints to help the\n    # libev migrator set the right global pinning\n    - libev\n    - libev >=4.11\n    # Use one dependency without any constraints to help the \n    # c-ares migrator set the right global pinning\n    - c-ares\n    - c-ares >=1.7.5\n  run:\n    - libstdcxx-ng  # [linux]\n\n\noutputs:\n  - name: libnghttp2\n    script: install.sh  # [unix]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - make\n      host:\n        - zlib\n        - openssl  # [unix]\n        # Use one dependency without any constraints to help the\n        # libev migrator set the right global pinning\n        - libev\n        - libev >=4.11\n        # Use one dependency without any constraints to help the \n        # c-ares migrator set the right global pinning\n        - c-ares\n        - c-ares >=1.7.5\n      run:\n        - libstdcxx-ng  # [linux]\n    build:\n      run_exports:\n        - {{ pin_subpackage('libnghttp2') }}\n    files:\n      - include/nghttp2/nghttp2*  # [unix]\n      - lib/libnghttp2*  # [unix]\n      - lib/nghttp2*  # [unix]\n      - lib/pkgconfig/libnghttp2*  # [unix]\n      - bin/nghttp*  # [unix]\n    test:\n      commands:\n        - nghttp -nv https://nghttp2.org\n        - test ! -f ${PREFIX}/lib/lib{{ name }}.a    # [unix]\n        - test -f ${PREFIX}/lib/lib{{ name }}.so     # [linux]\n\n  - name: libnghttp2-static\n    script: install.sh  # [unix]\n    build:\n      skip: true  # [not unix\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - make\n      host:\n        - {{ pin_subpackage('libnghttp2', exact=True) }}\n        # we need to add openssl to generate all appropriate versions\n        - openssl  # [unix]\n        # zlib does not have a dedicated static package, rather\n        # this pulls in both static and dynamically linked development\n        # dependencies\n        - zlib\n      run:\n        - {{ pin_subpackage('libnghttp2', exact=True) }}\n        - libev-static\n        - c-ares-static\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/lib{{ name }}.a    # [unix]\n\nabout:\n  home: http://github.com/nghttp2/nghttp2\n  license: MIT\n  license_family: MIT\n  license_file: COPYING\n  summary: This is an implementation of Hypertext Transfer Protocol version 2.\n\n  description: |\n    This is an implementation of the Hypertext Transfer Protocol version 2 in C.\n\n    The framing layer of HTTP/2 is implemented as a reusable C library. On top\n    of that, we have implemented an HTTP/2 client, server and proxy. We have\n    also developed load test and benchmarking tools for HTTP/2.\n  doc_url: https://nghttp2.org/documentation/\n  dev_url: https://github.com/nghttp2/nghttp2\n\nextra:\n  recipe-maintainers:\n    - cpaulik\n    - mariusvniekerk\n    - wolfv\n",
@@ -2530,7 +2548,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.21.1",
+ "smithy_version": "3.21.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
