@@ -1255,6 +1255,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1122243327.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.8.3"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1618,7 +1635,8 @@
   "1.7.3": 4,
   "1.8.0": 2,
   "1.8.1": 3,
-  "1.8.2": 1
+  "1.8.2": 1,
+  "1.8.3": 1
  },
  "new_version_errors": {
   "1.6.3": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '1.6.3' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/JuliaLang/julia/releases/download/v{{ version }}/julia-{{ version }}-full.tar.gz'\n",
@@ -1793,7 +1811,7 @@
    "julia"
   ]
  },
- "pinning_version": "2022.11.06.17.50.32",
+ "pinning_version": "2022.11.14.21.30.17",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"julia\" %}\n{% set version = \"1.8.2\" %}\n{% set sha256 = \"38882010297c42f6fd71dbe9d6eee836f40b97d218cdf628128e597dd252f468\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  fn: julia-{{ version }}-full.tar.gz\n\n  url: https://github.com/JuliaLang/julia/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n  patches:\n    ## from https://github.com/archlinux/svntogit-community/tree/packages/julia/trunk\n    - patches/julia-hardcoded-libs.patch\n    ## issues with this precompile test, see https://github.com/JuliaLang/julia/issues/43535\n    - patches/0002-disable-testing-Baz.baz-1.patch  # [linux]\n    - patches/julia-libunwind-1.6.patch  # [linux]\n    - patches/0003-Defer-codesigning-to-conda-forge.patch  # [osx]\n\nbuild:\n  skip: true  # [win]\n  number: 1\n  features:\n\nrequirements:\n  build:\n    - make\n    - perl\n    - python 3\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - openblas-ilp64\n    - patchelf  # [linux]\n    - openlibm\n    - gmp\n    - mpfr\n    - curl\n    - libgit2  # [not osx]\n    - libssh2\n    - libosxunwind  # [osx]\n    - libunwind  # [linux]\n    - mbedtls  # [not osx]\n    - arpack\n    - suitesparse\n    - pcre2\n    - git\n    - libutf8proc\n    - libnghttp2\n    - zlib\n    - p7zip\n\n  run:\n    - openblas-ilp64\n    - libosxunwind  # [osx]\n    - libunwind  # [linux]\n    - gmp\n    - mpfr\n    - openlibm\n    - arpack\n    - suitesparse\n    - pcre2\n    - curl\n    - libgit2  # [not osx]\n    - libssh2\n    - mbedtls  # [not osx]\n    - git\n    - libutf8proc\n    - libnghttp2\n    - zlib\n    - p7zip\n\ntest:\n  commands:\n    # check out versioninfo\n    - julia -e 'using InteractiveUtils; InteractiveUtils.versioninfo()'\n    # see if env vars are defined correctly\n    - echo $CONDA_JL_HOME\n    - echo $CONDA_JL_CONDA_EXE\n    # run julia tests\n    - julia -e 'Base.runtests([\"subarray\", \"core\", \"compiler\", \"worlds\", \"keywordargs\", \"numbers\", \"subtype\", \"char\", \"strings\", \"triplequote\", \"unicode\", \"intrinsics\", \"dict\", \"hashing\", \"iobuffer\", \"staged\", \"offsetarray\", \"arrayops\", \"tuple\", \"reduce\", \"reducedim\", \"abstractarray\", \"intfuncs\", \"simdloop\", \"vecelement\",\n      \"rational\", \"bitarray\", \"copy\", \"math\", \"fastmath\", \"functional\", \"iterators\", \"operators\", \"ordering\", \"path\", \"ccall\", \"parse\", \"gmp\", \"sorting\", \"spawn\", \"backtrace\", \"exceptions\", \"file\", \"read\", \"version\", \"namedtuple\", \"mpfr\", \"broadcast\", \"complex\", \"floatapprox\", \"reflection\", \"regex\", \"float16\", \"combinatorics\",\n      \"sysinfo\", \"env\", \"rounding\", \"ranges\", \"mod2pi\", \"euler\", \"show\", \"client\", \"errorshow\", \"sets\", \"goto\", \"llvmcall\", \"llvmcall2\", \"ryu\", \"some\", \"meta\", \"stacktraces\", \"docs\", \"misc\", \"threads\", \"stress\", \"binaryplatforms\", \"atexit\", \"enums\", \"int\", \"interpreter\", \"checked\", \"bitset\", \"floatfuncs\", \"precompile\", \"boundscheck\",\n      \"error\", \"ambiguous\", \"cartesian\", \"osutils\", \"channels\", \"iostream\", \"secretbuffer\", \"specificity\", \"reinterpretarray\", \"syntax\", \"corelogging\", \"missing\", \"asyncmap\", \"smallarrayshrink\", \"download\", \"opaque_closure\", \"filesystem\"]; ncores=ceil(Int, Sys.CPU_THREADS))'                               # all except stdlib?\n    - julia --project -e 'delete!(ENV, \"JULIA_PROJECT\"); delete!(ENV, \"JULIA_LOAD_PATH\"); Base.runtests([\"loading\", \"cmdlineargs\"])' # Julia 1.7.1 tests error here when a project is defined\n    - julia -e 'import Pkg;Pkg.add(\"LibSSH2_jll\")'\n    - julia -e 'import Pkg;Pkg.add(\"Sundials\")'\n    - echo $JULIA_CONDAPKG_BACKEND\n    - julia -e 'import Pkg; Pkg.add(\"CondaPkg\"); using CondaPkg; CondaPkg.add_channel(\"conda-forge\"); CondaPkg.status(); CondaPkg.current_packages()'\n    - julia -e 'import Pkg; Pkg.add(\"CondaPkg\"); using CondaPkg; CondaPkg.add_channel(\"conda-forge\"); print(CondaPkg.conda_cmd())'\n  requires:\n    - perl\n\nabout:\n  home: http://julialang.org/\n  license: MIT\n  license_file: LICENSE.md\n  summary: A high-performance dynamic programming language for data science\n  description: |\n    Julia is a high-level, high-performance dynamic language for technical computing.\n    The main homepage for Julia can be found at julialang.org.\n  dev_url: https://github.com/JuliaLang/julia\n  doc_url: https://docs.julialang.org\n\nextra:\n  recipe-maintainers:\n    - SylvainCorlay\n    - bgruening\n    - dfornika\n    - acaprez\n    - mariusvniekerk\n    - abhi18av\n    - mkitti\n    - ngam\n",
