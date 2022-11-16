@@ -310,8 +310,8 @@
    "osx_arm64": "osx_64"
   },
   "provider": {
-   "linux_aarch64": "default",
-   "linux_ppc64le": "default"
+   "linux_aarch64": "travis",
+   "linux_ppc64le": "travis"
   }
  },
  "feedstock_name": "ldas-tools-al",
@@ -326,7 +326,7 @@
    "summary": "LDAS tools abstraction toolkit"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "ldas-tools-al"
    ]
@@ -409,7 +409,7 @@
    "summary": "LDAS tools abstraction toolkit"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "ldas-tools-al"
    ]
@@ -492,7 +492,7 @@
    "summary": "LDAS tools abstraction toolkit"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "ldas-tools-al"
    ]
@@ -575,7 +575,7 @@
    "summary": "LDAS tools abstraction toolkit"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "ldas-tools-al",
     "ldas-tools-al",
@@ -652,7 +652,8 @@
     "no-openssl.patch",
     "no-openssl.patch",
     "no-openssl.patch",
-    "no-openssl.patch"
+    "no-openssl.patch",
+    "no-check-procfs.patch"
    ],
    "sha256": "b0a1b243997320ac6c18083adbf5b711404923b3ff309df2f2fe53489c4b0f6a",
    "url": "http://software.ligo.org/lscsoft/source/ldas-tools-al-2.6.7.tar.gz"
@@ -692,7 +693,7 @@
    "summary": "LDAS tools abstraction toolkit"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "ldas-tools-al"
    ]
@@ -778,7 +779,7 @@
    "summary": "LDAS tools abstraction toolkit"
   },
   "build": {
-   "number": "1",
+   "number": "2",
    "run_exports": [
     "ldas-tools-al"
    ]
@@ -808,7 +809,8 @@
   },
   "source": {
    "patches": [
-    "no-openssl.patch"
+    "no-openssl.patch",
+    "no-check-procfs.patch"
    ],
    "sha256": "b0a1b243997320ac6c18083adbf5b711404923b3ff309df2f2fe53489c4b0f6a",
    "url": "http://software.ligo.org/lscsoft/source/ldas-tools-al-2.6.7.tar.gz"
@@ -858,7 +860,7 @@
   ]
  },
  "pinning_version": "2022.09.10.19.24.40",
- "raw_meta_yaml": "{% set name = \"ldas-tools-al\" %}\n{% set version = \"2.6.7\" %}\n\n# dependencies\n{% set ldas_tools_cmake_version = \"1.2.3\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/{{ name }}-{{ version }}.tar.gz\n  sha256: b0a1b243997320ac6c18083adbf5b711404923b3ff309df2f2fe53489c4b0f6a\n  patches:\n    - no-openssl.patch\n    # when cross-compiling disable some checks that use try_run\n    # see https://git.ligo.org/ldastools/LDAS_Tools/-/issues/117\n    - no-check-procfs.patch  # [build_platform != target_platform]\n\nbuild:\n  number: 1\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(\"ldas-tools-al\", max_pin=\"x.x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.6\n    - make  # [unix]\n    - pkg-config  # [unix]\n  host:\n    - boost-cpp\n    - ldas-tools-cmake >={{ ldas_tools_cmake_version }}\n  run_constrained:   # [osx and x86_64]\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx and x86_64]\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config --print-errors --exact-version {{ version }} ldastoolsal\n\nabout:\n  home: https://wiki.ligo.org/Computing/LDASTools\n  dev_url: https://git.ligo.org/ldastools/LDAS_Tools\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LDAS tools abstraction toolkit\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - emaros\n",
+ "raw_meta_yaml": "{% set name = \"ldas-tools-al\" %}\n{% set version = \"2.6.7\" %}\n\n# dependencies\n{% set ldas_tools_cmake_version = \"1.2.3\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: http://software.ligo.org/lscsoft/source/{{ name }}-{{ version }}.tar.gz\n  sha256: b0a1b243997320ac6c18083adbf5b711404923b3ff309df2f2fe53489c4b0f6a\n  patches:\n    - no-openssl.patch\n    # when cross-compiling without an emulator disable some checks that use try_run\n    # see https://git.ligo.org/ldastools/LDAS_Tools/-/issues/117\n    - no-check-procfs.patch  # [osx and arm64]\n\nbuild:\n  number: 2\n  skip: true  # [win]\n  run_exports:\n    - {{ pin_subpackage(\"ldas-tools-al\", max_pin=\"x.x\") }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake >=3.6\n    - make  # [unix]\n    - pkg-config  # [unix]\n  host:\n    - boost-cpp\n    - ldas-tools-cmake >={{ ldas_tools_cmake_version }}\n  run_constrained:   # [osx and x86_64]\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx and x86_64]\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - pkg-config --print-errors --exact-version {{ version }} ldastoolsal\n\nabout:\n  home: https://wiki.ligo.org/Computing/LDASTools\n  dev_url: https://git.ligo.org/ldastools/LDAS_Tools\n  license: GPL-2.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: LDAS tools abstraction toolkit\n\nextra:\n  recipe-maintainers:\n    - duncanmmacleod\n    - emaros\n",
  "req": {
   "__set__": true,
   "elements": [
