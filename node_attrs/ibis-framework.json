@@ -224,6 +224,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1123668323.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -972,7 +991,7 @@
    "ibis-sqlite"
   ]
  },
- "pinning_version": "2022.09.13.20.27.40",
+ "pinning_version": "2022.11.15.22.41.08",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set name = \"ibis-framework\" %}\n{% set version = \"3.2.0\" %}\n\npackage:\n  name: {{ name }}-ext\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 49d86a6cc32b91df057a30e8729b530e261bd5b49bce55736796acc64da72cc8\n  patches:\n    - patches/pyproject.toml.patch\n\nbuild:\n  number: 1\n\nrequirements:\n  host:\n    - python >=3.8\n\noutputs:\n  - name: {{ name }}-core\n    version: {{ version }}\n\n    build:\n      noarch: python\n      script:\n        # TODO: make this work without short-circuiting poetry\n        - rm pyproject.toml || del pyproject.toml\n        - python -m pip install . -vv --no-deps\n\n    requirements:\n      host:\n        - pip\n        - setuptools\n        - python >=3.8\n\n      run:\n        - atpublic >=2.3\n        - cached_property >=1\n        - importlib-metadata >=4\n        - multipledispatch >=0.6\n        - numpy >=1.15\n        - pandas >=1.2.5\n        - parsy >=1.3.0\n        - poetry-dynamic-versioning >=0.14.0\n        - pydantic >=1.9.0\n        - python >=3.8\n        - python-graphviz >=0.16\n        - regex >=2021.7.6\n        - rich >=12.4.4,<13\n        - sqlglot >=4.5.0,<7\n        - toolz >=0.11\n\n    test:\n      requires:\n        - packaging >=21.3\n      imports:\n        - ibis\n        - ibis.backends.pandas\n\n  - name: {{ name }}\n    version: {{ version }}\n\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - atpublic <4,>=2.3\n        - dask >=2021.10.0\n        - datafusion <0.7,>=0.4\n        - duckdb-engine <1,>=0.1.8\n        - packaging >=21.3  # just necessary for duckdb backend\n        - pyarrow <10,>=1\n        - python-duckdb <1,>=0.3.2\n        - python-graphviz <0.21,>=0.16\n        - sqlalchemy <2.0,>=1.4\n        - {{ pin_subpackage(name + '-core') }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.dask\n        - ibis.backends.datafusion\n        - ibis.backends.duckdb\n        - ibis.backends.pandas\n        - ibis.backends.sqlite\n\n\n  - name: ibis-clickhouse\n    version: {{ version }}\n\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - clickhouse-driver >=0.1.3\n        - clickhouse-sqlalchemy >=0.1.4\n        - sqlalchemy <2.0,>=1.4\n        - {{ pin_subpackage(name + '-core') }}\n\n    test:\n      requires:\n        - packaging >=21.3\n      imports:\n        - ibis\n        - ibis.backends.clickhouse\n\n  - name: ibis-dask\n    version: {{ version }}\n\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - dask >=2021.10.0\n        - pyarrow >=1\n        - {{ pin_subpackage(name + '-core') }}\n\n    test:\n      requires:\n        - packaging >=21.3\n      imports:\n        - ibis\n        - ibis.backends.dask\n\n  - name: ibis-impala\n    version: {{ version }}\n\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - fsspec >=2022.1.0\n        - impyla >=0.17\n        - python-hdfs >=2.0.16\n        - requests >=2\n        - sqlalchemy <2.0,>=1.4\n        - {{ pin_subpackage(name + '-core') }}\n\n    test:\n      requires:\n        - packaging >=21.3\n      imports:\n        - ibis\n        - ibis.backends.impala\n\n  - name: ibis-mysql\n    version: {{ version }}\n\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - pymysql >=1\n        - sqlalchemy <2.0,>=1.4\n        - {{ pin_subpackage(name + '-core') }}\n\n    test:\n      requires:\n        - packaging >=21.3\n      imports:\n        - ibis\n        - ibis.backends.mysql\n\n  - name: ibis-postgres\n    version: {{ version }}\n\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - psycopg2 >=2.7\n        - sqlalchemy <2.0,>=1.4\n        - {{ pin_subpackage(name + '-core') }}\n\n    test:\n      requires:\n        - packaging >=21.3\n      imports:\n        - ibis\n        - ibis.backends.postgres\n\n  - name: ibis-pyspark\n    version: {{ version }}\n\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - pyarrow >=1\n        - pyspark >=2.4.3\n        - sqlalchemy <2.0,>=1.4\n        - {{ pin_subpackage(name + '-core') }}\n\n    test:\n      requires:\n        - packaging >=21.3\n      imports:\n        - ibis\n        - ibis.backends.pyspark\n\n  - name: ibis-sqlite\n    version: {{ version }}\n\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - sqlalchemy <2.0,>=1.4\n        - {{ pin_subpackage(name + '-core') }}\n\n    test:\n      requires:\n        - packaging >=21.3\n      imports:\n        - ibis\n        - ibis.backends.sqlite\n\n  - name: ibis-datafusion\n    version: {{ version }}\n\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - datafusion >=0.4\n        - {{ pin_subpackage(name + '-core') }}\n\n    test:\n      requires:\n        - packaging >=21.3\n      imports:\n        - ibis\n        - ibis.backends.datafusion\n\n  - name: ibis-duckdb\n    version: {{ version }}\n\n    build:\n      noarch: python\n\n    requirements:\n      run:\n        - duckdb-engine\n        - packaging >=21.3\n        - python-duckdb\n        - sqlalchemy <2.0,>=1.4\n        - {{ pin_subpackage(name + '-core') }}\n\n    test:\n      imports:\n        - ibis\n        - ibis.backends.duckdb\n\nabout:\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE.txt\n  home: http://www.ibis-project.org\n  summary: Productivity-centric Python Big Data Framework\n\nextra:\n  recipe-maintainers:\n    - jreback\n    - xmnlab\n    - datapythonista\n    - cpcloud\n    - gforsyth\n",
@@ -1072,7 +1091,7 @@
    ]
   }
  },
- "smithy_version": "3.21.1",
+ "smithy_version": "3.21.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
