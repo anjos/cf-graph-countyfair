@@ -1,4 +1,23 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1126935783.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.0.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "branch": "main",
@@ -619,6 +638,10 @@
  },
  "name": "gz-cmake3",
  "new_version": "3.0.1",
+ "new_version_attempts": {
+  "3.0.1": 1
+ },
+ "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
    "home": "https://github.com/gazebosim/gz-cmake",
@@ -820,6 +843,7 @@
    "libgz-cmake3"
   ]
  },
+ "pinning_version": "2022.11.17.21.14.25",
  "raw_meta_yaml": "{% set component_name = \"cmake\" %}\n{% set repo_name = \"gz-\" + component_name %}\n{% set version = \"3.0.0\" %}\n{% set major_version = version.split('.')[0] %}\n{% set name = repo_name + major_version %}\n{% set component_version = component_name + major_version %}\n{% set cxx_name = \"lib\" + name %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/gazebosim/{{ repo_name }}/archive/{{ repo_name }}{{ major_version }}_{{ version }}.tar.gz\n    sha256: 01edf6b20c0f2f76dc48c3fa48bfeb4e82dd60186b82c0b34e38f7e1f53f21ac\n\nbuild:\n  number: 1\n\noutputs:\n  - name: {{ cxx_name }}\n    script: build_cxx.sh  # [unix]\n    script: bld_cxx.bat  # [win]\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake\n        - pkg-config\n        - ninja\n    test:\n      commands:\n        - test -f ${PREFIX}/share/cmake/{{ name }}/{{ name }}-config.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\share\\\\cmake\\\\{{ name }}\\\\{{ name }}-config.cmake exit 1  # [win]\n\n  - name: {{ name }}\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n    requirements:\n      run:\n        - {{ pin_subpackage(cxx_name, exact=True) }}\n    test:\n      commands:\n        - test -f ${PREFIX}/share/cmake/{{ name }}/{{ name }}-config.cmake  # [not win]\n        - if exist %PREFIX%\\\\Library\\\\share\\\\cmake\\\\{{ name }}\\\\{{ name }}-config.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/gazebosim/gz-cmake\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: 'A set of CMake modules that are used by the C++-based Gazebo projects.'\n\nextra:\n  recipe-maintainers:\n    - wolfv\n    - traversaro\n    - j-rivero\n",
  "req": {
   "__set__": true,
@@ -863,6 +887,7 @@
    "elements": []
   }
  },
+ "smithy_version": "3.21.3",
  "strong_exports": false,
  "total_requirements": {
   "build": {
