@@ -213,6 +213,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1129271606.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "3.0.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -548,7 +565,7 @@
   }
  },
  "name": "wasmer",
- "new_version": "2.3.0",
+ "new_version": "3.0.0",
  "new_version_attempts": {
   "1.0.2": 1,
   "2.0.0": 1,
@@ -556,7 +573,8 @@
   "2.1.1": 1,
   "2.2.0": 1,
   "2.2.1": 1,
-  "2.3.0": 1
+  "2.3.0": 1,
+  "3.0.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -685,7 +703,7 @@
    "wasmer"
   ]
  },
- "pinning_version": "2022.06.06.01.05.55",
+ "pinning_version": "2022.11.20.19.10.04",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"2.3.0\" %}\n\npackage:\n  name: wasmer\n  version: {{ version }}\n\nsource:\n  url: https://github.com/wasmerio/wasmer/archive/{{ version }}.tar.gz\n  sha256: b27d12494191a5fe4a77b2cce085b6005f2bf6285ede6c86601a3062c6135782\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n    - {{ compiler(\"cxx\") }}\n    - {{ compiler(\"rust\") }}\n    - cargo-bundle-licenses\n    # TODO: investigate for osx?\n    - llvmdev >=12  # [linux]\n  host:\n    - libffi\n    - libxkbcommon  # [linux]\n    - openssl\n    - zlib\n  run: []\n\n{% set test_wasm = \"tests/wasi-wast/wasi/snapshot1/hello.wasm\" %}\n{% set test_text = \"Hello, world!\" %}\n{% set backends = [\"singlepass\", \"cranelift\"] %}\n{% set backends = backends + [\"llvm\"] %}  # [linux]\n\ntest:\n  source_files:\n    - {{ test_wasm }}\n  requires:\n    - m2-grep  # [win]\n  commands:\n    - wasmer --version\n    - wasmer --version | grep -ie '{{ version.replace(\".\", \"\\\\.\") }}'\n    - wasmer --help\n    {% for backend in backends %}\n    - wasmer run --{{ backend }} {{ test_wasm }}\n    - wasmer run --{{ backend }} {{ test_wasm }} | grep '{{ test_text }}'\n    - wasmer validate --{{ backend }} {{ test_wasm }}\n    # TODO: test engines?\n    # TODO: test compile?\n    # TODO: test exe?\n    # - WASMER_DIR=$PREFIX wasmer create-exe --{{ backend }} {{ test_wasm }} -o ./hello-{{ backend }}\n    # - ./hello-{{ backend }}\n    # - ./hello-{{ backend }} | grep '{{ test_text }}'\n    {% endfor %}\n\nabout:\n  home: https://wasmer.io\n  license: MIT\n  license_family: MIT\n  summary: Universal WebAssembly runtime\n  description: |\n    Wasmer is a standalone JIT WebAssembly runtime, aiming to be fully\n    compatible with WASI and Emscripten.\n  dev_url: https://github.com/wasmerio/wasmer\n  doc_url: https://docs.wasmer.io\n  doc_source_url: https://github.com/wasmerio/docs.wasmer.io\n  license_file:\n    - LICENSE\n    - ATTRIBUTIONS.md\n    - THIRDPARTY.yml\n\nextra:\n  recipe-maintainers:\n    - bollwyvl\n    - wolfv\n",
@@ -739,7 +757,7 @@
    ]
   }
  },
- "smithy_version": "3.20.0",
+ "smithy_version": "3.22.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
