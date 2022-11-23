@@ -16,6 +16,26 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "head": {
+     "ref": "<this_is_not_a_branch>"
+    },
+    "state": "closed"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -1725,7 +1745,7 @@
    "libgz-tools2"
   ]
  },
- "pinning_version": "2022.11.23.09.34.39",
+ "pinning_version": "2022.11.23.19.37.15",
  "raw_meta_yaml": "{% set component_name = \"tools\" %}\n{% set repo_name = \"gz-\" + component_name %}\n{% set version = \"2.0.0\" %}\n{% set major_version = version.split('.')[0] %}\n{% set name = repo_name + major_version %}\n{% set component_version = component_name + major_version %}\n{% set cxx_name = \"lib\" + name %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/gazebosim/{{ repo_name }}/archive/{{ repo_name }}{{ major_version }}_{{ version }}.tar.gz\n    sha256: 5e3788d5a1d5fa40724f1484cda716e0c050f01d2c516efa9f8a00877e74ef64\n    patches:\n      - fix_backward_install.patch \n\nbuild:\n  number: 2\n\noutputs:\n  - name: {{ cxx_name }}\n    script: build_cxx.sh  # [unix]\n    script: bld_cxx.bat  # [win]\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n      ignore_run_exports:\n        - ruby\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - {{ compiler('c') }}\n        - ninja\n        - cmake\n        - pkg-config\n      host:\n        - libgz-cmake3\n        - backward-cpp\n        - ruby                               # [not (win or (osx and arm64))]\n        - ruby 2.7                           # [win or (osx and arm64)]\n      run:\n        - ruby\n        - elfutils                           # [linux]\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/cmake/{{ name }}-all/{{ name }}-all-config.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\{{ name }}-all\\\\{{ name }}-all-config.cmake exit 1  # [win]\n\n  - name: {{ name }}\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n    requirements:\n      run:\n        - {{ pin_subpackage(cxx_name, exact=True) }}\n    test:\n      commands:\n        - test -f ${PREFIX}/lib/cmake/{{ name }}-all/{{ name }}-all-config.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\{{ name }}-all\\\\{{ name }}-all-config.cmake exit 1  # [win]\n\n\nabout:\n  home: https://github.com/gazebosim/gz-tools\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: 'Command line tools for the Gazebo libraries.'\n\nextra:\n  feedstock-name: {{ repo_name }}\n  recipe-maintainers:\n    - wolfv\n    - traversaro\n    - j-rivero\n",
  "req": {
   "__set__": true,
