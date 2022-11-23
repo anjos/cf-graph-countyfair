@@ -39,7 +39,7 @@
     "__lazy_json__": "pr_json/1127911359.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1669203614.2046096,
     "migrator_name": "ArchRebuild",
     "migrator_version": 1,
     "name": "aarch64 and ppc64le addition"
@@ -67,12 +67,33 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1133386551.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
  "bad": false,
  "branch": "main",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  }
+ },
  "feedstock_name": "go-yq",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -176,11 +197,19 @@
     "./scripts/generate-man-page-md.sh",
     "./scripts/generate-man-page.sh",
     "mkdir -p \"$PREFIX/share/man/man1/\"",
+    "install ./yq.1 \"$PREFIX/share/man/man1/yq.1\"",
+    "go build --ldflags '-s -w'",
+    "mkdir -p \"$PREFIX/bin/\"",
+    "install ./yq \"$PREFIX/bin/yq\"",
+    "./scripts/generate-man-page-md.sh",
+    "./scripts/generate-man-page.sh",
+    "mkdir -p \"$PREFIX/share/man/man1/\"",
     "install ./yq.1 \"$PREFIX/share/man/man1/yq.1\""
    ]
   },
   "extra": {
    "recipe-maintainers": [
+    "chrisburr",
     "chrisburr",
     "chrisburr"
    ]
@@ -198,6 +227,10 @@
     "c_compiler_stub",
     "go-cgo_compiler_stub",
     "make",
+    "pandoc",
+    "c_compiler_stub",
+    "go-cgo_compiler_stub",
+    "make",
     "pandoc"
    ]
   },
@@ -207,6 +240,8 @@
   },
   "test": {
    "commands": [
+    "yq --help",
+    "yq eval --null-input --no-colors '.key = \"cat\"' | grep -E '^key: cat$'",
     "yq --help",
     "yq eval --null-input --no-colors '.key = \"cat\"' | grep -E '^key: cat$'",
     "yq --help",
@@ -290,13 +325,87 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "description": "A lightweight and portable command-line YAML, JSON and XML processor.\nyq uses jq like syntax but works with yaml files as well as json, xml,\nproperties, csv and tsv. It doesn't yet support everything jq does - but it\ndoes support the most common operations and functions, and more is being\nadded continuously.\n",
+   "dev_url": "https://github.com/mikefarah/yq",
+   "doc_url": "https://mikefarah.gitbook.io/yq/",
+   "home": "https://github.com/mikefarah/yq",
+   "license": "MIT",
+   "license_file": "LICENSE",
+   "summary": "Process YAML documents from the CLI"
+  },
+  "build": {
+   "binary_relocation": false,
+   "number": "0",
+   "script": [
+    "go build --ldflags '-s -w'",
+    "mkdir -p \"$PREFIX/bin/\"",
+    "install ./yq \"$PREFIX/bin/yq\"",
+    "./scripts/generate-man-page-md.sh",
+    "./scripts/generate-man-page.sh",
+    "mkdir -p \"$PREFIX/share/man/man1/\"",
+    "install ./yq.1 \"$PREFIX/share/man/man1/yq.1\""
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "chrisburr"
+   ]
+  },
+  "package": {
+   "name": "go-yq",
+   "version": "4.30.4"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "go-cgo_compiler_stub",
+    "make",
+    "pandoc"
+   ]
+  },
+  "source": {
+   "sha256": "d46e4f5176d6115107909623bd89ceb7ae991acc0980112ba9b0159811229c0c",
+   "url": "https://github.com/mikefarah/yq/archive/refs/tags/v4.30.4.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "yq --help",
+    "yq eval --null-input --no-colors '.key = \"cat\"' | grep -E '^key: cat$'"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "go-cgo_compiler_stub",
+    "make",
+    "pandoc"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": []
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
    "go-yq"
   ]
  },
- "pinning_version": "2022.11.18.17.56.12",
+ "pinning_version": "2022.11.23.09.34.39",
  "raw_meta_yaml": "{% set name = \"go-yq\" %}\n{% set version = \"4.30.4\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/mikefarah/yq/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: d46e4f5176d6115107909623bd89ceb7ae991acc0980112ba9b0159811229c0c\n\nbuild:\n  number: 0\n  skip: true  # [not unix]\n  binary_relocation: false\n  script:\n    - go build --ldflags '-s -w'\n    - mkdir -p \"$PREFIX/bin/\"\n    - install ./yq \"$PREFIX/bin/yq\"\n    # Build the documentation\n    - ./scripts/generate-man-page-md.sh\n    - ./scripts/generate-man-page.sh\n    - mkdir -p \"$PREFIX/share/man/man1/\"\n    - install ./yq.1 \"$PREFIX/share/man/man1/yq.1\"\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('go-cgo') }}\n    - make\n    - pandoc\n\ntest:\n  commands:\n    - yq --help\n    - \"yq eval --null-input --no-colors '.key = \\\"cat\\\"' | grep -E '^key: cat$'\"\n\nabout:\n  home: https://github.com/mikefarah/yq\n  summary: Process YAML documents from the CLI\n  description: |\n    A lightweight and portable command-line YAML, JSON and XML processor.\n    yq uses jq like syntax but works with yaml files as well as json, xml,\n    properties, csv and tsv. It doesn't yet support everything jq does - but it\n    does support the most common operations and functions, and more is being\n    added continuously.\n  license: MIT\n  license_file: LICENSE\n  dev_url: https://github.com/mikefarah/yq\n  doc_url: https://mikefarah.gitbook.io/yq/\n\nextra:\n  recipe-maintainers:\n    - chrisburr\n",
  "req": {
   "__set__": true,
