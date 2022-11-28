@@ -1202,6 +1202,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1137834425.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "8.7.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1618,7 +1635,7 @@
   }
  },
  "name": "ipython",
- "new_version": "8.6.0",
+ "new_version": "8.7.0",
  "new_version_attempts": {
   "7.14.0": 1,
   "7.15.0": 1,
@@ -1646,7 +1663,8 @@
   "8.1.1": 1,
   "8.2.0": 1,
   "8.4.0": 1,
-  "8.5.0": 1
+  "8.5.0": 1,
+  "8.7.0": 1
  },
  "new_version_errors": {
   "7.20.0": "We found a problem parsing the recipe: \n\nwhile constructing a mapping\n  in \"<unicode string>\", line 53, column 3:\n      requires:\n      ^ (line: 53)\nfound duplicate key \"requires\" with value \"['curio', 'matplotlib-base', 'nbformat', 'nose >=0.10.1', 'numpy', 'pygments', 'requests', 'testpath', 'pip', 'trio', 'ipykernel']\" (original value: \"['pip']\")\n  in \"<unicode string>\", line 58, column 3:\n      requires:\n      ^ (line: 58)\n\nTo suppress this check see:\n    http://yaml.readthedocs.io/en/latest/api.html#duplicate-keys\n\nDuplicate keys will become an error in future releases, and are errors\nby default when using the new API.\n",
@@ -1821,14 +1839,12 @@
    "ipython"
   ]
  },
- "pinning_version": "2022.08.05.23.22.55",
+ "pinning_version": "2022.11.27.15.56.36",
  "pre_pr_migrator_attempts": {
-  "pypy37": 1,
-  "version": 1
+  "pypy37": 1
  },
  "pre_pr_migrator_status": {
-  "pypy37": "bot error: 7.16.x: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1042, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 222, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 216, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 444, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n",
-  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3000920886\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1150, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 309, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only 043bcd8176d51ead8631a498312bbe6ca2efe41a...HEAD' returned non-zero exit status 128.\n"
+  "pypy37": "bot error: 7.16.x: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1042, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 222, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 216, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 444, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
  },
  "raw_meta_yaml": "{% set version = \"8.6.0\" %}\n\n{% set migrating = false %}\n\npackage:\n  name: ipython\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/i/ipython/ipython-{{ version }}.tar.gz\n  sha256: 7c959e3dedbf7ed81f9b9d8833df252c430610e2a4a6464ec13cd20975ce20a5\n\nbuild:\n  number: 1\n  script: {{ PYTHON }} -m pip install . -vv --no-deps\n\n  noarch: python\n  script_env:\n    - MIGRATING={{ migrating }}\n    # TODO: investigate removing when some pypy/coverage speed issues are resolved\n    - IPYTHON_TESTING_TIMEOUT_SCALE=10\n    - COV_THRESHOLD=73  # [unix]\n    - COV_THRESHOLD=72  # [win]\n  entry_points:\n    - ipython = IPython:start_ipython\n    - ipython3 = IPython:start_ipython\n\nrequirements:\n  host:\n    - pip\n    - python >=3.8\n  run:\n    - __{{ noarch_platform }}\n    - python >=3.8\n    {% if noarch_platform == \"osx\" %}\n    - appnope\n    {% endif %}\n    - backcall\n    {% if noarch_platform == \"win\" %}\n    - colorama\n    {% endif %}\n    - decorator\n    - jedi >=0.16\n    - matplotlib-inline\n    {% if noarch_platform != \"win\" %}\n    - pexpect >4.3\n    {% endif %}\n    - pickleshare\n    - prompt-toolkit >3.0.1,<3.1.0\n    - pygments >=2.4.0\n    - stack_data\n    - traitlets >=5\n\ntest:\n  requires:\n    - pip\n    {% if not migrating %}\n    - black\n    - curio\n    - matplotlib-base !=3.2.0\n    - nbformat\n    - numpy >=1.20\n    - pandas\n    - pygments\n    - pytest <7\n    - pytest-cov\n    - testpath\n    - trio\n    {% endif %}\n\n  imports:\n    - IPython\n    - IPython.core\n    - IPython.core.magics\n    - IPython.core.tests\n    - IPython.extensions\n    - IPython.extensions.tests\n    - IPython.external\n    - IPython.lib\n    - IPython.lib.tests\n    - IPython.sphinxext\n    - IPython.terminal\n    - IPython.terminal.pt_inputhooks\n    - IPython.terminal.tests\n    - IPython.testing\n    - IPython.testing.plugin\n    - IPython.testing.tests\n    - IPython.utils\n    - IPython.utils.tests\n  commands:\n    - pip check\n    - ipython -h\n    - ipython3 -h\n\nabout:\n  home: https://ipython.org\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  summary: 'IPython: Productive Interactive Computing'\n  description: |\n    IPython provides a rich architecture for interactive computing with\n    a powerful interactive shell, a kernel for Jupyter, high performance\n    tools for parallel computing, and more.\n  doc_url: https://ipython.readthedocs.io\n  dev_url: https://github.com/ipython/ipython\n\nextra:\n  recipe-maintainers:\n    - Carreau\n    - jakirkham\n    - fperez\n    - ellisonbg\n    - minrk\n    - ocefpaf\n    - pelson\n    - takluyver\n    - bollwyvl\n    - blink1073\n",
  "req": {
@@ -1904,7 +1920,7 @@
    ]
   }
  },
- "smithy_version": "3.21.1",
+ "smithy_version": "3.22.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
