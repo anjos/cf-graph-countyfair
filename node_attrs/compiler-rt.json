@@ -509,6 +509,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1139070405.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "15.0.6"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1391,7 +1408,7 @@
   }
  },
  "name": "compiler-rt-packages",
- "new_version": "15.0.5",
+ "new_version": "15.0.6",
  "new_version_attempts": {
   "10.0.1": 1,
   "11.0.0": 1,
@@ -1411,7 +1428,8 @@
   "15.0.0": 1,
   "15.0.1": 0,
   "15.0.4": 1,
-  "15.0.5": 1
+  "15.0.5": 1,
+  "15.0.6": 1
  },
  "new_version_errors": {
   "12.0.0": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '12.0.0' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/compiler-rt-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz'\n"
@@ -1708,7 +1726,7 @@
    "compiler-rt_win-64"
   ]
  },
- "pinning_version": "2022.11.16.16.13.51",
+ "pinning_version": "2022.11.27.15.56.36",
  "raw_meta_yaml": "{% set version = \"15.0.5\" %}\n{% set prod_ver = '.'.join(version.split('.')[:3]) %}\n\npackage:\n  name: compiler-rt-packages\n  version: {{ version }}\n\nsource:\n  url: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/llvm-project-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz\n  sha256: 9c4278a6b8884eb7f4ae7dfe3c8e5445019824885e47cfdf1392563c47316fd6\n  patches:\n    - patches/0001-no-code-sign.patch\n    - patches/0002-compiler-rt-Make-7.0.0-compatible-with-10.9-SDK.patch\n    - patches/0003-set-cmake-paths.patch\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - cmake >=3.4.3\n    - {{ compiler('cxx') }}\n    - python *\n    - make                   # [unix]\n    - ninja                  # [win]\n    - llvmdev {{ version }}  # [build_platform != target_platform]\n  host:\n    - clangdev {{ version }}\n    - llvmdev {{ version }}\n    - libcxx   # [osx]\n    - zlib\n    - libxml2\n\noutputs:\n  - name: compiler-rt_{{ target_platform }}\n    build:\n      noarch: generic\n      ignore_run_exports_from:\n        - {{ compiler('cxx') }}\n      detect_binary_files_with_prefix: false  # [win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n      run:\n        - clang {{ version }}\n        - clangxx {{ version }}\n      run_constrained:\n        - compiler-rt {{ version }}\n    files:\n      - lib/clang/{{ prod_ver }}/lib\n    test:\n      commands:\n        - echo {{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}\n        - test -f $PREFIX/lib/clang/{{ prod_ver }}/lib/darwin/libclang_rt.osx.a  # [osx]\n\n  - name: compiler-rt\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n      run:\n        - clang {{ version }}\n        - clangxx {{ version }}\n        - compiler-rt_{{ target_platform }} {{ version }}\n    files:\n      - lib/clang/{{ prod_ver }}/share             # [unix]\n      - lib/clang/{{ prod_ver }}/include           # [unix]\n      - Library/lib/clang/{{ version }}/share     # [win]\n      - Library/lib/clang/{{ version }}/include   # [win]\n      - Library/lib/clang/{{ version }}/lib       # [win]\n    test:\n      # files:\n      #   - test.c.in\n      commands:\n        # {% set NEW_TARGET=\"10.\" ~ (((MACOSX_DEPLOYMENT_TARGET|default(\"10.13\")).split(\".\")[1])|int + 1) %}\n        # - sed \"s/@MACOSX_DEPLOYMENT_TARGET@/{{ NEW_TARGET }}/g\" test.c.in > test.c\n        # - clang -mmacosx-version-min={{ MACOSX_DEPLOYMENT_TARGET }} test.c  # [osx]\n        - test -f $PREFIX/lib/clang/{{ prod_ver }}/include/sanitizer/asan_interface.h  # [unix]\n\nabout:\n  home: http://llvm.org/\n  license: Apache-2.0 WITH LLVM-exception\n  license_file: compiler-rt/LICENSE.TXT\n  summary: compiler-rt runtime libraries\n  dev_url: https://github.com/llvm/llvm-project\n  description: |\n    builtins - low-level target-specific hooks required by code generation and other\n      runtime components\n    sanitizer runtimes - AddressSanitizer, ThreadSanitizer, UndefinedBehaviorSanitizer,\n      MemorySanitizer, LeakSanitizer, DataFlowSanitizer\n    profile - library which is used to collect coverage information\n    BlocksRuntime - target-independent implementation of Apple \"Blocks\" runtime\n      interfaces\n\nextra:\n  recipe-maintainers:\n    - SylvainCorlay\n    - inducer\n    - jakirkham\n    - isuruf\n    - h-vetinari\n  feedstock-name: compiler-rt\n",
  "req": {
   "__set__": true,
@@ -1774,7 +1792,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.21.3",
+ "smithy_version": "3.22.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
