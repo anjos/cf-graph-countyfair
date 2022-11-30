@@ -1,4 +1,23 @@
 {
+ "PRed": [
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1139732356.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "ArchRebuild",
+    "migrator_version": 1,
+    "name": "aarch64 and ppc64le addition"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "name"
+   ]
+  }
+ ],
  "archived": false,
  "bad": false,
  "branch": "main",
@@ -83,6 +102,7 @@
    "msmpi"
   ]
  },
+ "pinning_version": "2022.11.29.22.58.17",
  "raw_meta_yaml": "{% set name = \"msmpi\" %}\n{% set version = \"10.1.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/microsoft/Microsoft-MPI/archive/v{{ version }}.tar.gz\n  sha256: 63c7da941fc4ffb05a0f97bd54a67968c71f63389a0d162d3182eabba1beab3d\n  patches:\n    - conda-build.patch\n\nbuild:\n  number: 7\n  skip: true  # [not win]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - {{ compiler('m2w64_fortran') }}\n  run:\n    - mpi 1.0 msmpi\n\ntest:\n  files:\n    - tests/*  # [win]\n  requires:\n    - {{ compiler('c') }}\n    # These deps are needed for the mpi4py tests\n    # - python\n    # - pip\n    # - cython\n    # - setuptools\n    # - git\n  commands:\n    # simple package integraty check\n    - if not exist %LIBRARY_BIN%\\\\mpiexec.exe exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\smpd.exe exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\\\msmpi.dll exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\\\mpi.f90 exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\\\mpi.h exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\msmpi.lib exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\\\mpifort.lib exit 1  # [win]\n    - if not %MSMPI_BIN% == %LIBRARY_BIN% exit 1  # [win]\n    - if not %MSMPI_INC% == %LIBRARY_INC% exit 1  # [win]\n    - if not %MSMPI_LIB64% == %LIBRARY_LIB% exit 1  # [win]\n\n    # check if binaries work ok\n    - where mpiexec.exe\n    - where smpd.exe\n    \n    - mpiexec.exe /help2\n    - mpiexec.exe /help3\n\n    # This works! Just comment out to save time...\n    ## test compiling + linking + execution\n    #- git clone https://github.com/mpi4py/mpi4py.git\n    #- cd mpi4py\n    #- pip install --no-build-isolation --no-deps -v .\n    #- cd ..\n    #- python -c \"from mpi4py import MPI; print(MPI.Get_library_version())\"\n    #- mpiexec -n 2 python -m mpi4py.bench helloworld\n    #- mpiexec -n 2 python -m mpi4py.bench ringtest\n\n    # check if MSMPI_VER is correctly patched\n    - cl.exe -I%LIBRARY_INC% tests\\\\get_mpi_ver.c /Fe\"%cd%\\get_mpi_ver.exe\"\n    - for /f \"tokens=* usebackq\" %%f in (`get_mpi_ver`) do (set \"mpi_ver=%%f\")\n    # TODO(leofang): we could compute this, yes, but don't bother as MS-MPI is not evolving...\n    - if not %mpi_ver% == 2561 exit 1  # [win]  # for MS-MPI v10.1.x\n\n    # check compiling & running simple C code\n    # TODO(leofang): add C++ & Fortran tests?\n    - cl.exe -I%LIBRARY_INC% tests\\\\helloworld.c /Fe\"%cd%\\helloworld.exe\" /link /LIBPATH:\"%LIBRARY_LIB%\" msmpi.lib\n    - mpiexec.exe -n 4 helloworld.exe\n\nabout:\n  home: https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi\n  license: MIT\n  license_file: LICENSE.txt\n  summary: Microsoft message-passing-interface (MS-MPI)\n  description: |\n    Microsoft MPI (MS-MPI) is a Microsoft implementation of the Message Passing\n    Interface standard for developing and running parallel applications on the\n    Windows platform.\n  doc_url: https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi\n  dev_url: https://github.com/microsoft/Microsoft-MPI\n\nextra:\n  recipe-maintainers:\n    - RyanMcCarthy-NOAA\n    - isuruf\n",
  "req": {
   "__set__": true,
@@ -124,6 +144,7 @@
    ]
   }
  },
+ "smithy_version": "3.22.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
