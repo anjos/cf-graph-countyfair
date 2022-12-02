@@ -396,159 +396,6 @@
       "make"
      ],
      "host": [
-      "mpich",
-      "petsc * real_*",
-      "hdf5 * mpi_mpich_*",
-      "libfyaml",
-      "fftw * mpi_mpich_*"
-     ],
-     "run": [
-      "hypre",
-      "petsc",
-      "hdf5"
-     ],
-     "run_constrained": [
-      "damask ==3.0.0a7"
-     ]
-    },
-    "test": {
-     "commands": [
-      "export OMPI_MCA_plm=isolated",
-      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
-      "export OMP_NUM_THREADS=2",
-      "DAMASK_grid --help"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": [
-      "PETSC_DIR=${PREFIX} cmake -B build-mesh -DDAMASK_SOLVER=mesh -DCMAKE_INSTALL_PREFIX=${PREFIX}",
-      "cmake --build build-mesh --target install"
-     ]
-    },
-    "name": "damask-mesh",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "libgomp",
-      "cmake",
-      "make"
-     ],
-     "host": [
-      "mpich",
-      "petsc * real_*",
-      "hdf5 * mpi_mpich_*",
-      "libfyaml"
-     ],
-     "run": [
-      "hypre",
-      "petsc",
-      "hdf5"
-     ],
-     "run_constrained": [
-      "damask ==3.0.0a7"
-     ]
-    },
-    "test": {
-     "commands": [
-      "export OMPI_MCA_plm=isolated",
-      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
-      "export OMP_NUM_THREADS=2",
-      "DAMASK_mesh --help"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install ./python --no-deps -vv"
-    },
-    "name": "python-damask",
-    "requirements": {
-     "build": [
-      "cdt_stub",
-      "cdt_stub",
-      "cdt_stub",
-      "cdt_stub",
-      "cdt_stub",
-      "cdt_stub"
-     ],
-     "host": [
-      "xorg-libxfixes",
-      "python",
-      "pip"
-     ],
-     "run": [
-      "python",
-      "pandas",
-      "scipy",
-      "h5py >=3.3.0",
-      "vtk",
-      "matplotlib-base",
-      "pyyaml"
-     ],
-     "run_constrained": [
-      "damask ==3.0.0a7"
-     ]
-    },
-    "test": {
-     "imports": [
-      "damask"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": [
-      "echo DAMASK metapackage"
-     ]
-    },
-    "name": "damask",
-    "requirements": {
-     "host": [
-      "python"
-     ],
-     "run": [
-      "python",
-      "mpich",
-      "damask-mesh",
-      "damask-grid",
-      "python-damask"
-     ]
-    },
-    "test": {
-     "commands": [
-      "export OMPI_MCA_plm=isolated",
-      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
-      "export OMPI_MCA_rmaps_base_oversubscribe=yes",
-      "mpiexec -np 2 DAMASK_grid -h",
-      "mpiexec -np 2 DAMASK_mesh -h"
-     ],
-     "imports": [
-      "damask"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": [
-      "PETSC_DIR=${PREFIX} cmake -B build-grid -DDAMASK_SOLVER=grid -DCMAKE_INSTALL_PREFIX=${PREFIX}",
-      "cmake --build build-grid --target install"
-     ]
-    },
-    "name": "damask-grid",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "libgomp",
-      "cmake",
-      "make"
-     ],
-     "host": [
       "openmpi",
       "petsc * real_*",
       "hdf5 * mpi_openmpi_*",
@@ -666,6 +513,159 @@
      "run": [
       "python",
       "openmpi",
+      "damask-mesh",
+      "damask-grid",
+      "python-damask"
+     ]
+    },
+    "test": {
+     "commands": [
+      "export OMPI_MCA_plm=isolated",
+      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
+      "export OMPI_MCA_rmaps_base_oversubscribe=yes",
+      "mpiexec -np 2 DAMASK_grid -h",
+      "mpiexec -np 2 DAMASK_mesh -h"
+     ],
+     "imports": [
+      "damask"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "PETSC_DIR=${PREFIX} cmake -B build-grid -DDAMASK_SOLVER=grid -DCMAKE_INSTALL_PREFIX=${PREFIX}",
+      "cmake --build build-grid --target install"
+     ]
+    },
+    "name": "damask-grid",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "libgomp",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "mpich",
+      "petsc * real_*",
+      "hdf5 * mpi_mpich_*",
+      "libfyaml",
+      "fftw * mpi_mpich_*"
+     ],
+     "run": [
+      "hypre",
+      "petsc",
+      "hdf5"
+     ],
+     "run_constrained": [
+      "damask ==3.0.0a7"
+     ]
+    },
+    "test": {
+     "commands": [
+      "export OMPI_MCA_plm=isolated",
+      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
+      "export OMP_NUM_THREADS=2",
+      "DAMASK_grid --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "PETSC_DIR=${PREFIX} cmake -B build-mesh -DDAMASK_SOLVER=mesh -DCMAKE_INSTALL_PREFIX=${PREFIX}",
+      "cmake --build build-mesh --target install"
+     ]
+    },
+    "name": "damask-mesh",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "libgomp",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "mpich",
+      "petsc * real_*",
+      "hdf5 * mpi_mpich_*",
+      "libfyaml"
+     ],
+     "run": [
+      "hypre",
+      "petsc",
+      "hdf5"
+     ],
+     "run_constrained": [
+      "damask ==3.0.0a7"
+     ]
+    },
+    "test": {
+     "commands": [
+      "export OMPI_MCA_plm=isolated",
+      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
+      "export OMP_NUM_THREADS=2",
+      "DAMASK_mesh --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": "python -m pip install ./python --no-deps -vv"
+    },
+    "name": "python-damask",
+    "requirements": {
+     "build": [
+      "cdt_stub",
+      "cdt_stub",
+      "cdt_stub",
+      "cdt_stub",
+      "cdt_stub",
+      "cdt_stub"
+     ],
+     "host": [
+      "xorg-libxfixes",
+      "python",
+      "pip"
+     ],
+     "run": [
+      "python",
+      "pandas",
+      "scipy",
+      "h5py >=3.3.0",
+      "vtk",
+      "matplotlib-base",
+      "pyyaml"
+     ],
+     "run_constrained": [
+      "damask ==3.0.0a7"
+     ]
+    },
+    "test": {
+     "imports": [
+      "damask"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "echo DAMASK metapackage"
+     ]
+    },
+    "name": "damask",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "mpich",
       "damask-mesh",
       "damask-grid",
       "python-damask"
@@ -833,159 +833,6 @@
       "make"
      ],
      "host": [
-      "mpich",
-      "petsc * real_*",
-      "hdf5 * mpi_mpich_*",
-      "libfyaml",
-      "fftw * mpi_mpich_*"
-     ],
-     "run": [
-      "hypre",
-      "petsc",
-      "hdf5"
-     ],
-     "run_constrained": [
-      "damask ==3.0.0a7"
-     ]
-    },
-    "test": {
-     "commands": [
-      "export OMPI_MCA_plm=isolated",
-      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
-      "export OMP_NUM_THREADS=2",
-      "DAMASK_grid --help"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": [
-      "PETSC_DIR=${PREFIX} cmake -B build-mesh -DDAMASK_SOLVER=mesh -DCMAKE_INSTALL_PREFIX=${PREFIX}",
-      "cmake --build build-mesh --target install"
-     ]
-    },
-    "name": "damask-mesh",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "libgomp",
-      "cmake",
-      "make"
-     ],
-     "host": [
-      "mpich",
-      "petsc * real_*",
-      "hdf5 * mpi_mpich_*",
-      "libfyaml"
-     ],
-     "run": [
-      "hypre",
-      "petsc",
-      "hdf5"
-     ],
-     "run_constrained": [
-      "damask ==3.0.0a7"
-     ]
-    },
-    "test": {
-     "commands": [
-      "export OMPI_MCA_plm=isolated",
-      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
-      "export OMP_NUM_THREADS=2",
-      "DAMASK_mesh --help"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install ./python --no-deps -vv"
-    },
-    "name": "python-damask",
-    "requirements": {
-     "build": [
-      "cdt_stub",
-      "cdt_stub",
-      "cdt_stub",
-      "cdt_stub",
-      "cdt_stub",
-      "cdt_stub"
-     ],
-     "host": [
-      "xorg-libxfixes",
-      "python",
-      "pip"
-     ],
-     "run": [
-      "python",
-      "pandas",
-      "scipy",
-      "h5py >=3.3.0",
-      "vtk",
-      "matplotlib-base",
-      "pyyaml"
-     ],
-     "run_constrained": [
-      "damask ==3.0.0a7"
-     ]
-    },
-    "test": {
-     "imports": [
-      "damask"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": [
-      "echo DAMASK metapackage"
-     ]
-    },
-    "name": "damask",
-    "requirements": {
-     "host": [
-      "python"
-     ],
-     "run": [
-      "python",
-      "mpich",
-      "damask-mesh",
-      "damask-grid",
-      "python-damask"
-     ]
-    },
-    "test": {
-     "commands": [
-      "export OMPI_MCA_plm=isolated",
-      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
-      "export OMPI_MCA_rmaps_base_oversubscribe=yes",
-      "mpiexec -np 2 DAMASK_grid -h",
-      "mpiexec -np 2 DAMASK_mesh -h"
-     ],
-     "imports": [
-      "damask"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": [
-      "PETSC_DIR=${PREFIX} cmake -B build-grid -DDAMASK_SOLVER=grid -DCMAKE_INSTALL_PREFIX=${PREFIX}",
-      "cmake --build build-grid --target install"
-     ]
-    },
-    "name": "damask-grid",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "libgomp",
-      "cmake",
-      "make"
-     ],
-     "host": [
       "openmpi",
       "petsc * real_*",
       "hdf5 * mpi_openmpi_*",
@@ -1134,17 +981,16 @@
       "c_compiler_stub",
       "cxx_compiler_stub",
       "fortran_compiler_stub",
-      "llvm-openmp",
-      "pkg-config",
+      "libgomp",
       "cmake",
       "make"
      ],
      "host": [
-      "openmpi",
+      "mpich",
       "petsc * real_*",
-      "hdf5 * mpi_openmpi_*",
+      "hdf5 * mpi_mpich_*",
       "libfyaml",
-      "fftw * mpi_openmpi_*"
+      "fftw * mpi_mpich_*"
      ],
      "run": [
       "hypre",
@@ -1177,15 +1023,14 @@
       "c_compiler_stub",
       "cxx_compiler_stub",
       "fortran_compiler_stub",
-      "llvm-openmp",
-      "pkg-config",
+      "libgomp",
       "cmake",
       "make"
      ],
      "host": [
-      "openmpi",
+      "mpich",
       "petsc * real_*",
-      "hdf5 * mpi_openmpi_*",
+      "hdf5 * mpi_mpich_*",
       "libfyaml"
      ],
      "run": [
@@ -1212,8 +1057,16 @@
     },
     "name": "python-damask",
     "requirements": {
-     "build": [],
+     "build": [
+      "cdt_stub",
+      "cdt_stub",
+      "cdt_stub",
+      "cdt_stub",
+      "cdt_stub",
+      "cdt_stub"
+     ],
      "host": [
+      "xorg-libxfixes",
       "python",
       "pip"
      ],
@@ -1249,7 +1102,7 @@
      ],
      "run": [
       "python",
-      "openmpi",
+      "mpich",
       "damask-mesh",
       "damask-grid",
       "python-damask"
@@ -1397,6 +1250,153 @@
      "run": [
       "python",
       "mpich",
+      "damask-mesh",
+      "damask-grid",
+      "python-damask"
+     ]
+    },
+    "test": {
+     "commands": [
+      "export OMPI_MCA_plm=isolated",
+      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
+      "export OMPI_MCA_rmaps_base_oversubscribe=yes",
+      "mpiexec -np 2 DAMASK_grid -h",
+      "mpiexec -np 2 DAMASK_mesh -h"
+     ],
+     "imports": [
+      "damask"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "PETSC_DIR=${PREFIX} cmake -B build-grid -DDAMASK_SOLVER=grid -DCMAKE_INSTALL_PREFIX=${PREFIX}",
+      "cmake --build build-grid --target install"
+     ]
+    },
+    "name": "damask-grid",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "pkg-config",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "openmpi",
+      "petsc * real_*",
+      "hdf5 * mpi_openmpi_*",
+      "libfyaml",
+      "fftw * mpi_openmpi_*"
+     ],
+     "run": [
+      "hypre",
+      "petsc",
+      "hdf5"
+     ],
+     "run_constrained": [
+      "damask ==3.0.0a7"
+     ]
+    },
+    "test": {
+     "commands": [
+      "export OMPI_MCA_plm=isolated",
+      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
+      "export OMP_NUM_THREADS=2",
+      "DAMASK_grid --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "PETSC_DIR=${PREFIX} cmake -B build-mesh -DDAMASK_SOLVER=mesh -DCMAKE_INSTALL_PREFIX=${PREFIX}",
+      "cmake --build build-mesh --target install"
+     ]
+    },
+    "name": "damask-mesh",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "pkg-config",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "openmpi",
+      "petsc * real_*",
+      "hdf5 * mpi_openmpi_*",
+      "libfyaml"
+     ],
+     "run": [
+      "hypre",
+      "petsc",
+      "hdf5"
+     ],
+     "run_constrained": [
+      "damask ==3.0.0a7"
+     ]
+    },
+    "test": {
+     "commands": [
+      "export OMPI_MCA_plm=isolated",
+      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
+      "export OMP_NUM_THREADS=2",
+      "DAMASK_mesh --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": "python -m pip install ./python --no-deps -vv"
+    },
+    "name": "python-damask",
+    "requirements": {
+     "build": [],
+     "host": [
+      "python",
+      "pip"
+     ],
+     "run": [
+      "python",
+      "pandas",
+      "scipy",
+      "h5py >=3.3.0",
+      "vtk",
+      "matplotlib-base",
+      "pyyaml"
+     ],
+     "run_constrained": [
+      "damask ==3.0.0a7"
+     ]
+    },
+    "test": {
+     "imports": [
+      "damask"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "echo DAMASK metapackage"
+     ]
+    },
+    "name": "damask",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "openmpi",
       "damask-mesh",
       "damask-grid",
       "python-damask"
@@ -2087,153 +2087,6 @@
       "make"
      ],
      "host": [
-      "openmpi",
-      "petsc * real_*",
-      "hdf5 * mpi_openmpi_*",
-      "libfyaml",
-      "fftw * mpi_openmpi_*"
-     ],
-     "run": [
-      "hypre",
-      "petsc",
-      "hdf5"
-     ],
-     "run_constrained": [
-      "damask ==3.0.0a7"
-     ]
-    },
-    "test": {
-     "commands": [
-      "export OMPI_MCA_plm=isolated",
-      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
-      "export OMP_NUM_THREADS=2",
-      "DAMASK_grid --help"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": [
-      "PETSC_DIR=${PREFIX} cmake -B build-mesh -DDAMASK_SOLVER=mesh -DCMAKE_INSTALL_PREFIX=${PREFIX}",
-      "cmake --build build-mesh --target install"
-     ]
-    },
-    "name": "damask-mesh",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "llvm-openmp",
-      "pkg-config",
-      "cmake",
-      "make"
-     ],
-     "host": [
-      "openmpi",
-      "petsc * real_*",
-      "hdf5 * mpi_openmpi_*",
-      "libfyaml"
-     ],
-     "run": [
-      "hypre",
-      "petsc",
-      "hdf5"
-     ],
-     "run_constrained": [
-      "damask ==3.0.0a7"
-     ]
-    },
-    "test": {
-     "commands": [
-      "export OMPI_MCA_plm=isolated",
-      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
-      "export OMP_NUM_THREADS=2",
-      "DAMASK_mesh --help"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": "python -m pip install ./python --no-deps -vv"
-    },
-    "name": "python-damask",
-    "requirements": {
-     "build": [],
-     "host": [
-      "python",
-      "pip"
-     ],
-     "run": [
-      "python",
-      "pandas",
-      "scipy",
-      "h5py >=3.3.0",
-      "vtk",
-      "matplotlib-base",
-      "pyyaml"
-     ],
-     "run_constrained": [
-      "damask ==3.0.0a7"
-     ]
-    },
-    "test": {
-     "imports": [
-      "damask"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": [
-      "echo DAMASK metapackage"
-     ]
-    },
-    "name": "damask",
-    "requirements": {
-     "host": [
-      "python"
-     ],
-     "run": [
-      "python",
-      "openmpi",
-      "damask-mesh",
-      "damask-grid",
-      "python-damask"
-     ]
-    },
-    "test": {
-     "commands": [
-      "export OMPI_MCA_plm=isolated",
-      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
-      "export OMPI_MCA_rmaps_base_oversubscribe=yes",
-      "mpiexec -np 2 DAMASK_grid -h",
-      "mpiexec -np 2 DAMASK_mesh -h"
-     ],
-     "imports": [
-      "damask"
-     ]
-    }
-   },
-   {
-    "build": {
-     "script": [
-      "PETSC_DIR=${PREFIX} cmake -B build-grid -DDAMASK_SOLVER=grid -DCMAKE_INSTALL_PREFIX=${PREFIX}",
-      "cmake --build build-grid --target install"
-     ]
-    },
-    "name": "damask-grid",
-    "requirements": {
-     "build": [
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "llvm-openmp",
-      "pkg-config",
-      "cmake",
-      "make"
-     ],
-     "host": [
       "mpich",
       "petsc * real_*",
       "hdf5 * mpi_mpich_*",
@@ -2344,6 +2197,153 @@
      "run": [
       "python",
       "mpich",
+      "damask-mesh",
+      "damask-grid",
+      "python-damask"
+     ]
+    },
+    "test": {
+     "commands": [
+      "export OMPI_MCA_plm=isolated",
+      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
+      "export OMPI_MCA_rmaps_base_oversubscribe=yes",
+      "mpiexec -np 2 DAMASK_grid -h",
+      "mpiexec -np 2 DAMASK_mesh -h"
+     ],
+     "imports": [
+      "damask"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "PETSC_DIR=${PREFIX} cmake -B build-grid -DDAMASK_SOLVER=grid -DCMAKE_INSTALL_PREFIX=${PREFIX}",
+      "cmake --build build-grid --target install"
+     ]
+    },
+    "name": "damask-grid",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "pkg-config",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "openmpi",
+      "petsc * real_*",
+      "hdf5 * mpi_openmpi_*",
+      "libfyaml",
+      "fftw * mpi_openmpi_*"
+     ],
+     "run": [
+      "hypre",
+      "petsc",
+      "hdf5"
+     ],
+     "run_constrained": [
+      "damask ==3.0.0a7"
+     ]
+    },
+    "test": {
+     "commands": [
+      "export OMPI_MCA_plm=isolated",
+      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
+      "export OMP_NUM_THREADS=2",
+      "DAMASK_grid --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "PETSC_DIR=${PREFIX} cmake -B build-mesh -DDAMASK_SOLVER=mesh -DCMAKE_INSTALL_PREFIX=${PREFIX}",
+      "cmake --build build-mesh --target install"
+     ]
+    },
+    "name": "damask-mesh",
+    "requirements": {
+     "build": [
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "pkg-config",
+      "cmake",
+      "make"
+     ],
+     "host": [
+      "openmpi",
+      "petsc * real_*",
+      "hdf5 * mpi_openmpi_*",
+      "libfyaml"
+     ],
+     "run": [
+      "hypre",
+      "petsc",
+      "hdf5"
+     ],
+     "run_constrained": [
+      "damask ==3.0.0a7"
+     ]
+    },
+    "test": {
+     "commands": [
+      "export OMPI_MCA_plm=isolated",
+      "export OMPI_MCA_btl_vader_single_copy_mechanism=none",
+      "export OMP_NUM_THREADS=2",
+      "DAMASK_mesh --help"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": "python -m pip install ./python --no-deps -vv"
+    },
+    "name": "python-damask",
+    "requirements": {
+     "build": [],
+     "host": [
+      "python",
+      "pip"
+     ],
+     "run": [
+      "python",
+      "pandas",
+      "scipy",
+      "h5py >=3.3.0",
+      "vtk",
+      "matplotlib-base",
+      "pyyaml"
+     ],
+     "run_constrained": [
+      "damask ==3.0.0a7"
+     ]
+    },
+    "test": {
+     "imports": [
+      "damask"
+     ]
+    }
+   },
+   {
+    "build": {
+     "script": [
+      "echo DAMASK metapackage"
+     ]
+    },
+    "name": "damask",
+    "requirements": {
+     "host": [
+      "python"
+     ],
+     "run": [
+      "python",
+      "openmpi",
       "damask-mesh",
       "damask-grid",
       "python-damask"

@@ -184,6 +184,117 @@
    {
     "build": {
      "run_exports": [
+      "fftw",
+      "fftw * mpi_openmpi_*"
+     ],
+     "string": "mpi_openmpi_h1234567_6"
+    },
+    "name": "fftw",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "openmpi"
+     ],
+     "run": []
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "test ! -f ${PREFIX}/lib/libfftw3f.a",
+      "test ! -f ${PREFIX}/lib/libfftw3.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
+      "test -f ${PREFIX}/include/fftw3.h",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
+      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
+      "bash test_cmake.sh"
+     ],
+     "files": [
+      "test_cmake.sh",
+      "test_cmake/*"
+     ],
+     "requires": [
+      "python >=3",
+      "cmake",
+      "make",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "mpi_openmpi_h1234567_6"
+    },
+    "name": "fftw-static",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "openmpi",
+      "fftw"
+     ],
+     "run": [
+      "fftw"
+     ]
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
+      "test -f ${PREFIX}/lib/libfftw3f.a",
+      "test -f ${PREFIX}/lib/libfftw3.a",
+      "test -f ${PREFIX}/lib/libfftw3l.a",
+      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
       "fftw"
      ],
      "string": "nompi_h1234567_106"
@@ -395,117 +506,6 @@
       "test -f ${PREFIX}/lib/libfftw3l_omp.a"
      ]
     }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "fftw",
-      "fftw * mpi_openmpi_*"
-     ],
-     "string": "mpi_openmpi_h1234567_6"
-    },
-    "name": "fftw",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
-      "openmpi"
-     ],
-     "run": []
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "test ! -f ${PREFIX}/lib/libfftw3f.a",
-      "test ! -f ${PREFIX}/lib/libfftw3.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
-      "test -f ${PREFIX}/include/fftw3.h",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
-      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
-      "bash test_cmake.sh"
-     ],
-     "files": [
-      "test_cmake.sh",
-      "test_cmake/*"
-     ],
-     "requires": [
-      "python >=3",
-      "cmake",
-      "make",
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "mpi_openmpi_h1234567_6"
-    },
-    "name": "fftw-static",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
-      "openmpi",
-      "fftw"
-     ],
-     "run": [
-      "fftw"
-     ]
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
-      "test -f ${PREFIX}/lib/libfftw3f.a",
-      "test -f ${PREFIX}/lib/libfftw3.a",
-      "test -f ${PREFIX}/lib/libfftw3l.a",
-      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
-     ]
-    }
    }
   ],
   "package": {
@@ -593,6 +593,110 @@
    {
     "build": {
      "run_exports": [
+      "fftw"
+     ],
+     "string": "nompi_h1234567_106"
+    },
+    "name": "fftw",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [],
+     "run": []
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "test ! -f ${PREFIX}/lib/libfftw3f.a",
+      "test ! -f ${PREFIX}/lib/libfftw3.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
+      "test -f ${PREFIX}/include/fftw3.h",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
+      "bash test_cmake.sh"
+     ],
+     "files": [
+      "test_cmake.sh",
+      "test_cmake/*"
+     ],
+     "requires": [
+      "python >=3",
+      "cmake",
+      "make",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "nompi_h1234567_106"
+    },
+    "name": "fftw-static",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "fftw"
+     ],
+     "run": [
+      "fftw"
+     ]
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
+      "test -f ${PREFIX}/lib/libfftw3f.a",
+      "test -f ${PREFIX}/lib/libfftw3.a",
+      "test -f ${PREFIX}/lib/libfftw3l.a",
+      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
       "fftw",
       "fftw * mpi_openmpi_*"
      ],
@@ -679,110 +783,6 @@
      ],
      "host": [
       "openmpi",
-      "fftw"
-     ],
-     "run": [
-      "fftw"
-     ]
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
-      "test -f ${PREFIX}/lib/libfftw3f.a",
-      "test -f ${PREFIX}/lib/libfftw3.a",
-      "test -f ${PREFIX}/lib/libfftw3l.a",
-      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "fftw"
-     ],
-     "string": "nompi_h1234567_106"
-    },
-    "name": "fftw",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [],
-     "run": []
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "test ! -f ${PREFIX}/lib/libfftw3f.a",
-      "test ! -f ${PREFIX}/lib/libfftw3.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
-      "test -f ${PREFIX}/include/fftw3.h",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
-      "bash test_cmake.sh"
-     ],
-     "files": [
-      "test_cmake.sh",
-      "test_cmake/*"
-     ],
-     "requires": [
-      "python >=3",
-      "cmake",
-      "make",
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "nompi_h1234567_106"
-    },
-    "name": "fftw-static",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
       "fftw"
      ],
      "run": [
@@ -977,7 +977,7 @@
    "summary": "The fastest Fourier transform in the west."
   },
   "build": {
-   "number": "106"
+   "number": "6"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1002,10 +1002,9 @@
    {
     "build": {
      "run_exports": [
-      "fftw",
-      "fftw * mpi_mpich_*"
+      "fftw"
      ],
-     "string": "mpi_mpich_h1234567_6"
+     "string": "nompi_h1234567_106"
     },
     "name": "fftw",
     "requirements": {
@@ -1022,9 +1021,7 @@
       "m4",
       "libtool"
      ],
-     "host": [
-      "mpich"
-     ],
+     "host": [],
      "run": []
     },
     "script": "build_fftw.sh",
@@ -1049,9 +1046,6 @@
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
-      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
       "bash test_cmake.sh"
      ],
      "files": [
@@ -1069,7 +1063,7 @@
    },
    {
     "build": {
-     "string": "mpi_mpich_h1234567_6"
+     "string": "nompi_h1234567_106"
     },
     "name": "fftw-static",
     "requirements": {
@@ -1087,7 +1081,6 @@
       "libtool"
      ],
      "host": [
-      "mpich",
       "fftw"
      ],
      "run": [
@@ -1224,9 +1217,10 @@
    {
     "build": {
      "run_exports": [
-      "fftw"
+      "fftw",
+      "fftw * mpi_mpich_*"
      ],
-     "string": "nompi_h1234567_106"
+     "string": "mpi_mpich_h1234567_6"
     },
     "name": "fftw",
     "requirements": {
@@ -1243,7 +1237,9 @@
       "m4",
       "libtool"
      ],
-     "host": [],
+     "host": [
+      "mpich"
+     ],
      "run": []
     },
     "script": "build_fftw.sh",
@@ -1268,6 +1264,9 @@
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
+      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
       "bash test_cmake.sh"
      ],
      "files": [
@@ -1285,7 +1284,7 @@
    },
    {
     "build": {
-     "string": "nompi_h1234567_106"
+     "string": "mpi_mpich_h1234567_6"
     },
     "name": "fftw-static",
     "requirements": {
@@ -1303,6 +1302,7 @@
       "libtool"
      ],
      "host": [
+      "mpich",
       "fftw"
      ],
      "run": [
@@ -1476,332 +1476,6 @@
    {
     "build": {
      "run_exports": [
-      "fftw"
-     ],
-     "string": "nompi_h1234567_106"
-    },
-    "name": "fftw",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [],
-     "run": []
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "test ! -f ${PREFIX}/lib/libfftw3f.a",
-      "test ! -f ${PREFIX}/lib/libfftw3.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
-      "test -f ${PREFIX}/include/fftw3.h",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
-      "bash test_cmake.sh"
-     ],
-     "files": [
-      "test_cmake.sh",
-      "test_cmake/*"
-     ],
-     "requires": [
-      "python >=3",
-      "cmake",
-      "make",
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "nompi_h1234567_106"
-    },
-    "name": "fftw-static",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
-      "fftw"
-     ],
-     "run": [
-      "fftw"
-     ]
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
-      "test -f ${PREFIX}/lib/libfftw3f.a",
-      "test -f ${PREFIX}/lib/libfftw3.a",
-      "test -f ${PREFIX}/lib/libfftw3l.a",
-      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "fftw",
-      "fftw * mpi_mpich_*"
-     ],
-     "string": "mpi_mpich_h1234567_6"
-    },
-    "name": "fftw",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
-      "mpich"
-     ],
-     "run": []
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "test ! -f ${PREFIX}/lib/libfftw3f.a",
-      "test ! -f ${PREFIX}/lib/libfftw3.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
-      "test -f ${PREFIX}/include/fftw3.h",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
-      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
-      "bash test_cmake.sh"
-     ],
-     "files": [
-      "test_cmake.sh",
-      "test_cmake/*"
-     ],
-     "requires": [
-      "python >=3",
-      "cmake",
-      "make",
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "mpi_mpich_h1234567_6"
-    },
-    "name": "fftw-static",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
-      "mpich",
-      "fftw"
-     ],
-     "run": [
-      "fftw"
-     ]
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
-      "test -f ${PREFIX}/lib/libfftw3f.a",
-      "test -f ${PREFIX}/lib/libfftw3.a",
-      "test -f ${PREFIX}/lib/libfftw3l.a",
-      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "fftw",
-      "fftw * mpi_openmpi_*"
-     ],
-     "string": "mpi_openmpi_h1234567_6"
-    },
-    "name": "fftw",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
-      "openmpi"
-     ],
-     "run": []
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "test ! -f ${PREFIX}/lib/libfftw3f.a",
-      "test ! -f ${PREFIX}/lib/libfftw3.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
-      "test -f ${PREFIX}/include/fftw3.h",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
-      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
-      "bash test_cmake.sh"
-     ],
-     "files": [
-      "test_cmake.sh",
-      "test_cmake/*"
-     ],
-     "requires": [
-      "python >=3",
-      "cmake",
-      "make",
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "mpi_openmpi_h1234567_6"
-    },
-    "name": "fftw-static",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
-      "openmpi",
-      "fftw"
-     ],
-     "run": [
-      "fftw"
-     ]
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
-      "test -f ${PREFIX}/lib/libfftw3f.a",
-      "test -f ${PREFIX}/lib/libfftw3.a",
-      "test -f ${PREFIX}/lib/libfftw3l.a",
-      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
       "fftw",
       "fftw * mpi_openmpi_*"
      ],
@@ -2128,10 +1802,9 @@
    {
     "build": {
      "run_exports": [
-      "fftw",
-      "fftw * mpi_mpich_*"
+      "fftw"
      ],
-     "string": "mpi_mpich_h1234567_6"
+     "string": "nompi_h1234567_106"
     },
     "name": "fftw",
     "requirements": {
@@ -2148,9 +1821,7 @@
       "m4",
       "libtool"
      ],
-     "host": [
-      "mpich"
-     ],
+     "host": [],
      "run": []
     },
     "script": "build_fftw.sh",
@@ -2175,9 +1846,6 @@
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
-      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
       "bash test_cmake.sh"
      ],
      "files": [
@@ -2195,7 +1863,7 @@
    },
    {
     "build": {
-     "string": "mpi_mpich_h1234567_6"
+     "string": "nompi_h1234567_106"
     },
     "name": "fftw-static",
     "requirements": {
@@ -2213,7 +1881,6 @@
       "libtool"
      ],
      "host": [
-      "mpich",
       "fftw"
      ],
      "run": [
@@ -2325,6 +1992,117 @@
      ],
      "host": [
       "openmpi",
+      "fftw"
+     ],
+     "run": [
+      "fftw"
+     ]
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
+      "test -f ${PREFIX}/lib/libfftw3f.a",
+      "test -f ${PREFIX}/lib/libfftw3.a",
+      "test -f ${PREFIX}/lib/libfftw3l.a",
+      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "fftw",
+      "fftw * mpi_mpich_*"
+     ],
+     "string": "mpi_mpich_h1234567_6"
+    },
+    "name": "fftw",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "mpich"
+     ],
+     "run": []
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "test ! -f ${PREFIX}/lib/libfftw3f.a",
+      "test ! -f ${PREFIX}/lib/libfftw3.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
+      "test -f ${PREFIX}/include/fftw3.h",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
+      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
+      "bash test_cmake.sh"
+     ],
+     "files": [
+      "test_cmake.sh",
+      "test_cmake/*"
+     ],
+     "requires": [
+      "python >=3",
+      "cmake",
+      "make",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "mpi_mpich_h1234567_6"
+    },
+    "name": "fftw-static",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "mpich",
       "fftw"
      ],
      "run": [
@@ -2467,7 +2245,6 @@
       "c_compiler_stub",
       "cxx_compiler_stub",
       "fortran_compiler_stub",
-      "llvm-openmp",
       "make",
       "autoconf",
       "automake",
@@ -2476,12 +2253,9 @@
       "libtool"
      ],
      "host": [
-      "openmpi",
-      "llvm-openmp"
+      "openmpi"
      ],
-     "run": [
-      "llvm-openmp"
-     ]
+     "run": []
     },
     "script": "build_fftw.sh",
     "test": {
@@ -2535,7 +2309,6 @@
       "c_compiler_stub",
       "cxx_compiler_stub",
       "fortran_compiler_stub",
-      "llvm-openmp",
       "make",
       "autoconf",
       "automake",
@@ -2545,11 +2318,9 @@
      ],
      "host": [
       "openmpi",
-      "llvm-openmp",
       "fftw"
      ],
      "run": [
-      "llvm-openmp",
       "fftw"
      ]
     },
@@ -2572,9 +2343,10 @@
    {
     "build": {
      "run_exports": [
-      "fftw"
+      "fftw",
+      "fftw * mpi_mpich_*"
      ],
-     "string": "nompi_h1234567_106"
+     "string": "mpi_mpich_h1234567_6"
     },
     "name": "fftw",
     "requirements": {
@@ -2584,7 +2356,6 @@
       "c_compiler_stub",
       "cxx_compiler_stub",
       "fortran_compiler_stub",
-      "llvm-openmp",
       "make",
       "autoconf",
       "automake",
@@ -2593,11 +2364,9 @@
       "libtool"
      ],
      "host": [
-      "llvm-openmp"
+      "mpich"
      ],
-     "run": [
-      "llvm-openmp"
-     ]
+     "run": []
     },
     "script": "build_fftw.sh",
     "test": {
@@ -2621,6 +2390,9 @@
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
       "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
+      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
       "bash test_cmake.sh"
      ],
      "files": [
@@ -2638,7 +2410,7 @@
    },
    {
     "build": {
-     "string": "nompi_h1234567_106"
+     "string": "mpi_mpich_h1234567_6"
     },
     "name": "fftw-static",
     "requirements": {
@@ -2648,7 +2420,6 @@
       "c_compiler_stub",
       "cxx_compiler_stub",
       "fortran_compiler_stub",
-      "llvm-openmp",
       "make",
       "autoconf",
       "automake",
@@ -2657,11 +2428,10 @@
       "libtool"
      ],
      "host": [
-      "llvm-openmp",
+      "mpich",
       "fftw"
      ],
      "run": [
-      "llvm-openmp",
       "fftw"
      ]
     },
@@ -3032,6 +2802,118 @@
    {
     "build": {
      "run_exports": [
+      "fftw"
+     ],
+     "string": "nompi_h1234567_106"
+    },
+    "name": "fftw",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "llvm-openmp"
+     ],
+     "run": [
+      "llvm-openmp"
+     ]
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "test ! -f ${PREFIX}/lib/libfftw3f.a",
+      "test ! -f ${PREFIX}/lib/libfftw3.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
+      "test -f ${PREFIX}/include/fftw3.h",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
+      "bash test_cmake.sh"
+     ],
+     "files": [
+      "test_cmake.sh",
+      "test_cmake/*"
+     ],
+     "requires": [
+      "python >=3",
+      "cmake",
+      "make",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "nompi_h1234567_106"
+    },
+    "name": "fftw-static",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "llvm-openmp",
+      "fftw"
+     ],
+     "run": [
+      "llvm-openmp",
+      "fftw"
+     ]
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
+      "test -f ${PREFIX}/lib/libfftw3f.a",
+      "test -f ${PREFIX}/lib/libfftw3.a",
+      "test -f ${PREFIX}/lib/libfftw3l.a",
+      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
       "fftw",
       "fftw * mpi_mpich_*"
      ],
@@ -3123,6 +3005,124 @@
      ],
      "host": [
       "mpich",
+      "llvm-openmp",
+      "fftw"
+     ],
+     "run": [
+      "llvm-openmp",
+      "fftw"
+     ]
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
+      "test -f ${PREFIX}/lib/libfftw3f.a",
+      "test -f ${PREFIX}/lib/libfftw3.a",
+      "test -f ${PREFIX}/lib/libfftw3l.a",
+      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "fftw",
+      "fftw * mpi_openmpi_*"
+     ],
+     "string": "mpi_openmpi_h1234567_6"
+    },
+    "name": "fftw",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "openmpi",
+      "llvm-openmp"
+     ],
+     "run": [
+      "llvm-openmp"
+     ]
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "test ! -f ${PREFIX}/lib/libfftw3f.a",
+      "test ! -f ${PREFIX}/lib/libfftw3.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
+      "test -f ${PREFIX}/include/fftw3.h",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
+      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
+      "bash test_cmake.sh"
+     ],
+     "files": [
+      "test_cmake.sh",
+      "test_cmake/*"
+     ],
+     "requires": [
+      "python >=3",
+      "cmake",
+      "make",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "mpi_openmpi_h1234567_6"
+    },
+    "name": "fftw-static",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "openmpi",
       "llvm-openmp",
       "fftw"
      ],
@@ -3229,7 +3229,7 @@
    "summary": "The fastest Fourier transform in the west."
   },
   "build": {
-   "number": "6"
+   "number": "106"
   },
   "extra": {
    "recipe-maintainers": [
@@ -3251,6 +3251,124 @@
    ]
   },
   "outputs": [
+   {
+    "build": {
+     "run_exports": [
+      "fftw",
+      "fftw * mpi_mpich_*"
+     ],
+     "string": "mpi_mpich_h1234567_6"
+    },
+    "name": "fftw",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "mpich",
+      "llvm-openmp"
+     ],
+     "run": [
+      "llvm-openmp"
+     ]
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "test ! -f ${PREFIX}/lib/libfftw3f.a",
+      "test ! -f ${PREFIX}/lib/libfftw3.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
+      "test -f ${PREFIX}/include/fftw3.h",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
+      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
+      "bash test_cmake.sh"
+     ],
+     "files": [
+      "test_cmake.sh",
+      "test_cmake/*"
+     ],
+     "requires": [
+      "python >=3",
+      "cmake",
+      "make",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "mpi_mpich_h1234567_6"
+    },
+    "name": "fftw-static",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "mpich",
+      "llvm-openmp",
+      "fftw"
+     ],
+     "run": [
+      "llvm-openmp",
+      "fftw"
+     ]
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
+      "test -f ${PREFIX}/lib/libfftw3f.a",
+      "test -f ${PREFIX}/lib/libfftw3.a",
+      "test -f ${PREFIX}/lib/libfftw3l.a",
+      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
+     ]
+    }
+   },
    {
     "build": {
      "run_exports": [
@@ -3457,124 +3575,6 @@
       "libtool"
      ],
      "host": [
-      "llvm-openmp",
-      "fftw"
-     ],
-     "run": [
-      "llvm-openmp",
-      "fftw"
-     ]
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
-      "test -f ${PREFIX}/lib/libfftw3f.a",
-      "test -f ${PREFIX}/lib/libfftw3.a",
-      "test -f ${PREFIX}/lib/libfftw3l.a",
-      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
-      "fftw",
-      "fftw * mpi_mpich_*"
-     ],
-     "string": "mpi_mpich_h1234567_6"
-    },
-    "name": "fftw",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "llvm-openmp",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
-      "mpich",
-      "llvm-openmp"
-     ],
-     "run": [
-      "llvm-openmp"
-     ]
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "test ! -f ${PREFIX}/lib/libfftw3f.a",
-      "test ! -f ${PREFIX}/lib/libfftw3.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
-      "test -f ${PREFIX}/include/fftw3.h",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
-      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
-      "bash test_cmake.sh"
-     ],
-     "files": [
-      "test_cmake.sh",
-      "test_cmake/*"
-     ],
-     "requires": [
-      "python >=3",
-      "cmake",
-      "make",
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "mpi_mpich_h1234567_6"
-    },
-    "name": "fftw-static",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "llvm-openmp",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
-      "mpich",
       "llvm-openmp",
       "fftw"
      ],
@@ -3688,124 +3688,6 @@
    {
     "build": {
      "run_exports": [
-      "fftw",
-      "fftw * mpi_openmpi_*"
-     ],
-     "string": "mpi_openmpi_h1234567_6"
-    },
-    "name": "fftw",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "llvm-openmp",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
-      "openmpi",
-      "llvm-openmp"
-     ],
-     "run": [
-      "llvm-openmp"
-     ]
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "test ! -f ${PREFIX}/lib/libfftw3f.a",
-      "test ! -f ${PREFIX}/lib/libfftw3.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
-      "test -f ${PREFIX}/include/fftw3.h",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
-      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
-      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
-      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
-      "bash test_cmake.sh"
-     ],
-     "files": [
-      "test_cmake.sh",
-      "test_cmake/*"
-     ],
-     "requires": [
-      "python >=3",
-      "cmake",
-      "make",
-      "c_compiler_stub",
-      "cxx_compiler_stub"
-     ]
-    }
-   },
-   {
-    "build": {
-     "string": "mpi_openmpi_h1234567_6"
-    },
-    "name": "fftw-static",
-    "requirements": {
-     "build": [
-      "perl 5.*",
-      "cmake",
-      "c_compiler_stub",
-      "cxx_compiler_stub",
-      "fortran_compiler_stub",
-      "llvm-openmp",
-      "make",
-      "autoconf",
-      "automake",
-      "gettext",
-      "m4",
-      "libtool"
-     ],
-     "host": [
-      "openmpi",
-      "llvm-openmp",
-      "fftw"
-     ],
-     "run": [
-      "llvm-openmp",
-      "fftw"
-     ]
-    },
-    "script": "build_fftw.sh",
-    "test": {
-     "commands": [
-      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
-      "test -f ${PREFIX}/lib/libfftw3f.a",
-      "test -f ${PREFIX}/lib/libfftw3.a",
-      "test -f ${PREFIX}/lib/libfftw3l.a",
-      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
-      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3_omp.a",
-      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
-     ]
-    }
-   },
-   {
-    "build": {
-     "run_exports": [
       "fftw"
      ],
      "string": "nompi_h1234567_106"
@@ -4009,6 +3891,124 @@
      ],
      "host": [
       "mpich",
+      "llvm-openmp",
+      "fftw"
+     ],
+     "run": [
+      "llvm-openmp",
+      "fftw"
+     ]
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "strings ${PREFIX}/lib/libfftw3.a | grep -q dfftw",
+      "test -f ${PREFIX}/lib/libfftw3f.a",
+      "test -f ${PREFIX}/lib/libfftw3.a",
+      "test -f ${PREFIX}/lib/libfftw3l.a",
+      "test -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test -f ${PREFIX}/lib/libfftw3l_omp.a"
+     ]
+    }
+   },
+   {
+    "build": {
+     "run_exports": [
+      "fftw",
+      "fftw * mpi_openmpi_*"
+     ],
+     "string": "mpi_openmpi_h1234567_6"
+    },
+    "name": "fftw",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "openmpi",
+      "llvm-openmp"
+     ],
+     "run": [
+      "llvm-openmp"
+     ]
+    },
+    "script": "build_fftw.sh",
+    "test": {
+     "commands": [
+      "test ! -f ${PREFIX}/lib/libfftw3f.a",
+      "test ! -f ${PREFIX}/lib/libfftw3.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_threads.a",
+      "test ! -f ${PREFIX}/lib/libfftw3f_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3_omp.a",
+      "test ! -f ${PREFIX}/lib/libfftw3l_omp.a",
+      "test -f ${PREFIX}/include/fftw3.h",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_threads${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3f_omp${SHLIB_EXT}']\"",
+      "python -c \"import ctypes; ctypes.cdll[r'${PREFIX}/lib/libfftw3l_omp${SHLIB_EXT}']\"",
+      "test -f ${PREFIX}/lib/libfftw3_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3f_mpi${SHLIB_EXT} || exit 1",
+      "test -f ${PREFIX}/lib/libfftw3l_mpi${SHLIB_EXT} || exit 1",
+      "bash test_cmake.sh"
+     ],
+     "files": [
+      "test_cmake.sh",
+      "test_cmake/*"
+     ],
+     "requires": [
+      "python >=3",
+      "cmake",
+      "make",
+      "c_compiler_stub",
+      "cxx_compiler_stub"
+     ]
+    }
+   },
+   {
+    "build": {
+     "string": "mpi_openmpi_h1234567_6"
+    },
+    "name": "fftw-static",
+    "requirements": {
+     "build": [
+      "perl 5.*",
+      "cmake",
+      "c_compiler_stub",
+      "cxx_compiler_stub",
+      "fortran_compiler_stub",
+      "llvm-openmp",
+      "make",
+      "autoconf",
+      "automake",
+      "gettext",
+      "m4",
+      "libtool"
+     ],
+     "host": [
+      "openmpi",
       "llvm-openmp",
       "fftw"
      ],
