@@ -36,6 +36,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1143137018.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2022.11"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1465,7 +1482,11 @@
   }
  },
  "name": "bladerf-split",
- "new_version": "2021.10",
+ "new_version": "2022.11",
+ "new_version_attempts": {
+  "2022.11": 1
+ },
+ "new_version_errors": {},
  "osx_64_meta_yaml": {
   "about": {
    "description": "This software supports the Nuand bladeRF and bladeRF Micro USB 3.0 Software Defined Radio (SDR) devices:\n\n  - `libbladerf2` contains the library for bladeRF devices\n  - `libbladerf` contains the development files for compiling against the bladeRF library\n  - `libbladerf-python` contains the Python bindings for the bladeRF library\n  - `bladerf` package contains command line tools for using the devices\n\nFor Linux users of `bladerf`, you will likely want to link the provided udev rule into your system installation in order for the hardware to have the correct permissions:\n\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules /etc/udev/rules.d/\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules /etc/udev/rules.d/\n    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules /etc/udev/rules.d/\n    sudo udevadm control --reload\n    sudo udevadm trigger\n\nThen, make sure your user account belongs to the plugdev group in order to be able to access your device:\n\n    sudo usermod -a -G plugdev <user>\n\nYou may have to restart for this change to take effect.\n",
@@ -1869,7 +1890,7 @@
    "libbladerf2"
   ]
  },
- "pinning_version": "2022.04.11.13.50.18",
+ "pinning_version": "2022.12.02.10.47.43",
  "raw_meta_yaml": "{% set version = \"2021.10\" %}\n{% set lib_major_version = \"2\" %}\n{% set build = 0 %}\n\npackage:\n  name: bladerf-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/Nuand/bladeRF/archive/refs/tags/{{ version }}.tar.gz\n  sha256: 77000a42cf5c967aa32e7f8cfa825e21d0298cbeb7c872207ff09f04be718cce\n  patches:\n    - 0001-Add-required-ad9361-files-directly.patch\n    - 0002-Rename-bladeRF.dll-to-bladeRF-2.dll-on-Windows.patch\n    - 0003-Add-special-case-for-loading-windows-DLL-in-python.patch\n    - 0004-Modify-Python-bindings-to-load-major-versioned-libbl.patch\n    - 0005-Add-an-option-for-bundling-external-libraries-on-Win.patch\n    - 0006-Fix-test-linking-with-rt-when-glibc-2.17-is-used.patch\n\nbuild:\n  number: {{ build }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n    - pkg-config\n    - sysroot_linux-64 2.17  # [linux64]\n  host:\n    - libusb\n    - pthreads-win32  # [win]\n\noutputs:\n  - name: libbladerf{{ lib_major_version }}\n    script: install.sh  # [unix]\n    script: install.bat  # [not unix]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - cmake\n        - ninja\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - libusb\n        - pthreads-win32  # [win]\n      run:\n        - pthreads-win32  # [win]\n    test:\n      commands:\n        # verify that libraries get installed\n        - test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.{{ lib_major_version }}  # [linux]\n        - test -f $PREFIX/lib/libbladeRF.{{ lib_major_version }}${SHLIB_EXT}  # [osx]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\bladeRF-{{ lib_major_version }}.dll exit 1  # [win]\n  - name: libbladerf\n    script: install.sh  # [unix]\n    script: install.bat  # [not unix]\n    build:\n      run_exports:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, max_pin=False) }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - cmake\n        - ninja\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n      run:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n    test:\n      commands:\n        # verify that headers get installed\n        - test -f $PREFIX/include/bladeRF1.h  # [not win]\n        - test -f $PREFIX/include/bladeRF2.h  # [not win]\n        - test -f $PREFIX/include/libbladeRF.h  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\bladeRF1.h exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\bladeRF2.h exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\libbladeRF.h exit 1  # [win]\n\n        # verify that libraries get installed\n        - test -f $PREFIX/lib/libbladeRF${SHLIB_EXT}.{{ lib_major_version }}  # [linux]\n        - test -f $PREFIX/lib/libbladeRF.{{ lib_major_version }}${SHLIB_EXT}  # [osx]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\bladeRF-{{ lib_major_version }}.dll exit 1  # [win]\n\n        # verify that pkgconfig files get installed\n        - test -f $PREFIX/lib/pkgconfig/libbladeRF.pc  # [unix]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\pkgconfig\\\\libbladeRF.pc exit 1  # [win]\n  - name: libbladerf-python\n    build:\n      string: py_{{ build }}\n      noarch: python\n      script: python -m pip install -vv host/libraries/libbladeRF_bindings/python\n      entry_points:\n        - bladerf-tool = bladerf._tool:main\n    requirements:\n      build:\n        # cross-compilation dependencies\n        - python >=3.6                        # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n      host:\n        - cffi\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n        - pip\n        - python >=3.6\n      run:\n        - cffi\n        - libbladerf{{ lib_major_version }} {{ version }}\n        - python >=3.6\n    test:\n      imports:\n        - bladerf\n      commands:\n        - bladerf-tool version\n  - name: bladerf\n    script: install.sh  # [unix]\n    script: install.bat  # [not unix]\n    build:\n      # instructions for manually linking udev rules\n      post-link: post-link  # [linux]\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - cmake\n        - ninja\n        - sysroot_linux-64 2.17  # [linux64]\n      host:\n      run:\n        - {{ pin_subpackage('libbladerf' + lib_major_version, exact=True) }}\n        - {{ pin_subpackage('libbladerf-python', exact=True) }}\n        - pthreads-win32  # [win]\n    test:\n      commands:\n        # verify that executables get installed\n        - bladeRF-cli --version\n        - bladeRF-cli --lib-version\n        - bladeRF-fsk --help\n\n        # verify that udev rule gets installed\n        - test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules  # [linux]\n        - test -f $PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules  # [linux]\n        - test -f $PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules  # [linux]\n\nabout:\n  home: https://www.nuand.com/\n  license: LGPL-2.1-or-later AND GPL-2.0-or-later\n  license_family: LGPL\n  license_file:\n    - COPYING\n    - legal/licenses/\n  summary: 'Host software for bladeRF source software radio devices.'\n  description: >\n    This software supports the Nuand bladeRF and bladeRF Micro USB 3.0 Software\n    Defined Radio (SDR) devices:\n\n      - `libbladerf{{ lib_major_version }}` contains the library for bladeRF devices\n      - `libbladerf` contains the development files for compiling against the bladeRF library\n      - `libbladerf-python` contains the Python bindings for the bladeRF library\n      - `bladerf` package contains command line tools for using the devices\n\n    For Linux users of `bladerf`, you will likely want to link the provided udev\n    rule into your system installation in order for the hardware to have the\n    correct permissions:\n\n        sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf1.rules /etc/udev/rules.d/\n        sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bladerf2.rules /etc/udev/rules.d/\n        sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/88-nuand-bootloader.rules /etc/udev/rules.d/\n        sudo udevadm control --reload\n        sudo udevadm trigger\n\n    Then, make sure your user account belongs to the plugdev group in order to\n    be able to access your device:\n\n        sudo usermod -a -G plugdev <user>\n\n    You may have to restart for this change to take effect.\n  doc_url: https://github.com/Nuand/bladeRF/wiki\n  dev_url: https://github.com/Nuand/bladeRF\n\nextra:\n  feedstock-name: bladerf\n  recipe-maintainers:\n    - ryanvolz\n",
  "req": {
   "__set__": true,
@@ -1933,7 +1954,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.19.0",
+ "smithy_version": "3.22.0",
  "strong_exports": false,
  "total_requirements": {
   "build": {
