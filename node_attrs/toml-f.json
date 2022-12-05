@@ -53,7 +53,26 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git fetch --all --quiet' returned non-zero exit status 1.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 211, in run",
+   "    feedstock_dir, repo = get_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 314, in get_repo",
+   "    if fetch_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 214, in fetch_repo",
+   "    _run_git_cmd(f\"git fetch --all {quiet}\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 199, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git fetch --all --quiet' returned non-zero exit status 1.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
@@ -614,6 +633,12 @@
   ]
  },
  "pinning_version": "2022.08.01.12.11.42",
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3622111625\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 211, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 314, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 214, in fetch_repo\n    _run_git_cmd(f\"git fetch --all {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 199, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git fetch --all --quiet' returned non-zero exit status 1.\n"
+ },
  "raw_meta_yaml": "{% set name = \"toml-f\" %}\n{% set version = \"0.3.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/toml-f/toml-f/releases/download/v0.3.0/toml-f-{{ version }}.tar.xz\n  sha256: 40ceca008091607165a09961b79312abfdbbda71cbb94a9dc2625b88c93ff45a\n  patches:\n    - no-test-drive.patch  # [win]\n    - meson-wrap.patch  # [unix]\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  script:\n    - set -ex  # [unix]\n    - meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib}  # [unix]\n    - meson setup _build --prefix=%PREFIX% --libdir=lib  # [win]\n    - meson compile -C _build\n    - meson install -C _build --no-rebuild\n  run_exports:\n    - {{ pin_subpackage('toml-f', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [unix]\n    - {{ compiler('fortran') }}  # [unix]\n    - {{ compiler('m2w64_c') }}  # [win]\n    - {{ compiler('m2w64_fortran') }}  # [win]\n    - meson\n    - ninja\n\ntest:\n  requires:\n    - pkg-config\n  commands:\n    - set PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig  # [win]\n    - pkg-config {{ name }} --exact-version {{ version }}\n    - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT  # [unix]\n\nabout:\n  home: https://github.com/toml-f/toml-f\n  license: Apache-2.0 OR MIT\n  license_file:\n    - LICENSE-Apache\n    - LICENSE-MIT\n  summary: >-\n    TOML parser implementation for data serialization and deserialization in Fortran \n  doc_url: https://toml-f.github.io/toml-f\n\nextra:\n  recipe-maintainers:\n    - awvwgk\n",
  "req": {
   "__set__": true,

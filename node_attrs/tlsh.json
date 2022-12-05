@@ -487,7 +487,26 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git fetch --all --quiet' returned non-zero exit status 1.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 211, in run",
+   "    feedstock_dir, repo = get_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 314, in get_repo",
+   "    if fetch_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 214, in fetch_repo",
+   "    _run_git_cmd(f\"git fetch --all {quiet}\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 199, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git fetch --all --quiet' returned non-zero exit status 1.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {},
  "feedstock_name": "tlsh",
@@ -3057,6 +3076,12 @@
   ]
  },
  "pinning_version": "2022.10.29.17.19.28",
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3622111625\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 211, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 314, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 214, in fetch_repo\n    _run_git_cmd(f\"git fetch --all {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 199, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git fetch --all --quiet' returned non-zero exit status 1.\n"
+ },
  "raw_meta_yaml": "{% set name = \"tlsh\" %}\n{% set version = \"4.11.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/trendmicro/{{ name }}/archive/{{ version }}.tar.gz\n  sha256: 2f1502ca4697b2c5a3950ad2d5e19102cf977128714f6dfa5b9c6f7e03af6495\n  patches:\n    - 0000-cmake-flags.patch\n\nbuild:\n  number: 2\n  skip: true  # [win]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make\n  host:\n    - python\n    - pip\n  run:\n    - python\n\ntest:\n  commands:\n    - test -f ${CONDA_PREFIX}/lib/libtlsh.${SHLIB_EXT}\n\noutputs:\n  - name: libtlsh\n    script: install-libtlsh.sh\n    build:\n      run_exports:\n        - {{ pin_subpackage('libtlsh', max_pin='x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake\n        - make\n    test:\n      commands:\n        - echo libtlsh tested are during build\n  - name: python-tlsh\n    script: install-python-tlsh.sh\n    build:\n      run_exports:\n        - {{ pin_subpackage('python-tlsh', max_pin='x.x') }}\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake\n        - make\n      host:\n        - {{ pin_subpackage('libtlsh', exact=True) }}\n        - python\n        - pip\n      run:\n        - {{ pin_subpackage('libtlsh', exact=True) }}\n        - python\n    test:\n      requires:\n        - pip\n      imports:\n        - tlsh\n      commands:\n        - python -m pip check\n        # - echo \"TODO: restore the tests when python_test.sh works\"\n        # cd Testing && sh python_test.sh\n  - name: tlsh-tools\n    script: install-tlsh-tools.sh\n    build:\n      run_exports:\n        - {{ pin_subpackage('libtlsh', max_pin='x.x') }}\n    test:\n      commands:\n        - tlsh --help\n        - tlsh_unittest --help\n    requirements:\n      build:\n        - {{ compiler('c') }}\n        - {{ compiler('cxx') }}\n        - cmake\n        - make\n      host:\n        - {{ pin_subpackage('libtlsh', exact=True) }}\n      run:\n        - {{ pin_subpackage('libtlsh', exact=True) }}\n\nabout:\n  home: https://github.com/trendmicro/tlsh\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: TLSH is a fuzzy matching library.\n  description: |\n    Given a byte stream with a minimum length of 50 bytes TLSH generates a\n    hash value which can be used for similarity comparisons. Similar objects\n    will have similar hash values which allows for the detection of similar\n    objects by comparing their hash values. Note that the byte stream should\n    have a sufficient amount of complexity. For example, a byte stream of\n    identical bytes will not generate a hash value.\n\nextra:\n  recipe-maintainers:\n    - bollwyvl\n",
  "req": {
   "__set__": true,

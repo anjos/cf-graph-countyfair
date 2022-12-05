@@ -223,7 +223,26 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git fetch --all --quiet' returned non-zero exit status 1.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 211, in run",
+   "    feedstock_dir, repo = get_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 314, in get_repo",
+   "    if fetch_repo(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 214, in fetch_repo",
+   "    _run_git_cmd(f\"git fetch --all {quiet}\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 199, in _run_git_cmd",
+   "    return subprocess.run(cmd, shell=True, check=True)",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
+   "    raise CalledProcessError(retcode, process.args,",
+   "subprocess.CalledProcessError: Command 'git fetch --all --quiet' returned non-zero exit status 1.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {
   "bot": {
@@ -443,10 +462,10 @@
  },
  "pinning_version": "2020.12.16.16.31.44",
  "pre_pr_migrator_attempts": {
-  "version": 447
+  "version": 448
  },
  "pre_pr_migrator_status": {
-  "version": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3552567007\">bot CI job</a>): main: ['linux_64_: Encountered problems while solving:\\n  - nothing provides requested ki18n >=5.92\\n  - nothing provides requested kio >=5.92\\n  - nothing provides requested knotifications >=5.92\\n  - nothing provides requested kconfig >=5.92\\n  - nothing provides requested kirigami2 >=5.92\\n  - nothing provides requested kcoreaddons >=5.92\\n']"
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3622111625\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 211, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 314, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 214, in fetch_repo\n    _run_git_cmd(f\"git fetch --all {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 199, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git fetch --all --quiet' returned non-zero exit status 1.\n"
  },
  "raw_meta_yaml": "{% set name = \"purpose\" %}\n{% set version = \"5.76.0\" %}\n{% set major_minor = \".\".join(version.split(\".\")[:2]) %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://download.kde.org/stable/frameworks/{{ major_minor }}/purpose-{{ version }}.tar.xz\n  sha256: fd0edb0e7ba8b5336436848fe2452ff98c1b5bf2c49ea7744a8c0038d4e8887d\n\nbuild:\n  number: 0\n  skip: true  # [not linux]\n  run_exports:\n    - {{ pin_subpackage('purpose', max_pin='x.x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - make\n    - extra-cmake-modules >={{ major_minor }}\n    - {{ cdt('mesa-libgl-devel') }}  # [linux]\n    - {{ cdt('mesa-dri-drivers') }}  # [linux]\n    - {{ cdt('libselinux') }}  # [linux]\n    - {{ cdt('libxdamage') }}  # [linux]\n    - {{ cdt('libxxf86vm') }}  # [linux]\n  host:\n    - xorg-libxfixes  # [linux]\n    - xorg-libxext\n    - qt\n    - kirigami2 >={{ major_minor }}\n    - kio >={{ major_minor }}\n    - ki18n >={{ major_minor }}\n    - kconfig >={{ major_minor }}\n    #- kaccounts (optional, for youtube only)\n    - kcoreaddons >={{ major_minor }}\n    - knotifications >={{ major_minor }}\n\ntest:\n  commands:\n    - test -f ${PREFIX}/lib/libKF5Purpose.so\n\nabout:\n  home: https://api.kde.org/frameworks/purpose/html/index.html\n  license: GPL-2.0-or-later AND LGPL-2.0-or-later AND LGPL-2.1-or-later\n  license_file:\n    - LICENSES/GPL-2.0-or-later.txt\n    - LICENSES/LGPL-2.0-or-later.txt\n    - LICENSES/LGPL-2.1-or-later.txt\n  summary: Offers available actions for a specific purpose\n  description: |\n    This framework offers the possibility to create integrate services\n    and actions on any application without having to implement them\n    specifically. Purpose will offer them mechanisms to list the different\n    alternatives to execute given the requested action type and will facilitate\n    components so that all the plugins can receive all the information they need.\n  dev_url: https://cgit.kde.org/purpose.git/tree\n\nextra:\n  recipe-maintainers:\n    - scopatz\n",
  "req": {
