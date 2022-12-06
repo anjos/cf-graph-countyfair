@@ -78,11 +78,13 @@
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
+   "linux_aarch64": "linux_64",
+   "linux_ppc64le": "linux_64",
    "osx_arm64": "osx_64"
   },
   "provider": {
-   "linux_aarch64": "default",
-   "linux_ppc64le": "default"
+   "linux_aarch64": "azure",
+   "linux_ppc64le": "azure"
   }
  },
  "feedstock_name": "gz-sensors",
@@ -95,7 +97,7 @@
    "summary": "Gazebo Sensors provides numerous sensor models designed to generate realistic data from simulation environments."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "feedstock-name": "gz-sensors",
@@ -286,7 +288,7 @@
    "summary": "Gazebo Sensors provides numerous sensor models designed to generate realistic data from simulation environments."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "feedstock-name": "gz-sensors",
@@ -477,7 +479,7 @@
    "summary": "Gazebo Sensors provides numerous sensor models designed to generate realistic data from simulation environments."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "feedstock-name": "gz-sensors",
@@ -668,7 +670,7 @@
    "summary": "Gazebo Sensors provides numerous sensor models designed to generate realistic data from simulation environments."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "feedstock-name": "gz-sensors",
@@ -1488,7 +1490,7 @@
    "summary": "Gazebo Sensors provides numerous sensor models designed to generate realistic data from simulation environments."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "feedstock-name": "gz-sensors",
@@ -1682,7 +1684,7 @@
    "summary": "Gazebo Sensors provides numerous sensor models designed to generate realistic data from simulation environments."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "feedstock-name": "gz-sensors",
@@ -1876,7 +1878,7 @@
   ]
  },
  "pinning_version": "2022.12.04.19.22.35",
- "raw_meta_yaml": "{% set component_name = \"sensors\" %}\n{% set repo_name = \"gz-\" + component_name %}\n{% set version = \"7.0.0\" %}\n{% set major_version = version.split('.')[0] %}\n{% set name = repo_name + major_version %}\n{% set component_version = component_name + major_version %}\n{% set cxx_name = \"lib\" + name %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/gazebosim/{{ repo_name }}/archive/{{ repo_name }}{{ major_version }}_{{ version }}.tar.gz\n    sha256: 57666d4af26fb7b00802d8c3fc42de5bdcf471b4300a3f5fe71f75a94de14191\n\nbuild:\n  number: 1\n\noutputs:\n  - name: {{ cxx_name }}\n    script: build_cxx.sh  # [unix]\n    script: bld_cxx.bat  # [win]\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - {{ compiler('c') }}\n        - ninja\n        - cmake\n        - pkg-config\n      host:\n        - libgz-cmake3\n        - libprotobuf\n        - libgz-math7\n        - libgz-common5\n        - libgz-transport12\n        - libgz-rendering7\n        - libgz-msgs9\n        - libgz-plugin2\n        - libsdformat13\n        - libarchive  # [osx]\n        - ogre  {{ ogre }}\n    test:\n      commands:\n        - test -f ${PREFIX}/include/gz/{{ component_version }}/gz/{{ component_name }}.hh  # [not win]\n        - test -f ${PREFIX}/lib/lib{{ name }}${SHLIB_EXT}  # [not win]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}-config.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\gz\\\\{{ component_version }}\\\\gz\\\\{{ component_name }}.hh exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ name }}.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ name }}.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\{{ name }}\\\\{{ name }}-config.cmake exit 1  # [win]\n\n  - name: {{ name }}\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n    requirements:\n      run:\n        - {{ pin_subpackage(cxx_name, exact=True) }}\n    test:\n      commands:\n        - test -f ${PREFIX}/include/gz/{{ component_version }}/gz/{{ component_name }}.hh  # [not win]\n        - test -f ${PREFIX}/lib/lib{{ name }}${SHLIB_EXT}  # [not win]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}-config.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\gz\\\\{{ component_version }}\\\\gz\\\\{{ component_name }}.hh exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ name }}.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ name }}.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\{{ name }}\\\\{{ name }}-config.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/gazebosim/{{ repo_name }}\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: 'Gazebo Sensors provides numerous sensor models designed to generate realistic data from simulation environments.'\n\nextra:\n  feedstock-name: {{ repo_name }}\n  recipe-maintainers:\n    - wolfv\n    - traversaro\n    - Tobias-Fischer\n    - j-rivero\n",
+ "raw_meta_yaml": "{% set component_name = \"sensors\" %}\n{% set repo_name = \"gz-\" + component_name %}\n{% set version = \"7.0.0\" %}\n{% set major_version = version.split('.')[0] %}\n{% set name = repo_name + major_version %}\n{% set component_version = component_name + major_version %}\n{% set cxx_name = \"lib\" + name %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  - url: https://github.com/gazebosim/{{ repo_name }}/archive/{{ repo_name }}{{ major_version }}_{{ version }}.tar.gz\n    sha256: 57666d4af26fb7b00802d8c3fc42de5bdcf471b4300a3f5fe71f75a94de14191\n\nbuild:\n  number: 2\n\noutputs:\n  - name: {{ cxx_name }}\n    script: build_cxx.sh  # [unix]\n    script: bld_cxx.bat  # [win]\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - {{ compiler('c') }}\n        - ninja\n        - cmake\n        - pkg-config\n      host:\n        - libgz-cmake3\n        - libprotobuf\n        - libgz-math7\n        - libgz-common5\n        - libgz-transport12\n        - libgz-rendering7\n        - libgz-msgs9\n        - libgz-plugin2\n        - libsdformat13\n        - libarchive  # [osx]\n        - ogre  {{ ogre }}\n    test:\n      commands:\n        - test -f ${PREFIX}/include/gz/{{ component_version }}/gz/{{ component_name }}.hh  # [not win]\n        - test -f ${PREFIX}/lib/lib{{ name }}${SHLIB_EXT}  # [not win]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}-config.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\gz\\\\{{ component_version }}\\\\gz\\\\{{ component_name }}.hh exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ name }}.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ name }}.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\{{ name }}\\\\{{ name }}-config.cmake exit 1  # [win]\n\n  - name: {{ name }}\n    build:\n      run_exports:\n        - {{ pin_subpackage(cxx_name, max_pin='x') }}\n    requirements:\n      run:\n        - {{ pin_subpackage(cxx_name, exact=True) }}\n    test:\n      commands:\n        - test -f ${PREFIX}/include/gz/{{ component_version }}/gz/{{ component_name }}.hh  # [not win]\n        - test -f ${PREFIX}/lib/lib{{ name }}${SHLIB_EXT}  # [not win]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}-config.cmake  # [not win]\n        - if not exist %PREFIX%\\\\Library\\\\include\\\\gz\\\\{{ component_version }}\\\\gz\\\\{{ component_name }}.hh exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\{{ name }}.lib exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\bin\\\\{{ name }}.dll exit 1  # [win]\n        - if not exist %PREFIX%\\\\Library\\\\lib\\\\cmake\\\\{{ name }}\\\\{{ name }}-config.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/gazebosim/{{ repo_name }}\n  license: Apache-2.0\n  license_file: LICENSE\n  summary: 'Gazebo Sensors provides numerous sensor models designed to generate realistic data from simulation environments.'\n\nextra:\n  feedstock-name: {{ repo_name }}\n  recipe-maintainers:\n    - wolfv\n    - traversaro\n    - Tobias-Fischer\n    - j-rivero\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1992,7 +1994,7 @@
    "summary": "Gazebo Sensors provides numerous sensor models designed to generate realistic data from simulation environments."
   },
   "build": {
-   "number": "1"
+   "number": "2"
   },
   "extra": {
    "feedstock-name": "gz-sensors",
