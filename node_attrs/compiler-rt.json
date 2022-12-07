@@ -552,7 +552,7 @@
    "summary": "compiler-rt runtime libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "compiler-rt",
@@ -628,7 +628,7 @@
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make"
+    "ninja"
    ],
    "host": [
     "clangdev 15.0.6",
@@ -653,7 +653,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "make",
+    "ninja",
     "python"
    ]
   },
@@ -689,7 +689,7 @@
    "summary": "compiler-rt runtime libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "compiler-rt",
@@ -765,7 +765,7 @@
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make"
+    "ninja"
    ],
    "host": [
     "clangdev 15.0.6",
@@ -790,7 +790,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "make",
+    "ninja",
     "python"
    ]
   },
@@ -826,7 +826,7 @@
    "summary": "compiler-rt runtime libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "compiler-rt",
@@ -902,7 +902,7 @@
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make"
+    "ninja"
    ],
    "host": [
     "clangdev 15.0.6",
@@ -927,7 +927,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "make",
+    "ninja",
     "python"
    ]
   },
@@ -963,7 +963,7 @@
    "summary": "compiler-rt runtime libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "compiler-rt",
@@ -1331,23 +1331,23 @@
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make",
+    "ninja",
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make",
+    "ninja",
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make",
+    "ninja",
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make",
+    "ninja",
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make",
+    "ninja",
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
@@ -1444,7 +1444,7 @@
    "summary": "compiler-rt runtime libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "compiler-rt",
@@ -1521,7 +1521,7 @@
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make"
+    "ninja"
    ],
    "host": [
     "clangdev 15.0.6",
@@ -1547,7 +1547,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "make",
+    "ninja",
     "python"
    ]
   },
@@ -1584,7 +1584,7 @@
    "summary": "compiler-rt runtime libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "compiler-rt",
@@ -1661,7 +1661,7 @@
     "cmake >=3.4.3",
     "cxx_compiler_stub",
     "python *",
-    "make"
+    "ninja"
    ],
    "host": [
     "clangdev 15.0.6",
@@ -1687,7 +1687,7 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "make",
+    "ninja",
     "python"
    ]
   },
@@ -1727,7 +1727,7 @@
   ]
  },
  "pinning_version": "2022.11.27.15.56.36",
- "raw_meta_yaml": "{% set version = \"15.0.6\" %}\n{% set prod_ver = '.'.join(version.split('.')[:3]) %}\n\npackage:\n  name: compiler-rt-packages\n  version: {{ version }}\n\nsource:\n  url: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/llvm-project-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz\n  sha256: 9d53ad04dc60cb7b30e810faf64c5ab8157dadef46c8766f67f286238256ff92\n  patches:\n    - patches/0001-no-code-sign.patch\n    - patches/0002-compiler-rt-Make-7.0.0-compatible-with-10.9-SDK.patch\n    - patches/0003-set-cmake-paths.patch\n\nbuild:\n  number: 0\n\nrequirements:\n  build:\n    - cmake >=3.4.3\n    - {{ compiler('cxx') }}\n    - python *\n    - make                   # [unix]\n    - ninja                  # [win]\n    - llvmdev {{ version }}  # [build_platform != target_platform]\n  host:\n    - clangdev {{ version }}\n    - llvmdev {{ version }}\n    - libcxx   # [osx]\n    - zlib\n    - libxml2\n\noutputs:\n  - name: compiler-rt_{{ target_platform }}\n    build:\n      noarch: generic\n      ignore_run_exports_from:\n        - {{ compiler('cxx') }}\n      detect_binary_files_with_prefix: false  # [win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n      run:\n        - clang {{ version }}\n        - clangxx {{ version }}\n      run_constrained:\n        - compiler-rt {{ version }}\n    files:\n      - lib/clang/{{ prod_ver }}/lib\n    test:\n      commands:\n        - echo {{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}\n        - test -f $PREFIX/lib/clang/{{ prod_ver }}/lib/darwin/libclang_rt.osx.a  # [osx]\n\n  - name: compiler-rt\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n      run:\n        - clang {{ version }}\n        - clangxx {{ version }}\n        - compiler-rt_{{ target_platform }} {{ version }}\n    files:\n      - lib/clang/{{ prod_ver }}/share             # [unix]\n      - lib/clang/{{ prod_ver }}/include           # [unix]\n      - Library/lib/clang/{{ version }}/share     # [win]\n      - Library/lib/clang/{{ version }}/include   # [win]\n      - Library/lib/clang/{{ version }}/lib       # [win]\n    test:\n      # files:\n      #   - test.c.in\n      commands:\n        # {% set NEW_TARGET=\"10.\" ~ (((MACOSX_DEPLOYMENT_TARGET|default(\"10.13\")).split(\".\")[1])|int + 1) %}\n        # - sed \"s/@MACOSX_DEPLOYMENT_TARGET@/{{ NEW_TARGET }}/g\" test.c.in > test.c\n        # - clang -mmacosx-version-min={{ MACOSX_DEPLOYMENT_TARGET }} test.c  # [osx]\n        - test -f $PREFIX/lib/clang/{{ prod_ver }}/include/sanitizer/asan_interface.h  # [unix]\n\nabout:\n  home: http://llvm.org/\n  license: Apache-2.0 WITH LLVM-exception\n  license_file: compiler-rt/LICENSE.TXT\n  summary: compiler-rt runtime libraries\n  dev_url: https://github.com/llvm/llvm-project\n  description: |\n    builtins - low-level target-specific hooks required by code generation and other\n      runtime components\n    sanitizer runtimes - AddressSanitizer, ThreadSanitizer, UndefinedBehaviorSanitizer,\n      MemorySanitizer, LeakSanitizer, DataFlowSanitizer\n    profile - library which is used to collect coverage information\n    BlocksRuntime - target-independent implementation of Apple \"Blocks\" runtime\n      interfaces\n\nextra:\n  recipe-maintainers:\n    - SylvainCorlay\n    - inducer\n    - jakirkham\n    - isuruf\n    - h-vetinari\n  feedstock-name: compiler-rt\n",
+ "raw_meta_yaml": "{% set version = \"15.0.6\" %}\n{% set prod_ver = '.'.join(version.split('.')[:3]) %}\n\npackage:\n  name: compiler-rt-packages\n  version: {{ version }}\n\nsource:\n  url: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version.replace(\".rc\", \"-rc\") }}/llvm-project-{{ version.replace(\".rc\", \"rc\") }}.src.tar.xz\n  sha256: 9d53ad04dc60cb7b30e810faf64c5ab8157dadef46c8766f67f286238256ff92\n  patches:\n    - patches/0001-no-code-sign.patch\n    - patches/0002-compiler-rt-Make-7.0.0-compatible-with-10.9-SDK.patch\n    - patches/0003-set-cmake-paths.patch\n\nbuild:\n  number: 1\n\nrequirements:\n  build:\n    - cmake >=3.4.3\n    - {{ compiler('cxx') }}\n    - python *\n    - ninja\n    - llvmdev {{ version }}  # [build_platform != target_platform]\n  host:\n    - clangdev {{ version }}\n    - llvmdev {{ version }}\n    - libcxx   # [osx]\n    - zlib\n    - libxml2\n\noutputs:\n  - name: compiler-rt_{{ target_platform }}\n    build:\n      noarch: generic\n      ignore_run_exports_from:\n        - {{ compiler('cxx') }}\n      detect_binary_files_with_prefix: false  # [win]\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n      run:\n        - clang {{ version }}\n        - clangxx {{ version }}\n      run_constrained:\n        - compiler-rt {{ version }}\n    files:\n      - lib/clang/{{ prod_ver }}/lib\n    test:\n      commands:\n        - echo {{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}\n        - test -f $PREFIX/lib/clang/{{ prod_ver }}/lib/darwin/libclang_rt.osx.a  # [osx]\n\n  - name: compiler-rt\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n      host:\n      run:\n        - clang {{ version }}\n        - clangxx {{ version }}\n        - compiler-rt_{{ target_platform }} {{ version }}\n    files:\n      - lib/clang/{{ prod_ver }}/share             # [unix]\n      - lib/clang/{{ prod_ver }}/include           # [unix]\n      - Library/lib/clang/{{ version }}/share     # [win]\n      - Library/lib/clang/{{ version }}/include   # [win]\n      - Library/lib/clang/{{ version }}/lib       # [win]\n    test:\n      # files:\n      #   - test.c.in\n      commands:\n        # {% set NEW_TARGET=\"10.\" ~ (((MACOSX_DEPLOYMENT_TARGET|default(\"10.13\")).split(\".\")[1])|int + 1) %}\n        # - sed \"s/@MACOSX_DEPLOYMENT_TARGET@/{{ NEW_TARGET }}/g\" test.c.in > test.c\n        # - clang -mmacosx-version-min={{ MACOSX_DEPLOYMENT_TARGET }} test.c  # [osx]\n        - test -f $PREFIX/lib/clang/{{ prod_ver }}/include/sanitizer/asan_interface.h  # [unix]\n\nabout:\n  home: http://llvm.org/\n  license: Apache-2.0 WITH LLVM-exception\n  license_file: compiler-rt/LICENSE.TXT\n  summary: compiler-rt runtime libraries\n  dev_url: https://github.com/llvm/llvm-project\n  description: |\n    builtins - low-level target-specific hooks required by code generation and other\n      runtime components\n    sanitizer runtimes - AddressSanitizer, ThreadSanitizer, UndefinedBehaviorSanitizer,\n      MemorySanitizer, LeakSanitizer, DataFlowSanitizer\n    profile - library which is used to collect coverage information\n    BlocksRuntime - target-independent implementation of Apple \"Blocks\" runtime\n      interfaces\n\nextra:\n  recipe-maintainers:\n    - SylvainCorlay\n    - inducer\n    - jakirkham\n    - isuruf\n    - h-vetinari\n  feedstock-name: compiler-rt\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -1745,7 +1745,6 @@
    "libcxx",
    "libxml2",
    "llvmdev",
-   "make",
    "ninja",
    "python",
    "zlib"
@@ -1757,7 +1756,6 @@
    "elements": [
     "cmake",
     "cxx_compiler_stub",
-    "make",
     "ninja",
     "python"
    ]
@@ -1800,7 +1798,6 @@
    "elements": [
     "cmake >=3.4.3",
     "cxx_compiler_stub",
-    "make",
     "ninja",
     "python *"
    ]
@@ -1845,7 +1842,7 @@
    "summary": "compiler-rt runtime libraries"
   },
   "build": {
-   "number": "0"
+   "number": "1"
   },
   "extra": {
    "feedstock-name": "compiler-rt",
