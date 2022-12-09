@@ -102,7 +102,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git diff --name-only ebc1d54566eb81b27b9952467acc9416545865dd...HEAD' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 310, in run",
+   "    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode",
+   "    raise CalledProcessError(self.returncode, self.args, self.stdout,",
+   "subprocess.CalledProcessError: Command 'git diff --name-only ebc1d54566eb81b27b9952467acc9416545865dd...HEAD' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
@@ -474,10 +489,11 @@
   }
  },
  "name": "mpc",
- "new_version": "1.2.1",
+ "new_version": "1.3.0",
  "new_version_attempts": {
   "1.2.0": 1,
-  "1.2.1": 1
+  "1.2.1": 1,
+  "1.3.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -645,6 +661,12 @@
   ]
  },
  "pinning_version": "2020.10.22.15.42.41",
+ "pre_pr_migrator_attempts": {
+  "version": 1
+ },
+ "pre_pr_migrator_status": {
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3659335716\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 310, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 296, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only ebc1d54566eb81b27b9952467acc9416545865dd...HEAD' returned non-zero exit status 128.\n"
+ },
  "raw_meta_yaml": "{% set version = \"1.2.1\" %}\n\npackage:\n  name: mpc\n  version: {{ version }}\n\nsource:\n  url: https://ftp.gnu.org/gnu/mpc/mpc-{{ version }}.tar.gz\n  sha256: 17503d2c395dfcf106b622dc142683c1199431d095367c6aacba6eec30340459\n\nbuild:\n  skip: true  # [win and vc<14]\n  number: 0\n  run_exports:\n    - {{ pin_subpackage(\"mpc\") }}\n\nrequirements:\n  build:\n    - gnuconfig              # [unix]\n    - {{ compiler('c') }}\n    - autotools_clang_conda  # [win]\n    - make            # [unix]\n    - {{ compiler('c') }}\n  host:\n    - gmp             # [unix]\n    - mpir            # [win]\n    - mpfr\n  run:\n    - gmp             # [unix]\n    - mpir            # [win]\n    - mpfr\n\ntest:\n  commands:\n    - if not exist %LIBRARY_INC%\\\\mpc.h exit 1                  # [win]\n    - if not exist %LIBRARY_LIB%\\\\mpc.lib exit 1                # [win]\n    - if not exist %LIBRARY_BIN%\\\\mpc.dll exit 1                # [win]\n    - test -f ${PREFIX}/include/mpc.h                           # [unix]\n    - test -f ${PREFIX}/lib/libmpc.dylib                        # [osx]\n    - test -f ${PREFIX}/lib/libmpc.so                           # [linux]\n\nabout:\n  home: http://www.multiprecision.org/\n  license: LGPL-3.0-or-later\n  license_file: COPYING.LESSER\n  summary: A C library for the arithmetic of complex numbers with arbitrarily high precision.\n\nextra:\n  recipe-maintainers:\n    - isuruf\n    - jakirkham\n    - saraedum\n",
  "req": {
   "__set__": true,

@@ -177,6 +177,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1156417231.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.5.3"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -660,12 +677,13 @@
   }
  },
  "name": "gmatelastic-split",
- "new_version": "0.5.2",
+ "new_version": "0.5.3",
  "new_version_attempts": {
   "0.2.0": 1,
   "0.2.1": 1,
   "0.2.2": 1,
-  "0.5.2": 1
+  "0.5.2": 1,
+  "0.5.3": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -965,7 +983,7 @@
    "python-gmatelastic"
   ]
  },
- "pinning_version": "2022.10.28.22.34.20",
+ "pinning_version": "2022.12.09.08.14.11",
  "raw_meta_yaml": "{% set org = \"tdegeus\" %}\n{% set name = \"GMatElastic\" %}\n{% set version = \"0.5.2\" %}\n\npackage:\n  name: {{ name|lower }}-split\n  version: {{ version }}\n\nsource:\n  url: https://github.com/{{ org }}/{{ name }}/archive/v{{ version }}.tar.gz\n  sha256: 1ffdd1461d974f8307bea46f8ab60756ae8ebfb3fb02ba4accff13d609417d8b\n\nbuild:\n  number: 1\n\noutputs:\n\n  - name: {{ name|lower }}\n\n    script: install.sh  # [unix]\n    script: install.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n\n    requirements:\n      build:\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n      host:\n        - gmattensor >=0.10.1\n        - xtensor >=0.24.2\n      run:\n        - gmattensor >=0.10.1\n        - xtensor >=0.24.2\n\n    test:\n      commands:\n        - test -d ${PREFIX}/include/{{ name }}  # [unix]\n        - test -f ${PREFIX}/include/{{ name }}/Cartesian3d.h  # [unix]\n        - test -f ${PREFIX}/lib/cmake/{{ name }}/{{ name }}Config.cmake  # [unix]\n        - if exist %LIBRARY_PREFIX%\\include\\{{ name }}\\Cartesian3d.h (exit 0) else (exit 1)  # [win]\n        - if exist %LIBRARY_PREFIX%\\lib\\cmake\\{{ name }}Config.cmake (exit 0) else (exit 1)  # [win]\n\n  - name: python-{{ name|lower }}\n\n    script: install_python.sh  # [unix]\n    script: install_python.bat  # [win]\n\n    build:\n      script_env: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}\n      skip: true  # [python_impl == 'pypy']\n\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - numpy *                             # [build_platform != target_platform]\n        - setuptools_scm                      # [build_platform != target_platform]\n        - {{ compiler('cxx') }}\n        - cmake\n        - make  # [unix]\n        - ninja\n      host:\n        - gmattensor >=0.10.1\n        - numpy *\n        - pip\n        - pybind11\n        - pybind11-abi\n        - python\n        - scikit-build\n        - setuptools_scm\n        - xtensor >=0.24.2\n        - xtensor-python\n      run:\n        - numpy *\n        - python\n        - python-gmattensor >0.9.0\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n        - python -c \"import {{ name }}; assert {{ name }}.version() == '{{ version }}'\"\n      requires:\n        - pip\n\nabout:\n  home: https://github.com/{{ org }}/{{ name }}\n  license: MIT\n  license_family: MIT\n  license_file: LICENSE\n  summary: Linear elastic material model.\n  description: Linear elastic material model.\n  doc_url: https://{{ org }}.github.io/{{ name }}\n  dev_url: https://github.com/{{ org }}/{{ name }}\n\nextra:\n  recipe-maintainers:\n    - tdegeus\n",
  "req": {
   "__set__": true,
@@ -1031,7 +1049,7 @@
    ]
   }
  },
- "smithy_version": "3.21.2",
+ "smithy_version": "3.22.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
