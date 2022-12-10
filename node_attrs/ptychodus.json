@@ -54,7 +54,7 @@
    "summary": "Ptychodus is a ptychography analysis front-end."
   },
   "build": {
-   "number": "1"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -72,6 +72,7 @@
     "requirements": {
      "run": [
       "ptychodus",
+      "ptychonn",
       "tike"
      ]
     },
@@ -122,23 +123,26 @@
       "pip",
       "python >=3.9",
       "setuptools >=46.4.0",
-      "setuptools_scm >=6.2",
+      "setuptools_scm >=7",
       "setuptools_scm_git_archive",
       "wheel"
      ],
      "run": [
       "h5py =3.*",
-      "hdf5-external-filter-plugins-lz4",
+      "hdf5plugin",
       "matplotlib-base =3.*",
       "numpy =1.*",
       "python >=3.9",
+      "scikit-image >=0.19",
       "scipy =1.*",
       "tifffile =2022.*",
       "watchdog =2.*"
      ],
      "run_constrained": [
+      "gladier >=0.8.0b2",
+      "ptychonn >=0.0.2,<0.1",
       "pyqt =5.*",
-      "tike =0.22.*"
+      "tike =0.23.*"
      ]
     },
     "script": "build-core.sh",
@@ -158,11 +162,11 @@
   ],
   "package": {
    "name": "ptychodus",
-   "version": "0.2.2"
+   "version": "0.3.1"
   },
   "source": {
-   "sha256": "eadc9eb149de0f460ddf3591f01b3656bb0d3524b296a00783cdbd11828e1c02",
-   "url": "https://github.com/AdvancedPhotonSource/ptychodus/archive/v0.2.2.tar.gz"
+   "sha256": "4de3ba65ce837242ebf2866963ed2df810b394769e0c6e449ef4e32ed466517d",
+   "url": "https://github.com/AdvancedPhotonSource/ptychodus/archive/v0.3.1.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -185,13 +189,15 @@
    "__set__": true,
    "elements": [
     "h5py",
-    "hdf5-external-filter-plugins-lz4",
+    "hdf5plugin",
     "matplotlib-base",
     "numpy",
     "ptychodus",
     "ptychodus-core",
+    "ptychonn",
     "pyqt",
     "python",
+    "scikit-image",
     "scipy",
     "tifffile",
     "tike",
@@ -215,7 +221,7 @@
    "summary": "Ptychodus is a ptychography analysis front-end."
   },
   "build": {
-   "number": "1"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -233,6 +239,7 @@
     "requirements": {
      "run": [
       "ptychodus",
+      "ptychonn",
       "tike"
      ]
     },
@@ -283,23 +290,26 @@
       "pip",
       "python >=3.9",
       "setuptools >=46.4.0",
-      "setuptools_scm >=6.2",
+      "setuptools_scm >=7",
       "setuptools_scm_git_archive",
       "wheel"
      ],
      "run": [
       "h5py =3.*",
-      "hdf5-external-filter-plugins-lz4",
+      "hdf5plugin",
       "matplotlib-base =3.*",
       "numpy =1.*",
       "python >=3.9",
+      "scikit-image >=0.19",
       "scipy =1.*",
       "tifffile =2022.*",
       "watchdog =2.*"
      ],
      "run_constrained": [
+      "gladier >=0.8.0b2",
+      "ptychonn >=0.0.2,<0.1",
       "pyqt =5.*",
-      "tike =0.22.*"
+      "tike =0.23.*"
      ]
     },
     "script": "build-core.sh",
@@ -319,11 +329,11 @@
   ],
   "package": {
    "name": "ptychodus",
-   "version": "0.2.2"
+   "version": "0.3.1"
   },
   "source": {
-   "sha256": "eadc9eb149de0f460ddf3591f01b3656bb0d3524b296a00783cdbd11828e1c02",
-   "url": "https://github.com/AdvancedPhotonSource/ptychodus/archive/v0.2.2.tar.gz"
+   "sha256": "4de3ba65ce837242ebf2866963ed2df810b394769e0c6e449ef4e32ed466517d",
+   "url": "https://github.com/AdvancedPhotonSource/ptychodus/archive/v0.3.1.tar.gz"
   }
  },
  "name": "ptychodus",
@@ -345,19 +355,21 @@
   ]
  },
  "pinning_version": "2022.12.01.06.44.48",
- "raw_meta_yaml": "{% set name = \"ptychodus\" %}\n{% set version = \"0.2.2\" %}\n\npackage:\n  name: ptychodus\n  version: {{ version }}\n\nsource:\n  url: https://github.com/AdvancedPhotonSource/ptychodus/archive/v{{ version }}.tar.gz\n  sha256: eadc9eb149de0f460ddf3591f01b3656bb0d3524b296a00783cdbd11828e1c02\n\nbuild:\n  number: 1\n\noutputs:\n  # all optional packages\n  - name: ptychodus-all\n\n    build:\n      noarch: generic\n\n    requirements:\n      run:\n        - {{ pin_subpackage('ptychodus', exact=True) }}\n        - tike\n\n    test:\n      # no import test because tike imports cupy\n      requires:\n        - pip\n      commands:\n        - pip check\n      # no CLI test because tike imports cupy\n\n  # with QT\n  - name: ptychodus\n\n    build:\n      noarch: generic\n\n    requirements:\n      run:\n        - {{ pin_subpackage('ptychodus-core', exact=True) }}\n        - pyqt\n\n    test:\n      imports:\n        - ptychodus\n      requires:\n        - pip\n      commands:\n        - pip check\n        - ptychodus --version\n\n  # ptychodus without QT (headless) without optional packages\n  - name: ptychodus-core\n\n    script: build-core.sh\n\n    build:\n      noarch: python\n      entry_points:\n        - ptychodus = ptychodus.__main__:main\n        - ptychodus-rpc = ptychodus.model.rpc:main\n\n    requirements:\n      host:\n        - pip\n        - python >=3.9\n        - setuptools >=46.4.0\n        - setuptools_scm >=6.2\n        - setuptools_scm_git_archive\n        - wheel\n      run:\n        - h5py =3.*\n        - hdf5-external-filter-plugins-lz4\n        - matplotlib-base =3.*\n        - numpy =1.*\n        - python >=3.9\n        - scipy =1.*\n        - tifffile =2022.*\n        - watchdog =2.*\n      run_constrained:\n        - pyqt =5.*\n        - tike =0.22.*\n\n    test:\n      imports:\n        - ptychodus\n      requires:\n        - pip\n      commands:\n        - pip check\n        - ptychodus --version\n\nabout:\n  home: https://github.com/AdvancedPhotonSource/ptychodus\n  summary: Ptychodus is a ptychography analysis front-end.\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  dev_url: https://github.com/AdvancedPhotonSource/ptychodus\n\nextra:\n  recipe-maintainers:\n    - AdvancedPhotonSource/ptychodus\n    - carterbox\n    - stevehenke\n",
+ "raw_meta_yaml": "{% set name = \"ptychodus\" %}\n{% set version = \"0.3.1\" %}\n\npackage:\n  name: ptychodus\n  version: {{ version }}\n\nsource:\n  url: https://github.com/AdvancedPhotonSource/ptychodus/archive/v{{ version }}.tar.gz\n  sha256: 4de3ba65ce837242ebf2866963ed2df810b394769e0c6e449ef4e32ed466517d\n\nbuild:\n  number: 0\n\noutputs:\n  # all optional packages\n  - name: ptychodus-all\n\n    build:\n      noarch: generic\n\n    requirements:\n      run:\n        - {{ pin_subpackage('ptychodus', exact=True) }}\n        - ptychonn\n        - tike\n\n    test:\n      # no import test because tike imports cupy\n      requires:\n        - pip\n      commands:\n        - pip check\n      # no CLI test because tike imports cupy\n\n  # with QT\n  - name: ptychodus\n\n    build:\n      noarch: generic\n\n    requirements:\n      run:\n        - {{ pin_subpackage('ptychodus-core', exact=True) }}\n        - pyqt\n\n    test:\n      imports:\n        - ptychodus\n      requires:\n        - pip\n      commands:\n        - pip check\n        - ptychodus --version\n\n  # ptychodus without QT (headless) without optional packages\n  - name: ptychodus-core\n\n    script: build-core.sh\n\n    build:\n      noarch: python\n      entry_points:\n        - ptychodus = ptychodus.__main__:main\n        - ptychodus-rpc = ptychodus.model.rpc:main\n\n    requirements:\n      host:\n        - pip\n        - python >=3.9\n        - setuptools >=46.4.0\n        - setuptools_scm >=7\n        - setuptools_scm_git_archive\n        - wheel\n      run:\n        - h5py =3.*\n        - hdf5plugin\n        - matplotlib-base =3.*\n        - numpy =1.*\n        - python >=3.9\n        - scikit-image >=0.19\n        - scipy =1.*\n        - tifffile =2022.*\n        - watchdog =2.*\n      run_constrained:\n        - gladier >=0.8.0b2\n        - ptychonn >=0.0.2,<0.1\n        - pyqt =5.*\n        - tike =0.23.*\n\n    test:\n      imports:\n        - ptychodus\n      requires:\n        - pip\n      commands:\n        - pip check\n        - ptychodus --version\n\nabout:\n  home: https://github.com/AdvancedPhotonSource/ptychodus\n  summary: Ptychodus is a ptychography analysis front-end.\n  license: BSD-3-Clause\n  license_family: BSD\n  license_file: LICENSE\n  dev_url: https://github.com/AdvancedPhotonSource/ptychodus\n\nextra:\n  recipe-maintainers:\n    - AdvancedPhotonSource/ptychodus\n    - carterbox\n    - stevehenke\n",
  "req": {
   "__set__": true,
   "elements": [
    "h5py",
-   "hdf5-external-filter-plugins-lz4",
+   "hdf5plugin",
    "matplotlib-base",
    "numpy",
    "pip",
    "ptychodus",
    "ptychodus-core",
+   "ptychonn",
    "pyqt",
    "python",
+   "scikit-image",
    "scipy",
    "setuptools",
    "setuptools_scm",
@@ -388,13 +400,15 @@
    "__set__": true,
    "elements": [
     "h5py",
-    "hdf5-external-filter-plugins-lz4",
+    "hdf5plugin",
     "matplotlib-base",
     "numpy",
     "ptychodus",
     "ptychodus-core",
+    "ptychonn",
     "pyqt",
     "python",
+    "scikit-image",
     "scipy",
     "tifffile",
     "tike",
@@ -421,7 +435,7 @@
     "pip",
     "python >=3.9",
     "setuptools >=46.4.0",
-    "setuptools_scm >=6.2",
+    "setuptools_scm >=7",
     "setuptools_scm_git_archive",
     "wheel"
    ]
@@ -430,13 +444,15 @@
    "__set__": true,
    "elements": [
     "h5py =3.*",
-    "hdf5-external-filter-plugins-lz4",
+    "hdf5plugin",
     "matplotlib-base =3.*",
     "numpy =1.*",
     "ptychodus",
     "ptychodus-core",
+    "ptychonn",
     "pyqt",
     "python >=3.9",
+    "scikit-image >=0.19",
     "scipy =1.*",
     "tifffile =2022.*",
     "tike",
@@ -450,6 +466,6 @@
    ]
   }
  },
- "url": "https://github.com/AdvancedPhotonSource/ptychodus/archive/v0.2.2.tar.gz",
- "version": "0.2.2"
+ "url": "https://github.com/AdvancedPhotonSource/ptychodus/archive/v0.3.1.tar.gz",
+ "version": "0.3.1"
 }

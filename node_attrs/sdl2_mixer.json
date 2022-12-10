@@ -64,7 +64,7 @@
    "summary": "Sample multi-channel audio mixer library"
   },
   "build": {
-   "number": "0",
+   "number": "2",
    "run_exports": [
     "sdl2_mixer"
    ]
@@ -88,8 +88,8 @@
     "ninja"
    ],
    "host": [
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
+    "sdl2",
+    "mpg123 1.31.*",
     "fluidsynth",
     "libflac",
     "libmad",
@@ -98,8 +98,6 @@
     "opusfile"
    ],
    "run": [
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
     "fluidsynth",
     "libmad",
     "opusfile"
@@ -135,9 +133,9 @@
     "libmad",
     "libogg",
     "libvorbis",
+    "mpg123",
     "opusfile",
-    "sdl2",
-    "smpeg2"
+    "sdl2"
    ]
   },
   "run": {
@@ -145,9 +143,7 @@
    "elements": [
     "fluidsynth",
     "libmad",
-    "opusfile",
-    "sdl2",
-    "smpeg2"
+    "opusfile"
    ]
   },
   "test": {
@@ -166,7 +162,7 @@
    "summary": "Sample multi-channel audio mixer library"
   },
   "build": {
-   "number": "0",
+   "number": "2",
    "run_exports": [
     "sdl2_mixer",
     "sdl2_mixer",
@@ -206,42 +202,36 @@
     "ninja"
    ],
    "host": [
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
+    "sdl2",
+    "mpg123 1.31.*",
     "fluidsynth",
     "libflac",
     "libmad",
     "libogg",
     "libvorbis",
     "opusfile",
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
+    "sdl2",
+    "mpg123 1.31.*",
     "fluidsynth",
     "libflac",
     "libmad",
     "libogg",
     "libvorbis",
     "opusfile",
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
+    "sdl2",
+    "mpg123 1.31.*",
     "libflac",
     "libmad",
     "libogg",
     "libvorbis"
    ],
    "run": [
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
     "fluidsynth",
     "libmad",
     "opusfile",
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
     "fluidsynth",
     "libmad",
     "opusfile",
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
     "libmad"
    ]
   },
@@ -280,7 +270,7 @@
    "summary": "Sample multi-channel audio mixer library"
   },
   "build": {
-   "number": "0",
+   "number": "2",
    "run_exports": [
     "sdl2_mixer"
    ]
@@ -304,8 +294,8 @@
     "ninja"
    ],
    "host": [
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
+    "sdl2",
+    "mpg123 1.31.*",
     "fluidsynth",
     "libflac",
     "libmad",
@@ -314,8 +304,6 @@
     "opusfile"
    ],
    "run": [
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
     "fluidsynth",
     "libmad",
     "opusfile"
@@ -351,9 +339,9 @@
     "libmad",
     "libogg",
     "libvorbis",
+    "mpg123",
     "opusfile",
-    "sdl2",
-    "smpeg2"
+    "sdl2"
    ]
   },
   "run": {
@@ -361,9 +349,7 @@
    "elements": [
     "fluidsynth",
     "libmad",
-    "opusfile",
-    "sdl2",
-    "smpeg2"
+    "opusfile"
    ]
   },
   "test": {
@@ -378,7 +364,7 @@
   ]
  },
  "pinning_version": "2022.08.19.17.59.09",
- "raw_meta_yaml": "{% set version = \"2.6.2\" %}\n\npackage:\n  name: sdl2_mixer\n  version: {{ version }}\n\nsource:\n  url: https://github.com/libsdl-org/SDL_mixer/archive/refs/tags/release-{{ version }}.tar.gz\n  sha256: 30c64e23506fcb1699981a297833407bf5bf9d8ab77390e26b26117b4a58bad5\n\nbuild:\n  number: 0\n  run_exports:\n    - {{ pin_subpackage(\"sdl2_mixer\", max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n  host:\n    - sdl2 2.0.*\n    - smpeg2 2.0.*\n    - fluidsynth    # [not win]\n    - libflac\n    - libmad\n    - libogg\n    - libvorbis\n    - opusfile      # [not win]\n  run:\n    - sdl2 2.0.*\n    - smpeg2 2.0.*\n    # these should ideally (eventually?) all come from\n    # run-exports on the respective host dependencies\n    - fluidsynth    # [not win]\n    - libmad\n    - opusfile      # [not win]\n\ntest:\n  commands:\n    # shared libraries\n    - test -f $PREFIX/lib/libSDL2_mixer.so                # [linux]\n    - test -f $PREFIX/lib/libSDL2_mixer.dylib             # [osx]\n    - if not exist %LIBRARY_LIB%\\SDL2_mixer.lib exit 1    # [win]\n    - if not exist %LIBRARY_BIN%\\SDL2_mixer.dll exit 1    # [win]\n\n    # absence of static libraries\n    - test ! -f $PREFIX/lib/libSDL2_mixer.a               # [unix]\n\n    # headers\n    - test -f $PREFIX/include/SDL2/SDL_mixer.h            # [unix]\n    - if not exist %LIBRARY_INC%\\SDL2\\SDL_mixer.h exit 1  # [win]\n\nabout:\n  home: https://www.libsdl.org/projects/SDL_mixer/\n  license: Zlib\n  license_file: LICENSE.txt\n  summary: Sample multi-channel audio mixer library\n  description: |\n    Simple DirectMedia Layer is a cross-platform development library designed to\n    provide low level access to audio, keyboard, mouse, joystick, and graphics\n    hardware via OpenGL and Direct3D.\n  doc_url: https://www.libsdl.org/projects/SDL_mixer/docs/index.html\n  dev_url: https://github.com/libsdl-org/SDL_mixer\n\nextra:\n  recipe-maintainers:\n    - dschreij\n    - matham\n    - h-vetinari\n",
+ "raw_meta_yaml": "{% set version = \"2.6.2\" %}\n\npackage:\n  name: sdl2_mixer\n  version: {{ version }}\n\nsource:\n  url: https://github.com/libsdl-org/SDL_mixer/archive/refs/tags/release-{{ version }}.tar.gz\n  sha256: 30c64e23506fcb1699981a297833407bf5bf9d8ab77390e26b26117b4a58bad5\n\nbuild:\n  number: 2\n  run_exports:\n    - {{ pin_subpackage(\"sdl2_mixer\", max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - cmake\n    - ninja\n  host:\n    - sdl2\n    # todo: add to the global pinning\n    - mpg123 1.31.*\n    - fluidsynth    # [not win]\n    - libflac\n    - libmad\n    - libogg\n    - libvorbis\n    - opusfile      # [not win]\n  run:\n    # these should ideally (eventually?) all come from\n    # run-exports on the respective host dependencies\n    - fluidsynth    # [not win]\n    - libmad\n    - opusfile      # [not win]\n\ntest:\n  commands:\n    # shared libraries\n    - test -f $PREFIX/lib/libSDL2_mixer.so                # [linux]\n    - test -f $PREFIX/lib/libSDL2_mixer.dylib             # [osx]\n    - if not exist %LIBRARY_LIB%\\SDL2_mixer.lib exit 1    # [win]\n    - if not exist %LIBRARY_BIN%\\SDL2_mixer.dll exit 1    # [win]\n\n    # absence of static libraries\n    - test ! -f $PREFIX/lib/libSDL2_mixer.a               # [unix]\n\n    # headers\n    - test -f $PREFIX/include/SDL2/SDL_mixer.h            # [unix]\n    - if not exist %LIBRARY_INC%\\SDL2\\SDL_mixer.h exit 1  # [win]\n\nabout:\n  home: https://www.libsdl.org/projects/SDL_mixer/\n  license: Zlib\n  license_file: LICENSE.txt\n  summary: Sample multi-channel audio mixer library\n  description: |\n    Simple DirectMedia Layer is a cross-platform development library designed to\n    provide low level access to audio, keyboard, mouse, joystick, and graphics\n    hardware via OpenGL and Direct3D.\n  doc_url: https://www.libsdl.org/projects/SDL_mixer/docs/index.html\n  dev_url: https://github.com/libsdl-org/SDL_mixer\n\nextra:\n  recipe-maintainers:\n    - dschreij\n    - matham\n    - h-vetinari\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -390,10 +376,10 @@
    "libmad",
    "libogg",
    "libvorbis",
+   "mpg123",
    "ninja",
    "opusfile",
-   "sdl2",
-   "smpeg2"
+   "sdl2"
   ]
  },
  "requirements": {
@@ -416,9 +402,9 @@
     "libmad",
     "libogg",
     "libvorbis",
+    "mpg123",
     "opusfile",
-    "sdl2",
-    "smpeg2"
+    "sdl2"
    ]
   },
   "run": {
@@ -428,9 +414,7 @@
     "cxx_compiler_stub",
     "fluidsynth",
     "libmad",
-    "opusfile",
-    "sdl2",
-    "smpeg2"
+    "opusfile"
    ]
   },
   "test": {
@@ -458,9 +442,9 @@
     "libmad",
     "libogg",
     "libvorbis",
+    "mpg123 1.31.*",
     "opusfile",
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*"
+    "sdl2"
    ]
   },
   "run": {
@@ -468,9 +452,7 @@
    "elements": [
     "fluidsynth",
     "libmad",
-    "opusfile",
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*"
+    "opusfile"
    ]
   },
   "test": {
@@ -491,7 +473,7 @@
    "summary": "Sample multi-channel audio mixer library"
   },
   "build": {
-   "number": "0",
+   "number": "2",
    "run_exports": [
     "sdl2_mixer"
    ]
@@ -515,16 +497,14 @@
     "ninja"
    ],
    "host": [
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
+    "sdl2",
+    "mpg123 1.31.*",
     "libflac",
     "libmad",
     "libogg",
     "libvorbis"
    ],
    "run": [
-    "sdl2 2.0.*",
-    "smpeg2 2.0.*",
     "libmad"
    ]
   },
@@ -557,16 +537,14 @@
     "libmad",
     "libogg",
     "libvorbis",
-    "sdl2",
-    "smpeg2"
+    "mpg123",
+    "sdl2"
    ]
   },
   "run": {
    "__set__": true,
    "elements": [
-    "libmad",
-    "sdl2",
-    "smpeg2"
+    "libmad"
    ]
   },
   "test": {

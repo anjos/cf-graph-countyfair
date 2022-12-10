@@ -308,26 +308,7 @@
   }
  ],
  "archived": false,
- "bad": {
-  "exception": "Command 'git fetch --all --quiet' returned non-zero exit status 1.",
-  "traceback": [
-   "Traceback (most recent call last):",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator",
-   "    migrator_uid, pr_json = run(",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 211, in run",
-   "    feedstock_dir, repo = get_repo(",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 314, in get_repo",
-   "    if fetch_repo(",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 214, in fetch_repo",
-   "    _run_git_cmd(f\"git fetch --all {quiet}\")",
-   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 199, in _run_git_cmd",
-   "    return subprocess.run(cmd, shell=True, check=True)",
-   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run",
-   "    raise CalledProcessError(retcode, process.args,",
-   "subprocess.CalledProcessError: Command 'git fetch --all --quiet' returned non-zero exit status 1.",
-   ""
-  ]
- },
+ "bad": false,
  "branch": "main",
  "conda-forge.yml": {},
  "feedstock_name": "seispy",
@@ -350,11 +331,11 @@
     "rf2depth=seispy.rf2depth_makedata:rf2depth",
     "plotrt=seispy.scripts:plot_rt",
     "plotr=seispy.scripts:plot_r",
-    "updatecatalog=seispy.updatecatalog:main",
-    "ndk2dat=seispy.updatecatalog:ndk2dat",
+    "download_catalog=seispy.catalog:main",
     "ccp_profile=seispy.scripts:ccp_profile",
+    "pickdepth=seispy.pickdepth.pickdepthui:main",
     "hk=seispy.hk:hk",
-    "pickrf=seispy.pickui:main",
+    "pickrf=seispy.pickrf.pickui:main",
     "rfani=seispy.scripts:rfani",
     "ccp3d=seispy.scripts:ccp3d",
     "rfharmo=seispy.scripts:rfharmo",
@@ -372,7 +353,7 @@
   },
   "package": {
    "name": "seispy",
-   "version": "1.2.18"
+   "version": "1.3.2"
   },
   "requirements": {
    "host": [
@@ -380,29 +361,31 @@
     "python >=3.8"
    ],
    "run": [
-    "matplotlib >=3.5.0",
-    "numpy >=1.19.0",
-    "obspy >=1.3.0",
-    "pandas >=1.0.0",
-    "pyside6 >=6.3.0",
-    "python >=3.6",
-    "scipy >=1.9.2",
-    "scikits-bootstrap >=1.0.0"
+    "matplotlib-base >=3.5.0",
+    "numpy",
+    "obspy",
+    "pandas",
+    "pyside6",
+    "scipy",
+    "scikits-bootstrap"
    ]
   },
   "source": {
-   "sha256": "8ed889ac51a9bf56489ce1a7f5ee7f8f398145134506bb2ed4f38a8435ffd9d1",
-   "url": "https://pypi.io/packages/source/p/python-seispy/python-seispy-1.2.18.tar.gz"
+   "sha256": "24b98256d21a4730fcf83e9ce8727d9a8303dd950b9ff1ca94dab6d6e5c0c192",
+   "url": "https://pypi.io/packages/source/p/python-seispy/python-seispy-1.3.2.tar.gz"
   },
   "test": {
    "commands": [
-    "pip check"
+    "prf -h",
+    "rf2depth -h",
+    "download_catalog -h",
+    "ccp3d -h",
+    "ccp_profile -h",
+    "rfani -h",
+    "rfharmo -h"
    ],
    "imports": [
     "seispy"
-   ],
-   "requires": [
-    "pip"
    ]
   }
  },
@@ -421,21 +404,18 @@
   "run": {
    "__set__": true,
    "elements": [
-    "matplotlib",
+    "matplotlib-base",
     "numpy",
     "obspy",
     "pandas",
     "pyside6",
-    "python",
     "scikits-bootstrap",
     "scipy"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": [
-    "pip"
-   ]
+   "elements": []
   }
  },
  "meta_yaml": {
@@ -456,11 +436,11 @@
     "rf2depth=seispy.rf2depth_makedata:rf2depth",
     "plotrt=seispy.scripts:plot_rt",
     "plotr=seispy.scripts:plot_r",
-    "updatecatalog=seispy.updatecatalog:main",
-    "ndk2dat=seispy.updatecatalog:ndk2dat",
+    "download_catalog=seispy.catalog:main",
     "ccp_profile=seispy.scripts:ccp_profile",
+    "pickdepth=seispy.pickdepth.pickdepthui:main",
     "hk=seispy.hk:hk",
-    "pickrf=seispy.pickui:main",
+    "pickrf=seispy.pickrf.pickui:main",
     "rfani=seispy.scripts:rfani",
     "ccp3d=seispy.scripts:ccp3d",
     "rfharmo=seispy.scripts:rfharmo",
@@ -478,7 +458,7 @@
   },
   "package": {
    "name": "seispy",
-   "version": "1.2.18"
+   "version": "1.3.2"
   },
   "requirements": {
    "host": [
@@ -486,29 +466,31 @@
     "python >=3.8"
    ],
    "run": [
-    "matplotlib >=3.5.0",
-    "numpy >=1.19.0",
-    "obspy >=1.3.0",
-    "pandas >=1.0.0",
-    "pyside6 >=6.3.0",
-    "python >=3.6",
-    "scipy >=1.9.2",
-    "scikits-bootstrap >=1.0.0"
+    "matplotlib-base >=3.5.0",
+    "numpy",
+    "obspy",
+    "pandas",
+    "pyside6",
+    "scipy",
+    "scikits-bootstrap"
    ]
   },
   "source": {
-   "sha256": "8ed889ac51a9bf56489ce1a7f5ee7f8f398145134506bb2ed4f38a8435ffd9d1",
-   "url": "https://pypi.io/packages/source/p/python-seispy/python-seispy-1.2.18.tar.gz"
+   "sha256": "24b98256d21a4730fcf83e9ce8727d9a8303dd950b9ff1ca94dab6d6e5c0c192",
+   "url": "https://pypi.io/packages/source/p/python-seispy/python-seispy-1.3.2.tar.gz"
   },
   "test": {
    "commands": [
-    "pip check"
+    "prf -h",
+    "rf2depth -h",
+    "download_catalog -h",
+    "ccp3d -h",
+    "ccp_profile -h",
+    "rfani -h",
+    "rfharmo -h"
    ],
    "imports": [
     "seispy"
-   ],
-   "requires": [
-    "pip"
    ]
   }
  },
@@ -550,11 +532,11 @@
  "pre_pr_migrator_status": {
   "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3622111625\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 211, in run\n    feedstock_dir, repo = get_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 314, in get_repo\n    if fetch_repo(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 214, in fetch_repo\n    _run_git_cmd(f\"git fetch --all {quiet}\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/git_utils.py\", line 199, in _run_git_cmd\n    return subprocess.run(cmd, shell=True, check=True)\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command 'git fetch --all --quiet' returned non-zero exit status 1.\n"
  },
- "raw_meta_yaml": "{% set name = \"seispy\" %}\n\n{% set version = \"1.2.18\" %}\n\n\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/p/python-{{ name }}/python-{{ name }}-{{ version }}.tar.gz\n  sha256: 8ed889ac51a9bf56489ce1a7f5ee7f8f398145134506bb2ed4f38a8435ffd9d1\n\nbuild:\n  number: 0\n  noarch: python\n  entry_points:\n    - gen_rayp_lib=seispy.psrayp:gen_rayp_lib\n    - prf=seispy.scripts:prf\n    - srf=seispy.scripts:srf\n    - setpar=seispy.rf:setpar\n    - rf2depth=seispy.rf2depth_makedata:rf2depth\n    - plotrt=seispy.scripts:plot_rt\n    - plotr=seispy.scripts:plot_r\n    - updatecatalog=seispy.updatecatalog:main\n    - ndk2dat=seispy.updatecatalog:ndk2dat\n    - ccp_profile=seispy.scripts:ccp_profile\n    - hk=seispy.hk:hk\n    - pickrf=seispy.pickui:main\n    - rfani=seispy.scripts:rfani\n    - ccp3d=seispy.scripts:ccp3d\n    - rfharmo=seispy.scripts:rfharmo\n    - get_pierce_points=seispy.scripts:get_pierce_points\n    - veltxt2mod=seispy.modcreator:veltxt2mod\n  script: {{ PYTHON }} -m pip install . -vv\n\nrequirements:\n  host:\n    - pip\n    - python >=3.8\n  run:\n    - matplotlib >=3.5.0\n    - numpy >=1.19.0\n    - obspy >=1.3.0\n    - pandas >=1.0.0\n    - pyside6 >=6.3.0\n    - python >=3.6\n    - scipy >=1.9.2\n    - scikits-bootstrap >=1.0.0\n\ntest:\n  imports:\n    - seispy\n  commands:\n    - pip check\n  requires:\n    - pip\n\nabout:\n  home: https://pypi.org/project/python-seispy/\n  license: GPL-3.0-or-later\n  license_file: LICENSE.txt\n  summary: Python module of seismology and receiver functions\n  doc_url: https://seispy.xumijian.me/\n  dev_url: https://github.com/xumi1993/seispy\n\nextra:\n  recipe-maintainers:\n    - xumi1993\n",
+ "raw_meta_yaml": "{% set name = \"seispy\" %}\n\n{% set version = \"1.3.2\" %}\n\n\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/p/python-{{ name }}/python-{{ name }}-{{ version }}.tar.gz\n  sha256: 24b98256d21a4730fcf83e9ce8727d9a8303dd950b9ff1ca94dab6d6e5c0c192\n\nbuild:\n  number: 0\n  noarch: python\n  entry_points:\n    - gen_rayp_lib=seispy.psrayp:gen_rayp_lib\n    - prf=seispy.scripts:prf\n    - srf=seispy.scripts:srf\n    - setpar=seispy.rf:setpar\n    - rf2depth=seispy.rf2depth_makedata:rf2depth\n    - plotrt=seispy.scripts:plot_rt\n    - plotr=seispy.scripts:plot_r\n    - download_catalog=seispy.catalog:main\n    - ccp_profile=seispy.scripts:ccp_profile\n    - pickdepth=seispy.pickdepth.pickdepthui:main\n    - hk=seispy.hk:hk\n    - pickrf=seispy.pickrf.pickui:main\n    - rfani=seispy.scripts:rfani\n    - ccp3d=seispy.scripts:ccp3d\n    - rfharmo=seispy.scripts:rfharmo\n    - get_pierce_points=seispy.scripts:get_pierce_points\n    - veltxt2mod=seispy.modcreator:veltxt2mod\n  script: {{ PYTHON }} -m pip install . -vv\n\nrequirements:\n  host:\n    - pip\n    - python >=3.8\n  run:\n    - matplotlib-base >=3.5.0\n    - numpy\n    - obspy\n    - pandas\n    - pyside6\n    - scipy\n    - scikits-bootstrap\n\ntest:\n  imports:\n    - seispy\n  commands:\n    - prf -h\n    - rf2depth -h\n    - download_catalog -h\n    - ccp3d -h\n    - ccp_profile -h\n    - rfani -h\n    - rfharmo -h\n#   requires:\n\n\nabout:\n  home: https://pypi.org/project/python-seispy/\n  license: GPL-3.0-or-later\n  license_file: LICENSE.txt\n  summary: Python module of seismology and receiver functions\n  doc_url: https://seispy.xumijian.me/\n  dev_url: https://github.com/xumi1993/seispy\n\nextra:\n  recipe-maintainers:\n    - xumi1993\n",
  "req": {
   "__set__": true,
   "elements": [
-   "matplotlib",
+   "matplotlib-base",
    "numpy",
    "obspy",
    "pandas",
@@ -580,21 +562,18 @@
   "run": {
    "__set__": true,
    "elements": [
-    "matplotlib",
+    "matplotlib-base",
     "numpy",
     "obspy",
     "pandas",
     "pyside6",
-    "python",
     "scikits-bootstrap",
     "scipy"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": [
-    "pip"
-   ]
+   "elements": []
   }
  },
  "smithy_version": "3.22.0",
@@ -614,23 +593,20 @@
   "run": {
    "__set__": true,
    "elements": [
-    "matplotlib >=3.5.0",
-    "numpy >=1.19.0",
-    "obspy >=1.3.0",
-    "pandas >=1.0.0",
-    "pyside6 >=6.3.0",
-    "python >=3.6",
-    "scikits-bootstrap >=1.0.0",
-    "scipy >=1.9.2"
+    "matplotlib-base >=3.5.0",
+    "numpy",
+    "obspy",
+    "pandas",
+    "pyside6",
+    "scikits-bootstrap",
+    "scipy"
    ]
   },
   "test": {
    "__set__": true,
-   "elements": [
-    "pip"
-   ]
+   "elements": []
   }
  },
- "url": "https://pypi.io/packages/source/p/python-seispy/python-seispy-1.2.18.tar.gz",
- "version": "1.2.18"
+ "url": "https://pypi.io/packages/source/p/python-seispy/python-seispy-1.3.2.tar.gz",
+ "version": "1.3.2"
 }
