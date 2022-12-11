@@ -921,6 +921,12 @@
   ]
  },
  "pinning_version": "2022.11.11.09.28.38",
+ "pre_pr_migrator_attempts": {
+  "python311": 1
+ },
+ "pre_pr_migrator_status": {
+  "python311": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3670077399\">bot CI job</a>): main: ['linux_64_python3.11.____cpython: Encountered problems while solving:\\n  - package tensorflow-2.10.0-eigen_py310h7dfe345_0 requires python 3.10.*, but none of the providers can be installed\\n', 'osx_64_python3.11.____cpython: Encountered problems while solving:\\n  - package tensorflow-2.9.1-eigen_py310h8478240_0 requires python 3.10.*, but none of the providers can be installed\\n', 'osx_arm64_python3.11.____cpython: Encountered problems while solving:\\n  - package tensorflow-2.10.0-cpu_py310h6ecea76_0 requires python_abi 3.10.* *_cp310, but none of the providers can be installed\\n']"
+ },
  "raw_meta_yaml": "{% set name = \"cellfinder-core\" %}\n{% set version = \"0.3.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/cellfinder-core-{{ version }}.tar.gz\n  sha256: c0fc7c93b098b7033222450dcc4d02ae2a97f4e6ebea3f4ffa1f62f6febf3c23\n\nbuild:\n  entry_points:\n    - cellfinder_download = cellfinder_core.download.cli:main\n    - cellfinder_train = cellfinder_core.train.train_yml:cli\n  script: {{ PYTHON }} -m pip install . -vv\n  number: 0\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - cython                                 # [build_platform != target_platform]\n    - {{ compiler('cxx') }}\n  host:\n    - cython\n    - pip\n    - python\n  run:\n    - dask-core\n    - fancylog >=0.0.7\n    - imlib >=0.0.26\n    - natsort\n    - numpy\n    - python\n    - scikit-image\n    - scikit-learn\n    - tensorflow >=2.5.0  # [unix]\n    - tifffile\n    - tqdm\n  run_constrained:   # [win]\n    - tensorflow >=2.5.0  # [win]\n\ntest:\n  imports:\n    - cellfinder_core\n  commands:\n    - pip list\n    - pip check  # [unix]\n    - cellfinder_download --help\n    - cellfinder_train --help\n  requires:\n    - pip\n\nabout:\n  home: https://brainglobe.info/cellfinder\n  summary: Automated 3D cell detection in large microscopy images\n  license: BSD-3-Clause\n  license_file: LICENSE\n  dev_url: https://github.com/brainglobe/cellfinder-core\n\nextra:\n  recipe-maintainers:\n    - adamltyson\n    - goanpeca\n",
  "req": {
   "__set__": true,
