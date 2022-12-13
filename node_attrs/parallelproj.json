@@ -2,7 +2,11 @@
  "archived": false,
  "bad": false,
  "branch": "main",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "build_platform": {
+   "osx_arm64": "osx_64"
+  }
+ },
  "feedstock_name": "parallelproj",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -20,7 +24,7 @@
     "cudatoolkit",
     "cudatoolkit"
    ],
-   "number": "2",
+   "number": "3",
    "run_exports": [
     "parallelproj",
     "parallelproj",
@@ -28,7 +32,7 @@
     "parallelproj",
     "parallelproj"
    ],
-   "string": "cuda10.2h1234567_2"
+   "string": "cuda10.2h1234567_3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -160,10 +164,12 @@
     "cudatoolkit",
     "cudatoolkit",
     "cudatoolkit",
+    "cudatoolkit",
     "cudatoolkit"
    ],
-   "number": "2",
+   "number": "3",
    "run_exports": [
+    "parallelproj",
     "parallelproj",
     "parallelproj",
     "parallelproj",
@@ -176,10 +182,11 @@
     "parallelproj",
     "parallelproj"
    ],
-   "string": "cuda10.2h1234567_2"
+   "string": "cuda10.2h1234567_3"
   },
   "extra": {
    "recipe-maintainers": [
+    "gschramm",
     "gschramm",
     "gschramm",
     "gschramm",
@@ -232,6 +239,10 @@
     "ninja",
     "python",
     "c_compiler_stub",
+    "cmake >=3.23",
+    "ninja",
+    "python",
+    "c_compiler_stub",
     "cxx_compiler_stub",
     "cuda_compiler_stub",
     "cmake >=3.23",
@@ -266,6 +277,7 @@
     "libgomp",
     "libgomp",
     "libgomp",
+    "llvm-openmp",
     "llvm-openmp"
    ]
   },
@@ -298,6 +310,9 @@
     "test -f $PREFIX/lib/cmake/parallelproj/parallelprojConfig.cmake",
     "test -f $PREFIX/lib/libparallelproj_cuda$SHLIB_EXT",
     "test -f $PREFIX/include/parallelproj_cuda.h",
+    "test -f $PREFIX/lib/libparallelproj_c$SHLIB_EXT",
+    "test -f $PREFIX/include/parallelproj_c.h",
+    "test -f $PREFIX/lib/cmake/parallelproj/parallelprojConfig.cmake",
     "test -f $PREFIX/lib/libparallelproj_c$SHLIB_EXT",
     "test -f $PREFIX/include/parallelproj_c.h",
     "test -f $PREFIX/lib/cmake/parallelproj/parallelprojConfig.cmake",
@@ -337,11 +352,11 @@
    "ignore_run_exports": [
     "cudatoolkit"
    ],
-   "number": "2",
+   "number": "3",
    "run_exports": [
     "parallelproj"
    ],
-   "string": "cpuh1234567_2"
+   "string": "cpuh1234567_3"
   },
   "extra": {
    "recipe-maintainers": [
@@ -400,13 +415,87 @@
    "elements": []
   }
  },
+ "osx_arm64_meta_yaml": {
+  "about": {
+   "home": "https://github.com/gschramm/parallelproj",
+   "license": "MIT",
+   "license_file": "LICENSE",
+   "summary": "parallelized TOF PET projectors"
+  },
+  "build": {
+   "ignore_run_exports": [
+    "cudatoolkit"
+   ],
+   "number": "3",
+   "run_exports": [
+    "parallelproj"
+   ],
+   "string": "cpuh1234567_3"
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "gschramm"
+   ]
+  },
+  "package": {
+   "name": "parallelproj",
+   "version": "1.2.9"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cmake >=3.23",
+    "ninja",
+    "python"
+   ],
+   "host": [
+    "llvm-openmp"
+   ]
+  },
+  "source": {
+   "sha256": "0f663a539536084ad64f0fbdb4340ad5fbee1d9bbbbdc12d386d278844efe819",
+   "url": "https://github.com/gschramm/parallelproj/archive/refs/tags/v1.2.9.tar.gz"
+  },
+  "test": {
+   "commands": [
+    "test -f $PREFIX/lib/libparallelproj_c$SHLIB_EXT",
+    "test -f $PREFIX/include/parallelproj_c.h",
+    "test -f $PREFIX/lib/cmake/parallelproj/parallelprojConfig.cmake"
+   ]
+  }
+ },
+ "osx_arm64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "c_compiler_stub",
+    "cmake",
+    "ninja",
+    "python"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "llvm-openmp"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
  "outputs_names": {
   "__set__": true,
   "elements": [
    "parallelproj"
   ]
  },
- "raw_meta_yaml": "{% set name = \"parallelproj\" %}\n{% set version = \"1.2.9\" %}\n{% set build_number = \"2\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/gschramm/parallelproj/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 0f663a539536084ad64f0fbdb4340ad5fbee1d9bbbbdc12d386d278844efe819\n\nbuild:\n  run_exports:\n    - {{ pin_subpackage( name|lower, max_pin='x.x') }}\n  number: {{ build_number }}\n  ignore_run_exports:\n    - cudatoolkit\n  string: \"cpuh{{ PKG_HASH }}_{{ build_number }}\"   # [cuda_compiler_version == \"None\"]\n  string: \"cuda{{ cuda_compiler_version|string }}h{{ PKG_HASH }}_{{ build_number }}\"  # [cuda_compiler_version != \"None\"]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}  # [cuda_compiler_version != \"None\"]\n    - {{ compiler('cuda') }}  # [cuda_compiler_version != \"None\"]\n    - cmake >=3.23\n    - ninja\n    - python\n  host:\n    - libgomp      # [linux]\n    - llvm-openmp  # [osx]\ntest:\n  commands:\n    - test -f $PREFIX/lib/libparallelproj_c$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/include/parallelproj_c.h  # [unix]\n    - test -f $PREFIX/lib/cmake/parallelproj/parallelprojConfig.cmake  # [unix]\n    - test -f $PREFIX/lib/libparallelproj_cuda$SHLIB_EXT  # [linux and cuda_compiler_version != \"None\"]\n    - test -f $PREFIX/include/parallelproj_cuda.h  # [linux and cuda_compiler_version != \"None\"]\n    - if not exist %LIBRARY_LIB%\\parallelproj_c.lib exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\parallelproj_c.dll exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\parallelproj_c.h exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\cmake\\parallelproj\\parallelprojConfig.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/gschramm/parallelproj\n  license:  MIT\n  license_file: LICENSE\n  summary: 'parallelized TOF PET projectors'\n\nextra:\n  recipe-maintainers:\n    - gschramm\n",
+ "raw_meta_yaml": "{% set name = \"parallelproj\" %}\n{% set version = \"1.2.9\" %}\n{% set build_number = \"3\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/gschramm/parallelproj/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 0f663a539536084ad64f0fbdb4340ad5fbee1d9bbbbdc12d386d278844efe819\n\nbuild:\n  run_exports:\n    - {{ pin_subpackage( name|lower, max_pin='x.x') }}\n  number: {{ build_number }}\n  ignore_run_exports:\n    - cudatoolkit\n  string: \"cpuh{{ PKG_HASH }}_{{ build_number }}\"   # [cuda_compiler_version == \"None\"]\n  string: \"cuda{{ cuda_compiler_version|string }}h{{ PKG_HASH }}_{{ build_number }}\"  # [cuda_compiler_version != \"None\"]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}  # [cuda_compiler_version != \"None\"]\n    - {{ compiler('cuda') }}  # [cuda_compiler_version != \"None\"]\n    - cmake >=3.23\n    - ninja\n    - python\n  host:\n    - libgomp      # [linux]\n    - llvm-openmp  # [osx]\ntest:\n  commands:\n    - test -f $PREFIX/lib/libparallelproj_c$SHLIB_EXT  # [unix]\n    - test -f $PREFIX/include/parallelproj_c.h  # [unix]\n    - test -f $PREFIX/lib/cmake/parallelproj/parallelprojConfig.cmake  # [unix]\n    - test -f $PREFIX/lib/libparallelproj_cuda$SHLIB_EXT  # [linux and cuda_compiler_version != \"None\"]\n    - test -f $PREFIX/include/parallelproj_cuda.h  # [linux and cuda_compiler_version != \"None\"]\n    - if not exist %LIBRARY_LIB%\\parallelproj_c.lib exit 1  # [win]\n    - if not exist %LIBRARY_BIN%\\parallelproj_c.dll exit 1  # [win]\n    - if not exist %LIBRARY_INC%\\parallelproj_c.h exit 1  # [win]\n    - if not exist %LIBRARY_LIB%\\cmake\\parallelproj\\parallelprojConfig.cmake exit 1  # [win]\n\nabout:\n  home: https://github.com/gschramm/parallelproj\n  license:  MIT\n  license_file: LICENSE\n  summary: 'parallelized TOF PET projectors'\n\nextra:\n  recipe-maintainers:\n    - gschramm\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -505,7 +594,7 @@
     "cudatoolkit",
     "cudatoolkit"
    ],
-   "number": "2",
+   "number": "3",
    "run_exports": [
     "parallelproj",
     "parallelproj",
@@ -513,7 +602,7 @@
     "parallelproj",
     "parallelproj"
    ],
-   "string": "cuda10.2h1234567_2"
+   "string": "cuda10.2h1234567_3"
   },
   "extra": {
    "recipe-maintainers": [
