@@ -91,7 +91,7 @@
    "summary": "An optimizing compiler for evaluating mathematical expressions."
   },
   "build": {
-   "number": "3"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -641,12 +641,12 @@
   ],
   "package": {
    "name": "pytensor-suite",
-   "version": "2.8.10"
+   "version": "2.8.11"
   },
   "source": {
    "patches": null,
-   "sha256": "1cc26ebf6a5a8678b37bcb6ae497334bca3e3f7e27cb7815b0c9af0c0deb83f3",
-   "url": "https://pypi.io/packages/source/p/pytensor/pytensor-2.8.10.tar.gz"
+   "sha256": "f1dd07ba67a4c10bed9383f56b9e45a104839ce309eed949212d294595f03393",
+   "url": "https://pypi.io/packages/source/p/pytensor/pytensor-2.8.11.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -698,7 +698,7 @@
    "summary": "An optimizing compiler for evaluating mathematical expressions."
   },
   "build": {
-   "number": "3"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -2340,12 +2340,12 @@
   ],
   "package": {
    "name": "pytensor-suite",
-   "version": "2.8.10"
+   "version": "2.8.11"
   },
   "source": {
    "patches": null,
-   "sha256": "1cc26ebf6a5a8678b37bcb6ae497334bca3e3f7e27cb7815b0c9af0c0deb83f3",
-   "url": "https://pypi.io/packages/source/p/pytensor/pytensor-2.8.10.tar.gz"
+   "sha256": "f1dd07ba67a4c10bed9383f56b9e45a104839ce309eed949212d294595f03393",
+   "url": "https://pypi.io/packages/source/p/pytensor/pytensor-2.8.11.tar.gz"
   }
  },
  "name": "pytensor-suite",
@@ -2364,7 +2364,7 @@
    "summary": "An optimizing compiler for evaluating mathematical expressions."
   },
   "build": {
-   "number": "3"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -2914,12 +2914,12 @@
   ],
   "package": {
    "name": "pytensor-suite",
-   "version": "2.8.10"
+   "version": "2.8.11"
   },
   "source": {
    "patches": null,
-   "sha256": "1cc26ebf6a5a8678b37bcb6ae497334bca3e3f7e27cb7815b0c9af0c0deb83f3",
-   "url": "https://pypi.io/packages/source/p/pytensor/pytensor-2.8.10.tar.gz"
+   "sha256": "f1dd07ba67a4c10bed9383f56b9e45a104839ce309eed949212d294595f03393",
+   "url": "https://pypi.io/packages/source/p/pytensor/pytensor-2.8.11.tar.gz"
   }
  },
  "osx_64_requirements": {
@@ -2969,7 +2969,7 @@
   ]
  },
  "pinning_version": "2022.12.13.21.25.24",
- "raw_meta_yaml": "{% set version = \"2.8.10\" %}\n\npackage:\n  # https://github.com/conda/conda-build/issues/3933\n  name: pytensor-suite \n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/p/pytensor/pytensor-{{ version }}.tar.gz\n  sha256: 1cc26ebf6a5a8678b37bcb6ae497334bca3e3f7e27cb7815b0c9af0c0deb83f3\n  patches:\n\nbuild:\n  number: 3\n\noutputs:\n  - name: pytensor-base\n    build:\n      script:\n        - python -m pip install . --no-deps -vv\n      entry_points:\n        - pytensor-cache = bin.pytensor_cache:main\n    requirements:\n      build:\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n      host:\n        - pip\n        - python\n      run:\n        - python\n        # Ref: <https://github.com/pymc-devs/pytensor/blob/rel-{{ version }}/setup.py>\n        - numpy >=1.17.0\n        - scipy >=0.14\n        - filelock\n        - etuples\n        - logical-unification\n        - miniKanren\n        - cons\n        - typing_extensions\n        - setuptools >=48.0.0\n    test:\n      imports:\n        - pytensor\n      commands:\n        - pytensor-cache help\n        - pip check\n        - python check-for-warnings.py allowed-warnings-base.txt\n      requires:\n        - pip\n      files:\n        - check-for-warnings.py\n        - allowed-warnings-base.txt\n\n  - name: pytensor\n    build:\n      script:\n        - echo \"Nothing to build here, just add dependencies.\"\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('pytensor-base', exact=True) }}\n        - {{ compiler('c') }}  # [not win]\n        - cxx-compiler  # [not win]\n        - {{ compiler('m2w64_c') }}  # [win]\n        - {{ compiler('m2w64_cxx') }}  # [win]\n\n        - m2w64-toolchain  # [win]\n        # The libpython conda-forge package seems to be a wrapper package\n        # which configures m2w64-toolchain for Python.\n        # <https://github.com/conda-forge/libpython-feedstock/blob/main/recipe/bld.bat>\n        - libpython >=2.2  # [win]\n\n        # Use openblas on Apple M1. For everything else, use mkl-service.\n        - openblas  # [arm64]\n        - mkl-service  # [not arm64]\n        # For some reason we also need the \"blas\" package. Otherwise we get reports\n        # of \"cblas.h: No such file or directory\" at import time.\n        # Ref: <https://github.com/conda-forge/pytensor-feedstock/issues/80>\n        - blas\n    test:\n      imports:\n        - pytensor\n        - pytensor.configdefaults\n      commands:\n        - pytensor-cache help\n        - pip check\n        - python check-for-warnings.py allowed-warnings-main.txt\n      requires:\n        - pip\n      files:\n        - check-for-warnings.py\n        - allowed-warnings-main.txt\n\nabout:\n  home: https://github.com/pymc-devs/pytensor\n  license: BSD-3-Clause\n  summary: An optimizing compiler for evaluating mathematical expressions.\n  license_file: LICENSE.txt\n  dev_url: https://github.com/pymc-devs/pytensor/\n  doc_url: https://pytensor.readthedocs.io/en/latest/\n\nextra:\n  recipe-maintainers:\n    - aseyboldt\n    - maresb\n    - michaelosthege\n    - twiecki\n",
+ "raw_meta_yaml": "{% set version = \"2.8.11\" %}\n\npackage:\n  # https://github.com/conda/conda-build/issues/3933\n  name: pytensor-suite\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/p/pytensor/pytensor-{{ version }}.tar.gz\n  sha256: f1dd07ba67a4c10bed9383f56b9e45a104839ce309eed949212d294595f03393\n  patches:\n\nbuild:\n  number: 0\n\noutputs:\n  - name: pytensor-base\n    build:\n      script:\n        - python -m pip install . --no-deps -vv\n      entry_points:\n        - pytensor-cache = bin.pytensor_cache:main\n    requirements:\n      build:\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n      host:\n        - pip\n        - python\n      run:\n        - python\n        # Ref: <https://github.com/pymc-devs/pytensor/blob/rel-{{ version }}/setup.py>\n        - numpy >=1.17.0\n        - scipy >=0.14\n        - filelock\n        - etuples\n        - logical-unification\n        - miniKanren\n        - cons\n        - typing_extensions\n        - setuptools >=48.0.0\n    test:\n      imports:\n        - pytensor\n      commands:\n        - pytensor-cache help\n        - pip check\n        - python check-for-warnings.py allowed-warnings-base.txt\n      requires:\n        - pip\n      files:\n        - check-for-warnings.py\n        - allowed-warnings-base.txt\n\n  - name: pytensor\n    build:\n      script:\n        - echo \"Nothing to build here, just add dependencies.\"\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('pytensor-base', exact=True) }}\n        - {{ compiler('c') }}  # [not win]\n        - cxx-compiler  # [not win]\n        - {{ compiler('m2w64_c') }}  # [win]\n        - {{ compiler('m2w64_cxx') }}  # [win]\n\n        - m2w64-toolchain  # [win]\n        # The libpython conda-forge package seems to be a wrapper package\n        # which configures m2w64-toolchain for Python.\n        # <https://github.com/conda-forge/libpython-feedstock/blob/main/recipe/bld.bat>\n        - libpython >=2.2  # [win]\n\n        # Use openblas on Apple M1. For everything else, use mkl-service.\n        - openblas  # [arm64]\n        - mkl-service  # [not arm64]\n        # For some reason we also need the \"blas\" package. Otherwise we get reports\n        # of \"cblas.h: No such file or directory\" at import time.\n        # Ref: <https://github.com/conda-forge/aesara-feedstock/issues/80>\n        - blas\n    test:\n      imports:\n        - pytensor\n        - pytensor.configdefaults\n      commands:\n        - pytensor-cache help\n        - pip check\n        - python check-for-warnings.py allowed-warnings-main.txt\n      requires:\n        - pip\n      files:\n        - check-for-warnings.py\n        - allowed-warnings-main.txt\n\nabout:\n  home: https://github.com/pymc-devs/pytensor\n  license: BSD-3-Clause\n  summary: An optimizing compiler for evaluating mathematical expressions.\n  license_file: LICENSE.txt\n  dev_url: https://github.com/pymc-devs/pytensor/\n  doc_url: https://pytensor.readthedocs.io/en/latest/\n\nextra:\n  recipe-maintainers:\n    - aseyboldt\n    - maresb\n    - michaelosthege\n    - twiecki\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -3084,8 +3084,8 @@
    ]
   }
  },
- "url": "https://pypi.io/packages/source/p/pytensor/pytensor-2.8.10.tar.gz",
- "version": "2.8.10",
+ "url": "https://pypi.io/packages/source/p/pytensor/pytensor-2.8.11.tar.gz",
+ "version": "2.8.11",
  "win_64_meta_yaml": {
   "about": {
    "dev_url": "https://github.com/pymc-devs/pytensor/",
@@ -3096,7 +3096,7 @@
    "summary": "An optimizing compiler for evaluating mathematical expressions."
   },
   "build": {
-   "number": "3"
+   "number": "0"
   },
   "extra": {
    "recipe-maintainers": [
@@ -3658,12 +3658,12 @@
   ],
   "package": {
    "name": "pytensor-suite",
-   "version": "2.8.10"
+   "version": "2.8.11"
   },
   "source": {
    "patches": null,
-   "sha256": "1cc26ebf6a5a8678b37bcb6ae497334bca3e3f7e27cb7815b0c9af0c0deb83f3",
-   "url": "https://pypi.io/packages/source/p/pytensor/pytensor-2.8.10.tar.gz"
+   "sha256": "f1dd07ba67a4c10bed9383f56b9e45a104839ce309eed949212d294595f03393",
+   "url": "https://pypi.io/packages/source/p/pytensor/pytensor-2.8.11.tar.gz"
   }
  },
  "win_64_requirements": {
