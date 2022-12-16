@@ -282,6 +282,12 @@
   ]
  },
  "pinning_version": "2021.05.13.11.03.51",
+ "pre_pr_migrator_attempts": {
+  "krb5120": 1
+ },
+ "pre_pr_migrator_status": {
+  "krb5120": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3713164680\">bot CI job</a>): main: ['linux_64_: Encountered problems while solving:\\n  - package go-cgo_linux-64-1.15.10-h64e365f_0 requires go 1.15.10 h17d2266_0, but none of the providers can be installed\\n', 'osx_64_: Encountered problems while solving:\\n  - package go-cgo_osx-64-1.15.10-h51d245f_0 requires go 1.15.10 h5d8ce4a_0, but none of the providers can be installed\\n']"
+ },
  "raw_meta_yaml": "{% set name = \"openshift-cli\" %}\n{% set version = \"4.1.0\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  # Tarballs are not used as the build system relies heavily on the state of\n  # the git repository and updates will be difficult if it's patched with\n  # these details\n  git_url: https://github.com/openshift/origin.git\n  git_rev: v{{ version }}\n\nbuild:\n  number: 2\n  skip: true  # [win]\n  script:\n    - make build WHAT=cmd/oc\n    # For go 1.16 add @v$PKG_VERSION\n    - cp _output/local/bin/*/*/oc $PREFIX/bin\n\nrequirements:\n  build:\n    - {{ compiler(\"c\") }}\n    - {{ compiler(\"cxx\") }}\n    # GO 1.16 has issues but there haven't been any releases in a while so it's not worth fixing\n    - {{ compiler(\"cgo\") }} 1.15.*\n    - make\n  host:\n    - krb5\n    - socat  # [unix]\n  run:\n    - krb5\n    - socat  # [unix]\n\ntest:\n  commands:\n      - oc --help\n\nabout:\n  home: https://www.okd.io/\n  license: Apache-2.0\n  license_family: APACHE\n  license_file: LICENSE\n  summary: 'OpenShift Client'\n\n  description: |\n    This client helps you develop, build, deploy, and run your applications on any\n    OpenShift or Kubernetes cluster. It also includes the administrative\n    commands for managing a cluster under the 'adm' subcommand.\n  dev_url: https://github.com/openshift/origin\n  doc_url: https://docs.okd.io/latest/cli_reference/index.html\n\nextra:\n  recipe-maintainers:\n    - chrisburr\n",
  "req": {
   "__set__": true,

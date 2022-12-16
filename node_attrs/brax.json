@@ -46,7 +46,7 @@
   },
   "package": {
    "name": "brax",
-   "version": "0.0.15"
+   "version": "0.0.16"
   },
   "requirements": {
    "host": [
@@ -74,18 +74,24 @@
    ]
   },
   "source": {
-   "sha256": "9fae266a69282470783fecfc231d0bc91e955df1dcb6f81b36d39cfe703087eb",
-   "url": "https://pypi.io/packages/source/b/brax/brax-0.0.15.tar.gz"
+   "sha256": "5cef88b896eccaec819fd2707591f8c99444c49f911781abd6601af161777928",
+   "url": "https://pypi.io/packages/source/b/brax/brax-0.0.16.tar.gz"
   },
   "test": {
    "commands": [
-    "pip check"
+    "pip check",
+    "mkdir -p brax/tests/testdata",
+    "wget https://github.com/google/brax/raw/v0.0.16/brax/tests/testdata/cylinder.stl -O brax/tests/testdata/cylinder.stl",
+    "pytest --pyargs brax -v"
    ],
    "imports": [
     "brax"
    ],
    "requires": [
-    "pip"
+    "pip",
+    "pytest",
+    "transforms3d",
+    "wget"
    ]
   }
  },
@@ -126,7 +132,10 @@
   "test": {
    "__set__": true,
    "elements": [
-    "pip"
+    "pip",
+    "pytest",
+    "transforms3d",
+    "wget"
    ]
   }
  },
@@ -152,7 +161,7 @@
   },
   "package": {
    "name": "brax",
-   "version": "0.0.15"
+   "version": "0.0.16"
   },
   "requirements": {
    "host": [
@@ -180,18 +189,24 @@
    ]
   },
   "source": {
-   "sha256": "9fae266a69282470783fecfc231d0bc91e955df1dcb6f81b36d39cfe703087eb",
-   "url": "https://pypi.io/packages/source/b/brax/brax-0.0.15.tar.gz"
+   "sha256": "5cef88b896eccaec819fd2707591f8c99444c49f911781abd6601af161777928",
+   "url": "https://pypi.io/packages/source/b/brax/brax-0.0.16.tar.gz"
   },
   "test": {
    "commands": [
-    "pip check"
+    "pip check",
+    "mkdir -p brax/tests/testdata",
+    "wget https://github.com/google/brax/raw/v0.0.16/brax/tests/testdata/cylinder.stl -O brax/tests/testdata/cylinder.stl",
+    "pytest --pyargs brax -v"
    ],
    "imports": [
     "brax"
    ],
    "requires": [
-    "pip"
+    "pip",
+    "pytest",
+    "transforms3d",
+    "wget"
    ]
   }
  },
@@ -208,7 +223,7 @@
   ]
  },
  "pinning_version": "2022.12.14.21.36.18",
- "raw_meta_yaml": "{% set name = \"brax\" %}\n{% set version = \"0.0.15\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/brax-{{ version }}.tar.gz\n  sha256: 9fae266a69282470783fecfc231d0bc91e955df1dcb6f81b36d39cfe703087eb\n\nbuild:\n  noarch: python\n  script: {{ PYTHON }} -m pip install . -vv\n  number: 0\n\nrequirements:\n  host:\n    - pip\n    - python >=3.7\n  run:\n    - jaxlib >=0.3.7\n    - jax\n    - absl-py\n    - dataclasses\n    - dm-env\n    - flax\n    - gym\n    - numpy\n    - optax\n    - pillow\n    - python >=3.7\n    - pytinyrenderer\n    - pyyaml >=6.0\n    - tensorboardx\n    - trimesh\n    - typing-extensions\n    - grpcio\n\ntest:\n  imports:\n    - brax\n  commands:\n    - pip check\n  requires:\n    - pip\n\nabout:\n  home: http://github.com/google/brax\n  summary: A differentiable physics engine written in JAX.\n  license: Apache-2.0\n  license_file:\n    - LICENSE\n\nextra:\n  recipe-maintainers:\n    - traversaro\n    - erikfrey\n",
+ "raw_meta_yaml": "{% set name = \"brax\" %}\n{% set version = \"0.0.16\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/brax-{{ version }}.tar.gz\n  sha256: 5cef88b896eccaec819fd2707591f8c99444c49f911781abd6601af161777928\n\nbuild:\n  noarch: python\n  script: {{ PYTHON }} -m pip install . -vv\n  number: 0\n\nrequirements:\n  host:\n    - pip\n    - python >=3.7\n  run:\n    - jaxlib >=0.3.7\n    - jax\n    - absl-py\n    - dataclasses\n    - dm-env\n    - flax\n    - gym\n    - numpy\n    - optax\n    - pillow\n    - python >=3.7\n    - pytinyrenderer\n    - pyyaml >=6.0\n    - tensorboardx\n    - trimesh\n    - typing-extensions\n    - grpcio\n\ntest:\n  imports:\n    - brax\n  commands:\n    - pip check\n    # The testdata cylinder.stl is not shipped with the source archive,\n    # so we download it manually\n    # See:\n    # * https://github.com/google/brax/blob/v0.0.16/brax/tests/physics_test.py\n    # * https://github.com/abseil/abseil-py/blob/v1.3.0/absl/testing/absltest.py#L156\n    - mkdir -p brax/tests/testdata\n    - wget https://github.com/google/brax/raw/v{{ version }}/brax/tests/testdata/cylinder.stl -O brax/tests/testdata/cylinder.stl\n    - pytest --pyargs brax -v\n  requires:\n    - pip\n    - pytest\n    - transforms3d\n    - wget\n\nabout:\n  home: http://github.com/google/brax\n  summary: A differentiable physics engine written in JAX.\n  license: Apache-2.0\n  license_file:\n    - LICENSE\n\nextra:\n  recipe-maintainers:\n    - traversaro\n    - erikfrey\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -269,7 +284,10 @@
   "test": {
    "__set__": true,
    "elements": [
-    "pip"
+    "pip",
+    "pytest",
+    "transforms3d",
+    "wget"
    ]
   }
  },
@@ -312,10 +330,13 @@
   "test": {
    "__set__": true,
    "elements": [
-    "pip"
+    "pip",
+    "pytest",
+    "transforms3d",
+    "wget"
    ]
   }
  },
- "url": "https://pypi.io/packages/source/b/brax/brax-0.0.15.tar.gz",
- "version": "0.0.15"
+ "url": "https://pypi.io/packages/source/b/brax/brax-0.0.16.tar.gz",
+ "version": "0.0.16"
 }
