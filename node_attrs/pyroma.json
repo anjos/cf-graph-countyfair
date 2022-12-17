@@ -146,41 +146,42 @@
   },
   "package": {
    "name": "pyroma",
-   "version": "4.0"
+   "version": "4.1"
   },
   "requirements": {
-   "build": [
+   "host": [
     "python >=3.7",
     "pip"
    ],
    "run": [
     "docutils",
+    "packaging",
     "pep517",
     "pygments",
     "python >=3.7",
     "python-build",
     "requests",
-    "setuptools",
-    "wheel"
+    "setuptools >=61.0.0",
+    "trove-classifiers >=2022.6.26"
    ]
   },
   "source": {
-   "sha256": "b41ed0e080fb3aa9a7b8359d0ce7af39bc9b59cb9e7d696c6521f525257cc128",
-   "url": "https://pypi.io/packages/source/p/pyroma/pyroma-4.0.tar.gz"
+   "sha256": "ff87335abce04efef0749ee63f2a4dbb9a3fa5a1eee285beaaaed65059dca89a",
+   "url": "https://pypi.io/packages/source/p/pyroma/pyroma-4.1.tar.gz"
   },
   "test": {
    "commands": [
     "pip check",
     "pyroma --help",
     "cp -r $SRC_DIR/pyroma/testdata $(python -c 'from pathlib import Path; import pyroma; print(Path(pyroma.__file__).parent)')/testdata",
-    "python -b -X dev -m pytest -vv -r a -k \"not only_config\" --color=yes --pyargs pyroma.tests"
+    "python -b -X dev -m unittest -v pyroma.tests"
    ],
    "imports": [
     "pyroma"
    ],
    "requires": [
+    "flit >=3.4",
     "pip",
-    "pytest",
     "setuptools >=60"
    ],
    "source_files": [
@@ -191,33 +192,34 @@
  "linux_64_requirements": {
   "build": {
    "__set__": true,
+   "elements": []
+  },
+  "host": {
+   "__set__": true,
    "elements": [
     "pip",
     "python"
    ]
   },
-  "host": {
-   "__set__": true,
-   "elements": []
-  },
   "run": {
    "__set__": true,
    "elements": [
     "docutils",
+    "packaging",
     "pep517",
     "pygments",
     "python",
     "python-build",
     "requests",
     "setuptools",
-    "wheel"
+    "trove-classifiers"
    ]
   },
   "test": {
    "__set__": true,
    "elements": [
+    "flit",
     "pip",
-    "pytest",
     "setuptools"
    ]
   }
@@ -245,41 +247,42 @@
   },
   "package": {
    "name": "pyroma",
-   "version": "4.0"
+   "version": "4.1"
   },
   "requirements": {
-   "build": [
+   "host": [
     "python >=3.7",
     "pip"
    ],
    "run": [
     "docutils",
+    "packaging",
     "pep517",
     "pygments",
     "python >=3.7",
     "python-build",
     "requests",
-    "setuptools",
-    "wheel"
+    "setuptools >=61.0.0",
+    "trove-classifiers >=2022.6.26"
    ]
   },
   "source": {
-   "sha256": "b41ed0e080fb3aa9a7b8359d0ce7af39bc9b59cb9e7d696c6521f525257cc128",
-   "url": "https://pypi.io/packages/source/p/pyroma/pyroma-4.0.tar.gz"
+   "sha256": "ff87335abce04efef0749ee63f2a4dbb9a3fa5a1eee285beaaaed65059dca89a",
+   "url": "https://pypi.io/packages/source/p/pyroma/pyroma-4.1.tar.gz"
   },
   "test": {
    "commands": [
     "pip check",
     "pyroma --help",
     "cp -r $SRC_DIR/pyroma/testdata $(python -c 'from pathlib import Path; import pyroma; print(Path(pyroma.__file__).parent)')/testdata",
-    "python -b -X dev -m pytest -vv -r a -k \"not only_config\" --color=yes --pyargs pyroma.tests"
+    "python -b -X dev -m unittest -v pyroma.tests"
    ],
    "imports": [
     "pyroma"
    ],
    "requires": [
+    "flit >=3.4",
     "pip",
-    "pytest",
     "setuptools >=60"
    ],
    "source_files": [
@@ -302,11 +305,12 @@
   ]
  },
  "pinning_version": "2022.12.16.14.20.18",
- "raw_meta_yaml": "{% set name = \"pyroma\" %}\n{% set import = \"pyroma\" %}\n{% set entrypoint = \"pyroma\" %}\n{% set version = \"4.0\" %}\n{% set sha256 = \"b41ed0e080fb3aa9a7b8359d0ce7af39bc9b59cb9e7d696c6521f525257cc128\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 0\n  noarch: python\n  script: {{ PYTHON }} -m pip install . -vv\n  entry_points:\n    - {{ entrypoint }} = {{ import }}:main\n\nrequirements:\n  build:\n    - python >=3.7\n    - pip\n\n  run:\n    - docutils\n    - pep517\n    - pygments\n    - python >=3.7\n    - python-build\n    - requests\n    - setuptools\n    - wheel\n\ntest:\n  requires:\n    - pip\n    - pytest\n    - setuptools >=60\n\n  source_files:\n    # Test data to copy to installed package\n    - {{ import }}/testdata\n\n  imports:\n    - {{ import }}\n\n  commands:\n    - pip check\n    - {{ entrypoint }} --help\n    # Copy the testdata into the expected place, sincei it isn't normally installed with the package\n    - cp -r $SRC_DIR/{{ import }}/testdata $(python -c 'from pathlib import Path; import {{ import }}; print(Path({{ import }}.__file__).parent)')/testdata\n    # Run with Pytest instead of Unittest to skip a test that fails when installed, fixed in Pyroma 4.1\n    - python -b -X dev -m pytest -vv -r a -k \"not only_config\" --color=yes --pyargs {{ import }}.tests\n\nabout:\n  home: https://github.com/regebro/pyroma/\n  license: MIT\n  license_file: LICENSE.txt\n  summary: \"Test your project's packaging friendliness\"\n\nextra:\n  recipe-maintainers:\n    - CAM-Gerlach\n    - jakirkham\n",
+ "raw_meta_yaml": "{% set name = \"pyroma\" %}\n{% set import = \"pyroma\" %}\n{% set entrypoint = \"pyroma\" %}\n{% set version = \"4.1\" %}\n{% set sha256 = \"ff87335abce04efef0749ee63f2a4dbb9a3fa5a1eee285beaaaed65059dca89a\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 0\n  noarch: python\n  script: {{ PYTHON }} -m pip install . -vv\n  entry_points:\n    - {{ entrypoint }} = {{ import }}:main\n\nrequirements:\n  host:\n    - python >=3.7\n    - pip\n\n  run:\n    - docutils\n    - packaging\n    - pep517\n    - pygments  # Required internally by docutils for readme check to work\n    - python >=3.7\n    - python-build\n    - requests\n    - setuptools >=61.0.0\n    - trove-classifiers >=2022.6.26\n\ntest:\n  requires:\n    - flit >=3.4\n    - pip\n    - setuptools >=60\n\n  source_files:\n    # Test data to copy to installed package\n    - {{ import }}/testdata\n\n  imports:\n    - {{ import }}\n\n  commands:\n    - pip check\n    - {{ entrypoint }} --help\n    # Copy the testdata into the expected place, sincei it isn't normally installed with the package\n    - cp -r $SRC_DIR/{{ import }}/testdata $(python -c 'from pathlib import Path; import {{ import }}; print(Path({{ import }}.__file__).parent)')/testdata\n    - python -b -X dev -m unittest -v pyroma.tests\n\nabout:\n  home: https://github.com/regebro/pyroma/\n  license: MIT\n  license_file: LICENSE.txt\n  summary: Test your project's packaging friendliness\n\nextra:\n  recipe-maintainers:\n    - CAM-Gerlach\n    - jakirkham\n",
  "req": {
   "__set__": true,
   "elements": [
    "docutils",
+   "packaging",
    "pep517",
    "pip",
    "pygments",
@@ -314,39 +318,40 @@
    "python-build",
    "requests",
    "setuptools",
-   "wheel"
+   "trove-classifiers"
   ]
  },
  "requirements": {
   "build": {
+   "__set__": true,
+   "elements": []
+  },
+  "host": {
    "__set__": true,
    "elements": [
     "pip",
     "python"
    ]
   },
-  "host": {
-   "__set__": true,
-   "elements": []
-  },
   "run": {
    "__set__": true,
    "elements": [
     "docutils",
+    "packaging",
     "pep517",
     "pygments",
     "python",
     "python-build",
     "requests",
     "setuptools",
-    "wheel"
+    "trove-classifiers"
    ]
   },
   "test": {
    "__set__": true,
    "elements": [
+    "flit",
     "pip",
-    "pytest",
     "setuptools"
    ]
   }
@@ -356,37 +361,38 @@
  "total_requirements": {
   "build": {
    "__set__": true,
+   "elements": []
+  },
+  "host": {
+   "__set__": true,
    "elements": [
     "pip",
     "python >=3.7"
    ]
   },
-  "host": {
-   "__set__": true,
-   "elements": []
-  },
   "run": {
    "__set__": true,
    "elements": [
     "docutils",
+    "packaging",
     "pep517",
     "pygments",
     "python >=3.7",
     "python-build",
     "requests",
-    "setuptools",
-    "wheel"
+    "setuptools >=61.0.0",
+    "trove-classifiers >=2022.6.26"
    ]
   },
   "test": {
    "__set__": true,
    "elements": [
+    "flit >=3.4",
     "pip",
-    "pytest",
     "setuptools >=60"
    ]
   }
  },
- "url": "https://pypi.io/packages/source/p/pyroma/pyroma-4.0.tar.gz",
- "version": "4.0"
+ "url": "https://pypi.io/packages/source/p/pyroma/pyroma-4.1.tar.gz",
+ "version": "4.1"
 }
