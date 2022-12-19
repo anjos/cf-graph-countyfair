@@ -535,11 +535,13 @@
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
+   "linux_aarch64": "linux_64",
+   "linux_ppc64le": "linux_64",
    "osx_arm64": "osx_64"
   },
   "provider": {
-   "linux_aarch64": "default",
-   "linux_ppc64le": "default"
+   "linux_aarch64": "azure",
+   "linux_ppc64le": "azure"
   }
  },
  "feedstock_name": "esmf",
@@ -552,8 +554,8 @@
    "summary": "The Earth System Modeling Framework (ESMF) is software for building and\ncoupling weather, climate, and related models.'\n"
   },
   "build": {
-   "number": "1",
-   "string": "mpi_openmpi_h1234567_1"
+   "number": "2",
+   "string": "mpi_openmpi_h1234567_2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -705,8 +707,8 @@
    "summary": "The Earth System Modeling Framework (ESMF) is software for building and\ncoupling weather, climate, and related models.'\n"
   },
   "build": {
-   "number": "1",
-   "string": "mpi_openmpi_h1234567_1"
+   "number": "2",
+   "string": "mpi_openmpi_h1234567_2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -858,8 +860,8 @@
    "summary": "The Earth System Modeling Framework (ESMF) is software for building and\ncoupling weather, climate, and related models.'\n"
   },
   "build": {
-   "number": "1",
-   "string": "mpi_openmpi_h1234567_1"
+   "number": "2",
+   "string": "mpi_openmpi_h1234567_2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1011,8 +1013,8 @@
    "summary": "The Earth System Modeling Framework (ESMF) is software for building and\ncoupling weather, climate, and related models.'\n"
   },
   "build": {
-   "number": "1",
-   "string": "mpi_openmpi_h1234567_1"
+   "number": "2",
+   "string": "mpi_openmpi_h1234567_2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1455,8 +1457,8 @@
    "summary": "The Earth System Modeling Framework (ESMF) is software for building and\ncoupling weather, climate, and related models.'\n"
   },
   "build": {
-   "number": "1",
-   "string": "mpi_openmpi_h1234567_1"
+   "number": "2",
+   "string": "mpi_openmpi_h1234567_2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1608,8 +1610,8 @@
    "summary": "The Earth System Modeling Framework (ESMF) is software for building and\ncoupling weather, climate, and related models.'\n"
   },
   "build": {
-   "number": "1",
-   "string": "mpi_openmpi_h1234567_1"
+   "number": "2",
+   "string": "mpi_openmpi_h1234567_2"
   },
   "extra": {
    "recipe-maintainers": [
@@ -1766,7 +1768,7 @@
  "pre_pr_migrator_status": {
   "gcc930": "bot error: master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1008, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 220, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 101, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda/envs/run_env/lib/python3.8/subprocess.py\", line 444, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
  },
- "raw_meta_yaml": "{% set version = \"8.4.0\" %}\n{% set build = 1 %}\n\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n\n{% if mpi == 'mpich' %}\n# prioritize mpich variant, which was previously the only option, via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: esmf\n  version: {{ version }}\n\nsource:\n  url: https://github.com/esmf-org/esmf/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 28531810bf1ae78646cda6494a53d455d194400f19dccd13d6361871de42ed0f\n  patches:\n    # Always remove these very long running tests\n    - remove-long-running-tests.patch\n    # Remove system tests due to time limits on ci\n    - deactivate-system-tests.patch  # [(aarch64 or ppc64le) and mpi == 'mpich']\n\nbuild:\n  number: {{ build }}\n  skip: true  # [win]\n\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `esmf * mpi_mpich_*` for mpich\n  # `esmf * mpi_*` for any mpi\n  # `esmf * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\nrequirements:\n  build:\n    - perl\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - gnuconfig  # [unix]\n    - make  # [unix]\n    - {{ mpi }}  # [build_platform != target_platform and mpi == 'openmpi']\n    - netcdf-fortran * {{ mpi_prefix }}_*  # [build_platform != target_platform and mpi == 'openmpi']\n    - hdf5 * {{ mpi_prefix }}_*  # [build_platform != target_platform and mpi == 'openmpi']\n    - libnetcdf * {{ mpi_prefix }}_*  # [build_platform != target_platform and mpi == 'openmpi']\n  host:\n    # need to list netcdf-fortran, hdf5 and libnetcdf twice to get version\n    # pinning from conda_build_config and build pinning from {{ mpi_prefix }}\n    - netcdf-fortran\n    - netcdf-fortran * {{ mpi_prefix }}_*\n    - hdf5\n    - hdf5 * {{ mpi_prefix }}_*\n    - libnetcdf\n    - libnetcdf * {{ mpi_prefix }}_*\n    - {{ mpi }}  # [mpi != 'nompi']\n    - parallelio  # [mpi != 'nompi']\n  run:\n    - netcdf-fortran * {{ mpi_prefix }}_*\n    - libnetcdf * {{ mpi_prefix }}_*\n    - hdf5 * {{ mpi_prefix }}_*\n    - {{ mpi }}  # [mpi != 'nompi']\n    - openssh  # [mpi == 'openmpi']\n\ntest:\n  commands:\n    - ESMF_PrintInfo\n    - ESMF_RegridWeightGen --help\n\nabout:\n  home: http://earthsystemmodeling.org/\n  license: NCSA\n  license_file: LICENSE\n  summary: |\n    The Earth System Modeling Framework (ESMF) is software for building and\n    coupling weather, climate, and related models.'\n\nextra:\n  recipe-maintainers:\n    - zklaus\n    - ocefpaf\n    - rokuingh\n    - xylar\n",
+ "raw_meta_yaml": "{% set version = \"8.4.0\" %}\n{% set build = 2 %}\n\n# ensure mpi is defined (needed for conda-smithy recipe-lint)\n{% set mpi = mpi or 'nompi' %}\n\n{% if mpi == 'mpich' %}\n# prioritize mpich variant, which was previously the only option, via build number\n{% set build = build + 100 %}\n{% endif %}\n\npackage:\n  name: esmf\n  version: {{ version }}\n\nsource:\n  url: https://github.com/esmf-org/esmf/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: 28531810bf1ae78646cda6494a53d455d194400f19dccd13d6361871de42ed0f\n  patches:\n    # Always remove these very long running tests\n    - remove-long-running-tests.patch\n    # Remove system tests due to time limits on ci\n    - deactivate-system-tests.patch  # [(aarch64 or ppc64le) and mpi == 'mpich']\n\nbuild:\n  number: {{ build }}\n  skip: true  # [win]\n\n  # add build string so packages can depend on\n  # mpi or nompi variants explicitly:\n  # `esmf * mpi_mpich_*` for mpich\n  # `esmf * mpi_*` for any mpi\n  # `esmf * nompi_*` for no mpi\n\n  {% if mpi != 'nompi' %}\n  {% set mpi_prefix = \"mpi_\" + mpi %}\n  {% else %}\n  {% set mpi_prefix = \"nompi\" %}\n  {% endif %}\n  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}\n\nrequirements:\n  build:\n    - perl\n    - {{ compiler('fortran') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - gnuconfig  # [unix]\n    - make  # [unix]\n    - {{ mpi }}  # [build_platform != target_platform and mpi == 'openmpi']\n    - netcdf-fortran * {{ mpi_prefix }}_*  # [build_platform != target_platform and mpi == 'openmpi']\n    - hdf5 * {{ mpi_prefix }}_*  # [build_platform != target_platform and mpi == 'openmpi']\n    - libnetcdf * {{ mpi_prefix }}_*  # [build_platform != target_platform and mpi == 'openmpi']\n  host:\n    # need to list netcdf-fortran, hdf5 and libnetcdf twice to get version\n    # pinning from conda_build_config and build pinning from {{ mpi_prefix }}\n    - netcdf-fortran\n    - netcdf-fortran * {{ mpi_prefix }}_*\n    - hdf5\n    - hdf5 * {{ mpi_prefix }}_*\n    - libnetcdf\n    - libnetcdf * {{ mpi_prefix }}_*\n    - {{ mpi }}  # [mpi != 'nompi']\n    - parallelio  # [mpi != 'nompi']\n  run:\n    - netcdf-fortran * {{ mpi_prefix }}_*\n    - libnetcdf * {{ mpi_prefix }}_*\n    - hdf5 * {{ mpi_prefix }}_*\n    - {{ mpi }}  # [mpi != 'nompi']\n    - openssh  # [mpi == 'openmpi']\n\ntest:\n  commands:\n    - ESMF_PrintInfo\n    - ESMF_RegridWeightGen --help\n\nabout:\n  home: http://earthsystemmodeling.org/\n  license: NCSA\n  license_file: LICENSE\n  summary: |\n    The Earth System Modeling Framework (ESMF) is software for building and\n    coupling weather, climate, and related models.'\n\nextra:\n  recipe-maintainers:\n    - zklaus\n    - ocefpaf\n    - rokuingh\n    - xylar\n",
  "req": {
   "__set__": true,
   "elements": [
