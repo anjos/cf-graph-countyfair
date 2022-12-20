@@ -208,7 +208,7 @@
   },
   "build": {
    "noarch": "python",
-   "number": "1",
+   "number": "0",
    "script": "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install . -vv"
   },
   "extra": {
@@ -234,10 +234,11 @@
     "python >=3.6",
     "esmpy >=8.0.0",
     "xarray >=0.16.2",
-    "shapely",
+    "numpy >=1.16",
+    "shapely <2.0",
     "cf_xarray >=0.5.1",
     "sparse >=0.8.0",
-    "numba"
+    "numba >=0.55.2"
    ]
   },
   "source": {
@@ -246,14 +247,16 @@
   },
   "test": {
    "commands": [
-    "pip check",
-    "python -c \"import xesmf; print(xesmf.__version__)\""
+    "python -m pytest --pyargs xesmf"
    ],
    "imports": [
     "xesmf"
    ],
    "requires": [
-    "pip"
+    "pip",
+    "pytest",
+    "dask",
+    "cftime"
    ]
   }
  },
@@ -277,6 +280,7 @@
     "cf_xarray",
     "esmpy",
     "numba",
+    "numpy",
     "python",
     "shapely",
     "sparse",
@@ -286,7 +290,10 @@
   "test": {
    "__set__": true,
    "elements": [
-    "pip"
+    "cftime",
+    "dask",
+    "pip",
+    "pytest"
    ]
   }
  },
@@ -300,7 +307,7 @@
   },
   "build": {
    "noarch": "python",
-   "number": "1",
+   "number": "0",
    "script": "/usr/share/miniconda3/envs/run_env/conda-bld/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/bin/python -m pip install . -vv"
   },
   "extra": {
@@ -326,10 +333,11 @@
     "python >=3.6",
     "esmpy >=8.0.0",
     "xarray >=0.16.2",
-    "shapely",
+    "numpy >=1.16",
+    "shapely <2.0",
     "cf_xarray >=0.5.1",
     "sparse >=0.8.0",
-    "numba"
+    "numba >=0.55.2"
    ]
   },
   "source": {
@@ -338,14 +346,16 @@
   },
   "test": {
    "commands": [
-    "pip check",
-    "python -c \"import xesmf; print(xesmf.__version__)\""
+    "python -m pytest --pyargs xesmf"
    ],
    "imports": [
     "xesmf"
    ],
    "requires": [
-    "pip"
+    "pip",
+    "pytest",
+    "dask",
+    "cftime"
    ]
   }
  },
@@ -370,13 +380,14 @@
   ]
  },
  "pinning_version": "2022.06.29.18.34.42",
- "raw_meta_yaml": "{% set version = \"0.7.0\" %}\n\npackage:\n  name: xesmf\n  version: {{ version }}\n\nsource:\n  url: https://github.com/pangeo-data/xESMF/releases/download/v{{ version }}/xesmf-{{ version }}.tar.gz\n  sha256: 61272d40669c47767fc3301550e4e8e936b049fda870f085488a7375f367c83b\n\nbuild:\n  number: 1\n  noarch: python\n  script: {{ PYTHON }} -m pip install . -vv\n\nrequirements:\n  host:\n    - python >=3.6\n    - pip\n    - setuptools >=30.3.0\n    - setuptools_scm\n  run:\n    - python >=3.6\n    - esmpy >=8.0.0\n    - xarray >=0.16.2\n    - shapely\n    - cf_xarray >=0.5.1\n    - sparse >=0.8.0\n    - numba\n\ntest:\n  imports:\n    - xesmf\n  commands:\n    - pip check\n    - python -c \"import xesmf; print(xesmf.__version__)\"\n  requires:\n    - pip\n\nabout:\n  home: https://github.com/pangeo-data/xESMF\n  license: MIT\n  license_file: LICENSE\n  summary: Universal Regridder for Geospatial Data\n  license_family: MIT\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - JiaweiZhuang\n    - raphaeldussin\n    - huard\n",
+ "raw_meta_yaml": "{% set version = \"0.7.0\" %}\n\npackage:\n  name: xesmf\n  version: {{ version }}\n\nsource:\n  url: https://github.com/pangeo-data/xESMF/releases/download/v{{ version }}/xesmf-{{ version }}.tar.gz\n  sha256: 61272d40669c47767fc3301550e4e8e936b049fda870f085488a7375f367c83b\n\nbuild:\n  number: 0\n  noarch: python\n  script: {{ PYTHON }} -m pip install . -vv\n\nrequirements:\n  host:\n    - python >=3.6\n    - pip\n    - setuptools >=30.3.0\n    - setuptools_scm\n  run:\n    - python >=3.6\n    - esmpy >=8.0.0\n    - xarray >=0.16.2\n    - numpy >=1.16\n    - shapely <2.0\n    - cf_xarray >=0.5.1\n    - sparse >=0.8.0\n    - numba >=0.55.2\n\ntest:\n  requires:\n    - pip\n    - pytest\n    - dask\n    - cftime\n  imports:\n    - xesmf\n  commands:\n    # needs to fix: esmpy 8.4.0 requires pytest-json-report, which is not installed.\n    # - pip check\n    - python -m pytest --pyargs xesmf\n\nabout:\n  home: https://github.com/pangeo-data/xESMF\n  license: MIT\n  license_file: LICENSE\n  summary: Universal Regridder for Geospatial Data\n  license_family: MIT\n\nextra:\n  recipe-maintainers:\n    - ocefpaf\n    - JiaweiZhuang\n    - raphaeldussin\n    - huard\n",
  "req": {
   "__set__": true,
   "elements": [
    "cf_xarray",
    "esmpy",
    "numba",
+   "numpy",
    "pip",
    "python",
    "setuptools",
@@ -406,6 +417,7 @@
     "cf_xarray",
     "esmpy",
     "numba",
+    "numpy",
     "python",
     "shapely",
     "sparse",
@@ -415,7 +427,10 @@
   "test": {
    "__set__": true,
    "elements": [
-    "pip"
+    "cftime",
+    "dask",
+    "pip",
+    "pytest"
    ]
   }
  },
@@ -440,9 +455,10 @@
    "elements": [
     "cf_xarray >=0.5.1",
     "esmpy >=8.0.0",
-    "numba",
+    "numba >=0.55.2",
+    "numpy >=1.16",
     "python >=3.6",
-    "shapely",
+    "shapely <2.0",
     "sparse >=0.8.0",
     "xarray >=0.16.2"
    ]
@@ -450,7 +466,10 @@
   "test": {
    "__set__": true,
    "elements": [
-    "pip"
+    "cftime",
+    "dask",
+    "pip",
+    "pytest"
    ]
   }
  },
