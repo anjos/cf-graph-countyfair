@@ -498,6 +498,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1173389498.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.5.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1317,7 +1334,7 @@
   "0.4.2": 1,
   "0.4.3": 1,
   "0.4.4": 1,
-  "0.5.0": 1
+  "0.5.0": 2
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1476,14 +1493,12 @@
    "r-officer"
   ]
  },
- "pinning_version": "2022.10.07.20.39.23",
+ "pinning_version": "2022.12.21.05.25.31",
  "pre_pr_migrator_attempts": {
-  "rebuild-broken": 1,
-  "version": 1
+  "rebuild-broken": 1
  },
  "pre_pr_migrator_status": {
-  "rebuild-broken": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1265438560\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1175, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 196, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/broken_rebuild.py\", line 361, in migrate\n    self.set_build_number(os.path.join(recipe_dir, \"meta.yaml\"))\nNameError: name 'os' is not defined\n",
-  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3746770357\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 279, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 340, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n"
+  "rebuild-broken": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1265438560\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1175, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 196, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/broken_rebuild.py\", line 361, in migrate\n    self.set_build_number(os.path.join(recipe_dir, \"meta.yaml\"))\nNameError: name 'os' is not defined\n"
  },
  "raw_meta_yaml": "{% set version = \"0.4.4\" %}\n{% set posix = 'm2-' if win else '' %}\n{% set native = 'm2w64-' if win else '' %}\n\npackage:\n  name: r-officer\n  version: {{ version|replace(\"-\", \"_\") }}\n\nsource:\n  url:\n    - {{ cran_mirror }}/src/contrib/officer_{{ version }}.tar.gz\n    - {{ cran_mirror }}/src/contrib/Archive/officer/officer_{{ version }}.tar.gz\n  sha256: 6e0068d80345a504d04f06e1a43cf3a089db3dbcefc9923925c4bc453866cec0\n\nbuild:\n  merge_build_host: true  # [win]\n  number: 1\n  rpaths:\n    - lib/R/lib/\n    - lib/\n\nrequirements:\n  build:\n    - {{ compiler('c') }}              # [not win]\n    - {{ compiler('m2w64_c') }}        # [win]\n    - {{ compiler('cxx') }}            # [not win]\n    - {{ compiler('m2w64_cxx') }}      # [win]\n    - {{ posix }}filesystem        # [win]\n    - {{ posix }}make\n    - {{ posix }}sed               # [win]\n    - {{ posix }}coreutils         # [win]\n    - {{ posix }}zip               # [win]\n  host:\n    - r-base\n    - r-r6\n    - r-rcpp >=0.12.12\n    - r-base64enc\n    - r-digest\n    - r-htmltools\n    - r-magrittr\n    - r-rlang\n    - r-uuid\n    - r-xml2 >=1.1.0\n    - r-zip >=2.0.0\n  run:\n    - r-base\n    - {{ native }}gcc-libs         # [win]\n    - r-r6\n    - r-rcpp >=0.12.12\n    - r-base64enc\n    - r-digest\n    - r-htmltools\n    - r-magrittr\n    - r-rlang\n    - r-uuid\n    - r-xml2 >=1.1.0\n    - r-zip >=2.0.0\n\ntest:\n  commands:\n    - $R -e \"library('officer')\"           # [not win]\n    - \"\\\"%R%\\\" -e \\\"library('officer')\\\"\"  # [win]\n\nabout:\n  home: https://davidgohel.github.io/officer\n  license: GPL-3.0-only\n  summary: Access and manipulate 'Microsoft Word' and 'Microsoft PowerPoint' documents from R.  The package focuses on tabular and graphical reporting from R; it also provides two functions that let users get document content into data objects. A set of functions  lets add and remove images, tables and paragraphs of text\n    in new or existing documents.  When working with 'PowerPoint' presentations, slides can be added or removed; shapes inside  slides can also be added or removed. When working with 'Word' documents, a cursor can be  used to help insert or delete content at a specific location in the document. The package  does not require\n    any installation of Microsoft products to be able to write Microsoft files.\n  license_family: GPL3\n  license_file:\n    - {{ environ[\"PREFIX\"] }}/lib/R/share/licenses/GPL-3\n\nextra:\n  recipe-maintainers:\n    - conda-forge/r\n\n# Package: officer\n# Type: Package\n# Title: Manipulation of Microsoft Word and PowerPoint Documents\n# Version: 0.3.5\n# Authors@R: c( person(\"David\", \"Gohel\", role = c(\"aut\", \"cre\"), email = \"david.gohel@ardata.fr\"), person(\"Frank\", \"Hangler\", role = \"ctb\", email = \"frank@plotandscatter.com\", comment = \"function body_replace_all_text\"), person(\"Liz\", \"Sander\", role = \"ctb\", email = 'lsander@civisanalytics.com', comment = \"several documentation fixes\"), person(\"Anton\", \"Victorson\", role = \"ctb\", email = 'anton@victorson.se',comment = \"fixes xml structures\"), person(\"Jon\", \"Calder\", role = \"ctb\", email = 'jonmcalder@gmail.com', comment = \"update vignettes\"), person(\"John\", \"Harrold\", role = \"ctb\", email = 'john.m.harrold@gmail.com', comment = \"fuction annotate_base\") )\n# Description: Access and manipulate 'Microsoft Word' and 'Microsoft PowerPoint' documents from R.  The package focuses on tabular and graphical reporting from R; it also provides two functions that let users get document content into data objects. A set of functions  lets add and remove images, tables and paragraphs of text in new or existing documents.  When working with 'PowerPoint' presentations, slides can be added or removed; shapes inside  slides can also be added or removed. When working with 'Word' documents, a cursor can be  used to help insert or delete content at a specific location in the document. The package  does not require any installation of Microsoft products to be able to write Microsoft files.\n# License: GPL-3\n# LazyData: TRUE\n# LinkingTo: Rcpp\n# Imports: Rcpp (>= 0.12.12), R6, grDevices, base64enc, zip (>= 2.0.0), digest,uuid,stats, magrittr,htmltools,rlang, xml2 (>= 1.1.0)\n# URL: https://davidgohel.github.io/officer\n# Encoding: UTF-8\n# BugReports: https://github.com/davidgohel/officer/issues\n# RoxygenNote: 6.1.1\n# Suggests: testthat, devEMF,tibble,ggplot2, rmarkdown, knitr, rsvg\n# VignetteBuilder: knitr\n# NeedsCompilation: yes\n# Packaged: 2019-06-23 18:10:57 UTC; davidgohel\n# Author: David Gohel [aut, cre], Frank Hangler [ctb] (function body_replace_all_text), Liz Sander [ctb] (several documentation fixes), Anton Victorson [ctb] (fixes xml structures), Jon Calder [ctb] (update vignettes), John Harrold [ctb] (fuction annotate_base)\n# Maintainer: David Gohel <david.gohel@ardata.fr>\n# Repository: CRAN\n# Date/Publication: 2019-06-23 18:50:03 UTC\n",
  "req": {
@@ -1569,7 +1584,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.21.2",
+ "smithy_version": "3.22.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
