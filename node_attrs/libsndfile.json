@@ -113,6 +113,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1177281783.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.2.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -580,10 +597,11 @@
   }
  },
  "name": "libsndfile",
- "new_version": "1.1.0",
+ "new_version": "1.2.0",
  "new_version_attempts": {
   "1.0.31": 1,
-  "1.1.0": 0
+  "1.1.0": 0,
+  "1.2.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -778,7 +796,7 @@
    "libsndfile"
   ]
  },
- "pinning_version": "2022.03.25.20.30.42",
+ "pinning_version": "2022.12.22.13.58.53",
  "raw_meta_yaml": "{% set name = \"libsndfile\" %}\n{% set version = \"1.1.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  # libsndfile 1.1.0 shipped with slightly broken package archives\n  # these should be reconciled into one download in a subsequent release\n  url: https://github.com/libsndfile/{{ name }}/archive/refs/tags/{{ version }}.zip  # [win]\n  sha256: d71292106e6f75c3b6dc0292087d935507a34c3b93ad65c00d3d5729c5eecad2  # [win]\n  url: https://github.com/libsndfile/{{ name }}/releases/download/{{ version }}/{{ name }}-{{ version }}.tar.xz  # [not win]\n  sha256: 0f98e101c0f7c850a71225fb5feaf33b106227b3d331333ddc9bacee190bcf41  # [not win]\n  patches:\n    # the libs private sections of pkgconfig is only useful when statically\n    # linking which we do not use.\n    # On windows, this results in an empty \"-l\" which breakds downstream packages\n    # since the linker tries to link to \".libs\"\n    # https://github.com/conda-forge/gst-plugins-bad-feedstock/pull/20#issuecomment-1336553304\n    # it may be related to\n    # https://github.com/libsndfile/libsndfile/issues/827\n    # But I don't have time to investigate too much\n    - disable_libs_private_pkgconfig.patch\n\n\nbuild:\n  number: 1\n  run_exports:\n        # https://abi-laboratory.pro/?view=timeline&l=libsndfile\n    - {{ pin_subpackage(name, max_pin=\"x.x\") }}\n\nrequirements:\n  build:\n    - gnuconfig  # [unix]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n    - make   # [not win]\n    - cmake  # [win]\n    - ninja  # [win]\n    - python\n    - pkg-config  # [unix]\n  host:\n    - libflac\n    - libvorbis\n    - libogg\n    - libopus\n    - lame\n    - mpg123\n\ntest:\n  commands:\n    - test -f $PREFIX/lib/libsndfile${SHLIB_EXT}  # [not win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\sndfile.dll exit 1  # [win]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\sndfile.lib exit 1  # [win]\n\n    # try to run one of the commands (--help returns 1, so make that OK)\n    - sndfile-info --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi  # [not win]\n    - sndfile-info --help || if !ERRORLEVEL! LEQ 1 cmd /c \"exit /b 0\"  # [win]\n\nabout:\n  home: http://www.mega-nerd.com/libsndfile\n  dev_url: https://github.com/libsndfile/libsndfile\n  license: LGPL-2.1-or-later\n  license_family: LGPL\n  license_file: COPYING\n  summary: libsndfile - a C library for reading and writing files containing sampled sound (such as MS Windows WAV and the Apple/SGI AIFF format) through one standard library interface\n\nextra:\n  recipe-maintainers:\n    - hbredin\n    - thomasfillon\n    - SylvainCorlay\n    - wolfv\n    - JohanMabille\n    - bmcfee\n",
  "req": {
   "__set__": true,
@@ -838,7 +856,7 @@
    "elements": []
   }
  },
- "smithy_version": "3.19.0",
+ "smithy_version": "3.22.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
