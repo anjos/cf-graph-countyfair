@@ -171,6 +171,25 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1180294733.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "MigrationYaml",
+    "migrator_object_version": 1,
+    "migrator_version": 0,
+    "name": "python311"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_object_version",
+    "migrator_version",
+    "name"
+   ]
   }
  ],
  "archived": false,
@@ -3415,7 +3434,7 @@
    "spacy-model-de_dep_news_trf"
   ]
  },
- "pinning_version": "2022.07.11.13.37.43",
+ "pinning_version": "2022.12.27.19.59.10",
  "raw_meta_yaml": "{% set prefix = \"spacy-model-\" %}\n{% set lang = \"de\" %}\n\n{% if size == \"trf\" %}\n{% set name = lang + \"_dep_news\" %}\n{% else %}\n{% set name = lang + \"_core_news\" %}\n{% endif %}\n\n{% set version = \"3.1.0\" %}\n\npackage:\n  name: {{ prefix }}{{ lang|lower }}\n  version: {{ version }}\n\nsource:\n  - folder: sm\n    url: https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-{{ version }}/de_core_news_sm-{{ version }}.tar.gz\n    sha256: fbc37695977556240208ad4416c8c1a3f0d674805c26e3f9fe3cf4b23dc40269\n  - folder: lg\n    url: https://github.com/explosion/spacy-models/releases/download/de_core_news_lg-{{ version }}/de_core_news_lg-{{ version }}.tar.gz\n    sha256: 74c9f78c551919ec097f3bb43f7647eff0dd335e4dc91a32441e14005aea1e0e\n  - folder: md\n    url: https://github.com/explosion/spacy-models/releases/download/de_core_news_md-{{ version }}/de_core_news_md-{{ version }}.tar.gz\n    sha256: 1650cb597b32e546187a82f1c1a4042d737e89cd5b38134bce701346e52252d8\n  - folder: trf\n    url: https://github.com/explosion/spacy-models/releases/download/de_dep_news_trf-{{ version }}/de_dep_news_trf-{{ version }}.tar.gz\n    sha256: 935396369f394b1aac0f6313969c8e193365406c59c4c788bd352af3ffee4973\n\nbuild:\n  number: 0\n\ntest:\n  commands:\n    - echo \"make lint happy\"\n\noutputs:\n  - name: {{ prefix }}{{ name }}_{{ size }}\n    script: build.sh  # [unix]\n    script: build.bat  # [win]\n    requirements:\n      host:\n        - python\n        - pip\n      run:\n        - python\n        - setuptools\n        {% if size == \"trf\" %}\n        - spacy-transformers  # [unix]\n        {% endif %}\n\n    test:\n      imports:\n        - {{ name }}_{{ size }}\n      requires:\n        - spacy {{ version.split('.')[0] }}.*\n        {% if size == \"trf\" %}\n        - spacy-transformers  # [unix]\n        {% endif %}\n      commands:\n        {% if size == \"trf\" %}\n        - python -c \"import {{ name }}_{{ size }} as m; m.load()\"  # [unix]\n        {% else %}\n        - python -c \"import {{ name }}_{{ size }} as m; m.load()\"\n        - python -c \"import spacy; spacy.load('{{ name }}_{{ size }}')\"\n        {% endif %}\n\nabout:\n  home: https://spacy.io\n  license: CC-BY-SA-3.0\n  summary: 'German multi-task CNN trained on the TIGER and WikiNER corpus.'\n  license_file: LICENSE\n  doc_url: https://spacy.io/models/de\n\nextra:\n  recipe-maintainers:\n    - FernandezMathieu\n    - mxr-conda\n    - JennaLipscomb\n    - sodre\n",
  "req": {
   "__set__": true,
@@ -3454,7 +3473,7 @@
    ]
   }
  },
- "smithy_version": "3.21.0",
+ "smithy_version": "3.22.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
