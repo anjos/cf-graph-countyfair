@@ -16,6 +16,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1181303252.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "0.2.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -219,7 +236,7 @@
   "0.1.3": 1,
   "0.1.4": 16,
   "0.2.0": 5,
-  "0.2.1": 4
+  "0.2.1": 5
  },
  "new_version_errors": {
   "0.1.4": "We found a problem parsing the recipe for version '0.1.4': \n\nAssertionError('\\n')\n\ntraceback:\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/version.py\", line 513, in migrate\n    cmeta = CondaMetaYAML(fp.read())\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/recipe_parser/_parser.py\", line 476, in __init__\n    v, e = _parse_jinja2_variables(meta_yaml)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/recipe_parser/_parser.py\", line 117, in _parse_jinja2_variables\n    assert False, jinja2_data\n",
@@ -232,7 +249,7 @@
    "unionml"
   ]
  },
- "pinning_version": "2022.08.08.19.07.35",
+ "pinning_version": "2022.12.29.19.05.49",
  "raw_meta_yaml": "{% set reqfile = \"requirements.txt\" %}\n{% set name = \"unionml\" %}\n{% set version = \"0.1.4\" %}\n\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/unionml-{{ version }}.tar.gz\n  sha256: 79115a02d7e11c6dfd38c348eb5efdeedabceba670f59db6054c7ffb2ce59eac\n\nbuild:\n  number: 0\n  noarch: python\n  entry_points:\n    - unionml = unionml.cli:app\n  script:\n    ## Ensure inclusion of requirements.txt\n    {% set reqfile = \"requirements.txt\" %}\n    {% set reqsource = name ~ \".egg-info/requires.txt\" %}\n    # IF {{ reqfile }} is NOT PRESENT, COPY {{ reqfile }} from {{ reqsource }}\n    - echo -e \"\\n>>> ENSURE INCLUSION OF '{{ reqfile }}' <<<\\n\\n\"\n    - if [ ! -f {{ reqfile }} ] && [ -f {{ reqsource }} ]; then cp {{ reqsource }} {{ reqfile }}; fi  # [not win]\n    #- copy {{ name }}.egg-info\\requires.txt {{ reqfile }}  # [win]\n    - copy {{ reqsource | replace('/', '\\\\') }} {{ reqfile }}  # [win] \n    ## Install package {{ name }} from PyPI \n    - {{ PYTHON }} -m pip install . -vv\n\nrequirements:\n  host:\n    - pip\n    - python >=3.7\n  run:\n    - python >=3.7\n    - click\n    - cookiecutter\n    - dataclasses-json\n    - docker-py\n    - fastapi\n    - flytekit >=1.0.0\n    - gitpython\n    - joblib\n    - mangum\n    - numpy\n    - pandas\n    - pydantic\n    - scikit-learn\n    - typer\n    - uvicorn\n    # necessary for gitpython\n    - git\n\ntest:\n  imports:\n    - unionml\n  commands:\n    #- pip check\n    - unionml --help\n  requires:\n    - pip\n\nabout:\n  home: https://pypi.org/project/unionml/\n  summary: The easiest way to build and deploy machine learning microservices.\n  license: Apache-2.0\n  license_file: LICENSE\n  description: |\n    **UnionML** is an open source MLOps framework that aims to reduce the boilerplate and friction\n    that comes with building models and deploying them to production.\n\n    You can create **UnionML Apps** by defining a few core methods that are automatically bundled\n    into ML microservices, starting with model training and offline and online prediction.\n\n    Built on top of [Flyte](https://docs.flyte.org/en/latest/), UnionML provides a high-level\n    interface for productionizing your ML models so that you can focus on curating a better dataset\n    and improving your models.\n\n    To learn more, check out the \uD83D\uDCD6 [documentation](https://unionml.readthedocs.io).\n\n    PyPI: [https://pypi.org/project/unionml/](https://pypi.org/project/unionml/)\n\n  doc_url: https://unionml.readthedocs.io/\n  dev_url: https://github.com/unionai-oss/unionml\n\nextra:\n  recipe-maintainers:\n    - sugatoray\n",
  "req": {
   "__set__": true,
@@ -298,7 +315,7 @@
    ]
   }
  },
- "smithy_version": "3.21.1",
+ "smithy_version": "3.22.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
