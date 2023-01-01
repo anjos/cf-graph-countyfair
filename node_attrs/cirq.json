@@ -101,6 +101,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1181638603.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "1.1.0"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -851,7 +868,7 @@
   "0.14.1": 2,
   "0.15.0": 1,
   "1.0.0": 2,
-  "1.1.0": 3
+  "1.1.0": 4
  },
  "new_version_errors": {
   "1.1.0": "We found a problem parsing the recipe for version '1.1.0': \n\nAssertionError('\\n')\n\ntraceback:\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/version.py\", line 513, in migrate\n    cmeta = CondaMetaYAML(fp.read())\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/recipe_parser/_parser.py\", line 476, in __init__\n    v, e = _parse_jinja2_variables(meta_yaml)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/recipe_parser/_parser.py\", line 117, in _parse_jinja2_variables\n    assert False, jinja2_data\n"
@@ -869,7 +886,7 @@
    "cirq-web"
   ]
  },
- "pinning_version": "2022.08.03.11.08.53",
+ "pinning_version": "2022.12.29.19.05.49",
  "raw_meta_yaml": "{% set python_ver = \"python >=3.7\" %}\n{% set name = \"cirq\" %}\n{% set version = \"1.0.0\" %}\n{% set home = \"https://quantumai.google/cirq\" %}\n{% set summary = \"An open source framework for programming quantum computers\" %}\n{% set doc_url = \"https://quantumai.google/cirq/install\" %}\n{% set license = \"Apache-2.0\" %}\n{% set license_file = \"LICENSE\" %}\n{% set python_ver = \"python >=3.7\" %}\n\n\npackage:\n  name: {{ name }}-meta\n  version: {{ version }}\n\nsource:\n  url: https://github.com/quantumlib/Cirq/archive/refs/tags/v{{ version }}.tar.gz\n  sha256: d95d571f7165640083e11d1d25a6a7603e91b13d605e4b3a99aa152f5528a1ae\n\nbuild:\n  number: 0\n  noarch: python\n\noutputs:\n\n  - name: {{ name }}-core\n    build:\n      noarch: python\n    script: build_{{ name }}-core.sh\n\n    requirements:\n      host:\n        - pip\n        - {{ python_ver }}\n      run:\n        - backports.cached-property >=1.0.1,=1.0\n        - dataclasses\n        - duet-python >=0.2.7,=0.2\n        - matplotlib-base >=3.0,=3\n        - networkx >=2.4,=2\n        - numpy >=1.16,=1\n        - pandas\n        - {{ python_ver }}\n        - sortedcontainers >=2.0,=2\n        - scipy\n        - sympy <1.10\n        - typing_extensions\n        - tqdm\n\n    test:\n      imports:\n        - {{ name }}\n        # Package is named cirq-core but gets imported as cirq\n      commands:\n        - pip check\n      requires:\n        - pip\n\n    about:\n      home: {{ home }}\n      summary: {{ summary }}\n      dev_url: https://github.com/quantumlib/Cirq/tree/master/cirq-core\n      doc_url: {{ doc_url }}\n      license: {{ license }}\n      license_file: {{ name }}-core/{{ license_file }}\n\n\n  - name: {{ name }}-aqt\n    build:\n      noarch: python\n    script: build_{{ name }}-aqt.sh\n\n    requirements:\n      host:\n        - pip\n        - {{ python_ver }}\n      run:\n        - {{ name }}-core =={{ version }}\n        - requests >=2.18,=2\n        - {{ python_ver }}\n\n    test:\n      imports:\n        - {{ name }}_aqt\n      commands:\n        - pip check\n      requires:\n        - pip\n\n    about:\n      home: {{ home }}\n      summary: {{ summary }}\n      dev_url: https://github.com/quantumlib/Cirq/tree/master/cirq-aqt\n      doc_url: {{ doc_url }}\n      license: {{ license }}\n      license_file: {{ name }}-aqt/{{ license_file }}\n\n\n  - name: {{ name }}-web\n    build:\n      noarch: python\n    script: build_{{ name }}-web.sh\n\n    requirements:\n      host:\n        - pip\n        - {{ python_ver }}\n      run:\n        - {{ name }}-core =={{ version }}\n        - {{ python_ver }}\n\n    test:\n      imports:\n        - {{ name }}_web\n      commands:\n        - pip check\n      requires:\n        - pip\n\n    about:\n      home: {{ home }}\n      summary: {{ summary }}\n      dev_url: https://github.com/quantumlib/Cirq/tree/master/cirq-web\n      doc_url: {{ doc_url }}\n      license: {{ license }}\n      license_file: {{ name }}-web/{{ license_file }}\n\n\n  - name: {{ name }}-rigetti\n    build:\n      noarch: python\n    script: build_{{ name }}-rigetti.sh\n\n    requirements:\n      host:\n        - pip\n        - {{ python_ver }}\n      run:\n        - {{ name }}-core =={{ version }}\n        - pyquil >=3.0.0\n        - {{ python_ver }}\n\n    test:\n      imports:\n        - {{ name }}_rigetti\n      commands:\n        - pip check\n      requires:\n        - pip\n\n    about:\n      home: {{ home }}\n      summary: {{ summary }}\n      dev_url: https://github.com/quantumlib/Cirq/tree/master/cirq-rigetti\n      doc_url: {{ doc_url }}\n      license: {{ license }}\n      license_file: {{ name }}-rigetti/{{ license_file }}\n\n\n  - name: {{ name }}-pasqal\n    build:\n      noarch: python\n    script: build_{{ name }}-pasqal.sh\n\n    requirements:\n      host:\n        - pip\n        - {{ python_ver }}\n      run:\n        - {{ name }}-core =={{ version }}\n        - requests >=2.18,=2\n        - {{ python_ver }}\n\n    test:\n      imports:\n        - {{ name }}_pasqal\n      commands:\n        - pip check\n      requires:\n        - pip\n\n    about:\n      home: {{ home }}\n      summary: {{ summary }}\n      dev_url: https://github.com/quantumlib/Cirq/tree/master/cirq-pasqal\n      doc_url: {{ doc_url }}\n      license: {{ license }}\n      license_file: {{ name }}-pasqal/{{ license_file }}\n\n\n  - name: {{ name }}-ionq\n    build:\n      noarch: python\n    script: build_{{ name }}-ionq.sh\n\n    requirements:\n      host:\n        - pip\n        - {{ python_ver }}\n      run:\n        - {{ name }}-core =={{ version }}\n        - requests >=2.18,=2\n        - {{ python_ver }}\n\n    test:\n      imports:\n        - {{ name }}_ionq\n      commands:\n        - pip check\n      requires:\n        - pip\n\n    about:\n      home: {{ home }}\n      summary: {{ summary }}\n      dev_url: https://github.com/quantumlib/Cirq/tree/master/cirq-ionq\n      doc_url: {{ doc_url }}\n      license: {{ license }}\n      license_file: {{ name }}-ionq/{{ license_file }}\n\n\n  - name: {{ name }}-google\n    build:\n      noarch: python\n    script: build_{{ name }}-google.sh\n\n    requirements:\n      host:\n        - pip\n        - {{ python_ver }}\n      run:\n        - {{ name }}-core =={{ version }}\n        - google-api-core-grpc >=1.14.0,<2.0.0dev\n        - protobuf >=3.15.0,<4\n        - proto-plus >=1.20.0\n        - {{ python_ver }}\n\n    test:\n      imports:\n        - {{ name }}_google\n      commands:\n        - pip check\n      requires:\n        - pip\n\n    about:\n      home: {{ home }}\n      summary: {{ summary }}\n      dev_url: https://github.com/quantumlib/Cirq/tree/master/cirq-google\n      doc_url: {{ doc_url }}\n      license: {{ license }}\n      license_file: {{ name }}-google/{{ license_file }}\n\n\n  - name: {{ name }}\n    build:\n      noarch: python\n    script: build_{{ name }}.sh\n\n    requirements:\n      host:\n        - pip\n        - {{ python_ver }}\n      run:\n        - {{ name }}-aqt =={{ version }}\n        - {{ name }}-core =={{ version }}\n        - {{ name }}-google =={{ version }}\n        - {{ name }}-ionq =={{ version }}\n        - {{ name }}-pasqal =={{ version }}\n        - {{ name }}-rigetti =={{ version }}\n        - {{ name }}-web =={{ version }}\n        - {{ python_ver }}\n\n    test:\n      imports:\n        - {{ name }}\n      commands:\n        - pip check\n      requires:\n        - pip\n\n    about:\n      home: {{ home }}\n      summary: {{ summary }}\n      dev_url: https://github.com/quantumlib/Cirq\n      doc_url: {{ doc_url }}\n      license: {{ license }}\n      license_file: {{ license_file }}\n\n\nabout:\n  home: {{ home }}\n  summary: {{ summary }}\n  description: |\n    Cirq is a Python library for writing, manipulating, and optimizing quantum\n    circuits and running them against quantum computers and simulators.\n  dev_url: https://github.com/quantumlib/Cirq\n  doc_url: {{ doc_url }}\n  license: {{ license }}\n  license_file: {{ license_file }}\n\nextra:\n  recipe-maintainers:\n    - BastianZim\n  feedstock-name: {{ name }}\n",
  "req": {
   "__set__": true,
@@ -951,7 +968,7 @@
    ]
   }
  },
- "smithy_version": "3.21.1",
+ "smithy_version": "3.22.1",
  "strong_exports": false,
  "total_requirements": {
   "build": {
