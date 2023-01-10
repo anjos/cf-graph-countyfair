@@ -478,7 +478,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git diff --name-only 2602f278a4f3bcb6256b9a0cc5ad52e0046da1df...HEAD' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 310, in run",
+   "    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 340, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode",
+   "    raise CalledProcessError(self.returncode, self.args, self.stdout,",
+   "subprocess.CalledProcessError: Command 'git diff --name-only 2602f278a4f3bcb6256b9a0cc5ad52e0046da1df...HEAD' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
@@ -1850,7 +1865,7 @@
   }
  },
  "name": "libxc",
- "new_version": "6.0.0",
+ "new_version": "6.1.0",
  "new_version_attempts": {
   "5.0.0": 1,
   "5.1.0": 1,
@@ -1865,7 +1880,8 @@
   "5.2.1": 1,
   "5.2.2": 1,
   "5.2.3": 1,
-  "6.0.0": 2
+  "6.0.0": 2,
+  "6.1.0": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -2051,10 +2067,12 @@
  },
  "pinning_version": "2022.11.04.03.22.42",
  "pre_pr_migrator_attempts": {
-  "rebuild-broken": 1
+  "rebuild-broken": 1,
+  "version": 1
  },
  "pre_pr_migrator_status": {
-  "rebuild-broken": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1265438560\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1175, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 196, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/broken_rebuild.py\", line 361, in migrate\n    self.set_build_number(os.path.join(recipe_dir, \"meta.yaml\"))\nNameError: name 'os' is not defined\n"
+  "rebuild-broken": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1265438560\">bot CI job</a>): master: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1175, in main\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 196, in run\n    migrate_return = migrator.migrate(recipe_dir, feedstock_ctx.attrs, **kwargs)\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/migrators/broken_rebuild.py\", line 361, in migrate\n    self.set_build_number(os.path.join(recipe_dir, \"meta.yaml\"))\nNameError: name 'os' is not defined\n",
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3884832091\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 310, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 340, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only 2602f278a4f3bcb6256b9a0cc5ad52e0046da1df...HEAD' returned non-zero exit status 128.\n"
  },
  "raw_meta_yaml": "{% set name = \"libxc\" %}\n{% set version = \"5.2.3\" %}\n{% set sha256 = \"6cd45669d7f92bdcdb6879bea232dac94ad57d025cf2edfd019182ccf6494a75\" %}\n\npackage:\n  name: {{ name }}\n  version: {{ version }}\n\nsource:\n  url: https://gitlab.com/libxc/libxc/-/archive/{{ version }}/libxc-{{ version }}.tar.bz2\n  sha256: {{ sha256 }}\n\nbuild:\n  number: 2\n  run_exports:\n    - {{ pin_subpackage('libxc', max_pin='x') }}\n\nrequirements:\n  build:\n    - {{ compiler('c') }}\n    - {{ compiler('fortran') }}  # [linux]\n    - make                       # [linux]\n    - cmake >=3.1\n    - ninja                      # [win]\n    - perl\n  host:\n    - python\n  run:\n    - python\n\ntest:\n  commands:\n    - dir \"%PREFIX%\\Library\"                                # [win]\n    - dir \"%PREFIX%\"\\Library\\include                        # [win]\n    - ls -l $PREFIX/lib                                     # [unix]\n    - ls -l $PREFIX/share/cmake/Libxc                       # [unix]\n    # Verify library\n    - test -L $PREFIX/lib/libxc$SHLIB_EXT                   # [unix]\n    - test ! -f $PREFIX/lib/libxc.a                         # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\lib\\\\xc.lib exit 1    # [win]\n    - if not exist %PREFIX%\\\\Library\\\\bin\\\\xc.dll exit 1    # [win]\n    - test -f $PREFIX/lib/libxcf90$SHLIB_EXT                # [linux]\n    - test -f $PREFIX/lib/libxcf03$SHLIB_EXT                # [linux]\n    # Verify accessories\n    - test -f $PREFIX/include/xc.h                          # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\include\\\\xc.h exit 1  # [win]\n    - test -f $PREFIX/share/cmake/Libxc/LibxcConfig.cmake   # [unix]\n    - if not exist %PREFIX%\\\\Library\\\\share\\\\cmake\\\\Libxc\\\\LibxcConfig.cmake exit 1  # [win]\n    - test -f $PREFIX/lib/pkgconfig/libxc.pc                # [unix]\n    - test -f $PREFIX/lib/pkgconfig/libxcf90.pc             # [linux]\n    - test -f $PREFIX/lib/pkgconfig/libxcf03.pc             # [linux]\n    # Inspect linkage\n    - xc-info 100                                           # [unix]\n    - xc-info.exe 100                                       # [win]\n    - ldd -v $PREFIX/lib/libxc$SHLIB_EXT                    # [linux and build_platform == target_platform]\n    - ldd -v $PREFIX/bin/xc-info                            # [linux and build_platform == target_platform]\n    - otool -L $PREFIX/lib/libxc$SHLIB_EXT                  # [osx]\n\nabout:\n  home: http://www.tddft.org/programs/Libxc\n  dev_url: https://gitlab.com/libxc/libxc\n  doc_url: https://www.tddft.org/programs/libxc/manual/libxc-5.0.x/\n  license: MPL-2.0\n  license_url: https://opensource.org/licenses/MPL-2.0\n  license_file: COPYING\n  license_family: Other\n  summary: M.A.L. Marques's exchange-correlation functionals for density-functional theory\n\nextra:\n  recipe-maintainers:\n    - bjodah\n    - jan-janssen\n    - loriab\n",
  "req": {
