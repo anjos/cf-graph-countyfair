@@ -90,6 +90,23 @@
     "migrator_version",
     "name"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1193759411.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.9.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -2733,7 +2750,7 @@
  "new_version": "2.9.1",
  "new_version_attempts": {
   "2.8.11": 1,
-  "2.9.1": 1
+  "2.9.1": 2
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -3777,13 +3794,9 @@
    "pytensor-base"
   ]
  },
- "pinning_version": "2022.12.21.11.24.57",
- "pre_pr_migrator_attempts": {
-  "version": 1
- },
- "pre_pr_migrator_status": {
-  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3890356297\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 310, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 340, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only 2ddd8f143eaf16fdd88bddaaa8027a56b7209bae...HEAD' returned non-zero exit status 128.\n"
- },
+ "pinning_version": "2023.01.07.12.45.19",
+ "pre_pr_migrator_attempts": {},
+ "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"2.8.11\" %}\n\npackage:\n  # https://github.com/conda/conda-build/issues/3933\n  name: pytensor-suite\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/p/pytensor/pytensor-{{ version }}.tar.gz\n  sha256: f1dd07ba67a4c10bed9383f56b9e45a104839ce309eed949212d294595f03393\n  patches:\n\nbuild:\n  number: 1\n\noutputs:\n  - name: pytensor-base\n    build:\n      script:\n        - python -m pip install . --no-deps -vv\n      entry_points:\n        - pytensor-cache = bin.pytensor_cache:main\n    requirements:\n      build:\n        - python                                 # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n      host:\n        - pip\n        - python\n      run:\n        - python\n        # Ref: <https://github.com/pymc-devs/pytensor/blob/rel-{{ version }}/setup.py>\n        - numpy >=1.17.0\n        - scipy >=0.14\n        - filelock\n        - etuples\n        - logical-unification\n        - miniKanren\n        - cons\n        - typing_extensions\n        - setuptools >=48.0.0\n    test:\n      imports:\n        - pytensor\n      commands:\n        - pytensor-cache help\n        - pip check\n        - python check-for-warnings.py allowed-warnings-base.txt\n      requires:\n        - pip\n      files:\n        - check-for-warnings.py\n        - allowed-warnings-base.txt\n\n  - name: pytensor\n    build:\n      script:\n        - echo \"Nothing to build here, just add dependencies.\"\n    requirements:\n      host:\n        - python\n      run:\n        - python\n        - {{ pin_subpackage('pytensor-base', exact=True) }}\n        - {{ compiler('c') }}  # [not win]\n        - cxx-compiler  # [not win]\n        - {{ compiler('m2w64_c') }}  # [win]\n        - {{ compiler('m2w64_cxx') }}  # [win]\n\n        - m2w64-toolchain  # [win]\n        # The libpython conda-forge package seems to be a wrapper package\n        # which configures m2w64-toolchain for Python.\n        # <https://github.com/conda-forge/libpython-feedstock/blob/main/recipe/bld.bat>\n        - libpython >=2.2  # [win]\n\n        # Use openblas on Apple M1. For everything else, use mkl-service.\n        - openblas  # [arm64]\n        - mkl-service  # [not arm64]\n        # For some reason we also need the \"blas\" package. Otherwise we get reports\n        # of \"cblas.h: No such file or directory\" at import time.\n        # Ref: <https://github.com/conda-forge/aesara-feedstock/issues/80>\n        - blas\n    test:\n      imports:\n        - pytensor\n        - pytensor.configdefaults\n      commands:\n        - pytensor-cache help\n        - pip check\n        - python check-for-warnings.py allowed-warnings-main.txt\n      requires:\n        - pip\n      files:\n        - check-for-warnings.py\n        - allowed-warnings-main.txt\n\nabout:\n  home: https://github.com/pymc-devs/pytensor\n  license: BSD-3-Clause\n  summary: An optimizing compiler for evaluating mathematical expressions.\n  license_file: LICENSE.txt\n  dev_url: https://github.com/pymc-devs/pytensor/\n  doc_url: https://pytensor.readthedocs.io/en/latest/\n\nextra:\n  recipe-maintainers:\n    - aseyboldt\n    - maresb\n    - michaelosthege\n    - twiecki\n",
  "req": {
   "__set__": true,
