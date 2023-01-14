@@ -239,12 +239,11 @@
   ],
   "package": {
    "name": "exact-real",
-   "version": "3.0.0"
+   "version": "3.0.1"
   },
   "source": {
-   "patches": "0001-Do-not-use-variant-which-is-unsupported-on-some-vers.patch",
-   "sha256": "1d26da10e755521e3855908afae13ee4f7d206e7ba38ee2fe368bc43d636ce4b",
-   "url": "https://github.com/flatsurf/exact-real/releases/download/3.0.0/exact-real-3.0.0.tar.gz"
+   "sha256": "1e47e4f5c0bfe5fb68e3cd223eec3693508a4904f0b986a0d673fbd38ff14e1b",
+   "url": "https://github.com/flatsurf/exact-real/releases/download/3.0.1/exact-real-3.0.1.tar.gz"
   }
  },
  "linux_64_requirements": {
@@ -441,16 +440,15 @@
   ],
   "package": {
    "name": "exact-real",
-   "version": "3.0.0"
+   "version": "3.0.1"
   },
   "source": {
-   "patches": "0001-Do-not-use-variant-which-is-unsupported-on-some-vers.patch",
-   "sha256": "1d26da10e755521e3855908afae13ee4f7d206e7ba38ee2fe368bc43d636ce4b",
-   "url": "https://github.com/flatsurf/exact-real/releases/download/3.0.0/exact-real-3.0.0.tar.gz"
+   "sha256": "1e47e4f5c0bfe5fb68e3cd223eec3693508a4904f0b986a0d673fbd38ff14e1b",
+   "url": "https://github.com/flatsurf/exact-real/releases/download/3.0.1/exact-real-3.0.1.tar.gz"
   }
  },
  "name": "exact-real",
- "new_version": "3.0.0",
+ "new_version": "3.0.1",
  "new_version_attempts": {
   "2.2.0": 1,
   "2.2.1": 1,
@@ -543,12 +541,11 @@
   ],
   "package": {
    "name": "exact-real",
-   "version": "3.0.0"
+   "version": "3.0.1"
   },
   "source": {
-   "patches": "0001-Do-not-use-variant-which-is-unsupported-on-some-vers.patch",
-   "sha256": "1d26da10e755521e3855908afae13ee4f7d206e7ba38ee2fe368bc43d636ce4b",
-   "url": "https://github.com/flatsurf/exact-real/releases/download/3.0.0/exact-real-3.0.0.tar.gz"
+   "sha256": "1e47e4f5c0bfe5fb68e3cd223eec3693508a4904f0b986a0d673fbd38ff14e1b",
+   "url": "https://github.com/flatsurf/exact-real/releases/download/3.0.1/exact-real-3.0.1.tar.gz"
   }
  },
  "osx_64_requirements": {
@@ -602,7 +599,7 @@
   ]
  },
  "pinning_version": "2023.01.12.13.25.31",
- "raw_meta_yaml": "{% set name = \"exact-real\" %}\n{% set version = \"3.0.0\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/flatsurf/exact-real/releases/download/{{ version }}/exact-real-{{ version }}.tar.gz\n  sha256: 1d26da10e755521e3855908afae13ee4f7d206e7ba38ee2fe368bc43d636ce4b\n  patches:\n    0001-Do-not-use-variant-which-is-unsupported-on-some-vers.patch\n\nbuild:\n  number: 0\n  # dependency libeantic is not available for Windows on conda-forge yet\n  skip: true  # [win]\n\noutputs:\n  - name: libexactreal\n    script: build-libexactreal.sh  # [not win]\n    script: build-libexactreal.bat  # [win]\n    run_exports:\n      - {{ pin_subpackage(\"libexactreal\") }}\n    requirements:\n      build:\n        - libtool   # [unix]\n        - automake  # [unix]\n        - make      # [unix]\n        - autotools_clang_conda  # [win]\n        - gnuconfig  # [unix]\n        - {{ compiler('cxx') }}\n      host:\n        - arb\n        - boost-cpp\n        - libeantic >=1.0.2,<2\n        - gmp  # [unix]\n        - mpir  # [win]\n    test:\n      commands:\n        - test -f $PREFIX/include/exact-real/exact-real.hpp  # [unix]\n        - test -f $PREFIX/lib/libexactreal${SHLIB_EXT}                # [unix]\n  - name: pyexactreal\n    script: build-pyexactreal.sh  # [not win]\n    script: bld-pyexactreal.bat  # [win]\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - libtool   # [unix]\n        - automake  # [unix]\n        - make      # [unix]\n        - autotools_clang_conda  # [win]\n        - gnuconfig  # [unix]\n        - {{ compiler('cxx') }}\n      host:\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        - setuptools\n        - pytest\n        - {{ pin_subpackage(\"libexactreal\") }}\n      run:\n        # cppyy dynamically compiles C++ wrappers at runtime, therefore we need C++ headers of boost.\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        - pyeantic\n        - gmpxxyy\n        # A subpackage does not see the run_exports of another subpackage:\n        # https://github.com/conda/conda-build/issues/3478\n        - {{ pin_subpackage(\"libexactreal\") }}\n    test:\n      imports:\n        - pyexactreal\n\nabout:\n  home: https://github.com/flatsurf/exact-real\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: Lazy computations with real numbers in C++ and Python\n  description: |\n    exact-real is a C++/Python library which provides exact lazy computations\n    in the Real Numbers. In particular it provides arithmetic and comparisons\n    of (random) transcendental numbers.\n  dev_url: https://github.com/flatsurf/exact-real\n\nextra:\n  recipe-maintainers:\n    - saraedum\n",
+ "raw_meta_yaml": "{% set name = \"exact-real\" %}\n{% set version = \"3.0.1\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/flatsurf/exact-real/releases/download/{{ version }}/exact-real-{{ version }}.tar.gz\n  sha256: 1e47e4f5c0bfe5fb68e3cd223eec3693508a4904f0b986a0d673fbd38ff14e1b\n\nbuild:\n  number: 0\n  # dependency libeantic is not available for Windows on conda-forge yet\n  skip: true  # [win]\n\noutputs:\n  - name: libexactreal\n    script: build-libexactreal.sh  # [not win]\n    script: build-libexactreal.bat  # [win]\n    run_exports:\n      - {{ pin_subpackage(\"libexactreal\") }}\n    requirements:\n      build:\n        - libtool   # [unix]\n        - automake  # [unix]\n        - make      # [unix]\n        - autotools_clang_conda  # [win]\n        - gnuconfig  # [unix]\n        - {{ compiler('cxx') }}\n      host:\n        - arb\n        - boost-cpp\n        - libeantic >=1.0.2,<2\n        - gmp  # [unix]\n        - mpir  # [win]\n    test:\n      commands:\n        - test -f $PREFIX/include/exact-real/exact-real.hpp  # [unix]\n        - test -f $PREFIX/lib/libexactreal${SHLIB_EXT}                # [unix]\n  - name: pyexactreal\n    script: build-pyexactreal.sh  # [not win]\n    script: bld-pyexactreal.bat  # [win]\n    requirements:\n      build:\n        - python                              # [build_platform != target_platform]\n        - cross-python_{{ target_platform }}  # [build_platform != target_platform]\n        - libtool   # [unix]\n        - automake  # [unix]\n        - make      # [unix]\n        - autotools_clang_conda  # [win]\n        - gnuconfig  # [unix]\n        - {{ compiler('cxx') }}\n      host:\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        - setuptools\n        - pytest\n        - {{ pin_subpackage(\"libexactreal\") }}\n      run:\n        # cppyy dynamically compiles C++ wrappers at runtime, therefore we need C++ headers of boost.\n        - boost-cpp\n        - python\n        - cppyy\n        - cppyythonizations\n        - pyeantic\n        - gmpxxyy\n        # A subpackage does not see the run_exports of another subpackage:\n        # https://github.com/conda/conda-build/issues/3478\n        - {{ pin_subpackage(\"libexactreal\") }}\n    test:\n      imports:\n        - pyexactreal\n\nabout:\n  home: https://github.com/flatsurf/exact-real\n  license: GPL-3.0-or-later\n  license_family: GPL\n  license_file: COPYING\n  summary: Lazy computations with real numbers in C++ and Python\n  description: |\n    exact-real is a C++/Python library which provides exact lazy computations\n    in the Real Numbers. In particular it provides arithmetic and comparisons\n    of (random) transcendental numbers.\n  dev_url: https://github.com/flatsurf/exact-real\n\nextra:\n  recipe-maintainers:\n    - saraedum\n",
  "req": {
   "__set__": true,
   "elements": [
@@ -715,6 +712,6 @@
    "elements": []
   }
  },
- "url": "https://github.com/flatsurf/exact-real/releases/download/3.0.0/exact-real-3.0.0.tar.gz",
- "version": "3.0.0"
+ "url": "https://github.com/flatsurf/exact-real/releases/download/3.0.1/exact-real-3.0.1.tar.gz",
+ "version": "3.0.1"
 }
