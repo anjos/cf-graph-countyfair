@@ -2,7 +2,11 @@
  "archived": false,
  "bad": false,
  "branch": "main",
- "conda-forge.yml": {},
+ "conda-forge.yml": {
+  "provider": {
+   "linux_aarch64": "default"
+  }
+ },
  "feedstock_name": "pcsclite",
  "hash_type": "sha256",
  "linux_64_meta_yaml": {
@@ -104,7 +108,7 @@
    "elements": []
   }
  },
- "meta_yaml": {
+ "linux_aarch64_meta_yaml": {
   "about": {
    "dev_url": "https://salsa.debian.org/rousseau/PCSC",
    "home": "https://pcsclite.apdu.fr/",
@@ -152,8 +156,7 @@
     "flex",
     "libtool",
     "make",
-    "pkg-config",
-    "sysroot_linux-64 2.17"
+    "pkg-config"
    ],
    "host": [
     "libudev"
@@ -166,6 +169,132 @@
   },
   "test": {
    "commands": [
+    "pcscd --version",
+    "test -f $PREFIX/include/PCSC/pcsclite.h",
+    "test -f $PREFIX/lib/libpcsclite.so.1",
+    "test -f $PREFIX/lib/pkgconfig/libpcsclite.pc"
+   ]
+  }
+ },
+ "linux_aarch64_requirements": {
+  "build": {
+   "__set__": true,
+   "elements": [
+    "autoconf-archive",
+    "automake",
+    "c_compiler_stub",
+    "cdt_stub",
+    "flex",
+    "libtool",
+    "make",
+    "pkg-config"
+   ]
+  },
+  "host": {
+   "__set__": true,
+   "elements": [
+    "libudev"
+   ]
+  },
+  "run": {
+   "__set__": true,
+   "elements": []
+  },
+  "test": {
+   "__set__": true,
+   "elements": []
+  }
+ },
+ "meta_yaml": {
+  "about": {
+   "dev_url": "https://salsa.debian.org/rousseau/PCSC",
+   "home": "https://pcsclite.apdu.fr/",
+   "license": "BSD-3-Clause and GPL-3.0-or-later and BSD-2-Clause and MIT",
+   "license_file": [
+    "COPYING",
+    "GPL-3.0.txt",
+    "COPYING",
+    "GPL-3.0.txt"
+   ],
+   "summary": "Middleware to access a smart card using SCard API (PC/SC)."
+  },
+  "build": {
+   "number": "0",
+   "run_exports": [
+    "pcsclite",
+    "pcsclite"
+   ],
+   "script": [
+    "set -e",
+    "set -x",
+    "if test -f Makefile; then make distclean; fi",
+    "rm -rf *.cache *.m4 config.guess config.log config.status config.sub depcomp ltmain.sh",
+    "autoreconf --verbose --install --force",
+    "./configure --prefix=$PREFIX --sbindir=$PREFIX/bin",
+    "make install",
+    "make distcheck",
+    "rm $PREFIX/bin/pcsc-spy",
+    "rm $PREFIX/lib/libpcscspy.so*",
+    "set -e",
+    "set -x",
+    "if test -f Makefile; then make distclean; fi",
+    "rm -rf *.cache *.m4 config.guess config.log config.status config.sub depcomp ltmain.sh",
+    "autoreconf --verbose --install --force",
+    "./configure --prefix=$PREFIX --sbindir=$PREFIX/bin",
+    "make install",
+    "make distcheck",
+    "rm $PREFIX/bin/pcsc-spy",
+    "rm $PREFIX/lib/libpcscspy.so*"
+   ]
+  },
+  "extra": {
+   "recipe-maintainers": [
+    "leofang",
+    "thewchan",
+    "leofang",
+    "thewchan"
+   ]
+  },
+  "package": {
+   "name": "pcsclite",
+   "version": "1.9.9"
+  },
+  "requirements": {
+   "build": [
+    "c_compiler_stub",
+    "cdt_stub",
+    "autoconf-archive",
+    "automake",
+    "flex",
+    "libtool",
+    "make",
+    "pkg-config",
+    "sysroot_linux-64 2.17",
+    "c_compiler_stub",
+    "cdt_stub",
+    "autoconf-archive",
+    "automake",
+    "flex",
+    "libtool",
+    "make",
+    "pkg-config"
+   ],
+   "host": [
+    "libudev",
+    "libudev"
+   ],
+   "run": []
+  },
+  "source": {
+   "sha256": "cbcc3b34c61f53291cecc0d831423c94d437b188eb2b97b7febc08de1c914e8a",
+   "url": "https://pcsclite.apdu.fr/files/pcsc-lite-1.9.9.tar.bz2"
+  },
+  "test": {
+   "commands": [
+    "pcscd --version",
+    "test -f $PREFIX/include/PCSC/pcsclite.h",
+    "test -f $PREFIX/lib/libpcsclite.so.1",
+    "test -f $PREFIX/lib/pkgconfig/libpcsclite.pc",
     "pcscd --version",
     "test -f $PREFIX/include/PCSC/pcsclite.h",
     "test -f $PREFIX/lib/libpcsclite.so.1",
