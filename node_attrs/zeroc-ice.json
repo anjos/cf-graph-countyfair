@@ -444,7 +444,22 @@
   }
  ],
  "archived": false,
- "bad": false,
+ "bad": {
+  "exception": "Command 'git diff --name-only 80b4a299f9e7f2cceab0bea509a0afc959febb24...HEAD' returned non-zero exit status 128.",
+  "traceback": [
+   "Traceback (most recent call last):",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator",
+   "    migrator_uid, pr_json = run(",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 310, in run",
+   "    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")",
+   "  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 340, in eval_cmd",
+   "    c.check_returncode()",
+   "  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode",
+   "    raise CalledProcessError(self.returncode, self.args, self.stdout,",
+   "subprocess.CalledProcessError: Command 'git diff --name-only 80b4a299f9e7f2cceab0bea509a0afc959febb24...HEAD' returned non-zero exit status 128.",
+   ""
+  ]
+ },
  "branch": "main",
  "conda-forge.yml": {
   "build_platform": {
@@ -1352,13 +1367,14 @@
   }
  },
  "name": "zeroc-ice",
- "new_version": "3.7.8",
+ "new_version": "3.7.8.2",
  "new_version_attempts": {
   "3.7.4": 1,
   "3.7.5": 1,
   "3.7.6": 1,
   "3.7.7": 2,
-  "3.7.8": 1
+  "3.7.8": 1,
+  "3.7.8.2": 1
  },
  "new_version_errors": {},
  "osx_64_meta_yaml": {
@@ -1883,10 +1899,12 @@
  },
  "pinning_version": "2022.11.18.05.48.19",
  "pre_pr_migrator_attempts": {
-  "pypy37": 1
+  "pypy37": 1,
+  "version": 1
  },
  "pre_pr_migrator_status": {
-  "pypy37": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1416596639\">bot CI job</a>): master: ['linux_64_openssl3python3.7.____73_pypy: Encountered problems while solving:\\n  - package python-3.7.9-4_73_pypy requires pypy3.7 7.3.3.*, but none of the providers can be installed\\n', 'osx_64_openssl3python3.7.____73_pypy: Encountered problems while solving:\\n  - package python-3.7.9-4_73_pypy requires pypy3.7 7.3.3.*, but none of the providers can be installed\\n']"
+  "pypy37": "not solvable (<a href=\"https://github.com/regro/autotick-bot/actions/runs/1416596639\">bot CI job</a>): master: ['linux_64_openssl3python3.7.____73_pypy: Encountered problems while solving:\\n  - package python-3.7.9-4_73_pypy requires pypy3.7 7.3.3.*, but none of the providers can be installed\\n', 'osx_64_openssl3python3.7.____73_pypy: Encountered problems while solving:\\n  - package python-3.7.9-4_73_pypy requires pypy3.7 7.3.3.*, but none of the providers can be installed\\n']",
+  "version": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3943440371\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 310, in run\n    gdiff = eval_cmd(f\"git diff --name-only {head_ref.strip()}...HEAD\")\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 340, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'git diff --name-only 80b4a299f9e7f2cceab0bea509a0afc959febb24...HEAD' returned non-zero exit status 128.\n"
  },
  "raw_meta_yaml": "{% set name = \"zeroc-ice\" %}\n{% set version = \"3.7.8\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz\n  sha256: 9287511c890c5dd15404635546d4b28db56a1904713da1ea829e9d7454f96486\n  patches:\n    - patch\n\nbuild:\n  number: 0\n  skip: true  # [win]\n  entry_points:\n    - slice2py=slice2py:main\n\nrequirements:\n  build:\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - {{ compiler('c') }}\n    - {{ compiler('cxx') }}\n  host:\n    - pip\n    - python\n    - bzip2\n    - openssl\n    - libiconv\n  run:\n    - python\n    - bzip2\n    - openssl\n    - libiconv\n\ntest:\n  imports:\n    - Glacier2\n    - Ice\n    - Ice.Py3\n    - IceBox\n    - IceGrid\n    - IceMX\n    - IcePatch2\n    - IceStorm\n  commands:\n    - slice2py --help\n\nabout:\n  home: https://zeroc.com\n  license: GPL-2.0-only\n  license_family: GPL2\n  license_file:\n    - ICE_LICENSE\n  summary: Ice is a comprehensive RPC framework with support for Python, C++, .NET, Java, JavaScript and more.\n\nextra:\n  recipe-maintainers:\n    - dpryan79\n    - joshmoore\n    - manics\n",
  "req": {

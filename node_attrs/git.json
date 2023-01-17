@@ -928,6 +928,23 @@
     "migrator_version",
     "version"
    ]
+  },
+  {
+   "PR": {
+    "__lazy_json__": "pr_json/1200911949.json"
+   },
+   "data": {
+    "bot_rerun": false,
+    "migrator_name": "Version",
+    "migrator_version": 0,
+    "version": "2.39.1"
+   },
+   "keys": [
+    "bot_rerun",
+    "migrator_name",
+    "migrator_version",
+    "version"
+   ]
   }
  ],
  "archived": false,
@@ -1984,7 +2001,7 @@
   }
  },
  "name": "git",
- "new_version": "2.39.0",
+ "new_version": "2.39.1",
  "new_version_attempts": {
   "2.26.1": 2,
   "2.26.2": 1,
@@ -2015,7 +2032,8 @@
   "2.38.0": 1,
   "2.38.1": 1,
   "2.38.2": 3,
-  "2.39.0": 1
+  "2.39.0": 1,
+  "2.39.1": 1
  },
  "new_version_errors": {
   "2.26.1": "The recipe did not change in the version migration, a URL did not hash, or there is jinja2 syntax the bot cannot handle!\n\nPlease check the URLs in your recipe with version '2.26.1' to make sure they exist!\n\nWe also found the following errors:\n\n - could not hash URL template 'https://github.com/git-for-windows/git/releases/download/v{{ version }}.windows.1/PortableGit-{{ version }}-64-bit.7z.exe'\n",
@@ -2397,7 +2415,7 @@
    "git"
   ]
  },
- "pinning_version": "2022.12.12.15.21.25",
+ "pinning_version": "2023.01.17.14.17.22",
  "pre_pr_migrator_attempts": {},
  "pre_pr_migrator_status": {},
  "raw_meta_yaml": "{% set version = \"2.39.0\" %}\n\npackage:\n  name: git\n  version: {{ version }}\n\nsource:\n  - url: https://mirrors.edge.kernel.org/pub/software/scm/git/git-{{ version }}.tar.gz  # [not win]\n    folder: code  # [not win]\n    sha256: d929fe67cef7ac3ca709d2b56a9920f17112d5a524bf8112af37ec045a7a5109  # [not win]\n    patches:   # [not win]\n      - 0001-macOS-Do-not-use-the-system-Wish-urgh.patch  # [not win]\n  - url: https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-{{ version }}.tar.gz  # [not win]\n    folder: manpages  # [not win]\n    sha256: f1cda399d98bca2a6213fd4a05b4265bd6786e6b32c16ffff33716a3cddeb868  # [not win]\n  - url: https://mirrors.edge.kernel.org/pub/software/scm/git/git-htmldocs-{{ version }}.tar.gz  # [not win]\n    folder: htmldocs  # [not win]\n    sha256: bb70864d90828b74188cd76f0870c5d2f6a9ee890f82c7d5a3cd94fbb5e2ea38  # [not win]\n\n  - url: https://github.com/git-for-windows/git/releases/download/v{{ version }}.windows.1/PortableGit-{{ version }}-64-bit.7z.exe  # [win64]\n    folder: .  # [win64]\n    sha256: 8ca31e8474048b48b813ebdf95f288d58f253717d071d11785cc23f37dc6a396  # [win64]\n\nbuild:\n  number: 0\n  # git hardcodes paths to external utilities (e.g. curl)\n  detect_binary_files_with_prefix: true\n  ignore_run_exports_from:\n    - perl 5.*  # [unix]\n\nrequirements:\n  build:\n    - {{ compiler('c') }}  # [unix]\n    - autoconf  # [unix]\n    - make      # [unix]\n    - 7za       # [win]\n    - tk        # [unix]\n    - gettext   # [unix]\n  host:\n    - curl      # [unix]\n    - expat     # [unix]\n    - libiconv  # [unix]\n    - openssl   # [unix]\n    - pcre2     # [unix]\n    - perl 5.*  # [unix]\n    - zlib      # [unix]\n  run:\n    # Without the explicit dependency on curl, it seems\n    # that linux_64 fails on the symbol lookup for curl_global_sslset\n    - curl      # [unix]\n    - gettext   # [unix]\n    - perl 5.*  # [unix]\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx and x86_64]\n\ntest:\n  commands:\n    # Verify git location.\n    - test -f $PREFIX/bin/git                               # [unix]\n    - test -f $PREFIX/bin/gitk                              # [unix]\n    - test -f $PREFIX/bin/git-credential-osxkeychain        # [osx]\n    - if not exist %LIBRARY_PREFIX%\\\\bin\\\\git.exe exit 1    # [win]\n\n    # Verify interactive support.\n    - test -f $PREFIX/libexec/git-core/git-add--interactive  # [unix]\n\n    # Run git commands.\n    - git --version\n    - git clone https://github.com/conda-forge/git-feedstock\n\n    # Git credential commands\n    - git-credential-osxkeychain 2>&1 | grep -q usage  # [osx]\n\n    # test completions\n    - bash $PREFIX/share/bash-completion/completions/git  # [unix]\n\n    # confirm toplevel manpage\n    - test -f $PREFIX/man/man1/git.1  # [not win]\n    - test -f $PREFIX/share/man/man1/git.1  # [osx]\n\n    # confirm toplevel html doc page\n    - test -f $PREFIX/share/doc/git/index.html  # [not win]\n\nabout:\n  home: https://git-scm.com/\n  license: GPL-2.0-or-later and LGPL-2.1-or-later\n  license_file: code/COPYING  # [not win]\n  summary: distributed version control system\n\nextra:\n  recipe-maintainers:\n    - jakirkham\n    - msarahan\n    - pelson\n    - scopatz\n    - ocefpaf\n    - djsutherland\n",
