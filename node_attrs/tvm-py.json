@@ -225,7 +225,7 @@
     "__lazy_json__": "pr_json/981933938.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1674084922.748223,
     "migrator_name": "Version",
     "migrator_version": 0,
     "version": "0.9.0"
@@ -261,7 +261,7 @@
     "__lazy_json__": "pr_json/1127435658.json"
    },
    "data": {
-    "bot_rerun": false,
+    "bot_rerun": 1674084922.7484424,
     "migrator_name": "MigrationYaml",
     "migrator_object_version": 1,
     "migrator_version": 0,
@@ -1726,10 +1726,12 @@
  "pinning_version": "2022.11.18.09.29.52",
  "pre_pr_migrator_attempts": {
   "pypy38": 5,
+  "python311": 1,
   "python39": 1
  },
  "pre_pr_migrator_status": {
   "pypy38": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3952891184\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 279, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 340, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n",
+  "python311": "bot error (<a href=\"https://github.com/regro/autotick-bot/actions/runs/3953696010\">bot CI job</a>): main: Traceback (most recent call last):\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 1166, in _run_migrator\n    migrator_uid, pr_json = run(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/auto_tick.py\", line 279, in run\n    eval_cmd(\n  File \"/home/runner/work/autotick-bot/autotick-bot/cf-scripts/conda_forge_tick/utils.py\", line 340, in eval_cmd\n    c.check_returncode()\n  File \"/usr/share/miniconda3/envs/run_env/lib/python3.9/subprocess.py\", line 460, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command 'conda smithy rerender -c auto --no-check-uptodate' returned non-zero exit status 1.\n",
   "python39": "not solvable: master: ['linux_64_numpy1.19python3.9.____cpython: Encountered problems while solving.\\nProblem: package numpy-1.19.0-py36h7314795_0 requires python_abi 3.6.* *_cp36m, but none of the providers can be installed\\n', 'osx_64_numpy1.19python3.9.____cpython: Encountered problems while solving.\\nProblem: package numpy-1.19.0-py36he764e95_0 requires python_abi 3.6 *_pypy36_pp73, but none of the providers can be installed\\n']"
  },
  "raw_meta_yaml": "{% set name = \"tvm-py\" %}\n{% set version = \"0.8.0\" %}\n{% set proc_type = \"cuda\" if cuda_compiler_version != \"None\" else \"cpu\" %}\n\npackage:\n  name: {{ name|lower }}\n  version: {{ version }}\n\nsource:\n  url: https://github.com/apache/incubator-tvm/archive/v{{ version }}.tar.gz\n  sha256: d950c5d159c1345d0727dfb3cabb456e6947a8cb80519feaeed8e0b35e6e913e\n\nbuild:\n  number: 4\n  script:\n    - cd python\n    - {{ PYTHON }} -m pip install . -vv\n  skip: true  # [win]\n  skip: true  # [cuda_compiler_version in (\"10.2\", \"11.0\", \"11.1\")]\n  string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ proc_type }}  # [cuda_compiler_version == \"None\"]\n  string: py{{ CONDA_PY }}{{ cuda_compiler_version|replace('.', '') }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ proc_type }}  # [cuda_compiler_version != \"None\"]\n\nrequirements:\n  build:\n    - {{ compiler('cxx') }}\n    - {{ compiler('c') }}\n    - {{ compiler('cuda') }}  # [cuda_compiler_version != \"None\"]\n    - python                                 # [build_platform != target_platform]\n    - cross-python_{{ target_platform }}     # [build_platform != target_platform]\n    - cython                                 # [build_platform != target_platform]\n    - numpy                                  # [build_platform != target_platform]\n  host:\n    - libtvm =={{ version }}=*{{ proc_type }}*\n    - python\n    - pip\n    - cython\n    - numpy\n    - setuptools\n    - scipy\n    - psutil\n    - decorator\n    - attrs\n    - typed-ast\n  run:\n    - python\n    - {{ pin_compatible('numpy') }}\n    - scipy\n    - psutil\n    - decorator\n    - attrs\n    - typed-ast\n    - libtvm =={{ version }}=*{{ proc_type }}*\n    - __cuda  # [cuda_compiler_version != \"None\"]\n    - cloudpickle\n    - tornado\n    - synr  ==0.5.0\n    - pytest\n    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default(\"10.9\") }}  # [osx and x86_64]\n\ntest:\n  imports:\n    - tvm\n  requires:\n   - pip\n   - pytest\n  source_files:\n    - tests\n  commands:\n   - pip check\n   - python -m pytest -v tests/python/all-platform-minimal-test\n\nabout:\n  home: https://tvm.apache.org/\n  license: Apache-2.0\n  license_family: Apache\n  license_file: LICENSE\n  summary: Open Deep Learning Compiler Stack\n  description: |\n    Apache TVM (incubating) is a compiler stack for deep learning systems.\n    It is designed to close the gap between the productivity-focused deep\n    learning frameworks, and the performance- and efficiency-focused hardware\n    backends. TVM works with deep learning frameworks to provide end to end\n    compilation to different backends.\n  doc_url: https://tvm.apache.org/docs/\n  dev_url: https://github.com/apache/incubator-tvm\n\nextra:\n  recipe-maintainers:\n    - ngam\n    - marcelotrevisani\n",
